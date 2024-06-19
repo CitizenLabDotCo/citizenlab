@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Vill du skicka det här e-postmeddelandet till alla registrerade användare?",
   "app.containers.Admin.emails.viewExample": "Utsikt",
   "app.containers.Admin.ideas.import": "Importera",
-  "app.containers.Admin.ideas.tabInputStatuses": "Status för inmatning",
   "app.containers.Admin.initiatives.addNewProposal": "Lägg till ett förslag",
   "app.containers.Admin.initiatives.cosponsors": "Medförslagsställare",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Antal medförslagsställare",

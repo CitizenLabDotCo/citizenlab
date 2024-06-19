@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Želite li poslati ovu e-poruku svim registriranim korisnicima?",
   "app.containers.Admin.emails.viewExample": "Pogled",
   "app.containers.Admin.ideas.import": "Uvoz",
-  "app.containers.Admin.ideas.tabInputStatuses": "Statusi unosa",
   "app.containers.Admin.initiatives.addNewProposal": "Dodajte prijedlog",
   "app.containers.Admin.initiatives.cosponsors": "Kosponzori",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Broj kosponzora",

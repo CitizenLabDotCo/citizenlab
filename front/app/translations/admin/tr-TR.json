@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Bu e-postayı tüm kayıtlı kullanıcılara göndermek istiyor musunuz?",
   "app.containers.Admin.emails.viewExample": "Görünüm",
   "app.containers.Admin.ideas.import": "İçe aktar",
-  "app.containers.Admin.ideas.tabInputStatuses": "Giriş durumları",
   "app.containers.Admin.initiatives.addNewProposal": "Bir öneri ekleyin",
   "app.containers.Admin.initiatives.cosponsors": "Eş Sponsorlar",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Destekçi sayısı",

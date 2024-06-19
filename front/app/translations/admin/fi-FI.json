@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Haluatko lähettää tämän sähköpostin kaikille rekisteröityneille käyttäjille?",
   "app.containers.Admin.emails.viewExample": "Näytä",
   "app.containers.Admin.ideas.import": "Tuonti",
-  "app.containers.Admin.ideas.tabInputStatuses": "Syöttötilat",
   "app.containers.Admin.initiatives.addNewProposal": "Lisää ehdotus",
   "app.containers.Admin.initiatives.cosponsors": "Kannattajat",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Kannattajien määrä",

@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Voulez-vous envoyer ce courriel à tous les utilisateurs ?",
   "app.containers.Admin.emails.viewExample": "Voir",
   "app.containers.Admin.ideas.import": "Importer",
-  "app.containers.Admin.ideas.tabInputStatuses": "Statuts des contributions",
   "app.containers.Admin.initiatives.addNewProposal": "Ajouter une proposition",
   "app.containers.Admin.initiatives.cosponsors": "Soutiens",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Nombre de soutiens",

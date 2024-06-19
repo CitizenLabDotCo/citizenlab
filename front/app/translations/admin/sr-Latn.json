@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Da li želite da pošaljete ovaj email svim korisnicima?",
   "app.containers.Admin.emails.viewExample": "Поглед",
   "app.containers.Admin.ideas.import": "Uvezi",
-  "app.containers.Admin.ideas.tabInputStatuses": "Статуси уноса",
   "app.containers.Admin.initiatives.addNewProposal": "Dodajte predlog",
   "app.containers.Admin.initiatives.cosponsors": "Cosponsors",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Number of cosponsors",

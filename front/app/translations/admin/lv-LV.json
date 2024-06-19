@@ -728,7 +728,6 @@
   "app.containers.Admin.emails.toAllUsers": "Vai vēlaties nosūtīt šo e-pastu visiem reģistrētajiem lietotājiem?",
   "app.containers.Admin.emails.viewExample": "Skatīt",
   "app.containers.Admin.ideas.import": "Importēt",
-  "app.containers.Admin.ideas.tabInputStatuses": "Ievades statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Pievienot priekšlikumu",
   "app.containers.Admin.initiatives.cosponsors": "Atbalstītāji",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Atbalstītāju skaits",
