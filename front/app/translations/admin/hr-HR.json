@@ -2432,7 +2432,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Prijavite se",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Ovako banner vide registrirani korisnici.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Ovako posjetitelji koji nisu registrirani na platformi vide banner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Ovaj banner je posebno koristan za slike koje ne funkcioniraju dobro s tekstom iz naslova, podnaslova ili gumba. Ove stavke bit će gurnute ispod natpisa. Više informacija o preporučenoj upotrebi slika možete pronaći na našoj {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Ovaj natpis je posebno koristan sa slikama koje ne funkcioniraju dobro s tekstom iz naslova, podnaslova ili gumba. Ove stavke bit će gurnute ispod natpisa. Više informacija o preporučenoj upotrebi slika možete pronaći na našem {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "baza znanja",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dva reda",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Visina ugradnje (pikseli)",
