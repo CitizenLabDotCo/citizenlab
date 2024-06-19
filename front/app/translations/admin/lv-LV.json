@@ -2432,6 +2432,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Reģistrējieties",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Šādi baneri redz reģistrētie lietotāji.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Šādā veidā reklāmkarogu redz apmeklētāji, kuri nav reģistrējušies platformā.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Šis baneris ir īpaši noderīgs, ja attēli nav labi savienoti ar virsraksta, apakšvirsraksta vai pogas tekstu. Šie elementi tiks izstumti zem banera. Vairāk informācijas par ieteicamo attēlu izmantošanu var atrast mūsu vietnē {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "zināšanu bāze",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Divas rindas",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Iekļautais augstums (pikseļi)",
