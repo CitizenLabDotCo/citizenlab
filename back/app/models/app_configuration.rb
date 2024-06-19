@@ -114,6 +114,13 @@ class AppConfiguration < ApplicationRecord
         experiment.use { first! }
         experiment.try { Current.app_configuration }
 
+        experiment.compare_errors do |control, candidate|
+          next true if control.instance_of?(candidate.class) && control.message == candidate.message
+          next true if control.instance_of?(RecordNotFound) && candidate.instance_of?(RecordNotFound)
+
+          false
+        end
+
         experiment.clean(&:attributes)
 
         experiment.context({
