@@ -157,7 +157,6 @@ const IdeaStatuses = () => {
             {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
             so it's always disabled. */}
             <DeleteStatusButton
-              tooltipDisabled={false}
               buttonDisabled
               tooltipContent={
                 customIdeaStatusesAllowed ? (
@@ -171,7 +170,6 @@ const IdeaStatuses = () => {
               ideaStatusId={defaultStatus.id}
             />
             <EditStatusButton
-              tooltipDisabled={customIdeaStatusesAllowed}
               buttonDisabled={!customIdeaStatusesAllowed}
               tooltipContent={
                 <FormattedMessage {...messages.pricingPlanUpgrade} />
@@ -200,7 +198,6 @@ const IdeaStatuses = () => {
                   <Buttons>
                     {customIdeaStatusesAllowed ? (
                       <DeleteStatusButton
-                        tooltipDisabled={isDeletable(ideaStatus)}
                         buttonDisabled={!isDeletable(ideaStatus)}
                         tooltipContent={
                           <FormattedMessage
@@ -218,7 +215,6 @@ const IdeaStatuses = () => {
                       />
                     ) : (
                       <DeleteStatusButton
-                        tooltipDisabled={false}
                         buttonDisabled
                         tooltipContent={
                           <FormattedMessage {...messages.pricingPlanUpgrade} />
@@ -227,7 +223,6 @@ const IdeaStatuses = () => {
                       />
                     )}
                     <EditStatusButton
-                      tooltipDisabled={customIdeaStatusesAllowed}
                       buttonDisabled={!customIdeaStatusesAllowed}
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />

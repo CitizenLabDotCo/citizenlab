@@ -10,18 +10,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  tooltipDisabled: TooltipProps['disabled'];
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
   linkTo: RouteType;
 }
 
 const EditStatusButton = ({
-  tooltipDisabled,
   buttonDisabled,
   tooltipContent,
   linkTo,
 }: Props) => {
+  const tooltipDisabled = !buttonDisabled;
+
   return (
     <Tooltip
       placement="top"

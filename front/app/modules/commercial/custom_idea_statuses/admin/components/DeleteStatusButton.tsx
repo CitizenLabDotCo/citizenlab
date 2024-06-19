@@ -15,19 +15,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  tooltipDisabled: TooltipProps['disabled'];
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
   ideaStatusId: string;
 }
 
 const DeleteStatusButton = ({
-  tooltipDisabled,
   buttonDisabled,
   tooltipContent,
   ideaStatusId,
 }: Props) => {
   const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
+  const tooltipDisabled = !buttonDisabled;
 
   return (
     <Tooltip
