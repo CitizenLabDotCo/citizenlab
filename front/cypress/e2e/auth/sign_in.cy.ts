@@ -57,7 +57,7 @@ describe('Sign in page', () => {
   });
 
   it('logs in with valid credentials', () => {
-    const email = 'admin@citizenlab.co';
+    const email = 'admin@govocal.com';
     const password = 'democracy2.0';
 
     cy.get('#email').type(email);

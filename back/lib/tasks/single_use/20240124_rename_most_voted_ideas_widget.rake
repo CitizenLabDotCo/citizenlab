@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-MULTILOC_TYPES = {
+MOST_VOTED_MULTILOC_TYPES = {
   'MostVotedIdeasWidget' => 'MostReactedIdeasWidget'
 }
-TEXT_PROPS = %w[text alt title]
+MOST_VOTED_MOST_VOTED_TEXT_PROPS = %w[text alt title]
 
 namespace :single_use do
   desc 'Fix existing layouts'
@@ -37,7 +37,7 @@ namespace :single_use do
 end
 
 def multiloc_element?(elt)
-  MULTILOC_TYPES.key? node_type(elt)
+  MOST_VOTED_MULTILOC_TYPES.key? node_type(elt)
 end
 
 def node_type(elt)
@@ -52,9 +52,9 @@ def migrate_monolingual(craftjs_json, primary_locale, other_locales)
   craftjs_json.transform_values do |elt|
     new_elt = elt.deep_dup
     if multiloc_element?(elt)
-      new_elt['type']['resolvedName'] = MULTILOC_TYPES[elt.dig('type', 'resolvedName')] if MULTILOC_TYPES.key? elt.dig('type', 'resolvedName')
-      new_elt['displayName'] = MULTILOC_TYPES[elt['displayName']] if MULTILOC_TYPES.key? elt['displayName']
-      TEXT_PROPS.each do |text_prop|
+      new_elt['type']['resolvedName'] = MOST_VOTED_MULTILOC_TYPES[elt.dig('type', 'resolvedName')] if MOST_VOTED_MULTILOC_TYPES.key? elt.dig('type', 'resolvedName')
+      new_elt['displayName'] = MOST_VOTED_MULTILOC_TYPES[elt['displayName']] if MOST_VOTED_MULTILOC_TYPES.key? elt['displayName']
+      MOST_VOTED_TEXT_PROPS.each do |text_prop|
         if elt['props'].key? text_prop
           new_elt['props'][text_prop] = { primary_locale => elt.dig('props', text_prop) }
           other_locales.each do |other_locale|

@@ -17,7 +17,7 @@ class ApplicationMailer < ActionMailer::Base
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
-  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
+  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url, :home_url, :tenant_logo_url,
     :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
     :header_logo_only?, :remove_vendor_branding?
 
@@ -180,10 +180,16 @@ class ApplicationMailer < ActionMailer::Base
     @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
   end
 
-  def logo_url
-    @logo_url ||= app_configuration.logo.versions.then do |versions|
+  def tenant_logo_url
+    @tenant_logo_url ||= app_configuration.logo.versions.then do |versions|
       versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
+  end
+
+  def gv_gray_logo_url
+    logo_languages = %i[en nl fr es da de]
+    lang_part = (locale.fallback_languages & logo_languages).first.to_s
+    "https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_#{lang_part}.png"
   end
 
   def formatted_todays_date

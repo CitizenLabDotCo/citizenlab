@@ -5,9 +5,6 @@ import Success from './';
 const meta = {
   title: 'Components/Success',
   component: Success,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Success>;
 
 export default meta;

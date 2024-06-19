@@ -1,11 +1,12 @@
 import React from 'react';
-import type { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'react-router-dom';
 import { allModes } from './modes';
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 initialize();
 
@@ -17,7 +18,6 @@ const routerDecorator = (Story) => (
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -28,9 +28,14 @@ const preview: Preview = {
     reactIntl,
     chromatic: {
       modes: {
-        ...allModes
+        ...allModes,
       },
-      disableSnapshot: true
+      disableSnapshot: true,
+    },
+    viewport: {
+      viewports: {
+        ...MINIMAL_VIEWPORTS
+      },
     }
   },
   decorators: [mswDecorator, routerDecorator, contexts],

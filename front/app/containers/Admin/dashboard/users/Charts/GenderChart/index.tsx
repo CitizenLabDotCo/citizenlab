@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 import moment from 'moment';
 
-import { useUsersByGenderLive } from 'api/graph_data_units';
+import { useDemographicsLive } from 'api/graph_data_units';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -32,12 +32,17 @@ const GenderChart = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { data: usersByGender } = useUsersByGenderLive({
+  const { data: usersByGender } = useDemographicsLive({
+    custom_field_id: customFieldId,
     start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
     end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
     group_id: currentGroupFilter,
   });
-  const serie = convertToGraphFormat(usersByGender, formatMessage);
+
+  const serie = convertToGraphFormat(
+    usersByGender?.data.attributes.series,
+    formatMessage
+  );
   const graphRef = useRef();
   const cardTitle = formatMessage(messages.usersByGenderTitle);
 
