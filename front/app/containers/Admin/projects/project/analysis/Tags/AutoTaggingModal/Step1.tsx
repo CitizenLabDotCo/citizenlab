@@ -176,7 +176,7 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
-  const advancedAutotaggingEnabled = useFeatureFlag({
+  const advancedAutotaggingAllowed = useFeatureFlag({
     name: 'advanced_autotagging',
     onlyCheckAllowed: true,
   });
@@ -189,23 +189,18 @@ const Step1 = ({
     analysisId,
     queryParams: filters,
   });
-
   const allInputsCount = allInputs?.pages[0].meta.filtered_count;
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count;
-
   const { formatMessage } = useIntl();
-  const advancedAutotaggingOptionDisabled = !advancedAutotaggingEnabled;
 
   return (
     <>
       <Title mb="32px">
-        <Icon name="stars" height="32px" width="32px" />{' '}
+        <Icon name="stars" height="32px" width="32px" mr="4px" />
         {formatMessage(messages.autoTagTitle)}
       </Title>
       <Text mb="32px">{formatMessage(messages.autoTagDescription)}</Text>
-
       <Title variant="h4">{formatMessage(messages.whatToTag)}</Title>
-
       <Box display="flex" gap="16px">
         <AutoTagTargetContainer
           className={autoTaggingTarget === 'all' ? 'selected' : ''}
@@ -247,7 +242,6 @@ const Step1 = ({
                 </>
               }
             />
-
             {isEmpty(filters) && (
               <Text fontSize="s">
                 {formatMessage(messages.noActiveFilters)}
@@ -256,22 +250,19 @@ const Step1 = ({
           </Box>
         </AutoTagTargetContainer>
       </Box>
-
       <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
-
       <Box display="flex" gap="16px" flexWrap="wrap">
         <AutoTagOption
           tagType="nlp_topic"
           title={formatMessage(messages.fullyAutomatedTitle)}
           onSelect={() => onSelectMethod('nlp_topic')}
-          isDisabled={advancedAutotaggingOptionDisabled}
+          isDisabled={!advancedAutotaggingAllowed}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip={formatMessage(messages.fullyAutomatedTooltip)}
           isRecommended
         >
           {formatMessage(messages.fullyAutomatedDescription)}
         </AutoTagOption>
-
         <AutoTagOption
           tagType="custom"
           title={formatMessage(messages.classificationByLabelTitle)}
@@ -282,57 +273,52 @@ const Step1 = ({
         >
           {formatMessage(messages.classificationByLabelDescription)}
         </AutoTagOption>
-
         <AutoTagOption
           tagType="custom"
           title={formatMessage(messages.classificationByExampleTitle)}
           onSelect={() => onSelectMethod('few_shot_classification')}
-          isDisabled={advancedAutotaggingOptionDisabled}
+          isDisabled={!advancedAutotaggingAllowed}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
           tooltip={formatMessage(messages.classificationByExampleTooltip)}
         >
           {formatMessage(messages.classificationByExampleDescription)}
         </AutoTagOption>
-
         {analysis?.data.attributes.participation_method === 'ideation' && (
           <AutoTagOption
             tagType="platform_topic"
             title={formatMessage(messages.platformTagsTitle)}
             onSelect={() => onSelectMethod('platform_topic')}
-            isDisabled={advancedAutotaggingOptionDisabled}
+            isDisabled={!advancedAutotaggingAllowed}
             isLoading={isLoading && loadingMethod === 'platform_topic'}
           >
             {formatMessage(messages.platformTagsDescription)}
           </AutoTagOption>
         )}
-
         <AutoTagOption
           tagType="sentiment"
           title={formatMessage(messages.sentimentTagTitle)}
           onSelect={() => onSelectMethod('sentiment')}
-          isDisabled={advancedAutotaggingOptionDisabled}
+          isDisabled={!advancedAutotaggingAllowed}
           isLoading={isLoading && loadingMethod === 'sentiment'}
         >
           {formatMessage(messages.sentimentTagDescription)}
         </AutoTagOption>
-
         {analysis?.data.attributes.participation_method === 'ideation' && (
           <AutoTagOption
             tagType="controversial"
             title={formatMessage(messages.controversialTagTitle)}
             onSelect={() => onSelectMethod('controversial')}
-            isDisabled={advancedAutotaggingOptionDisabled}
+            isDisabled={!advancedAutotaggingAllowed}
             isLoading={isLoading && loadingMethod === 'controversial'}
           >
             {formatMessage(messages.controversialTagDescription)}
           </AutoTagOption>
         )}
-
         <AutoTagOption
           tagType="language"
           title={formatMessage(messages.languageTagTitle)}
           onSelect={() => onSelectMethod('language')}
-          isDisabled={advancedAutotaggingOptionDisabled}
+          isDisabled={!advancedAutotaggingAllowed}
           isLoading={isLoading && loadingMethod === 'language'}
         >
           {formatMessage(messages.languageTagDescription)}
