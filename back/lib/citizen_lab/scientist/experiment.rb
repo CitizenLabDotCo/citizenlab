@@ -31,6 +31,8 @@ module CitizenLab
               candidate: observation_payload(result.candidates.first),
               execution_order: result.observations.map(&:name)
             })
+        else
+          Rails.logger.info("Experiment '#{name}' matched")
         end
       end
 

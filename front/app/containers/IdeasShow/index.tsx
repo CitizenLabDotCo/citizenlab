@@ -140,20 +140,17 @@ export const IdeasShow = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact &&
-            participationContext?.attributes.participation_method !==
-              'voting' && // To reduce bias we want to hide the author data during voting methods
-            statusId && (
-              <Box my="24px">
-                <MetaInformation
-                  ideaId={ideaId}
-                  projectId={project.data.id}
-                  statusId={statusId}
-                  authorId={authorId}
-                  compact={compact}
-                />
-              </Box>
-            )}
+          {compact && statusId && (
+            <Box my="24px">
+              <MetaInformation
+                ideaId={ideaId}
+                projectId={project.data.id}
+                statusId={statusId}
+                authorId={authorId}
+                compact={compact}
+              />
+            </Box>
+          )}
           <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}
