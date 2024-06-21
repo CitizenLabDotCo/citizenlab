@@ -55,7 +55,7 @@ module UserConfirmation
   end
 
   def reset_confirmation_code
-    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
+    self.email_confirmation_code = SecureRandom.alphanumeric(12) # Rails.env.development? ? '1234' : SecureRandom.alphanumeric(12)
   end
 
   def increment_confirmation_code_reset_count
