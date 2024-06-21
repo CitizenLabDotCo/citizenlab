@@ -10,7 +10,7 @@ module UserConfirmation
     end
 
     with_options if: -> { user_confirmation_enabled? } do
-      validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+      validates :email_confirmation_code, format: { with: VALID_USER_CONFIRMATION_CODE_PATTERNS }, allow_nil: true
       validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
       validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
     end

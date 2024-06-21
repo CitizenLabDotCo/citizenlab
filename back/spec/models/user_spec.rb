@@ -1074,7 +1074,7 @@ RSpec.describe User do
     describe '#reset_confirmation_and_counts' do
       before do
         user.update!(
-          email_confirmation_code: '1234',
+          email_confirmation_code: 'fzfbGgQ1xhad',
           email_confirmation_retry_count: 2,
           email_confirmation_code_reset_count: 2
         )
@@ -1092,6 +1092,17 @@ RSpec.describe User do
       end
 
       it 'only resets confirmation_required if not confirmed' do
+        user.reset_confirmation_and_counts
+
+        expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_changed?).to be false
+        expect(user.email_confirmation_retry_count_changed?).to be false
+        expect(user.email_confirmation_code_reset_count_changed?).to be false
+      end
+
+      it 'works with legacy 4-digit codes' do
+        user.update!(email_confirmation_code: '1234')
         user.reset_confirmation_and_counts
 
         expect(user.confirmation_required?).to be true
@@ -1140,7 +1151,7 @@ RSpec.describe User do
     describe '#reset_confirmation_code' do
       it 'changes the code' do
         expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)
-        expect(user.email_confirmation_code).to match(USER_CONFIRMATION_CODE_PATTERN)
+        expect(user.email_confirmation_code).to match(VALID_USER_CONFIRMATION_CODE_PATTERNS)
       end
 
       it 'should not save a change to the email confirmation code' do
