@@ -104,7 +104,8 @@ class AppConfiguration < ApplicationRecord
     private(
       :find_by, :find_by!, :find_or_create_by, :find_or_create_by!,
       :first, :first!,
-      :last, :last!
+      :last, :last!,
+      :update, :update!, :update_all
     )
 
     def instance
