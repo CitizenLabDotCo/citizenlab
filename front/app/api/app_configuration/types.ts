@@ -35,6 +35,7 @@ export type IAppConfigurationSettingsCore = {
     | 'not_applicable';
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
+  google_search_console_meta_attribute?: string | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;

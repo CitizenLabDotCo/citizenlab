@@ -32,7 +32,8 @@ module MultiTenancy
               maximum_moderators_number: 2,
               additional_admins_number: 1,
               additional_moderators_number: 1,
-              population: 27_500
+              population: 27_500,
+              google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
               allowed: true,
