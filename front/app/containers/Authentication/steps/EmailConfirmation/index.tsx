@@ -58,9 +58,8 @@ const EmailConfirmation = ({
   const schema = useMemo(
     () =>
       object({
-        code: string()
-          .required(formatMessage(messages.codeMustHaveFourDigits))
-          .matches(/^\d{4}$/, formatMessage(messages.codeMustHaveFourDigits)),
+        code: string().required(formatMessage(messages.codeMustHaveFourDigits)),
+        // .matches(/^\d{4}$/, formatMessage(messages.codeMustHaveFourDigits)),
       }),
     [formatMessage]
   );
@@ -125,7 +124,7 @@ const EmailConfirmation = ({
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
-            maxCharCount={4}
+            // maxCharCount={4}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
