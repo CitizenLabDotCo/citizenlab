@@ -8,8 +8,6 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
@@ -19,11 +17,11 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import messages from './messages';
 
-const SummarizeButton = () => {
-  const largeSummariesEnabled = useFeatureFlag({
-    name: 'large_summaries',
-    onlyCheckAllowed: true,
-  });
+const SummarizeButton = ({
+  applyInputsLimit,
+}: {
+  applyInputsLimit: boolean;
+}) => {
   const { formatMessage } = useIntl();
 
   const { mutate: addSummary, isLoading: isLoadingSummary } =
@@ -70,8 +68,6 @@ const SummarizeButton = () => {
 
   const tooManyInputs =
     preCheck?.data.attributes.impossible_reason === 'too_many_inputs';
-
-  const applyInputsLimit = !largeSummariesEnabled && inputsCount > 30;
 
   const summaryPossible =
     !tooManyInputs && !applyInputsLimit && inputsCount > 0;
