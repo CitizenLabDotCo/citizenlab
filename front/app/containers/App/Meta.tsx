@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -80,7 +80,7 @@ const Meta = () => {
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
-        {!isNil(googleSearchConsoleMetaAttribute) && (
+        {googleSearchConsoleMetaAttribute && (
           <meta
             name="google-site-verification"
             content={googleSearchConsoleMetaAttribute}
