@@ -555,6 +555,8 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.0)
     domain_name (0.6.20240107)
+    drb (2.2.0)
+      ruby2_keywords
     easy_translate (0.5.1)
       thread
       thread_safe
@@ -1268,6 +1270,7 @@ DEPENDENCIES
   dalli (~> 3.2.8)
   database_cleaner (~> 2.0.2)
   document_annotation!
+  drb
   email_campaigns!
   factory_bot_rails
   faker
