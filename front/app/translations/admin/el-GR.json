@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "Όλες οι απαντήσεις",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Ακρίβεια: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Υπήρξε σφάλμα στη δημιουργία της περίληψης της AI. Παρακαλούμε αναδημιουργήστε την παρακάτω περίληψη.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Υπήρξε σφάλμα στη δημιουργία της περίληψης της AI. Προσπαθήστε να την αναδημιουργήσετε παρακάτω.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Ανοιχτή ανάλυση AI",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Απόκρυψη περιλήψεων για αυτή την ερώτηση",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "επιλεγμένες είσοδοι",
