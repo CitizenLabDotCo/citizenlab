@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "كل الملفات",
   "app.containers.Admin.projects.project.survey.allResponses": "جميع الردود",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "الدقة: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "حدث خطأ أثناء إنشاء ملخص الذكاء الاصطناعي. يرجى إعادة إنشاء الملخص أدناه.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "حدث خطأ أثناء إنشاء ملخص الذكاء الاصطناعي. يرجى محاولة تجديده أدناه.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "فتح تحليل الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "إخفاء ملخصات هذا السؤال",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "المدخلات المحددة",
