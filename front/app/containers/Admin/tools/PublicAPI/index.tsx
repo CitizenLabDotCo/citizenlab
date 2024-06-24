@@ -35,7 +35,7 @@ export const PublicAPI = () => {
         </Text>
         <Tooltip
           content={<FormattedMessage {...messages.publicAPIDisabled} />}
-          disabled={!isPublicAPIEnabled}
+          disabled={isPublicAPIEnabled}
           placement="top"
           theme="dark"
         >
