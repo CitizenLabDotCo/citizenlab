@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
@@ -19,16 +17,18 @@ import messages from './messages';
 
 const SummarizeButton = ({
   applyInputsLimit,
+  inputsCount,
+  analysisId,
 }: {
   applyInputsLimit: boolean;
+  inputsCount: number;
+  analysisId: string;
 }) => {
   const { formatMessage } = useIntl();
-
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisSummaryPreCheck();
-  const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
   const handleSummaryCreate = () => {
@@ -46,13 +46,6 @@ const SummarizeButton = ({
       }
     );
   };
-
-  const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId,
-    queryParams: filters,
-  });
-
-  const inputsCount = inputs?.pages[0].meta.filtered_count || 0;
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);
   useEffect(() => {

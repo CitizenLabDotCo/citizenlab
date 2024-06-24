@@ -50,7 +50,11 @@ const Insights = () => {
     <Box display="flex" flexDirection="column" height="100%">
       <Box display="flex" gap="4px">
         <Box flex="1">
-          <SummarizeButton applyInputsLimit={applyInputsLimit} />
+          <SummarizeButton
+            applyInputsLimit={applyInputsLimit}
+            inputsCount={filteredInputsCount}
+            analysisId={analysisId}
+          />
         </Box>
         <Box flex="1">
           <QuestionButton
