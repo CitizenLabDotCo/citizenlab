@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "Totes les respostes",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisió: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "S'ha produït un error en generar el resum de l'IA. Si us plau, regenera el resum a continuació.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "S'ha produït un error en generar el resum de l'IA. Si us plau, proveu de regenerar-lo a continuació.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Anàlisi d'IA oberta",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Amaga els resums d'aquesta pregunta",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "entrades seleccionades",
