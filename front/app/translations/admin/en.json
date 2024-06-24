@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "All responses",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Accuracy: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "There was an error generating the AI summary. Please regenerate the summary below.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "There was an error generating the AI summary. Please try to regenerate it below.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI analysis",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Hide summaries for this question",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "inputs selected",
