@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Kaikki tiedostot",
   "app.containers.Admin.projects.project.survey.allResponses": "Kaikki vastaukset",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Tarkkuus: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Tekoälyyhteenvedon luomisessa tapahtui virhe. Luo alla oleva yhteenveto uudelleen.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Tekoälyyhteenvedon luomisessa tapahtui virhe. Yritä luoda se uudelleen alla.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Avaa AI-analyysi",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Piilota tämän kysymyksen yhteenvedot",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "tulot valittu",
