@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle filer",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle svar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nøyaktighet: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Det oppsto en feil under generering av AI-sammendraget. Gjenskap sammendraget nedenfor.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Det oppsto en feil under generering av AI-sammendraget. Prøv å gjenskape den nedenfor.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Åpen AI-analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Skjul sammendrag for dette spørsmålet",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "innganger valgt",
