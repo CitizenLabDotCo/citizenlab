@@ -80,11 +80,7 @@ module MultiTenancy
             model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
             begin
-              if model.try(:in_list?)
-                model.class.acts_as_list_no_update { save_model(model, validate) }
-              else
-                save_model(model, validate)
-              end
+              preserve_ordering(model) { save_model(model, validate) }
 
               # Only upload attributes that are strings are copied verbatim using
               # `update_columns` to bypass the CarrierWave uploader.
@@ -209,6 +205,16 @@ module MultiTenancy
           # generation of templates remains within the 3 hours execution
           # limit of CircleCI.
           model.update!(image_assignments)
+        end
+      end
+
+      def preserve_ordering(model, &)
+        if model.try(:in_list?)
+          model.class.acts_as_list_no_update(&)
+        elsif model.instance_of? Project # Support nested admin publications
+          AdminPublication.acts_as_list_no_update(&)
+        else
+          yield
         end
       end
 
