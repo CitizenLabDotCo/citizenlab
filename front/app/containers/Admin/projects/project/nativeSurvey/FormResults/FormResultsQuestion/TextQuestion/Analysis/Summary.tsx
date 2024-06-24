@@ -99,7 +99,7 @@ const Summary = ({
             backgroundTaskId={backgroundTaskId}
           />
           {backgroundTaskFailed && (
-            <Error text={formatMessage(messages.backgroundTaskFailed)} />
+            <Error text={formatMessage(messages.backgroundTaskFailedMessage)} />
           )}
         </Box>
 
