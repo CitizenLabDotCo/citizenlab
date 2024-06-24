@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
+import { ITab } from 'typings';
 
 import NavigationTabs, {
   Tab,
@@ -19,29 +19,18 @@ const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
-  const getTabs = () => {
-    const tabs: {
-      name: string;
-      label: string;
-      url: RouteType;
-      statusLabel?: string;
-    }[] = [];
-
-    tabs.push({
+  const tabs: ITab[] = [
+    {
       name: 'manual-emails',
       label: formatMessage(messages.customEmails),
       url: '/admin/messaging/emails/custom',
-    });
-    tabs.push({
+    },
+    {
       name: 'automated-emails',
       label: formatMessage(messages.tabAutomatedEmails),
       url: '/admin/messaging/emails/automated',
-    });
-
-    return tabs;
-  };
-
-  const tabs = getTabs();
+    },
+  ];
 
   return (
     <>
