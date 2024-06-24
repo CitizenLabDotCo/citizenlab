@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Wszystkie pliki",
   "app.containers.Admin.projects.project.survey.allResponses": "Wszystkie odpowiedzi",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Dokładność: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Wystąpił błąd podczas generowania podsumowania AI. Ponownie wygeneruj poniższe podsumowanie.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Wystąpił błąd podczas generowania podsumowania AI. Spróbuj je ponownie wygenerować poniżej.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Otwarta analiza sztucznej inteligencji",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Ukryj podsumowania dla tego pytania",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "wybrane wejścia",
