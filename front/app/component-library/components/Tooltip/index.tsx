@@ -84,7 +84,7 @@ const Tooltip = ({ children, ...rest }: TooltipProps) => {
       }}
       {...rest}
     >
-      <Box as="span" id={tooltipId.current}>
+      <Box as="span" id={tooltipId.current} w="fit-content">
         {children}
       </Box>
     </Tippy>
