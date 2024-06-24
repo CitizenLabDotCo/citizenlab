@@ -108,6 +108,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.refresh',
     defaultMessage: '{ count } new responses',
   },
+  regenerate: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.regenerate',
+    defaultMessage: 'Regenerate',
+  },
+  backgroundTaskFailed: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed',
+    defaultMessage:
+      'There was an error generating the AI summary. Please regenerate the summary below.',
+  },
   showSummaries: {
     id: 'app.containers.Admin.projects.project.survey.analysis.showInsights',
     defaultMessage: 'Show AI insights',
