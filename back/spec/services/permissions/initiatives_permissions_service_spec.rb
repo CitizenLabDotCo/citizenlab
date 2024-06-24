@@ -24,14 +24,14 @@ describe Permissions::BasePermissionsService do
       expect(service.denied_reason_for_action(action, user)).to be_nil
     end
 
-    it 'returns `not_signed_in` when user needs to be signed in' do
+    it 'returns `user_not_signed_in` when user needs to be signed in' do
       permission.update!(permitted_by: 'users')
-      expect(service.denied_reason_for_action(action, nil)).to eq 'not_signed_in'
+      expect(service.denied_reason_for_action(action, nil)).to eq 'user_not_signed_in'
     end
 
-    it 'returns `not_in_group` when user is not in authorized groups' do
+    it 'returns `user_not_in_group` when user is not in authorized groups' do
       permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2).map(&:id))
-      expect(service.denied_reason_for_action(action, user)).to eq 'not_in_group'
+      expect(service.denied_reason_for_action(action, user)).to eq 'user_not_in_group'
     end
   end
 end

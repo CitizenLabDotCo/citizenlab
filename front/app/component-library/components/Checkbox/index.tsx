@@ -27,6 +27,7 @@ const StyledCheckbox = styled.div<{
   checkedColor?: Color;
   size: string;
   disabled: boolean;
+  usePrimaryBorder?: boolean;
 }>`
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 
@@ -43,6 +44,7 @@ const StyledCheckbox = styled.div<{
         ? props.theme.colors[props.checkedColor]
         : undefined,
       checkedOrIndeterminate: props.checkedOrIndeterminate,
+      usePrimaryBorder: props.usePrimaryBorder,
       element: 'border',
     })};
     &.enabled {
@@ -89,6 +91,7 @@ export type CheckboxProps = {
   name?: string;
   stopLabelPropagation?: boolean;
   checkedColor?: Color;
+  usePrimaryBorder?: boolean;
 };
 
 type Props = {
@@ -112,6 +115,7 @@ const Checkbox = ({
   onChange,
   checked,
   checkedColor,
+  usePrimaryBorder = false,
   name,
   ...boxProps
 }: Props) => {
@@ -145,6 +149,7 @@ const Checkbox = ({
           disabled ? 'disabled' : 'enabled'
         } e2e-checkbox`}
         onClick={handleOnCheckboxClick}
+        usePrimaryBorder={usePrimaryBorder}
         disabled={disabled}
       >
         {checked && (

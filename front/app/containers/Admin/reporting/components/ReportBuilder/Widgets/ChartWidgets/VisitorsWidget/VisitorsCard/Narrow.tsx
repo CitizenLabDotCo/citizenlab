@@ -10,8 +10,9 @@ import { formatLargeNumber, getDaysInRange } from '../../utils';
 
 import {
   AbsoluteStatistic,
-  VisitDurationStatistic,
-  PageViewsStatistic,
+  OtherStatistic,
+  getDurationDeltaSign,
+  getPageViewsDeltaSign,
 } from './Statistics';
 import { Props } from './Wide';
 
@@ -44,41 +45,40 @@ const Narrow = ({
             />
           </Box>
           <Box mt="12px">
-            <VisitDurationStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.visitDuration}
               stat={stats.visitDuration}
               previousDays={previousDays}
+              sign={getDurationDeltaSign(stats.visitDuration.delta)}
             />
           </Box>
           <Box mt="12px">
-            <PageViewsStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.pageViews}
               stat={stats.pageViews}
               previousDays={previousDays}
+              sign={getPageViewsDeltaSign(stats.pageViews.delta)}
             />
           </Box>
         </Box>
       )}
-
-      <Box flexGrow={1} display="flex" justifyContent="flex-end" height="200px">
-        <Box pt="8px" width="100%" maxWidth="800px" h="100%">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAt ? moment(startAt) : null}
-            endAtMoment={endAt ? moment(endAt) : null}
-            resolution={currentResolution}
-            margin={{
-              left: 5,
-              right: -20,
-              top: 0,
-              bottom: 0,
-            }}
-            yaxis={{
-              orientation: 'right',
-              tickFormatter: formatLargeNumber,
-            }}
-          />
-        </Box>
+      <Box pt="8px" width="100%" h="200px">
+        <Chart
+          timeSeries={timeSeries}
+          startAtMoment={startAt ? moment(startAt) : null}
+          endAtMoment={endAt ? moment(endAt) : null}
+          resolution={currentResolution}
+          margin={{
+            left: 5,
+            right: -20,
+            top: 0,
+            bottom: 0,
+          }}
+          yaxis={{
+            orientation: 'right',
+            tickFormatter: formatLargeNumber,
+          }}
+        />
       </Box>
     </Box>
   );

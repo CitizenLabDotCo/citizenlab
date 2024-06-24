@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
@@ -51,7 +50,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
     : undefined;
 
   return (
-    <Tippy
+    <Tooltip
       content={<p>{tooltipContent}</p>}
       placement="auto-start"
       zIndex={99999}
@@ -73,7 +72,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
           {formatMessage(messages.askQuestion)}
         </Button>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

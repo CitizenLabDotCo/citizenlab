@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Box,
   CheckboxWithLabel,
-  colors,
   Text,
 } from '@citizenlab/cl2-component-library';
 import {
@@ -13,8 +12,7 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { darken } from 'polished';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -28,10 +26,10 @@ import VerificationIcon from '../VerificationIcon';
 import { getOptions, getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-const StyledBox = styled(Box)`
-  background-color: ${colors.grey100};
+const StyledBox = styled(Box)<{ hoverColor?: string }>`
+  cursor: pointer;
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${({ hoverColor }) => hoverColor};
   }
 `;
 
@@ -46,6 +44,7 @@ const MultiSelectCheckboxControl = ({
   id,
   visible,
 }: ControlProps) => {
+  const theme = useTheme();
   const [didBlur, setDidBlur] = useState(false);
   const { formatMessage } = useIntl();
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
@@ -99,8 +98,15 @@ const MultiSelectCheckboxControl = ({
         )}
         {options?.map((option) => (
           <StyledBox
+            hoverColor={theme.colors.tenantPrimaryLighten75}
             style={{ cursor: 'pointer' }}
             mb="12px"
+            border={
+              dataArray.includes(option.value)
+                ? `2px solid ${theme.colors.tenantPrimary}`
+                : `1px solid ${theme.colors.tenantPrimary}`
+            }
+            background={theme.colors.tenantPrimaryLighten95}
             key={option.value}
             borderRadius="3px"
             onBlur={() => {
@@ -112,9 +118,14 @@ const MultiSelectCheckboxControl = ({
             <CheckboxWithLabel
               size="20px"
               padding="18px 20px 18px 20px"
-              checkedColor={'tenantSecondary'}
-              label={option.label}
+              checkedColor={'tenantPrimary'}
+              label={
+                <Text m="0px" color={'tenantPrimary'}>
+                  {option.label}
+                </Text>
+              }
               checked={dataArray.includes(option.value)}
+              usePrimaryBorder={true}
               onChange={() => {
                 if (dataArray.includes(option.value)) {
                   dataArray.length === 1
@@ -132,7 +143,12 @@ const MultiSelectCheckboxControl = ({
         ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

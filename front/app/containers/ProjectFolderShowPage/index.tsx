@@ -117,7 +117,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 <Button
                   icon="edit"
                   linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
                   <FormattedMessage {...messages.editFolder} />

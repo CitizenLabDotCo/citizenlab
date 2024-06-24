@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
+import { CLError } from 'typings';
+
 import { IBackgroundJobData } from './types';
 import useBackgroundJobs from './useBackgroundJobs';
-import { CLError } from 'typings';
 
 const useTrackBackgroundJobs = ({
   jobs,
@@ -29,7 +30,7 @@ const useTrackBackgroundJobs = ({
   const errors: CLError[] =
     polledJobs?.data && polledJobs.data.length > 0
       ? polledJobs.data.flatMap((job) => {
-          if (!!job.attributes.last_error) {
+          if (job.attributes.last_error) {
             return job.attributes.last_error;
           } else {
             return [];

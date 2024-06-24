@@ -27,7 +27,7 @@ const AssignMultipleVotesBox = memo(({ ideaId, phase }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const {
     voting_max_total,
     voting_term_singular_multiloc,

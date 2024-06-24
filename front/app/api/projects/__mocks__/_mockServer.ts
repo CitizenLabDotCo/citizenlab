@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IProjects, IProjectData, IProject } from '../types';
 
@@ -34,11 +34,11 @@ export const project1: IProjectData = {
       large:
         'https://demo.stg.citizenlab.co/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -161,11 +161,11 @@ export const project2: IProjectData = {
     header_bg: {
       large: null,
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -291,11 +291,11 @@ const votingProject: IProject = {
       header_bg: {
         large: null,
       },
-      action_descriptor: {
+      action_descriptors: {
         posting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
-          future_enabled: null,
+          disabled_reason: 'posting_not_supported',
+          future_enabled_at: null,
         },
         commenting_idea: {
           enabled: true,
@@ -307,14 +307,14 @@ const votingProject: IProject = {
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
         },
         voting: {
@@ -402,19 +402,19 @@ export const apiPathBySlug = '/web_api/v1/projects/by_slug/:slug';
 export const apiPathAll = '/web_api/v1/projects';
 
 const endpoints = {
-  'GET projects/:id': rest.get(apiPathById, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project1 }));
+  'GET projects/:id': http.get(apiPathById, () => {
+    return HttpResponse.json({ data: project1 }, { status: 200 });
   }),
-  'GET projects/by_slug/:slug': rest.get(apiPathBySlug, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project2 }));
+  'GET projects/by_slug/:slug': http.get(apiPathBySlug, () => {
+    return HttpResponse.json({ data: project2 }, { status: 200 });
   }),
-  'GET projects': rest.get(apiPathAll, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projects));
+  'GET projects': http.get(apiPathAll, () => {
+    return HttpResponse.json(projects, { status: 200 });
   }),
 };
 
-export const votingProjectHandler = rest.get(apiPathById, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(votingProject));
+export const votingProjectHandler = http.get(apiPathById, () => {
+  return HttpResponse.json(votingProject, { status: 200 });
 });
 
 export default endpoints;

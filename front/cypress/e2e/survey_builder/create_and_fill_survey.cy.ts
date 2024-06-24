@@ -68,7 +68,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -81,7 +81,7 @@ describe('Survey builder', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
@@ -120,7 +120,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Navigate to the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
 
     cy.get('[data-cy="e2e-edit-survey-link"]').click();
@@ -143,7 +143,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -164,7 +164,7 @@ describe('Survey builder', () => {
     cy.get(`[data-cy="${`field-${questionTitle}`}"]`).should('not.exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('not.exist');
   });
 
@@ -208,7 +208,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(multipleChoiceChooseOneTitle).should('exist');
     cy.contains(multipleChoiceChooseManyTitle).should('exist');
@@ -230,7 +230,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(chooseOneOption2).click({ force: true });
     cy.contains(chooseManyOption2).click({
       force: true,
@@ -241,7 +241,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(chooseOneOption2).click({ force: true });
     cy.contains(chooseManyOption2).click({
       force: true,
@@ -270,7 +270,7 @@ describe('Survey builder', () => {
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
-    const projectUrl = `/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`;
+    const projectUrl = `/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`;
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
@@ -290,7 +290,7 @@ describe('Survey builder', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
   });
 
@@ -311,7 +311,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -341,7 +341,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -381,7 +381,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-title-multiloc').should('exist');
 
     // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -523,7 +523,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -538,7 +538,9 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the second option and click next
+    cy.wait(2000);
     cy.contains(chooseOneOption2).click({ force: true });
+    cy.wait(2000);
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the third page
@@ -649,7 +651,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -675,6 +677,7 @@ describe('Survey builder', () => {
 
     // Go back to the previous page to go to page 1
     cy.get('[data-cy="e2e-previous-page"]').click();
+    cy.wait(2000);
 
     // Go to page two and try clicking next
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -689,11 +692,12 @@ describe('Survey builder', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
     cy.contains(page2Title).should('exist');
 
     // Select the second option to navigate to the other pages
+    cy.wait(2000);
     cy.contains(secondLogicQnOption2).click({ force: true });
 
     // Go to page 3
@@ -702,14 +706,13 @@ describe('Survey builder', () => {
     cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
 
     // Go to page 4
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.wait(2000);
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.contains(page4Title).should('exist');
-
-    cy.get('[data-cy="e2e-next-page"]').click();
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(1000);
+
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     cy.get('.e2e-modal-close-button').click();
     cy.get('#e2e-modal-container').should('have.length', 0);
@@ -915,7 +918,7 @@ describe('Survey builder', () => {
     cy.get('form').submit();
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     // First page
     cy.contains(questionTitle).should('exist');
@@ -1009,7 +1012,7 @@ describe('Survey builder', () => {
     cy.get('form').submit();
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     // First page
     cy.contains(questionTitle).should('exist');

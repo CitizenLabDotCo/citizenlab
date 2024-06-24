@@ -28,13 +28,13 @@ const GroupType = styled(BaseGroupType)`
 `;
 
 const IconWrapper = styled(BaseIconWrapper)`
-  background: ${transparentize(0.9, colors.orange)};
+  background: ${transparentize(0.9, colors.orange500)};
 `;
 
 const LightningBoltIcon = styled(Icon).attrs({ name: 'flash' })`
   width: 28px;
   height: 28px;
-  fill: ${colors.orange};
+  fill: ${colors.orange500};
 `;
 
 const BlackedOut = styled.div`
@@ -104,7 +104,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
       <Step2Button
         disabled={!isSmartGroupsEnabled}
         className="e2e-create-rules-group-button"
-        buttonStyle="cl-blue"
+        buttonStyle="admin-dark"
         onClick={onClick('rules')}
       >
         <FormattedMessage {...adminUsersMessages.step1CreateButtonSmart} />

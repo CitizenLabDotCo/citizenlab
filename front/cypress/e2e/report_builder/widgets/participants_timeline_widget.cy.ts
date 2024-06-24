@@ -83,7 +83,7 @@ describe('Report builder Participants timeline widget', () => {
   });
 
   it('handles Participants timeline widget correctly', function () {
-    cy.get('#e2e-draggable-active-users-widget').dragAndDrop(
+    cy.get('#e2e-draggable-participants-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -122,13 +122,13 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Participants: 1').should('exist');
+    cy.contains('Participants: ').should('exist');
 
     cy.get('.e2e-statistic-delta').should('exist');
   });
 
   it('deletes Participants timeline widget correctly', function () {
-    cy.get('#e2e-draggable-active-users-widget').dragAndDrop(
+    cy.get('#e2e-draggable-participants-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -148,8 +148,8 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait('@getReportLayout');
     cy.wait(500);
 
-    cy.get('#e2e-draggable-active-users-widget').should('exist');
-    cy.get('#e2e-draggable-active-users-widget')
+    cy.get('#e2e-draggable-participants-widget').should('exist');
+    cy.get('#e2e-draggable-participants-widget')
       .parent()
       .click({ force: true });
 

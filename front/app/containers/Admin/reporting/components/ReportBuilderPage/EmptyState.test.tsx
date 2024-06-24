@@ -17,7 +17,7 @@ describe('EmptyState', () => {
     const createReportButton = screen.getByRole('button', {
       name: 'Create a report',
     });
-    expect(createReportButton).not.toBeDisabled();
+    expect(createReportButton).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   it('renders with a disabled button when the feature flag is turned off', () => {
@@ -31,6 +31,6 @@ describe('EmptyState', () => {
       name: 'Create a report',
     });
 
-    expect(createReportButton).toBeDisabled();
+    expect(createReportButton).toHaveAttribute('aria-disabled', 'true');
   });
 });

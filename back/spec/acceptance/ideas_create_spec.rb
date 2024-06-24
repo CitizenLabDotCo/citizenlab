@@ -254,7 +254,7 @@ resource 'Ideas' do
             example_request '[error] Creating an idea in a project with an active information phase' do
               assert_status 401
               json_response = json_parse(response_body)
-              expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
+              expect(json_response.dig(:errors, :base).first[:error]).to eq 'posting_not_supported'
             end
           end
 

@@ -471,15 +471,27 @@ const createAdminProjectsRoutes = () => {
               },
               {
                 path: projectsRoutes.projectPhaseNativeSurvey,
-                element: <AdminProjectsSurvey />,
+                element: (
+                  <PageLoading>
+                    <AdminProjectsSurvey />
+                  </PageLoading>
+                ),
               },
               {
                 path: projectsRoutes.projectPhaseIdeaFormEdit,
-                element: <IdeaFormBuilder />,
+                element: (
+                  <PageLoading>
+                    <IdeaFormBuilder />
+                  </PageLoading>
+                ),
               },
               {
                 path: projectsRoutes.projectPhaseNativeSurveyEdit,
-                element: <SurveyFormBuilder />,
+                element: (
+                  <PageLoading>
+                    <SurveyFormBuilder />
+                  </PageLoading>
+                ),
               },
               {
                 path: projectsRoutes.projectPhaseVolunteeringCause,

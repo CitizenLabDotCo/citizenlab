@@ -36,7 +36,7 @@ module Permissions
         posting_idea: {
           enabled: !posting_disabled_reason,
           disabled_reason: posting_disabled_reason,
-          future_enabled: posting_disabled_reason && future_enabled_phase('posting_idea', user, project)&.start_at
+          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea', user, project)&.start_at
         },
         commenting_idea: {
           enabled: !commenting_disabled_reason,

@@ -136,7 +136,11 @@ describe('Verification modal', () => {
 
       // button should now be disabled
       cy.get('#e2e-idea-button > button').should('exist');
-      cy.get('#e2e-idea-button > button').should('be.disabled');
+      cy.get('#e2e-idea-button > button').should(
+        'have.attr',
+        'aria-disabled',
+        'true'
+      );
     });
   });
 });

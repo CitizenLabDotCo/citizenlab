@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
-import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
+import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import {
   ProjectId,
@@ -32,7 +32,7 @@ const Charts = (props: Props) => {
           />
         </Box>
         <Box width="50%">
-          <ActiveUsersCard
+          <ParticipantsCard
             {...props}
             layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
           />

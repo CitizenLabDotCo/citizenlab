@@ -6,9 +6,9 @@ import {
   Spinner,
   stylingConsts,
   Title,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { InfiniteData } from '@tanstack/react-query';
-import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -169,7 +169,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             alignItems="center"
           >
             {isProjectFoldersEnabled && (
-              <Tippy
+              <Tooltip
                 content={
                   <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
                 }
@@ -186,9 +186,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
                     <FormattedMessage {...messages.createProjectFolder} />
                   </Button>
                 </Box>
-              </Tippy>
+              </Tooltip>
             )}
-            <Tippy
+            <Tooltip
               content={
                 <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
               }
@@ -205,7 +205,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                   <FormattedMessage {...messages.newProject} />
                 </Button>
               </Box>
-            </Tippy>
+            </Tooltip>
           </Box>
         </Box>
         <Box my="24px" w="fit-content">

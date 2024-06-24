@@ -62,12 +62,6 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingNotYetPossible',
     defaultMessage: 'New submissions are not yet accepted here.',
   },
-  postingMayNotBePermitted: {
-    id: 'app.containers.IdeaButton.postingMayNotBePermitted',
-    defaultMessage:
-      'Please {signInLink} to the platform to see what actions you can take.',
-  },
-
   verificationLinkText: {
     id: 'app.containers.IdeaButton.verificationLinkText',
     defaultMessage: 'Verify your account now.',

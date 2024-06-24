@@ -7,19 +7,29 @@ import { Localize } from 'hooks/useLocalize';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 
-export const getNumberOfVotesDisabledExplanation = (
+export const getVoteSubmissionDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   phase: IPhaseData,
+  permissionsDisabledReason: string | null,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
+
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsMessage = getPermissionsDisabledMessage(
+    action,
+    permissionsDisabledReason
+  );
+  if (permissionsMessage) return formatMessage(permissionsMessage);
 
   const maxNumberOfVotesExceeded =
     typeof maxVotes === 'number' && numberOfVotesCast !== undefined

@@ -23,9 +23,7 @@ const Container = styled.div`
     text-transform: uppercase;
   }
 
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
+  margin-right: 40px;
 
   a {
     color: ${colors.textSecondary};

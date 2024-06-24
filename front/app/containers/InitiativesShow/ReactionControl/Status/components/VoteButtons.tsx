@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Tippy from '@tippyjs/react';
+import { colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 
@@ -34,17 +34,17 @@ const VoteButtons = ({
     <>
       {userReacted ? (
         <Button
-          buttonStyle="success"
           iconSize="20px"
           icon="check"
           onClick={onCancelReaction}
           id="e2e-proposal-cancel-vote-button"
+          bgColor={colors.success}
           disabled={cancelReactionDisabled}
         >
           <FormattedMessage {...messages.voted} />
         </Button>
       ) : (
-        <Tippy
+        <Tooltip
           disabled={!tippyContent}
           placement="bottom"
           content={tippyContent || <></>}
@@ -60,7 +60,7 @@ const VoteButtons = ({
           >
             <FormattedMessage {...messages.vote} />
           </Button>
-        </Tippy>
+        </Tooltip>
       )}
     </>
   );

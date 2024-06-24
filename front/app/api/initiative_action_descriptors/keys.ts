@@ -2,7 +2,7 @@ import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
   type: 'initiativs',
-  variant: 'action_descriptor',
+  variant: 'action_descriptors',
 };
 
 const initiativeActionDescriptorsKeys = {

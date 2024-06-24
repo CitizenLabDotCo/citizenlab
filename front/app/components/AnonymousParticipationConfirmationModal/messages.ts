@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Participate anonymously',
   },
   participateAnonymouslyModalText: {
-    id: 'app.components.anonymousParticipationModal.participateAnonymouslyModalText4',
+    id: 'app.components.anonymousParticipationModal.participateAnonymouslyModalText',
     defaultMessage:
-      'This will safely <b>hide your profile</b> from admins, moderators and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.',
+      'This will safely <b>hide your profile</b> from admins, project managers and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.',
   },
   participateAnonymouslyModalTextSection2: {
     id: 'app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2',

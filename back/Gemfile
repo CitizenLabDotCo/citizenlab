@@ -8,19 +8,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0'
-# Use postgresql as the database for Active Record
-gem 'pg' # , '~> 0.18'
-# Use Puma as the app server
+gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.2'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.20'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
+gem 'csv', '~> 3.3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '2.0.0'
@@ -78,20 +70,18 @@ group :test do
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.40'
+  gem 'rspec-html-matchers', '~> 0.10'
   # gem 'bullet'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.3.2'
 gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
 gem 'que-web', '~> 0.10.0'
 
-gem 'activerecord-import', '~> 1.6'
+gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 8.0'
 
@@ -120,6 +110,7 @@ gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
 gem 'stackprof', '~> 0.2.26'
+gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'
@@ -164,6 +155,22 @@ gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
 
+# Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:
+#   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
+#   warning: .../.rbenv/versions/3.3.1/lib/ruby/3.3.0/mutex_m.rb was loaded from
+#   the standard library, but will no longer be part of the default gems since Ruby 3.4.0.
+#   Add mutex_m to your Gemfile or gemspec. Also contact author of activesupport-7.0.8.4
+#   to add mutex_m into its gemspec.
+#   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
+#   warning: .../.rbenv/versions/3.3.1/lib/ruby/3.3.0/kconv.rb is found in nkf,
+#   which will no longer be part of the default gems since Ruby 3.4.0. Add nkf to your
+#   Gemfile or gemspec. Also contact author of httpi-3.0.1 to add nkf into its gemspec.
+#
+# They are likely not direct dependencies, hence we can remove them once the dependent
+# gems are updated.
+gem 'nkf'
+gem 'mutex_m'
+
 free_engines = %w[
   document_annotation
   email_campaigns
@@ -205,7 +212,6 @@ commercial_engines = [
   'remove_vendor_branding',
   'report_builder',
   'smart_groups',
-  'texting',
   'user_custom_fields',
 
   # ID verification engines.

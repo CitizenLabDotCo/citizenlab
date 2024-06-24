@@ -5,8 +5,8 @@ import {
   fontSizes,
   Box,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { darken } from 'polished';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -106,7 +106,7 @@ const UserName = ({
 
   if (anonymous) {
     return (
-      <Tippy
+      <Tooltip
         placement="top-start"
         maxWidth={'260px'}
         theme={'dark'}
@@ -125,7 +125,7 @@ const UserName = ({
         >
           {formatMessage(messages.anonymous)}
         </Name>
-      </Tippy>
+      </Tooltip>
     );
   }
 

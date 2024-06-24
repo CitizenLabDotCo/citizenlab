@@ -109,7 +109,7 @@ resource 'Reports' do
           id: report.id,
           type: 'report',
           attributes: {
-            action_descriptor: {
+            action_descriptors: {
               editing_report: {
                 enabled: true,
                 disabled_reason: nil
@@ -303,7 +303,7 @@ resource 'Reports' do
           id: be_a(String),
           type: 'report',
           attributes: {
-            action_descriptor: {
+            action_descriptors: {
               editing_report: {
                 enabled: true,
                 disabled_reason: nil

@@ -31,12 +31,12 @@ const CommentingProposalDisabled = () => {
     if (commentingPermissions?.enabled === true) {
       return null;
     } else if (
-      commentingPermissions?.disabledReason === 'not_permitted' &&
+      commentingPermissions?.disabledReason === 'user_not_permitted' &&
       !isLoggedIn
     ) {
       return messages.commentingInitiativeMaybeNotPermitted;
     } else if (
-      commentingPermissions?.disabledReason === 'not_permitted' &&
+      commentingPermissions?.disabledReason === 'user_not_permitted' &&
       isLoggedIn
     ) {
       return messages.commentingInitiativeNotPermitted;

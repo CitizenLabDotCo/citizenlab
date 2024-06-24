@@ -7,7 +7,7 @@ import Confetti from './confetti.svg';
 const ConfettiSvg = () => {
   return (
     <Box display="flex">
-      <img src={Confetti} alt="confetti animation" />
+      <img src={Confetti} alt="" />
     </Box>
   );
 };

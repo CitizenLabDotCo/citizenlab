@@ -41,8 +41,6 @@ export type FormBuilderConfig = {
   alwaysShowCustomFields: boolean;
   isFormPhaseSpecific: boolean;
 
-  viewFormLink?: RouteType;
-
   goBackUrl?: RouteType;
 
   getDeletionNotice?: (projectId: string) => void;

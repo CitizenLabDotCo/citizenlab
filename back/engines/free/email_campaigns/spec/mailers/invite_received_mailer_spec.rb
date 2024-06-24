@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
           invitee_first_name: recipient.first_name,
           invitee_last_name: recipient.last_name,
           invite_text: "<p>#{invite_text}</p>",
-          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: Locale.new(recipient.locale))
         }
       }
     end

@@ -42,7 +42,7 @@ module BulkImportIdeas::Patches::Idea
       def remove_import_author
         return unless author && idea_import&.user_created == true && publication_status == 'draft' && author.ideas.count == 1 && author.no_password? && !author.sso?
 
-        author.destroy!
+        DeleteUserJob.perform_now(author)
       end
     end
   end

@@ -18,8 +18,8 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { isDraft } from 'api/campaigns/util';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -98,11 +98,14 @@ const SendNowWarning = styled.div`
 const Show = () => {
   const { campaignId } = useParams() as { campaignId: string };
 
-  const { data: user } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
   const { data: project } = useProjectById(
     campaign?.data.attributes.context_id
+  );
+
+  const { data: sender } = useUserById(
+    campaign?.data.relationships.author.data.id
   );
 
   const {
@@ -155,8 +158,8 @@ const Show = () => {
   const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
-    if (senderType === 'author' && user) {
-      senderName = getFullName(user.data);
+    if (senderType === 'author' && sender) {
+      senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
         tenant?.data.attributes.settings.core.organization_name
@@ -213,7 +216,7 @@ const Show = () => {
             <Buttons>
               <Button
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
@@ -330,7 +333,7 @@ const Show = () => {
             </SendNowWarning>
             <ButtonsWrapper>
               <Button
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />

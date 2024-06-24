@@ -1,18 +1,16 @@
 import { FormatMessage } from 'typings';
 
-import { UsersByAgeResponse } from 'api/graph_data_units/responseTypes/_deprecated';
-
 import messages from 'containers/Admin/dashboard/messages';
 
 import { binAge } from 'utils/dataUtils';
 
 const convertToGraphFormat = (
-  data: UsersByAgeResponse | undefined,
+  data: Record<string, number> | undefined,
   formatMessage: FormatMessage
 ) => {
   if (!data) return null;
 
-  return binAge(data.data.attributes, {
+  return binAge(data, {
     missingBin: formatMessage(messages._blank),
   });
 };

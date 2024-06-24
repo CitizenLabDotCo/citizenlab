@@ -106,7 +106,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
 
         <AddButton
           text={formatMessage(messages.addModerators)}
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           padding="10px 16px"
           onClick={handleAddClick}

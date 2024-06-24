@@ -8,6 +8,6 @@ export default defineMessages({
   subscriptionEnded: {
     id: 'containers.SubscriptionEndedPage.subscriptionEnded',
     defaultMessage:
-      'It appears that you no longer can access this page, since your CitizenLab subscription has ended.',
+      'It appears that you no longer can access this page, since your Go Vocal subscription has ended.',
   },
 });

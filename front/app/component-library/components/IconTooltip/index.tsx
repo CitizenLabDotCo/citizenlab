@@ -1,6 +1,5 @@
 import React, { memo, ReactChild, FC } from 'react';
 
-import Tippy from '@tippyjs/react';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
@@ -16,6 +15,7 @@ import Box, {
   BoxZIndexProps,
 } from '../Box';
 import Icon, { IconNames } from '../Icon';
+import Tooltip from '../Tooltip';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
@@ -95,8 +95,7 @@ const IconTooltip: FC<Props> = memo<Props>(
     ...rest
   }) => {
     return (
-      <Tippy
-        interactive={true}
+      <Tooltip
         placement={placement || 'right-end'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
@@ -116,6 +115,7 @@ const IconTooltip: FC<Props> = memo<Props>(
           display="flex"
           justifyContent="center"
           alignItems="center"
+          alignSelf="center"
           {...rest}
         >
           <TooltipIcon
@@ -127,7 +127,7 @@ const IconTooltip: FC<Props> = memo<Props>(
             transform={transform}
           />
         </Box>
-      </Tippy>
+      </Tooltip>
     );
   }
 );

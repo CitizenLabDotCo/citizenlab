@@ -22,20 +22,20 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
-import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
-import { getPeriod } from '../../Widgets/_deprecated/AboutReportWidget/utils';
-import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
+import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
 import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
+import { getPeriod } from '../utils';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
@@ -103,21 +103,26 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const aboutTextMultiloc = createMultiloc(
     appConfigurationLocales,
     (locale) => {
-      const formatMessage = (message, values) =>
-        formatMessageWithLocale(locale, message, values);
+      const formatMessage = (
+        message: MessageDescriptor,
+        values?: FormatMessageValues
+      ) => formatMessageWithLocale(locale, message, values);
 
       const { startAt, endAt } = projectPeriod;
+
       const period = getPeriod({ startAt, endAt, formatMessage });
 
       return withoutSpacing`
         <ul>
-          <li>${formatMessage(aboutMessages.projectLabel, {
-            projectsList: projectTitle?.[locale] ?? '',
-          })}</li>
+          <li>
+            <b>${formatMessage(messages.projectLabel)}</b>:
+            ${` ${projectTitle?.[locale] ?? ''}`}
+          </li>
           ${period ? `<li>${period}</li>` : ''}
-          <li>${formatMessage(aboutMessages.managerLabel, {
-            managerName: projectModerator,
-          })}</li>
+          <li>
+            <b>${formatMessage(messages.managerLabel)}</b>:
+            ${` ${projectModerator}`}
+          </li>
         </ul>
       `;
     }
@@ -180,9 +185,9 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         )}
       />
       <WhiteSpace />
-      <ActiveUsersWidget
+      <ParticipantsWidget
         projectId={projectId}
-        title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+        title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
         {...projectPeriod}
       />
       <WhiteSpace />

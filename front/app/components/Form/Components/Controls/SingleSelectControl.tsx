@@ -52,10 +52,7 @@ const SingleSelectControl = ({
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
-          value={{
-            value: data,
-            label: 'any',
-          }} /* sad workaround waiting for PR in component library */
+          value={data}
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
@@ -64,12 +61,17 @@ const SingleSelectControl = ({
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty={!required}
+          canBeEmpty // see Select component for more info
           disabled={uischema?.options?.readonly}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

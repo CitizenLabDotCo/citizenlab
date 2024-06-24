@@ -291,7 +291,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                 </DndProvider>
                 <Button
                   icon="plus-circle"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   data-cy="e2e-add-answer"
                   onClick={addOption}
                   text={formatMessage(messages.addAnswer)}

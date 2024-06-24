@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::CommentMarkedAsSpamMailer do
           post_type: comment.post_type,
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
-          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale),
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale)),
           spam_report_reason_code: 'inappropriate',
           spam_report_other_reason: nil
         }
@@ -52,7 +52,7 @@ RSpec.describe EmailCampaigns::CommentMarkedAsSpamMailer do
     end
 
     it 'assigns go to comment CTA' do
-      comment_url = Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale)
+      comment_url = Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(comment_url)
     end
   end

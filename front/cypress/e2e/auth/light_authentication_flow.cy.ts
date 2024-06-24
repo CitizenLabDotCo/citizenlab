@@ -66,7 +66,7 @@ describe('Light authentication flow', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/ideas/new`
+      `/en/projects/${projectTitle}/surveys/new`
     );
     cy.logout();
   });
@@ -77,7 +77,7 @@ describe('Light authentication flow', () => {
     cy.get('#e2e-idea-button').should('exist');
     cy.get('#e2e-idea-button').click({ force: true });
 
-    cy.get('input#email').focus().type('admin@citizenlab.co');
+    cy.get('input#email').focus().type('admin@govocal.com');
     cy.get('#e2e-light-flow-email-submit').click();
 
     cy.get('input#password').type('democracy2.0');
@@ -85,7 +85,7 @@ describe('Light authentication flow', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/ideas/new`
+      `/en/projects/${projectTitle}/surveys/new`
     );
     cy.logout();
   });

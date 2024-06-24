@@ -26,6 +26,23 @@ RSpec.describe DeleteInvitesJob do
 
     it 'deletes only expired invites' do
       described_class.perform_now(expiry_time)
+
+      expect(invite1.reload).to eq invite1
+      expect { invite2.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { invite3.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect(invite4.reload).to eq invite4
+    end
+
+    it 'deletes records correctly and w/o errors when two jobs are called in parallel', use_transactional_fixtures: false do
+      expect(ErrorReporter).not_to receive(:report)
+
+      tenant = Tenant.current
+      Array.new(2) do
+        Thread.new do
+          tenant.switch { described_class.perform_now(expiry_time) }
+        end
+      end.each(&:join)
+
       expect(invite1.reload).to eq invite1
       expect { invite2.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { invite3.reload }.to raise_error(ActiveRecord::RecordNotFound)
