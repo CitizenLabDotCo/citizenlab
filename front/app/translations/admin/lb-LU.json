@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "All Äntwerten",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Genauegkeet: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Et gouf e Feeler beim Generéiere vum AI Resumé. Regeneréiert w.e.g. de Resumé hei ënnen.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Et gouf e Feeler beim Generéiere vum AI Resumé. Probéiert w.e.g. et hei ënnen ze regeneréieren.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI Analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Verstoppen Zesummefaassungen fir dës Fro",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "Input ausgewielt",
