@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Sve datoteke",
   "app.containers.Admin.projects.project.survey.allResponses": "Svi odgovori",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Točnost: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Došlo je do pogreške prilikom generiranja AI sažetka. Molimo ponovno generirajte sažetak u nastavku.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Došlo je do pogreške prilikom generiranja AI sažetka. Pokušajte ga regenerirati u nastavku.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Otvorena AI analiza",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Sakrij sažetke za ovo pitanje",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "odabrani ulazi",
