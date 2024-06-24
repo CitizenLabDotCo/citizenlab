@@ -24,7 +24,6 @@ export default async function confirmEmail(
       action: 'post',
       body: bodyData,
     });
-
     queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
     queryClient.invalidateQueries({
