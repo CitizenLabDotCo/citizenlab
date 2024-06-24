@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle filer",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle svar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nøjagtighed: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Der opstod en fejl ved genereringen af AI-resuméet. Genopret venligst oversigten nedenfor.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Der opstod en fejl ved genereringen af AI-oversigten. Prøv at genskabe det nedenfor.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Åben AI-analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Skjul opsummeringer for dette spørgsmål",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "valgte input",
