@@ -31,6 +31,8 @@ class Current < ActiveSupport::CurrentAttributes
   private
 
   def cache_tenant
+    return if Apartment::Tenant.current == 'public'
+
     self.tenant = Tenant.by_schema_name!(Apartment::Tenant.current)
     self.app_configuration = AppConfiguration.send(:first!)
   rescue StandardError
