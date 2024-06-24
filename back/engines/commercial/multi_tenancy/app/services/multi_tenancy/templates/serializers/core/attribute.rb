@@ -19,6 +19,10 @@ module MultiTenancy
             output_hash[name] = call_proc(method, model, serialization_params)
           end
 
+          def nested?
+            !!options[:nested]
+          end
+
           private
 
           def conditional_proc
