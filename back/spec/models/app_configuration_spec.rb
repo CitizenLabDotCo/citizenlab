@@ -16,17 +16,28 @@ RSpec.describe AppConfiguration do
   end
 
   describe '.timezone' do
-    let(:timezone_name) { 'Europe/Amsterdam' }
-
     before do
       app_config = described_class.instance
       app_config.settings['core']['timezone'] = timezone_name
-      app_config.save!
+      # We skip validation to be able to test invalid timezones.
+      app_config.save!(validate: false)
     end
 
-    it 'returns the correct timezone object' do
-      expected_timezone = Time.find_zone(timezone_name)
-      expect(described_class.timezone).to eq(expected_timezone)
+    context 'when the timezone name is valid' do
+      let(:timezone_name) { 'Europe/Amsterdam' }
+
+      it 'returns the correct timezone object' do
+        expected_timezone = Time.find_zone(timezone_name)
+        expect(described_class.timezone).to eq(expected_timezone)
+      end
+    end
+
+    context 'when the timezone name is invalid' do
+      let(:timezone_name) { 'Invalid/Timezone' }
+
+      it 'raises a KeyError' do
+        expect { described_class.timezone }.to raise_error(KeyError, timezone_name)
+      end
     end
   end
 end
