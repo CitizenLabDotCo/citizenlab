@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alla filer",
   "app.containers.Admin.projects.project.survey.allResponses": "Alla svar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Noggrannhet: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Det uppstod ett fel vid genereringen av AI-sammandraget. Vänligen återskapa sammanfattningen nedan.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Det uppstod ett fel vid genereringen av AI-sammandraget. Vänligen försök att återskapa den nedan.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Öppen AI-analys",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Dölj sammanfattningar för denna fråga",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "valda ingångar",
