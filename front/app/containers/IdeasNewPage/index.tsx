@@ -81,7 +81,7 @@ const IdeasNewPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: phase_id || getCurrentPhase(phases?.data)?.id || '',
+          id: phase_id,
         },
       });
     };
@@ -104,10 +104,10 @@ const IdeasNewPage = () => {
     we are redirecting /ideas/new requests to the new /surveys/new URL. This code can be removed
     once we've verified all surveys started before the date this got merged have been completed.
   */
-  if (currentPhase && participationMethod === 'native_survey') {
+  if (participationMethod === 'native_survey') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${currentPhase.id}`}
+        to={`/projects/${slug}/surveys/new?phase_id=${phase_id}`}
         replace
       />
     );

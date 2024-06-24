@@ -93,7 +93,7 @@ const IdeaButton = memo<Props>(
           search: stringify(
             {
               ...positionParams,
-              phase_id: phase?.id,
+              phase_id: phase.id,
             },
             { addQueryPrefix: true }
           ),
