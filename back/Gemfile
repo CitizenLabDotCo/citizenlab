@@ -83,7 +83,7 @@ gem 'que-web', '~> 0.10.0'
 
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
-gem 'activerecord-postgis-adapter', '~> 8.0'
+gem 'activerecord-postgis-adapter', '~> 9.0'
 
 gem 'carrierwave', '~> 3.0.7'
 gem 'carrierwave-base64', '~> 2.10'
