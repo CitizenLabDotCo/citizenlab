@@ -3,8 +3,6 @@ import React from 'react';
 import { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const Tab = React.lazy(() => import('./admin/components/Tab'));
-const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const StatusesComponent = React.lazy(() => import('./admin/containers/'));
 const NewStatusComponent = React.lazy(() => import('./admin/containers/new'));
@@ -38,15 +36,6 @@ const configuration: ModuleConfiguration = {
         element: <StatusShowComponent />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.settings.tabs': (props) => {
-      return (
-        <FeatureFlag name="custom_idea_statuses">
-          <Tab {...props} />
-        </FeatureFlag>
-      );
-    },
   },
 };
 

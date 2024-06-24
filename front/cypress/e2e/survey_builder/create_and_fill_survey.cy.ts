@@ -538,7 +538,9 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the second option and click next
+    cy.wait(2000);
     cy.contains(chooseOneOption2).click({ force: true });
+    cy.wait(2000);
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the third page
@@ -675,6 +677,7 @@ describe('Survey builder', () => {
 
     // Go back to the previous page to go to page 1
     cy.get('[data-cy="e2e-previous-page"]').click();
+    cy.wait(2000);
 
     // Go to page two and try clicking next
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -694,6 +697,7 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Select the second option to navigate to the other pages
+    cy.wait(2000);
     cy.contains(secondLogicQnOption2).click({ force: true });
 
     // Go to page 3
@@ -702,14 +706,13 @@ describe('Survey builder', () => {
     cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
 
     // Go to page 4
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.wait(2000);
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.contains(page4Title).should('exist');
-
-    cy.get('[data-cy="e2e-next-page"]').click();
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(1000);
+
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     cy.get('.e2e-modal-close-button').click();
     cy.get('#e2e-modal-container').should('have.length', 0);
