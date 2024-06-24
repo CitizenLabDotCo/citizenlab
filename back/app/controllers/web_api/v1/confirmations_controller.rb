@@ -23,7 +23,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     payload[:exp] = 1.day.from_now.to_i
     cookies[:cl2_jwt] = {
       value: AuthToken::AuthToken.new(payload: payload).token,
-      expires: 1.day.from_now
+      expires: 1.month.from_now
     }
   end
 
