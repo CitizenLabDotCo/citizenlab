@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle Dateien",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle Antworten",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Genauigkeit: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Bei der Erstellung der KI-Zusammenfassung ist ein Fehler aufgetreten. Bitte regenerieren Sie die Zusammenfassung unten.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Bei der Erstellung der KI-Zusammenfassung ist ein Fehler aufgetreten. Bitte versuchen Sie, sie unten neu zu generieren.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Zur KI-Analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Zusammenfassungen ausblenden für diese Frage",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "Beiträge ausgewählt",
