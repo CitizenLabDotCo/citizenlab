@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Visi faili",
   "app.containers.Admin.projects.project.survey.allResponses": "Visas atbildes",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precizitāte: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Mākslīgā intelekta kopsavilkuma ģenerēšanā tika pieļauta kļūda. Lūdzu, reģenerējiet kopsavilkumu zemāk.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Mākslīgā intelekta kopsavilkuma ģenerēšanā tika pieļauta kļūda. Lūdzu, mēģiniet to reģenerēt tālāk tekstā.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Atvērtā AI analīze",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Paslēpt kopsavilkumus par šo jautājumu",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "atlasītās ievades",
