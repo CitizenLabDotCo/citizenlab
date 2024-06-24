@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Tüm dosyalar",
   "app.containers.Admin.projects.project.survey.allResponses": "Tüm yanıtlar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Doğruluk: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "AI özeti oluşturulurken bir hata oluştu. Lütfen aşağıdaki özeti yeniden oluşturun.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Yapay zeka özeti oluşturulurken bir hata oluştu. Lütfen aşağıda yeniden oluşturmayı deneyin.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Açık yapay zeka analizi",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Bu soru için özetleri gizle",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "seçili girişler",
