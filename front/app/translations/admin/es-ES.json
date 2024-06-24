@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Todos los archivos",
   "app.containers.Admin.projects.project.survey.allResponses": "Todas las respuestas",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisión: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Se ha producido un error al generar el resumen de IA. Vuelve a generar el resumen a continuación.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Se ha producido un error al generar el resumen de la IA. Intenta regenerarlo a continuación.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Análisis de IA abierta",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Ocultar los resúmenes de esta pregunta",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "entradas seleccionadas",
