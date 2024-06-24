@@ -942,7 +942,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "Tutte le risposte",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisione: {accuracy}{percentage}",
-  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailed": "Si è verificato un errore nella generazione del riepilogo AI. Per favore, rigenera il riepilogo qui sotto.",
+  "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Si è verificato un errore nella generazione del riepilogo AI. Prova a rigenerarlo qui sotto.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Analisi dell'intelligenza artificiale aperta",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Nascondi i riassunti per questa domanda",
   "app.containers.Admin.projects.project.survey.analysis.inputsSelected": "ingressi selezionati",
