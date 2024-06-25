@@ -3,11 +3,13 @@ import React from 'react';
 import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
-import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
+import {
+  ActionDescriptorAction,
+  ProjectPostingDisabledReason,
+} from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
@@ -57,18 +59,20 @@ const TooltipContentText = styled.div`
 interface Props {
   projectId: string;
   inMap: boolean;
+  action: ActionDescriptorAction;
   disabledReason: ProjectPostingDisabledReason;
-  phase: IPhaseData | undefined;
 }
 
-const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
+const PermissionsTippyContent = ({
+  projectId,
+  inMap,
+  action,
+  disabledReason,
+}: Props) => {
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 
-  const disabledMessage = getPermissionsDisabledMessage(
-    'posting_idea',
-    disabledReason
-  );
+  const disabledMessage = getPermissionsDisabledMessage(action, disabledReason);
 
   return (
     <TooltipContent
@@ -84,4 +88,4 @@ const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
   );
 };
 
-export default TippyContent;
+export default PermissionsTippyContent;

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
-import globalMessages from 'utils/actionDescriptors/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 

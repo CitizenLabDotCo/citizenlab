@@ -21,6 +21,10 @@ import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
 import { volunteer, VolunteerParams } from './volunteer';
 import { vote, VoteParams } from './vote';
+import {
+  attendEvent,
+  AttendEventParams,
+} from 'containers/Authentication/SuccessActions/actions/attendEvent';
 
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
@@ -45,6 +49,11 @@ interface ReplyToCommentAction {
 interface ScrollToAction {
   name: 'scrollTo';
   params: ScrollToParams;
+}
+
+interface AttendEventAction {
+  name: 'attendEvent';
+  params: AttendEventParams;
 }
 
 interface VolunteerAction {
@@ -88,7 +97,8 @@ export type SuccessAction =
   | ReactionOnIdeaAction
   | ReactionOnInitiativeAction
   | FollowAction
-  | SubmitPollAction;
+  | SubmitPollAction
+  | AttendEventAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
@@ -105,5 +115,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'reactionOnComment') return reactionOnComment(params);
   if (name === 'reactionOnIdea') return reactionOnIdea(params);
   if (name === 'submit_poll') return submitPoll(params);
+  if (name === 'attendEvent') return attendEvent(params);
   return reactionOnInitiative(params);
 };
