@@ -327,6 +327,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         }
+        customisable_homepage_banner: {
+          enabled: true,
+          allowed: true
+        }
       }
     )
 
