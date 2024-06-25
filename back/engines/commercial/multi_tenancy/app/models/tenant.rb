@@ -94,6 +94,12 @@ class Tenant < ApplicationRecord
     Current.tenant
   end
 
+  def self.safe_current
+    Current.tenant
+    rescue ActiveRecord::RecordNotFound
+      nil
+  end
+
   def self.settings(*path)
     ErrorReporter.report_msg('Tenant::settings is deprecated. Use AppConfiguration#settings instead.')
     AppConfiguration.instance.settings(*path)
