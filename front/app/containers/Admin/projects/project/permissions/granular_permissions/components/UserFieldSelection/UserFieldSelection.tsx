@@ -12,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SupportedLocale } from 'typings';
 
-import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useAddPermissionCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
@@ -27,7 +26,6 @@ import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../containers/Granular/messages';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
@@ -54,7 +52,6 @@ const UserFieldSelection = ({
   initiativeContext,
   onChange,
 }: UserFieldSelectionProps) => {
-  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const permissionsCustomFieldsAllowed = useFeatureFlag({
     name: 'permissions_custom_fields',
@@ -119,10 +116,6 @@ const UserFieldSelection = ({
   };
 
   const groupIds = permission.relationships.groups.data.map((p) => p.id);
-
-  if (isNilOrError(locale) || isNilOrError(authUser)) {
-    return null;
-  }
 
   const showQuestionToggle =
     permission.attributes.permitted_by !== 'everyone_confirmed_email';
@@ -234,11 +227,11 @@ const UserFieldSelection = ({
                         label={
                           <Text
                             fontSize="s"
-                            style={
-                              !permissionsCustomFieldsAllowed
-                                ? { color: colors.disabled }
-                                : { color: colors.primary }
-                            }
+                            style={{
+                              color: permissionsCustomFieldsAllowed
+                                ? colors.primary
+                                : colors.disabled,
+                            }}
                           >
                             <FormattedMessage {...messages.required} />
                           </Text>
