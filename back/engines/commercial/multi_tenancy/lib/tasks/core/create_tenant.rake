@@ -326,7 +326,7 @@ namespace :cl2_back do
         multi_language_platform: {
           enabled: true,
           allowed: true
-        }
+        },
         customisable_homepage_banner: {
           enabled: true,
           allowed: true
