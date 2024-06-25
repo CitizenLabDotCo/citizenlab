@@ -116,7 +116,9 @@ const ActionForm = ({
           <Box display="flex" gap="16px" mb="20px">
             {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
             If separate, we will need to update code where we check for attributes.posting_idea */}
-            {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
+            {(action === 'taking_survey' ||
+              (projectType === 'nativeSurvey' &&
+                action === 'posting_idea')) && (
               <CardButton
                 title={formatMessage(
                   permissionsMessages.permissionsAnyoneLabel

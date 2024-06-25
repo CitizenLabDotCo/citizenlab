@@ -13,6 +13,7 @@ module Permissions
       annotating_document
       taking_survey
       taking_poll
+      attending_event
     ].freeze
 
     USER_DENIED_REASONS = {
@@ -58,6 +59,8 @@ module Permissions
           permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
         end
       end
+
+      # binding.pry
 
       raise "Unknown action '#{action}' for phase: #{phase}" unless permission
 
