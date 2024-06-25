@@ -167,14 +167,12 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  // relevant flag
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  // relevant flag
   project_management?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
@@ -211,9 +209,7 @@ export interface IAppConfigurationSettings {
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
-  // relevant flag
   permission_option_email_confirmation?: AppConfigurationFeature;
-  // relevant flag
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
