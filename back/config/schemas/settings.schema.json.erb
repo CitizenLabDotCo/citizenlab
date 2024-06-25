@@ -1304,6 +1304,18 @@
         }
       },
 
+      "customisable_homepage_banner": {
+        "type": "object",
+        "title": "Customisable homepage banner",
+        "description": "Enables the ability to customize the homepage banner settings beyond just the text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "management_feed": {
         "type": "object",
         "title": "Management Feed",
