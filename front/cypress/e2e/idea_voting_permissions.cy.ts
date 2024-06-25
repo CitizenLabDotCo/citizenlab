@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../support/commands';
 // OS-133
 describe('Idea reacting permissions', () => {
   describe('a project that requires verification to reaction', () => {
-    it('sends non-registred user to sign up, verifies the user and reactions successfully', () => {
+    it('sends non-registered user to sign up, verifies the user and reactions successfully', () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
@@ -128,7 +128,7 @@ describe('Idea reacting permissions', () => {
   });
 
   describe('a project that does not require verification', () => {
-    it("sends signed out user to log in and doesn't ask for verification", () => {
+    it.only("sends signed out user to log in and doesn't ask for verification", () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();

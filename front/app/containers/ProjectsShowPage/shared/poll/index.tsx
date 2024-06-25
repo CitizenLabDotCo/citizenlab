@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
-import { ProjectPollDisabledReason } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';
@@ -37,22 +37,6 @@ interface Props {
   projectId: string;
 }
 
-const disabledMessages: {
-  [key in ProjectPollDisabledReason]: MessageDescriptor | undefined;
-} = {
-  project_inactive: messages.pollDisabledProjectInactive,
-  project_not_visible: messages.pollDisabledNotPermitted,
-  not_poll: messages.pollDisabledNotActivePhase,
-  already_responded: messages.pollDisabledAlreadyResponded,
-  user_not_active: undefined,
-  user_not_verified: undefined,
-  user_missing_requirements: undefined,
-  user_not_signed_in: undefined,
-  user_not_in_group: globalMessages.notInGroup,
-  user_not_permitted: messages.pollDisabledNotPermitted,
-  user_blocked: messages.pollDisabledNotPermitted,
-};
-
 const Poll = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
@@ -67,8 +51,11 @@ const Poll = ({ projectId, phaseId }: Props) => {
   const { enabled, disabled_reason } =
     project.data.attributes.action_descriptors.taking_poll;
 
+  const disabledMessage =
+    getPermissionsDisabledMessage('taking_poll', disabled_reason) || null;
+
   const message = !enabled
-    ? disabledMessages[disabled_reason] ?? messages.pollDisabledNotPossible
+    ? disabledMessage ?? messages.pollDisabledNotPossible
     : null;
 
   const actionDisabledAndNotFixable =
