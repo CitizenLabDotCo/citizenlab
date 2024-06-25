@@ -33,33 +33,35 @@ end
 
 resource 'Stats - Ideas' do
   explanation 'The various stats endpoints can be used to show certain properties of ideas.'
+  header 'Content-Type', 'application/json'
 
-  let_it_be(:now) { Time.now.in_time_zone(@timezone) }
-  let(:bearer) { "Bearer #{@token}" }
+  let_it_be(:now) { AppConfiguration.timezone.now }
+  let_it_be(:start_at) { (now - 1.year).beginning_of_year }
+  let_it_be(:end_at) { (now - 1.year).end_of_year }
 
-  before do
-    header 'Content-Type', 'application/json'
-    admin_header_token
+  before { admin_header_token }
 
+  before_all do
     AppConfiguration.instance.update!(created_at: now - 3.years)
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     @project1 = create(:single_phase_ideation_project)
     @project2 = create(:single_phase_ideation_project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.month do
+
+    travel_to(start_at - 1.month) do
       i = create(:idea, project: @project2, idea_status: @proposed)
       create(:official_feedback, post: i)
     end
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
+    travel_to(start_at + 2.months) do
       @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1, idea_status: @proposed)
     end
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
+    travel_to(start_at + 5.months) do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
       create(:idea, project: @project2, idea_status: @proposed)
     end
+
     native_survey_project = create(:single_phase_native_survey_project)
     create(:idea, project: native_survey_project, creation_phase: native_survey_project.phases.first)
   end
@@ -70,6 +72,10 @@ resource 'Stats - Ideas' do
     group_filter_parameter self
     topic_filter_parameter self
     feedback_needed_filter_parameter self
+
+    # Remove time-boundary query parameters
+    let(:start_at) { nil }
+    let(:end_at) { nil }
 
     example_request 'Count all ideas' do
       assert_status 200
@@ -117,9 +123,6 @@ resource 'Stats - Ideas' do
     feedback_needed_filter_parameter self
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
       example_request 'Ideas by topic' do
         assert_status 200
         json_response = json_parse response_body
@@ -132,9 +135,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         topic = create(:topic)
@@ -154,9 +155,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 2.months do
@@ -181,9 +180,7 @@ resource 'Stats - Ideas' do
     feedback_needed_filter_parameter self
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         topic = create(:topic)
@@ -205,9 +202,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 2.months do
@@ -234,9 +229,6 @@ resource 'Stats - Ideas' do
     feedback_needed_filter_parameter self
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
       example_request 'Ideas by project' do
         assert_status 200
         json_response = json_parse response_body
@@ -251,9 +243,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:topic) { @topic.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 4.months do
@@ -272,9 +262,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 8.months do
@@ -301,9 +289,6 @@ resource 'Stats - Ideas' do
     feedback_needed_filter_parameter self
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
       example_request 'Ideas by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
@@ -323,9 +308,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:topic) { @topic.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 4.months do
@@ -346,9 +329,7 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
         travel_to start_at + 8.months do

@@ -5,10 +5,9 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::Queries::Demographics do
   subject(:query) { described_class.new(build(:admin)) }
 
-  let_it_be(:timezone) { AppConfiguration.instance.settings('core', 'timezone') }
-  let_it_be(:now) { Time.now.in_time_zone(timezone) }
-  let_it_be(:start_at) { (now - 1.year).in_time_zone(timezone).beginning_of_year }
-  let_it_be(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
+  let_it_be(:now) { AppConfiguration.timezone.now }
+  let_it_be(:start_at) { (now - 1.year).beginning_of_year }
+  let_it_be(:end_at) { (now - 1.year).end_of_year }
 
   describe '#run_query' do
     context 'select field' do
@@ -35,7 +34,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
-        AppConfiguration.update!(created_at: Date.new(2020, 1, 1))
+        AppConfiguration.instance.update!(created_at: Date.new(2020, 1, 1))
       end
 
       it 'returns multilocs' do
@@ -104,7 +103,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           custom_field_values: { birthyear: 1977 }
         )
 
-        AppConfiguration.update!(created_at: Date.new(2020, 1, 1))
+        AppConfiguration.instance.update!(created_at: Date.new(2020, 1, 1))
       end
 
       it 'returns correct series data' do

@@ -162,7 +162,7 @@
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/addon-viewport": "^8.1.8",
     "@storybook/builder-vite": "^8.1.6",
-    "@storybook/react": "^8.1.6",
+    "@storybook/react": "^8.1.9",
     "@storybook/react-vite": "^8.1.6",
     "@storybook/react-webpack5": "^8.1.9",
     "@tanstack/react-query-devtools": "^4.22.4",

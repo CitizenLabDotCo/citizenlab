@@ -4,8 +4,6 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import Tooltip from '../Tooltip';
-import Icon, { IconNames } from '../Icon';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {
@@ -16,6 +14,8 @@ import Box, {
   BoxDisplayProps,
   BoxZIndexProps,
 } from '../Box';
+import Icon, { IconNames } from '../Icon';
+import Tooltip from '../Tooltip';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
@@ -115,6 +115,7 @@ const IconTooltip: FC<Props> = memo<Props>(
           display="flex"
           justifyContent="center"
           alignItems="center"
+          alignSelf="center"
           {...rest}
         >
           <TooltipIcon
