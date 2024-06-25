@@ -11,6 +11,8 @@ import {
 import { debounce } from 'lodash-es';
 import styled, { useTheme } from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import RangeInput from 'components/UI/RangeInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -59,6 +61,10 @@ const OverlayControls = ({
   bannerOverlayColor,
   onOverlayChange,
 }: Props) => {
+  const customHomepageBannerAllowed = useFeatureFlag({
+    name: 'customisable_homepage_banner',
+    onlyCheckAllowed: true,
+  });
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity !== 0
   );
@@ -106,6 +112,7 @@ const OverlayControls = ({
       <Box mb={overlayEnabled ? '20px' : '0'} data-cy="e2e-overlay-toggle">
         <Toggle
           id="overlay-toggle"
+          disabled={!customHomepageBannerAllowed}
           onChange={handleOverlayEnabling}
           checked={overlayEnabled}
           label={
