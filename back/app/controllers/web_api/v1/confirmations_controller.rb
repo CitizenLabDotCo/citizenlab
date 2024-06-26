@@ -18,12 +18,17 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   private
 
   def reset_auth_cookie
-    # TODO: JS Need to get the expiry from the current token
+    # get the expiry time from the current token
+    current_token = request.headers['Authorization']&.split&.last
+    current_payload = AuthToken::AuthToken.new(token: current_token).payload
+
+    # Set a new token with the same expiry time
     payload = current_user.to_token_payload
-    payload[:exp] = 1.day.from_now.to_i
+    payload[:exp] = current_payload['exp']
+
     cookies[:cl2_jwt] = {
       value: AuthToken::AuthToken.new(payload: payload).token,
-      expires: 1.month.from_now
+      expires: Time.at(current_payload['exp'])
     }
   end
 

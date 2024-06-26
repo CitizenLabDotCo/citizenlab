@@ -292,6 +292,7 @@ class User < ApplicationRecord
   # Can add verification in here as a level 2 maybe
   def security_level
     return 1 unless confirmation_required?
+
     0
   end
 

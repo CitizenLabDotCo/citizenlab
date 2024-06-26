@@ -39,9 +39,10 @@ module AuthToken
     # Has the security level of the user changed since the token was issued?
     # eg user has now confirmed - reject if the level is now higher
     def validate_secure_attribute_changes(entity_class, entity)
-      if entity_class == User
-        return nil if @payload['security_level'] && @payload['security_level'] < entity.security_level
+      if entity_class == User && (@payload['security_level'] && @payload['security_level'] < entity.security_level)
+        return nil
       end
+
       entity
     end
 
