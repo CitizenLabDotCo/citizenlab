@@ -71,9 +71,10 @@ const IdeasNewSurveyPage = () => {
       authUser: authUser?.data,
     });
 
+  // Hard to understand why this is needed without context.
+  // The phase id checks are also unclear.
+  // Please replace this text and add a comment if you know.
   const userCannotViewSurvey =
-    // Hard to understand why we do this check without context.
-    // Please replace this text and add a comment if you know.
     !canModerateProject(project.data.id, authUser) &&
     phaseIdFromSearchParams !== currentPhase?.id;
 
