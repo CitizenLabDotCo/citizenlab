@@ -13,7 +13,7 @@ module MultiTenancy
         end
 
         def serialize(record)
-          ref_attributes(record).merge(value_attributes(record)).merge(nested_attributes(record))
+          ref_attributes(record).merge value_attributes(record)
         end
 
         private
@@ -33,16 +33,8 @@ module MultiTenancy
           result.transform_values! { |value| Value.new(value) }
         end
 
-        def nested_attributes(record)
-          result = self.class.nested_attributes.to_a.each_with_object({}) do |attribute, acc|
-            attribute.serialize(record, options, acc)
-          end
-
-          result.transform_values! { |value| NestedAttributes.new(value) }
-        end
-
         class_methods do
-          attr_accessor :value_attributes, :reference_attributes, :nested_attributes
+          attr_accessor :value_attributes, :reference_attributes
 
           def inherited(subclass)
             super(subclass)
@@ -50,19 +42,16 @@ module MultiTenancy
             # Allows serializer subclasses to inherit attributes from their ancestors.
             subclass.value_attributes = value_attributes.dup if value_attributes.present?
             subclass.reference_attributes = reference_attributes.dup if reference_attributes.present?
-            subclass.nested_attributes = nested_attributes.dup if nested_attributes.present?
           end
 
           def attributes(*attributes_list, &block)
             self.value_attributes ||= []
-            self.nested_attributes ||= []
 
             attributes_list = attributes_list.first if attributes_list.first.is_a?(Array)
             options = attributes_list.last.is_a?(Hash) ? attributes_list.pop : {}
 
             attributes_list.each do |attr_name|
-              atr = Attribute.new(attr_name.to_sym, block || attr_name, options)
-              atr.nested? ? nested_attributes << atr : value_attributes << atr
+              value_attributes << Attribute.new(attr_name.to_sym, block || attr_name, options)
             end
           end
 
