@@ -41,6 +41,21 @@ resource 'Mailgun Events' do
       expect(delivery.reload.delivery_status).to eq 'opened'
     end
 
+    example 'Switches tenant correctly' do
+      mailgun_event # create all data needed for this test
+      tenant = Tenant.current
+      # Reset current tenant schema to public.
+      # The correct tenant will be set in around_action hook as in real requests.
+      Apartment::Tenant.reset
+
+      do_request(mailgun_event)
+      expect(response_status).to eq 200
+      expect(Sentry.get_current_scope.tags).to include(switched_tenant: 'example.org')
+
+      tenant.switch!
+      expect(delivery.reload.delivery_status).to eq 'opened'
+    end
+
     context '[error] for a non-existing tenant' do
       let!(:cl_tenant_id) { '70abacb2-69e8-4c2d-93cc-c0aeab657f02' }
 
