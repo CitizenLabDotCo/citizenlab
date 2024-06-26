@@ -1492,7 +1492,8 @@ type IPhasePermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'voting'
-  | 'annotating_document';
+  | 'annotating_document'
+  | 'attending_event';
 
 type ApiSetPermissionTypeProps = {
   phaseId: string;

@@ -6,6 +6,7 @@ import {
   Title,
   colors,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
@@ -15,15 +16,24 @@ import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 import Modal from 'components/UI/Modal';
 
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
 
@@ -59,36 +69,56 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
   const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
+  // Permissions
+  const { data: project } = useProjectById(event.relationships.project.data.id);
+  const { data: phases } = usePhases(project?.data.id);
+  const currentPhase = getCurrentPhase(phases?.data);
+
+  // NOTE: If the project does not have a current phase then users cannot register for events
+  if (!project || !currentPhase) return null;
+
+  const { enabled, disabled_reason } =
+    project.data.attributes.action_descriptors.attending_event;
+
   const handleClick = () => {
     if (event?.attributes.using_url) {
       window.open(event.attributes.using_url);
       return;
-    } else {
-      if (user) {
-        registerAttendance();
-      } else {
-        // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
-        // As such, our only option at this point is to trigger the flow without a success action.
-        triggerAuthenticationFlow({
-          flow: 'signin',
-        });
-      }
+    }
+
+    if (userIsAttending && attendanceId) {
+      deleteEventAttendance({ attendanceId });
+      return;
+    }
+
+    if (user && enabled) {
+      registerAttendance(user.data);
+      return;
+    }
+
+    if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
+      const context = {
+        type: 'phase',
+        action: 'attending_event',
+        id: currentPhase?.id,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'attendEvent',
+        params: { attendFunction: registerAttendance },
+      };
+
+      triggerAuthenticationFlow({ context, successAction });
     }
   };
 
-  const registerAttendance = () => {
-    if (userIsAttending && attendanceId) {
-      deleteEventAttendance({
-        attendanceId,
-      });
-    } else if (user) {
-      addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
-      addFollower({
-        followableId: event.relationships.project.data.id,
-        followableType: 'projects',
-      });
-      setConfirmationModalVisible(true);
-    }
+  const registerAttendance = (userData: IUserData) => {
+    addEventAttendance({ eventId: event.id, attendeeId: userData.id });
+    addFollower({
+      followableId: event.relationships.project.data.id,
+      followableType: 'projects',
+    });
+    setConfirmationModalVisible(true);
   };
 
   const getButtonText = () => {
@@ -112,24 +142,44 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const isLoading = isAddingAttendance || isRemovingAttendance;
   const eventDateTime = getEventDateString(event);
 
+  // Permissions disabled reasons
+  const buttonDisabled =
+    !!disabled_reason && !isFixableByAuthentication(disabled_reason);
+  const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
+    'attending_event',
+    disabled_reason
+  );
+  const disabledMessage =
+    permissionDisabledMessageDescriptor &&
+    formatMessage(permissionDisabledMessageDescriptor);
+
   return (
     <>
-      <Button
-        ml="auto"
-        width={'100%'}
-        iconPos={userIsAttending ? 'left' : 'right'}
-        icon={getButtonIcon()}
-        iconSize="20px"
-        bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
-        onClick={(event) => {
-          event.preventDefault();
-          handleClick();
-        }}
-        processing={isLoading}
-        id="e2e-event-attendance-button"
+      <Tooltip
+        disabled={!disabled_reason}
+        placement="bottom"
+        content={disabledMessage}
       >
-        {getButtonText()}
-      </Button>
+        <Button
+          ml="auto"
+          width={'100%'}
+          iconPos={userIsAttending ? 'left' : 'right'}
+          icon={getButtonIcon()}
+          iconSize="20px"
+          bgColor={
+            userIsAttending ? colors.success : theme.colors.tenantPrimary
+          }
+          disabled={buttonDisabled}
+          onClick={(event) => {
+            event.preventDefault();
+            handleClick();
+          }}
+          processing={isLoading}
+          id="e2e-event-attendance-button"
+        >
+          {getButtonText()}
+        </Button>
+      </Tooltip>
       <Modal
         opened={confirmationModalVisible}
         close={() => {

@@ -61,7 +61,7 @@ module Permissions
       when 'taking_poll'
         taking_poll_denied_reason_for_phase(phase, user)
       else
-        raise "Unsupported action: #{action}"
+        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
       end
       return phase_denied_reason if phase_denied_reason
 

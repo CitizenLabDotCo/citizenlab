@@ -233,4 +233,27 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledAlreadyResponded',
     defaultMessage: "You've already taken this poll.",
   },
+
+  // 'attending_event'
+  attendingEventNotSignedIn: {
+    id: 'app.utils.actionDescriptors.attendingEventNotSignedIn',
+    defaultMessage: 'You must log in or register to attend this event.',
+  },
+  attendingEventNotPermitted: {
+    id: 'app.utils.actionDescriptors.attendingEventNotPermitted',
+    defaultMessage: 'You are not permitted to attend this event.',
+  },
+  attendingEventNotInGroup: {
+    id: 'app.utils.actionDescriptors.attendingEventNotInGroup',
+    defaultMessage: 'You do not meet the requirements to attend this event.',
+  },
+  attendingEventNotVerified: {
+    id: 'app.utils.actionDescriptors.attendingEventNotVerified',
+    defaultMessage:
+      'You must verify your account before you can attend this event.',
+  },
+  attendingEventMissingRequirements: {
+    id: 'app.utils.actionDescriptors.attendingEventMissingRequirements',
+    defaultMessage: 'You must complete your profile to attend this event.',
+  },
 });

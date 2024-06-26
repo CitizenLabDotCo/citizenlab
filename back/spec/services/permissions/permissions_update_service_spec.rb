@@ -28,23 +28,23 @@ describe Permissions::PermissionsUpdateService do
   describe '#update_permissions_for_scope' do
     it 'changes the permissions for a phase when the method is changed' do
       phase = create(:phase, participation_method: 'ideation', with_permissions: true)
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea]
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
 
       phase.update!(participation_method: 'voting', voting_method: 'budgeting', ideas_order: 'random')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[voting commenting_idea]
+      expect(phase.permissions.pluck(:action)).to match_array %w[voting commenting_idea attending_event]
     end
 
     it 'changes permitted_by to "users" when changing from native_survey to ideation if permitted_by is "everyone"' do
       phase = create(:native_survey_phase, with_permissions: true)
-      phase.permissions.first.update!(permitted_by: 'everyone')
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[everyone]
+      phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'everyone')
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[everyone users]
 
       phase.update!(participation_method: 'ideation')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users]
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
     end
 
     it 'does not change permitted_by to "users" for external surveys permitted_by "everyone"' do
@@ -58,14 +58,14 @@ describe Permissions::PermissionsUpdateService do
 
     it 'does not changes permitted_by from native_survey if permitted_by is not "everyone"' do
       phase = create(:native_survey_phase, with_permissions: true)
-      phase.permissions.first.update!(permitted_by: 'groups')
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups]
+      phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'groups')
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users]
 
       phase.update!(participation_method: 'ideation')
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users users]
+      expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users users users]
     end
   end
 end

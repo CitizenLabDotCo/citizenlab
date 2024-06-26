@@ -13,6 +13,7 @@ module Permissions
       annotating_document
       taking_survey
       taking_poll
+      attending_event
     ].freeze
 
     USER_DENIED_REASONS = {
