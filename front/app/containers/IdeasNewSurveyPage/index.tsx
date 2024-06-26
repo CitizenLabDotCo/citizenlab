@@ -37,8 +37,7 @@ const IdeasNewSurveyPage = () => {
   // If we reach this component by hitting surveys/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
   const phaseIdFromSearchParams = searchParams.get('phase_id');
-  const currentPhaseId =
-    phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
+  const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
@@ -59,7 +58,7 @@ const IdeasNewSurveyPage = () => {
     return <PageNotFound />;
   }
 
-  if (!phases || !currentPhaseId) {
+  if (!phases || !phaseId) {
     return null;
   }
 
@@ -89,7 +88,7 @@ const IdeasNewSurveyPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: currentPhaseId,
+          id: phaseId,
         },
       });
     };

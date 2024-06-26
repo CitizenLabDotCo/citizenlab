@@ -130,7 +130,7 @@ const IdeaButton = memo<Props>(
           name: 'redirectToIdeaForm',
           params: {
             projectSlug: project.data.attributes.slug,
-            phaseId: phase?.id,
+            phaseId: phase.id,
           },
         };
 

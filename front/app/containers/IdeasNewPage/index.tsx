@@ -35,7 +35,7 @@ const IdeasNewPage = () => {
   const [searchParams] = useSearchParams();
   // If we reach this component by hitting ideas/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
-  const currentPhaseId =
+  const phaseId =
     searchParams.get('phase_id') || getCurrentPhase(phases?.data)?.id;
 
   /*
@@ -58,7 +58,7 @@ const IdeasNewPage = () => {
     return <PageNotFound />;
   }
 
-  if (!phases || !currentPhaseId) {
+  if (!phases || !phaseId) {
     return null;
   }
 
@@ -66,7 +66,7 @@ const IdeasNewPage = () => {
   const participationMethod = getParticipationMethod(
     project.data,
     phases.data,
-    currentPhaseId
+    phaseId
   );
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
@@ -82,7 +82,7 @@ const IdeasNewPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: currentPhaseId,
+          id: phaseId,
         },
       });
     };
@@ -108,7 +108,7 @@ const IdeasNewPage = () => {
   if (participationMethod === 'native_survey') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${currentPhaseId}`}
+        to={`/projects/${slug}/surveys/new?phase_id=${phaseId}`}
         replace
       />
     );
