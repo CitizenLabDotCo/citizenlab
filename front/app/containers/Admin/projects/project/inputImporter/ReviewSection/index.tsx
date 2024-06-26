@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   Box,
@@ -50,10 +50,10 @@ const ReviewSection = ({
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
 
-  const jobsChanged = () => {
+  const handleJobsChanged = useCallback(() => {
     if (importJobs.length > 0) setImportTriggered(true);
     refetchIdeas();
-  };
+  }, [importJobs, refetchIdeas]);
 
   const {
     active: importing,
@@ -61,7 +61,7 @@ const ReviewSection = ({
     errors: importErrors,
   } = useTrackBackgroundJobs({
     jobs: importJobs,
-    onChange: jobsChanged,
+    onChange: handleJobsChanged,
   });
 
   const { mutate: deleteIdea } = useDeleteIdea();
