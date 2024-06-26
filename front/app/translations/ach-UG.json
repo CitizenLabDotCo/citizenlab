@@ -1664,6 +1664,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "crwdns1646276:0crwdne1646276:0",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "crwdns1646278:0crwdne1646278:0",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "crwdns777669:0crwdne777669:0",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "crwdns2573824:0crwdne2573824:0",
   "app.containers.ReactionControl.a11y_likesDislikes": "crwdns777671:0{likesCount}crwdnd777671:0{dislikesCount}crwdne777671:0",
   "app.containers.ReactionControl.cancelDislikeSuccess": "crwdns2423294:0crwdne2423294:0",
   "app.containers.ReactionControl.cancelLikeSuccess": "crwdns2423296:0crwdne2423296:0",
