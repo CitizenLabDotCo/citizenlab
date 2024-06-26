@@ -73,7 +73,7 @@ const IdeasNewSurveyPage = () => {
 
   const userCannotViewSurvey =
     // Hard to understand why we do this check without context.
-    // Please replace this text and add a comment explaining this when you know.
+    // Please replace this text and add a comment if you know.
     !canModerateProject(project.data.id, authUser) &&
     phaseIdFromSearchParams !== currentPhase?.id;
 
