@@ -7,7 +7,7 @@ import useBackgroundJobs from './useBackgroundJobs';
 
 const useTrackBackgroundJobs = ({
   jobs,
-  onChange, // Make sure to use `useCallback` for `onChange`
+  onChange, // Make sure onChange is not changed on every render (e.g., use `useCallback` around it where you call useTrackBackgroundJobs)
 }: {
   jobs: IBackgroundJobData[];
   onChange: () => void;
