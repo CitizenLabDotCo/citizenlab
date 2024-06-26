@@ -34,8 +34,6 @@ export const PhaseActionForm = ({
 
   const config = getMethodConfig(phase.attributes.participation_method);
 
-  console.log(permissions);
-
   return (
     <Box mb="40px">
       <ActionsForm

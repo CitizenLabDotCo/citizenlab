@@ -1,3 +1,8 @@
+import {
+  attendEvent,
+  AttendEventParams,
+} from 'containers/Authentication/SuccessActions/actions/attendEvent';
+
 import { follow, FollowActionParams } from './follow';
 import {
   reactionOnComment,
@@ -21,10 +26,6 @@ import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
 import { volunteer, VolunteerParams } from './volunteer';
 import { vote, VoteParams } from './vote';
-import {
-  attendEvent,
-  AttendEventParams,
-} from 'containers/Authentication/SuccessActions/actions/attendEvent';
 
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';

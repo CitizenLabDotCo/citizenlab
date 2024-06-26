@@ -6,37 +6,36 @@ import {
   Title,
   colors,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { attendEvent } from 'containers/Authentication/SuccessActions/actions/attendEvent';
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 import Modal from 'components/UI/Modal';
 
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
 
 import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';
-
-import useProjectById from 'api/projects/useProjectById';
-import { Tooltip } from '@citizenlab/cl2-component-library';
-import {
-  getPermissionsDisabledMessage,
-  isFixableByAuthentication,
-} from 'utils/actionDescriptors';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { attendEvent } from 'containers/Authentication/SuccessActions/actions/attendEvent';
-import { getCurrentPhase } from 'api/phases/utils';
-import usePhases from 'api/phases/usePhases';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -81,7 +80,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         projectId: project.data.id,
         eventId: event.id,
         userId: user?.data?.id,
-        attendanceId: attendanceId,
+        attendanceId,
       };
 
       if (enabled) {
@@ -179,7 +178,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         >
           {getButtonText()}
         </Button>
-        {/*</ButtonWrapper>*/}
+        {/* </ButtonWrapper>*/}
       </Tooltip>
       <Modal
         opened={confirmationModalVisible}
