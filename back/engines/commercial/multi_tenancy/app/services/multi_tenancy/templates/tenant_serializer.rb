@@ -103,6 +103,7 @@ module MultiTenancy
 
           # Initiatives
           Initiative => serialize_records(initiatives),
+          InitiativeStatusChange => serialize_records(InitiativeStatusChange.where(initiative: initiatives)),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
           CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),

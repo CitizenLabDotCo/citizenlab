@@ -20,7 +20,7 @@ module MultiTenancy
         @save_temp_remote_urls = save_temp_remote_urls
       end
 
-      def deserialize(...)
+      def deserialize(template, validate: true, max_time: nil, local_copy: false)
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
         # the executor before setting the `CurrentAttributes` value. This is because
@@ -35,14 +35,16 @@ module MultiTenancy
         # Note: It's safe to call wrap multiple times because the executor is re-entrant.
         ::Rails.application.executor.wrap do
           Current.set(loading_tenant_template: true) do
-            _deserialize(...)
+            _deserialize(template, validate, max_time, local_copy)
           end
         end
+
+        check_inconsistent_data! if validate
       end
 
       private
 
-      def _deserialize(template, validate: true, max_time: nil, local_copy: false)
+      def _deserialize(template, validate, max_time, local_copy)
         t1 = Time.zone.now
         obj_to_id_and_class = {}.compare_by_identity
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
@@ -223,6 +225,11 @@ module MultiTenancy
           model.save # Might fail but runs before_validations
           model.save(validate: false)
         end
+      end
+
+      def check_inconsistent_data!
+        summary = InvalidDataChecker.new.check_tenant
+        raise "Inconsistent data after template application: #{summary[:issues]}" if summary[:issues].present?
       end
     end
   end
