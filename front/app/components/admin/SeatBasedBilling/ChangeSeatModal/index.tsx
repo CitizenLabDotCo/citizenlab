@@ -147,8 +147,9 @@ const ChangeSeatModal = ({
           </Text>
 
           {!isChangingToNormalUser && (
-            <Box mb="24px">
+            <Box mb="24px" gap="8px" flexDirection="column" display="flex">
               <SeatInfo seatType="admin" />
+              <SeatInfo seatType="moderator" />
             </Box>
           )}
 
