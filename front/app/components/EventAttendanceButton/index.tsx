@@ -10,18 +10,21 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
+import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { attendEvent } from 'containers/Authentication/SuccessActions/actions/attendEvent';
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
@@ -44,6 +47,7 @@ type EventAttendanceButtonProps = {
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const theme = useTheme();
   const { data: user } = useAuthUser();
+  const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
@@ -51,11 +55,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId(user?.data?.id);
-  const { data: project } = useProjectById(event.relationships.project.data.id);
-  const { data: phases } = usePhases(project?.data.id);
-  const currentPhase = getCurrentPhase(phases?.data);
-
-  if (!project || !currentPhase) return null;
+  const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
+    useAddEventAttendance(event.id);
+  const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
+    useDeleteEventAttendance(event.id, user?.data?.id);
 
   // Attendance
   const userAttendingEventObject = eventsAttending?.data?.find(
@@ -67,60 +70,55 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
   // Permissions
+  const { data: project } = useProjectById(event.relationships.project.data.id);
+  const { data: phases } = usePhases(project?.data.id);
+  const currentPhase = getCurrentPhase(phases?.data);
+
+  if (!project || !currentPhase) return null;
+
   const { enabled, disabled_reason } =
     project.data.attributes.action_descriptors.attending_event;
 
   const handleClick = () => {
     if (event?.attributes.using_url) {
-      // TODO: JS: This should be handled by the attendEvent method
       window.open(event.attributes.using_url);
       return;
-    } else {
-      const attendEventParams = {
-        projectId: project.data.id,
-        eventId: event.id,
-        userId: user?.data?.id,
-        attendanceId,
+    }
+
+    if (userIsAttending && attendanceId) {
+      deleteEventAttendance({ attendanceId });
+      return;
+    }
+
+    if (user && enabled) {
+      registerAttendance(user.data);
+      return;
+    }
+
+    if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
+      const context = {
+        type: 'phase',
+        action: 'attending_event',
+        id: currentPhase?.id,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'attendEvent',
+        params: { attendFunction: registerAttendance },
       };
 
-      if (enabled) {
-        // TODO: JS: This needs to be async
-        attendEvent(attendEventParams);
-        setConfirmationModalVisible(true);
-        return;
-      }
-
-      if (isFixableByAuthentication(disabled_reason)) {
-        const context = {
-          type: 'phase',
-          action: 'attending_event',
-          id: currentPhase?.id,
-        } as const;
-
-        const successAction: SuccessAction = {
-          name: 'attendEvent',
-          params: attendEventParams,
-        };
-
-        triggerAuthenticationFlow({ context, successAction });
-      }
+      triggerAuthenticationFlow({ context, successAction });
     }
   };
 
-  // const registerAttendance = () => {
-  //   if (userIsAttending && attendanceId) {
-  //     deleteEventAttendance({
-  //       attendanceId,
-  //     });
-  //   } else if (user) {
-  //     addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
-  //     addFollower({
-  //       followableId: event.relationships.project.data.id,
-  //       followableType: 'projects',
-  //     });
-  //     setConfirmationModalVisible(true);
-  //   }
-  // };
+  const registerAttendance = (userData: IUserData) => {
+    addEventAttendance({ eventId: event.id, attendeeId: userData.id });
+    addFollower({
+      followableId: event.relationships.project.data.id,
+      followableType: 'projects',
+    });
+    setConfirmationModalVisible(true);
+  };
 
   const getButtonText = () => {
     if (customButtonText && event?.attributes.using_url) {
@@ -140,10 +138,12 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     return 'plus-circle';
   };
 
+  const isLoading = isAddingAttendance || isRemovingAttendance;
   const eventDateTime = getEventDateString(event);
+
+  // Permissions disabled reasons
   const buttonDisabled =
     !!disabled_reason && !isFixableByAuthentication(disabled_reason);
-
   const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
     'attending_event',
     disabled_reason
@@ -173,12 +173,11 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
             event.preventDefault();
             handleClick();
           }}
-          // processing={isLoading}
+          processing={isLoading}
           id="e2e-event-attendance-button"
         >
           {getButtonText()}
         </Button>
-        {/* </ButtonWrapper>*/}
       </Tooltip>
       <Modal
         opened={confirmationModalVisible}
