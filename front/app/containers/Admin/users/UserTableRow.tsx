@@ -63,6 +63,8 @@ interface Props {
   authUser: IUserData;
 }
 
+export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
+
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role;
@@ -109,7 +111,8 @@ const UserTableRow = ({
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+  const [changingToRoleType, setChangingToRowType] =
+    useState<ChangingRoleTypes>('admin');
 
   const exceedsSeatsAdmin = useExceedsSeats()({
     newlyAddedAdminsNumber: 1,
@@ -155,17 +158,28 @@ const UserTableRow = ({
     }
   };
 
-  const changeRoleHandler = (changeToNormalUser: boolean) => {
-    setIsChangingToNormalUser(changeToNormalUser);
+  const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
+    setChangingToRowType(changingToRoleType);
+    const changeToNormalUser = changingToRoleType === 'user';
+
+    const showModalForAdmin =
+      changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
+    const showModalForModerator =
+      changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
 
     // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
     const shouldOpenConfirmationInModal =
       changeToNormalUser ||
       !hasSeatBasedBillingEnabled ||
-      exceedsSeatsAdmin.admin ||
-      exceedsSeatsModerator.moderator;
+      showModalForAdmin ||
+      showModalForModerator;
+
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
+      return;
+    }
+
+    if (changingToRoleType === 'moderator') {
       return;
     }
 
@@ -206,7 +220,7 @@ const UserTableRow = ({
   const getSeatChangeActions = () => {
     const setAsAdminAction = {
       handler: () => {
-        changeRoleHandler(false);
+        changeRoleHandler('admin');
       },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
@@ -222,7 +236,7 @@ const UserTableRow = ({
 
     const setAsNormalUserAction = {
       handler: () => {
-        changeRoleHandler(true);
+        changeRoleHandler('user');
       },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
@@ -353,8 +367,8 @@ const UserTableRow = ({
             changeRoles={changeRoles}
             showModal={showChangeSeatModal}
             closeModal={closeChangeSeatModal}
-            isChangingToNormalUser={isChangingToNormalUser}
             returnFocusRef={moreActionsButtonRef}
+            changingToRoleType={changingToRoleType}
           />
         </Suspense>
         <Modal
@@ -374,7 +388,7 @@ const UserTableRow = ({
           <SetSetAsProjectModerator
             user={userInRow}
             onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
-            onSucces={() => changeRoleHandler(false)}
+            onSucces={() => changeRoleHandler('moderator')}
           />
         </Modal>
       </Tr>

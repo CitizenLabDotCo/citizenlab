@@ -7,6 +7,8 @@ import { IUserData } from 'api/users/types';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { ChangingRoleTypes } from 'containers/Admin/users/UserTableRow';
+
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import Modal from 'components/UI/Modal';
@@ -53,7 +55,7 @@ const getButtonText = (
 interface Props {
   userToChangeSeat: IUserData;
   showModal: boolean;
-  isChangingToNormalUser: boolean;
+  changingToRoleType: ChangingRoleTypes;
   closeModal: () => void;
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   /**
@@ -69,9 +71,10 @@ const ChangeSeatModal = ({
   closeModal,
   userToChangeSeat,
   changeRoles,
-  isChangingToNormalUser,
   returnFocusRef,
+  changingToRoleType,
 }: Props) => {
+  const isChangingToNormalUser = changingToRoleType === 'user';
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
   const isUserToChangeModerator = !isRegularUser({
@@ -85,18 +88,19 @@ const ChangeSeatModal = ({
     isChangingToNormalUser && isUserToChangeModerator;
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: 1,
+    newlyAddedAdminsNumber: changingToRoleType === 'admin' ? 1 : 0,
+    newlyAddedModeratorsNumber: changingToRoleType === 'moderator' ? 1 : 0,
   });
 
   const confirmChangeQuestion = getInfoText(
     isUserToChangeSeatAdmin,
     isChangingModeratorToNormalUser,
-    exceedsSeats.admin
+    exceedsSeats.any
   );
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeModerator,
-    exceedsSeats.admin,
+    exceedsSeats.any,
     hasSeatBasedBillingEnabled
   );
 
@@ -113,6 +117,7 @@ const ChangeSeatModal = ({
     setShowSuccess(false);
   };
 
+  const seatType = changingToRoleType === 'admin' ? 'admin' : 'moderator';
   return (
     <Modal
       opened={showModal}
@@ -123,8 +128,8 @@ const ChangeSeatModal = ({
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}
-          hasExceededPlanSeatLimit={exceedsSeats.admin}
-          seatType="admin"
+          hasExceededPlanSeatLimit={exceedsSeats[seatType]}
+          seatType={seatType}
         />
       ) : (
         <Box
@@ -147,9 +152,8 @@ const ChangeSeatModal = ({
           </Text>
 
           {!isChangingToNormalUser && (
-            <Box mb="24px" gap="8px" flexDirection="column" display="flex">
-              <SeatInfo seatType="admin" />
-              <SeatInfo seatType="moderator" />
+            <Box mb="24px">
+              <SeatInfo seatType={seatType} />
             </Box>
           )}
 
