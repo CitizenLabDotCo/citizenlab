@@ -14,17 +14,19 @@ type CardButtonProps = {
   icon?: React.ReactNode;
   title?: string;
   subtitle?: string;
+  disabled?: boolean;
 };
 
 // TODO: Temporary colour until new tealLight variations added to component library
 export const backgroundColor = lighten(0.1, colors.tealLight);
 
 const CardButton = ({
-  selected,
+  selected = false,
   iconName,
   icon,
   title,
   subtitle,
+  disabled = false,
   onMouseEnter,
   onMouseLeave,
   ...rest
@@ -48,12 +50,13 @@ const CardButton = ({
       border={
         selected ? `solid 1px ${colors.primary}` : `solid 1px ${colors.grey400}`
       }
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       as={'button' as unknown as undefined}
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
       justifyContent="flex-start"
+      disabled={disabled}
       {...rest}
     >
       {iconName && (
@@ -61,14 +64,14 @@ const CardButton = ({
           width="28px"
           height="28px"
           name={iconName}
-          fill={colors.teal200}
+          fill={disabled ? colors.disabled : colors.teal200}
         />
       )}
       {icon ?? null}
       {title && (
         <Title
           variant="h5"
-          color={'primary'}
+          color={disabled ? 'disabled' : 'primary'}
           textAlign="left"
         >
           {title}
@@ -77,7 +80,7 @@ const CardButton = ({
       {subtitle && (
         <Text
           fontSize="s"
-          color={'primary'}
+          color={disabled ? 'disabled' : 'primary'}
           textAlign="left"
         >
           {subtitle}
