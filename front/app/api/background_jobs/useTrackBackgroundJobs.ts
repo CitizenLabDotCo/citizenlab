@@ -5,10 +5,9 @@ import { CLError } from 'typings';
 import { IBackgroundJobData } from './types';
 import useBackgroundJobs from './useBackgroundJobs';
 
-// When you use this hook, make sure to use useCallback for onChange.
 const useTrackBackgroundJobs = ({
   jobs,
-  onChange,
+  onChange, // Make sure to use `useCallback` for `onChange`
 }: {
   jobs: IBackgroundJobData[];
   onChange: () => void;
