@@ -37,9 +37,9 @@ module MultiTenancy
           Current.set(loading_tenant_template: true) do
             _deserialize(template, validate, max_time, local_copy)
           end
+        end.tap do
+          check_inconsistent_data! if validate
         end
-
-        check_inconsistent_data! if validate
       end
 
       private
