@@ -26,12 +26,13 @@ import { getEventDateString } from 'utils/dateUtils';
 
 import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';
-import PermissionsTippyContent from 'components/PermissionsTippyContent';
 
 import useProjectById from 'api/projects/useProjectById';
-// import ButtonWrapper from 'components/UI/Button';
 import { Tooltip } from '@citizenlab/cl2-component-library';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { attendEvent } from 'containers/Authentication/SuccessActions/actions/attendEvent';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -57,10 +58,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   if (!project || !currentPhase) return null;
 
-  // Permissions
-  const { enabled, disabled_reason } =
-    project.data.attributes.action_descriptors.attending_event;
-
   // Attendance
   const userAttendingEventObject = eventsAttending?.data?.find(
     (eventAttending) => eventAttending.id === event.id
@@ -69,6 +66,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
   const customButtonText = localize(event?.attributes.attend_button_multiloc);
+
+  // Permissions
+  const { enabled, disabled_reason } =
+    project.data.attributes.action_descriptors.attending_event;
 
   const handleClick = () => {
     if (event?.attributes.using_url) {
@@ -91,12 +92,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       }
 
       if (isFixableByAuthentication(disabled_reason)) {
-        const phaseId = currentPhase?.id;
-
         const context = {
           type: 'phase',
           action: 'attending_event',
-          id: phaseId,
+          id: currentPhase?.id,
         } as const;
 
         const successAction: SuccessAction = {
@@ -146,33 +145,21 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const buttonDisabled =
     !!disabled_reason && !isFixableByAuthentication(disabled_reason);
 
-  console.log(disabled_reason);
+  const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
+    'attending_event',
+    disabled_reason
+  );
+  const disabledMessage =
+    permissionDisabledMessageDescriptor &&
+    formatMessage(permissionDisabledMessageDescriptor);
 
   return (
     <>
       <Tooltip
-        disabled={!!disabled_reason}
+        disabled={!disabled_reason}
         placement="bottom"
-        content={
-          disabled_reason ? (
-            <PermissionsTippyContent
-              projectId={project.data.id}
-              inMap={false}
-              action="attending_event"
-              disabledReason={disabled_reason}
-            />
-          ) : null
-        }
-        theme="light"
-        hideOnClick={false}
+        content={disabledMessage}
       >
-        {/*<ButtonWrapper*/}
-        {/*  id="e2e-cta-button"*/}
-        {/*  tabIndex={!enabled ? 0 : -1}*/}
-        {/*  className={`e2e-event-attendance-button ${*/}
-        {/*    !enabled ? 'disabled' : ''*/}
-        {/*  } ${disabled_reason ? disabled_reason : ''}`}*/}
-        {/*>*/}
         <Button
           ml="auto"
           width={'100%'}

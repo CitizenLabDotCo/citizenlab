@@ -24,7 +24,7 @@ import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
-import PermissionsTippyContent from 'components/PermissionsTippyContent';
+import TippyContent from './TippyContent';
 import tracks from './tracks';
 
 const Container = styled.div``;
@@ -147,10 +147,9 @@ const IdeaButton = memo<Props>(
 
     if (inMap && !enabled && !!disabledReason) {
       return (
-        <PermissionsTippyContent
+        <TippyContent
           projectId={projectId}
           inMap={inMap}
-          action="posting_idea"
           disabledReason={disabledReason}
         />
       );
@@ -163,10 +162,9 @@ const IdeaButton = memo<Props>(
           placement="bottom"
           content={
             tippyEnabled ? (
-              <PermissionsTippyContent
+              <TippyContent
                 projectId={projectId}
                 inMap={inMap}
-                action="posting_idea"
                 disabledReason={disabledReason}
               />
             ) : null
