@@ -128,7 +128,7 @@ describe('Idea reacting permissions', () => {
   });
 
   describe('a project that does not require verification', () => {
-    it.only("sends signed out user to log in and doesn't ask for verification", () => {
+    it("sends signed out user to log in and doesn't ask for verification", () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
