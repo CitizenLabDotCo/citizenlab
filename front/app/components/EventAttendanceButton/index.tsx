@@ -74,6 +74,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
 
+  // NOTE: If the project does not have a current phase then users cannot register for events
   if (!project || !currentPhase) return null;
 
   const { enabled, disabled_reason } =
