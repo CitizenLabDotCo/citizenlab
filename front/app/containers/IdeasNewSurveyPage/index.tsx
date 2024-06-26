@@ -78,8 +78,8 @@ const IdeasNewSurveyPage = () => {
     !canModerateProject(project.data.id, authUser) &&
     /* Something I could deduct: when this code was added, we made the (wrong) 
     assumption that `phase_id` was always a string (we were type casting the phase_id param). 
-    So I _think_ we are checking here whether the phase_id from the search params is the same
-    as currentPhase?.id, when both are strings.*/
+    So I _think_ we are checking here whether phase_id from the search params is differnet from
+    currentPhase?.id when both are strings.*/
     phaseIdFromSearchParams !== currentPhase?.id;
 
   if (disabledReason === 'postingLimitedMaxReached') {
