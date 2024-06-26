@@ -61,14 +61,14 @@ const CardButton = ({
           width="28px"
           height="28px"
           name={iconName}
-          fill={selected ? colors.teal200 : colors.grey400}
+          fill={colors.teal200}
         />
       )}
       {icon ?? null}
       {title && (
         <Title
           variant="h5"
-          color={selected ? 'primary' : 'coolGrey700'}
+          color={'primary'}
           textAlign="left"
         >
           {title}
@@ -77,7 +77,7 @@ const CardButton = ({
       {subtitle && (
         <Text
           fontSize="s"
-          color={selected ? 'primary' : 'coolGrey700'}
+          color={'primary'}
           textAlign="left"
         >
           {subtitle}
