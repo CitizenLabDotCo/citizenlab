@@ -61,10 +61,10 @@ module EmailCampaigns
       head :not_acceptable if signature != OpenSSL::HMAC.hexdigest(digest, api_key, data)
     end
 
-    def switch_tenant(&block)
+    def switch_tenant(&)
       tenant_id = params.dig(:'event-data', :'user-variables', :cl_tenant_id)
       if tenant_id
-        Tenant.find(tenant_id).switch(&block)
+        Tenant.find(tenant_id).switch(&)
       else
         head :not_acceptable
       end

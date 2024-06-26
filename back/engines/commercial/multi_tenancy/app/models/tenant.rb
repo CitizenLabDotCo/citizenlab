@@ -96,8 +96,8 @@ class Tenant < ApplicationRecord
 
   def self.safe_current
     Current.tenant
-    rescue ActiveRecord::RecordNotFound
-      nil
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 
   def self.settings(*path)
