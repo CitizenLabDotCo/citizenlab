@@ -227,11 +227,7 @@ const UserFieldSelection = ({
                         label={
                           <Text
                             fontSize="s"
-                            style={{
-                              color: permissionsCustomFieldsAllowed
-                                ? colors.primary
-                                : colors.disabled,
-                            }}
+                            color={permissionsCustomFieldsAllowed ? 'primary' : 'disabled'}
                           >
                             <FormattedMessage {...messages.required} />
                           </Text>
