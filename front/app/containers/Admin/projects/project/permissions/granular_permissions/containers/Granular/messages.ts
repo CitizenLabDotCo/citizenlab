@@ -203,4 +203,9 @@ export default defineMessages({
     defaultMessage:
       'Asking custom questions is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  permissionEmailConfirmTooltip: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionEmailConfirmTooltip',
+    defaultMessage:
+      'This option requires the user confirmation feature to be enabled.',
+  },
 });

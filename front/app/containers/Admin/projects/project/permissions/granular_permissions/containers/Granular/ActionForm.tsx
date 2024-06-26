@@ -7,6 +7,7 @@ import {
   colors,
   Title,
   CardButton,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -50,9 +51,7 @@ const ActionForm = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
-  const userConfirmationEnabled = useFeatureFlag({
-    name: 'user_confirmation',
-  });
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   const groupsOptions = () => {
     if (!groups) {
@@ -128,11 +127,11 @@ const ActionForm = ({
                 selected={permittedBy === 'everyone'}
               />
             )}
-            {/* 
-              Light registration via email confirmation can only work properly if 
-              user confirmation is enabled.
-            */}
-            {userConfirmationEnabled && (
+            <Tooltip
+              // User confirmation needs to be enabled to allow for this to work
+              disabled={userConfirmationEnabled}
+              content={formatMessage(messages.permissionEmailConfirmTooltip)}
+            >
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
@@ -145,7 +144,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
               />
-            )}
+            </Tooltip>
             <CardButton
               id="e2e-permission-registered-users"
               iconName="user-circle"
