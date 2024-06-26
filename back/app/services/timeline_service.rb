@@ -2,23 +2,24 @@
 
 class TimelineService
   def future_phases(project, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
+    date = tenant_timezone.at(time).to_date
     project.phases.select do |phase|
       phase.start_at > date
     end
   end
 
   def past_phases(project, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
+    date = tenant_timezone.at(time).to_date
     project.phases.select do |phase|
       phase.end_at&.< date
     end
   end
 
   def current_phase(project, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
-
-    project.phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date) }
+    date = tenant_timezone.at(time).to_date
+    project.phases.find do |phase|
+      phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date)
+    end
   end
 
   def current_phase_not_archived(project, time = Time.now)
@@ -28,12 +29,12 @@ class TimelineService
   end
 
   def phase_is_complete?(phase, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
+    date = tenant_timezone.at(time).to_date
     phase.end_at.present? && phase.end_at <= date
   end
 
   def current_or_last_can_contain_ideas_phase(project, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
+    date = tenant_timezone.at(time).to_date
 
     phases = project.phases
     return if phases.blank?
@@ -46,7 +47,7 @@ class TimelineService
   end
 
   def current_and_future_phases(project, time = Time.now)
-    date = time.in_time_zone(tenant_timezone).to_date
+    date = tenant_timezone.at(time).to_date
 
     project.phases.select do |phase|
       phase.end_at.nil? || phase.end_at >= date
@@ -70,7 +71,7 @@ class TimelineService
   end
 
   def timeline_active(project)
-    today = Time.now.in_time_zone(tenant_timezone).to_date
+    today = tenant_timezone.at(Time.now).to_date
     if project.phases.blank?
       nil
     elsif today < project.phases.minimum(:start_at)
@@ -84,7 +85,7 @@ class TimelineService
 
   def timeline_active_on_collection(projects)
     projects = projects.to_a
-    today = Time.now.in_time_zone(tenant_timezone).to_date
+    today = tenant_timezone.at(Time.now).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)
 
@@ -130,6 +131,6 @@ class TimelineService
   private
 
   def tenant_timezone
-    @tenant_timezone ||= AppConfiguration.instance.settings('core', 'timezone')
+    @tenant_timezone ||= AppConfiguration.timezone
   end
 end
