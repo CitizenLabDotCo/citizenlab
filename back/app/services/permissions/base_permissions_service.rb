@@ -60,8 +60,6 @@ module Permissions
         end
       end
 
-      # binding.pry
-
       raise "Unknown action '#{action}' for phase: #{phase}" unless permission
 
       permission
