@@ -128,9 +128,13 @@ const ActionForm = ({
               />
             )}
             <Tooltip
-              // User confirmation needs to be enabled to allow for this to work
+              // user_confirmation needs to be enabled for this option to work
               disabled={userConfirmationEnabled}
-              content={formatMessage(messages.permissionEmailConfirmTooltip)}
+              content={
+                <FormattedMessage
+                  {...messages.userConfirmationRequiredTooltip}
+                />
+              }
             >
               <CardButton
                 id="e2e-permission-email-confirmed-users"
@@ -143,6 +147,7 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
+                disabled={!userConfirmationEnabled}
               />
             </Tooltip>
             <CardButton
