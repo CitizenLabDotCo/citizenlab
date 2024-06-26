@@ -64,7 +64,6 @@ class Project < ApplicationRecord
   has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -87,7 +86,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
-  validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
+  validate :admin_publication_must_exist
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
@@ -223,10 +222,6 @@ class Project < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
-  end
-
-  def set_admin_publication
-    self.admin_publication_attributes = {} unless admin_publication
   end
 
   def remove_notifications

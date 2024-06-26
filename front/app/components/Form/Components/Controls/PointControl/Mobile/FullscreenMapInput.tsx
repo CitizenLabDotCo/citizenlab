@@ -157,7 +157,7 @@ const FullscreenMapInput = memo<Props>(
               >
                 <Box>
                   <FormLabel
-                    htmlFor={sanitizeForClassname(id)}
+                    htmlFor={id && sanitizeForClassname(id)}
                     labelValue={getLabel(uischema, schema, path)}
                     optional={!required}
                   />

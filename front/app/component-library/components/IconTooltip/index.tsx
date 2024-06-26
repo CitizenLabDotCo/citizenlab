@@ -115,6 +115,7 @@ const IconTooltip: FC<Props> = memo<Props>(
           display="flex"
           justifyContent="center"
           alignItems="center"
+          alignSelf="center"
           {...rest}
         >
           <TooltipIcon

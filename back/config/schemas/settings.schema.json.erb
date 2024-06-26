@@ -119,6 +119,11 @@
             "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "google_search_console_meta_attribute": {
+            "title": "Google Search Console Meta Attribute",
+            "description": "Set this token to verify the ownership of the platform in Google Search Console. The value you should set is the content of the \"content\"= HTML tag attribute in meta tag Google provides.",
+            "type": ["string", "null"]
+          },
           "custom_onboarding_message": {
             "title": "Header Banner Call-to-Action Text",
             "description": "Optional Call-to-Action text for signed in users, shown on a banner on the top of the homepage. Accompanied by a Call-to-Action (CTA) button. If this field is left blank, 'Header banner non-call to action' text is shown in the banner.",

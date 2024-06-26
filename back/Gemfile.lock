@@ -421,7 +421,7 @@ GEM
     activerecord (7.0.8.4)
       activemodel (= 7.0.8.4)
       activesupport (= 7.0.8.4)
-    activerecord-import (1.6.0)
+    activerecord-import (1.7.0)
       activerecord (>= 4.2)
     activerecord-postgis-adapter (8.0.3)
       activerecord (~> 7.0.0)
@@ -555,6 +555,8 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.0)
     domain_name (0.6.20240107)
+    drb (2.2.0)
+      ruby2_keywords
     easy_translate (0.5.1)
       thread
       thread_safe
@@ -566,7 +568,7 @@ GEM
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faker (3.3.1)
+    faker (3.4.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.9.0)
       faraday-net_http (>= 2.0, < 3.2)
@@ -581,9 +583,12 @@ GEM
       net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.16.3)
-    ffi-compiler (1.0.1)
-      ffi (>= 1.0.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
+    ffi-compiler (1.3.2)
+      ffi (>= 1.15.5)
       rake
     fog-aws (3.22.0)
       fog-core (~> 2.1)
@@ -692,13 +697,14 @@ GEM
     hashdiff (1.1.0)
     hashie (5.0.0)
     htmlentities (4.3.4)
-    http (5.1.1)
+    http (5.2.0)
       addressable (~> 2.8)
+      base64 (~> 0.1)
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
-      llhttp-ffi (~> 0.4.0)
+      llhttp-ffi (~> 0.5.0)
     http-accept (1.7.0)
-    http-cookie (1.0.5)
+    http-cookie (1.0.6)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     httparty (0.22.0)
@@ -769,7 +775,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    llhttp-ffi (0.4.0)
+    llhttp-ffi (0.5.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     loofah (2.22.0)
@@ -1000,8 +1006,8 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.0)
+      strscan
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1208,7 +1214,7 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.23.0)
+    webmock (3.23.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -1232,7 +1238,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.12)
-  activerecord-import (~> 1.6)
+  activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!
@@ -1264,6 +1270,7 @@ DEPENDENCIES
   dalli (~> 3.2.8)
   database_cleaner (~> 2.0.2)
   document_annotation!
+  drb
   email_campaigns!
   factory_bot_rails
   faker

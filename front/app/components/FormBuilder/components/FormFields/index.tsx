@@ -70,7 +70,7 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      lastGroupElement.questions.push({
+      lastGroupElement?.questions.push({
         ...field,
       });
     }

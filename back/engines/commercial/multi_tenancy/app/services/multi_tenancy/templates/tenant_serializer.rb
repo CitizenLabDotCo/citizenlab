@@ -146,17 +146,10 @@ module MultiTenancy
       # @raise [TSort::Cyclic] if there is a circular dependency between the classes
       #   and the class cannot be sorted.
       def sort_by_references(models)
-        ref_dependencies_graph = extract_referential_dependencies(models)
+        graph = extract_dependencies_graph(models)
 
-        # User depends on CustomField because of the custom field values. We have to add
-        # this dependency manually because the custom field values are stored as JSON in
-        # the database, so serialized users don't hold references to CustomField.
-        if ref_dependencies_graph.key?(User) && ref_dependencies_graph.key?(CustomField)
-          ref_dependencies_graph[User] << CustomField
-        end
-
-        each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }
-        each_child = ->(n, &b) { ref_dependencies_graph.fetch(n).each(&b) }
+        each_node = ->(&process_node) { graph.each_key(&process_node) }
+        each_child = ->(node, &process_child) { graph.fetch(node).each(&process_child) }
 
         sorted_classes = TSort.tsort(each_node, each_child)
         models.slice(*sorted_classes)
@@ -172,14 +165,29 @@ module MultiTenancy
       #   }
       #
       # @return [Hash<Class, Array<Class>>]
-      def extract_referential_dependencies(models)
-        models.transform_values do |records|
+      def extract_dependencies_graph(models)
+        graph = models.transform_values do |records|
           records.flat_map do |_id, attributes|
             attributes.values.filter do |value|
               value.is_a?(Serializers::Core::Ref) && value.id
             end.map(&:klass)
           end.uniq
         end
+
+        # User depends on CustomField because of the custom field values. We have to add
+        # this dependency manually because the custom field values are stored as JSON in
+        # the database, so serialized users don't hold references to CustomField.
+        if graph.key?(User) && graph.key?(CustomField)
+          graph[User] << CustomField
+        end
+
+        # Support nested admin publications
+        if graph.key?(AdminPublication)
+          graph[AdminPublication].delete Project
+          graph[Project] << AdminPublication if graph.key?(Project)
+        end
+
+        graph
       end
 
       # Replace the Ref objects in the models hash with actual references to the
@@ -219,7 +227,10 @@ module MultiTenancy
 
       def serialize_admin_publications(scope)
         # This code will stop working when folders can contain folders
-        serialize_records(scope.order(parent_id: :desc, ordering: :asc))
+        scope = scope
+          .where(publication_type: 'ProjectFolders::Folder') # Support nested admin publications
+          .order(parent_id: :desc, ordering: :asc)
+        serialize_records scope
       end
 
       def serialize_comments(*post_scopes)

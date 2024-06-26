@@ -91,8 +91,6 @@ class AppConfiguration < ApplicationRecord
   end
 
   class << self
-    include Scientist
-
     # We prevent the direct instantiation of AppConfiguration, because it is a singleton.
     private :new
 
@@ -106,28 +104,17 @@ class AppConfiguration < ApplicationRecord
     private(
       :find_by, :find_by!, :find_or_create_by, :find_or_create_by!,
       :first, :first!,
-      :last, :last!
+      :last, :last!,
+      :update, :update!, :update_all
     )
 
     def instance
-      science 'app_configuration' do |experiment|
-        experiment.use { first! }
-        experiment.try { Current.app_configuration }
+      Current.app_configuration
+    end
 
-        experiment.compare_errors do |control, candidate|
-          next true if control.instance_of?(candidate.class) && control.message == candidate.message
-          next true if control.instance_of?(ActiveRecord::RecordNotFound) && candidate.instance_of?(ActiveRecord::RecordNotFound)
-
-          false
-        end
-
-        experiment.clean(&:attributes)
-
-        experiment.context({
-          execution_stack: caller,
-          tenant_schema: Apartment::Tenant.current
-        })
-      end
+    def timezone
+      timezone_str = instance.settings.dig('core', 'timezone')
+      ActiveSupport::TimeZone[timezone_str] or raise KeyError, timezone_str
     end
   end
 
