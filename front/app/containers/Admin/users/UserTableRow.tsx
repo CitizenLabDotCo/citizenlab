@@ -167,7 +167,6 @@ const UserTableRow = ({
     const showModalForModerator =
       changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
 
-    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
     const shouldOpenConfirmationInModal =
       changeToNormalUser ||
       !hasSeatBasedBillingEnabled ||
@@ -179,6 +178,7 @@ const UserTableRow = ({
       return;
     }
 
+    // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
     if (changingToRoleType === 'moderator') {
       return;
     }
@@ -388,7 +388,7 @@ const UserTableRow = ({
           <SetSetAsProjectModerator
             user={userInRow}
             onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
-            onSucces={() => changeRoleHandler('moderator')}
+            onSuccess={() => changeRoleHandler('moderator')}
           />
         </Modal>
       </Tr>
