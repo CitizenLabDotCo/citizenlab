@@ -7,6 +7,7 @@ import {
   colors,
   Title,
   CardButton,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -53,6 +54,9 @@ const ActionForm = ({
   const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
 
   const groupsOptions = () => {
     if (!groups) {
@@ -68,7 +72,9 @@ const ActionForm = ({
   const handlePermittedByUpdate =
     (value: IPermissionData['attributes']['permitted_by']) => (e) => {
       e.preventDefault();
-      onChange(value, groupIds);
+      if (isGranularPermissionsEnabled) {
+        onChange(value, groupIds);
+      }
     };
 
   const handleGroupIdsUpdate = (options: { value: string }[]) => {
@@ -86,84 +92,141 @@ const ActionForm = ({
   return (
     <form>
       <Box mb="10px">
-        <Toggle
-          checked={permittedBy === 'admins_moderators'}
-          label={
-            <Box display="flex">
-              <span style={{ color: colors.primary }}>
-                <FormattedMessage
-                  {...permissionsMessages.permissionsAdminsAndCollaborators}
-                />
-              </span>
-
-              <IconTooltip
-                ml="4px"
-                icon="info-solid"
-                content={formatMessage(
-                  permissionsMessages.permissionsAdminsAndCollaboratorsTooltip
-                )}
-              />
-            </Box>
+        <Tooltip
+          placement="bottom-start"
+          disabled={
+            permittedBy === 'everyone' ? true : isGranularPermissionsEnabled
           }
-          onChange={handlePermittedByUpdate(
-            permittedBy === 'admins_moderators' ? 'users' : 'admins_moderators'
-          )}
-          id={`participation-permission-admins-${permissionId}`}
-        />
+          content={
+            <FormattedMessage {...messages.granularPermissionsOffText} />
+          }
+        >
+          <Box w="fit-content">
+            <Toggle
+              checked={permittedBy === 'admins_moderators'}
+              disabled={!isGranularPermissionsEnabled}
+              label={
+                <Box display="flex">
+                  <span style={{ color: colors.primary }}>
+                    <FormattedMessage
+                      {...permissionsMessages.permissionsAdminsAndCollaborators}
+                    />
+                  </span>
+
+                  <IconTooltip
+                    ml="4px"
+                    icon="info-solid"
+                    content={formatMessage(
+                      permissionsMessages.permissionsAdminsAndCollaboratorsTooltip
+                    )}
+                  />
+                </Box>
+              }
+              onChange={handlePermittedByUpdate(
+                permittedBy === 'admins_moderators'
+                  ? 'users'
+                  : 'admins_moderators'
+              )}
+              id={`participation-permission-admins-${permissionId}`}
+            />
+          </Box>
+        </Tooltip>
       </Box>
       {permittedBy !== 'admins_moderators' && (
         <Box mt="20px">
           <Box display="flex" gap="16px" mb="20px">
-            {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
-            If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-              <CardButton
-                title={formatMessage(
-                  permissionsMessages.permissionsAnyoneLabel
-                )}
-                subtitle={formatMessage(
-                  permissionsMessages.permissionsAnyoneLabelDescription
-                )}
-                onClick={handlePermittedByUpdate('everyone')}
-                selected={permittedBy === 'everyone'}
-              />
+              <Tooltip
+                disabled={
+                  permittedBy === 'everyone'
+                    ? true
+                    : isGranularPermissionsEnabled
+                }
+                content={
+                  <FormattedMessage {...messages.granularPermissionsOffText} />
+                }
+              >
+                <CardButton
+                  height="100%"
+                  title={formatMessage(
+                    permissionsMessages.permissionsAnyoneLabel
+                  )}
+                  subtitle={formatMessage(
+                    permissionsMessages.permissionsAnyoneLabelDescription
+                  )}
+                  onClick={handlePermittedByUpdate('everyone')}
+                  selected={permittedBy === 'everyone'}
+                />
+              </Tooltip>
             )}
             {emailConfirmPermissionEnabled && (
+              <Tooltip
+                disabled={
+                  permittedBy === 'everyone_confirmed_email'
+                    ? true
+                    : isGranularPermissionsEnabled
+                }
+                content={
+                  <FormattedMessage {...messages.granularPermissionsOffText} />
+                }
+              >
+                <CardButton
+                  height="100%"
+                  id="e2e-permission-email-confirmed-users"
+                  iconName="email"
+                  title={formatMessage(
+                    permissionsMessages.permissionsEmailConfirmLabel
+                  )}
+                  subtitle={formatMessage(
+                    permissionsMessages.permissionsEmailConfirmLabelDescription
+                  )}
+                  onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+                  selected={permittedBy === 'everyone_confirmed_email'}
+                />
+              </Tooltip>
+            )}
+            <Tooltip
+              disabled={
+                permittedBy === 'users' ? true : isGranularPermissionsEnabled
+              }
+              content={
+                <FormattedMessage {...messages.granularPermissionsOffText} />
+              }
+            >
               <CardButton
-                id="e2e-permission-email-confirmed-users"
-                iconName="email"
+                height="100%"
+                id="e2e-permission-registered-users"
+                iconName="user-circle"
+                title={formatMessage(messages.permissionsUsersLabel)}
+                subtitle={formatMessage(
+                  messages.permissionsUsersLabelDescription
+                )}
+                onClick={handlePermittedByUpdate('users')}
+                selected={permittedBy === 'users'}
+              />
+            </Tooltip>
+            <Tooltip
+              disabled={
+                permittedBy === 'groups' ? true : isGranularPermissionsEnabled
+              }
+              content={
+                <FormattedMessage {...messages.granularPermissionsOffText} />
+              }
+            >
+              <CardButton
+                height="100%"
+                id="e2e-permission-user-groups"
+                iconName="group"
                 title={formatMessage(
-                  permissionsMessages.permissionsEmailConfirmLabel
+                  permissionsMessages.permissionsSelectionLabel
                 )}
                 subtitle={formatMessage(
-                  permissionsMessages.permissionsEmailConfirmLabelDescription
+                  permissionsMessages.permissionsSelectionLabelDescription
                 )}
-                onClick={handlePermittedByUpdate('everyone_confirmed_email')}
-                selected={permittedBy === 'everyone_confirmed_email'}
+                onClick={handlePermittedByUpdate('groups')}
+                selected={permittedBy === 'groups'}
               />
-            )}
-            <CardButton
-              id="e2e-permission-registered-users"
-              iconName="user-circle"
-              title={formatMessage(messages.permissionsUsersLabel)}
-              subtitle={formatMessage(
-                messages.permissionsUsersLabelDescription
-              )}
-              onClick={handlePermittedByUpdate('users')}
-              selected={permittedBy === 'users'}
-            />
-            <CardButton
-              id="e2e-permission-user-groups"
-              iconName="group"
-              title={formatMessage(
-                permissionsMessages.permissionsSelectionLabel
-              )}
-              subtitle={formatMessage(
-                permissionsMessages.permissionsSelectionLabelDescription
-              )}
-              onClick={handlePermittedByUpdate('groups')}
-              selected={permittedBy === 'groups'}
-            />
+            </Tooltip>
           </Box>
           {permittedBy === 'groups' && (
             <Box
