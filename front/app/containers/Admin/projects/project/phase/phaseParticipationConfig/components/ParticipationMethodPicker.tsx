@@ -72,9 +72,10 @@ const ParticipationMethodPicker = ({
     name: 'konveio_document_annotation',
     onlyCheckAllowed: true,
   });
-  const documentAnnotationEnabled = useFeatureFlag({
-    name: 'konveio_document_annotation',
-  });
+  // const documentAnnotationEnabled = useFeatureFlag({
+  //   name: 'konveio_document_annotation',
+  // });
+  const documentAnnotationEnabled = false;
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
   });
