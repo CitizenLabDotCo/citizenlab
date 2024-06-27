@@ -17,7 +17,6 @@ import {
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import FolderMoreActionsMenu from './FolderMoreActionsMenu';
@@ -74,93 +73,86 @@ const ProjectFolderRow = memo<Props>(
       }
     };
 
-    if (!isNilOrError(authUser)) {
-      return (
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+        data-cy="e2e-project-folder-row"
+      >
         <Box
           display="flex"
           flexDirection="column"
-          flexGrow={1}
-          data-cy="e2e-project-folder-row"
+          width="100%"
+          alignItems="flex-start"
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            width="100%"
-            alignItems="flex-start"
-          >
-            <Box width="100%" display="flex" alignItems="center">
-              <FolderRowContent
-                className="e2e-admin-adminPublications-list-item"
-                data-testid="folder-row"
-                hasProjects={hasProjects}
-                as="button"
-                onClick={handleClick}
+          <Box width="100%" display="flex" alignItems="center">
+            <FolderRowContent
+              className="e2e-admin-adminPublications-list-item"
+              data-testid="folder-row"
+              hasProjects={hasProjects}
+              as="button"
+              onClick={handleClick}
+            >
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
               >
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="flex-start"
-                >
-                  <RowContentInner className="expand primary">
-                    {hasProjects && (
-                      <ArrowIcon
-                        expanded={hasProjects && isFolderOpen}
-                        name="chevron-right"
-                      />
-                    )}
-
-                    <FolderIcon name="folder-outline" />
-
-                    <RowTitle
-                      value={publication.attributes.publication_title_multiloc}
+                <RowContentInner className="expand primary">
+                  {hasProjects && (
+                    <ArrowIcon
+                      expanded={hasProjects && isFolderOpen}
+                      name="chevron-right"
                     />
-                    {isBeingDeleted && (
-                      <Box>
-                        <Spinner size="20px" color={colors.grey400} />
-                      </Box>
-                    )}
-                  </RowContentInner>
-                  <PublicationStatusLabel
-                    publicationStatus={
-                      publication.attributes.publication_status
-                    }
+                  )}
+
+                  <FolderIcon name="folder-outline" />
+
+                  <RowTitle
+                    value={publication.attributes.publication_title_multiloc}
                   />
-                </Box>
-                <RowButton
-                  className={`e2e-admin-edit-project ${
-                    publication.attributes.publication_title_multiloc[
-                      'en-GB'
-                    ] || ''
-                  }`}
-                  linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
-                  buttonStyle="secondary-outlined"
-                  icon="edit"
-                  disabled={
-                    isBeingDeleted ||
-                    !userModeratesFolder(
-                      authUser,
-                      publication.relationships.publication.data.id
-                    )
-                  }
-                  data-testid="folder-row-edit-button"
-                >
-                  <FormattedMessage {...messages.edit} />
-                </RowButton>
-              </FolderRowContent>
-              <FolderMoreActionsMenu
-                folderId={publication.relationships.publication.data.id}
-                setError={setFolderDeletionError}
-                setIsRunningAction={setIsBeingDeleted}
-              />
-            </Box>
-
-            {folderDeletionError && <Error text={folderDeletionError} />}
+                  {isBeingDeleted && (
+                    <Box>
+                      <Spinner size="20px" color={colors.grey400} />
+                    </Box>
+                  )}
+                </RowContentInner>
+                <PublicationStatusLabel
+                  publicationStatus={publication.attributes.publication_status}
+                />
+              </Box>
+              <RowButton
+                className={`e2e-admin-edit-project ${
+                  publication.attributes.publication_title_multiloc['en-GB'] ||
+                  ''
+                }`}
+                linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
+                buttonStyle="secondary-outlined"
+                icon="edit"
+                disabled={
+                  isBeingDeleted ||
+                  !userModeratesFolder(
+                    authUser,
+                    publication.relationships.publication.data.id
+                  )
+                }
+                data-testid="folder-row-edit-button"
+              >
+                <FormattedMessage {...messages.edit} />
+              </RowButton>
+            </FolderRowContent>
+            <FolderMoreActionsMenu
+              folderId={publication.relationships.publication.data.id}
+              setError={setFolderDeletionError}
+              setIsRunningAction={setIsBeingDeleted}
+            />
           </Box>
-        </Box>
-      );
-    }
 
-    return null;
+          {folderDeletionError && <Error text={folderDeletionError} />}
+        </Box>
+      </Box>
+    );
   }
 );
 
