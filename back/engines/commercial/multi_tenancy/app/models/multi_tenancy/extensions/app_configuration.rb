@@ -34,7 +34,7 @@ module MultiTenancy
 
       def update_tenant
         Tenant.transaction do
-          tenant = Tenant.current
+          tenant = Tenant.current.reload
           # When computing the attributes delta, we cannot compare the tenant with:
           # - `AppConfiguration.instance` because the delta would include both, stale
           # and dirty attributes from the `AppConfiguration.instance` record. We only
@@ -44,7 +44,7 @@ module MultiTenancy
           # `AppConfiguration` side effects (`SideFxAppConfigurationService`).
           #
           # So we compare with `AppConfiguration.first` instead.
-          app_config = ::AppConfiguration.send(:first)
+          app_config = ::AppConfiguration.send(:first!)
           attrs_delta = tenant.send(:attributes_delta, app_config, tenant)
 
           next if attrs_delta.blank?

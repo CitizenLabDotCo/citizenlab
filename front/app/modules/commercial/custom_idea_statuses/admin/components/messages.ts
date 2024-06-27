@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  tabInputStatuses: {
-    id: 'app.containers.Admin.ideas.tabInputStatuses',
-    defaultMessage: 'Input statuses',
-  },
   fieldTitle: {
     id: 'app.containers.admin.ideaStatuses.form.fieldTitle',
     defaultMessage: 'Status Name',
@@ -89,5 +85,13 @@ export default defineMessages({
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',
     defaultMessage: 'Save status',
+  },
+  editButtonLabel: {
+    id: 'app.containers.admin.ideaStatuses.all.editButtonLabel',
+    defaultMessage: 'Edit',
+  },
+  deleteButtonLabel: {
+    id: 'app.containers.admin.ideaStatuses.all.deleteButtonLabel',
+    defaultMessage: 'Delete',
   },
 });

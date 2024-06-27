@@ -521,7 +521,6 @@
   "app.containers.Admin.emails.toAllUsers": "Voleu enviar aquest correu electrònic a tots els usuaris registrats?",
   "app.containers.Admin.emails.viewExample": "Veure",
   "app.containers.Admin.ideas.import": "Importar",
-  "app.containers.Admin.ideas.tabInputStatuses": "Estats d'entrada",
   "app.containers.Admin.initiatives.addNewProposal": "Afegir una proposta",
   "app.containers.Admin.initiatives.cosponsors": "Copatrocinadors",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Nombre de copatrocinadors",

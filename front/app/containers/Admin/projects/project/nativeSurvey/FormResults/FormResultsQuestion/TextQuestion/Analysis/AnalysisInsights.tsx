@@ -40,7 +40,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   const { mutate: preCheck, isLoading: preCheckIsLoading } =
     useAddAnalysisSummaryPreCheck();
 
-  const largeSummariesEnabled = useFeatureFlag({
+  const largeSummariesAllowed = useFeatureFlag({
     name: 'large_summaries',
     onlyCheckAllowed: true,
   });
@@ -72,7 +72,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
                 analysisId: analysis.id,
                 filters: {
                   input_custom_field_no_empty_values: true,
-                  limit: !largeSummariesEnabled ? 30 : undefined,
+                  limit: !largeSummariesAllowed ? 30 : undefined,
                 },
               });
             }
@@ -86,7 +86,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     insights,
     automaticSummaryCreated,
     inputCount,
-    largeSummariesEnabled,
+    largeSummariesAllowed,
     preCheck,
   ]);
 
