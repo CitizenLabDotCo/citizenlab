@@ -5,7 +5,6 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
@@ -38,12 +37,11 @@ const getInfoText = (
 const getButtonText = (
   isUserAdmin: boolean,
   isUserToChangeModerator: boolean,
-  hasExceededPlanSeatLimit: boolean,
-  hasSeatBasedBillingEnabled: boolean
+  hasExceededPlanSeatLimit: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin || isUserToChangeModerator || !hasSeatBasedBillingEnabled) {
+  if (isUserAdmin || isUserToChangeModerator) {
     return buttonText;
   }
 
@@ -78,9 +76,6 @@ const ChangeSeatModal = ({
     data: userToChangeSeat,
   });
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
@@ -96,8 +91,7 @@ const ChangeSeatModal = ({
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeModerator,
-    exceedsSeats.admin,
-    hasSeatBasedBillingEnabled
+    exceedsSeats.admin
   );
 
   const header = !showSuccess ? (
