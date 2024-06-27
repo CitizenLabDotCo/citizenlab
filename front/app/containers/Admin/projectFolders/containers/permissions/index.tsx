@@ -47,9 +47,6 @@ const FolderPermissions = () => {
   const { mutate: addFolderModerator, isLoading: addIsLoading } =
     useAddProjectFolderModerator();
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const { data: folderModerators } = useProjectFolderModerators({
     projectFolderId,
   });
@@ -91,10 +88,7 @@ const FolderPermissions = () => {
   const handleAddClick = () => {
     const isSelectedUserAModerator =
       moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal =
-      hasSeatBasedBillingEnabled &&
-      exceedsSeats.moderator &&
-      !isSelectedUserAModerator;
+    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
     if (shouldOpenModal) {
       setShowModal(true);
     } else {
@@ -158,15 +152,13 @@ const FolderPermissions = () => {
               data-cy="e2e-add-folder-moderator-button"
             />
           </Box>
-          {hasSeatBasedBillingEnabled && (
-            <Suspense fallback={null}>
-              <AddModeratorsModal
-                addModerators={handleOnAddFolderModeratorsClick}
-                showModal={showModal}
-                closeModal={closeModal}
-              />
-            </Suspense>
-          )}
+          <Suspense fallback={null}>
+            <AddModeratorsModal
+              addModerators={handleOnAddFolderModeratorsClick}
+              showModal={showModal}
+              closeModal={closeModal}
+            />
+          </Suspense>
         </UserSelectSection>
 
         <List>
@@ -205,11 +197,9 @@ const FolderPermissions = () => {
           </>
         </List>
       </Box>
-      {!hasSeatBasedBillingEnabled && (
-        <Box width="516px" py="32px">
-          <SeatInfo seatType="moderator" />
-        </Box>
-      )}
+      <Box width="516px" py="32px">
+        <SeatInfo seatType="moderator" />
+      </Box>
     </Box>
   );
 };
