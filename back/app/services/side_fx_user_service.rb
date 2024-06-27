@@ -132,7 +132,7 @@ class SideFxUserService
   end
 
   def should_send_confirmation_email?(user)
-    user.should_send_confirmation_email? &&
+    user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 end
