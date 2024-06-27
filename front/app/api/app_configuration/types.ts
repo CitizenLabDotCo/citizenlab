@@ -218,7 +218,6 @@ export interface IAppConfigurationSettings {
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
-  seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
   follow?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
