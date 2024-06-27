@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useAuthUser from 'api/me/useAuthUser';
 
 import { Row } from 'components/admin/ResourceList';
 
@@ -23,37 +22,28 @@ const NonSortableFolderRow = ({
   publication,
   search,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
-
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: ['draft', 'published', 'archived'],
   });
-
-  const folderChildAdminPublications = data?.pages
-    .map((page) => page.data)
-    .flat();
-
   const [folderOpen, setFolderOpen] = useState(false);
-
-  if (!authUser) {
-    return null;
-  }
-
-  const showProjects =
-    !!folderChildAdminPublications &&
-    folderChildAdminPublications?.length > 0 &&
-    !search;
 
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);
   };
+
+  const folderChildAdminPublications = data?.pages
+    .map((page) => page.data)
+    .flat();
+  const showProjects =
+    !!folderChildAdminPublications &&
+    folderChildAdminPublications?.length > 0 &&
+    !search;
   const showBottomBorder = isLastItem && !folderOpen;
-
   const publicationRelation = publication.relationships.publication.data;
-
   const folderId =
     publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
+
   return (
     <>
       <Row id={id} isLastItem={showBottomBorder}>
