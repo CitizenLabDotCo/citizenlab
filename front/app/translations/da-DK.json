@@ -1664,6 +1664,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Den procentdel af deltagerne, der valgte denne mulighed.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Den procentdel af det samlede antal stemmer, som denne mulighed fik.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Omkostninger:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Vis mere ",
   "app.containers.ReactionControl.a11y_likesDislikes": "Antal likes i alt: {likesCount}, total dislikes: {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Du har annulleret din uvilje mod dette input.",
   "app.containers.ReactionControl.cancelLikeSuccess": "Du har annulleret dit like for dette input med succes.",

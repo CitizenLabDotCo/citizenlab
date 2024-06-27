@@ -1664,6 +1664,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Tämän vaihtoehdon valinneiden osallistujien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Tämän vaihtoehdon saamien äänien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kustannus:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Näytä lisää",
   "app.containers.ReactionControl.a11y_likesDislikes": "Tykkäyksiä yhteensä: {likesCount}, ei-tykkäyksiä yhteensä: {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Peruutit ei-tykkäyksesi tälle syötteelle.",
   "app.containers.ReactionControl.cancelLikeSuccess": "Peruutit tykkäyksen tälle syötteelle.",
