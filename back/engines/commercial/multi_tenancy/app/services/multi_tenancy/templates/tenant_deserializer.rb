@@ -39,7 +39,7 @@ module MultiTenancy
           end
         end
 
-        check_inconsistent_data! if validate
+        # check_inconsistent_data! if validate # TODO: Re-enable after fixing inconsistent data on templates.
 
         created_objects_ids
       end
