@@ -98,9 +98,6 @@ const UserTableRow = ({
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
 
   const { mutate: deleteUser } = useDeleteUser();
   const isUserInRowAdmin = isAdmin({ data: userInRow });
@@ -159,7 +156,7 @@ const UserTableRow = ({
 
     // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
     const shouldOpenConfirmationInModal =
-      changeToNormalUser || !hasSeatBasedBillingEnabled || exceedsSeats.admin;
+      changeToNormalUser || exceedsSeats.admin;
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
       return;
