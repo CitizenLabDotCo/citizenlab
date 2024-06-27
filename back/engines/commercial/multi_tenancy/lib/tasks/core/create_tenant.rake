@@ -283,10 +283,6 @@ namespace :cl2_back do
           allowed: false,
           duration: 90
         },
-        seat_based_billing: {
-          enabled: true,
-          allowed: true
-        },
         public_api_tokens: {
           enabled: true,
           allowed: true

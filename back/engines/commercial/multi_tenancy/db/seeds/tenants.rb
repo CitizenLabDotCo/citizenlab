@@ -404,10 +404,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            seat_based_billing: {
-              enabled: true,
-              allowed: true
-            },
             public_api_tokens: {
               enabled: true,
               allowed: true
