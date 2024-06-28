@@ -64,8 +64,8 @@ describe('Blocked user', () => {
   // registration work, but we will come back to this.
   it.skip('Should not be able to reaction comments', () => {
     cy.visit('ideas/verified-idea');
-    cy.get('#e2e-comment-like-button').should('exist');
-    cy.get('#e2e-comment-like-button').click({ force: true });
+    cy.get('.e2e-comment-like-button').should('exist');
+    cy.get('.e2e-comment-like-button').click({ force: true });
     cy.get('.e2e-comment-reaction.reacted').should('not.exist');
   });
 });

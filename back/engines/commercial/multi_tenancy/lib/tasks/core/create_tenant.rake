@@ -242,10 +242,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_management: {
-          enabled: true,
-          allowed: true
-        },
         moderation: {
           enabled: true,
           allowed: true

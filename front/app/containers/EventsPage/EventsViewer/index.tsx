@@ -180,7 +180,7 @@ const EventsViewer = ({
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
   return (
-    <Box className={className} id="project-events">
+    <Box className={className}>
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
