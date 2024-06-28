@@ -2405,6 +2405,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertekst",
   "app.containers.ContentBuilder.homepage.button": "Knapp",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Oppsett",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Tilpassing av andre innstillinger enn teksten på hjemmesidens banner er ikke inkludert i din nåværende lisens. Ta kontakt med GovSuccess Manager for å lære mer om det.",
   "app.containers.ContentBuilder.homepage.customized_button": "Tilpasset",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Knappetekst",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Link til knapp",
