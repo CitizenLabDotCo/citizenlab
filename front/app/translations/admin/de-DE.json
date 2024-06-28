@@ -949,7 +949,7 @@
   "app.containers.Admin.projects.project.survey.analysis.openAnalysisActions": "Analyse-Einstellungen öffnen",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "%",
   "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} neue Antworten",
-  "app.containers.Admin.projects.project.survey.analysis.regenerate": "Regenerieren Sie",
+  "app.containers.Admin.projects.project.survey.analysis.regenerate": "Neu erstellen",
   "app.containers.Admin.projects.project.survey.analysis.showInsights": "KI-Einblicke anzeigen",
   "app.containers.Admin.projects.project.survey.analysis.tooltipTextLimit": "Sie können mit Ihrer aktuellen Lizenz maximal 30 Beiträge auf einmal zusammenfassen. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um mehr freizuschalten.",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Fragen für die Analyse auswählen",
