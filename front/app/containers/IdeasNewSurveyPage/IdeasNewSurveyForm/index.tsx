@@ -66,7 +66,7 @@ interface FormValues {
 
 interface Props {
   project: IProject;
-  phaseId: string;
+  phaseId: string | undefined;
 }
 
 const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
@@ -158,6 +158,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     // inputSchemaError should display an error page instead
     inputSchemaError ||
     !participationMethodConfig ||
+    !phaseId ||
     !schema ||
     !uiSchema
   ) {

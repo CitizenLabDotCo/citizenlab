@@ -58,7 +58,7 @@ const IdeasNewSurveyPage = () => {
     return <PageNotFound />;
   }
 
-  if (!phases || !phaseId) {
+  if (!phases) {
     return null;
   }
 
@@ -99,7 +99,7 @@ const IdeasNewSurveyPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: phaseId,
+          id: phaseId || '',
         },
       });
     };

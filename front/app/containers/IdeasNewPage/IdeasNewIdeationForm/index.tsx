@@ -68,7 +68,7 @@ interface FormValues {
 
 interface Props {
   project: IProject;
-  phaseId: string;
+  phaseId: string | undefined;
 }
 
 const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
