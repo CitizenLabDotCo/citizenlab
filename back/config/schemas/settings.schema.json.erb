@@ -315,18 +315,6 @@
         }
       },
 
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -1112,18 +1100,6 @@
         }
       },
 
-      "seat_based_billing": {
-        "type": "object",
-        "title": "Seat based billing",
-        "description":  "Enables seat-based billing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "input_form_custom_fields": {
         "type": "object",
         "title": "Input form builder custom fields",
@@ -1145,18 +1121,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "permission_option_email_confirmation": {
-        "type": "object",
-        "title": "Registration via email confirmation",
-        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1338,10 +1302,7 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
-
-    "permission_option_email_confirmation": ["user_confirmation"],
     "power_bi": ["public_api_tokens"],
-
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],

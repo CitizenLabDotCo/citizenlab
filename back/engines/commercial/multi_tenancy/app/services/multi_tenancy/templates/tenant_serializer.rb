@@ -103,6 +103,7 @@ module MultiTenancy
 
           # Initiatives
           Initiative => serialize_records(initiatives),
+          InitiativeStatusChange => serialize_records(InitiativeStatusChange.where(initiative: initiatives)),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
           CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
@@ -181,12 +182,6 @@ module MultiTenancy
           graph[User] << CustomField
         end
 
-        # Support nested admin publications
-        if graph.key?(AdminPublication)
-          graph[AdminPublication].delete Project
-          graph[Project] << AdminPublication if graph.key?(Project)
-        end
-
         graph
       end
 
@@ -227,10 +222,7 @@ module MultiTenancy
 
       def serialize_admin_publications(scope)
         # This code will stop working when folders can contain folders
-        scope = scope
-          .where(publication_type: 'ProjectFolders::Folder') # Support nested admin publications
-          .order(parent_id: :desc, ordering: :asc)
-        serialize_records scope
+        serialize_records(scope.order(parent_id: :desc, ordering: :asc))
       end
 
       def serialize_comments(*post_scopes)

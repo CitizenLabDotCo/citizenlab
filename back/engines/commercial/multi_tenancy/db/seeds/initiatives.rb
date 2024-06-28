@@ -22,12 +22,6 @@ module MultiTenancy
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             assignee: rand(5) == 0 ? User.admin.sample : nil
           )
-          # TODO: make initiative statuses correspond with required reactions reached
-          InitiativeStatusChange.create!(
-            created_at: initiative.published_at,
-            initiative: initiative,
-            initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
-          )
 
           [1, 1, 2, 2, 3][rand(5)].times do |_i|
             initiative.initiative_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)

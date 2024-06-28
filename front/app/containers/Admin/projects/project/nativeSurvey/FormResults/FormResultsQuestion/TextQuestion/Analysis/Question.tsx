@@ -31,8 +31,9 @@ const Question = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const largeSummariesEnabled = useFeatureFlag({
+  const largeSummariesAllowed = useFeatureFlag({
     name: 'large_summaries',
+    onlyCheckAllowed: true,
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
@@ -59,7 +60,7 @@ const Question = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (!largeSummariesEnabled && filteredInputCount > 30);
+    (!largeSummariesAllowed && filteredInputCount > 30);
 
   if (!question || !answer) {
     return <Spinner />;

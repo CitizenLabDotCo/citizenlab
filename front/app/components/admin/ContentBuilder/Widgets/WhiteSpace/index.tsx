@@ -36,7 +36,7 @@ const WhiteSpace = ({ size, withDivider }: Props) => {
     }
   };
   return (
-    <Box id="e2e-white-space" w="100%" paddingY={calculatePaddingY()}>
+    <Box className="e2e-white-space" w="100%" paddingY={calculatePaddingY()}>
       {withDivider && <Divider m="0" />}
     </Box>
   );
