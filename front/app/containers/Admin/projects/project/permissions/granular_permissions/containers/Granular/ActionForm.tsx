@@ -51,9 +51,7 @@ const ActionForm = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
-  const emailConfirmPermissionEnabled = useFeatureFlag({
-    name: 'permission_option_email_confirmation',
-  });
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
   const isGranularPermissionsEnabled = useFeatureFlag({
     name: 'granular_permissions',
   });
@@ -159,74 +157,61 @@ const ActionForm = ({
                 />
               </Tooltip>
             )}
-            {emailConfirmPermissionEnabled && (
-              <Tooltip
-                disabled={
-                  permittedBy === 'everyone_confirmed_email'
-                    ? true
-                    : isGranularPermissionsEnabled
-                }
-                content={
-                  <FormattedMessage {...messages.granularPermissionsOffText} />
-                }
-              >
-                <CardButton
-                  height="100%"
-                  id="e2e-permission-email-confirmed-users"
-                  iconName="email"
-                  title={formatMessage(
-                    permissionsMessages.permissionsEmailConfirmLabel
-                  )}
-                  subtitle={formatMessage(
-                    permissionsMessages.permissionsEmailConfirmLabelDescription
-                  )}
-                  onClick={handlePermittedByUpdate('everyone_confirmed_email')}
-                  selected={permittedBy === 'everyone_confirmed_email'}
+            <Tooltip
+              // user_confirmation needs to be enabled for this option to work and granular permissions should be turned on to give users this feature
+              disabled={
+                isGranularPermissionsEnabled
+                  ? userConfirmationEnabled
+                  : permittedBy === 'everyone_confirmed_email'
+                  ? true
+                  : isGranularPermissionsEnabled
+              }
+              content={
+                <FormattedMessage
+                  {...(isGranularPermissionsEnabled
+                    ? messages.userConfirmationRequiredTooltip
+                    : messages.granularPermissionsOffText)}
                 />
-              </Tooltip>
-            )}
-            <Tooltip
-              disabled={
-                permittedBy === 'users' ? true : isGranularPermissionsEnabled
-              }
-              content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
               }
             >
               <CardButton
-                height="100%"
-                id="e2e-permission-registered-users"
-                iconName="user-circle"
-                title={formatMessage(messages.permissionsUsersLabel)}
-                subtitle={formatMessage(
-                  messages.permissionsUsersLabelDescription
-                )}
-                onClick={handlePermittedByUpdate('users')}
-                selected={permittedBy === 'users'}
-              />
-            </Tooltip>
-            <Tooltip
-              disabled={
-                permittedBy === 'groups' ? true : isGranularPermissionsEnabled
-              }
-              content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
-              }
-            >
-              <CardButton
-                height="100%"
-                id="e2e-permission-user-groups"
-                iconName="group"
+                id="e2e-permission-email-confirmed-users"
+                iconName="email"
                 title={formatMessage(
-                  permissionsMessages.permissionsSelectionLabel
+                  permissionsMessages.permissionsEmailConfirmLabel
                 )}
                 subtitle={formatMessage(
-                  permissionsMessages.permissionsSelectionLabelDescription
+                  permissionsMessages.permissionsEmailConfirmLabelDescription
                 )}
-                onClick={handlePermittedByUpdate('groups')}
-                selected={permittedBy === 'groups'}
+                onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+                selected={permittedBy === 'everyone_confirmed_email'}
+                disabled={
+                  isGranularPermissionsEnabled ? !userConfirmationEnabled : true
+                }
               />
             </Tooltip>
+            <CardButton
+              id="e2e-permission-registered-users"
+              iconName="user-circle"
+              title={formatMessage(messages.permissionsUsersLabel)}
+              subtitle={formatMessage(
+                messages.permissionsUsersLabelDescription
+              )}
+              onClick={handlePermittedByUpdate('users')}
+              selected={permittedBy === 'users'}
+            />
+            <CardButton
+              id="e2e-permission-user-groups"
+              iconName="group"
+              title={formatMessage(
+                permissionsMessages.permissionsSelectionLabel
+              )}
+              subtitle={formatMessage(
+                permissionsMessages.permissionsSelectionLabelDescription
+              )}
+              onClick={handlePermittedByUpdate('groups')}
+              selected={permittedBy === 'groups'}
+            />
           </Box>
           {permittedBy === 'groups' && (
             <Box

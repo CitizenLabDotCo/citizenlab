@@ -34,7 +34,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import CustomFieldSettings from './CustomFieldSettings';
 import CustomFieldsSignupText from './CustomFieldsSignupText';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
-import ToggleUserConfirmation from './ToggleUserConfirmation';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -52,10 +51,6 @@ const SettingsRegistrationTab = () => {
   // Creating another instance to update follow preferences separately
   const { mutate: updateFollowPreferences } = useUpdateAppConfiguration();
 
-  const userConfirmationIsAllowed = useFeatureFlag({
-    name: 'user_confirmation',
-    onlyCheckAllowed: true,
-  });
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
@@ -115,22 +110,7 @@ const SettingsRegistrationTab = () => {
     });
   };
 
-  const userConfirmationToggleIsEnabled =
-    !!latestAppConfigSettings?.user_confirmation?.enabled;
-
   const isOnboardingEnabled = !!latestAppConfigSettings?.core.onboarding;
-
-  const handleUserConfirmationToggleChange = (value: boolean) => {
-    const newAttributesDiff = {
-      ...attributesDiff,
-      settings: {
-        ...(attributesDiff.settings || {}),
-        user_confirmation: { enabled: value },
-      },
-    };
-
-    setAttributesDiff(newAttributesDiff);
-  };
 
   const handleOnboardingChange = (value: boolean) => {
     updateFollowPreferences({
@@ -181,12 +161,6 @@ const SettingsRegistrationTab = () => {
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
               }
             />
-            {userConfirmationIsAllowed && (
-              <ToggleUserConfirmation
-                onChange={handleUserConfirmationToggleChange}
-                isEnabled={userConfirmationToggleIsEnabled}
-              />
-            )}
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({
