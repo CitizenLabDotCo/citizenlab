@@ -1136,18 +1136,6 @@
         }
       },
 
-      "permission_option_email_confirmation": {
-        "type": "object",
-        "title": "Registration via email confirmation",
-        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "permissions_custom_fields": {
         "type": "object",
         "title": "Permission custom fields on project actions",
@@ -1326,10 +1314,7 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
-
-    "permission_option_email_confirmation": ["user_confirmation"],
     "power_bi": ["public_api_tokens"],
-
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],

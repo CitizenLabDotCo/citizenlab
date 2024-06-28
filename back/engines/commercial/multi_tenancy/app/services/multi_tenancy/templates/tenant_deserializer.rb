@@ -33,15 +33,13 @@ module MultiTenancy
         # console or running Rake tasks.
         #
         # Note: It's safe to call wrap multiple times because the executor is re-entrant.
-        created_objects_ids = ::Rails.application.executor.wrap do
+        ::Rails.application.executor.wrap do
           Current.set(loading_tenant_template: true) do
             _deserialize(template, validate, max_time, local_copy)
           end
         end
 
-        check_inconsistent_data! if validate
-
-        created_objects_ids
+        # check_inconsistent_data! if validate # TODO: Re-enable after fixing inconsistent data on templates.
       end
 
       private

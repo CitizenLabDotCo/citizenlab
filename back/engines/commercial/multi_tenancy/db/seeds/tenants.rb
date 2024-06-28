@@ -134,10 +134,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            permission_option_email_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true

@@ -75,7 +75,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser={false}
+        changingToRoleType="admin"
       />
     );
 
@@ -95,7 +95,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser={false}
+        changingToRoleType="admin"
       />
     );
 
@@ -115,7 +115,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockAdmin.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser
+        changingToRoleType="user"
       />
     );
 
