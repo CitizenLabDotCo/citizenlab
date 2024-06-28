@@ -13,18 +13,12 @@ export type IPhaseTab = ITab & {
 export type FeatureFlags = {
   surveys_enabled: boolean;
   typeform_enabled: boolean;
-  granular_permissions_enabled: boolean;
   report_builder_enabled: boolean;
 };
 
 export const getTabs = (
   phase: IPhaseData,
-  {
-    surveys_enabled,
-    typeform_enabled,
-    granular_permissions_enabled,
-    report_builder_enabled,
-  }: FeatureFlags,
+  { surveys_enabled, typeform_enabled, report_builder_enabled }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {
   return [
@@ -82,7 +76,7 @@ export const getTabs = (
         ? undefined
         : formatMessage(messages.lockedTooltip),
     },
-    granular_permissions_enabled && {
+    {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
       name: 'access-rights',

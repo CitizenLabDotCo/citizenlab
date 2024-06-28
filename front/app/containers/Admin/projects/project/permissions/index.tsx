@@ -37,16 +37,12 @@ const ProjectPermissions = () => {
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
 
-  const isGranularPermissionsEnabled = useFeatureFlag({
-    name: 'granular_permissions',
-  });
-
   const isProjectManagementEnabled = useFeatureFlag({
     name: 'project_management',
   });
 
   if (phase && project) {
-    return isGranularPermissionsEnabled ? (
+    return (
       <StyledSection>
         <Title variant="h2" color="primary">
           <FormattedMessage {...messages.participationRequirementsTitle} />
@@ -56,7 +52,7 @@ const ProjectPermissions = () => {
         </Text>
         <PhasePermissions project={project.data} phase={phase.data} />
       </StyledSection>
-    ) : null;
+    );
   }
 
   if (project) {
@@ -71,19 +67,15 @@ const ProjectPermissions = () => {
           </Text>
           <ProjectVisibility projectId={projectId} />
         </>
-        {isGranularPermissionsEnabled && (
-          <StyledSection>
-            <Title variant="h2" color="primary">
-              <FormattedMessage {...messages.participationRequirementsTitle} />
-            </Title>
-            <Text color="coolGrey600" pb="8px">
-              <FormattedMessage
-                {...messages.participationRequirementsSubtitle}
-              />
-            </Text>
-            <Granular project={project.data} />
-          </StyledSection>
-        )}
+        <StyledSection>
+          <Title variant="h2" color="primary">
+            <FormattedMessage {...messages.participationRequirementsTitle} />
+          </Title>
+          <Text color="coolGrey600" pb="8px">
+            <FormattedMessage {...messages.participationRequirementsSubtitle} />
+          </Text>
+          <Granular project={project.data} />
+        </StyledSection>
         <Outlet
           id="app.containers.Admin.project.edit.permissions.moderatorRights"
           projectId={projectId}
