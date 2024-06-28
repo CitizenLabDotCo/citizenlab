@@ -127,15 +127,13 @@ const ActionForm = ({
                 selected={permittedBy === 'everyone'}
               />
             )}
-            <Tooltip
-              // user_confirmation needs to be enabled for this option to work
-              disabled={userConfirmationEnabled}
-              content={
-                <FormattedMessage
-                  {...messages.userConfirmationRequiredTooltip}
-                />
-              }
-            >
+            {/* 
+              This is a quick fix.
+              The height of the CardButton is not equal to that of other CardButtons when wrapped in a Tooltip.
+              Ideally, we should have a Tooltip component that can wrap any component and adjust its height accordingly.
+              Now, only clients with user_confirmation disabled (~1%) will see the version that's too short (the one wrapped with Tooltip).
+            */}
+            {userConfirmationEnabled ? (
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
@@ -147,9 +145,32 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
-                disabled={!userConfirmationEnabled}
               />
-            </Tooltip>
+            ) : (
+              <Tooltip
+                // user_confirmation needs to be enabled for this option to work
+                disabled={false}
+                content={
+                  <FormattedMessage
+                    {...messages.userConfirmationRequiredTooltip}
+                  />
+                }
+              >
+                <CardButton
+                  id="e2e-permission-email-confirmed-users"
+                  iconName="email"
+                  title={formatMessage(
+                    permissionsMessages.permissionsEmailConfirmLabel
+                  )}
+                  subtitle={formatMessage(
+                    permissionsMessages.permissionsEmailConfirmLabelDescription
+                  )}
+                  onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+                  selected={permittedBy === 'everyone_confirmed_email'}
+                  disabled
+                />
+              </Tooltip>
+            )}
             <CardButton
               id="e2e-permission-registered-users"
               iconName="user-circle"
