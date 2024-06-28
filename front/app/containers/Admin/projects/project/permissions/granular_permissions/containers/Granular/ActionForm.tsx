@@ -148,6 +148,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
                 disabled={!userConfirmationEnabled}
+                height="100%"
               />
             </Tooltip>
             <CardButton
