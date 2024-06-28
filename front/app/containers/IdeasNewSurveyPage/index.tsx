@@ -116,7 +116,7 @@ const IdeasNewSurveyPage = () => {
     );
   }
 
-  return <IdeasNewSurveyForm project={project} />;
+  return <IdeasNewSurveyForm project={project} phaseId={phaseId} />;
 };
 
 export default IdeasNewSurveyPage;

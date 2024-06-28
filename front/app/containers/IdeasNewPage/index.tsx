@@ -114,7 +114,7 @@ const IdeasNewPage = () => {
     );
   }
 
-  return <IdeasNewIdeationForm project={project} />;
+  return <IdeasNewIdeationForm project={project} phaseId={phaseId} />;
 };
 
 export default IdeasNewPage;
