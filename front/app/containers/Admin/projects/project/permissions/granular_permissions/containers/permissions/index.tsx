@@ -58,7 +58,6 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
         <Section>
           <SectionTitle>
             <FormattedMessage {...messages.granularPermissionsTitle} />
-            heehe
           </SectionTitle>
           <ActionsForm
             permissions={initiativePermissions}
