@@ -79,8 +79,12 @@ const IdeasNewSurveyPage = () => {
     /* Something I could deduct: when this code was added, we made the (wrong) 
     assumption that `phase_id` was always a string (we were type casting the phase_id param). 
     So I _think_ we are checking here whether phase_id from the search params is differnet from
-    currentPhase?.id when both are strings.*/
-    phaseIdFromSearchParams !== currentPhase?.id;
+    currentPhase?.id when both are strings.
+    
+    I've added back undefined as a fallback, so the check remains the same as when we were using parse
+    to get the phase_id from the search params.
+    */
+    (phaseIdFromSearchParams || undefined) !== currentPhase?.id;
 
   if (disabledReason === 'postingLimitedMaxReached') {
     return <SurveySubmittedNotice project={project.data} />;
