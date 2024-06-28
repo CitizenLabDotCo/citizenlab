@@ -161,7 +161,9 @@ const UserFieldSelection = ({
                 placement="bottom-start"
                 disabled={isGranularPermissionsEnabled}
                 content={
-                  <FormattedMessage {...messages.granularPermissionsOffText} />
+                  <FormattedMessage
+                    {...messages.granularPermissionsOffMessage}
+                  />
                 }
               >
                 <Toggle

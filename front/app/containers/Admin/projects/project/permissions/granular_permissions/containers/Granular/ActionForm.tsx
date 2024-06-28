@@ -96,7 +96,7 @@ const ActionForm = ({
             permittedBy === 'everyone' ? true : isGranularPermissionsEnabled
           }
           content={
-            <FormattedMessage {...messages.granularPermissionsOffText} />
+            <FormattedMessage {...messages.granularPermissionsOffMessage} />
           }
         >
           <Box w="fit-content">
@@ -141,7 +141,9 @@ const ActionForm = ({
                     : isGranularPermissionsEnabled
                 }
                 content={
-                  <FormattedMessage {...messages.granularPermissionsOffText} />
+                  <FormattedMessage
+                    {...messages.granularPermissionsOffMessage}
+                  />
                 }
               >
                 <CardButton
@@ -171,7 +173,7 @@ const ActionForm = ({
                 <FormattedMessage
                   {...(isGranularPermissionsEnabled
                     ? messages.userConfirmationRequiredTooltip
-                    : messages.granularPermissionsOffText)}
+                    : messages.granularPermissionsOffMessage)}
                 />
               }
             >
@@ -197,7 +199,7 @@ const ActionForm = ({
                 permittedBy === 'users' ? true : isGranularPermissionsEnabled
               }
               content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
+                <FormattedMessage {...messages.granularPermissionsOffMessage} />
               }
             >
               <CardButton
@@ -218,7 +220,7 @@ const ActionForm = ({
                 permittedBy === 'groups' ? true : isGranularPermissionsEnabled
               }
               content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
+                <FormattedMessage {...messages.granularPermissionsOffMessage} />
               }
             >
               <CardButton
