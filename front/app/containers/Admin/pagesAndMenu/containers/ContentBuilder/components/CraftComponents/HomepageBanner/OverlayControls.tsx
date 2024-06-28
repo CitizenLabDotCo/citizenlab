@@ -123,33 +123,35 @@ const OverlayControls = ({
         />
       </Box>
       {/* We check for typeof of opacity because 0 would coerce to false. */}
-      {overlayEnabled && typeof bannerOverlayOpacity === 'number' && (
-        <StyledBox
-          p="40px"
-          border={`1px solid ${colors.grey300}`}
-          borderRadius={theme.borderRadius}
-        >
-          <Box mb="36px">
-            <ColorPickerInput
-              id="image-overlay-color"
-              label={formatMessage(messages.imageOverlayColor)}
-              type="text"
-              value={bannerOverlayColor || defaultOverlayColor}
-              onChange={handleOverlayColorOnChange}
+      {customHomepageBannerAllowed &&
+        overlayEnabled &&
+        typeof bannerOverlayOpacity === 'number' && (
+          <StyledBox
+            p="40px"
+            border={`1px solid ${colors.grey300}`}
+            borderRadius={theme.borderRadius}
+          >
+            <Box mb="36px">
+              <ColorPickerInput
+                id="image-overlay-color"
+                label={formatMessage(messages.imageOverlayColor)}
+                type="text"
+                value={bannerOverlayColor || defaultOverlayColor}
+                onChange={handleOverlayColorOnChange}
+              />
+            </Box>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={bannerOverlayOpacity}
+              onChange={debouncedHandleOverlayOpacityOnChange}
             />
-          </Box>
-          <Label>
-            <FormattedMessage {...messages.imageOverlayOpacity} />
-          </Label>
-          <RangeInput
-            step={1}
-            min={0}
-            max={100}
-            value={bannerOverlayOpacity}
-            onChange={debouncedHandleOverlayOpacityOnChange}
-          />
-        </StyledBox>
-      )}
+          </StyledBox>
+        )}
     </>
   );
 };
