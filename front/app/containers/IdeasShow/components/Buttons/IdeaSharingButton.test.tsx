@@ -50,7 +50,7 @@ describe('IdeaSharingButton', () => {
     screen.getByLabelText('Share via WhatsApp').click();
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
-      `https://api.whatsapp.com/send?phone=&text=Support%20this%20idea%3A%20Idea%201%20title https://demo.stg.citizenlab.co/ideas/idea-1?utm_source=share_idea&utm_campaign=share_content&utm_medium=whatsapp&utm_content=dd3f228f-26dc-4844-8315-8277e8f7676e`
+      `https://api.whatsapp.com/send?phone=&text=Support%20this%20idea%3A%20Idea%201%20title https://demo.stg.govocal.com/ideas/idea-1?utm_source=share_idea&utm_campaign=share_content&utm_medium=whatsapp&utm_content=dd3f228f-26dc-4844-8315-8277e8f7676e`
     );
   });
 });

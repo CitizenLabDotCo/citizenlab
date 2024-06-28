@@ -113,12 +113,12 @@ const FormBuilderToolbox = ({
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && <BuiltInFields move={move} />}
-        <Box display="flex">
+        <Box display="flex" alignItems="center">
           <Title
             fontWeight="normal"
-            mb="4px"
             ml="16px"
             variant="h6"
+            m="0px"
             as="h3"
             color="textSecondary"
             style={{ textTransform: 'uppercase' }}
@@ -128,7 +128,6 @@ const FormBuilderToolbox = ({
           {!builderConfig.alwaysShowCustomFields && (
             <IconTooltip
               ml="4px"
-              mt="8px"
               icon={isCustomFieldsDisabled ? 'info-outline' : 'info-solid'}
               iconColor={
                 isCustomFieldsDisabled ? colors.coolGrey300 : colors.coolGrey500

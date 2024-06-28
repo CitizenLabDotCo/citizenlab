@@ -15,7 +15,7 @@ module EmailCampaigns
           phase_description_multiloc: { 'en' => 'Project is now being implemented' },
           phase_start_at: Time.zone.today.prev_day.iso8601,
           phase_end_at: Time.zone.today.next_month.iso8601,
-          phase_url: 'demo.stg.citizenlab.co',
+          phase_url: 'demo.stg.govocal.com',
           project_title_multiloc: { 'en' => 'Renovations' },
           project_description_multiloc: { 'en' => 'Renovating the entire city' },
           project_description_preview_multiloc: { 'en' => 'Project description preview text (a.k.a Homepage description)' }

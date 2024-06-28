@@ -57,6 +57,8 @@ const Meta = () => {
     let metaDescription = localize(metaDescriptionMultiLoc);
     metaDescription =
       metaDescription || formatMessage(messages.appMetaDescription);
+    const googleSearchConsoleMetaAttribute =
+      tenant.data.attributes.settings.core.google_search_console_meta_attribute;
 
     const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
@@ -78,6 +80,12 @@ const Meta = () => {
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
+        {googleSearchConsoleMetaAttribute && (
+          <meta
+            name="google-site-verification"
+            content={googleSearchConsoleMetaAttribute}
+          />
+        )}
         <meta property="og:title" content={metaTitle} />
         <meta property="og:type" content="website" />
         <meta property="og:description" content={metaDescription} />

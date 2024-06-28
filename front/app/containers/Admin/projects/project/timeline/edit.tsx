@@ -614,7 +614,7 @@ const AdminPhaseEdit = () => {
             </>
           )}
           <SectionField className="fullWidth">
-            <Box display="flex">
+            <Box display="flex" alignItems="center">
               <SubSectionTitle>
                 <FormattedMessage {...messages.descriptionLabel} />
               </SubSectionTitle>

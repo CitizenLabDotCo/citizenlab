@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useRef } from 'react';
+import React, { useState, Suspense, useRef } from 'react';
 
 import {
   Tr,
@@ -19,6 +19,7 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import ChangeSeatModal from 'components/admin/SeatBasedBilling/ChangeSeatModal';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
@@ -39,10 +40,6 @@ import events from './events';
 import messages from './messages';
 import SetSetAsProjectModerator from './SetAsProjectModerator';
 import UserAssignedItems from './UserAssignedItems';
-
-const ChangeSeatModal = lazy(
-  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
-);
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -65,6 +62,8 @@ interface Props {
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   authUser: IUserData;
 }
+
+export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
@@ -112,10 +111,15 @@ const UserTableRow = ({
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+  const [changingToRoleType, setChangingToRowType] =
+    useState<ChangingRoleTypes>('admin');
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeatsAdmin = useExceedsSeats()({
     newlyAddedAdminsNumber: 1,
+  });
+
+  const exceedsSeatsModerator = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
   });
 
   const closeChangeSeatModal = () => {
@@ -154,14 +158,28 @@ const UserTableRow = ({
     }
   };
 
-  const changeRoleHandler = (changeToNormalUser: boolean) => {
-    setIsChangingToNormalUser(changeToNormalUser);
+  const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
+    setChangingToRowType(changingToRoleType);
+    const changeToNormalUser = changingToRoleType === 'user';
 
-    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
+    const showModalForAdmin =
+      changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
+    const showModalForModerator =
+      changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
+
     const shouldOpenConfirmationInModal =
-      changeToNormalUser || !hasSeatBasedBillingEnabled || exceedsSeats.admin;
+      changeToNormalUser ||
+      !hasSeatBasedBillingEnabled ||
+      showModalForAdmin ||
+      showModalForModerator;
+
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
+      return;
+    }
+
+    // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
+    if (changingToRoleType === 'moderator') {
       return;
     }
 
@@ -202,21 +220,23 @@ const UserTableRow = ({
   const getSeatChangeActions = () => {
     const setAsAdminAction = {
       handler: () => {
-        changeRoleHandler(false);
+        changeRoleHandler('admin');
       },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
     };
 
     const setSetAsProjectModeratorAction = {
-      handler: () => setIsSetSetAsProjectModeratorOpened(true),
+      handler: () => {
+        setIsSetSetAsProjectModeratorOpened(true);
+      },
       label: formatMessage(messages.setAsProjectModerator),
       icon: 'user-check' as const,
     };
 
     const setAsNormalUserAction = {
       handler: () => {
-        changeRoleHandler(true);
+        changeRoleHandler('user');
       },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
@@ -347,8 +367,8 @@ const UserTableRow = ({
             changeRoles={changeRoles}
             showModal={showChangeSeatModal}
             closeModal={closeChangeSeatModal}
-            isChangingToNormalUser={isChangingToNormalUser}
             returnFocusRef={moreActionsButtonRef}
+            changingToRoleType={changingToRoleType}
           />
         </Suspense>
         <Modal
@@ -368,6 +388,7 @@ const UserTableRow = ({
           <SetSetAsProjectModerator
             user={userInRow}
             onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
+            onSuccess={() => changeRoleHandler('moderator')}
           />
         </Modal>
       </Tr>

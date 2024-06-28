@@ -26,7 +26,7 @@ const useActiveElement = () => {
 
   return active;
 };
-const Tooltip = ({ children, ...rest }: TooltipProps) => {
+const Tooltip = ({ children, theme = 'light', ...rest }: TooltipProps) => {
   const tooltipId = useRef(
     `tooltip-${Math.random().toString(36).substring(7)}`
   );
@@ -82,9 +82,10 @@ const Tooltip = ({ children, ...rest }: TooltipProps) => {
         setIsFocused(undefined);
         setKey((prev) => prev + 1);
       }}
+      theme={theme}
       {...rest}
     >
-      <Box as="span" id={tooltipId.current}>
+      <Box as="span" id={tooltipId.current} w="fit-content">
         {children}
       </Box>
     </Tippy>

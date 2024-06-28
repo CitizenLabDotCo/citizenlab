@@ -182,11 +182,11 @@ export default ({
                   values={{
                     wcagLink: (
                       <a
-                        href="https://www.w3.org/TR/WCAG21/"
+                        href="https://www.w3.org/TR/WCAG22/"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        WCAG 2.1 AA
+                        WCAG 2.2 AA
                       </a>
                     ),
                     lineBreak: <br />,

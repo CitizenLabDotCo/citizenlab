@@ -212,7 +212,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="e2e-project-see-events-button"
           buttonStyle="secondary-outlined"
           onClick={() => {
-            scrollToElement({ id: 'project-events' });
+            scrollToElement({ id: 'e2e-events-section-project-page' });
           }}
           fontWeight="500"
           mb="8px"

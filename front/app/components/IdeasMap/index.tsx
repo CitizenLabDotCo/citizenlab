@@ -543,10 +543,10 @@ const IdeasMap = memo<Props>(
               width="390px"
               height={`calc(${mapHeightDesktop} - 80px)`}
               position="absolute"
-              display="flex"
               top="25px"
               left="25px"
               zIndex="900"
+              display={isTabletOrSmaller ? 'none' : 'flex'}
             >
               <IdeaMapOverlay
                 projectId={projectId}

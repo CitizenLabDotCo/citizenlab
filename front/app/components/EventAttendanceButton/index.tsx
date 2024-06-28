@@ -126,7 +126,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           handleClick();
         }}
         processing={isLoading}
-        id="e2e-event-attendance-button"
+        className="e2e-event-attendance-button"
       >
         {getButtonText()}
       </Button>
