@@ -100,10 +100,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
-  const userCanEditFolder = userModeratesFolder(
-    authUser?.data,
-    projectFolder.id
-  );
+  const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
 
   return (
     <>

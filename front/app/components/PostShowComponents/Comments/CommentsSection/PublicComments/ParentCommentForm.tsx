@@ -11,6 +11,7 @@ import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -113,6 +114,7 @@ const ParentCommentForm = ({
     useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
+  const { data: project } = useProjectById(projectId);
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -286,7 +288,7 @@ const ParentCommentForm = ({
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
   const userCanModerate = {
-    idea: canModerateProject(projectId, authUser),
+    idea: project ? canModerateProject(project.data, authUser) : false,
     initiative: canModerateInitiative(authUser),
   }[postType];
 
@@ -296,7 +298,7 @@ const ParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={userCanModerate}
+        showModeratorStyles={userCanModerate}
       />
       <FormContainer
         className="ideaCommentForm"

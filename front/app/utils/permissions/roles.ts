@@ -1,7 +1,5 @@
 import { IUser } from 'api/users/types';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
@@ -30,22 +28,18 @@ export const userHasRole = (user: IUser, role: TRole['type']) => {
   return result !== undefined;
 };
 
-export const isAdmin = (user?: IUser | null | undefined | Error) => {
-  if (!isNilOrError(user)) {
-    return !!user && userHasRole(user, 'admin');
-  }
+export const isAdmin = (user: IUser | undefined) => {
+  if (!user) return false;
 
-  return false;
+  return userHasRole(user, 'admin');
 };
 
-export const isModerator = (user?: IUser | null | undefined | Error) => {
-  if (!isNilOrError(user)) {
-    return ['project_moderator', 'project_folder_moderator'].includes(
-      user.data.attributes.highest_role
-    );
-  }
+export const isModerator = (user: IUser | undefined) => {
+  if (!user) return false;
 
-  return false;
+  return ['project_moderator', 'project_folder_moderator'].includes(
+    user.data.attributes.highest_role
+  );
 };
 
 /*
@@ -56,32 +50,27 @@ export const isModerator = (user?: IUser | null | undefined | Error) => {
   In the backend, it's used for data integrity.
   Most of the times it's used it's to make sure that we don't accept test data from CL employees as valid data.
 */
-export const isSuperAdmin = (user?: IUser | null | Error) => {
-  if (!isNilOrError(user)) {
-    return user.data.attributes?.highest_role === 'super_admin';
-  }
-  return false;
+export const isSuperAdmin = (user: IUser | undefined) => {
+  if (!user) return false;
+
+  return user.data.attributes.highest_role === 'super_admin';
 };
 
-export const isRegularUser = (user?: IUser | null) => {
-  if (!isNilOrError(user)) {
-    // Every user with a role higher than "user" can be considered a moderator
-    return user.data.attributes?.highest_role === 'user';
-  }
-  return false;
+export const isRegularUser = (user: IUser | undefined) => {
+  if (!user) return false;
+
+  return user.data.attributes.highest_role === 'user';
 };
 
-export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
-  return (
-    isModerator(user) &&
-    (!projectId ||
-      !!(
-        user &&
-        projectId &&
-        user.data.attributes?.roles &&
-        user.data.attributes?.roles?.find(
-          (r: IProjectModeratorRole) => r.project_id === projectId
-        )
-      ))
+export const isProjectModerator = (
+  user: IUser | undefined,
+  projectId: string
+) => {
+  if (!user) return false;
+
+  const role = user.data.attributes.roles?.find(
+    (r) => r.type === 'project_moderator' && r.project_id === projectId
   );
+
+  return role !== undefined;
 };

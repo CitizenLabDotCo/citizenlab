@@ -138,7 +138,7 @@ const ProjectFolderRow = memo<Props>(
                   disabled={
                     isBeingDeleted ||
                     !userModeratesFolder(
-                      authUser.data,
+                      authUser,
                       publication.relationships.publication.data.id
                     )
                   }

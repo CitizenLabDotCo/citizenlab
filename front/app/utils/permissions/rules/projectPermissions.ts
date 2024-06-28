@@ -5,6 +5,8 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
+import { userModeratesFolder } from './projectFolderPermissions';
+
 definePermissionRule('project', 'create', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
@@ -18,16 +20,22 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
 });
 
 export function canModerateProject(
-  projectId: string | null | undefined,
+  project: IProjectData,
   user: IUser | undefined
 ) {
-  if (projectId) {
-    return isAdmin(user) || isProjectModerator(user, projectId);
-  }
+  const projectId = project.id;
+  const projectFolderId = project.attributes.folder_id;
 
-  return isAdmin(user);
+  if (!user) return false;
+
+  return (
+    isAdmin(user) ||
+    (typeof projectFolderId === 'string' &&
+      userModeratesFolder(user, projectFolderId)) ||
+    isProjectModerator(user, projectId)
+  );
 }
 
 definePermissionRule('project', 'moderate', (project: IProjectData, user) => {
-  return canModerateProject(project.id, user);
+  return canModerateProject(project, user);
 });
