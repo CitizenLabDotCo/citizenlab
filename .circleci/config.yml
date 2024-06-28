@@ -645,7 +645,7 @@ jobs:
       - run:
           command: npm install lighthouse-ci@1.13.1
       - run:
-          command: npx lighthouse-ci@1.13.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.13.1 https://demo.stg.govocal.com --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse

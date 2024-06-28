@@ -6,7 +6,6 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { IPhaseData } from 'api/phases/types';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ActionsForm from '../containers/Granular/ActionsForm';
 import { HandlePermissionChangeProps } from '../containers/Granular/utils';
@@ -22,13 +21,13 @@ type PhaseActionFormProps = {
   projectId: string;
 };
 
-export const PhaseActionForm = ({
+const PhaseActionForm = ({
   phase,
   onChange,
   projectId,
 }: PhaseActionFormProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
-  if (isNilOrError(permissions)) {
+  if (!permissions) {
     return null;
   }
 
@@ -46,3 +45,5 @@ export const PhaseActionForm = ({
     </Box>
   );
 };
+
+export default PhaseActionForm;
