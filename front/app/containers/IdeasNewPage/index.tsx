@@ -33,10 +33,10 @@ const IdeasNewPage = () => {
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const [searchParams] = useSearchParams();
+  const phaseIdFromSearchParams = searchParams.get('phase_id');
   // If we reach this component by hitting ideas/new directly, without a phase_id,
   // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
-  const phaseId =
-    searchParams.get('phase_id') || getCurrentPhase(phases?.data)?.id;
+  const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
@@ -66,7 +66,10 @@ const IdeasNewPage = () => {
   const participationMethod = getParticipationMethod(
     project.data,
     phases.data,
-    phaseId
+    // No particular reason why this needs to be phaseIdFromSearchParams,
+    // I just wanted to keep this part as it was while refactoring some other parts
+    // to reduce the chances of introducing bugs. But it could probably be phaseId instead.
+    phaseIdFromSearchParams || undefined
   );
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
