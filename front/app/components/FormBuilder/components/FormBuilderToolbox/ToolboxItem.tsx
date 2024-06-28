@@ -86,7 +86,6 @@ const ToolboxItem = ({
     >
       <Box
         as="button"
-        aria-describedby="tooltip-content"
         minWidth={!disabled ? '100%' : 'auto'}
         p="0px"
         type="button"
