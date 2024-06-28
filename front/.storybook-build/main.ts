@@ -4,26 +4,19 @@ const webpack = require('webpack');
 import mockModules from '../.storybook/mockModules';
 const { EsbuildPlugin } = require('esbuild-loader');
 
+import { stories, addons, babel, staticDirs } from '../.storybook/main';
+
 const config: StorybookConfig = {
-  stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    // This plugin was causing a peer dependency conflict.
-    // We first need to upgrade our main app to react-router-dom >=6.4.0
-    // This upgrade has breaking changes so those need to be dealt with first.
-    // 'storybook-addon-react-router-v6',
-    'storybook-react-intl',
-    '@storybook/addon-viewport',
-  ],
+  stories,
+  addons,
+  babel,
+  staticDirs,
   framework: {
     name: '@storybook/react-webpack5',
     options: {},
   },
   docs: {
     autodocs: 'tag',
-  },
-  babel: async () => {
-    const opt = require('../.storybook/.babelrc.json');
-    return opt;
   },
   webpackFinal(config, _options) {
     config.resolve = {
@@ -99,6 +92,5 @@ const config: StorybookConfig = {
 
     return config;
   },
-  staticDirs: ['../.storybook/public', '../.storybook/static'],
 };
 export default config;
