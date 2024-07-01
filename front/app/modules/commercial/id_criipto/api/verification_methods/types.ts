@@ -1,5 +1,4 @@
 import 'api/verification_methods/types';
-import { Multiloc } from 'typings';
 
 declare module 'api/verification_methods/types' {
   export interface IVerificationMethodNamesMap {
@@ -11,7 +10,7 @@ declare module 'api/verification_methods/types' {
     type: 'verification_method';
     attributes: {
       name: 'criipto';
-      method_name_multiloc: Multiloc;
+      ui_method_name: string;
     };
   };
 
