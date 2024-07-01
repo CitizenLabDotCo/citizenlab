@@ -105,7 +105,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
       const successAction: SuccessAction = {
         name: 'attendEvent',
-        params: {},
+        params: { event },
       };
 
       triggerAuthenticationFlow({ context, successAction });
