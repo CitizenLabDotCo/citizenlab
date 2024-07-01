@@ -51,5 +51,9 @@ class Factory
     end
   end
 
+  def action_config_for(action)
+    ::ActionConfig::Base.new
+  end
+
   private_class_method :new
 end

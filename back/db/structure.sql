@@ -19,7 +19,7 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
-ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
+ALTER TABLE IF EXISTS ONLY public.permissions_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
@@ -100,7 +100,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac76
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
-ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
+ALTER TABLE IF EXISTS ONLY public.permissions_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
@@ -192,8 +192,8 @@ DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
-DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
-DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_permissions_fields_on_permission_id;
+DROP INDEX IF EXISTS public.index_permissions_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
@@ -417,7 +417,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
-ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS permissions_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.permissions_fields DROP CONSTRAINT IF EXISTS permissions_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS page_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.onboarding_campaign_dismissals DROP CONSTRAINT IF EXISTS onboarding_campaign_dismissals_pkey;
@@ -530,7 +530,7 @@ DROP TABLE IF EXISTS public.polls_response_options;
 DROP TABLE IF EXISTS public.polls_questions;
 DROP TABLE IF EXISTS public.polls_options;
 DROP TABLE IF EXISTS public.phase_files;
-DROP TABLE IF EXISTS public.permissions_custom_fields;
+DROP TABLE IF EXISTS public.permissions_fields;
 DROP TABLE IF EXISTS public.permissions;
 DROP TABLE IF EXISTS public.onboarding_campaign_dismissals;
 DROP TABLE IF EXISTS public.notifications;
@@ -1107,10 +1107,10 @@ CREATE TABLE public.official_feedbacks (
 --
 
 CREATE VIEW public.analytics_build_feedbacks AS
- SELECT a.post_id,
-    min(a.feedback_first_date) AS feedback_first_date,
-    max(a.feedback_official) AS feedback_official,
-    max(a.feedback_status_change) AS feedback_status_change
+ SELECT post_id,
+    min(feedback_first_date) AS feedback_first_date,
+    max(feedback_official) AS feedback_official,
+    max(feedback_status_change) AS feedback_status_change
    FROM ( SELECT activities.item_id AS post_id,
             min(activities.created_at) AS feedback_first_date,
             0 AS feedback_official,
@@ -1125,7 +1125,7 @@ CREATE VIEW public.analytics_build_feedbacks AS
             0 AS feedback_status_change
            FROM public.official_feedbacks
           GROUP BY official_feedbacks.post_id) a
-  GROUP BY a.post_id;
+  GROUP BY post_id;
 
 
 --
@@ -1190,8 +1190,8 @@ CREATE TABLE public.projects (
 --
 
 CREATE VIEW public.analytics_dimension_projects AS
- SELECT projects.id,
-    projects.title_multiloc
+ SELECT id,
+    title_multiloc
    FROM public.projects;
 
 
@@ -1431,11 +1431,11 @@ CREATE TABLE public.events (
 --
 
 CREATE VIEW public.analytics_fact_events AS
- SELECT events.id,
-    events.project_id AS dimension_project_id,
-    (events.created_at)::date AS dimension_date_created_id,
-    (events.start_at)::date AS dimension_date_start_id,
-    (events.end_at)::date AS dimension_date_end_id
+ SELECT id,
+    project_id AS dimension_project_id,
+    (created_at)::date AS dimension_date_created_id,
+    (start_at)::date AS dimension_date_start_id,
+    (end_at)::date AS dimension_date_end_id
    FROM public.events;
 
 
@@ -1979,11 +1979,11 @@ CREATE TABLE public.impact_tracking_sessions (
 --
 
 CREATE VIEW public.analytics_fact_sessions AS
- SELECT impact_tracking_sessions.id,
-    impact_tracking_sessions.monthly_user_hash,
-    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
-    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
-    impact_tracking_sessions.user_id AS dimension_user_id
+ SELECT id,
+    monthly_user_hash,
+    (created_at)::date AS dimension_date_created_id,
+    (updated_at)::date AS dimension_date_updated_id,
+    user_id AS dimension_user_id
    FROM public.impact_tracking_sessions;
 
 
@@ -2878,16 +2878,19 @@ CREATE TABLE public.permissions (
 
 
 --
--- Name: permissions_custom_fields; Type: TABLE; Schema: public; Owner: -
+-- Name: permissions_fields; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.permissions_custom_fields (
+CREATE TABLE public.permissions_fields (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     permission_id uuid NOT NULL,
     custom_field_id uuid NOT NULL,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    field_type character varying DEFAULT 'custom_field'::character varying,
+    verified boolean DEFAULT false,
+    enabled boolean DEFAULT true
 );
 
 
@@ -4033,10 +4036,10 @@ ALTER TABLE ONLY public.static_pages
 
 
 --
--- Name: permissions_custom_fields permissions_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: permissions_fields permissions_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.permissions_custom_fields
+ALTER TABLE ONLY public.permissions_fields
     ADD CONSTRAINT permissions_custom_fields_pkey PRIMARY KEY (id);
 
 
@@ -5633,21 +5636,21 @@ CREATE INDEX index_onboarding_campaign_dismissals_on_user_id ON public.onboardin
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_permission_field ON public.permissions_custom_fields USING btree (permission_id, custom_field_id);
+CREATE UNIQUE INDEX index_permission_field ON public.permissions_fields USING btree (permission_id, custom_field_id);
 
 
 --
--- Name: index_permissions_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_permissions_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_permissions_custom_fields_on_custom_field_id ON public.permissions_custom_fields USING btree (custom_field_id);
+CREATE INDEX index_permissions_fields_on_custom_field_id ON public.permissions_fields USING btree (custom_field_id);
 
 
 --
--- Name: index_permissions_custom_fields_on_permission_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_permissions_fields_on_permission_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_permissions_custom_fields_on_permission_id ON public.permissions_custom_fields USING btree (permission_id);
+CREATE INDEX index_permissions_fields_on_permission_id ON public.permissions_fields USING btree (permission_id);
 
 
 --
@@ -6316,10 +6319,10 @@ ALTER TABLE ONLY public.analytics_dimension_projects_fact_visits
 
 
 --
--- Name: permissions_custom_fields fk_rails_50335fc43f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: permissions_fields fk_rails_50335fc43f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.permissions_custom_fields
+ALTER TABLE ONLY public.permissions_fields
     ADD CONSTRAINT fk_rails_50335fc43f FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
@@ -6964,10 +6967,10 @@ ALTER TABLE ONLY public.baskets_ideas
 
 
 --
--- Name: permissions_custom_fields fk_rails_e211dc8f99; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: permissions_fields fk_rails_e211dc8f99; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.permissions_custom_fields
+ALTER TABLE ONLY public.permissions_fields
     ADD CONSTRAINT fk_rails_e211dc8f99 FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
 
 
@@ -7491,6 +7494,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240510103700'),
 ('20240516113700'),
 ('20240606112752'),
-('20240612134240');
+('20240612134240'),
+('20240701143612');
 
 

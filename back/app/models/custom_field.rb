@@ -45,8 +45,8 @@ class CustomField < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
-  has_many :permissions_custom_fields, dependent: :destroy
-  has_many :permissions, through: :permissions_custom_fields
+  has_many :permissions_fields, dependent: :destroy
+  has_many :permissions, through: :permissions_fields
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[

@@ -4,7 +4,7 @@ import { IItemParameters, IListParameters } from './types';
 
 const baseKey = { type: 'permissions_custom_field' };
 
-const permissionsCustomFieldsKeys = {
+const permissionsFieldsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: IListParameters) => [
@@ -16,4 +16,4 @@ const permissionsCustomFieldsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default permissionsCustomFieldsKeys;
+export default permissionsFieldsKeys;

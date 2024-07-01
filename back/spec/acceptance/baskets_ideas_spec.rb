@@ -185,7 +185,7 @@ resource BasketsIdea do
             postcode_field = create(:custom_field, resource_type: 'User', key: 'postcode_xyz', title_multiloc: { 'en' => 'Postcode' }, required: false)
             permission = project.phases.first.permissions.find_by(action: 'voting')
             permission.update!(global_custom_fields: false)
-            create(:permissions_custom_field, permission: permission, custom_field: postcode_field, required: true)
+            create(:permissions_field, permission: permission, custom_field: postcode_field, required: true)
           end
 
           example_request '[error] Not authorized to add an idea to a basket & create the basket' do

@@ -4,27 +4,27 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsCustomFieldsData } from './__mocks__/usePermissionsCustomFields';
-import useAddPermissionsCustomField from './useAddPermissionsCustomField';
+import { permissionsFieldsData } from './__mocks__/usePermissionsFields';
+import useAddPermissionsField from './useAddPermissionsField';
 
-const apiPath = '*/permissions/:action/permissions_custom_fields';
+const apiPath = '*/permissions/:action/permissions_fields';
 const server = setupServer(
   http.post(apiPath, () => {
     return HttpResponse.json(
-      { data: permissionsCustomFieldsData[0] },
+      { data: permissionsFieldsData[0] },
       { status: 200 }
     );
   })
 );
 
-describe('useAddPermissionsCustomField', () => {
+describe('useAddPermissionsField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        useAddPermissionsCustomField({
+        useAddPermissionsField({
           phaseId: 'phaseId1',
           action: 'taking_survey',
         }),
@@ -42,7 +42,7 @@ describe('useAddPermissionsCustomField', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(permissionsCustomFieldsData[0]);
+    expect(result.current.data?.data).toEqual(permissionsFieldsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -54,7 +54,7 @@ describe('useAddPermissionsCustomField', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        useAddPermissionsCustomField({
+        useAddPermissionsField({
           phaseId: 'phaseId1',
           action: 'taking_survey',
         }),

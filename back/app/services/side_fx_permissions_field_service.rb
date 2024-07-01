@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-class SideFxPermissionsCustomFieldService
+class SideFxPermissionsFieldService
   include SideFxHelper
 
   def before_create(_permissions_custom_field, _user); end
 
-  def after_create(permissions_custom_field, user)
-    LogActivityJob.perform_later permissions_custom_field, 'created', user, permissions_custom_field.created_at.to_i
+  def after_create(permissions_field, user)
+    LogActivityJob.perform_later permissions_field, 'created', user, permissions_field.created_at.to_i
   end
 
   def before_update(_permissions_custom_field, _user); end
 
-  def after_update(permissions_custom_field, user)
-    LogActivityJob.perform_later permissions_custom_field, 'changed', user, permissions_custom_field.updated_at.to_i
+  def after_update(permissions_field, user)
+    LogActivityJob.perform_later permissions_field, 'changed', user, permissions_field.updated_at.to_i
   end
 
   def before_destroy(_permissions_custom_field, user); end
@@ -24,7 +24,7 @@ class SideFxPermissionsCustomFieldService
       'deleted',
       user,
       Time.now.to_i,
-      payload: { permissions_custom_field: serialized_permissions_custom_field }
+      payload: { permissions_field: serialized_permissions_custom_field }
     )
   end
 end
