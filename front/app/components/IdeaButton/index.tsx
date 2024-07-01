@@ -88,7 +88,7 @@ const IdeaButton = memo<Props>(
           search: stringify(
             {
               ...positionParams,
-              phase_id: phase?.id,
+              phase_id: phase.id,
             },
             { addQueryPrefix: true }
           ),
@@ -125,7 +125,7 @@ const IdeaButton = memo<Props>(
           name: 'redirectToIdeaForm',
           params: {
             projectSlug: project.data.attributes.slug,
-            phaseId: phase?.id,
+            phaseId: phase.id,
           },
         };
 
