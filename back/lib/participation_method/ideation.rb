@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def transitive?
+      true
+    end
+
     def assign_defaults_for_phase
       phase.ideas_order ||= 'trending'
     end

@@ -6,6 +6,10 @@ module ParticipationMethod
       @phase = phase
     end
 
+    def transitive?
+      false
+    end
+
     def assign_defaults_for_phase
       # Default is to do nothing.
     end

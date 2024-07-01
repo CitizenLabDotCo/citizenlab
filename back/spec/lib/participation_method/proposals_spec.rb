@@ -2,18 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe ParticipationMethod::Voting do
+RSpec.describe ParticipationMethod::Proposals do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:budgeting_phase) }
+  let(:phase) { create(:phase) }
 
   describe '#assign_defaults_for_phase' do
-    context 'budgeting' do
-      it 'sets the posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_phase
-        expect(phase.posting_method).to eq 'unlimited'
-        expect(phase.ideas_order).to eq 'random'
-      end
+    let(:phase) { build(:phase) }
+
+    it 'sets the posting method to unlimited' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.posting_method).to eq 'unlimited'
+      expect(phase.ideas_order).to eq 'trending'
     end
   end
 
@@ -23,14 +23,19 @@ RSpec.describe ParticipationMethod::Voting do
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil
       input.title_multiloc = { 'en' => 'Changed title' }
+
       expect(participation_method.generate_slug(input)).to eq 'changed-title'
     end
   end
 
   describe '#create_default_form!' do
     it 'creates a default form' do
-      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
-      expect { participation_method.create_default_form! }.to change(CustomField, :count)
+      form = nil
+      expect { form = participation_method.create_default_form! }
+        .to change(CustomForm, :count).by(1)
+        .and change(CustomField, :count).by_at_least(1)
+
+      expect(form.participation_context).to eq phase.project
     end
   end
 
@@ -60,32 +65,30 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#author_in_form?' do
-    before { SettingsService.new.activate_feature! 'idea_author_change' }
+    it 'returns false for a visitor when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(nil)).to be false
+    end
 
     it 'returns false for a resident when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
       expect(participation_method.author_in_form?(create(:user))).to be false
     end
 
+    it 'returns false for a moderator when idea_author_change is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+
     it 'returns true for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
       expect(participation_method.author_in_form?(create(:admin))).to be true
     end
   end
 
   describe '#budget_in_form?' do
-    it 'returns false for a resident and a budgeting phase' do
-      expect(participation_method.budget_in_form?(create(:user))).to be false
-    end
-
-    it 'returns true for a moderator and a budgeting phase' do
-      expect(participation_method.budget_in_form?(create(:admin))).to be true
-    end
-
-    describe do
-      let(:phase) { create(:budgeting_phase) }
-
-      it 'returns true for a moderator and a budgeting phase' do
-        expect(participation_method.budget_in_form?(create(:admin))).to be true
-      end
+    it 'returns false for a moderator and a timeline project with a budgeting phase' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
     end
   end
 
@@ -123,12 +126,55 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#never_show?' do
+    it 'returns false' do
+      expect(participation_method.never_show?).to be false
+    end
+  end
+
+  describe '#posting_allowed?' do
+    it 'returns true' do
+      expect(participation_method.posting_allowed?).to be true
+    end
+  end
+
+  describe '#update_if_published?' do
+    it 'returns true' do
+      expect(participation_method.update_if_published?).to be true
+    end
+  end
+
+  describe '#creation_phase?' do
+    it 'returns false' do
+      expect(participation_method.creation_phase?).to be false
+    end
+  end
+
   describe '#custom_form' do
-    let(:project) { phase.project }
+    let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
+    let(:phase) { project.phases.first }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
+    end
+  end
+
+  describe '#edit_custom_form_allowed?' do
+    it 'returns true' do
+      expect(participation_method.edit_custom_form_allowed?).to be true
+    end
+  end
+
+  describe '#delete_inputs_on_pc_deletion?' do
+    it 'returns false' do
+      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
+    end
+  end
+
+  describe '#sign_in_required_for_posting?' do
+    it 'returns true' do
+      expect(participation_method.sign_in_required_for_posting?).to be true
     end
   end
 
@@ -138,48 +184,51 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#additional_export_columns' do
-    context 'voting method is budgeting' do
-      it 'returns [picks, budget]' do
-        expect(participation_method.additional_export_columns).to eq %w[picks budget]
-      end
+  describe '#supports_toxicity_detection?' do
+    it 'returns true' do
+      expect(participation_method.supports_toxicity_detection?).to be true
+    end
+  end
+
+  describe '#include_data_in_email?' do
+    it 'returns true' do
+      expect(participation_method.include_data_in_email?).to be true
+    end
+  end
+
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints.size).to be 8
+      expect(participation_method.constraints.keys).to match_array %i[
+        ideation_section1
+        title_multiloc
+        body_multiloc
+        idea_images_attributes
+        idea_files_attributes
+        topic_ids
+        location_description
+        proposed_budget
+      ]
     end
 
-    context 'voting method is multiple_voting' do
-      let(:phase) { create(:multiple_voting_phase) }
-
-      it 'returns [participants, votes]' do
-        expect(participation_method.additional_export_columns).to eq %w[participants votes]
-      end
-    end
-
-    context 'voting method is single_voting' do
-      let(:phase) { create(:single_voting_phase) }
-
-      it 'returns [votes] if voting method is single_voting' do
-        expect(participation_method.additional_export_columns).to eq %w[votes]
+    it 'each constraint has locks only on enabled, required & title_multiloc' do
+      participation_method.constraints.each do |_key, value|
+        expect(value.key?(:locks)).to be true
+        valid_locks = %i[enabled required title_multiloc]
+        expect(valid_locks).to include(*value[:locks].keys)
       end
     end
   end
 
-  its(:transitive?) { is_expected.to be true }
-  its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
-  its(:validate_built_in_fields?) { is_expected.to be true }
-  its(:never_show?) { is_expected.to be false }
-  its(:posting_allowed?) { is_expected.to be false }
-  its(:update_if_published?) { is_expected.to be true }
-  its(:creation_phase?) { is_expected.to be false }
-  its(:edit_custom_form_allowed?) { is_expected.to be true }
-  its(:delete_inputs_on_pc_deletion?) { is_expected.to be false }
-  its(:sign_in_required_for_posting?) { is_expected.to be true }
-  its(:supports_toxicity_detection?) { is_expected.to be true }
-  its(:include_data_in_email?) { is_expected.to be true }
+  its(:transitive?) { is_expected.to be false }
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
-  its(:supports_reacting?) { is_expected.to be false }
+  its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
 end
