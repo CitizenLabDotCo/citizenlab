@@ -26,25 +26,21 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
+
+  FIELD_TYPES = %w[custom_field email].freeze
+  LOCKED_TYPES = {
+    'posting_idea' => %w[email]
+  }.freeze
+
   belongs_to :permission
   belongs_to :custom_field
 
   validates :permission, :custom_field, presence: true
   validates :permission_id, uniqueness: { scope: :custom_field_id }
-
-  LOCKS = {
-    'following' => [],
-    'posting_idea' => %w[email],
-    'commenting_idea' => %w[email],
-    'survey' => %w[taking_survey],
-    'poll' => %w[taking_poll],
-    'voting' => %w[voting commenting_idea],
-    'volunteering' => [],
-    'document_annotation' => %w[annotating_document]
-  }
+  validates :field_type, presence: true, inclusion: { in: FIELD_TYPES }
 
   def locked
-    false
+    LOCKED_TYPES[permission.action]&.include?(field_type)
   end
 
 end
