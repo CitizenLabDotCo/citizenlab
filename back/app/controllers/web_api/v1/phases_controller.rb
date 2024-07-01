@@ -58,7 +58,7 @@ class WebApi::V1::PhasesController < ApplicationController
     phase = nil
     ActiveRecord::Base.transaction do
       participation_method = Factory.instance.participation_method_for @phase
-      @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
+      @phase.ideas.each(&:destroy!) if !participation_method.transitive?
 
       phase = @phase.destroy
       check_timeline_inconsistencies! @phase.project if phase.destroyed?

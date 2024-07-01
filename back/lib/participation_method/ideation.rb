@@ -276,7 +276,8 @@ module ParticipationMethod
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.create(participation_context: phase.project)
+      context = transitive? ? phase.project : phase
+      form = CustomForm.create(participation_context: context)
 
       default_fields(form).reverse_each do |field|
         field.save!

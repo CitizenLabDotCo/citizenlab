@@ -164,32 +164,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#edit_custom_form_allowed?' do
-    context 'when there are no responses' do
-      it 'returns true' do
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-
-    context 'when there are responses' do
-      before do
-        IdeaStatus.create_defaults
-        create(:idea, project: phase.project, creation_phase: phase)
-      end
-
-      it 'returns true' do
-        phase.reload
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns true' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be true
-    end
-  end
-
   describe '#sign_in_required_for_posting?' do
     it 'returns false' do
       expect(participation_method.sign_in_required_for_posting?).to be false

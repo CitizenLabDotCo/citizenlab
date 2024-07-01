@@ -81,14 +81,6 @@ module ParticipationMethod
       phase.project.custom_form || CustomForm.new(participation_context: phase.project)
     end
 
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      false
-    end
-
     def sign_in_required_for_posting?
       false
     end

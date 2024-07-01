@@ -53,7 +53,6 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       @participation_method = Factory.instance.participation_method_for @custom_form.participation_context
-      verify_no_responses @participation_method
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -314,12 +313,6 @@ module IdeaCustomFields
 
     def secure_constantize(key)
       CONSTANTIZER.fetch(params[:container_type])[key]
-    end
-
-    def verify_no_responses(participation_method)
-      return if participation_method.edit_custom_form_allowed?
-
-      raise UpdatingFormWithInputError
     end
 
     def render_updating_form_with_input_error
