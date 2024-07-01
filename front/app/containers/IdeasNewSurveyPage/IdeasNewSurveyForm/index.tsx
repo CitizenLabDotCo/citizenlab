@@ -7,7 +7,6 @@ import {
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -30,14 +29,16 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import Warning from 'components/UI/Warning';
 
+import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
+import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -65,16 +66,16 @@ interface FormValues {
 
 interface Props {
   project: IProject;
+  phaseId: string | undefined;
 }
 
-const IdeasNewSurveyForm = ({ project }: Props) => {
+const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
-  const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
@@ -166,7 +167,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
-      if (allowAnonymousPosting || isNilOrError(authUser)) {
+      if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
@@ -266,6 +267,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            phaseId={phaseId}
           />
         </Box>
         <main id="e2e-idea-new-page">
@@ -282,6 +284,17 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
+              {allowAnonymousPosting && (
+                <Box
+                  w="100%"
+                  px={isSmallerThanPhone ? '16px' : '24px'}
+                  mt="12px"
+                >
+                  <Warning icon="shield-checkered">
+                    {formatMessage(messages.anonymousSurveyMessage)}
+                  </Warning>
+                </Box>
+              )}
               <Form
                 schema={schema}
                 uiSchema={uiSchema}

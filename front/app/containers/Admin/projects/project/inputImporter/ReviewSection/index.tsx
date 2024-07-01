@@ -42,7 +42,6 @@ const ReviewSection = ({
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
-  const [importTriggered, setImportTriggered] = useState<boolean>(false);
 
   const {
     data: ideas,
@@ -50,18 +49,13 @@ const ReviewSection = ({
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
 
-  const jobsChanged = () => {
-    if (importJobs.length > 0) setImportTriggered(true);
-    refetchIdeas();
-  };
-
   const {
     active: importing,
     failed: importFailed,
     errors: importErrors,
   } = useTrackBackgroundJobs({
     jobs: importJobs,
-    onChange: jobsChanged,
+    onChange: refetchIdeas,
   });
 
   const { mutate: deleteIdea } = useDeleteIdea();
@@ -80,7 +74,7 @@ const ReviewSection = ({
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
-  if (!importTriggered && numIdeas === 0) {
+  if (importJobs.length === 0 && numIdeas === 0) {
     return <EmptyState />;
   }
 
