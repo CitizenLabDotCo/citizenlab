@@ -27,6 +27,8 @@ import { submitPoll, SubmitPollParams } from './submitPoll';
 import { volunteer, VolunteerParams } from './volunteer';
 import { vote, VoteParams } from './vote';
 
+import { isEqual } from 'lodash-es';
+
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
@@ -136,16 +138,13 @@ type JSONCompatible<T> = unknown extends T
 // This is why we need to make sure that the SuccessAction is JSON serializable-
 // e.g. callbacks are not JSON serializable and thus should never be
 // used in the params.
-const ensureJSONSerializable = <T>(params: JSONCompatible<T>) => {
-  const numberOfKeys = Object.keys(params).length;
-  const numberOfKeysAfterStringify = Object.keys(
-    JSON.parse(JSON.stringify(params))
-  ).length;
-
-  // This should in theory never happen, since it should be caught
-  // by the JSONCompatible type check.
-  if (numberOfKeys !== numberOfKeysAfterStringify) {
-    throw new Error('SuccessAction params must be JSON serializable');
+const ensureJSONSerializable = <T extends Record<string, any>>(
+  params: JSONCompatible<T>
+) => {
+  if (!isEqual(JSON.parse(JSON.stringify(params)), params)) {
+    // This should in theory never happen, since it should be caught
+    // by the JSONCompatible type check.
+    throw new Error('SuccessAction params are not JSON serializable');
   }
 };
 
