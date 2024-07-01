@@ -90,20 +90,8 @@ module ParticipationMethod
       false
     end
 
-    def creation_phase?
-      true
-    end
-
     def custom_form
       phase.custom_form || CustomForm.new(participation_context: phase)
-    end
-
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      true
     end
 
     def supports_exports?

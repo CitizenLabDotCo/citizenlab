@@ -155,7 +155,7 @@ class WebApi::V1::IdeasController < ApplicationController
     extract_custom_field_values_from_params!(participation_method.custom_form)
     params_for_create = idea_params participation_method.custom_form, is_moderator
     input = Idea.new params_for_create
-    input.creation_phase = (phase if participation_method.creation_phase?)
+    input.creation_phase = (phase if !participation_method.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force

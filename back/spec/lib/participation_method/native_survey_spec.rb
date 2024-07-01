@@ -146,47 +146,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#creation_phase?' do
-    let(:project) { create(:project_with_active_native_survey_phase) }
-    let(:phase) { project.phases.first }
-
-    it 'returns true' do
-      expect(participation_method.creation_phase?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project_form) { create(:custom_form, participation_context: phase.project) }
     let(:phase) { create(:native_survey_phase) }
 
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
-    end
-  end
-
-  describe '#edit_custom_form_allowed?' do
-    context 'when there are no responses' do
-      it 'returns true' do
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-
-    context 'when there are responses' do
-      before do
-        IdeaStatus.create_defaults
-        create(:idea, project: phase.project, creation_phase: phase)
-      end
-
-      it 'returns true' do
-        phase.reload
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns true' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be true
     end
   end
 
@@ -214,6 +179,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be false }

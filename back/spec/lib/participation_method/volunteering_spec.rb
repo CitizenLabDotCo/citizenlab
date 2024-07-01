@@ -88,30 +88,12 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
-    end
-  end
-
-  describe '#edit_custom_form_allowed?' do
-    it 'returns true' do
-      expect(participation_method.edit_custom_form_allowed?).to be true
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns false' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
     end
   end
 
@@ -139,6 +121,7 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
+  its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_publication?) { is_expected.to be false }

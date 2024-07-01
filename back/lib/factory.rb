@@ -20,6 +20,10 @@ class Factory
         ::ParticipationMethod::Information.new(phase)
       when 'ideation'
         ::ParticipationMethod::Ideation.new(phase)
+      when 'proposals'
+        ::ParticipationMethod::Proposals.new(phase)
+      when 'native_survey'
+        ::ParticipationMethod::NativeSurvey.new(phase)
       when 'document_annotation'
         ::ParticipationMethod::DocumentAnnotation.new(phase)
       when 'survey'
@@ -30,8 +34,6 @@ class Factory
         ::ParticipationMethod::Poll.new(phase)
       when 'volunteering'
         ::ParticipationMethod::Volunteering.new(phase)
-      when 'native_survey'
-        ::ParticipationMethod::NativeSurvey.new(phase)
       else
         ::ParticipationMethod::None.new
       end

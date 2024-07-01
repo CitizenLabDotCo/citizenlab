@@ -6,6 +6,10 @@ module ParticipationMethod
       @phase = phase
     end
 
+    def transitive?
+      false
+    end
+
     def assign_defaults_for_phase
       # Default is to do nothing.
     end
@@ -69,20 +73,8 @@ module ParticipationMethod
       true
     end
 
-    def creation_phase?
-      false
-    end
-
     def custom_form
       phase.project.custom_form || CustomForm.new(participation_context: phase.project)
-    end
-
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      false
     end
 
     def sign_in_required_for_posting?
