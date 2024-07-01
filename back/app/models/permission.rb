@@ -19,7 +19,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators custom].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],

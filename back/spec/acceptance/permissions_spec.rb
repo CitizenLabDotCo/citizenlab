@@ -125,14 +125,29 @@ resource 'Permissions' do
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @phase.permissions.first.action }
-      let(:permitted_by) { 'groups' }
-      let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
-      example_request 'Update a permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+      context 'permitted_by: groups' do
+        let(:permitted_by) { 'groups' }
+        let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+
+        example_request 'Update a permission with groups permitted_by' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
+          expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'permitted_by: custom' do
+        let(:permitted_by) { 'custom' }
+        let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+
+        example_request 'Update a permission with the custom permitted_by' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
+          expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
       end
     end
 
