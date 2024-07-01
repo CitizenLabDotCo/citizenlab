@@ -32,7 +32,7 @@ module IdCriipto
         domain
         client_id
         client_secret
-        method_name_multiloc
+        ui_method_name
         uid_field_pattern
         method_name_for_hashing
         minimum_age
@@ -41,10 +41,11 @@ module IdCriipto
 
     def config_parameters_schema
       {
-        # method_name_multiloc: {
-        #   '$ref': '#/definitions/multiloc_string',
-        #   description: 'The name this verification method will have in the UI'
-        # },
+        ui_method_name: {
+          type: 'string',
+          description: 'The name this verification method will have in the UI',
+          default: 'MitID'
+        },
         identity_source: {
           private: true,
           type: 'string',
@@ -98,7 +99,7 @@ module IdCriipto
 
     def exposed_config_parameters
       [
-        :method_name_multiloc
+        :ui_method_name
       ]
     end
 
