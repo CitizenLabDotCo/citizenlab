@@ -46,10 +46,6 @@ module UserConfirmation
     self.email_confirmation_code_sent_at = nil
   end
 
-  def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil?
-  end
-
   def email_confirmation_code_expiration_at
     email_confirmation_code_sent_at + 1.day
   end
