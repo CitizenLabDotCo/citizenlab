@@ -83,7 +83,7 @@ interface ReactionOnInitiativeAction {
 }
 
 interface SubmitPollAction {
-  name: 'submit_poll';
+  name: 'submitPoll';
   params: SubmitPollParams;
 }
 
@@ -195,7 +195,7 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return reactionOnIdea(params);
   }
 
-  if (name === 'submit_poll') {
+  if (name === 'submitPoll') {
     ensureJSONSerializable(params);
     return submitPoll(params);
   }
