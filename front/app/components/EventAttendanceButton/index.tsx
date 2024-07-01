@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import {
-  Box,
-  Button,
-  Title,
-  colors,
-  Text,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
@@ -25,20 +18,16 @@ import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
-
-import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
-import Modal from 'components/UI/Modal';
 
 import {
   getPermissionsDisabledMessage,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
-import { getEventDateString } from 'utils/dateUtils';
 
-import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';
+import ConfirmationModal from './ConfirmationModal';
+import useObserveEvent from 'hooks/useObserveEvent';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -73,6 +62,12 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { data: project } = useProjectById(event.relationships.project.data.id);
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
+
+  const handleEventAttendanceEvent = useCallback(() => {
+    setConfirmationModalVisible(true);
+  }, []);
+
+  useObserveEvent('eventAttendance', handleEventAttendanceEvent);
 
   // NOTE: If the project does not have a current phase then users cannot register for events
   if (!project || !currentPhase) return null;
@@ -140,7 +135,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const isLoading = isAddingAttendance || isRemovingAttendance;
-  const eventDateTime = getEventDateString(event);
 
   // Permissions disabled reasons
   const buttonDisabled =
@@ -180,50 +174,11 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           {getButtonText()}
         </Button>
       </Tooltip>
-      <Modal
+      <ConfirmationModal
         opened={confirmationModalVisible}
-        close={() => {
-          setConfirmationModalVisible(false);
-        }}
-        header={
-          <Title mt="4px" mb="0px" variant="h3">
-            {user?.data?.attributes?.first_name
-              ? formatMessage(messages.seeYouThereName, {
-                  userFirstName: user?.data?.attributes?.first_name,
-                })
-              : formatMessage(messages.seeYouThere)}
-          </Title>
-        }
-        width={'520px'}
-      >
-        <EventModalConfetti />
-        <Box pt="0px" p="36px">
-          <Title my="12px" variant="h3" style={{ fontWeight: 600 }}>
-            {localize(event?.attributes?.title_multiloc)}
-          </Title>
-          <Text my="4px" color="coolGrey600" fontSize="m">
-            {eventDateTime}
-          </Text>
-          <AddEventToCalendarButton eventId={event.id} />
-          {event && (
-            <Box mt="16px" width="100%" mx="auto">
-              <Text
-                textAlign="center"
-                width="100%"
-                mb="8px"
-                style={{ fontWeight: 600 }}
-              >
-                {formatMessage(messages.forwardToFriend)}
-              </Text>
-              <EventSharingButtons
-                event={event}
-                hideTitle={true}
-                justifyContent="center"
-              />
-            </Box>
-          )}
-        </Box>
-      </Modal>
+        event={event}
+        onClose={() => setConfirmationModalVisible(false)}
+      />
     </>
   );
 };
