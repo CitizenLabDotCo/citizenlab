@@ -244,7 +244,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "5.0.1",
     "rollup": "^3.29.4",
-    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript": "^1.0.1",
