@@ -58,14 +58,14 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse response_body
         permission_data = json_response[:data].find { |d| d[:id] == permission.id }
-        ordered_permissions_custom_field_ids = permission.permissions_fields.sort_by do |permissions_field|
+        ordered_permissions_field_ids = permission.permissions_fields.sort_by do |permissions_field|
           permissions_field.custom_field.ordering
         end.map(&:id)
         expect(permission_data.dig(:relationships, :custom_fields)).to eq(
           { data: [field1, field2, field3].map { |field| { id: field.id, type: 'custom_field' } } }
         )
         expect(permission_data.dig(:relationships, :permissions_fields)).to eq(
-          { data: ordered_permissions_custom_field_ids.map { |id| { id: id, type: 'permissions_field' } } }
+          { data: ordered_permissions_field_ids.map { |id| { id: id, type: 'permissions_field' } } }
         )
         [field1, field2, field3].each do |field|
           included_field = json_response[:included].find { |d| d[:id] == field.id }
@@ -75,8 +75,8 @@ resource 'Permissions' do
           )
         end
         permission.permissions_fields.each do |permissions_field|
-          included_permissions_custom_field = json_response[:included].find { |d| d[:id] == permissions_field.id }
-          expect(included_permissions_custom_field[:attributes]).to include(
+          included_permissions_field = json_response[:included].find { |d| d[:id] == permissions_field.id }
+          expect(included_permissions_field[:attributes]).to include(
             required: permissions_field.required
           )
         end

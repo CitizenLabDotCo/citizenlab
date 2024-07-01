@@ -44,7 +44,7 @@ export interface IPermissionCustomFieldUpdate {
 
 export interface IPermissionsFieldData {
   id: string;
-  type: 'permissions_custom_field';
+  type: 'permissions_field';
   attributes: {
     required: boolean;
     created_at: string;

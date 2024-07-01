@@ -2,7 +2,7 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_custom_field, only: %i[show update destroy]
+  before_action :set_permissions_field, only: %i[show update destroy]
 
   def index
     authorize PermissionsField.new(permission: permission)
@@ -69,7 +69,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   private
 
-  def set_permissions_custom_field
+  def set_permissions_field
     @permissions_field = authorize PermissionsField.find(params[:id])
   end
 

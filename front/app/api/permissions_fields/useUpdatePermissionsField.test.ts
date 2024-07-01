@@ -8,7 +8,7 @@ import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissio
 
 const data = {
   id: 'customFieldId1',
-  type: 'permissions_custom_field',
+  type: 'permissions_field',
   attributes: {
     required: true,
     created_at: 'created-at',

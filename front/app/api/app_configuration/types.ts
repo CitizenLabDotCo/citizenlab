@@ -208,7 +208,7 @@ export interface IAppConfigurationSettings {
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
-  permissions_fields?: AppConfigurationFeature;
+  permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;

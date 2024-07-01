@@ -54,7 +54,7 @@ const UserFieldSelection = ({
 }: UserFieldSelectionProps) => {
   const { formatMessage } = useIntl();
   const permissionsFieldsAllowed = useFeatureFlag({
-    name: 'permissions_fields',
+    name: 'permissions_custom_fields',
     onlyCheckAllowed: true,
   });
   const { data: globalRegistrationFields } = useUserCustomFields();
