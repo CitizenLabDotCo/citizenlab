@@ -8,13 +8,11 @@ export interface SubmitPollParams {
   phaseId: string;
   answers: string[];
   projectId: string;
-  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export const submitPoll =
-  ({ phaseId, answers, projectId, setIsSubmitting }: SubmitPollParams) =>
+  ({ phaseId, answers, projectId }: SubmitPollParams) =>
   async () => {
-    setIsSubmitting(true);
     await addPollResponse({
       phaseId,
       optionIds: answers,
@@ -30,5 +28,4 @@ export const submitPoll =
     queryClient.invalidateQueries({
       queryKey: projectsKeys.item({ id: projectId }),
     });
-    setIsSubmitting(false);
   };

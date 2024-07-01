@@ -27,6 +27,8 @@ import { submitPoll, SubmitPollParams } from './submitPoll';
 import { volunteer, VolunteerParams } from './volunteer';
 import { vote, VoteParams } from './vote';
 
+import { isEqual } from 'lodash-es';
+
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
@@ -83,7 +85,7 @@ interface ReactionOnInitiativeAction {
 }
 
 interface SubmitPollAction {
-  name: 'submit_poll';
+  name: 'submitPoll';
   params: SubmitPollParams;
 }
 
@@ -101,21 +103,108 @@ export type SuccessAction =
   | SubmitPollAction
   | AttendEventAction;
 
+// https://hackernoon.com/mastering-type-safe-json-serialization-in-typescript
+type JSONPrimitive = string | number | boolean | null | undefined;
+
+type JSONValue =
+  | JSONPrimitive
+  | JSONValue[]
+  | {
+      [key: string]: JSONValue;
+    };
+
+// eslint-disable-next-line
+type NotAssignableToJson = bigint | symbol | Function;
+
+type JSONCompatible<T> = unknown extends T
+  ? never
+  : {
+      [P in keyof T]: T[P] extends JSONValue
+        ? T[P]
+        : T[P] extends NotAssignableToJson
+        ? never
+        : JSONCompatible<T[P]>;
+    };
+
+// We need this check to make sure that the params are JSON serializable.
+// When I (Luuc) built this initially, I didn't enforce this yet.
+// But now it seems that people are adding non-JSON-serializable attributes,
+// which breaks core functionality.
+// Hopefully, this function will help avoid this in the future.
+//
+// The reason why we only allow JSON serializable attributes is because
+// when dealing with SSO or other authentication flows that leave the platform,
+// we need to somehow remember what the user was doing before they left.
+// We do this by storing the SuccessAction in the session storage.
+// This is why we need to make sure that the SuccessAction is JSON serializable-
+// e.g. callbacks are not JSON serializable and thus should never be
+// used in the params.
+const ensureJSONSerializable = <T extends Record<string, any>>(
+  params: JSONCompatible<T>
+) => {
+  if (!isEqual(JSON.parse(JSON.stringify(params)), params)) {
+    // This should in theory never happen, since it should be caught
+    // by the JSONCompatible type check.
+    throw new Error('SuccessAction params are not JSON serializable');
+  }
+};
+
 export const getAction = ({ name, params }: SuccessAction) => {
-  if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
+  if (name === 'redirectToIdeaForm') {
+    ensureJSONSerializable(params);
+    return redirectToIdeaForm(params);
+  }
+
   if (name === 'redirectToInitiativeForm') {
+    ensureJSONSerializable(params);
     return redirectToInitiativeForm(params);
   }
+
   if (name === 'follow') {
+    ensureJSONSerializable(params);
     return follow(params);
   }
-  if (name === 'replyToComment') return replyToComment(params);
-  if (name === 'scrollTo') return scrollTo(params);
-  if (name === 'volunteer') return volunteer(params);
-  if (name === 'vote') return vote(params);
-  if (name === 'reactionOnComment') return reactionOnComment(params);
-  if (name === 'reactionOnIdea') return reactionOnIdea(params);
-  if (name === 'submit_poll') return submitPoll(params);
-  if (name === 'attendEvent') return attendEvent(params);
+
+  if (name === 'replyToComment') {
+    ensureJSONSerializable(params);
+    return replyToComment(params);
+  }
+
+  if (name === 'scrollTo') {
+    ensureJSONSerializable(params);
+    return scrollTo(params);
+  }
+
+  if (name === 'volunteer') {
+    ensureJSONSerializable(params);
+    return volunteer(params);
+  }
+
+  if (name === 'vote') {
+    ensureJSONSerializable(params);
+    return vote(params);
+  }
+
+  if (name === 'reactionOnComment') {
+    ensureJSONSerializable(params);
+    return reactionOnComment(params);
+  }
+
+  if (name === 'reactionOnIdea') {
+    ensureJSONSerializable(params);
+    return reactionOnIdea(params);
+  }
+
+  if (name === 'submitPoll') {
+    ensureJSONSerializable(params);
+    return submitPoll(params);
+  }
+
+  if (name === 'attendEvent') {
+    ensureJSONSerializable(params);
+    return attendEvent(params);
+  }
+
+  ensureJSONSerializable(params);
   return reactionOnInitiative(params);
 };
