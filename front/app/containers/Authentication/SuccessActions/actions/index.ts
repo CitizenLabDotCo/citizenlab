@@ -113,6 +113,7 @@ type JSONValue =
       [key: string]: JSONValue;
     };
 
+// tslint:disable-next-line
 type NotAssignableToJson = bigint | symbol | Function;
 
 type JSONCompatible<T> = unknown extends T
