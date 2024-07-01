@@ -1,11 +1,9 @@
 import { IUserData } from 'api/users/types';
 
-export interface AttendEventParams {
-  attendFunction: (user) => void;
-}
+export interface AttendEventParams {}
 
-export const attendEvent =
-  ({ attendFunction }: AttendEventParams) =>
-  async (authUser: IUserData) => {
-    attendFunction(authUser);
+export const attendEvent = (_: AttendEventParams) => {
+  return async (authUser: IUserData) => {
+    // attendFunction(authUser);
   };
+};
