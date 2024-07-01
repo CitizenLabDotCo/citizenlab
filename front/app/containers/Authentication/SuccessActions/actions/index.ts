@@ -101,6 +101,7 @@ export type SuccessAction =
   | SubmitPollAction
   | AttendEventAction;
 
+// https://hackernoon.com/mastering-type-safe-json-serialization-in-typescript
 type JSONPrimitive = string | number | boolean | null | undefined;
 
 type JSONValue =
@@ -124,7 +125,7 @@ type JSONCompatible<T> = unknown extends T
 
 // We need this check to make sure that the params are JSON serializable.
 // When I (Luuc) built this initially, I didn't enforce this yet.
-// But now it seems that people are adding non-JSON-serializable attributes to the params,
+// But now it seems that people are adding non-JSON-serializable attributes,
 // which breaks core functionality.
 // Hopefully, this function will help avoid this in the future.
 //
@@ -133,13 +134,16 @@ type JSONCompatible<T> = unknown extends T
 // we need to somehow remember what the user was doing before they left.
 // We do this by storing the SuccessAction in the session storage.
 // This is why we need to make sure that the SuccessAction is JSON serializable-
-// callbacks are not JSON serializable and thus should never be used in the params.
+// e.g. callbacks are not JSON serializable and thus should never be
+// used in the params.
 const ensureJSONSerializable = <T>(params: JSONCompatible<T>) => {
   const numberOfKeys = Object.keys(params).length;
   const numberOfKeysAfterStringify = Object.keys(
     JSON.parse(JSON.stringify(params))
   ).length;
 
+  // This should in theory never happen, since it should be caught
+  // by the JSONCompatible type check.
   if (numberOfKeys !== numberOfKeysAfterStringify) {
     throw new Error('SuccessAction params must be JSON serializable');
   }
