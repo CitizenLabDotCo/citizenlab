@@ -41,10 +41,6 @@ const ProjectPermissions = () => {
     name: 'granular_permissions',
   });
 
-  const isProjectManagementEnabled = useFeatureFlag({
-    name: 'project_management',
-  });
-
   if (phase && project) {
     return isGranularPermissionsEnabled ? (
       <StyledSection>
@@ -94,9 +90,7 @@ const ProjectPermissions = () => {
             ) : null
           }
         </Outlet>
-        {isProjectManagementEnabled && (
-          <ProjectManagement projectId={projectId} />
-        )}
+        <ProjectManagement projectId={projectId} />
       </>
     );
   }

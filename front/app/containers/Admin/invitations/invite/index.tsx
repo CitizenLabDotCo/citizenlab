@@ -24,7 +24,6 @@ import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -60,12 +59,7 @@ const Invitations = () => {
   const { mutateAsync: bulkInviteXLSX } = useBulkInviteXLSX();
   const { mutateAsync: bulkInviteCountNewSeatsXLSX } =
     useBulkInviteCountNewSeatsXLSX();
-
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const tenantLocales = useAppConfigurationLocales();
-
   const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
   const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
     null
@@ -390,11 +384,7 @@ const Invitations = () => {
   const handleSubmitAction = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (hasSeatBasedBillingEnabled) {
-      onSubmit({ save: false });
-    } else {
-      onSubmit({ save: true });
-    }
+    onSubmit({ save: false });
   };
 
   const invitationTabs: { name: TInviteTabName; label: string }[] = [
@@ -492,7 +482,7 @@ const Invitations = () => {
           </SectionField>
         </Section>
       </form>
-      {hasSeatBasedBillingEnabled && newSeatsResponse && (
+      {newSeatsResponse && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
             inviteUsers={() => onSubmit({ save: true })}

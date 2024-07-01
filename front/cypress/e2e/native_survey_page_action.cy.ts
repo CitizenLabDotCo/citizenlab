@@ -70,13 +70,19 @@ describe('Native survey project page actions', () => {
     it('tests actions when accepting submissions', () => {
       // Action as unregistered user
       cy.visit(`/projects/${projectSlugWithOneOpenEndedPhase}`);
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button > div')
+        .first()
+        .find('button')
+        .click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Action as registered user
       cy.setLoginCookie(userEmail, userPassword);
       cy.visit(`/projects/${projectSlugWithOneOpenEndedPhase}`);
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button > div')
+        .first()
+        .find('button')
+        .click({ force: true });
       cy.url().should(
         'include',
         `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
@@ -85,8 +91,11 @@ describe('Native survey project page actions', () => {
       // Action as admin user
       cy.setAdminLoginCookie();
       cy.visit(`/projects/${projectSlugWithOneOpenEndedPhase}`);
-      cy.get('#e2e-cta-button').should('be.visible');
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button > div').should('be.visible');
+      cy.get('.e2e-idea-button > div')
+        .first()
+        .find('button')
+        .click({ force: true });
       cy.url().should(
         'include',
         `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
@@ -112,8 +121,8 @@ describe('Native survey project page actions', () => {
       cy.visit(`/projects/${projectSlugWithOneOpenEndedPhase}`);
       // Check that correct text and actions shown
       cy.wait(3000); // I think the content build error is causing some flaky behaviour. This wait seems to fix it.
-      cy.get('#e2e-idea-button').should('exist');
-      cy.get('#e2e-idea-button').first().click();
+      cy.get('.e2e-idea-button > div').first().find('button').should('exist');
+      cy.get('.e2e-idea-button > div').first().find('button').click();
       cy.url().should(
         'include',
         `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
@@ -169,7 +178,7 @@ describe('Native survey project page actions', () => {
       cy.contains(
         "Unfortunately, you can't participate in this project anymore because it has been archived"
       );
-      cy.get('#e2e-cta-button').should('not.exist');
+      cy.get('.e2e-idea-button > div').should('not.exist');
       cy.contains('1 survey').should('not.exist');
     });
   });
@@ -221,7 +230,10 @@ describe('Native survey project page actions', () => {
       // Visit timeline project
       cy.visit(`/projects/${projectSlugWithFutureSurvey}`);
       // Check that correct text and actions shown
-      cy.get('#e2e-cta-button').should('be.visible').trigger('mouseenter');
+      cy.get('.e2e-idea-button > div')
+        .first()
+        .should('be.visible')
+        .trigger('mouseenter');
       cy.contains('New submissions can only be added in active phases.').should(
         'exist'
       );
@@ -274,7 +286,9 @@ describe('Native survey project page actions', () => {
       // Visit timeline project
       cy.visit(`/projects/${projectSlugPostingDisabled}`);
       // Check that correct text and actions shown
-      cy.get('#e2e-cta-button').should('be.visible').trigger('mouseenter');
+      cy.get('.e2e-idea-button > div')
+        .should('be.visible')
+        .trigger('mouseenter');
       cy.contains('New submissions are not currently being accepted').should(
         'exist'
       );

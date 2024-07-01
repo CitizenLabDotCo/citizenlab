@@ -79,7 +79,7 @@ const EventInformation = ({ event }: Props) => {
 
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box id="e2e-event-card">
+      <Box className="e2e-event-card">
         {mediumImage && (
           <Box height="140px" m="-16px">
             <EventCardImage src={mediumImage} cover={true} alt="" />

@@ -47,7 +47,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
 
   return (
     <TwoColumnWrapper
-      id="e2e-two-column"
+      className="e2e-two-column"
       columnLayout={columnLayout}
       px={componentDefaultPadding}
       maxWidth="1200px"
@@ -80,7 +80,6 @@ export const TwoColumnSettings = () => {
         onChange={(value) => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
-        id="layout-1-1"
         name="columnLayout"
         value={'1-1'}
         label={
@@ -101,7 +100,6 @@ export const TwoColumnSettings = () => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
-        id="layout-2-1"
         name="columnLayout"
         value="2-1"
         label={
@@ -121,7 +119,6 @@ export const TwoColumnSettings = () => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
-        id="layout-1-2"
         name="columnLayout"
         value="1-2"
         label={
