@@ -146,15 +146,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#creation_phase?' do
-    let(:project) { create(:project_with_active_native_survey_phase) }
-    let(:phase) { project.phases.first }
-
-    it 'returns true' do
-      expect(participation_method.creation_phase?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project_form) { create(:custom_form, participation_context: phase.project) }
     let(:phase) { create(:native_survey_phase) }

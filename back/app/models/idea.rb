@@ -183,7 +183,7 @@ class Idea < ApplicationRecord
   end
 
   def input_term
-    return creation_phase.input_term if participation_method_on_creation.creation_phase?
+    return creation_phase.input_term if !participation_method_on_creation.transitive?
 
     current_phase = TimelineService.new.current_phase project
     return current_phase.input_term if current_phase&.can_contain_ideas?
@@ -261,7 +261,7 @@ class Idea < ApplicationRecord
       return
     end
 
-    if !participation_method_on_creation.creation_phase?
+    if participation_method_on_creation.transitive?
       errors.add(
         :creation_phase,
         :invalid_participation_method,

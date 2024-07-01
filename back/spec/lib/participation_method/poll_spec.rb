@@ -88,12 +88,6 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: phase.project) }

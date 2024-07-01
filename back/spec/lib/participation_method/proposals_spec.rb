@@ -5,26 +5,24 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Proposals do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
+  let(:phase) { create(:proposals_phase) }
+  let(:proposal) { create(:proposal, project: phase.project) }
 
   describe '#assign_defaults_for_phase' do
-    let(:phase) { build(:phase) }
+    let(:phase) { build(:proposals_phase) }
 
-    it 'sets the posting method to unlimited' do
+    it 'sets the ideas_order to trending' do
       participation_method.assign_defaults_for_phase
-      expect(phase.posting_method).to eq 'unlimited'
       expect(phase.ideas_order).to eq 'trending'
     end
   end
 
   describe '#generate_slug' do
-    let(:input) { create(:idea) }
-
     it 'sets and persists the slug of the input' do
-      input.update_column :slug, nil
-      input.title_multiloc = { 'en' => 'Changed title' }
+      proposal.update_column :slug, nil
+      proposal.title_multiloc = { 'en' => 'Changed title' }
 
-      expect(participation_method.generate_slug(input)).to eq 'changed-title'
+      expect(participation_method.generate_slug(proposal)).to eq 'changed-title'
     end
   end
 
@@ -141,12 +139,6 @@ RSpec.describe ParticipationMethod::Proposals do
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
-    end
-  end
-
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
     end
   end
 

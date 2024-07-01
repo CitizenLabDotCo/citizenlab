@@ -87,12 +87,6 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
-    end
-  end
-
   describe '#sign_in_required_for_posting?' do
     it 'returns false' do
       expect(participation_method.sign_in_required_for_posting?).to be false

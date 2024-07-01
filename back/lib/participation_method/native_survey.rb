@@ -90,10 +90,6 @@ module ParticipationMethod
       false
     end
 
-    def creation_phase?
-      true
-    end
-
     def custom_form
       phase.custom_form || CustomForm.new(participation_context: phase)
     end

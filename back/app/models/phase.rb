@@ -58,7 +58,7 @@ class Phase < ApplicationRecord
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
 
-  PARTICIPATION_METHODS = %w[information ideation survey voting poll volunteering native_survey document_annotation].freeze
+  PARTICIPATION_METHODS = %w[information ideation proposals survey voting poll volunteering native_survey document_annotation].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
@@ -103,7 +103,7 @@ class Phase < ApplicationRecord
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
   # ideation? or voting?
-  with_options if: :can_contain_ideas? do
+  with_options if: :can_contain_ideas? do # TODO: Include proposals
     validates :presentation_mode,
       inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
@@ -135,7 +135,7 @@ class Phase < ApplicationRecord
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
   # ideation?
-  with_options if: :ideation? do
+  with_options if: :ideation? do # TODO: Include proposals
     validates :presentation_mode, presence: true
   end
 
@@ -204,31 +204,31 @@ class Phase < ApplicationRecord
     @previous_phase_end_at_updated || false
   end
 
-  def ideation?
+  def ideation? # TODO: Remove if-tests
     participation_method == 'ideation'
   end
 
-  def information?
+  def information? # TODO: Remove if-tests
     participation_method == 'information'
   end
 
-  def voting?
+  def voting? # TODO: Remove if-tests
     participation_method == 'voting'
   end
 
-  def native_survey?
+  def native_survey? # TODO: Remove if-tests
     participation_method == 'native_survey'
   end
 
-  def can_contain_ideas?
+  def can_contain_ideas? # TODO: Remove if-tests
     ideation? || voting?
   end
 
-  def can_contain_input?
+  def can_contain_input? # TODO: Remove if-tests
     can_contain_ideas? || native_survey?
   end
 
-  def uses_input_form?
+  def uses_input_form? # TODO: Remove if-tests
     native_survey?
   end
 
@@ -336,7 +336,7 @@ class Phase < ApplicationRecord
     end
   end
 
-  def set_participation_method
+  def set_participation_method # TODO: Remove?
     self.participation_method ||= 'ideation'
   end
 

@@ -30,10 +30,6 @@ module ParticipationMethod
       super # TODO (if no reviewing and no reactions + toggle)
     end
 
-    def creation_phase?
-      true # TODO (use transitive? instead, get collections of ideas and of proposals)
-    end
-
     def custom_form
       super # TODO (use transive? and use form of phase)
     end

@@ -73,10 +73,6 @@ module ParticipationMethod
       true
     end
 
-    def creation_phase?
-      false
-    end
-
     def custom_form
       phase.project.custom_form || CustomForm.new(participation_context: phase.project)
     end

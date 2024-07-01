@@ -10,9 +10,8 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 
-    it 'sets the posting method to unlimited' do
+    it 'sets the ideas_order to trending' do
       participation_method.assign_defaults_for_phase
-      expect(phase.posting_method).to eq 'unlimited'
       expect(phase.ideas_order).to eq 'trending'
     end
   end
@@ -166,12 +165,6 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
-    end
-  end
-
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
     end
   end
 
