@@ -1107,10 +1107,10 @@ CREATE TABLE public.official_feedbacks (
 --
 
 CREATE VIEW public.analytics_build_feedbacks AS
- SELECT a.post_id,
-    min(a.feedback_first_date) AS feedback_first_date,
-    max(a.feedback_official) AS feedback_official,
-    max(a.feedback_status_change) AS feedback_status_change
+ SELECT post_id,
+    min(feedback_first_date) AS feedback_first_date,
+    max(feedback_official) AS feedback_official,
+    max(feedback_status_change) AS feedback_status_change
    FROM ( SELECT activities.item_id AS post_id,
             min(activities.created_at) AS feedback_first_date,
             0 AS feedback_official,
@@ -1125,7 +1125,7 @@ CREATE VIEW public.analytics_build_feedbacks AS
             0 AS feedback_status_change
            FROM public.official_feedbacks
           GROUP BY official_feedbacks.post_id) a
-  GROUP BY a.post_id;
+  GROUP BY post_id;
 
 
 --
@@ -1190,8 +1190,8 @@ CREATE TABLE public.projects (
 --
 
 CREATE VIEW public.analytics_dimension_projects AS
- SELECT projects.id,
-    projects.title_multiloc
+ SELECT id,
+    title_multiloc
    FROM public.projects;
 
 
@@ -1431,11 +1431,11 @@ CREATE TABLE public.events (
 --
 
 CREATE VIEW public.analytics_fact_events AS
- SELECT events.id,
-    events.project_id AS dimension_project_id,
-    (events.created_at)::date AS dimension_date_created_id,
-    (events.start_at)::date AS dimension_date_start_id,
-    (events.end_at)::date AS dimension_date_end_id
+ SELECT id,
+    project_id AS dimension_project_id,
+    (created_at)::date AS dimension_date_created_id,
+    (start_at)::date AS dimension_date_start_id,
+    (end_at)::date AS dimension_date_end_id
    FROM public.events;
 
 
@@ -1979,11 +1979,11 @@ CREATE TABLE public.impact_tracking_sessions (
 --
 
 CREATE VIEW public.analytics_fact_sessions AS
- SELECT impact_tracking_sessions.id,
-    impact_tracking_sessions.monthly_user_hash,
-    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
-    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
-    impact_tracking_sessions.user_id AS dimension_user_id
+ SELECT id,
+    monthly_user_hash,
+    (created_at)::date AS dimension_date_created_id,
+    (updated_at)::date AS dimension_date_updated_id,
+    user_id AS dimension_user_id
    FROM public.impact_tracking_sessions;
 
 
