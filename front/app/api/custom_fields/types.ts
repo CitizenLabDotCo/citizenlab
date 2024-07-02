@@ -31,7 +31,9 @@ export type ICustomFieldInputType =
   | 'image_files'
   | 'topic_ids'
   | 'multiselect_image'
-  | 'point';
+  | 'point'
+  | 'line'
+  | 'polygon';
 
 export type IOptionsType = {
   id?: string;

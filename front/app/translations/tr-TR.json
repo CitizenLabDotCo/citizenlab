@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Açık olduğunda, katılımcıların devam etmek için belirtilen sayıda yanıtı seçmesi gerekir.",
   "app.components.formBuilder.limitNumberAnswers": "Cevap sayısını sınırlayın",
   "app.components.formBuilder.linearScale": "Doğrusal ölçek",
-  "app.components.formBuilder.locationAnswer": "Konum cevabı",
   "app.components.formBuilder.locationDescription": "Konum",
   "app.components.formBuilder.logic": "Mantık",
   "app.components.formBuilder.logicValidationError": "Mantık önceki sayfalara bağlantı veremez",

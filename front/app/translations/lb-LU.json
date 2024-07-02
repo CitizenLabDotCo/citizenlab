@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Wann ageschalt, mussen d'Befroten déi spezifizéiert Zuel vun Äntwerten auswielen fir weiderzekommen.",
   "app.components.formBuilder.limitNumberAnswers": "Limitéiert d'Zuel vun den Äntwerten",
   "app.components.formBuilder.linearScale": "Linearmossstaf",
-  "app.components.formBuilder.locationAnswer": "Location Äntwert",
   "app.components.formBuilder.locationDescription": "Uert",
   "app.components.formBuilder.logic": "Logik",
   "app.components.formBuilder.logicValidationError": "Logik kann net mat viregte Säite verknëppt ginn",

@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Kun se on käytössä, vastaajien on valittava määritetty määrä vastauksia jatkaakseen.",
   "app.components.formBuilder.limitNumberAnswers": "Rajoita vastausten määrää",
   "app.components.formBuilder.linearScale": "Lineaarinen asteikko",
-  "app.components.formBuilder.locationAnswer": "Sijainti vastaus",
   "app.components.formBuilder.locationDescription": "Sijainti",
   "app.components.formBuilder.logic": "Logiikka",
   "app.components.formBuilder.logicValidationError": "Logiikka ei välttämättä linkitä aikaisemmille sivuille",

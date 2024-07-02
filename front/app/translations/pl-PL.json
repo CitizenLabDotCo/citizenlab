@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Po włączeniu respondenci muszą wybrać określoną liczbę odpowiedzi, aby kontynuować.",
   "app.components.formBuilder.limitNumberAnswers": "Ogranicz liczbę odpowiedzi",
   "app.components.formBuilder.linearScale": "Skala liniowa",
-  "app.components.formBuilder.locationAnswer": "Odpowiedź lokalizacji",
   "app.components.formBuilder.locationDescription": "Lokalizacja",
   "app.components.formBuilder.logic": "Logika",
   "app.components.formBuilder.logicValidationError": "Logika nie może zawierać linków do wcześniejszych stron",

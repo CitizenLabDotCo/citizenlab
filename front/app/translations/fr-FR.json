@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Lorsque cette option est activée, les répondants doivent sélectionner le nombre de réponses spécifié pour continuer.",
   "app.components.formBuilder.limitNumberAnswers": "Limiter le nombre de réponses",
   "app.components.formBuilder.linearScale": "Échelle linéaire",
-  "app.components.formBuilder.locationAnswer": "Localisation",
   "app.components.formBuilder.locationDescription": "Emplacement",
   "app.components.formBuilder.logic": "Logique",
   "app.components.formBuilder.logicValidationError": "Logic ne peut pas créer de liens vers des pages antérieures",

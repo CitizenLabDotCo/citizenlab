@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Када је укључено, испитаници треба да изаберу одређени број одговора да би наставили.",
   "app.components.formBuilder.limitNumberAnswers": "Ограничите број одговора",
   "app.components.formBuilder.linearScale": "Линеарна скала",
-  "app.components.formBuilder.locationAnswer": "Location answer",
   "app.components.formBuilder.locationDescription": "Локација",
   "app.components.formBuilder.logic": "Логика",
   "app.components.formBuilder.logicValidationError": "Логика можда неће имати везе са претходним страницама",

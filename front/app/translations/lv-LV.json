@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Kad tas ir ieslēgts, respondentiem ir jāizvēlas norādītais atbilžu skaits, lai turpinātu darbu.",
   "app.components.formBuilder.limitNumberAnswers": "Ierobežot atbilžu skaitu",
   "app.components.formBuilder.linearScale": "Lineārā skala",
-  "app.components.formBuilder.locationAnswer": "Atrašanās vietas atbilde",
   "app.components.formBuilder.locationDescription": "Atrašanās vieta",
   "app.components.formBuilder.logic": "Loģika",
   "app.components.formBuilder.logicValidationError": "Loģika nedrīkst veidot saites uz iepriekšējām lapām",

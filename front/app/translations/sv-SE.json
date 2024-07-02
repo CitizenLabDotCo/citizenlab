@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "När den är aktiverad måste respondenterna välja det angivna antalet svar för att gå vidare.",
   "app.components.formBuilder.limitNumberAnswers": "Begränsa antalet svar",
   "app.components.formBuilder.linearScale": "Linjär skala",
-  "app.components.formBuilder.locationAnswer": "Svar på plats",
   "app.components.formBuilder.locationDescription": "Plats",
   "app.components.formBuilder.logic": "Logik",
   "app.components.formBuilder.logicValidationError": "Logik får inte länka till tidigare sidor",

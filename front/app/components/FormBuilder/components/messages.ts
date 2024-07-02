@@ -70,9 +70,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
-  locationAnswer: {
-    id: 'app.components.formBuilder.locationAnswer',
-    defaultMessage: 'Location answer',
+  dropPin: {
+    id: 'app.components.formBuilder.dropPin',
+    defaultMessage: 'Drop pin',
+  },
+  drawRoute: {
+    id: 'app.components.formBuilder.drawRoute',
+    defaultMessage: 'Draw route',
+  },
+  drawPolygon: {
+    id: 'app.components.formBuilder.drawPolygon',
+    defaultMessage: 'Draw polygon',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',

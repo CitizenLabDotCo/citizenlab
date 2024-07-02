@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Når slått på, må respondentene velge det angitte antallet svar for å fortsette.",
   "app.components.formBuilder.limitNumberAnswers": "Begrens antall svar",
   "app.components.formBuilder.linearScale": "Lineær skala",
-  "app.components.formBuilder.locationAnswer": "Plasseringssvar",
   "app.components.formBuilder.locationDescription": "Plassering",
   "app.components.formBuilder.logic": "Logikk",
   "app.components.formBuilder.logicValidationError": "Logikken kan ikke koble til tidligere sider",

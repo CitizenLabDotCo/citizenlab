@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "عند تشغيله، يحتاج المستجيبون إلى تحديد العدد المحدد من الإجابات للمتابعة.",
   "app.components.formBuilder.limitNumberAnswers": "الحد من عدد الإجابات",
   "app.components.formBuilder.linearScale": "مقياس خطي",
-  "app.components.formBuilder.locationAnswer": "إجابة الموقع",
   "app.components.formBuilder.locationDescription": "موقع",
   "app.components.formBuilder.logic": "الأساس المنطقي",
   "app.components.formBuilder.logicValidationError": "قد لا يرتبط الأساس المنطقي بالصفحات السابقة",

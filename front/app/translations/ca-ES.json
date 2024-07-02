@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Quan està activat, els enquestats han de seleccionar el nombre especificat de respostes per continuar.",
   "app.components.formBuilder.limitNumberAnswers": "Limitar el nombre de respostes",
   "app.components.formBuilder.linearScale": "Escala lineal",
-  "app.components.formBuilder.locationAnswer": "Resposta d'ubicació",
   "app.components.formBuilder.locationDescription": "Ubicació",
   "app.components.formBuilder.logic": "Lògica",
   "app.components.formBuilder.logicValidationError": "La lògica pot no enllaçar a pàgines anteriors",

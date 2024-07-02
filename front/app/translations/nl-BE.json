@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Als dit is ingeschakeld, moeten respondenten het opgegeven aantal antwoorden selecteren om verder te kunnen gaan.",
   "app.components.formBuilder.limitNumberAnswers": "Beperk het aantal antwoorden",
   "app.components.formBuilder.linearScale": "Lineaire schaal",
-  "app.components.formBuilder.locationAnswer": "Locatie antwoord",
   "app.components.formBuilder.locationDescription": "Locatie",
   "app.components.formBuilder.logic": "Logica",
   "app.components.formBuilder.logicValidationError": "Logica mag niet linken naar eerdere pagina's",

@@ -51,7 +51,7 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
-    multiselect multiselect_image number page point select select_image text text_multiloc topic_ids section
+    multiselect multiselect_image number page point line polygon select select_image text text_multiloc topic_ids section
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes

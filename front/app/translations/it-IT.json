@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Quando è attivata, i rispondenti devono selezionare il numero di risposte specificato per procedere.",
   "app.components.formBuilder.limitNumberAnswers": "Limita il numero di risposte",
   "app.components.formBuilder.linearScale": "Scala lineare",
-  "app.components.formBuilder.locationAnswer": "Risposta alla domanda",
   "app.components.formBuilder.locationDescription": "Posizione",
   "app.components.formBuilder.logic": "Logica",
   "app.components.formBuilder.logicValidationError": "La logica non può collegarsi a pagine precedenti",
