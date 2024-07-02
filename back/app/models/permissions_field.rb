@@ -26,7 +26,6 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
-
   FIELD_TYPES = %w[custom_field email].freeze
   LOCKED_TYPES = {
     'posting_idea' => %w[email]
@@ -42,5 +41,4 @@ class PermissionsField < ApplicationRecord
   def locked
     LOCKED_TYPES[permission.action]&.include?(field_type)
   end
-
 end

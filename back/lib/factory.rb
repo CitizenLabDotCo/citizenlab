@@ -51,7 +51,7 @@ class Factory
     end
   end
 
-  def action_config_for(action)
+  def action_config_for(_action)
     ::ActionConfig::Base.new
   end
 

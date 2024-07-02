@@ -6,7 +6,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   def index
     authorize PermissionsField.new(permission: permission)
-    permissions_fields = permission.permissions_fields
+    permissions_fields = permissions_fields(permission)
     permissions_fields = paginate permissions_fields
     permissions_fields = permissions_fields.includes(:custom_field)
 
@@ -86,10 +86,23 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_create
-    params.require(:permissions_field).permit(:required, :custom_field_id)
+    params.require(:permissions_field).permit(:required, :custom_field_id, :field_type, :verified, :enabled)
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required)
+    params.require(:permissions_field).permit(:required, :verified, :enabled)
+  end
+
+  def permissions_fields(permission)
+    return lock_fields(permission.permissions_fields) if permission.permitted_by == 'custom'
+
+    # To support the old permitted_by values
+    permission.permissions_fields.where(field_type: 'custom_field')
+  end
+
+  def lock_fields(permissions_fields)
+    permissions_fields.each do |permissions_field|
+      permissions_field.locked = permissions_field.custom_field.locked
+    end
   end
 end

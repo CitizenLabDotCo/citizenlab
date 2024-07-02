@@ -77,5 +77,4 @@ RSpec.describe Permission do
       expect(permission).to be_valid
     end
   end
-
 end
