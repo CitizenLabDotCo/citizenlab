@@ -70,9 +70,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
-  locationAnswer: {
-    id: 'app.components.formBuilder.locationAnswer',
-    defaultMessage: 'Location answer',
+  dropPin: {
+    id: 'app.components.formBuilder.dropPin',
+    defaultMessage: 'Drop pin',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',

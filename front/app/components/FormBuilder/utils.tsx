@@ -228,7 +228,7 @@ const getInputTypeStringKey = (
       translatedStringKey = messages.fileUpload;
       break;
     case 'point':
-      translatedStringKey = messages.locationAnswer;
+      translatedStringKey = messages.dropPin;
       break;
   }
 
