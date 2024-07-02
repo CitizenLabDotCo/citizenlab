@@ -35,10 +35,9 @@ resource 'PermissionsField' do
       do_request
 
       assert_status 200
-      json_response = json_parse response_body
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map { |d| d.dig(:attributes, :required) }).to eq [true, false]
-      expect(json_response[:data].map { |d| d.dig(:relationships, :custom_field) }).to eq([
+      expect(response_data.size).to eq 2
+      expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
+      expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
         { data: { id: field1.id, type: 'custom_field' } },
         { data: { id: field2.id, type: 'custom_field' } }
       ])
@@ -50,10 +49,10 @@ resource 'PermissionsField' do
 
     example_request 'Get one permissions custom fields by id' do
       assert_status 200
-      json_response = json_parse response_body
 
-      expect(json_response.dig(:data, :id)).to eq id
-      expect(json_response.dig(:data, :attributes, :created_at)).to be_present
+      expect(response_data[:id]).to eq id
+      expect(response_data.dig(:attributes, :created_at)).to be_present
+      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled verified locked created_at updated_at])
     end
   end
 
