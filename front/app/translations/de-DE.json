@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Wenn diese Funktion aktiviert ist, müssen die Befragten die angegebene Anzahl von Antworten auswählen, um fortzufahren.",
   "app.components.formBuilder.limitNumberAnswers": "Anzahl der Antworten begrenzen",
   "app.components.formBuilder.linearScale": "Lineare Skala",
-  "app.components.formBuilder.locationAnswer": "Standort-Antwort",
   "app.components.formBuilder.locationDescription": "Standort",
   "app.components.formBuilder.logic": "Logik",
   "app.components.formBuilder.logicValidationError": "Logik darf nicht auf vorherige Seiten verlinken",

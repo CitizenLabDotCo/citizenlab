@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Cuando está activado, los encuestados tienen que seleccionar el número especificado de respuestas para continuar.",
   "app.components.formBuilder.limitNumberAnswers": "Limitar el número de respuestas",
   "app.components.formBuilder.linearScale": "Escala lineal",
-  "app.components.formBuilder.locationAnswer": "Respuesta sobre la ubicación",
   "app.components.formBuilder.locationDescription": "Ubicación",
   "app.components.formBuilder.logic": "Lógica",
   "app.components.formBuilder.logicValidationError": "La lógica no puede enlazar con páginas anteriores",

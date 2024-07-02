@@ -704,7 +704,6 @@
   "app.components.formBuilder.limitAnswersTooltip": "Όταν είναι ενεργοποιημένη, οι ερωτώμενοι πρέπει να επιλέξουν τον καθορισμένο αριθμό απαντήσεων για να προχωρήσουν.",
   "app.components.formBuilder.limitNumberAnswers": "Περιορισμός του αριθμού των απαντήσεων",
   "app.components.formBuilder.linearScale": "Γραμμική κλίμακα",
-  "app.components.formBuilder.locationAnswer": "Απάντηση τοποθεσίας",
   "app.components.formBuilder.locationDescription": "Τοποθεσία",
   "app.components.formBuilder.logic": "Λογική",
   "app.components.formBuilder.logicValidationError": "Η λογική δεν μπορεί να παραπέμπει σε προηγούμενες σελίδες",
