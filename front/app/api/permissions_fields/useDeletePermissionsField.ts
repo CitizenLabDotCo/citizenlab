@@ -2,16 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsCustomFieldsKeys from './keys';
+import permissionsFieldsKeys from './keys';
 import { IListParameters } from './types';
 
-const deletePermissionsCustomField = (id: string) =>
+const deletePermissionsField = (id: string) =>
   fetcher({
-    path: `/permissions_custom_fields/${id}`,
+    path: `/permissions_fields/${id}`,
     action: 'delete',
   });
 
-const useDeletePermissionsCustomField = ({
+const useDeletePermissionsField = ({
   phaseId,
   projectId,
   initiativeContext,
@@ -20,10 +20,10 @@ const useDeletePermissionsCustomField = ({
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deletePermissionsCustomField,
+    mutationFn: deletePermissionsField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.list({
+        queryKey: permissionsFieldsKeys.list({
           phaseId,
           projectId,
           initiativeContext,
@@ -34,4 +34,4 @@ const useDeletePermissionsCustomField = ({
   });
 };
 
-export default useDeletePermissionsCustomField;
+export default useDeletePermissionsField;

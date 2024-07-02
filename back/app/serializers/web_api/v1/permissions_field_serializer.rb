@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+class WebApi::V1::PermissionsFieldSerializer < WebApi::V1::BaseSerializer
+  attributes :required, :enabled, :verified, :locked, :created_at, :updated_at
+
+  has_one :permission
+  has_one :custom_field
+end

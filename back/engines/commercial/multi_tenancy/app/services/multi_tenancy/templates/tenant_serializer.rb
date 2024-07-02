@@ -53,7 +53,7 @@ module MultiTenancy
           InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),
           Permission => serialize_records(Permission),
-          PermissionsCustomField => serialize_records(PermissionsCustomField),
+          PermissionsField => serialize_records(PermissionsField),
           Phase => serialize_records(Phase),
           PhaseFile => serialize_records(PhaseFile),
           Project => serialize_records(Project),

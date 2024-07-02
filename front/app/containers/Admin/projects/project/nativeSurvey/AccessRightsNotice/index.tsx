@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -35,7 +35,7 @@ const AccessRightsNotice = ({
   const { formatMessage } = useIntl();
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { data: userCustomFields } = useUserCustomFields();
-  const { data: permissionCustomFields } = usePermissionsCustomFields({
+  const { data: permissionCustomFields } = usePermissionsFields({
     projectId,
     phaseId,
     initiativeContext: false,

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 import { generateTempId } from 'components/FormBuilder/utils';
@@ -18,7 +18,7 @@ import { SelectionScreen } from './screens/SelectionScreen';
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;
   setShowSelectionModal: (show: boolean) => void;
-  selectedFields: Array<IPermissionsCustomFieldData> | undefined;
+  selectedFields: Array<IPermissionsFieldData> | undefined;
   handleAddField: (field: IUserCustomFieldData) => void;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   locale: string;

@@ -4,8 +4,8 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import useDeletePermissionsCustomField from './useDeletePermissionsCustomField';
-const apiPath = '*permissions_custom_fields/:id';
+import useDeletePermissionsField from './useDeletePermissionsField';
+const apiPath = '*permissions_fields/:id';
 
 const server = setupServer(
   http.delete(apiPath, () => {
@@ -13,14 +13,14 @@ const server = setupServer(
   })
 );
 
-describe('useDeletePermissionsCustomField', () => {
+describe('useDeletePermissionsField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        useDeletePermissionsCustomField({
+        useDeletePermissionsField({
           action: 'taking_poll',
           projectId: '1',
         }),
@@ -45,7 +45,7 @@ describe('useDeletePermissionsCustomField', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        useDeletePermissionsCustomField({
+        useDeletePermissionsField({
           action: 'taking_poll',
           projectId: '1',
         }),
