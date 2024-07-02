@@ -91,7 +91,7 @@ const ActionForm = ({
             <Box display="flex">
               <span style={{ color: colors.primary }}>
                 <FormattedMessage
-                  {...permissionsMessages.permissionsAdminsAndCollaborators}
+                  {...messages.permissionsAdminsAndCollaborators}
                 />
               </span>
 
@@ -99,7 +99,7 @@ const ActionForm = ({
                 ml="4px"
                 icon="info-solid"
                 content={formatMessage(
-                  permissionsMessages.permissionsAdminsAndCollaboratorsTooltip
+                  messages.permissionsAdminsAndCollaboratorsTooltip
                 )}
               />
             </Box>
@@ -139,11 +139,9 @@ const ActionForm = ({
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
-                title={formatMessage(
-                  permissionsMessages.permissionsEmailConfirmLabel
-                )}
+                title={formatMessage(messages.permissionsEmailConfirmLabel)}
                 subtitle={formatMessage(
-                  permissionsMessages.permissionsEmailConfirmLabelDescription
+                  messages.permissionsEmailConfirmLabelDescription
                 )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}

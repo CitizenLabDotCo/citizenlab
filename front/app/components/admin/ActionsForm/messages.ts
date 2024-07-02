@@ -101,4 +101,22 @@ export default defineMessages({
     defaultMessage:
       'In addition to registered users, unregistered users who provide an email and confirm it will be able to take the action. Select this option to lower the barrier for participation.',
   },
+  permissionsEmailConfirmLabel: {
+    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabel',
+    defaultMessage: 'Users with confirmed email',
+  },
+  permissionsEmailConfirmLabelDescription: {
+    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription',
+    defaultMessage:
+      'Anyone can participate after submitting and confirming their email address.',
+  },
+  permissionsAdminsAndCollaborators: {
+    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
+    defaultMessage: 'Admins and collaborators only',
+  },
+  permissionsAdminsAndCollaboratorsTooltip: {
+    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
+    defaultMessage:
+      'Only platform admins, folder managers and project managers can take the action',
+  },
 });
