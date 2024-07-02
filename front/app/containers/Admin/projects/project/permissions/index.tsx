@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { Title, Text, Toggle, colors } from '@citizenlab/cl2-component-library';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -19,6 +19,8 @@ import ProjectVisibility from './containers/ProjectVisibility';
 import Granular from './granular_permissions/containers/Granular';
 import PhasePermissions from './granular_permissions/containers/Granular/PhasePermissions';
 import messages from './messages';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -33,6 +35,8 @@ const ProjectPermissions = () => {
     projectId: string;
     phaseId?: string;
   };
+  const [search] = useSearchParams();
+  const newSystemActive = !!search.get('new_system');
 
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
@@ -47,6 +51,16 @@ const ProjectPermissions = () => {
         <Title variant="h2" color="primary">
           <FormattedMessage {...messages.participationRequirementsTitle} />
         </Title>
+        <Toggle
+          checked={newSystemActive}
+          onChange={() => {
+            newSystemActive
+              ? removeSearchParams(['new_system'])
+              : updateSearchParams({ new_system: true });
+          }}
+          label="Use new system"
+          labelTextColor={colors.primary}
+        />
         <Text color="coolGrey600" pb="8px">
           <FormattedMessage {...messages.participationRequirementsSubtitle} />
         </Text>
