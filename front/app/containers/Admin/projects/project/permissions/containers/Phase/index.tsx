@@ -9,6 +9,7 @@ import {
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FormattedMessage } from 'utils/cl-intl';
 import PhasePermissions from '../../components/PhasePermissions';
+import PhasePermissionsNew from '../../components/PhasePermissionsNew';
 import messages from '../../messages';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -51,7 +52,11 @@ const Phase = () => {
       <Text color="coolGrey600" pb="8px">
         <FormattedMessage {...messages.participationRequirementsSubtitle} />
       </Text>
-      <PhasePermissions project={project.data} phase={phase.data} />
+      {newSystemActive ? (
+        <PhasePermissionsNew />
+      ) : (
+        <PhasePermissions project={project.data} phase={phase.data} />
+      )}
     </Box>
   );
 };
