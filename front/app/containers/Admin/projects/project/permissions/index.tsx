@@ -58,15 +58,13 @@ const ProjectPermissions = () => {
   if (project) {
     return (
       <>
-        <>
-          <Title variant="h2" color="primary">
-            <FormattedMessage {...messages.projectVisibilityTitle} />
-          </Title>
-          <Text color="coolGrey600">
-            <FormattedMessage {...messages.projectVisibilitySubtitle} />
-          </Text>
-          <ProjectVisibility projectId={projectId} />
-        </>
+        <Title variant="h2" color="primary">
+          <FormattedMessage {...messages.projectVisibilityTitle} />
+        </Title>
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.projectVisibilitySubtitle} />
+        </Text>
+        <ProjectVisibility projectId={projectId} />
         {isGranularPermissionsEnabled && (
           <StyledSection>
             <Title variant="h2" color="primary">
