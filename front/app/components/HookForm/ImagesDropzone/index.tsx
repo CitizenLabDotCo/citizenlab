@@ -3,7 +3,8 @@ import React from 'react';
 import { Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import Error from 'components/UI/Error';
+// import Error from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import ImagesDropzoneComponent, {
   Props as ImagesDropzoneComponentProps,
 } from 'components/UI/ImagesDropzone';
@@ -50,13 +51,16 @@ const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
           );
         }}
       />
-      {errorMessage && (
+      {/* {errorMessage && (
         <Error
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
           scrollIntoView={false}
         />
+      )} */}
+      {errorMessage && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={errorMessage} />
       )}
     </>
   );

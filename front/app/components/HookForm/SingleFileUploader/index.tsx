@@ -4,7 +4,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import Error from 'components/UI/Error';
+// import Error from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import messages from 'components/UI/FileUploader/messages';
 import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
 import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
@@ -73,13 +74,16 @@ const SingleFileUploader = ({ name, accept }: Props) => {
           );
         }}
       />
-      {errorMessage && (
+      {/* {errorMessage && (
         <Error
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
           scrollIntoView={false}
         />
+      )} */}
+      {errorMessage && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={errorMessage} />
       )}
     </>
   );

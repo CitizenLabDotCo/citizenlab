@@ -7,7 +7,8 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 interface Props
   extends Omit<ColorPickerInputProps, 'value' | 'onChange' | 'type'> {
@@ -37,7 +38,7 @@ const ColorPicker = ({ name, ...rest }: Props) => {
           <ColorPickerInput type="text" id={name} {...field} {...rest} />
         )}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -53,6 +54,12 @@ const ColorPicker = ({ name, ...rest }: Props) => {
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

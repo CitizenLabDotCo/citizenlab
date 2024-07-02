@@ -4,7 +4,8 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
-import Error from 'components/UI/Error';
+// import Error from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import FileUploaderComponent, {
   Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
@@ -67,13 +68,16 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
           );
         }}
       />
-      {errorMessage && (
+      {/* {errorMessage && (
         <Error
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
           scrollIntoView={false}
         />
+      )} */}
+      {errorMessage && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={errorMessage} />
       )}
     </>
   );

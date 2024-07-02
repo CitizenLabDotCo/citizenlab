@@ -5,7 +5,8 @@ import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 interface Props {
   name: string;
@@ -27,23 +28,10 @@ const RadioGroup = ({ name, children }: Props) => {
     <Box border="none" as="fieldset">
       {children}
       {validationError && (
-        <Error
-          id={name}
-          marginTop="8px"
-          marginBottom="8px"
-          text={validationError}
-          scrollIntoView={false}
-        />
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
       )}
       {apiError && (
-        <Error
-          id={name}
-          fieldName={name as TFieldName}
-          apiErrors={apiError}
-          marginTop="8px"
-          marginBottom="8px"
-          scrollIntoView={false}
-        />
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </Box>
   );

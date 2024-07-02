@@ -45,6 +45,7 @@ interface Props {
   onSubmit: (formData: FormData) => void | Promise<any>;
   initialFormData: FormData;
   title?: ReactElement;
+  // We can use these two functions in the places where we use the Form component to determine custom error messages
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */

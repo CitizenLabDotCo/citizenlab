@@ -10,7 +10,8 @@ import { CLError, SupportedLocale, RHFErrors } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -67,7 +68,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           );
         }}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -83,6 +84,12 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

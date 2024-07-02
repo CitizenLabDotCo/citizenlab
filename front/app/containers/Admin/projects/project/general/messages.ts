@@ -171,4 +171,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
     defaultMessage: 'visit our support center',
   },
+  blankTitleError: {
+    id: 'app.containers.AdminPage.ProjectEdit.tittleMultiloc.errors.blankTitleError',
+    defaultMessage: 'Project title cannot be blank.',
+  },
+  genericErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.tittleMultiloc.errors.genericErrorMessage',
+    defaultMessage: 'An error occurred on this field.',
+  },
 });
