@@ -7,8 +7,8 @@ import { IPhaseData } from 'api/phases/types';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import ActionsForm from '../containers/Granular/ActionsForm';
-import { HandlePermissionChangeProps } from '../containers/Granular/utils';
+import ActionsForm from './ActionsForm';
+import { HandlePermissionChangeProps } from './utils';
 
 type PhaseActionFormProps = {
   phase: IPhaseData;

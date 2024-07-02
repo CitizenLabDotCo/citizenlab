@@ -8,7 +8,7 @@ import { IPermissionData } from 'api/permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
+import UserFieldSelection from './UserFieldSelection';
 
 import ActionForm from './ActionForm';
 import messages from './messages';

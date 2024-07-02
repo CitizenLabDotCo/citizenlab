@@ -15,7 +15,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import PhaseActionForm from '../../components/PhaseActionForm';
+import PhaseActionForm from './PhaseActionForm';
 
 import messages from './messages';
 import { HandlePermissionChangeProps } from './utils';

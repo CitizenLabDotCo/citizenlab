@@ -16,7 +16,7 @@ import { isBuiltInField } from 'api/user_custom_fields/util';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from '../../../containers/Granular/messages';
+import messages from './messages';
 
 type SelectionScreenProps = {
   selectedFields: Array<IPermissionsCustomFieldData> | undefined;

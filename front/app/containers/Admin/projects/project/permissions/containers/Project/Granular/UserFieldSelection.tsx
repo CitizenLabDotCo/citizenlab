@@ -27,8 +27,8 @@ import useLocale from 'hooks/useLocale';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 
-import messages from '../../containers/Granular/messages';
-import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
+import messages from './messages';
+import { HandlePermissionChangeProps } from './utils';
 
 import { FieldSelectionModal } from './FieldSelectionModal';
 
@@ -227,7 +227,11 @@ const UserFieldSelection = ({
                         label={
                           <Text
                             fontSize="s"
-                            color={permissionsCustomFieldsAllowed ? 'primary' : 'disabled'}
+                            color={
+                              permissionsCustomFieldsAllowed
+                                ? 'primary'
+                                : 'disabled'
+                            }
                           >
                             <FormattedMessage {...messages.required} />
                           </Text>

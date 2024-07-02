@@ -11,10 +11,10 @@ import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ProjectManagement from './containers/ProjectManagement';
-import ProjectVisibility from './containers/ProjectVisibility';
-import Granular from './granular_permissions/containers/Granular';
-import messages from './messages';
+import ProjectManagement from './ProjectManagement';
+import ProjectVisibility from './ProjectVisibility';
+import Granular from './Granular';
+import messages from '../../messages';
 
 const Project = () => {
   const { projectId } = useParams();

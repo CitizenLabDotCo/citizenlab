@@ -9,7 +9,7 @@ const AdminInitiativesSettings = lazy(() => import('./settings'));
 const AdminGranularPermissionsComponent = lazy(
   () =>
     import(
-      'containers/Admin/projects/project/permissions/granular_permissions/containers/permissions'
+      'containers/Admin/projects/project/permissions/containers/Initiative'
     )
 );
 

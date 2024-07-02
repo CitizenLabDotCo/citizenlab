@@ -13,8 +13,8 @@ import { Section } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import ModeratorList from '../../components/ModeratorList';
-import UserSearch from '../../components/UserSearch';
+import ModeratorList from '../../../components/ModeratorList';
+import UserSearch from '../../../components/UserSearch';
 
 import messages from './messages';
 

@@ -14,8 +14,8 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import ActionsForm from '../Granular/ActionsForm';
-import { HandlePermissionChangeProps } from '../Granular/utils';
+import ActionsForm from '../Project/Granular/ActionsForm';
+import { HandlePermissionChangeProps } from '../Project/Granular/utils';
 
 import messages from './messages';
 
