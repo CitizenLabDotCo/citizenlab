@@ -117,6 +117,7 @@ const ActionForm = ({
             If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
               <CardButton
+                iconName="user-circle"
                 title={formatMessage(
                   permissionsMessages.permissionsAnyoneLabel
                 )}
@@ -151,7 +152,7 @@ const ActionForm = ({
             </Tooltip>
             <CardButton
               id="e2e-permission-registered-users"
-              iconName="user-circle"
+              iconName="user-check"
               title={formatMessage(messages.permissionsUsersLabel)}
               subtitle={formatMessage(
                 messages.permissionsUsersLabelDescription
