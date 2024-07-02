@@ -23,4 +23,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',
     defaultMessage: 'Who are the project managers?',
   },
+  moderatorsNotFound: {
+    id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
+    defaultMessage: 'Moderators not found',
+  },
+  pendingInvitation: {
+    id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
+    defaultMessage: 'Pending invitation',
+  },
+  moderatorDeletionConfirmation: {
+    id: 'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  deleteModeratorLabel: {
+    id: 'app.containers.AdminPage.groups.permissions.deleteModeratorLabel',
+    defaultMessage: 'Delete',
+  },
+  addModerators: {
+    id: 'app.components.UserSearch.addModerators',
+    defaultMessage: 'Add',
+  },
+  searchUsers: {
+    id: 'app.components.UserSearch.searchUsers',
+    defaultMessage: 'Type to search users...',
+  },
 });

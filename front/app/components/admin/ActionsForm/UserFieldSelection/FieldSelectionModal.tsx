@@ -10,10 +10,10 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../containers/Granular/messages';
+import messages from './messages';
 
-import { AddFieldScreen } from './screens/AddFieldScreen';
-import { SelectionScreen } from './screens/SelectionScreen';
+import { AddFieldScreen } from './AddFieldScreen';
+import { SelectionScreen } from './SelectionScreen';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;

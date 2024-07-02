@@ -2,7 +2,6 @@ import { MessageDescriptor } from 'react-intl';
 
 import {
   IGlobalPermissionAction,
-  IPermissionData,
   IPhasePermissionAction,
 } from 'api/permissions/types';
 
@@ -13,14 +12,6 @@ import messages from './messages';
 type GetPermissionActionMessageProps = {
   permissionAction: IPhasePermissionAction | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
-};
-
-export type HandlePermissionChangeProps = {
-  permission: IPermissionData;
-  permittedBy?: IPermissionData['attributes']['permitted_by'];
-  globalCustomFields?: IPermissionData['attributes']['global_custom_fields'];
-  groupIds: string[];
-  phaseId?: string | null;
 };
 
 export const getPermissionActionSectionSubtitle = ({

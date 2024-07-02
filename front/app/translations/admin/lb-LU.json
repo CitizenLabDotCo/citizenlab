@@ -30,7 +30,6 @@
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",
   "app.components.UserSearch.addModerators": "Afügen",
-  "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Type to search users...",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "Keng Donnéeë verfügbar.",
@@ -1468,7 +1467,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn. Dir kënnt d’Säit och vun der Navigatiounsleescht ewechhuelen, wann Dir net prett sidd, se ze läschen.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Är Navigatiounsleescht kann zousätzlech zu den Homepagen a Projetssäiten bis zu fënnef Säiten uweisen. Dir kënnt Menüpunkten ëmbenennen, nei uerdnen an nei Säite mat Ärem eegenen Inhalt dobäifügen.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."

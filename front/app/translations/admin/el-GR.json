@@ -60,7 +60,6 @@
   "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Your plan has {managerSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   "app.components.UserSearch.addModerators": "Add",
-  "app.components.UserSearch.noOptions": "Δεν υπάρχουν επιλογές",
   "app.components.UserSearch.searchUsers": "Πληκτρολογήστε για να αναζητήσετε χρήστες...",
   "app.components.admin.Graphs": "Δεν υπάρχουν διαθέσιμα δεδομένα με τα τρέχοντα φίλτρα.",
   "app.components.admin.Graphs.noDataShort": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
@@ -1794,7 +1793,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί. Μπορείτε επίσης να καταργήσετε τη σελίδα από τη γραμμή πλοήγησης αν δεν είστε ακόμα έτοιμοι να τη διαγράψετε.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Η γραμμή πλοήγησης μπορεί να εμφανίζει έως και πέντε σελίδες εκτός από τις σελίδες Αρχική σελίδα και Έργα. Μπορείτε να μετονομάσετε τα στοιχεία μενού, να αναδιατάξετε και να προσθέσετε νέες σελίδες με το δικό σας περιεχόμενο.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
