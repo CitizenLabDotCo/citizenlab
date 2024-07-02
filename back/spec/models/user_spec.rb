@@ -1181,6 +1181,17 @@ RSpec.describe User do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
+
+      it 'cancels any pending email change initiated with the same email' do
+        new_email = 'new-email@provider.org'
+        user1, user2 = create_list(:user, 2, new_email: new_email, email_confirmation_code: 9999)
+
+        user1.confirm!
+
+        user2.reload
+        expect(user2.new_email).to be_nil
+        expect(user2.email_confirmation_code).to be_nil
+      end
     end
   end
 
