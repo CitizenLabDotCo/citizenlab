@@ -53,7 +53,7 @@ const Phase = () => {
         <FormattedMessage {...messages.participationRequirementsSubtitle} />
       </Text>
       {newSystemActive ? (
-        <PhasePermissionsNew />
+        <PhasePermissionsNew project={project.data} phase={phase.data} />
       ) : (
         <PhasePermissions project={project.data} phase={phase.data} />
       )}
