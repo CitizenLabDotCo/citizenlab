@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import ActionsFormNew from './ActionsFormNew';
@@ -16,7 +16,13 @@ const PhasePermissionsNew = ({ project, phase }: Props) => {
   const handlePermissionChange = () => {}; // TODO
 
   return (
-    <Box>
+    <Box
+      minHeight="100px"
+      display="flex"
+      flex={'1'}
+      flexDirection="column"
+      background={colors.white}
+    >
       <ActionsFormNewWrapper
         phase={phase}
         onChange={handlePermissionChange}
