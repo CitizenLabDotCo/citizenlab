@@ -302,7 +302,7 @@ da:
       header: "Din bekræftelseskode"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekræft din e-mailadresse"
-      thanks_for_signing_up: "Tak for din registrering på %{organizationName}'s borgerinddragelsesplatform."
+      thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s borgerinddragelsesplatform."
       best_regards: "Med venlig hilsen,"
       ignore_email: "Hvis du ikke har anmodet om en kode, kan du roligt ignorere denne e-mail."
       expire_code: "Denne kode udløber om "

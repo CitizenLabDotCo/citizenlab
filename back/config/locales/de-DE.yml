@@ -302,7 +302,7 @@ de:
       header: "Ihr Bestätigungscode"
       header_message: "Hallo %{firstName}!"
       confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
-      thanks_for_signing_up: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
+      thanks_for_signing_up1: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
       best_regards: "Herzliche Grüße"
       ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren."
       expire_code: "Dieser Code läuft ab in "

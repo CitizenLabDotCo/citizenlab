@@ -302,7 +302,7 @@ sr-Cyrl:
       header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
       confirm_email_address: "Потврдите вашу емаил адресу"
-      thanks_for_signing_up: "Хвала што сте се пријавили за платформу за учешће %{organizationName}."
+      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
       best_regards: "Срдачан поздрав,"
       ignore_email: "Ако нисте тражили код, можете безбедно да игноришете ову е-поруку."
       expire_code: "Овај код ће истећи за "

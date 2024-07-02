@@ -302,7 +302,7 @@ hr:
       header: "Vaš kod za potvrdu"
       header_message: "Pozdrav, %{firstName}!"
       confirm_email_address: "Potvrdite svoju adresu e-pošte"
-      thanks_for_signing_up: "Hvala vam što ste se registrirali na platformu %{organizationName}."
+      thanks_for_signing_up1: "Zahvaljujemo se na sudjelovanju. Unesite ovaj kod za potvrdu u prozor na platformi za sudjelovanje %{organizationName}:"
       best_regards: "S poštovanjem,"
       ignore_email: "Ako niste zatražili kod, slobodno zanemarite ovu e-poruku."
       expire_code: "Vaš će kod isteći za"

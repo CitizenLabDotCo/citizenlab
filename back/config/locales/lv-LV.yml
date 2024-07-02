@@ -302,7 +302,7 @@ lv:
       header: "Jūsu apstiprinājuma kods"
       header_message: "Sveiki %{firstName}!"
       confirm_email_address: "Apstipriniet savu e-pasta adresi"
-      thanks_for_signing_up: "Paldies, ka reģistrējāties %{organizationName} līdzdalības platformā."
+      thanks_for_signing_up1: "Paldies par dalību. Lūdzu, ievadiet šo apstiprinājuma kodu %{organizationName}platformas logā:"
       best_regards: "Ar sveicieniem,"
       ignore_email: "Ja neesat pieprasījis kodu, varat droši ignorēt šo e-pastu."
       expire_code: "Šī koda derīguma termiņš beigsies "
