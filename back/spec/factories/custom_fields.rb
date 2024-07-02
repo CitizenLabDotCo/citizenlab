@@ -42,6 +42,34 @@ FactoryBot.define do
       input_type { 'point' }
     end
 
+    factory :custom_field_line do
+      title_multiloc do
+        {
+          'en' => 'Which route do you take to work?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate which route you take to work.'
+        }
+      end
+      input_type { 'line' }
+    end
+
+    factory :custom_field_polygon do
+      title_multiloc do
+        {
+          'en' => 'Which area you live?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate where you live.'
+        }
+      end
+      input_type { 'polygon' }
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {

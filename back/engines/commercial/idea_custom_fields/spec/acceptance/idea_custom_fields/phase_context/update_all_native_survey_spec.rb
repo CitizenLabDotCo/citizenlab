@@ -2883,6 +2883,8 @@ resource 'Idea Custom Fields' do
       context "Update custom field's map config relation" do
         let!(:map_config1) { create(:map_config, mappable: nil) }
         let!(:map_config2) { create(:map_config, mappable: nil) }
+        let!(:map_config3) { create(:map_config, mappable: nil) }
+
 
         example "Relating map_config(s) with 'point' custom field(s)" do
           field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
@@ -2904,7 +2906,15 @@ resource 'Idea Custom Fields' do
                 required: true,
                 enabled: true,
                 map_config_id: map_config2.id
-              }
+              },
+              {
+                title_multiloc: { 'en' => 'Inserted line custom field' },
+                description_multiloc: { 'en' => 'Inserted line custom field description' },
+                input_type: 'line',
+                required: false,
+                enabled: false,
+                map_config_id: map_config3.id
+              },
             ]
           }
 
@@ -2914,6 +2924,10 @@ resource 'Idea Custom Fields' do
           new_custom_field = map_config1.reload.mappable
           expect(new_custom_field.title_multiloc).to eq({ 'en' => 'Inserted point custom field' })
           expect(new_custom_field.input_type).to eq('point')
+
+          new_custom_field_line = map_config3.reload.mappable
+          expect(new_custom_field_line.title_multiloc).to eq({ 'en' => 'Inserted line custom field' })
+          expect(new_custom_field_line.input_type).to eq('line')
 
           updated_custom_field = CustomField.find(field_to_update.id)
           expect(updated_custom_field.map_config).to eq(map_config2)
