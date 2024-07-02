@@ -27,9 +27,8 @@
 #
 class PermissionsField < ApplicationRecord
   FIELD_TYPES = %w[custom_field email].freeze
-  LOCKED_TYPES = {
-    'posting_idea' => %w[email]
-  }.freeze
+
+  attribute :locked, :boolean, default: false
 
   belongs_to :permission
   belongs_to :custom_field
@@ -38,7 +37,4 @@ class PermissionsField < ApplicationRecord
   validates :permission_id, uniqueness: { scope: :custom_field_id }
   validates :field_type, presence: true, inclusion: { in: FIELD_TYPES }
 
-  def locked
-    LOCKED_TYPES[permission.action]&.include?(field_type)
-  end
 end
