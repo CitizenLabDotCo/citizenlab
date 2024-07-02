@@ -26,19 +26,41 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints.keys).to match_array %i[
+        ideation_section1
+        title_multiloc
+        body_multiloc
+        idea_images_attributes
+        idea_files_attributes
+        topic_ids
+        location_description
+      ]
+    end
+
+    it 'each constraint has locks only on enabled, required & title_multiloc' do
+      participation_method.constraints.each do |_key, value|
+        expect(value.key?(:locks)).to be true
+        valid_locks = %i[enabled required title_multiloc]
+        expect(valid_locks).to include(*value[:locks].keys)
+      end
+    end
+  end
+
   describe '#create_default_form!' do
-    it 'creates a default form' do
+    it 'creates a default form on the phase level' do
       form = nil
       expect { form = participation_method.create_default_form! }
         .to change(CustomForm, :count).by(1)
         .and change(CustomField, :count).by_at_least(1)
 
-      expect(form.participation_context).to eq phase.project
+      expect(form.participation_context).to eq phase
     end
   end
 
   describe '#default_fields' do
-    it 'returns the default ideation fields' do
+    it 'returns the default proposals fields' do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq %w[
@@ -51,14 +73,7 @@ RSpec.describe ParticipationMethod::Proposals do
         ideation_section3
         topic_ids
         location_description
-        proposed_budget
       ]
-    end
-  end
-
-  describe '#validate_built_in_fields?' do
-    it 'returns true' do
-      expect(participation_method.validate_built_in_fields?).to be true
     end
   end
 
@@ -85,7 +100,7 @@ RSpec.describe ParticipationMethod::Proposals do
   end
 
   describe '#budget_in_form?' do
-    it 'returns false for a moderator and a timeline project with a budgeting phase' do
+    it 'returns false' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
     end
   end
@@ -176,32 +191,10 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe 'constraints' do
-    it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.size).to be 8
-      expect(participation_method.constraints.keys).to match_array %i[
-        ideation_section1
-        title_multiloc
-        body_multiloc
-        idea_images_attributes
-        idea_files_attributes
-        topic_ids
-        location_description
-        proposed_budget
-      ]
-    end
-
-    it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each do |_key, value|
-        expect(value.key?(:locks)).to be true
-        valid_locks = %i[enabled required title_multiloc]
-        expect(valid_locks).to include(*value[:locks].keys)
-      end
-    end
-  end
-
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
+  its(:validate_built_in_fields?) { is_expected.to be true }
+  its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }

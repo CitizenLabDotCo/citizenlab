@@ -6,24 +6,16 @@ module ParticipationMethod
       false
     end
 
-    def default_fields(custom_form)
+    def assign_defaults(input)
       super # TODO (default status and publication status)
-    end
-
-    def constraints
-      super # TODO (remove proposed_budget)
-    end
-
-    def create_default_form!
-      super # TODO (link to phase instead of project)
     end
 
     def budget_in_form?(_)
       false
     end
 
-    def proposed_budget_in_form?(_)
-      false # TODO (add everywhere else)
+    def proposed_budget_in_form?
+      false
     end
 
     def update_if_published?
@@ -31,7 +23,7 @@ module ParticipationMethod
     end
 
     def custom_form
-      super # TODO (use transive? and use form of phase)
+      super # TODO (use transitive? and use form of phase)
     end
 
     def supports_publication?

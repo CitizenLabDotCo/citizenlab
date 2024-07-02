@@ -21,7 +21,7 @@ module ParticipationMethod
 
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
-      [
+      fields = [
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
@@ -225,8 +225,10 @@ module ParticipationMethod
           enabled: true,
           ordering: 8,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
-        ),
-        CustomField.new(
+        )
+      ]
+      if proposed_budget_in_form?
+        fields << CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
           key: 'proposed_budget',
@@ -249,7 +251,8 @@ module ParticipationMethod
           ordering: 9,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
-      ]
+      end
+      fields
     end
 
     def allowed_extra_field_input_types
@@ -258,16 +261,17 @@ module ParticipationMethod
 
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
-      {
+      result = {
         ideation_section1: { locks: { enabled: true, title_multiloc: true } },
         title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
         idea_files_attributes: { locks: { title_multiloc: true } },
         topic_ids: { locks: { title_multiloc: true } },
-        location_description: { locks: { title_multiloc: true } },
-        proposed_budget: { locks: { title_multiloc: true } }
+        location_description: { locks: { title_multiloc: true } }
       }
+      result[:proposed_budget] = { locks: { title_multiloc: true } } if proposed_budget_in_form?
+      result
     end
 
     def form_structure_element
@@ -301,6 +305,10 @@ module ParticipationMethod
       phase.project.phases.any? do |phase|
         phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
       end
+    end
+
+    def proposed_budget_in_form?
+      true
     end
 
     def allowed_ideas_orders

@@ -57,6 +57,10 @@ module ParticipationMethod
       false
     end
 
+    def proposed_budget_in_form?
+      false
+    end
+
     def allowed_ideas_orders
       []
     end

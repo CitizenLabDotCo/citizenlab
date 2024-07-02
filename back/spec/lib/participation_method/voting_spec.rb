@@ -164,6 +164,7 @@ RSpec.describe ParticipationMethod::Voting do
 
   its(:transitive?) { is_expected.to be true }
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
+  its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:never_show?) { is_expected.to be false }
   its(:posting_allowed?) { is_expected.to be false }
