@@ -27,6 +27,11 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
   },
+  websiteConformsTo: {
+    id: 'app.containers.AccessibilityStatement.websiteConformsTo',
+    defaultMessage:
+      'Our website conforms to the following accessibility standards:',
+  },
   contentConformanceExceptions: {
     id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
@@ -154,5 +159,152 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
     defaultMessage:
       'Screen reader users may experience difficulties when using the search function. The number of search results may not be reported consistently.',
+  },
+  defenderOfRights: {
+    id: 'app.containers.AccessibilityStatement.defenderOfRights',
+    defaultMessage: 'Defender of rights',
+  },
+  accessibilityDefect: {
+    id: 'app.containers.AccessibilityStatement.accessibilityDefect',
+    defaultMessage:
+      'If you notice an accessibility defect preventing you from accessing content or functionality of the site, you notify us and you are unable to obtain a rapid response from us, you have the right to send your grievances or a request for referral to the Defender of Rights.',
+  },
+  severalMeans: {
+    id: 'app.containers.AccessibilityStatement.severalMeans',
+    defaultMessage: 'Several means are at your disposal:',
+  },
+  contactForm: {
+    id: 'app.containers.AccessibilityStatement.contactForm',
+    defaultMessage: 'Contact form',
+  },
+  contactFormLink: {
+    id: 'app.containers.AccessibilityStatement.contactFormLink',
+    defaultMessage: 'https://www.defenseurdesdroits.fr/nous-contacter-355',
+  },
+  listOfDelegatesLinkText: {
+    id: 'app.containers.AccessibilityStatement.listOfDelegatesLinkText',
+    defaultMessage: 'List of delegates near you',
+  },
+  listOfDelegatesLink: {
+    id: 'app.containers.AccessibilityStatement.listOfDelegatesLink',
+    defaultMessage: 'https://www.defenseurdesdroits.fr/carte-des-delegues',
+  },
+  withContactInfo: {
+    id: 'app.containers.AccessibilityStatement.withContactInfo',
+    defaultMessage:
+      '{listOfDelegatesLinkText} with their direct contact information',
+  },
+  telephoneNumber: {
+    id: 'app.containers.AccessibilityStatement.telephoneNumber',
+    defaultMessage: 'A telephone number: 09 69 39 00 00',
+  },
+  postalAddressFr: {
+    id: 'app.containers.AccessibilityStatement.postalAddressFr',
+    defaultMessage: 'A postal address in the {administrationDirectoryLinkText}',
+  },
+  administrationDirectoryLink: {
+    id: 'app.containers.AccessibilityStatement.administrationDirectoryLink',
+    defaultMessage:
+      'https://lannuaire.service-public.fr/autorites-independantes/autorite-administrative-independante_195381',
+  },
+  administrationDirectoryLinkText: {
+    id: 'app.containers.AccessibilityStatement.administrationDirectoryLinkText',
+    defaultMessage: 'administration directory',
+  },
+  multiYearPlanTitle: {
+    id: 'app.containers.AccessibilityStatement.multiYearPlanTitle',
+    defaultMessage: 'Multi-Year Accessibility Plan',
+  },
+  introduction: {
+    id: 'app.containers.AccessibilityStatement.introduction',
+    defaultMessage: 'Introduction',
+  },
+  introductionContent: {
+    id: 'app.containers.AccessibilityStatement.introductionContent',
+    defaultMessage:
+      'Go Vocal is committed to ensuring digital accessibility for people with disabilities. We strive to improve the user experience for everyone by applying relevant accessibility standards, including WCAG 2.2 AA and RGAA v4.1. This multi-year accessibility plan outlines our strategy to maintain and enhance accessibility compliance through continuous certification, periodic audits, and ongoing internal monitoring.',
+  },
+  currentStatus: {
+    id: 'app.containers.AccessibilityStatement.currentStatus',
+    defaultMessage: 'Current Status',
+  },
+  currentStatusContent: {
+    id: 'app.containers.AccessibilityStatement.currentStatusContent',
+    defaultMessage:
+      'As of July 2024, Go Vocal has successfully passed an accessibility audit of a demo website that is representative of this website conducted by a certified third-party auditor. Our website is currently in compliance with both WCAG 2.2 AA and RGAA v4.1 standards.',
+  },
+  certificationAndAudits: {
+    id: 'app.containers.AccessibilityStatement.certificationAndAudits',
+    defaultMessage: 'Certification and Audits',
+  },
+  goal: {
+    id: 'app.containers.AccessibilityStatement.goal',
+    defaultMessage: 'Goal',
+  },
+  goalContent: {
+    id: 'app.containers.AccessibilityStatement.goalContent',
+    defaultMessage:
+      'To maintain accessibility compliance through certification and regular audits according to WCAG 2.2 AA and RGAA v4.1 standards.',
+  },
+  plan: {
+    id: 'app.containers.AccessibilityStatement.plan',
+    defaultMessage: 'Plan',
+  },
+  certification: {
+    id: 'app.containers.AccessibilityStatement.certification',
+    defaultMessage: 'Certification',
+  },
+  certificationPoint1: {
+    id: 'app.containers.AccessibilityStatement.certificationPoint1',
+    defaultMessage:
+      'Obtain official accessibility certification from a recognized certifying body, ensuring compliance with RGAA v4.1 and WCAG 2.2 AA standards.',
+  },
+  certificationPoint2: {
+    id: 'app.containers.AccessibilityStatement.certificationPoint2',
+    defaultMessage:
+      'Ensure all new content and features comply with these standards.',
+  },
+  certificationPoint3: {
+    id: 'app.containers.AccessibilityStatement.certificationPoint3',
+    defaultMessage:
+      'Re-certify the website once the current certificate expires.',
+  },
+  periodicAudits: {
+    id: 'app.containers.AccessibilityStatement.periodicAudits',
+    defaultMessage: 'Periodic Audits',
+  },
+  auditPoint1: {
+    id: 'app.containers.AccessibilityStatement.auditPoint1',
+    defaultMessage:
+      'Conduct comprehensive accessibility audits every two years at a minimum by certified third-party auditors to ensure ongoing compliance with WCAG 2.2 AA and RGAA v4.1 standards.',
+  },
+  auditPoint2: {
+    id: 'app.containers.AccessibilityStatement.auditPoint2',
+    defaultMessage:
+      'Address any issues identified during these audits promptly.',
+  },
+  accessibilityViolations: {
+    id: 'app.containers.AccessibilityStatement.accessibilityViolations',
+    defaultMessage:
+      'Track and implement accessibility violations raised: Address any issues identified during usage of the platform.',
+  },
+  internalMonitoring: {
+    id: 'app.containers.AccessibilityStatement.internalMonitoring',
+    defaultMessage: 'Internal Monitoring',
+  },
+  monitoringPoint1: {
+    id: 'app.containers.AccessibilityStatement.monitoringPoint1',
+    defaultMessage:
+      'Continuously monitor and maintain website accessibility between certification audits.',
+  },
+  monitoringPoint2: {
+    id: 'app.containers.AccessibilityStatement.monitoringPoint2',
+    defaultMessage:
+      'Implement internal processes to ensure that all new content and updates adhere to WCAG 2.2 AA and RGAA v4.1 standards.',
+  },
+  monitoringPoint3: {
+    id: 'app.containers.AccessibilityStatement.monitoringPoint3',
+    defaultMessage:
+      'Provide ongoing accessibility training for all web developers and designers.',
   },
 });
