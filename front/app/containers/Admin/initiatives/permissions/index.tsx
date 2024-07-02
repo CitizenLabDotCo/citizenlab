@@ -1,9 +1,6 @@
 import React from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import GetGlobalPermissions, {
-  GetGlobalPermissionsChildProps,
-} from 'resources/GetGlobalPermissions';
 
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
@@ -12,23 +9,16 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ActionsForm from 'components/admin/ActionsForm';
 import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 
 import messages from './messages';
 
-interface DataProps {
-  permissions: GetGlobalPermissionsChildProps;
-}
+import usePermissions from 'api/permissions/usePermissions';
+import { IGlobalPermissionData } from 'api/permissions/types';
 
-const PermissionsInitiatives = ({ permissions }: DataProps) => {
-  const { mutate: updateGlobalPermission } = useUpdatePermission();
-  const featureEnabled = useFeatureFlag({ name: 'granular_permissions' });
-
-  if (!featureEnabled || isNilOrError(permissions)) return null;
-
+const filterPermissions = (permissions: IGlobalPermissionData[]) => {
   const initiativePermissions = permissions.filter((permission) =>
     [
       'posting_initiative',
@@ -36,6 +26,23 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
       'reacting_initiative',
     ].includes(permission.attributes.action)
   );
+
+  // TODO remove this later when we actually start using 'visiting' as a permission
+  const notVisitingPermissions = initiativePermissions.filter((permission) => {
+    return (permission.attributes.action as any) !== 'visiting';
+  });
+
+  return notVisitingPermissions;
+};
+
+const PermissionsInitiatives = () => {
+  const { data: unfilteredPermissions } = usePermissions();
+  const { mutate: updateGlobalPermission } = useUpdatePermission();
+  const featureEnabled = useFeatureFlag({ name: 'granular_permissions' });
+
+  if (!featureEnabled || !unfilteredPermissions) return null;
+
+  const permissions = filterPermissions(unfilteredPermissions.data);
 
   const handlePermissionChange = ({
     permission,
@@ -63,7 +70,7 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
             <FormattedMessage {...messages.granularPermissionsTitle} />
           </SectionTitle>
           <ActionsForm
-            permissions={initiativePermissions}
+            permissions={permissions}
             onChange={handlePermissionChange}
             postType="initiative"
             projectId={null}
@@ -75,8 +82,4 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
   );
 };
 
-export default () => (
-  <GetGlobalPermissions>
-    {(permissions) => <PermissionsInitiatives permissions={permissions} />}
-  </GetGlobalPermissions>
-);
+export default PermissionsInitiatives;
