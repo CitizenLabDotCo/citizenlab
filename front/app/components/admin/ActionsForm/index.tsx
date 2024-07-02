@@ -41,7 +41,6 @@ type PostTypeProps =
 type SharedProps = {
   permissions: IPermissionData[];
   phaseId?: string | null;
-  initiativeContext?: boolean;
   onChange: ({
     permission,
     permittedBy,
@@ -57,7 +56,6 @@ const ActionsForm = ({
   postType,
   onChange,
   projectId,
-  initiativeContext,
   phaseId,
 }: Props) => {
   const [previousUsersGlobalCustomFields, setPreviousUsersGlobalCustomFields] =
@@ -147,7 +145,7 @@ const ActionsForm = ({
                     permission={permission}
                     projectId={projectId}
                     phaseId={phaseId}
-                    initiativeContext={initiativeContext}
+                    initiativeContext={postType === 'initiative'}
                     onChange={onChange}
                   />
                 </Box>
