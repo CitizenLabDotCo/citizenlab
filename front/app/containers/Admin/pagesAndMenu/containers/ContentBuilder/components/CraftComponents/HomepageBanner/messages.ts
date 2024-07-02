@@ -139,4 +139,9 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.signedInDescription',
     defaultMessage: 'This is how registered users see the banner.',
   },
+  customizationNotAvailable: {
+    id: 'app.containers.ContentBuilder.homepage.customizationNotAvailable',
+    defaultMessage:
+      'Customizing settings other than the text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });

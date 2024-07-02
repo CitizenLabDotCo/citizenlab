@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionField } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -43,6 +45,11 @@ export interface Props {
 
 const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const customHomepageBannerAllowed = useFeatureFlag({
+    name: 'customisable_homepage_banner',
+    onlyCheckAllowed: true,
+  });
+
   return (
     <SectionField key="layout">
       <Text color="primary">
@@ -57,6 +64,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               value="full_width_banner_layout"
               name="banner-layout"
               id="banner-full-width-banner-layout"
+              disabled={!customHomepageBannerAllowed}
               label={
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.fullWidthBannerLayout)}
@@ -104,6 +112,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 name="banner-layout"
                 id="banner-two-column-layout"
                 label={formatMessage(messages.TwoColumnLayout)}
+                disabled={!customHomepageBannerAllowed}
               />
             </Box>
             <LayoutPreview
@@ -124,6 +133,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               value="two_row_layout"
               name="banner-layout"
               id="banner-two-row-layout"
+              disabled={!customHomepageBannerAllowed}
               label={
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.twoRowLayout)}
@@ -168,6 +178,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               value="fixed_ratio_layout"
               name="banner-layout"
               id="banner_fixed_ratio_layout"
+              disabled={!customHomepageBannerAllowed}
               label={
                 <Box display="flex" gap="8px">
                   {formatMessage(messages.fixedRatioLayout)}

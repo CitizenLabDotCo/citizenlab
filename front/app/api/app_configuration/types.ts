@@ -230,6 +230,7 @@ export interface IAppConfigurationSettings {
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;
+  customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
 }
 
