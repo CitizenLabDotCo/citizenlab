@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FormattedMessage } from 'utils/cl-intl';
-import PhasePermissions from '../Project/Granular/PhasePermissions';
+import PhasePermissions from '../../components/PhasePermissions';
 import messages from '../../messages';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';

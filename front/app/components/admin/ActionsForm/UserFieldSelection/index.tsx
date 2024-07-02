@@ -28,7 +28,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 
 import messages from './messages';
-import { HandlePermissionChangeProps } from './utils';
+import { HandlePermissionChangeProps } from '../typings';
 
 import { FieldSelectionModal } from './FieldSelectionModal';
 

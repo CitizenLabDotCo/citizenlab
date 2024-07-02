@@ -12,10 +12,8 @@ import UserFieldSelection from './UserFieldSelection';
 
 import ActionForm from './ActionForm';
 import messages from './messages';
-import {
-  getPermissionActionSectionSubtitle,
-  HandlePermissionChangeProps,
-} from './utils';
+import { getPermissionActionSectionSubtitle } from './utils';
+import { HandlePermissionChangeProps } from './typings';
 
 const ActionPermissionWrapper = styled.div`
   margin-left: 0px;
@@ -110,55 +108,55 @@ const ActionsForm = ({
         <FormattedMessage {...messages.noActionsCanBeTakenInThisProject} />
       </p>
     );
-  } else {
-    return (
-      <>
-        {permissions.map((permission, index) => {
-          const permissionAction = permission.attributes.action;
-          return (
-            <ActionPermissionWrapper
-              key={permission.id}
-              className={`${index === 0 ? 'first' : ''} ${
-                index === permissions.length - 1 ? 'last' : ''
-              }`}
-            >
-              <Title variant="h3" color="primary">
-                <FormattedMessage
-                  {...getPermissionActionSectionSubtitle({
-                    permissionAction,
-                    postType,
-                  })}
-                />
-              </Title>
-              <ActionForm
-                permissionData={permission}
-                groupIds={permission.relationships.groups.data.map((p) => p.id)}
-                projectType={postType}
-                onChange={handlePermissionChange(permission, phaseId)}
-              />
-              {permission.attributes.permitted_by !== 'everyone' &&
-                permission.attributes.permitted_by !== 'admins_moderators' && (
-                  <Box
-                    pt="10px"
-                    borderLeft={`solid 1px ${colors.grey300}`}
-                    px="20px"
-                    pb="20px"
-                  >
-                    <UserFieldSelection
-                      permission={permission}
-                      projectId={projectId}
-                      phaseId={phaseId}
-                      initiativeContext={initiativeContext}
-                      onChange={onChange}
-                    />
-                  </Box>
-                )}
-            </ActionPermissionWrapper>
-          );
-        })}
-      </>
-    );
   }
+
+  return (
+    <>
+      {permissions.map((permission, index) => {
+        const permissionAction = permission.attributes.action;
+        return (
+          <ActionPermissionWrapper
+            key={permission.id}
+            className={`${index === 0 ? 'first' : ''} ${
+              index === permissions.length - 1 ? 'last' : ''
+            }`}
+          >
+            <Title variant="h3" color="primary">
+              <FormattedMessage
+                {...getPermissionActionSectionSubtitle({
+                  permissionAction,
+                  postType,
+                })}
+              />
+            </Title>
+            <ActionForm
+              permissionData={permission}
+              groupIds={permission.relationships.groups.data.map((p) => p.id)}
+              projectType={postType}
+              onChange={handlePermissionChange(permission, phaseId)}
+            />
+            {permission.attributes.permitted_by !== 'everyone' &&
+              permission.attributes.permitted_by !== 'admins_moderators' && (
+                <Box
+                  pt="10px"
+                  borderLeft={`solid 1px ${colors.grey300}`}
+                  px="20px"
+                  pb="20px"
+                >
+                  <UserFieldSelection
+                    permission={permission}
+                    projectId={projectId}
+                    phaseId={phaseId}
+                    initiativeContext={initiativeContext}
+                    onChange={onChange}
+                  />
+                </Box>
+              )}
+          </ActionPermissionWrapper>
+        );
+      })}
+    </>
+  );
 };
 
 export default ActionsForm;

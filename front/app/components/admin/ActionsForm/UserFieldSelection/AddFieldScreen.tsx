@@ -32,7 +32,7 @@ import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 
 import messages from './messages';
-import { getLabelForInputType } from './utils';
+import { getLabelForInputType } from '../utils';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;

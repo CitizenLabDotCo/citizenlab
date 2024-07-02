@@ -7,8 +7,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
-import PhasePermissions from './PhasePermissions';
+import messages from 'components/admin/ActionsForm/messages';
+import PhasePermissions from '../../../components/PhasePermissions';
 
 interface Props {
   projectId: string;

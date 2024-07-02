@@ -15,10 +15,12 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import PhaseActionForm from './PhaseActionForm';
+import ActionsForm from 'components/admin/ActionsForm';
 
-import messages from './messages';
-import { HandlePermissionChangeProps } from './utils';
+import messages from '../../containers/Project/Granular/messages';
+import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   project: IProjectData;
@@ -54,7 +56,7 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
 
   const isSinglePhase = !phaseNumber;
 
-  const phaseActionForm = (
+  const phaseActionsForm = (
     <Box
       display="flex"
       flex={'1'}
@@ -62,7 +64,7 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
       background={colors.white}
       minHeight="100px"
     >
-      <PhaseActionForm
+      <ActionsFormWrapper
         phase={phase}
         onChange={handlePermissionChange}
         projectId={project.id}
@@ -71,7 +73,7 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
   );
 
   if (isSinglePhase) {
-    return phaseActionForm;
+    return phaseActionsForm;
   } else {
     return (
       <Accordion
@@ -98,10 +100,46 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
           setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
         }}
       >
-        {phaseActionForm}
+        {phaseActionsForm}
       </Accordion>
     );
   }
+};
+
+type ActionsFormWrapperProps = {
+  phase: IPhaseData;
+  onChange: ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => void;
+  projectId: string;
+};
+
+const ActionsFormWrapper = ({
+  phase,
+  onChange,
+  projectId,
+}: ActionsFormWrapperProps) => {
+  const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
+  if (!permissions) {
+    return null;
+  }
+
+  const config = getMethodConfig(phase.attributes.participation_method);
+
+  return (
+    <Box mb="40px">
+      <ActionsForm
+        permissions={permissions.data}
+        onChange={onChange}
+        postType={config.postType}
+        projectId={projectId}
+        phaseId={phase.id}
+      />
+    </Box>
+  );
 };
 
 export default PhasePermissions;
