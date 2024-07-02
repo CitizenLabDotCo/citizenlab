@@ -138,7 +138,7 @@ const FormBuilderToolbox = ({
                 <Box>
                   <Text my="4px" color="white" fontSize="s">
                     {isCustomFieldsDisabled
-                      ? formatMessage(messages.disabledCustomFieldsTooltip)
+                      ? formatMessage(messages.disabledCustomFieldsTooltip1)
                       : formatMessage(messages.fieldIsNotVisibleTooltip)}
                   </Text>
                 </Box>
