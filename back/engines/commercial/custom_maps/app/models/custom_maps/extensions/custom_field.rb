@@ -10,7 +10,7 @@ module CustomMaps
       end
 
       def supports_map_config?
-        input_type == 'point'
+        input_type == 'point' || input_type == "line" || input_type == "polygon"
       end
     end
   end

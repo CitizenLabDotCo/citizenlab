@@ -80,6 +80,10 @@ const getCustomFieldBadgeLabel = (
       return messages.fileUpload;
     case 'point':
       return messages.dropPin;
+    case 'line':
+      return messages.drawRoute;
+    case 'polygon':
+      return messages.drawPolygon;
     default:
       return messages.default;
   }

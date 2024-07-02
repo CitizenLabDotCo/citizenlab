@@ -223,25 +223,31 @@ const FormBuilderToolbox = ({
         />
         {isLocationAnswerEnabled && (
           <>
-            <Title
-              fontWeight="normal"
-              ml="16px"
-              mt="16px"
-              variant="h6"
-              m="0px"
-              as="h3"
-              color="textSecondary"
-              style={{ textTransform: 'uppercase' }}
-            >
-              Mapping
-            </Title>
             <ToolboxItem
-              icon="map"
+              icon="dropPin"
               label={formatMessage(messages.dropPin)}
               onClick={() => addField('point')}
               data-cy="e2e-point-field"
               fieldsToExclude={builderConfig.toolboxFieldsToExclude}
               inputType="point"
+              disabled={isCustomFieldsDisabled}
+            />
+            <ToolboxItem
+              icon="drawRoute"
+              label={formatMessage(messages.drawRoute)}
+              onClick={() => addField('line')}
+              data-cy="e2e-line-field"
+              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+              inputType="line"
+              disabled={isCustomFieldsDisabled}
+            />
+            <ToolboxItem
+              icon="drawPolygon"
+              label={formatMessage(messages.drawPolygon)}
+              onClick={() => addField('polygon')}
+              data-cy="e2e-polygon-field"
+              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+              inputType="polygon"
               disabled={isCustomFieldsDisabled}
             />
           </>

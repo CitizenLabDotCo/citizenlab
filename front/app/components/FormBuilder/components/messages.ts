@@ -74,6 +74,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.dropPin',
     defaultMessage: 'Drop pin',
   },
+  drawRoute: {
+    id: 'app.components.formBuilder.drawRoute',
+    defaultMessage: 'Draw route',
+  },
+  drawPolygon: {
+    id: 'app.components.formBuilder.drawPolygon',
+    defaultMessage: 'Draw polygon',
+  },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',
@@ -173,6 +181,10 @@ export default defineMessages({
   optional: {
     id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
+  },
+  mapping: {
+    id: 'app.components.formBuilder.mapping',
+    defaultMessage: 'Mapping',
   },
   // Logic Settings
   formEnd: {

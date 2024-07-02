@@ -357,6 +357,38 @@ class CustomFieldService
     }
   end
 
+  # *** line ***
+
+  def line_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+  
+  def line_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** polygon ***
+
+  def polygon_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+  
+  def polygon_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
   # *** files ***
 
   def files_to_ui_schema_field(field, locale)
