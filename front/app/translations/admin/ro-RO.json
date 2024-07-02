@@ -30,7 +30,6 @@
   "app.components.ProjectTemplatePreview.typeProjectName": "Tastați numele proiectului",
   "app.components.ProjectTemplatePreview.useTemplate": "Utilizați acest șablon",
   "app.components.UserSearch.addModerators": "Adaugă",
-  "app.components.UserSearch.noOptions": "Fără opțiuni",
   "app.components.UserSearch.searchUsers": "Căutați utilizatori",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "Nu există date disponibile.",
@@ -1380,7 +1379,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."

@@ -60,7 +60,6 @@
   "app.components.SeatTrackerInfo.adminInfoTextWithoutBilling": "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   "app.components.SeatTrackerInfo.managerInfoTextWithoutBilling": "Your plan has {managerSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   "app.components.UserSearch.addModerators": "Aggiungi",
-  "app.components.UserSearch.noOptions": "Nessuna opzione",
   "app.components.UserSearch.searchUsers": "Digita per cercare gli utenti...",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "Nessun dato disponibile.",
@@ -1794,7 +1793,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sei sicuro di voler cancellare questa pagina? Questo non può essere annullato. Puoi anche rimuovere la pagina dalla barra di navigazione se non sei ancora pronto a cancellarla.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "La tua barra di navigazione può visualizzare fino a quattro pagine oltre alle pagine Home e progetti. Puoi rinominare le voci di menu, riordinare e aggiungere nuove pagine con i tuoi contenuti.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
