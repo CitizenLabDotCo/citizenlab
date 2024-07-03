@@ -173,17 +173,10 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#include_data_in_email?' do
-    it 'returns false' do
-      expect(participation_method.include_data_in_email?).to be false
-    end
-  end
-
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }

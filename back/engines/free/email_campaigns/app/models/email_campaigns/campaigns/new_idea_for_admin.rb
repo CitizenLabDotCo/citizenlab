@@ -83,7 +83,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       idea = activity.item
-      return [] unless idea.participation_method_on_creation.include_data_in_email?
+      return [] if idea.participation_method_on_creation.never_show?
 
       [{
         event_payload: {

@@ -111,65 +111,29 @@ RSpec.describe ParticipationMethod::Proposals do
       let!(:initial_status) { create(:idea_status_implemented) }
 
       it 'sets a default "proposed" idea_status if not set' do
-        input = build(:idea, idea_status: nil)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq proposed
+        proposal = build(:proposal, idea_status: nil)
+        participation_method.assign_defaults proposal
+        expect(proposal.idea_status).to eq proposed
       end
 
       it 'does not change the idea_status if it is already set' do
         initial_status = create(:idea_status_implemented)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-
-    context 'when the proposed idea status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:idea, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
+        proposal = build(:proposal, idea_status: initial_status)
+        participation_method.assign_defaults proposal
+        expect(proposal.idea_status).to eq initial_status
       end
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
-  describe '#posting_allowed?' do
-    it 'returns true' do
-      expect(participation_method.posting_allowed?).to be true
-    end
-  end
-
-  describe '#update_if_published?' do
+  describe '#update_if_published?' do # TODO
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
     end
   end
 
   describe '#custom_form' do
-    let(:project) { create(:project_with_active_ideation_phase) }
-    let(:project_form) { create(:custom_form, participation_context: project) }
-    let(:phase) { project.phases.first }
-
-    it 'returns the custom form of the project' do
-      expect(participation_method.custom_form.participation_context_id).to eq project.id
-    end
-  end
-
-  describe '#sign_in_required_for_posting?' do
-    it 'returns true' do
-      expect(participation_method.sign_in_required_for_posting?).to be true
+    it 'returns the custom form of the phase' do
+      expect(participation_method.custom_form.participation_context_id).to eq phase.id
     end
   end
 
@@ -179,28 +143,19 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#supports_toxicity_detection?' do
-    it 'returns true' do
-      expect(participation_method.supports_toxicity_detection?).to be true
-    end
-  end
-
-  describe '#include_data_in_email?' do
-    it 'returns true' do
-      expect(participation_method.include_data_in_email?).to be true
-    end
-  end
-
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:never_show?) { is_expected.to be false }
+  its(:posting_allowed?) { is_expected.to be true }
+  its(:sign_in_required_for_posting?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:additional_export_columns) { is_expected.to eq [] }

@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def transitive?
-      false
+      true
     end
 
     def assign_defaults_for_phase
@@ -78,7 +78,8 @@ module ParticipationMethod
     end
 
     def custom_form
-      phase.project.custom_form || CustomForm.new(participation_context: phase.project)
+      context = transitive? ? phase.project : phase
+      context.custom_form || CustomForm.new(participation_context: context)
     end
 
     def sign_in_required_for_posting?
@@ -90,10 +91,6 @@ module ParticipationMethod
     end
 
     def supports_exports?
-      false
-    end
-
-    def supports_publication?
       false
     end
 
@@ -127,10 +124,6 @@ module ParticipationMethod
 
     def supports_permitted_by_everyone?
       false
-    end
-
-    def include_data_in_email?
-      true
     end
 
     def supports_answer_visible_to?

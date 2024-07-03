@@ -40,7 +40,7 @@ FactoryBot.define do
       association :project, factory: :single_phase_proposals_project
       creation_phase { project.phases.first }
     end
-  
+
     factory :native_survey_response, class: 'Idea' do
       association :project, factory: :single_phase_native_survey_project
       creation_phase { project.phases.first }

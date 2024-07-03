@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
+    def transitive?
+      false
+    end
+
     def assign_defaults_for_phase
       phase.posting_method = 'limited'
       phase.posting_limited_max = 1
@@ -108,10 +112,6 @@ module ParticipationMethod
 
     def supports_permitted_by_everyone?
       true
-    end
-
-    def include_data_in_email?
-      false
     end
 
     def return_disabled_actions?

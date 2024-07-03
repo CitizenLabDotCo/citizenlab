@@ -196,12 +196,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#include_data_in_email?' do
-    it 'returns true' do
-      expect(participation_method.include_data_in_email?).to be true
-    end
-  end
-
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.size).to be 8
@@ -230,7 +224,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }

@@ -171,9 +171,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:update_if_published?) { is_expected.to be true }
   its(:sign_in_required_for_posting?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
-  its(:include_data_in_email?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }

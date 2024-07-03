@@ -149,9 +149,9 @@ module EmailCampaigns
     def top_ideas(project, name_service)
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
-      top_ideas = top_ideas.all.select do |idea|
-        idea.participation_method_on_creation.include_data_in_email? &&
-          (idea_activity_count(idea) > 0 || idea.published_at > Time.now - days_ago)
+      top_ideas = top_ideas.all.reject do |idea|
+        (idea.participation_method_on_creation.never_show? ||
+          (idea_activity_count(idea) <= 0 && idea.published_at <= Time.now - days_ago))
       end
       top_ideas = top_ideas.sort_by do |idea|
         idea_activity_count idea

@@ -161,7 +161,7 @@ module XlsxExport
     def meta_report_fields
       [].tap do |meta_fields|
         meta_fields << created_at_report_field
-        meta_fields << published_at_report_field if participation_method.supports_publication?
+        meta_fields << published_at_report_field unless participation_method.never_show?
         meta_fields << comments_count_report_field if participation_method.supports_commenting?
         if participation_method.supports_reacting?
           meta_fields << likes_count_report_field
