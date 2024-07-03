@@ -1,11 +1,16 @@
 import React from 'react';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
+
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import ActionsFormNew from './ActionsFormNew';
 import { IPhaseData } from 'api/phases/types';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 import { IProjectData } from 'api/projects/types';
+
+import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+import ActionsFormNew from './ActionsFormNew';
 
 interface Props {
   project: IProjectData;
