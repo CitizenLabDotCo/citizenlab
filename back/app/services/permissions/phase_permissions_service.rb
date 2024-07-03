@@ -42,12 +42,19 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
-    def denied_reason_for_action(action, user, phase, project: phase&.project, reaction_mode: nil)
+    attr_reader :phase
+
+    def initialize(phase)
+      super
+      @phase = phase
+    end
+
+    def denied_reason_for_action(action, user, project: phase&.project, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
       when 'posting_idea'
-        posting_idea_denied_reason_for_phase(phase, user)
+        posting_idea_denied_reason_for_phase(user)
       when 'commenting_idea'
         commenting_idea_denied_reason_for_phase(phase)
       when 'reacting_idea'
@@ -73,39 +80,39 @@ module Permissions
     private
 
     # Phase methods
-    def posting_idea_denied_reason_for_phase(phase, user)
-      if !Factory.instance.participation_method_for(phase).posting_allowed?
+    def posting_idea_denied_reason_for_phase(user)
+      if !participation_method.posting_allowed?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
-      elsif user && posting_limit_reached?(phase, user)
+      elsif user && posting_limit_reached?(user)
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
 
-    def commenting_idea_denied_reason_for_phase(phase)
-      if !phase.supports_commenting?
+    def commenting_idea_denied_reason_for_phase
+      if !participation_method.supports_commenting?
         COMMENTING_DENIED_REASONS[:commenting_not_supported]
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end
     end
 
-    def reacting_denied_reason_for_phase(phase, user, reaction_mode: nil)
+    def reacting_denied_reason_for_phase(user, reaction_mode: nil)
       if !phase.ideation?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif reaction_mode == 'up' && user && liking_limit_reached?(phase, user)
+      elsif reaction_mode == 'up' && user && liking_limit_reached?(user)
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif reaction_mode == 'down' && user && disliking_limit_reached?(phase, user)
+      elsif reaction_mode == 'down' && user && disliking_limit_reached?(user)
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
 
-    def taking_survey_denied_reason_for_phase(phase)
+    def taking_survey_denied_reason_for_phase
       unless phase.survey?
         TAKING_SURVEY_DENIED_REASONS[:not_survey]
       end
@@ -154,6 +161,10 @@ module Permissions
 
     def disliking_limit_reached?(phase, user)
       phase.reacting_dislike_limited? && user.reactions.down.where(reactable: phase.ideas).size >= phase.reacting_dislike_limited_max
+    end
+
+    def participation_method
+      @participation_method ||= Factory.instance.participation_method_for(phase)
     end
   end
 end

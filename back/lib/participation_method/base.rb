@@ -69,7 +69,7 @@ module ParticipationMethod
       false
     end
 
-    def posting_allowed?
+    def posting_allowed? # TODO: Rename to posting_supported?
       false
     end
 

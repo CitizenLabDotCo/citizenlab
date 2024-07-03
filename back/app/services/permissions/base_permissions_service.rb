@@ -26,7 +26,6 @@ module Permissions
     }.freeze
 
     def initialize
-      super
       @timeline_service = TimelineService.new
     end
 
