@@ -21,7 +21,12 @@ interface Props {
   ) => void;
 }
 
-const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
+const ActionFormNew = ({
+  permissionData,
+  groupIds,
+  phaseType,
+  onChange,
+}: Props) => {
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
     onChange(permittedBy, []); // TODO
   };
@@ -58,6 +63,7 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
           />
         </Box>
       )}
+      <Box>TODO</Box>
     </form>
   );
 };
