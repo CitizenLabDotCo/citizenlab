@@ -2,8 +2,6 @@ import React from 'react';
 
 import {
   Box,
-  IconTooltip,
-  Toggle,
   colors,
   Title,
   CardButton,
@@ -24,6 +22,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import AdminCollaboratorToggle from './AdminCollaboratorToggle';
 import messages from './messages';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
@@ -85,29 +84,12 @@ const ActionForm = ({
   return (
     <form>
       <Box mb="10px">
-        <Toggle
-          checked={permittedBy === 'admins_moderators'}
-          label={
-            <Box display="flex">
-              <span style={{ color: colors.primary }}>
-                <FormattedMessage
-                  {...messages.permissionsAdminsAndCollaborators}
-                />
-              </span>
-
-              <IconTooltip
-                ml="4px"
-                icon="info-solid"
-                content={formatMessage(
-                  messages.permissionsAdminsAndCollaboratorsTooltip
-                )}
-              />
-            </Box>
-          }
+        <AdminCollaboratorToggle
+          enabled={permittedBy === 'admins_moderators'}
+          id={`participation-permission-admins-${permissionId}`}
           onChange={handlePermittedByUpdate(
             permittedBy === 'admins_moderators' ? 'users' : 'admins_moderators'
           )}
-          id={`participation-permission-admins-${permissionId}`}
         />
       </Box>
       {permittedBy !== 'admins_moderators' && (

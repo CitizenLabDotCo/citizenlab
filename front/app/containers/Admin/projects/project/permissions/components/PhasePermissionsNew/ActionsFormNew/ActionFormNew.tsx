@@ -8,6 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
+import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
 import actionFormMessages from 'components/admin/ActionsForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -38,7 +39,7 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
     };
 
   const {
-    // id: permissionId,
+    id: permissionId,
     attributes: { permitted_by: permittedBy, action },
   } = permissionData;
 
@@ -47,6 +48,15 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
 
   return (
     <form>
+      <Box mb="20px">
+        <AdminCollaboratorToggle
+          enabled={permittedBy === 'admins_moderators'}
+          id={`participation-permission-admins-${permissionId}`}
+          onChange={handlePermittedByUpdate(
+            permittedBy === 'admins_moderators' ? 'users' : 'admins_moderators'
+          )}
+        />
+      </Box>
       <Box display="flex" gap="16px">
         {isSurveyAction && (
           <CardButton
@@ -74,7 +84,7 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
         />
         <CardButton
           id="e2e-permission-registered-users"
-          iconName="shield-check"
+          iconName="user-check"
           title={formatMessage(actionFormMessages.permissionsUsersLabel)}
           subtitle={formatMessage(
             actionFormMessages.permissionsUsersLabelDescription
