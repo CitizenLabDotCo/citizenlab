@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-namespace :cl2_back do # rubocop:disable Metrics/BlockLength
+namespace :cl2_back do
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
@@ -18,7 +18,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             'nl-BE' => 'Mirakelgem'
           },
           signup_helper_text: {
-            en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
+            en: 'If you don\'t want to register, use hello@govocal.com/democrazy as email/password'
           },
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
@@ -46,19 +46,11 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        permission_option_email_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         permissions_custom_fields: {
           enabled: true,
           allowed: true
         },
         anonymous_participation: {
-          enabled: true,
-          allowed: true
-        },
-        representativeness: {
           enabled: true,
           allowed: true
         },
@@ -192,10 +184,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        admin_project_templates: {
-          enabled: true,
-          allowed: true
-        },
         verification: {
           enabled: true,
           allowed: true,
@@ -254,14 +242,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        project_management: {
-          enabled: true,
-          allowed: true
-        },
-        project_visibility: {
-          enabled: true,
-          allowed: true
-        },
         moderation: {
           enabled: true,
           allowed: true
@@ -271,24 +251,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         disable_disliking: {
-          enabled: true,
-          allowed: true
-        },
-        texting: {
-          enabled: true,
-          allowed: true,
-          from_number: '+12345678912',
-          monthly_sms_segments_limit: 100_000
-        },
-        native_surveys: {
-          enabled: true,
-          allowed: true
-        },
-        analytics: {
-          enabled: true,
-          allowed: true
-        },
-        visitors_dashboard: {
           enabled: true,
           allowed: true
         },
@@ -312,10 +274,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: false,
           allowed: false,
           duration: 90
-        },
-        seat_based_billing: {
-          enabled: true,
-          allowed: true
         },
         public_api_tokens: {
           enabled: true,
@@ -375,12 +333,12 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
-        email: 'hello@citizenlab.co',
+        email: 'hello@govocal.com',
         password: 'democrazy',
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
-      admin = User.find_by(email: 'admin@citizenlab.co')
+      admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
     end

@@ -213,6 +213,13 @@ context 'criipto verification' do
     expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
   end
 
+  it 'does not send email to empty address (when just registered)' do
+    get '/auth/criipto'
+    follow_redirect!
+
+    expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
   context 'when verification is already taken by new user' do
     before do
       get '/auth/criipto'
@@ -285,12 +292,15 @@ context 'criipto verification' do
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
 
-        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-        headers = { 'Authorization' => "Bearer #{token}" }
+        headers = { 'Authorization' => authorization_header(user) }
+
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
+
         post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
 
         post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
         expect(response).to have_http_status(:ok)

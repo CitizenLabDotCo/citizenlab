@@ -430,10 +430,10 @@ describe('Survey builder', () => {
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
-    cy.get('#e2e-cta-button')
+    cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -441,10 +441,10 @@ describe('Survey builder', () => {
     // Take the survey again
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
-    cy.get('#e2e-cta-button')
+    cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -538,7 +538,9 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the second option and click next
+    cy.wait(2000);
     cy.contains(chooseOneOption2).click({ force: true });
+    cy.wait(2000);
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the third page
@@ -654,14 +656,18 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Select the second option to go to page two
-    cy.contains(firstLogicQnOption2).click({ force: true });
+    cy.contains(firstLogicQnOption2)
+      .should('be.visible')
+      .click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the second page
     cy.contains(page2Title).should('exist');
 
     // Select the first option to go to survey end
-    cy.contains(secondLogicQnOption1).click({ force: true });
+    cy.contains('label', secondLogicQnOption1)
+      .should('be.visible')
+      .click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the submit page
@@ -675,6 +681,7 @@ describe('Survey builder', () => {
 
     // Go back to the previous page to go to page 1
     cy.get('[data-cy="e2e-previous-page"]').click();
+    cy.wait(2000);
 
     // Go to page two and try clicking next
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -694,22 +701,24 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Select the second option to navigate to the other pages
+    cy.wait(2000);
     cy.contains(secondLogicQnOption2).click({ force: true });
 
     // Go to page 3
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.contains(page3Title).should('exist');
-    cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="properties${page3QnTitle}"]`)
+      .should('be.visible')
+      .type(answer, { force: true });
 
     // Go to page 4
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.wait(2000);
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.contains(page4Title).should('exist');
-
-    cy.get('[data-cy="e2e-next-page"]').click();
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(1000);
+
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
     cy.get('.e2e-modal-close-button').click();
     cy.get('#e2e-modal-container').should('have.length', 0);
@@ -753,11 +762,11 @@ describe('Survey builder', () => {
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
-    cy.get('#e2e-cta-button')
+    cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
@@ -774,7 +783,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-cta-button').find('button').should('have.attr', 'disabled');
+    cy.get('.e2e-idea-button').find('button').should('have.attr', 'disabled');
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
   });
 
@@ -1019,7 +1028,7 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Go through option 2 flow first and enter data
-    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseOneOption2).should('be.visible').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.contains(page3Title).should('exist');
     cy.contains(question3Title).should('exist');
@@ -1029,7 +1038,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the first option and click next
-    cy.contains(chooseOneOption1).click({ force: true });
+    cy.contains(chooseOneOption1).should('be.visible').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that we are on the fourth page and on the last page as indicated by the page logic

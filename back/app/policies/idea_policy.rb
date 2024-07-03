@@ -73,13 +73,13 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    (user && UserRoleService.new.can_moderate_project?(record.project, user)) || update?
   end
 
   private
 
   def owner?
-    record.author_id == user.id
+    user && record.author_id == user.id
   end
 end
 

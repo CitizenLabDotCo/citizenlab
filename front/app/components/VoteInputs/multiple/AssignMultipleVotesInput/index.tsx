@@ -6,8 +6,8 @@ import {
   Text,
   colors,
   useBreakpoint,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
@@ -185,9 +185,8 @@ const AssignMultipleVotesInput = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Tippy
+        <Tooltip
           disabled={!minusButtonDisabledExplanation}
-          interactive={true}
           placement="bottom"
           content={minusButtonDisabledExplanation}
         >
@@ -203,7 +202,7 @@ const AssignMultipleVotesInput = ({
               <h1 style={{ margin: '0px' }}>-</h1>
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
 
         <Box
           onClick={(event) => {
@@ -239,9 +238,8 @@ const AssignMultipleVotesInput = ({
             })}
           </Text>
         </Box>
-        <Tippy
+        <Tooltip
           disabled={!plusButtonDisabledExplanation}
-          interactive={true}
           placement="bottom-end"
           content={plusButtonDisabledExplanation}
         >
@@ -257,15 +255,14 @@ const AssignMultipleVotesInput = ({
               <h1 style={{ margin: '0px' }}>+</h1>
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     );
   }
 
   return (
-    <Tippy
+    <Tooltip
       disabled={!plusButtonDisabledExplanation}
-      interactive={true}
       placement="bottom"
       content={plusButtonDisabledExplanation}
     >
@@ -282,7 +279,7 @@ const AssignMultipleVotesInput = ({
           {formatMessage(messages.select)}
         </Button>
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 

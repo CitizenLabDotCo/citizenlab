@@ -51,7 +51,7 @@ const TopBar = ({ project, event }: Props) => {
         />
         {canModerate && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             m="0px"
             icon="edit"
             px="8px"

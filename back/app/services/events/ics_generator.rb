@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'icalendar/tzinfo'
+
 module Events
   class IcsGenerator
     # @param [Event, #to_ary] events one or multiple events
@@ -24,11 +26,12 @@ module Events
 
     def empty_calendar
       Icalendar::Calendar.new.tap do |cal|
-        cal.prodid = 'CitizenLab'
+        cal.prodid = 'GoVocal'
       end
     end
 
     def add_event_to_calendar(cal, event, preferred_locale)
+      timezone = AppConfiguration.timezone
       start_time = event.start_at.in_time_zone(timezone)
       end_time = event.end_at.in_time_zone(timezone)
 
@@ -43,6 +46,8 @@ module Events
       # Therefore, we have decided to use the timezone identifier without the `/` prefix,
       # even though it deviates from the ICS specification.
       tzid = timezone.tzinfo.identifier
+      ical_timezone = timezone.tzinfo.ical_timezone start_time
+      cal.add_timezone ical_timezone
 
       cal.event do |e|
         e.dtstart = Icalendar::Values::DateTime.new(start_time, tzid: tzid)
@@ -75,13 +80,6 @@ module Events
 
     def multiloc_service
       @multiloc_service ||= MultilocService.new
-    end
-
-    def timezone
-      @timezone ||= begin
-        timezone_name = AppConfiguration.instance.settings.dig('core', 'timezone')
-        ActiveSupport::TimeZone[timezone_name] || (raise KeyError, timezone_name)
-      end
     end
   end
 end

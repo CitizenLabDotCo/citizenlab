@@ -27,31 +27,32 @@ end
 
 resource 'Stats - Initiatives' do
   explanation 'The various stats endpoints can be used to show certain properties of initiatives.'
+  header 'Content-Type', 'application/json'
 
-  let_it_be(:now) { Time.now.in_time_zone(@timezone) }
+  let_it_be(:now) { AppConfiguration.timezone.now }
 
-  before do
-    header 'Content-Type', 'application/json'
-    admin_header_token
+  before { admin_header_token }
 
+  before_all do
     AppConfiguration.instance.update!(created_at: now - 3.years)
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     @threshold_reached = create(:initiative_status, code: 'threshold_reached')
     @initiatives_with_topics = []
     @initiatives_with_areas = []
 
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.month do
+    begin_of_last_year = AppConfiguration.timezone.now.beginning_of_year - 1.year
+
+    travel_to(begin_of_last_year - 1.month) do
       i = create(:initiative, initiative_status: @threshold_reached)
       create(:official_feedback, post: i)
     end
 
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
+    travel_to(begin_of_last_year + 2.months) do
       @initiatives_with_topics += create_list(:initiative_with_topics, 2, initiative_status: @threshold_reached)
       @initiatives_with_areas += create_list(:initiative_with_areas, 3, initiative_status: @threshold_reached)
     end
 
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
+    travel_to(begin_of_last_year + 5.months) do
       @initiatives_with_topics += create_list(:initiative_with_topics, 3, initiative_status: @threshold_reached)
       @initiatives_with_areas += create_list(:initiative_with_areas, 2, initiative_status: @threshold_reached)
       create(:initiative, initiative_status: @threshold_reached)

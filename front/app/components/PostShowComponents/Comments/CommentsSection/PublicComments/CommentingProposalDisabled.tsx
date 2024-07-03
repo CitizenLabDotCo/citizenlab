@@ -10,6 +10,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
+import actionDescriptorMessages from 'utils/actionDescriptors/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -21,6 +22,7 @@ const CommentingProposalDisabled = () => {
     'commenting_initiative'
   );
 
+  // NOTE: The use of actionDescriptorMessages temporary until initiative comments moved centrally to actionDescriptors utils
   const calculateMessageDescriptor = (
     commentingPermissions: ReturnType<typeof useInitiativesPermissions>
   ) => {
@@ -41,12 +43,12 @@ const CommentingProposalDisabled = () => {
     ) {
       return messages.commentingInitiativeNotPermitted;
     } else if (authenticationRequirements === 'verify') {
-      return messages.commentingDisabledUnverified;
+      return actionDescriptorMessages.commentingDisabledUnverified;
     } else if (
       authUser &&
       authenticationRequirements === 'complete_registration'
     ) {
-      return messages.completeProfileToComment;
+      return actionDescriptorMessages.completeProfileToComment;
     } else if (authenticationRequirements === 'sign_in_up') {
       return messages.signInToCommentInitiative;
     } else if (authenticationRequirements === 'sign_in_up_and_verify') {

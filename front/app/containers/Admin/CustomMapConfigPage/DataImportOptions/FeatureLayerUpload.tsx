@@ -157,7 +157,7 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
 
       <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={() => {
             setView('main');
           }}

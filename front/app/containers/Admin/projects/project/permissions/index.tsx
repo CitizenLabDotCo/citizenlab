@@ -37,20 +37,12 @@ const ProjectPermissions = () => {
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
 
-  const isProjectVisibilityEnabled = useFeatureFlag({
-    name: 'project_visibility',
-  });
-
   const isGranularPermissionsEnabled = useFeatureFlag({
     name: 'granular_permissions',
   });
 
-  const isProjectManagementEnabled = useFeatureFlag({
-    name: 'project_management',
-  });
-
   if (phase && project) {
-    return isGranularPermissionsEnabled && isProjectVisibilityEnabled ? (
+    return isGranularPermissionsEnabled ? (
       <StyledSection>
         <Title variant="h2" color="primary">
           <FormattedMessage {...messages.participationRequirementsTitle} />
@@ -66,18 +58,16 @@ const ProjectPermissions = () => {
   if (project) {
     return (
       <>
-        {isProjectVisibilityEnabled && (
-          <>
-            <Title variant="h2" color="primary">
-              <FormattedMessage {...messages.projectVisibilityTitle} />
-            </Title>
-            <Text color="coolGrey600">
-              <FormattedMessage {...messages.projectVisibilitySubtitle} />
-            </Text>
-            <ProjectVisibility projectId={projectId} />
-          </>
-        )}
-        {isGranularPermissionsEnabled && isProjectVisibilityEnabled && (
+        <>
+          <Title variant="h2" color="primary">
+            <FormattedMessage {...messages.projectVisibilityTitle} />
+          </Title>
+          <Text color="coolGrey600">
+            <FormattedMessage {...messages.projectVisibilitySubtitle} />
+          </Text>
+          <ProjectVisibility projectId={projectId} />
+        </>
+        {isGranularPermissionsEnabled && (
           <StyledSection>
             <Title variant="h2" color="primary">
               <FormattedMessage {...messages.participationRequirementsTitle} />
@@ -100,9 +90,7 @@ const ProjectPermissions = () => {
             ) : null
           }
         </Outlet>
-        {isProjectManagementEnabled && (
-          <ProjectManagement projectId={projectId} />
-        )}
+        <ProjectManagement projectId={projectId} />
       </>
     );
   }

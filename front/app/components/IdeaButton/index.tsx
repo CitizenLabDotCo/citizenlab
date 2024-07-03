@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-import Tippy from '@tippyjs/react';
+import { Tooltip, Box } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -26,10 +25,6 @@ import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 import TippyContent from './TippyContent';
 import tracks from './tracks';
-
-const Container = styled.div``;
-
-const ButtonWrapper = styled.div``;
 
 export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
@@ -93,7 +88,7 @@ const IdeaButton = memo<Props>(
           search: stringify(
             {
               ...positionParams,
-              phase_id: phase?.id,
+              phase_id: phase.id,
             },
             { addQueryPrefix: true }
           ),
@@ -130,7 +125,7 @@ const IdeaButton = memo<Props>(
           name: 'redirectToIdeaForm',
           params: {
             projectSlug: project.data.attributes.slug,
-            phaseId: phase?.id,
+            phaseId: phase.id,
           },
         };
 
@@ -157,10 +152,9 @@ const IdeaButton = memo<Props>(
     }
 
     return (
-      <Container id={id} className={className || ''}>
-        <Tippy
+      <Box id={id} className={className || ''}>
+        <Tooltip
           disabled={!tippyEnabled}
-          interactive={true}
           placement="bottom"
           content={
             tippyEnabled ? (
@@ -175,8 +169,7 @@ const IdeaButton = memo<Props>(
           theme="light"
           hideOnClick={false}
         >
-          <ButtonWrapper
-            id="e2e-cta-button"
+          <Box
             tabIndex={!enabled ? 0 : -1}
             className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
               disabledReason ? disabledReason : ''
@@ -184,11 +177,11 @@ const IdeaButton = memo<Props>(
           >
             <Button
               {...buttonContainerProps}
-              aria-describedby="tooltip-content"
+              aria-describedby={
+                tippyEnabled ? 'tooltip-content-idea-button' : undefined
+              }
               onClick={onClick}
               disabled={!enabled}
-              ariaDisabled={false}
-              id="e2e-idea-button"
             >
               {isNativeSurvey ? (
                 <>{localize(phase.attributes.native_survey_button_multiloc)}</>
@@ -205,9 +198,9 @@ const IdeaButton = memo<Props>(
                 />
               )}
             </Button>
-          </ButtonWrapper>
-        </Tippy>
-      </Container>
+          </Box>
+        </Tooltip>
+      </Box>
     );
   }
 );

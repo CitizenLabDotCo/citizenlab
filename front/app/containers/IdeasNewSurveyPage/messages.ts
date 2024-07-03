@@ -30,4 +30,8 @@ export default defineMessages({
     defaultMessage:
       'This survey is not currently open for responses. Please return to the project for more information.',
   },
+  anonymousSurveyMessage: {
+    id: 'app.components.form.anonymousSurveyMessage',
+    defaultMessage: 'All responses to this survey are anonymized',
+  },
 });

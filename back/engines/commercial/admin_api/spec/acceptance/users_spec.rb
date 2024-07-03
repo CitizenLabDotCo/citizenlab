@@ -9,7 +9,7 @@ resource 'User', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
-  let!(:user) { create(:user, email: 'moderator@citizenlab.co') }
+  let!(:user) { create(:user, email: 'moderator@govocal.com') }
 
   get 'admin_api/users' do
     with_options scope: :page do
@@ -39,12 +39,12 @@ resource 'User', admin_api: true do
   get 'admin_api/users/by_email' do
     parameter :email, 'The email of the user'
 
-    let(:email) { 'moderator@citizenlab.co' }
+    let(:email) { 'moderator@govocal.com' }
 
     example_request 'Get one user by email' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response[:email]).to eq 'moderator@citizenlab.co'
+      expect(json_response[:email]).to eq 'moderator@govocal.com'
     end
   end
 
@@ -88,7 +88,7 @@ resource 'User', admin_api: true do
 
     let(:first_name) { 'Jaak' }
     let(:last_name) { 'Brijl' }
-    let(:email) { 'admin@citizenlab.co' }
+    let(:email) { 'admin@govocal.com' }
     let(:password) { 'nmQuiteP4s' }
     let(:roles) { [{ type: 'admin' }] }
 

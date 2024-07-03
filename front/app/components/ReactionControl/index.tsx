@@ -8,7 +8,6 @@ import { TReactionMode } from 'api/idea_reactions/types';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
 import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
 import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -19,6 +18,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 

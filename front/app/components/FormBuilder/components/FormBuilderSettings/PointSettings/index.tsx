@@ -191,7 +191,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           mt="16px"
           iconPos="left"
           icon="edit"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={onConfigureMapClick}
         >
           {formatMessage(messages.configureMap)}

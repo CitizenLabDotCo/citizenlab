@@ -12,12 +12,8 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
-import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-import usePhase from 'api/phases/usePhase';
-
-import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -28,10 +24,8 @@ import {
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
+import { customAjv } from 'components/Form/utils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Warning from 'components/UI/Warning';
-
-import { useIntl } from 'utils/cl-intl';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -39,7 +33,6 @@ import {
   isVisible,
 } from '../Controls/visibilityUtils';
 
-import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 
 // Handling survey pages in here. The more things that we have added to it,
@@ -57,7 +50,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -74,11 +66,6 @@ const CLSurveyPageLayout = memo(
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
     const pagesRef = useRef<HTMLDivElement>(null);
-    const [queryParams] = useSearchParams();
-    const phaseId = queryParams.get('phase_id') || undefined;
-    const { data: phase } = usePhase(phaseId);
-    const allowAnonymousPosting =
-      phase?.data.attributes.allow_anonymous_participation;
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
     useEffect(() => {
@@ -136,7 +123,9 @@ const CLSurveyPageLayout = memo(
     const scrollToTop = () => {
       // Scroll inner container to top
       if (pagesRef?.current) {
-        pagesRef.current.scrollTop = 0;
+        pagesRef.current.scrollIntoView({
+          block: 'start',
+        });
       }
     };
 
@@ -209,13 +198,6 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box display="flex" flexDirection="column" height="100%">
-          {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="12px">
-              <Warning icon="shield-checkered">
-                {formatMessage(messages.anonymousSurveyMessage)}
-              </Warning>
-            </Box>
-          )}
           <Box h="100%" display="flex" ref={pagesRef}>
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(

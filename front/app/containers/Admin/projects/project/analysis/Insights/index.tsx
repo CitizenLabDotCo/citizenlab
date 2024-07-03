@@ -27,7 +27,7 @@ const Insights = () => {
     analysisId,
   });
 
-  const largeSummariesEnabled = useFeatureFlag({
+  const largeSummariesAllowed = useFeatureFlag({
     name: 'large_summaries',
     onlyCheckAllowed: true,
   });
@@ -44,13 +44,17 @@ const Insights = () => {
 
   const inputsCount = allInputs?.pages[0].meta.filtered_count || 0;
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count || 0;
-  const applyInputsLimit = !largeSummariesEnabled && filteredInputsCount > 30;
+  const applyInputsLimit = !largeSummariesAllowed && filteredInputsCount > 30;
 
   return (
     <Box display="flex" flexDirection="column" height="100%">
       <Box display="flex" gap="4px">
         <Box flex="1">
-          <SummarizeButton />
+          <SummarizeButton
+            applyInputsLimit={applyInputsLimit}
+            inputsCount={filteredInputsCount}
+            analysisId={analysisId}
+          />
         </Box>
         <Box flex="1">
           <QuestionButton
