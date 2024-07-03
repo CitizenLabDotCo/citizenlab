@@ -1,11 +1,16 @@
 import React from 'react';
+
 import { Title, Box } from '@citizenlab/cl2-component-library';
+
 import { IPermissionData } from 'api/permissions/types';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
-import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from 'components/admin/ActionsForm/messages';
-import ActionFormNew from './ActionFormNew';
+import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 import { getPermissionActionSectionSubtitle } from 'components/admin/ActionsForm/utils';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import ActionFormNew from './ActionFormNew';
 
 type PostTypeProps =
   | {
@@ -61,7 +66,7 @@ const ActionsFormNew = ({
     <>
       {permissions.map((permission, index) => {
         const permissionAction = permission.attributes.action;
-        const last = index == permissions.length - 1;
+        const last = index === permissions.length - 1;
 
         return (
           <Box key={permission.id} mb={last ? '0px' : '20px'}>
