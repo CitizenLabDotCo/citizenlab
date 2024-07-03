@@ -133,6 +133,10 @@ RSpec/SharedContext:
   Exclude:
     - "**/spec/acceptance/**/*"
 
+RSpec/ImplicitSubject:
+  Exclude:
+    - "**/spec/policies/**/*"
+
 Style/IfUnlessModifier:
   Enabled: false
 

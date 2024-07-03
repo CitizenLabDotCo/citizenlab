@@ -142,6 +142,7 @@ describe IdeaPolicy do
               expect(scope.resolve.size).to eq 1
             end
 
+            # rubocop:disable RSpec/NestedGroups
             context 'when the idea is going to be published' do
               before do
                 idea.update!(publication_status: 'draft')
@@ -153,6 +154,7 @@ describe IdeaPolicy do
                 expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
               end
             end
+            # rubocop:enable RSpec/NestedGroups
           end
         end
       end
