@@ -198,18 +198,23 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def visit_line(_field)
     {
-      required: %w[type coordinates],
-      type: 'object',
-      properties: {
-        type: {
-          type: 'string',
-          enum: ['Point']
-        },
-        coordinates: {
-          type: 'array',
-          minItems: 2,
-          items: {
-            type: 'number'
+      type: 'array',
+      minItems: 2,
+      items: {
+        required: %w[type coordinates],
+        type: 'object',
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['Point']
+          },
+          coordinates: {
+            type: 'array',
+            minItems: 2,
+            maxItems: 2,
+            items: {
+              type: 'number'
+            }
           }
         }
       }
@@ -218,18 +223,23 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def visit_polygon(_field)
     {
-      required: %w[type coordinates],
-      type: 'object',
-      properties: {
-        type: {
-          type: 'string',
-          enum: ['Point']
-        },
-        coordinates: {
-          type: 'array',
-          minItems: 2,
-          items: {
-            type: 'number'
+      type: 'array',
+      minItems: 2,
+      items: {
+        required: %w[type coordinates],
+        type: 'object',
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['Point']
+          },
+          coordinates: {
+            type: 'array',
+            minItems: 2,
+            maxItems: 2,
+            items: {
+              type: 'number'
+            }
           }
         }
       }
