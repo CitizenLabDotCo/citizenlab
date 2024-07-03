@@ -83,7 +83,7 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_phase
-      if !participation_method.participation_method_for(phase).posting_allowed?
+      if !participation_method.participation_method_for(phase).posting_allowed? # TODO: Rename to posting_supported?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
@@ -93,7 +93,7 @@ module Permissions
     end
 
     def commenting_idea_denied_reason_for_phase
-      if !phase.can_contain_ideas?
+      if !participation_method.supports_commenting?
         COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
