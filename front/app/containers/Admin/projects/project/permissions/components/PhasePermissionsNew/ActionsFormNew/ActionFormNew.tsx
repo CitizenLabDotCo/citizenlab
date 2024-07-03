@@ -4,6 +4,8 @@ import { Box, CardButton } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
+
 import actionFormMessages from 'components/admin/ActionsForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -45,11 +47,11 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
       <Box display="flex" gap="16px">
         {isSurveyAction && (
           <CardButton
-            id="e2e-permission-everyone"
-            iconName="email"
-            title={formatMessage(actionFormMessages.permissionsUsersLabel)}
+            id="e2e-permission-anyone"
+            iconName="user-circle"
+            title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
             subtitle={formatMessage(
-              actionFormMessages.permissionsUsersLabelDescription
+              permissionsMessages.permissionsAnyoneLabelDescription
             )}
             onClick={handlePermittedByUpdate('everyone')}
             selected={permittedBy === 'everyone'}
