@@ -87,9 +87,9 @@ module Analysis
     # The linked project or phase should be a valid form context (the
     # participation_context the custom_form is associated with)
     def project_or_phase_form_context
-      if phase && !phase.uses_input_form?
+      if phase && Factory.instance.participation_method_for(phase).transitive?
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed phase is not associated with a form definition.')
-      elsif project && !project.uses_input_form?
+      elsif project && !project.phases.any? { |phase| Factory.instance.participation_method_for(phase).transitive? }
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project has no phases supporting a participation method that can hold inputs')
       end
     end

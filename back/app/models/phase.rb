@@ -347,14 +347,6 @@ class Phase < ApplicationRecord
   def can_contain_input? # TODO: Remove if-tests
     can_contain_ideas? || native_survey?
   end
-
-  def uses_input_form? # TODO: Remove if-tests
-    native_survey?
-  end
-
-  def custom_form_persisted?
-    custom_form.present?
-  end
 end
 
 Phase.include(Analysis::Patches::Phase)

@@ -421,17 +421,4 @@ RSpec.describe Phase do
       expect(phase).to be_valid
     end
   end
-
-  describe '#custom_form_persisted?' do
-    it 'returns true when the custom_form has been saved' do
-      phase = create(:phase)
-      create(:custom_form, participation_context: phase)
-      expect(phase.custom_form_persisted?).to be true
-    end
-
-    it 'returns false when there is no custom_form' do
-      phase = create(:phase)
-      expect(phase.custom_form_persisted?).to be false
-    end
-  end
 end

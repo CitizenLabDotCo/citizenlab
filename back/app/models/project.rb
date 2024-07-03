@@ -187,13 +187,6 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
-  def uses_input_form?
-    phases.each do |phase|
-      return true if phase.can_contain_ideas?
-    end
-    false
-  end
-
   private
 
   def admin_publication_must_exist
