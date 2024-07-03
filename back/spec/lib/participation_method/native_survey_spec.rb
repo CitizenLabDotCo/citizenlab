@@ -110,7 +110,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
-      let(:input) { build(:idea, publication_status: 'draft', idea_status: nil) }
+      let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
       it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
         participation_method.assign_defaults input
@@ -120,7 +120,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
 
     context 'when the proposed idea status is not available' do
-      let(:input) { build(:idea) }
+      let(:input) { build(:idea, idea_status: nil) }
 
       it 'raises ActiveRecord::RecordNotFound' do
         expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
