@@ -135,6 +135,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         w="fit-content"
         className={`e2e-list-map-viewbuttons ${className || ''}`}
         role="tablist"
+        background={colors.white}
       >
         <ListButton
           role="tab"
