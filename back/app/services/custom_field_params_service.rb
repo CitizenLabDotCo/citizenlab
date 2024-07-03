@@ -9,7 +9,7 @@ class CustomFieldParamsService
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
-      when 'point'
+      when 'point', 'line', 'polygon'
         fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
       when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
         fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
