@@ -302,7 +302,7 @@ sv:
       header: "Din bekräftelsekod"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekräfta din e-postadress"
-      thanks_for_signing_up: "Tack för att du registrerade dig för %{organizationName}s plattform för deltagande."
+      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}:s plattform för deltagande:"
       best_regards: "Med vänliga hälsningar,"
       ignore_email: "Om du inte har begärt en kod kan du ignorera det här e-postmeddelandet."
       expire_code: "Den här koden kommer att gå ut om"

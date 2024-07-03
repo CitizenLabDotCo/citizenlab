@@ -28,6 +28,20 @@ const props: Props = {
   projectFolderId: 'projectFolderId',
 };
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
+
 describe('ItemsInFolder', () => {
   it('Changes the order of projects', () => {
     render(<ItemsInFolder {...props} />);
