@@ -31,13 +31,12 @@ module Permissions
       if custom_permitted_by_enabled?
         if @permission.permitted_by == 'everyone_confirmed_email'
           @permission.update!(permitted_by: 'custom')
+          # Remove the password from defaults
           fields = default_fields.reject { |f| f[:field_type] == 'password' }
-          if @permission.global_custom_fields
-            # Insert default fields without password & custom fields
-            fields = fields.reject { |f| f[:field_type] == 'custom_field' }
-          else
-            # Insert default fields without password
-          end
+
+          # Remove custom fields if using global custom fields
+          fields = fields.reject { |f| f[:field_type] == 'custom_field' } if @permission.global_custom_fields
+
           insert_default_fields(fields: fields)
         elsif %w[users groups].include?(@permission.permitted_by) && !@permission.global_custom_fields
           @permission.update!(permitted_by: 'custom')
@@ -67,7 +66,7 @@ module Permissions
       # Email is locked + required if password is added
 
       permissions_fields.map do |permissions_field|
-        #permissions_field.locked = true
+        # permissions_field.locked = true
         permissions_field
       end
     end
