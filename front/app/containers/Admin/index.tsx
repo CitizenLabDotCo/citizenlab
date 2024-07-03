@@ -116,6 +116,7 @@ const AdminPage = memo<Props>(({ className }) => {
   if (!userCanViewPath) {
     return null;
   }
+
   const isFoldersPage = pathname.match(
     /admin\/projects\/folders\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
   );
