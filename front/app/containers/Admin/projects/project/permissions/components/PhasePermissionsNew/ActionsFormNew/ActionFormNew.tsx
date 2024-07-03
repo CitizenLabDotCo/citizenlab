@@ -49,13 +49,15 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
           }}
         />
       </Box>
-      <Box display="flex" gap="16px">
-        <CardButtons
-          isSurveyAction={isSurveyAction}
-          permittedBy={permittedBy}
-          onUpdate={handlePermittedByUpdate}
-        />
-      </Box>
+      {permittedBy !== 'admins_moderators' && (
+        <Box display="flex" gap="16px">
+          <CardButtons
+            isSurveyAction={isSurveyAction}
+            permittedBy={permittedBy}
+            onUpdate={handlePermittedByUpdate}
+          />
+        </Box>
+      )}
     </form>
   );
 };
