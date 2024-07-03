@@ -15,8 +15,8 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input.publication_status = 'published'
-      input.idea_status = IdeaStatus.find_by!(code: 'proposed')
+      input.publication_status ||= 'published'
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
     end
 
     def form_structure_element
