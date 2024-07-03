@@ -74,7 +74,7 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
         />
         <CardButton
           id="e2e-permission-registered-users"
-          iconName="email"
+          iconName="shield-check"
           title={formatMessage(actionFormMessages.permissionsUsersLabel)}
           subtitle={formatMessage(
             actionFormMessages.permissionsUsersLabelDescription
