@@ -7,20 +7,19 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import ActionsForm from 'components/admin/ActionsForm';
+import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import ActionsForm from 'components/admin/ActionsForm';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../../containers/Project/Granular/messages';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   project: IProjectData;

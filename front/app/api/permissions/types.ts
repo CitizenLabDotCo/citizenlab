@@ -49,9 +49,10 @@ export interface IPhasePermissionData {
     permitted_by:
       | 'everyone'
       | 'users'
-      | 'groups'
+      | 'groups' // soon to be deprecated
       | 'admins_moderators'
-      | 'everyone_confirmed_email';
+      | 'everyone_confirmed_email' // soon to be deprecated
+      | 'custom'; // new permitted_by type, only used if XXXX feature flag active
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;

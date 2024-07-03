@@ -1,20 +1,44 @@
 import React from 'react';
+
 import { Box, CardButton } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import actionFormMessages from 'components/admin/ActionsForm/messages';
+
+import { IPermissionData } from 'api/permissions/types';
+
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
-type Props = any;
+import actionFormMessages from 'components/admin/ActionsForm/messages';
 
-const ActionFormNew = (_: Props) => {
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
+interface Props {
+  permissionData: IPermissionData;
+  groupIds?: string[];
+  projectType?: 'defaultInput' | 'nativeSurvey';
+  onChange: (
+    permittedBy:
+      | IPermissionData['attributes']['permitted_by']
+      | IPermissionData['attributes']['global_custom_fields'],
+    groupIds: Props['groupIds']
+  ) => void;
+}
+
+const ActionFormNew = ({ permissionData, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
-  const permittedBy = 'users' as any; // TODO
+  const handlePermittedByUpdate =
+    (permittedBy: IPermissionData['attributes']['permitted_by']) => (e) => {
+      e.preventDefault();
 
-  const handlePermittedByUpdate = (_permittedBy: any) => (e) => {
-    e.preventDefault();
-  }; // TODO
+      onChange(permittedBy, []); // TODO
+    };
+
+  const {
+    // id: permissionId,
+    // attributes: { permitted_by: permittedBy, action },
+    attributes: { permitted_by: permittedBy },
+  } = permissionData;
 
   return (
     <form>
@@ -27,8 +51,8 @@ const ActionFormNew = (_: Props) => {
           subtitle={formatMessage(
             permissionsMessages.permissionsAnyoneLabelDescription
           )}
-          onClick={handlePermittedByUpdate('anyone')} // TODO
-          selected={permittedBy === 'anyone'} // TODO
+          onClick={handlePermittedByUpdate('everyone')}
+          selected={permittedBy === 'everyone'}
         />
         <CardButton
           id="e2e-permission-registered-users"
@@ -37,8 +61,16 @@ const ActionFormNew = (_: Props) => {
           subtitle={formatMessage(
             actionFormMessages.permissionsUsersLabelDescription
           )}
-          onClick={handlePermittedByUpdate('users')} // TODO
-          selected={permittedBy === 'users'} // TODO
+          onClick={handlePermittedByUpdate('users')}
+          selected={permittedBy === 'users'}
+        />
+        <CardButton
+          id="e2e-permission-admins-managers"
+          iconName="shield-checkered"
+          title={formatMessage(messages.adminsManagers)}
+          subtitle={formatMessage(messages.adminsManagersSubtitle)}
+          onClick={handlePermittedByUpdate('admins_moderators')}
+          selected={permittedBy === 'admins_moderators'}
         />
         <CardButton
           id="e2e-permission-custom"
