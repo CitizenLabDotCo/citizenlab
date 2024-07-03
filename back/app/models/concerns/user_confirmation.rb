@@ -10,7 +10,7 @@ module UserConfirmation
     end
 
     with_options if: -> { user_confirmation_enabled? } do
-      validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
+      validates :email_confirmation_code, format: { with: VALID_USER_CONFIRMATION_CODE_PATTERNS }, allow_nil: true
       validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
       validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
     end
@@ -51,7 +51,7 @@ module UserConfirmation
   end
 
   def reset_confirmation_code
-    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
+    self.email_confirmation_code = SecureRandom.alphanumeric(12) # Rails.env.development? ? '1234' : SecureRandom.alphanumeric(12)
   end
 
   def increment_confirmation_code_reset_count
