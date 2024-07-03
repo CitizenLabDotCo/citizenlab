@@ -15,7 +15,6 @@ import messages from './messages';
 interface Props {
   permissionData: IPermissionData;
   groupIds?: string[];
-  projectType?: 'defaultInput' | 'nativeSurvey';
   onChange: (
     permittedBy:
       | IPermissionData['attributes']['permitted_by']
@@ -36,24 +35,26 @@ const ActionFormNew = ({ permissionData, onChange }: Props) => {
 
   const {
     // id: permissionId,
-    // attributes: { permitted_by: permittedBy, action },
-    attributes: { permitted_by: permittedBy },
+    attributes: { permitted_by: permittedBy, ...rest },
   } = permissionData;
+
+  console.log(rest);
 
   return (
     <form>
       <Box display="flex" gap="16px">
-        {/* TODO hide anyone if not survey */}
-        <CardButton
-          id="e2e-permission-anyone"
-          iconName="user-circle"
-          title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
-          subtitle={formatMessage(
-            permissionsMessages.permissionsAnyoneLabelDescription
-          )}
-          onClick={handlePermittedByUpdate('everyone')}
-          selected={permittedBy === 'everyone'}
-        />
+        {rest && (
+          <CardButton
+            id="e2e-permission-anyone"
+            iconName="user-circle"
+            title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
+            subtitle={formatMessage(
+              permissionsMessages.permissionsAnyoneLabelDescription
+            )}
+            onClick={handlePermittedByUpdate('everyone')}
+            selected={permittedBy === 'everyone'}
+          />
+        )}
         <CardButton
           id="e2e-permission-registered-users"
           iconName="email"
@@ -77,8 +78,8 @@ const ActionFormNew = ({ permissionData, onChange }: Props) => {
           iconName="cog"
           title={formatMessage(messages.custom)}
           subtitle={formatMessage(messages.customSubtitle)}
-          onClick={handlePermittedByUpdate('custom')} // TODO
-          selected={permittedBy === 'custom'} // TODO
+          onClick={handlePermittedByUpdate('custom')}
+          selected={permittedBy === 'custom'}
         />
       </Box>
     </form>

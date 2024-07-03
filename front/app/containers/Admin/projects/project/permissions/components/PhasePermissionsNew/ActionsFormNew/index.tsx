@@ -81,7 +81,6 @@ const ActionsFormNew = ({
             <ActionFormNew
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
-              projectType={postType}
               onChange={handlePermissionChange(permission, phaseId)}
             />
             {/* {permission.attributes.permitted_by !== 'everyone' &&
