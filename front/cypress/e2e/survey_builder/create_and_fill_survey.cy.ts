@@ -656,14 +656,18 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Select the second option to go to page two
-    cy.contains(firstLogicQnOption2).click({ force: true });
+    cy.contains(firstLogicQnOption2)
+      .should('be.visible')
+      .click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the second page
     cy.contains(page2Title).should('exist');
 
     // Select the first option to go to survey end
-    cy.contains(secondLogicQnOption1).click({ force: true });
+    cy.contains('label', secondLogicQnOption1)
+      .should('be.visible')
+      .click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that the user is on the submit page
@@ -703,7 +707,9 @@ describe('Survey builder', () => {
     // Go to page 3
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.contains(page3Title).should('exist');
-    cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="properties${page3QnTitle}"]`)
+      .should('be.visible')
+      .type(answer, { force: true });
 
     // Go to page 4
     cy.wait(2000);
