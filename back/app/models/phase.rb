@@ -204,38 +204,6 @@ class Phase < ApplicationRecord
     @previous_phase_end_at_updated || false
   end
 
-  def ideation? # TODO: Remove if-tests
-    participation_method == 'ideation'
-  end
-
-  def information? # TODO: Remove if-tests
-    participation_method == 'information'
-  end
-
-  def voting? # TODO: Remove if-tests
-    participation_method == 'voting'
-  end
-
-  def native_survey? # TODO: Remove if-tests
-    participation_method == 'native_survey'
-  end
-
-  def can_contain_ideas? # TODO: Remove if-tests
-    ideation? || voting?
-  end
-
-  def can_contain_input? # TODO: Remove if-tests
-    can_contain_ideas? || native_survey?
-  end
-
-  def uses_input_form? # TODO: Remove if-tests
-    native_survey?
-  end
-
-  def custom_form_persisted?
-    custom_form.present?
-  end
-
   def posting_limited?
     posting_method == 'limited'
   end
@@ -354,6 +322,38 @@ class Phase < ApplicationRecord
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase
+  end
+
+  def ideation? # TODO: Remove if-tests
+    participation_method == 'ideation'
+  end
+
+  def information? # TODO: Remove if-tests
+    participation_method == 'information'
+  end
+
+  def voting? # TODO: Remove if-tests
+    participation_method == 'voting'
+  end
+
+  def native_survey? # TODO: Remove if-tests
+    participation_method == 'native_survey'
+  end
+
+  def can_contain_ideas? # TODO: Remove if-tests
+    ideation? || voting?
+  end
+
+  def can_contain_input? # TODO: Remove if-tests
+    can_contain_ideas? || native_survey?
+  end
+
+  def uses_input_form? # TODO: Remove if-tests
+    native_survey?
+  end
+
+  def custom_form_persisted?
+    custom_form.present?
   end
 end
 
