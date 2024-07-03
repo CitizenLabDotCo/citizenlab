@@ -67,5 +67,13 @@ describe Permissions::PermissionsUpdateService do
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea]
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users users]
     end
+
+    it 'sets all permissions to "users" when creating new permissions' do
+      phase = create(:phase)
+      expect(phase.permissions).to be_empty
+
+      service.update_permissions_for_scope(phase)
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users]
+    end
   end
 end
