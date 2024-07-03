@@ -430,10 +430,10 @@ describe('Survey builder', () => {
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
-    cy.get('.e2e-idea-button')
+    cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -441,10 +441,10 @@ describe('Survey builder', () => {
     // Take the survey again
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
-    cy.get('.e2e-idea-button')
+    cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
