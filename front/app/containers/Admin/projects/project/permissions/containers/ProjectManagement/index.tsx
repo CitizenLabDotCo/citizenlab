@@ -8,8 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
 
@@ -36,9 +34,6 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
 
   return (
     <ModeratorSubSection>
@@ -81,11 +76,9 @@ const ProjectManagement = ({ projectId }: Props) => {
         }
       />
       <ModeratorList projectId={projectId} />
-      {!hasSeatBasedBillingEnabled && (
-        <Box width="516px">
-          <SeatInfo seatType="moderator" />
-        </Box>
-      )}
+      <Box width="516px">
+        <SeatInfo seatType="moderator" />
+      </Box>
     </ModeratorSubSection>
   );
 };

@@ -1,17 +1,14 @@
 import React from 'react';
 
 import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/messages';
-
-import messages from './messages';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;
@@ -60,35 +57,28 @@ const TooltipContentText = styled.div`
 interface Props {
   projectId: string;
   inMap: boolean;
-  disabledReason: IIdeaPostingDisabledReason;
-  phase: IPhaseData;
+  disabledReason: ProjectPostingDisabledReason;
+  phase: IPhaseData | undefined;
 }
-
-const disabledMessages: {
-  [key in IIdeaPostingDisabledReason]: MessageDescriptor;
-} = {
-  notPermitted: messages.postingNoPermission,
-  postingDisabled: messages.postingDisabled,
-  postingLimitedMaxReached: messages.postingLimitedMaxReached,
-  projectInactive: messages.postingInactive,
-  futureEnabled: messages.postingNotYetPossible,
-  notActivePhase: messages.postingInNonActivePhases,
-  notInGroup: globalMessages.notInGroup,
-};
 
 const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 
+  const disabledMessage = getPermissionsDisabledMessage(
+    'posting_idea',
+    disabledReason
+  );
+
   return (
     <TooltipContent
-      id="tooltip-content"
+      id="tooltip-content-idea-button"
       className="e2e-disabled-tooltip"
       inMap={inMap}
     >
       <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
-        <FormattedMessage {...disabledMessages[disabledReason]} />
+        <FormattedMessage {...disabledMessage} />
       </TooltipContentText>
     </TooltipContent>
   );

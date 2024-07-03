@@ -53,9 +53,11 @@ describe('All events page', () => {
     cy.visit(`/events`);
 
     // Select filters
-    cy.get('#e2e-project-filter-selector').should('exist');
-    cy.get('#e2e-project-filter-selector').click();
-    cy.get('#e2e-project-filter-selector').should('contain', projectTitle);
+    cy.get('.e2e-project-filter-selector').should('exist');
+    cy.get('.e2e-project-filter-selector').first().click();
+    cy.get('.e2e-project-filter-selector')
+      .first()
+      .should('contain', projectTitle);
     cy.contains(projectTitle).click({ force: true });
 
     cy.get('#e2e-event-date-filter').should('exist');
@@ -71,7 +73,7 @@ describe('All events page', () => {
 
     // Confirm filters work
     cy.get('#e2e-current-and-upcoming-events').within(() => {
-      cy.get('#e2e-event-card').should('exist');
+      cy.get('.e2e-event-card').should('exist');
       cy.contains(emailTitle).should('exist');
     });
 

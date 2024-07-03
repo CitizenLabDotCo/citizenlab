@@ -173,7 +173,6 @@ export interface IAppConfigurationSettings {
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  project_management?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
@@ -209,7 +208,6 @@ export interface IAppConfigurationSettings {
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
-  permission_option_email_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
@@ -218,7 +216,6 @@ export interface IAppConfigurationSettings {
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
-  seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
   follow?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;

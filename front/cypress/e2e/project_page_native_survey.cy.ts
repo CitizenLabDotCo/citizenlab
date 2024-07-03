@@ -228,10 +228,10 @@ describe('Native survey CTA bar', () => {
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
-    cy.get('#e2e-cta-button')
+    cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').find('button').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response
