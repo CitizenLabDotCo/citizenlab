@@ -141,6 +141,18 @@ describe IdeaPolicy do
             it 'indexes the idea' do
               expect(scope.resolve.size).to eq 1
             end
+
+            context 'when the idea is going to be published' do
+              before do
+                idea.update!(publication_status: 'draft')
+                idea.publication_status = 'published'
+              end
+
+              it "doesn't allow to create/update idea" do
+                expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+                expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
+              end
+            end
           end
         end
       end
