@@ -202,6 +202,10 @@ class CustomField < ApplicationRecord
       visitor.visit_page self
     when 'point'
       visitor.visit_point self
+    when 'line'
+      visitor.visit_line self
+    when 'polygon'
+      visitor.visit_polygon self
     when 'section'
       visitor.visit_section self
     when 'select'

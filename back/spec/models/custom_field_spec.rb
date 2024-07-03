@@ -67,6 +67,14 @@ class TestVisitor < FieldVisitorService
     'point from visitor'
   end
 
+  def visit_line(_field)
+    'line from visitor'
+  end
+
+  def visit_polygon(_field)
+    'polygon from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
