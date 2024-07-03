@@ -81,6 +81,45 @@ resource 'Permissions' do
           )
         end
       end
+
+      context 'when "custom_permitted_by" feature is enabled' do
+        before { SettingsService.new.activate_feature! 'custom_permitted_by' }
+
+        example 'permitted_by "group" is updated to "custom" before being returned' do
+          @phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'groups')
+
+          do_request
+          assert_status 200
+          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
+          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
+          # 3 fields - 3 built-in only
+          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 3
+        end
+
+        example 'permitted_by "everyone_confirmed_email" is updated to "custom"' do
+          @phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'everyone_confirmed_email')
+
+          do_request
+          assert_status 200
+          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
+          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
+          # 2 fields - 2 built-in (no password)
+          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 2
+        end
+
+        example 'permitted_by "user" is updated to "custom" if any custom fields have been added' do
+          permission = @phase.permissions.find_by(action: 'posting_idea')
+          permission.update!(global_custom_fields: false)
+          create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
+
+          do_request
+          assert_status 200
+          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
+          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
+          # 4 fields - 3 built-in & 1 custom
+          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 4
+        end
+      end
     end
 
     get 'web_api/v1/permissions' do
@@ -142,11 +181,13 @@ resource 'Permissions' do
         let(:permitted_by) { 'custom' }
         let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
-        example_request 'Update a permission with the custom permitted_by' do
+        before { SettingsService.new.activate_feature! 'custom_permitted_by' }
+
+        example_request 'Permissions fields are created when permission is updated with "custom" permitted_by' do
           assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
-          expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+          expect(response_data.dig(:relationships, :permissions_fields, :data).count).to eq 3
         end
       end
     end

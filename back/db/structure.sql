@@ -2884,7 +2884,7 @@ CREATE TABLE public.permissions (
 CREATE TABLE public.permissions_fields (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     permission_id uuid NOT NULL,
-    custom_field_id uuid NOT NULL,
+    custom_field_id uuid,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,

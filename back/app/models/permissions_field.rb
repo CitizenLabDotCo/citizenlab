@@ -6,7 +6,7 @@
 #
 #  id              :uuid             not null, primary key
 #  permission_id   :uuid             not null
-#  custom_field_id :uuid             not null
+#  custom_field_id :uuid
 #  required        :boolean          default(TRUE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -26,15 +26,15 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
-  FIELD_TYPES = %w[custom_field email].freeze
+  FIELD_TYPES = %w[custom_field email password name].freeze
 
   attribute :locked, :boolean, default: false
 
   belongs_to :permission
-  belongs_to :custom_field
+  belongs_to :custom_field, optional: true
 
-  validates :permission, :custom_field, presence: true
-  validates :permission_id, uniqueness: { scope: :custom_field_id }
-  validates :field_type, presence: true, inclusion: { in: FIELD_TYPES }
-
+  validates :permission, presence: true
+  validates :custom_field, presence: true, if: -> { field_type == 'custom_field' }
+  validates :permission_id, uniqueness: { scope: :custom_field_id }, if: -> { custom_field_id.present? }
+  validates :field_type, presence: true, inclusion: { in: FIELD_TYPES } # TODO: JS Different if feature flag on
 end

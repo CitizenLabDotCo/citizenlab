@@ -6,7 +6,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   def index
     authorize PermissionsField.new(permission: permission)
-    permissions_fields = permissions_fields(permission)
+    permissions_fields = Permissions::PermissionsFieldsService.new(permission).fields
     permissions_fields = paginate permissions_fields
     permissions_fields = permissions_fields.includes(:custom_field)
 
@@ -29,9 +29,9 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   def create
     permissions_field = PermissionsField.new({ permission: permission }.merge(permission_params_for_create))
     authorize permissions_field
-    SideFxPermissionsFieldService.new.before_create permissions_field, current_user
+    sidefx.before_create permissions_field, current_user
     if permissions_field.save
-      SideFxPermissionsFieldService.new.after_create permissions_field, current_user
+      sidefx.after_create permissions_field, current_user
       render json: WebApi::V1::PermissionsFieldSerializer.new(
         permissions_field,
         params: jsonapi_serializer_params
@@ -44,9 +44,9 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   def update
     @permissions_field.assign_attributes permission_params_for_update
     authorize @permissions_field
-    SideFxPermissionsFieldService.new.before_update @permissions_field, current_user
+    sidefx.before_update @permissions_field, current_user
     if @permissions_field.save
-      SideFxPermissionsFieldService.new.before_update @permissions_field, current_user
+      sidefx.before_update @permissions_field, current_user
       render json: WebApi::V1::PermissionsFieldSerializer.new(
         @permissions_field,
         params: jsonapi_serializer_params
@@ -57,10 +57,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def destroy
-    SideFxPermissionsFieldService.new.before_destroy @permissions_field, current_user
+    sidefx.before_destroy @permissions_field, current_user
     permissions_field = @permissions_field.destroy
     if permissions_field.destroyed?
-      SideFxPermissionsFieldService.new.after_destroy permissions_field, current_user
+      sidefx.after_destroy permissions_field, current_user
       head :ok
     else
       head :internal_server_error
@@ -77,6 +77,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     @permission ||= Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 
+  def sidefx
+    @sidefx ||= Permissions::SideFxPermissionsFieldService.new
+  end
+
   def permission_scope
     Permissions::PermissionsUpdateService.new.permission_scope_from_permissions_params(params)
   end
@@ -91,18 +95,5 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   def permission_params_for_update
     params.require(:permissions_field).permit(:required, :verified, :enabled)
-  end
-
-  def permissions_fields(permission)
-    return lock_fields(permission.permissions_fields) if permission.permitted_by == 'custom'
-
-    # To support the old permitted_by values
-    permission.permissions_fields.where(field_type: 'custom_field')
-  end
-
-  def lock_fields(permissions_fields)
-    permissions_fields.each do |permissions_field|
-      permissions_field.locked = permissions_field.custom_field.locked
-    end
   end
 end
