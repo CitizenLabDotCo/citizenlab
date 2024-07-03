@@ -4,6 +4,8 @@ import { Box, CardButton } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 import actionFormMessages from 'components/admin/ActionsForm/messages';
@@ -26,6 +28,7 @@ interface Props {
 
 const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   const handlePermittedByUpdate =
     (permittedBy: IPermissionData['attributes']['permitted_by']) => (e) => {
@@ -58,6 +61,18 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
           />
         )}
         <CardButton
+          id="e2e-permission-email-confirmed-users"
+          iconName="email"
+          title={formatMessage(actionFormMessages.permissionsEmailConfirmLabel)}
+          subtitle={formatMessage(
+            actionFormMessages.permissionsEmailConfirmLabelDescription
+          )}
+          onClick={handlePermittedByUpdate('everyone_confirmed_email')}
+          selected={permittedBy === 'everyone_confirmed_email'}
+          disabled={!userConfirmationEnabled}
+          height="100%"
+        />
+        <CardButton
           id="e2e-permission-registered-users"
           iconName="email"
           title={formatMessage(actionFormMessages.permissionsUsersLabel)}
@@ -66,14 +81,6 @@ const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
           )}
           onClick={handlePermittedByUpdate('users')}
           selected={permittedBy === 'users'}
-        />
-        <CardButton
-          id="e2e-permission-admins-managers"
-          iconName="shield-checkered"
-          title={formatMessage(messages.adminsManagers)}
-          subtitle={formatMessage(messages.adminsManagersSubtitle)}
-          onClick={handlePermittedByUpdate('admins_moderators')}
-          selected={permittedBy === 'admins_moderators'}
         />
         <CardButton
           id="e2e-permission-custom"
