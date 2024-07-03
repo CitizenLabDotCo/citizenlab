@@ -184,6 +184,7 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
+  const showSearch = !(selectedView === 'map') && showSearchbar;
 
   if (isLoading) return <Spinner />;
 
@@ -205,7 +206,7 @@ const IdeasWithoutFiltersSidebar = ({
             flexWrap="wrap"
             gap="12px"
           >
-            {showSearchbar && (
+            {showSearch && (
               <StyledSearchInput
                 defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
@@ -214,7 +215,12 @@ const IdeasWithoutFiltersSidebar = ({
               />
             )}
             {showDropdownFilters && (
-              <Box display="flex" alignItems="center">
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                w={showSearch ? 'auto' : '100%'}
+              >
                 <SelectSort
                   value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                   phase={phase?.data}
