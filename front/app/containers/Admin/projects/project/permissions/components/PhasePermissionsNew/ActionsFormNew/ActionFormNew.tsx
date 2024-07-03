@@ -4,8 +4,6 @@ import { Box, CardButton } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 
-import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
-
 import actionFormMessages from 'components/admin/ActionsForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -15,6 +13,7 @@ import messages from './messages';
 interface Props {
   permissionData: IPermissionData;
   groupIds?: string[];
+  phaseType: 'defaultInput' | 'nativeSurvey';
   onChange: (
     permittedBy:
       | IPermissionData['attributes']['permitted_by']
@@ -23,7 +22,7 @@ interface Props {
   ) => void;
 }
 
-const ActionFormNew = ({ permissionData, onChange }: Props) => {
+const ActionFormNew = ({ permissionData, phaseType, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const handlePermittedByUpdate =
@@ -35,21 +34,22 @@ const ActionFormNew = ({ permissionData, onChange }: Props) => {
 
   const {
     // id: permissionId,
-    attributes: { permitted_by: permittedBy, ...rest },
+    attributes: { permitted_by: permittedBy, action },
   } = permissionData;
 
-  console.log(rest);
+  const isSurveyAction =
+    phaseType === 'nativeSurvey' && action === 'posting_idea';
 
   return (
     <form>
       <Box display="flex" gap="16px">
-        {rest && (
+        {isSurveyAction && (
           <CardButton
-            id="e2e-permission-anyone"
-            iconName="user-circle"
-            title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
+            id="e2e-permission-everyone"
+            iconName="email"
+            title={formatMessage(actionFormMessages.permissionsUsersLabel)}
             subtitle={formatMessage(
-              permissionsMessages.permissionsAnyoneLabelDescription
+              actionFormMessages.permissionsUsersLabelDescription
             )}
             onClick={handlePermittedByUpdate('everyone')}
             selected={permittedBy === 'everyone'}
