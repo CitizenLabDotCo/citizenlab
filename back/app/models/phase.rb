@@ -232,6 +232,31 @@ class Phase < ApplicationRecord
     start_at <= Time.zone.now
   end
 
+  # Used for validations (which are hard to delegate through the participation method)
+  def ideation?
+    participation_method == 'ideation'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def proposals?
+    participation_method == 'proposals'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def information?
+    participation_method == 'information'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def voting?
+    participation_method == 'voting'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
   private
 
   def sanitize_description_multiloc
@@ -322,31 +347,6 @@ class Phase < ApplicationRecord
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def ideation?
-    participation_method == 'ideation'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def proposals?
-    participation_method == 'proposals'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def information?
-    participation_method == 'information'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def voting?
-    participation_method == 'voting'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def native_survey?
-    participation_method == 'native_survey'
   end
 
   # Used for validations (which are hard to delegate through the participation method)

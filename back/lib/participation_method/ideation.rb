@@ -303,7 +303,7 @@ module ParticipationMethod
 
     def budget_in_form?(user)
       phase.project.phases.any? do |phase|
-        phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
+        phase.participation_method == 'voting' && Factory.instance.voting_method_for(phase).budget_in_form?(user)
       end
     end
 
