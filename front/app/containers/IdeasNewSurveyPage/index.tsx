@@ -75,7 +75,7 @@ const IdeasNewSurveyPage = () => {
   // The phase id checks are also unclear.
   // Please replace this text and add a comment if you know.
   const userCannotViewSurvey =
-    !canModerateProject(project.data.id, authUser) &&
+    !canModerateProject(project.data, authUser) &&
     /* Something I could deduct: when this code was added, we made the (wrong) 
     assumption that `phase_id` was always a string (we were type casting the phase_id param). 
     So I _think_ we are checking here whether phase_id from the search params is differnet from
