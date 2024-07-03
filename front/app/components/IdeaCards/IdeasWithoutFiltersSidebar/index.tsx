@@ -40,14 +40,12 @@ import tracks from '../tracks';
 const FiltersArea = styled.div`
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   margin-bottom: 12px;
   gap: 12px;
 
   ${isRtl`
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
   `}
 
   ${media.tablet`
@@ -193,50 +191,55 @@ const IdeasWithoutFiltersSidebar = ({
     return (
       <Box id="e2e-ideas-container" className={`${className || ''}`}>
         <FiltersArea id="e2e-ideas-filters" className="ideasContainer">
-          {showSearchbar && (
-            <StyledSearchInput
-              defaultValue={ideaQueryParameters.search}
-              className="e2e-search-ideas-input"
-              onChange={handleSearchOnChange}
-              a11y_numberOfSearchResults={list.length}
-            />
-          )}
-          {showDropdownFilters && (
-            <Box display="flex" alignItems="center">
-              <SelectSort
-                value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
-                phase={phase?.data}
-                onChange={handleSortOnChange}
-                alignment={!smallerThanTablet ? 'right' : 'left'}
-              />
-              {allowProjectsFilter && (
-                <ProjectFilterDropdown
-                  title={<FormattedMessage {...messages.projectFilterTitle} />}
-                  onChange={handleProjectsOnChange}
-                />
-              )}
-              {topicsEnabled && !isNilOrError(project) && projectId && (
-                <TopicFilterDropdown
-                  projectId={projectId}
-                  selectedTopicIds={ideaQueryParameters.topics ?? []}
-                  onChange={handleTopicsOnChange}
-                  alignment={!smallerThanTablet ? 'right' : 'left'}
-                />
-              )}
-            </Box>
-          )}
-          {showViewButtons && (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent={smallerThanPhone ? 'flex-start' : undefined}
-            >
+          <Box display="flex" justifyContent="flex-end">
+            {showViewButtons && (
               <ViewButtons
                 selectedView={selectedView}
                 onClick={setSelectedView}
               />
-            </Box>
-          )}
+            )}
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap="12px"
+          >
+            {showSearchbar && (
+              <StyledSearchInput
+                defaultValue={ideaQueryParameters.search}
+                className="e2e-search-ideas-input"
+                onChange={handleSearchOnChange}
+                a11y_numberOfSearchResults={list.length}
+              />
+            )}
+            {showDropdownFilters && (
+              <Box display="flex" alignItems="center">
+                <SelectSort
+                  value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
+                  phase={phase?.data}
+                  onChange={handleSortOnChange}
+                  alignment={!smallerThanTablet ? 'right' : 'left'}
+                />
+                {allowProjectsFilter && (
+                  <ProjectFilterDropdown
+                    title={
+                      <FormattedMessage {...messages.projectFilterTitle} />
+                    }
+                    onChange={handleProjectsOnChange}
+                  />
+                )}
+                {topicsEnabled && !isNilOrError(project) && projectId && (
+                  <TopicFilterDropdown
+                    projectId={projectId}
+                    selectedTopicIds={ideaQueryParameters.topics ?? []}
+                    onChange={handleTopicsOnChange}
+                    alignment={!smallerThanTablet ? 'right' : 'left'}
+                  />
+                )}
+              </Box>
+            )}
+          </Box>
         </FiltersArea>
         <IdeasView
           list={list}
