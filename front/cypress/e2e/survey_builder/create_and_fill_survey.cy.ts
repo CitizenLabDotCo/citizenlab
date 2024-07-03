@@ -1028,7 +1028,7 @@ describe('Survey builder', () => {
     cy.contains(page2Title).should('exist');
 
     // Go through option 2 flow first and enter data
-    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseOneOption2).should('be.visible').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.contains(page3Title).should('exist');
     cy.contains(question3Title).should('exist');
@@ -1038,7 +1038,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-previous-page"]').click();
 
     // Select the first option and click next
-    cy.contains(chooseOneOption1).click({ force: true });
+    cy.contains(chooseOneOption1).should('be.visible').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Check to see that we are on the fourth page and on the last page as indicated by the page logic
