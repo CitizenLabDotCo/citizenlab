@@ -26,16 +26,7 @@ module Permissions
     }.freeze
 
     def initialize
-      super
       @timeline_service = TimelineService.new
-    end
-
-    # NOTE: Where phase and project are nil, the check is for global permissions (ie initiatives)
-    def denied_reason_for_action(action, user, phase = nil, project: nil)
-      return unless supported_action? action
-
-      permission = find_permission(action, phase)
-      user_denied_reason(permission, user, project)
     end
 
     private
@@ -44,24 +35,6 @@ module Permissions
       return true if SUPPORTED_ACTIONS.include? action
 
       raise "Unsupported action: #{action}"
-    end
-
-    def find_permission(action, phase)
-      permission = phase&.permissions&.find { |p| p[:action] == action }
-
-      if permission.blank?
-        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
-        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-        if permission.blank? && Permission.available_actions(scope)
-          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-        end
-      end
-
-      raise "Unknown action '#{action}' for phase: #{phase}" unless permission
-
-      permission
     end
 
     # User methods

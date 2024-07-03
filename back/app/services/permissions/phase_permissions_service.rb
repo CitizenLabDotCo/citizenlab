@@ -42,48 +42,57 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
-    def denied_reason_for_action(action, user, phase, project: phase&.project, reaction_mode: nil)
+    def initialize(phase, user)
+      super()
+      @phase ||= phase
+      @user ||= user # TODO: Pass to super
+    end
+
+    def denied_reason_for_phase(action, project: phase&.project, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
       when 'posting_idea'
-        posting_idea_denied_reason_for_phase(phase, user)
+        posting_idea_denied_reason_for_phase
       when 'commenting_idea'
-        commenting_idea_denied_reason_for_phase(phase)
+        commenting_idea_denied_reason_for_phase
       when 'reacting_idea'
-        reacting_denied_reason_for_phase(phase, user, reaction_mode: reaction_mode)
+        reacting_denied_reason_for_phase(reaction_mode: reaction_mode)
       when 'voting'
-        voting_denied_reason_for_phase(phase, user)
+        voting_denied_reason_for_phase
       when 'annotating_document'
-        annotating_document_denied_reason_for_phase(phase)
+        annotating_document_denied_reason_for_phase
       when 'taking_survey'
-        taking_survey_denied_reason_for_phase(phase)
+        taking_survey_denied_reason_for_phase
       when 'taking_poll'
-        taking_poll_denied_reason_for_phase(phase, user)
+        taking_poll_denied_reason_for_phase
       else
         raise "Unsupported action: #{action}"
       end
       return phase_denied_reason if phase_denied_reason
 
-      super action, user, phase, project: project
-    end
+      return unless supported_action? action
 
-    alias denied_reason_for_phase denied_reason_for_action
+      permission = find_permission(action)
+      user_denied_reason(permission, user, project) # TODO
+    end
 
     private
 
+    attr_reader :phase, :user
+
     # Phase methods
-    def posting_idea_denied_reason_for_phase(phase, user)
-      if !Factory.instance.participation_method_for(phase).posting_allowed?
+    def posting_idea_denied_reason_for_phase
+      if !participation_method.participation_method_for(phase).posting_allowed?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
-      elsif user && posting_limit_reached?(phase, user)
+      elsif user && posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
 
-    def commenting_idea_denied_reason_for_phase(phase)
+    def commenting_idea_denied_reason_for_phase
       if !phase.can_contain_ideas?
         COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
       elsif !phase.commenting_enabled
@@ -91,33 +100,33 @@ module Permissions
       end
     end
 
-    def reacting_denied_reason_for_phase(phase, user, reaction_mode: nil)
+    def reacting_denied_reason_for_phase(reaction_mode: nil)
       if !phase.ideation?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif reaction_mode == 'up' && user && liking_limit_reached?(phase, user)
+      elsif reaction_mode == 'up' && user && liking_limit_reached?
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif reaction_mode == 'down' && user && disliking_limit_reached?(phase, user)
+      elsif reaction_mode == 'down' && user && disliking_limit_reached?
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
 
-    def taking_survey_denied_reason_for_phase(phase)
+    def taking_survey_denied_reason_for_phase
       unless phase.survey?
         TAKING_SURVEY_DENIED_REASONS[:not_survey]
       end
     end
 
-    def annotating_document_denied_reason_for_phase(phase)
+    def annotating_document_denied_reason_for_phase
       unless phase.document_annotation?
         ANNOTATING_DOCUMENT_DENIED_REASONS[:not_document_annotation]
       end
     end
 
-    def taking_poll_denied_reason_for_phase(phase, user)
+    def taking_poll_denied_reason_for_phase
       if !phase.poll?
         TAKING_POLL_DENIED_REASONS[:not_poll]
       elsif user && phase.poll_responses.exists?(user: user)
@@ -125,7 +134,7 @@ module Permissions
       end
     end
 
-    def voting_denied_reason_for_phase(phase, _user)
+    def voting_denied_reason_for_phase
       unless phase.voting?
         VOTING_DENIED_REASONS[:not_voting]
       end
@@ -133,7 +142,7 @@ module Permissions
 
     # Helper methods
 
-    def posting_limit_reached?(phase, user)
+    def posting_limit_reached?
       if phase.posting_limited?
         num_authored = phase.ideas.where(author: user, publication_status: 'published').size
         return true if num_authored >= phase.posting_limited_max
@@ -148,12 +157,34 @@ module Permissions
       false
     end
 
-    def liking_limit_reached?(phase, user)
+    def liking_limit_reached?
       phase.reacting_like_limited? && user.reactions.up.where(reactable: phase.ideas).size >= phase.reacting_like_limited_max
     end
 
-    def disliking_limit_reached?(phase, user)
+    def disliking_limit_reached?
       phase.reacting_dislike_limited? && user.reactions.down.where(reactable: phase.ideas).size >= phase.reacting_dislike_limited_max
+    end
+
+    def participation_method
+      @participation_method ||= Factory.instance.participation_method_for(phase)
+    end
+
+    def find_permission(action)
+      permission = phase&.permissions&.find { |p| p[:action] == action }
+
+      if permission.blank?
+        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
+        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+        if permission.blank? && Permission.available_actions(scope)
+          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+        end
+      end
+
+      raise "Unknown action '#{action}' for phase: #{phase}" unless permission
+
+      permission
     end
   end
 end
