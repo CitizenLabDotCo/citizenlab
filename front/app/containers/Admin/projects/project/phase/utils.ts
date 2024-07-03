@@ -2,7 +2,7 @@ import { FormatMessage } from 'typings';
 
 import { IGroupData } from 'api/groups/types';
 import { IPhasePermissionAction } from 'api/permissions/types';
-import { IPCPermissionData, permittedBy } from 'api/phase_permissions/types';
+import { IPCPermissionData, PermittedBy } from 'api/phase_permissions/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -11,7 +11,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 export const getPartipationRequirementMessage = (
-  permittedBy: permittedBy,
+  permittedBy: PermittedBy,
   noOfGroups: number,
   formatMessage: FormatMessage
 ) => {

@@ -1,5 +1,7 @@
 import { IRelationship } from 'typings';
 
+import { PermittedBy } from 'api/phase_permissions/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import permissionsKeys from './keys';
@@ -46,13 +48,7 @@ export interface IPhasePermissionData {
   type: string;
   attributes: {
     action: IPhasePermissionAction;
-    permitted_by:
-      | 'everyone'
-      | 'users'
-      | 'groups' // soon to be deprecated
-      | 'admins_moderators'
-      | 'everyone_confirmed_email' // soon to be deprecated
-      | 'custom'; // new permitted_by type, only used if XXXX feature flag active
+    permitted_by: PermittedBy;
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;

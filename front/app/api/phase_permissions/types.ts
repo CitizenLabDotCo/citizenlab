@@ -22,12 +22,13 @@ export interface IPCPermissions {
 export interface IPCPermission {
   data: IPCPermissionData;
 }
-export type permittedBy =
+export type PermittedBy =
   | 'everyone'
   | 'users'
-  | 'groups'
+  | 'groups' // soon to be deprecated
   | 'admins_moderators'
-  | 'everyone_confirmed_email';
+  | 'everyone_confirmed_email' // soon to be deprecated
+  | 'custom'; // new permitted_by type, only used if XXXX feature flag active
 
 export interface IPermissionUpdate {
   group_ids: string[];
@@ -39,7 +40,7 @@ export interface IPCPermissionData {
   type: string;
   attributes: {
     action: IPhasePermissionAction;
-    permitted_by: permittedBy;
+    permitted_by: PermittedBy;
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;
