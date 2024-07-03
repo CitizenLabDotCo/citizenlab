@@ -8,6 +8,8 @@ import { Localize } from 'hooks/useLocalize';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
+import newMessages from '../permissions/components/PhasePermissionsNew/ActionsFormNew/messages';
+
 import messages from './messages';
 
 export const getPartipationRequirementMessage = (
@@ -32,6 +34,9 @@ export const getPartipationRequirementMessage = (
       });
     case 'everyone':
       participantMessage = messages.everyone;
+      break;
+    case 'custom':
+      participantMessage = newMessages.custom;
       break;
   }
   return formatMessage(participantMessage);
