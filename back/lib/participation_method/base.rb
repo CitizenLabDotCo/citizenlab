@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def transitive?
-      true
+      false
     end
 
     def assign_defaults_for_phase
@@ -115,6 +115,10 @@ module ParticipationMethod
     end
 
     def supports_idea_form?
+      false
+    end
+
+    def supports_input_term?
       false
     end
 

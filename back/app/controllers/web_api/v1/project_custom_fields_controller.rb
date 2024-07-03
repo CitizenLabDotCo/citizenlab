@@ -20,7 +20,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def phase
-    @phase ||= TimelineService.new.current_or_last_can_contain_ideas_phase(project)
+    @phase ||= TimelineService.new.current_and_future_phases(project).select { |phase| Factory.instance.participation_method_for(phase).transitive? }.first
   end
 
   def input_term

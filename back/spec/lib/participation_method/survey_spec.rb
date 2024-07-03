@@ -120,6 +120,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
+  its(:supports_input_term?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }

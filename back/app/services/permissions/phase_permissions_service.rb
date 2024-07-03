@@ -84,8 +84,8 @@ module Permissions
     end
 
     def commenting_idea_denied_reason_for_phase(phase)
-      if !phase.can_contain_ideas?
-        COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
+      if !phase.supports_commenting?
+        COMMENTING_DENIED_REASONS[:commenting_not_supported]
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end

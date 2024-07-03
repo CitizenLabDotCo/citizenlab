@@ -33,19 +33,6 @@ class TimelineService
     phase.end_at.present? && phase.end_at <= date
   end
 
-  def current_or_last_can_contain_ideas_phase(project, time = Time.now)
-    date = tenant_timezone.at(time).to_date
-
-    phases = project.phases
-    return if phases.blank?
-
-    ideation_phases = phases.select(&:can_contain_ideas?)
-    return if ideation_phases.blank?
-
-    current_phase = ideation_phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || date <= phase.end_at) }
-    current_phase || ideation_phases.last
-  end
-
   def current_and_future_phases(project, time = Time.now)
     date = tenant_timezone.at(time).to_date
 

@@ -103,9 +103,10 @@ class Phase < ApplicationRecord
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
   # ideation? or voting?
-  with_options if: :can_contain_ideas? do # TODO: Include proposals
+  with_options if: :can_contain_published_inputs? do
     validates :presentation_mode,
-      inclusion: { in: PRESENTATION_MODES }, allow_nil: true
+      inclusion: { in: PRESENTATION_MODES }
+    validates :presentation_mode, presence: true
 
     validates :posting_enabled, inclusion: { in: [true, false] }
     validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
@@ -128,16 +129,11 @@ class Phase < ApplicationRecord
     if: %i[can_contain_input? posting_limited?]
   validates :reacting_like_limited_max, presence: true,
     numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_ideas? reacting_like_limited?]
+    if: %i[can_contain_published_inputs? reacting_like_limited?]
   validates :reacting_dislike_limited_max, presence: true,
     numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_ideas? reacting_dislike_limited?]
+    if: %i[can_contain_published_inputs? reacting_dislike_limited?]
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
-
-  # ideation?
-  with_options if: :ideation? do # TODO: Include proposals
-    validates :presentation_mode, presence: true
-  end
 
   # voting?
   with_options if: :voting? do
@@ -324,28 +320,39 @@ class Phase < ApplicationRecord
     Factory.instance.voting_method_for(self).validate_phase
   end
 
-  def ideation? # TODO: Remove if-tests
+  # Used for validations (which are hard to delegate through the participation method)
+  def ideation?
     participation_method == 'ideation'
   end
 
-  def information? # TODO: Remove if-tests
+  # Used for validations (which are hard to delegate through the participation method)
+  def proposals?
+    participation_method == 'proposals'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def information?
     participation_method == 'information'
   end
 
-  def voting? # TODO: Remove if-tests
+  # Used for validations (which are hard to delegate through the participation method)
+  def voting?
     participation_method == 'voting'
   end
 
-  def native_survey? # TODO: Remove if-tests
+  # Used for validations (which are hard to delegate through the participation method)
+  def native_survey?
     participation_method == 'native_survey'
   end
 
-  def can_contain_ideas? # TODO: Remove if-tests
-    ideation? || voting?
+  # Used for validations (which are hard to delegate through the participation method)
+  def can_contain_published_inputs?
+    ideation? || proposals? || voting?
   end
 
-  def can_contain_input? # TODO: Remove if-tests
-    can_contain_ideas? || native_survey?
+  # Used for validations (which are hard to delegate through the participation method)
+  def can_contain_input?
+    can_contain_published_inputs? || native_survey?
   end
 end
 

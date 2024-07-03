@@ -113,56 +113,6 @@ describe TimelineService do
     end
   end
 
-  describe 'current_or_last_can_contain_ideas_phase' do
-    let(:project) { create(:project) }
-
-    it 'returns the currently active ideation phase of the project' do
-      active_phase = create_active_phase(project)
-      5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(active_phase.id)
-    end
-
-    it 'returns the currently active voting phase of the project' do
-      active_phase = create_active_phase(project, factory: :budgeting_phase)
-      5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(active_phase.id)
-    end
-
-    it 'returns the last ideation phase of the project if there is no currently active phase' do
-      5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(project.phases.last.id)
-    end
-
-    it 'returns the last voting phase of the project if there is no currently active phase' do
-      4.times { create_inactive_phase(project, participation_method: 'ideation') }
-      create_inactive_phase(project, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(project.phases.last.id)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.voting_method).to eq('budgeting')
-    end
-
-    it 'returns the last ideation phase of the project if the end_date is blank' do
-      create_active_phase(project, factory: :native_survey_phase)
-      open_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date + 10.days, end_at: nil)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(open_ideation_phase.id)
-    end
-
-    it 'returns the current ideation phase of the project if the end_date is blank' do
-      create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
-      open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 1.day, end_at: nil)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(open_current_ideation_phase.id)
-    end
-
-    it 'returns nil if there are no phases' do
-      expect(service.current_or_last_can_contain_ideas_phase(project)).to be_nil
-    end
-
-    it 'returns nil if there are no ideation phases' do
-      create_active_phase(project, factory: :native_survey_phase)
-      5.times { create_inactive_phase(project, participation_method: 'poll') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)).to be_nil
-    end
-  end
-
   describe 'current_and_future_phases' do
     it 'returns an array of current and future phases' do
       project = create(:project_with_current_phase)

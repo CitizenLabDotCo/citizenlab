@@ -183,25 +183,10 @@ class Idea < ApplicationRecord
   end
 
   def input_term
-    return creation_phase.input_term if !participation_method_on_creation.transitive?
-
-    current_phase = TimelineService.new.current_phase project
-    return current_phase.input_term if current_phase&.can_contain_ideas?
-
-    case phases.size
-    when 0
-      Phase::DEFAULT_INPUT_TERM
-    when 1
-      phases[0].input_term
+    if participation_method_on_creation.transitive?
+      transitive_input_term
     else
-      now = Time.zone.now
-      phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
-      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at&.<= now }
-      if first_past_phase_with_ideas
-        first_past_phase_with_ideas.input_term
-      else # now is before the first phase with ideas
-        phases_with_ideas.first.input_term
-      end
+      creation_phase.input_term
     end
   end
 
@@ -268,6 +253,23 @@ class Idea < ApplicationRecord
         message: 'The creation phase cannot be set for transitive participation methods'
       )
     end
+  end
+
+  def transitive_input_term
+    current_phase_input_term || last_past_phase_input_term || Phase::DEFAULT_INPUT_TERM
+  end
+
+  def current_phase_input_term
+    current_phase = TimelineService.new.current_phase project
+    current_phase.input_term if current_phase && Factory.instance.participation_method_for(current_phase).supports_input_term?
+  end
+
+  def last_past_phase_input_term
+    past_phases = TimelineService.new.past_phases(project).select { |phase| phases_ids.include? phase.id }
+    past_phases_with_input_term = past_phases.select do |phase|
+      Factory.instance.participation_method_for(phase).supports_input_term?
+    end
+    past_phases_with_input_term.last&.input_term
   end
 end
 
