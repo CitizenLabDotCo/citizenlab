@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Wymagana jest minimalna liczba głosów",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcja",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Karta Menedżer wprowadzania",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Skonfiguruj opcje głosowania na stronie {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Uczestnicy",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratorzy i menedżerowie",
