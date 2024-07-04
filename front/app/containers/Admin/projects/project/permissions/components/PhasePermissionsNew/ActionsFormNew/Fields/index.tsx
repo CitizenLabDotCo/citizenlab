@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Title, Box } from '@citizenlab/cl2-component-library';
+import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -16,6 +16,17 @@ const Fields = () => {
       <Box mt="20px">
         <DefaultField fieldName="Name" />
         <DefaultField fieldName="Email" />
+      </Box>
+      <Box mt="20px" w="100%" display="flex">
+        <Button
+          buttonStyle="admin-dark"
+          icon="plus-circle"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <FormattedMessage {...messages.addAQuestion} />
+        </Button>
       </Box>
     </Box>
   );

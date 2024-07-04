@@ -71,7 +71,7 @@ const EmailModal = ({ opened, onClose }: Props) => {
           label={formatMessage(messages.notRequired)}
         />
         <Box w="100%" display="flex" mt="32px">
-          <Button width="auto" onClick={() => {}}>
+          <Button width="auto" buttonStyle="admin-dark" onClick={() => {}}>
             {formatMessage(messages.saveRules)}
           </Button>
         </Box>
