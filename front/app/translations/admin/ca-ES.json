@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Cal un nombre mínim de vots",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opció",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Pestanya Gestor d'entrada",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configureu les opcions de votació a la pestanya Gestor d'entrada després de crear una fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configureu les opcions de votació al {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Participants",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administradors i gestors",
