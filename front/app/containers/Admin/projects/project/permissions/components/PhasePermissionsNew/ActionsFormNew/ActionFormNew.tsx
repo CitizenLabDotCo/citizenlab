@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
+import GroupSelect from 'components/admin/ActionsForm/GroupSelect';
 
 import CardButtons from './CardButtons';
 
@@ -23,7 +24,7 @@ interface Props {
 
 const ActionFormNew = ({
   permissionData,
-  // groupIds,
+  groupIds,
   phaseType,
   onChange,
 }: Props) => {
@@ -63,7 +64,17 @@ const ActionFormNew = ({
           />
         </Box>
       )}
-      <Box>TODO</Box>
+      <Box mt="20px">
+        <Title variant="h5" color="primary">
+          Restrict participation to user group(s)
+        </Title>
+        <GroupSelect
+          groupIds={groupIds}
+          onChange={(groups) => {
+            onChange(permissionData.attributes.permitted_by, groups);
+          }}
+        />
+      </Box>
     </form>
   );
 };

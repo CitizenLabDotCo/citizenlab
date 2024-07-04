@@ -8,12 +8,11 @@ import { IPermissionData } from 'api/permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import UserFieldSelection from './UserFieldSelection';
-
 import ActionForm from './ActionForm';
 import messages from './messages';
-import { getPermissionActionSectionSubtitle } from './utils';
 import { HandlePermissionChangeProps } from './typings';
+import UserFieldSelection from './UserFieldSelection';
+import { getPermissionActionSectionSubtitle } from './utils';
 
 const ActionPermissionWrapper = styled.div`
   margin-left: 0px;
