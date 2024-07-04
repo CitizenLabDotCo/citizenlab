@@ -148,13 +148,6 @@ const ActionForm = ({
               >
                 <FormattedMessage {...messages.selectUserGroups} />
               </Title>
-              {/* <StyledMultipleSelect
-                value={groupIds || []}
-                options={groupsOptions()}
-                onChange={handleGroupIdsUpdate}
-                placeholder={<FormattedMessage {...messages.selectGroups} />}
-                id="e2e-select-user-group"
-              /> */}
               <GroupSelect
                 groupIds={groupIds}
                 onChange={handleGroupIdsUpdate}
