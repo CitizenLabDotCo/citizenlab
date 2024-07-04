@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Eine Mindestanzahl von Stimmen ist erforderlich",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Option",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Beitragsmanager",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Konfigurieren Sie die Abstimmungsoptionen auf der Registerkarte Beitragsmanager, nachdem Sie eine Phase erstellt haben.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurieren Sie die Abstimmungsoptionen im {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Teilnehmende",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Admins und Manager*innen",
