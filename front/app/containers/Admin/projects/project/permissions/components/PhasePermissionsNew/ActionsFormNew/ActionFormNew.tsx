@@ -8,7 +8,10 @@ import { PermittedBy } from 'api/phase_permissions/types';
 import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
 import GroupSelect from 'components/admin/ActionsForm/GroupSelect';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import CardButtons from './CardButtons';
+import messages from './messages';
 
 interface Props {
   permissionData: IPermissionData;
@@ -21,6 +24,10 @@ interface Props {
     groupIds: Props['groupIds']
   ) => void;
 }
+
+const showGroupSelect = (permittedBy: PermittedBy) => {
+  return permittedBy !== 'everyone' && permittedBy !== 'admins_moderators';
+};
 
 const ActionFormNew = ({
   permissionData,
@@ -64,17 +71,19 @@ const ActionFormNew = ({
           />
         </Box>
       )}
-      <Box mt="20px">
-        <Title variant="h5" color="primary">
-          Restrict participation to user group(s)
-        </Title>
-        <GroupSelect
-          groupIds={groupIds}
-          onChange={(groups) => {
-            onChange(permissionData.attributes.permitted_by, groups);
-          }}
-        />
-      </Box>
+      {showGroupSelect(permittedBy) && (
+        <Box mt="20px">
+          <Title variant="h5" color="primary">
+            <FormattedMessage {...messages.restrictParticipation} />
+          </Title>
+          <GroupSelect
+            groupIds={groupIds}
+            onChange={(groups) => {
+              onChange(permissionData.attributes.permitted_by, groups);
+            }}
+          />
+        </Box>
+      )}
     </form>
   );
 };
