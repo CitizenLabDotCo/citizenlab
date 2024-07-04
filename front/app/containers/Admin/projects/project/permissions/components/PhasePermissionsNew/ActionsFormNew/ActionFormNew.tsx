@@ -74,7 +74,7 @@ const ActionFormNew = ({
       )}
       {showGroupSelect(permittedBy) && (
         <Box mt="20px">
-          <Title variant="h5" color="primary">
+          <Title variant="h4" color="primary">
             <FormattedMessage {...messages.restrictParticipation} />
           </Title>
           <GroupSelect
@@ -85,7 +85,7 @@ const ActionFormNew = ({
           />
         </Box>
       )}
-      <Box mt="20px">
+      <Box mt="28px">
         <Fields />
       </Box>
     </form>

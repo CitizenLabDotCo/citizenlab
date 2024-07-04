@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Box,
+  Button,
   stylingConsts,
   Text,
   Toggle,
@@ -26,7 +27,17 @@ const DefaultField = ({ fieldName }: Props) => {
       <Text m="0" fontSize="m" color="primary">
         {fieldName}
       </Text>
-      <Box>
+      <Box display="flex" flexDirection="row">
+        <Button
+          icon="edit"
+          buttonStyle="text"
+          p="0"
+          m="0"
+          mr="22px"
+          onClick={noop}
+        >
+          Edit
+        </Button>
         <Box
           mb="-4px" // cancel out te bottom margin of the Toggle
         >

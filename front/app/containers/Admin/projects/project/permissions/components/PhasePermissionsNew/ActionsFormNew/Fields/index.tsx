@@ -11,7 +11,7 @@ import DefaultField from './DefaultField';
 const Fields = () => {
   return (
     <Box maxWidth="844px">
-      <Title variant="h5" color="primary">
+      <Title variant="h4" color="primary">
         <FormattedMessage {...messages.whatInformation} />
       </Title>
       <Box mt="20px">
