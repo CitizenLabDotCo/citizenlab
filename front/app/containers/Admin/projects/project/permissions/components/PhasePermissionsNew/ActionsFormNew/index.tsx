@@ -39,7 +39,7 @@ const ActionsFormNew = ({
   permissions,
   postType,
   onChange,
-  // projectId,
+  projectId,
   phaseId,
 }: Props) => {
   const handlePermissionChange =
@@ -62,6 +62,8 @@ const ActionsFormNew = ({
     );
   }
 
+  if (!phaseId) return null;
+
   return (
     <>
       {permissions.map((permission, index) => {
@@ -79,28 +81,13 @@ const ActionsFormNew = ({
               />
             </Title>
             <ActionFormNew
+              phaseId={phaseId}
+              projectId={projectId}
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
               onChange={handlePermissionChange(permission, phaseId)}
             />
-            {/* {permission.attributes.permitted_by !== 'everyone' &&
-              permission.attributes.permitted_by !== 'admins_moderators' && (
-                <Box
-                  pt="10px"
-                  borderLeft={`solid 1px ${colors.grey300}`}
-                  px="20px"
-                  pb="20px"
-                >
-                  <UserFieldSelection
-                    permission={permission}
-                    projectId={projectId}
-                    phaseId={phaseId}
-                    initiativeContext={postType === 'initiative'}
-                    onChange={onChange}
-                  />
-                </Box>
-              )} */}
           </Box>
         );
       })}

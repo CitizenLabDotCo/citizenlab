@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
+import { FieldSelectionModal } from 'components/admin/ActionsForm/UserFieldSelection/FieldSelectionModal';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
+import CustomFields from './CustomFields';
 import DefaultField from './DefaultField';
 import messages from './messages';
 
-const Fields = () => {
+interface Props {
+  phaseId: string;
+  projectId: string;
+}
+
+const Fields = ({ phaseId, projectId }: Props) => {
+  const [showSelectionModal, setShowSelectionModal] = useState(false);
+
   return (
     <Box maxWidth="844px">
       <Title variant="h4" color="primary">
@@ -16,6 +26,7 @@ const Fields = () => {
       <Box mt="20px">
         <DefaultField fieldName="Name" />
         <DefaultField fieldName="Email" />
+        <CustomFields phaseId={phaseId} projectId={projectId} />
       </Box>
       <Box mt="20px" w="100%" display="flex">
         <Button
@@ -23,10 +34,18 @@ const Fields = () => {
           icon="plus-circle"
           onClick={(e) => {
             e.preventDefault();
+            setShowSelectionModal(true);
           }}
         >
           <FormattedMessage {...messages.addAQuestion} />
         </Button>
+        <FieldSelectionModal
+          showSelectionModal={showSelectionModal}
+          setShowSelectionModal={setShowSelectionModal}
+          selectedFields={[]} // TODO
+          handleAddField={() => {}} // TODO
+          isLoading={false} // TODO
+        />
       </Box>
     </Box>
   );

@@ -13,6 +13,8 @@ import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 
+import useLocale from 'hooks/useLocale';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -21,7 +23,6 @@ import messages from './messages';
 type SelectionScreenProps = {
   selectedFields: Array<IPermissionsFieldData> | undefined;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
-  locale: string;
   handleAddField: (fields: IUserCustomFieldData) => void;
   setShowAddFieldPage: (show: boolean) => void;
   isLoading: boolean;
@@ -30,11 +31,11 @@ type SelectionScreenProps = {
 export const SelectionScreen = ({
   registrationFieldList,
   selectedFields,
-  locale,
   handleAddField,
   setShowAddFieldPage,
   isLoading,
 }: SelectionScreenProps) => {
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const selectedFieldIds = new Set(
     selectedFields?.map((field) => field.relationships.custom_field.data.id)

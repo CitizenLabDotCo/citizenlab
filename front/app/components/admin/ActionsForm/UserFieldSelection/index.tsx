@@ -226,9 +226,7 @@ const UserFieldSelection = ({
                           <Text
                             fontSize="s"
                             color={
-                              permissionsFieldsAllowed
-                                ? 'primary'
-                                : 'disabled'
+                              permissionsFieldsAllowed ? 'primary' : 'disabled'
                             }
                           >
                             <FormattedMessage {...messages.required} />
@@ -267,8 +265,6 @@ const UserFieldSelection = ({
                 selectedFields={initialFieldArray}
                 handleAddField={handleAddField}
                 isLoading={isLoading}
-                registrationFieldList={globalRegistrationFields?.data}
-                locale={locale}
               />
             </>
           )}

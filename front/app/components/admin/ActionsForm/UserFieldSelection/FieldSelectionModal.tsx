@@ -4,6 +4,9 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
+import useLocale from 'hooks/useLocale';
 
 import { generateTempId } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
@@ -19,8 +22,6 @@ type FieldSelectionModalProps = {
   setShowSelectionModal: (show: boolean) => void;
   selectedFields: Array<IPermissionsFieldData> | undefined;
   handleAddField: (field: IUserCustomFieldData) => void;
-  registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
-  locale: string;
   isLoading: boolean;
 };
 
@@ -29,12 +30,14 @@ export const FieldSelectionModal = ({
   setShowSelectionModal,
   selectedFields,
   handleAddField,
-  registrationFieldList,
-  locale,
   isLoading,
 }: FieldSelectionModalProps) => {
+  const locale = useLocale();
   const [showAddFieldPage, setShowAddFieldPage] = React.useState(false);
+  const { data: globalRegistrationFields } = useUserCustomFields();
   const { formatMessage } = useIntl();
+
+  const registrationFieldList = globalRegistrationFields?.data;
 
   const defaultFormValues = {
     options: [
@@ -75,7 +78,6 @@ export const FieldSelectionModal = ({
           <SelectionScreen
             selectedFields={selectedFields}
             registrationFieldList={registrationFieldList}
-            locale={locale}
             handleAddField={handleAddField}
             isLoading={isLoading}
             setShowAddFieldPage={setShowAddFieldPage}

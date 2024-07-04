@@ -15,6 +15,8 @@ import Fields from './Fields';
 import messages from './messages';
 
 interface Props {
+  phaseId: string;
+  projectId: string;
   permissionData: IPermissionData;
   groupIds?: string[];
   phaseType: 'defaultInput' | 'nativeSurvey';
@@ -31,6 +33,8 @@ const showGroupSelect = (permittedBy: PermittedBy) => {
 };
 
 const ActionFormNew = ({
+  phaseId,
+  projectId,
   permissionData,
   groupIds,
   phaseType,
@@ -86,7 +90,7 @@ const ActionFormNew = ({
         </Box>
       )}
       <Box mt="28px">
-        <Fields />
+        <Fields phaseId={phaseId} projectId={projectId} />
       </Box>
     </form>
   );
