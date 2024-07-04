@@ -11,8 +11,8 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  field_type      :string           default("custom_field")
-#  verified        :boolean          default(FALSE)
-#  enabled         :boolean          default(TRUE)
+#  enabled         :boolean          default(TRUE), not null
+#  config          :jsonb            not null
 #
 # Indexes
 #

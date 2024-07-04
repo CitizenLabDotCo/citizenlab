@@ -2889,8 +2889,8 @@ CREATE TABLE public.permissions_fields (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     field_type character varying DEFAULT 'custom_field'::character varying,
-    verified boolean DEFAULT false,
-    enabled boolean DEFAULT true
+    enabled boolean DEFAULT true NOT NULL,
+    config jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
