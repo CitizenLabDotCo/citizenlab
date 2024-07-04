@@ -23,7 +23,7 @@ interface Props {
 
 const ActionFormNew = ({
   permissionData,
-  groupIds,
+  // groupIds,
   phaseType,
   onChange,
 }: Props) => {

@@ -7,27 +7,20 @@ import {
   CardButton,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
-import useGroups from 'api/groups/useGroups';
 import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AdminCollaboratorToggle from './AdminCollaboratorToggle';
+import GroupSelect from './GroupSelect';
 import messages from './messages';
-
-const StyledMultipleSelect = styled(MultipleSelect)`
-  width: 300px;
-`;
 
 interface Props {
   permissionData: IPermissionData;
@@ -47,21 +40,8 @@ const ActionForm = ({
   projectType,
   onChange,
 }: Props) => {
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: groups } = useGroups({});
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
-
-  const groupsOptions = () => {
-    if (!groups) {
-      return [];
-    } else {
-      return groups.data.map((group) => ({
-        label: localize(group.attributes.title_multiloc),
-        value: group.id,
-      }));
-    }
-  };
 
   const handlePermittedByUpdate =
     (value: IPermissionData['attributes']['permitted_by']) => (e) => {
@@ -69,11 +49,8 @@ const ActionForm = ({
       onChange(value, groupIds);
     };
 
-  const handleGroupIdsUpdate = (options: { value: string }[]) => {
-    onChange(
-      permissionData.attributes.permitted_by,
-      options.map((o) => o.value)
-    );
+  const handleGroupIdsUpdate = (groups: string[]) => {
+    onChange(permissionData.attributes.permitted_by, groups);
   };
 
   const {
@@ -171,12 +148,16 @@ const ActionForm = ({
               >
                 <FormattedMessage {...messages.selectUserGroups} />
               </Title>
-              <StyledMultipleSelect
+              {/* <StyledMultipleSelect
                 value={groupIds || []}
                 options={groupsOptions()}
                 onChange={handleGroupIdsUpdate}
                 placeholder={<FormattedMessage {...messages.selectGroups} />}
                 id="e2e-select-user-group"
+              /> */}
+              <GroupSelect
+                groupIds={groupIds}
+                onChange={handleGroupIdsUpdate}
               />
             </Box>
           )}
