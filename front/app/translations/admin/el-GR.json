@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Απαιτείται ελάχιστος αριθμός ψήφων",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Επιλογή",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Καρτέλα Input Manager",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Διαμορφώστε τις επιλογές ψηφοφορίας στην καρτέλα Διαχείριση εισόδου μετά τη δημιουργία μιας φάσης.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Διαμορφώστε τις επιλογές ψηφοφορίας στη διεύθυνση {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Συμμετέχοντες",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Διαχειριστές & διευθυντές",
