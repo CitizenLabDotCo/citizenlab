@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 describe Permissions::IdeaPermissionsService do
@@ -87,6 +85,7 @@ describe Permissions::IdeaPermissionsService do
   end
 
   describe '"reacting_idea" denied_reason_for_idea' do
+    let(:service) { described_class.new(user, reaction.reactable) }
     let(:user) { create(:user) }
 
     context 'a reaction' do

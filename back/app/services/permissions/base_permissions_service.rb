@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[

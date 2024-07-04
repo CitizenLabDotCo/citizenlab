@@ -1,12 +1,15 @@
-# frozen_string_literal: true
-
 module Permissions
   class IdeaPermissionsService < ProjectPermissionsService
     IDEA_DENIED_REASONS = {
       idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
-    def denied_reason_for_action(action, user, idea, reaction_mode: nil)
+    def initialize(idea, user)
+      super(user)
+      @idea ||= idea
+    end
+
+    def denied_reason_for_idea(action, reaction_mode: nil)
       reason = super action, user, idea.project, reaction_mode: reaction_mode
       return reason if reason
 
@@ -16,19 +19,18 @@ module Permissions
       end
     end
 
-    def denied_reason_for_idea_reaction(user, reaction, reaction_mode: nil)
+    def denied_reason_for_idea_reaction(reaction, reaction_mode: nil)
       reaction_mode ||= reaction.mode
-      idea = reaction.reactable
-      denied_reason_for_action('reacting_idea', user, idea, reaction_mode: reaction_mode)
+      denied_reason_for_idea('reacting_idea', reaction_mode: reaction_mode)
     end
 
     def action_descriptors(idea, user)
-      commenting_disabled_reason = denied_reason_for_action 'commenting_idea', user, idea
-      liking_disabled_reason = denied_reason_for_action 'reacting_idea', user, idea, reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', user, idea, reaction_mode: 'down'
-      cancelling_reactions_disabled_reason = denied_reason_for_action 'reacting_idea', user, idea
-      voting_disabled_reason = denied_reason_for_action 'voting', user, idea
-      comment_reacting_disabled_reason = denied_reason_for_action 'commenting_idea', user, idea
+      commenting_disabled_reason = denied_reason_for_idea 'commenting_idea'
+      liking_disabled_reason = denied_reason_for_idea 'reacting_idea', reaction_mode: 'up'
+      disliking_disabled_reason = denied_reason_for_idea 'reacting_idea', reaction_mode: 'down'
+      cancelling_reactions_disabled_reason = denied_reason_for_idea 'reacting_idea'
+      voting_disabled_reason = denied_reason_for_idea 'voting'
+      comment_reacting_disabled_reason = denied_reason_for_idea 'commenting_idea'
 
       {
         commenting_idea: {

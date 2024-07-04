@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Permissions
   class PhasePermissionsService < BasePermissionsService
     PHASE_DENIED_REASONS = {
@@ -82,7 +80,7 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_phase
-      if !participation_method.participation_method_for(phase).posting_allowed? # TODO: Rename to posting_supported?
+      if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
