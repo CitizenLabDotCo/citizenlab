@@ -212,58 +212,75 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe '"reacting_idea" denied_reason_for_project' do
-    it 'returns nil when reacting is enabled in the current phase' do
-      project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: true })
+    context 'when reacting is enabled in the current phase' do
+      let(:current_phase_attrs) { { reacting_enabled: true } }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to be_nil
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to be_nil
+      it 'returns nil' do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to be_nil
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to be_nil
+      end
     end
 
-    it 'returns `project_inactive` when the project is archived' do
-      project = create(
-        :project_with_current_phase,
-        admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { reacting_enabled: true }
-      )
+    context 'when the project is archived' do
+      let(:project) do
+        create(
+          :project_with_current_phase,
+          admin_publication_attributes: { publication_status: 'archived' },
+          current_phase_attrs: { reacting_enabled: true }
+        )
+      end
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'project_inactive'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'project_inactive'
+      it 'returns `project_inactive`' do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
+      end
     end
 
-    it "returns `project_inactive` when the timeline hasn't started yet" do
-      project = create(:project_with_future_phases)
+    context "when the timeline hasn't started yet" do
+      let(:project) { create(:project_with_future_phases) }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'project_inactive'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'project_inactive'
+      it "returns `project_inactive`" do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
+      end
     end
 
-    it 'returns `project_inactive` when the timeline has past' do
-      project = create(:project_with_past_phases)
+    context 'when the timeline has past' do
+      let(:project) { create(:project_with_past_phases) }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'project_inactive'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'project_inactive'
+      it 'returns `project_inactive' do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
+      end
     end
 
-    it "returns `reacting_not_supported` when we're in a participatory budgeting context" do
-      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 })
+    context "when we're in a participatory budgeting context" do
+      let(:current_phase_attrs) { { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 } }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'reacting_not_supported'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'reacting_not_supported'
+      it "returns `reacting_not_supported`" do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'reacting_not_supported'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'reacting_not_supported'
+      end
     end
 
-    it 'returns `reacting_disabled` if reacting is disabled' do
-      project = create(:project_with_current_phase, current_phase_attrs: { reacting_enabled: false })
+    context 'when reacting is disabled' do
+      let(:current_phase_attrs) { { reacting_enabled: false } }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'reacting_disabled'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'reacting_disabled'
+      it 'returns `reacting_disabled`' do
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'reacting_disabled'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'reacting_disabled'
+      end
     end
 
-    it 'returns `reacting_like_limited_max_reached` if the like limit was reached' do
-      project = create(:project_with_current_phase,
-        current_phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
-      create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
+    context 'when the like limit was reached' do
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 } }
 
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'reacting_like_limited_max_reached'
-      expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to be_nil
+      it 'returns `reacting_like_limited_max_reached`' do
+        create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
+
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'reacting_like_limited_max_reached'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to be_nil
+      end
     end
 
     describe 'with phase permissions' do
@@ -276,63 +293,85 @@ describe Permissions::ProjectPermissionsService do
           .find_by(action: 'reacting_idea')
       end
 
-      it 'returns `user_not_signed_in` when user needs to be signed in' do
-        permission.update!(permitted_by: 'users')
-        expect(service.denied_reason_for_project('reacting_idea', nil, project, reaction_mode: 'up')).to eq 'user_not_signed_in'
-        expect(service.denied_reason_for_project('reacting_idea', nil, project, reaction_mode: 'down')).to eq 'user_not_signed_in'
+      context 'when the user needs to be signed in' do
+        let(:user) { nil }
+
+        it 'returns `user_not_signed_in` when user needs to be signed in' do
+          permission.update!(permitted_by: 'users')
+          expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'user_not_signed_in'
+          expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'user_not_signed_in'
+        end
       end
 
       it "returns 'user_not_in_group' if it's in the current phase and reacting is not permitted" do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
-        expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'up')).to eq 'user_not_in_group'
-        expect(service.denied_reason_for_project('reacting_idea', user, project, reaction_mode: 'down')).to eq 'user_not_in_group'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'user_not_in_group'
+        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'user_not_in_group'
       end
     end
   end
 
   describe '"taking_survey" denied_reason_for_project' do
-    it 'returns `not_survey` when the active context is not a survey' do
-      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
-      expect(service.denied_reason_for_project('taking_survey', create(:user), project)).to eq 'not_survey'
+    context 'when the active context is not a survey' do
+      let(:current_phase_attrs) { { participation_method: 'ideation' } }
+
+      it 'returns `not_survey`' do
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'not_survey'
+      end
     end
 
-    it 'returns `project_inactive` when the timeline has past' do
-      project = create(:project_with_past_phases)
-      expect(service.denied_reason_for_project('taking_survey', create(:user), project)).to eq 'project_inactive'
+    context 'when the active context is not a survey' do
+      let(:project) { create(:project_with_past_phases) }
+
+      it 'returns `project_inactive`' do
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'project_inactive'
+      end
     end
 
-    it 'returns `project_inactive` when the project is archived' do
-      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.denied_reason_for_project('taking_survey', create(:user), project)).to eq 'project_inactive'
+    context 'when the project is archived' do
+      let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it 'returns `project_inactive` ' do
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'project_inactive'
+      end
     end
 
-    it 'returns nil when taking the survey is allowed' do
-      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
-      groups = create_list(:group, 2, projects: [project])
-      permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
-      user = create(:user)
-      group = groups.first
-      group.add_member user
-      group.save!
-      expect(service.denied_reason_for_project('taking_survey', user, project)).to be_nil
+    context 'when taking the survey is allowed' do
+      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
+
+      it 'returns nil' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
+        groups = create_list(:group, 2, projects: [project])
+        permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+        group = groups.first
+        group.add_member user
+        group.save!
+        expect(service.denied_reason_for_project('taking_survey')).to be_nil
+      end
     end
 
-    it 'returns `user_not_signed_in` when user needs to be signed in' do
-      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
-      permission.update!(permitted_by: 'users')
-      expect(service.denied_reason_for_project('taking_survey', nil, project)).to eq 'user_not_signed_in'
+    context 'when taking the survey is allowed' do
+      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
+      let(:user) { nil }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
+        permission.update!(permitted_by: 'users')
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_signed_in'
+      end
     end
 
-    it 'returns `user_not_in_group` when taking the survey is not permitted' do
-      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
-      permission.update!(
-        permitted_by: 'groups',
-        group_ids: create_list(:group, 2).map(&:id)
-      )
-      expect(service.denied_reason_for_project('taking_survey', create(:user), project)).to eq 'user_not_in_group'
+    context 'when taking the survey is allowed' do
+      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
+
+      it 'returns `user_not_in_group` when taking the survey is not permitted' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
+        permission.update!(
+          permitted_by: 'groups',
+          group_ids: create_list(:group, 2).map(&:id)
+        )
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_in_group'
+      end
     end
   end
 
@@ -573,77 +612,92 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe '"voting" future_enabled_phase' do
+    let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
+    let(:phases_config) do
+      {
+        sequence: 'xcxxyxy',
+        x: { participation_method: 'ideation' },
+        y: { participation_method: 'voting', voting_method: 'budgeting' },
+        c: { participation_method: 'ideation' }
+      }
+    end
+
     it 'returns the first upcoming phase that is voting' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcxxyxy',
-          x: { participation_method: 'ideation' },
-          y: { participation_method: 'voting', voting_method: 'budgeting' },
-          c: { participation_method: 'ideation' }
-        }
-      )
-      expect(service.future_enabled_phase('voting', create(:user), project)).to eq project.phases.order(:start_at)[4]
+      expect(service.future_enabled_phase('voting')).to eq project.phases.order(:start_at)[4]
     end
 
-    it 'returns nil if none of the next phases are voting phase' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcyyy',
-          y: { participation_method: 'ideation' }
-        }
-      )
-      expect(service.future_enabled_phase('voting', create(:user), project)).to be_nil
+    context 'when none of the next phases are voting phases' do
+      let(:phases_config) { { sequence: 'xcyyy', y: { participation_method: 'ideation' } } }
+
+      it 'returns nil' do
+        expect(service.future_enabled_phase('voting')).to be_nil
+      end
     end
 
-    it 'returns nil for a project without future phases' do
-      project = create(:project_with_past_phases)
-      expect(service.future_enabled_phase('voting', create(:user), project)).to be_nil
+    context 'for a project without future phases' do
+      let(:project) { create(:project_with_past_phases) }
+
+      it 'returns nil' do
+        expect(service.future_enabled_phase('voting')).to be_nil
+      end
     end
   end
 
   describe 'project_visible_disabled_reason' do
-    it 'returns nil when a user is an admin and the project is visible to admins' do
-      project = create(:project, visible_to: 'admins')
-      user = create(:admin)
-      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
+    context 'when the project is visible to admins' do
+      let(:project) { create(:project, visible_to: 'admins') }
+
+      context 'when a user is an admin' do
+        let(:user) { create(:admin) }
+
+        it 'returns nil' do
+          expect(service.send(:project_visible_disabled_reason)).to be_nil
+        end
+      end
+
+      it 'returns "project_not_visible" when a user is not admin' do
+        expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
+      end
+
+      context 'when there is no logged in user' do
+        let(:user) { nil }
+
+        it 'returns "project_not_visible"' do
+          expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
+        end
+      end
     end
 
-    it 'returns "project_not_visible" when a user is not admin and the project is visible to admins' do
-      project = create(:project, visible_to: 'admins')
-      user = create(:user)
-      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
-    end
+    context 'when the project is visible to groups' do
+      let(:project) { create(:project, visible_to: 'groups', groups: [create(:group)]) }
 
-    it 'returns "project_not_visible" when there is no logged in user and the project is visible to admins' do
-      project = create(:project, visible_to: 'admins')
-      user = nil
-      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
-    end
+      it 'returns "project_not_visible" when a user is not in a project group' do
+        expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
+      end
 
-    it 'returns nil when a user is in a project group' do
-      project = create(:project, visible_to: 'groups', groups: [create(:group)])
-      user = create(:user, manual_groups: [project.groups.first])
-      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
-    end
+      context 'when the user is in a project group' do
+        let(:user) { create(:user, manual_groups: [project.groups.first]) }
 
-    it 'returns nil when a user is a project moderator' do
-      project = create(:project, visible_to: 'groups', groups: [create(:group)])
-      user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
-      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
-    end
+        it 'returns nil' do
+          expect(service.send(:project_visible_disabled_reason)).to be_nil
+        end
+      end
 
-    it 'returns "project_not_visible" when a user is not in a project group' do
-      project = create(:project, visible_to: 'groups', groups: [create(:group)])
-      user = create(:user)
-      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
-    end
+      context 'when the user is in a project group' do
+        let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
 
-    it 'returns "project_not_visible" when there is no logged in user and the project is visible to groups' do
-      project = create(:project, visible_to: 'groups', groups: [create(:group)])
-      user = nil
-      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
+        it 'returns nil' do
+          expect(service.send(:project_visible_disabled_reason)).to be_nil
+        end
+      end
+
+      context 'when there is no logged in user' do
+        let(:user) { nil }
+
+        it 'returns "project_not_visible"' do
+          expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
+        end
+      end
     end
   end
 
@@ -671,7 +725,7 @@ describe Permissions::ProjectPermissionsService do
       expect(projects.length).to eq 5
       expect do
         projects.each do |project|
-          service.action_descriptors(project, user)
+          described_class.new(project, user).action_descriptors
         end
       end.not_to exceed_query_limit(5) # Down from an original 470
     end
@@ -702,7 +756,7 @@ describe Permissions::ProjectPermissionsService do
       expect(projects.length).to eq 5
       expect do
         projects.each do |project|
-          service.action_descriptors(project, user)
+          described_class.new(project, user).action_descriptors
         end
       end.not_to exceed_query_limit(8) # Down from an original 490
     end

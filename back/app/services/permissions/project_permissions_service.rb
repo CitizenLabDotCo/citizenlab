@@ -5,7 +5,7 @@ module Permissions
     }.freeze
 
     def initialize(project, user)
-      super(user)
+      super(user, user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false))
       @project ||= project
     end
 
@@ -27,7 +27,7 @@ module Permissions
       end
     end
 
-    def action_descriptors(project, user)
+    def action_descriptors
       posting_disabled_reason = denied_reason_for_project 'posting_idea'
       commenting_disabled_reason = denied_reason_for_project 'commenting_idea'
       reacting_disabled_reason = denied_reason_for_project 'reacting_idea'
@@ -41,7 +41,7 @@ module Permissions
         posting_idea: {
           enabled: !posting_disabled_reason,
           disabled_reason: posting_disabled_reason,
-          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea', user, project)&.start_at
+          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea')&.start_at
         },
         commenting_idea: {
           enabled: !commenting_disabled_reason,

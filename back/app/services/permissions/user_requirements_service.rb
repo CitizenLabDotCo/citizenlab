@@ -7,7 +7,7 @@ class Permissions::UserRequirementsService
   end
 
   def requirements(permission, user)
-    requirements = base_requirements permission
+    requirements = base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
@@ -20,6 +20,7 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_fields(permission)
+    # ##### return [] ##### TODO: Fix performance
     if permission.global_custom_fields
       registration_fields
     else
@@ -115,9 +116,10 @@ class Permissions::UserRequirementsService
   end
 
   def onboarding_possible?
-    return @onboarding_possible unless @onboarding_possible.nil?
+    return true
+    # return @onboarding_possible unless @onboarding_possible.nil?
 
-    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
+    # @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
   end
 
   def ignore_password_for_sso!(requirements, user)
