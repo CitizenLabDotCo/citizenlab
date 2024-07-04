@@ -27,10 +27,10 @@ import useLocale from 'hooks/useLocale';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 
-import messages from './messages';
 import { HandlePermissionChangeProps } from '../typings';
 
 import { FieldSelectionModal } from './FieldSelectionModal';
+import messages from './messages';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;

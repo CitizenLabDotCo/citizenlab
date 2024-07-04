@@ -10,9 +10,8 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
-
 import { AddFieldScreen } from './AddFieldScreen';
+import messages from './messages';
 import { SelectionScreen } from './SelectionScreen';
 
 type FieldSelectionModalProps = {
