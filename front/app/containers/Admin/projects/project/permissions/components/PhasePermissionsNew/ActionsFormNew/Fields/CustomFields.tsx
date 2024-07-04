@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 
@@ -18,10 +18,6 @@ const CustomFields = ({ phaseId, projectId }: Props) => {
     action: 'posting_idea',
   });
 
-  console.log(permissionFields);
-
-  if (phaseId !== 'kut') return null;
-
   return (
     <SortableList
       items={permissionFields?.data ?? ([] as any)}
@@ -29,7 +25,7 @@ const CustomFields = ({ phaseId, projectId }: Props) => {
     >
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
-          {itemsList.map((_, index: number) => (
+          {itemsList.map((_field, index: number) => (
             <SortableRow
               id={index.toString()}
               key={index.toString()}
@@ -39,12 +35,14 @@ const CustomFields = ({ phaseId, projectId }: Props) => {
               isLastItem={index === itemsList.length - 1}
             >
               <Box
+                w="100%"
                 display="flex"
-                flexWrap="wrap"
                 alignItems="center"
                 marginRight="20px"
               >
-                TEST
+                <Text m="0" mt="4px" fontSize="m" color="primary">
+                  Test
+                </Text>
               </Box>
             </SortableRow>
           ))}
