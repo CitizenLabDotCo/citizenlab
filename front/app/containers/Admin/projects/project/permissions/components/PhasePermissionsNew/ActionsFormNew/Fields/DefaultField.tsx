@@ -8,7 +8,10 @@ import {
   Toggle,
 } from '@citizenlab/cl2-component-library';
 
+import { useIntl } from 'utils/cl-intl';
+
 import EmailModal from './EmailModal';
+import messages from './messages';
 
 interface Props {
   fieldName: string;
@@ -17,6 +20,7 @@ interface Props {
 const noop = () => {};
 
 const DefaultField = ({ fieldName }: Props) => {
+  const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -41,7 +45,7 @@ const DefaultField = ({ fieldName }: Props) => {
             mr="22px"
             onClick={() => setIsModalOpen(true)}
           >
-            Edit
+            {formatMessage(messages.edit)}
           </Button>
           <Box
             mb="-4px" // cancel out te bottom margin of the Toggle
