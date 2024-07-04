@@ -145,7 +145,11 @@ const FullscreenMapInput = memo<Props>(
                 onClick={onMapClick}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
               />
-              <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
+              <ResetMapViewButton
+                id={id}
+                mapConfig={mapConfig}
+                mapView={mapView}
+              />
               <Box
                 p="16px"
                 pb="0px"

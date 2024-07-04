@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
+import { Point } from 'geojson';
 import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -20,10 +20,12 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
+import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
   handleDataPointChange,
   handleDataMultipointChange,
+  getUserInputPoints,
 } from '../utils';
 
 type Props = {
@@ -59,11 +61,21 @@ const DesktopView = ({
     label: '',
   });
 
+  useEffect(() => {
+    // Add custom buttons to map interface
+    mapView?.ui.add(
+      document.getElementById(`undo-button-${id}`) || '',
+      'bottom-left'
+    );
+    mapView?.ui.add(
+      document.getElementById(`reset-view-${id}`) || '',
+      'bottom-left'
+    );
+  }, [mapView, id]);
+
   // Show graphics on map when location point(s) change
   useEffect(() => {
     if (data) {
-      console.log({ data });
-
       if (inputType === 'point') {
         handleDataPointChange({
           data,
@@ -83,7 +95,7 @@ const DesktopView = ({
     } else {
       clearPointData(mapView, setAddress);
     }
-  }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
+  }, [data, id, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
@@ -96,39 +108,43 @@ const DesktopView = ({
           }
         );
       } else if (inputType === 'line' || inputType === 'polygon') {
-        // Add the clicked location to the line
+        // Add the clicked location to the existing points
         const newPoint = esriPointToGeoJson(event.mapPoint);
-
-        const filteredGraphics: Graphic[] = [];
-        mapView?.graphics.forEach((graphic) => {
-          if (graphic.geometry.type === 'point') {
-            filteredGraphics.push(graphic);
-          }
-        });
-
-        const currentPoints = filteredGraphics.map((graphic) =>
-          esriPointToGeoJson(graphic.geometry as __esri.Point)
-        );
-
+        const currentPointsGeoJSON = getUserInputPoints(mapView);
         // Update the form data
-        handleMultiPointChange?.([...currentPoints, newPoint]);
+        handleMultiPointChange?.([...currentPointsGeoJSON, newPoint]);
       }
     },
     [handleMultiPointChange, handlePointChange, inputType]
   );
 
+  const handleLocationInputChange = (point: Point | undefined) => {
+    if (handlePointChange) {
+      handlePointChange(point);
+    } else if (handleMultiPointChange) {
+      point ? handleMultiPointChange([point]) : handleMultiPointChange([]);
+    }
+  };
+
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
         <Box mb="12px">
-          {handlePointChange && (
-            <LocationTextInput
-              address={address}
-              handlePointChange={handlePointChange}
-            />
-          )}
+          <LocationTextInput
+            address={address}
+            handlePointChange={handleLocationInputChange}
+          />
         </Box>
         <>
+          {(inputType === 'line' || inputType === 'polygon') && (
+            <UndoButton
+              handleMultiPointChange={handleMultiPointChange}
+              mapView={mapView}
+              id={id}
+              undoEnabled={data}
+            />
+          )}
+
           <EsriMap
             id="e2e-point-control-map"
             height="400px"
@@ -146,7 +162,7 @@ const DesktopView = ({
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
           />
-          <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
+          <ResetMapViewButton id={id} mapConfig={mapConfig} mapView={mapView} />
         </>
       </Box>
       <ErrorDisplay

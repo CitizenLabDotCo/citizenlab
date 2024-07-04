@@ -6,6 +6,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 
 import {
+  esriPointToGeoJson,
   getMapPinSymbol,
   getShapeSymbol,
   goToMapLocation,
@@ -111,6 +112,7 @@ export const handleDataMultipointChange = ({
   tenantPrimaryColor,
 }: HandleDataMultipointChangeProps) => {
   const points = data as GeoJSON.Point[];
+
   // Create a graphic and add the point and symbol to it
   const graphics = points.map((point) => {
     return new Graphic({
@@ -120,16 +122,15 @@ export const handleDataMultipointChange = ({
       }),
       symbol: getShapeSymbol({
         shape: 'circle',
-        color: colors.white,
-        sizeInPx: 12,
-        outlineColor: colors.black,
+        color: tenantPrimaryColor,
+        sizeInPx: 14,
+        outlineColor: colors.white,
         outlineWidth: 2,
       }),
     });
   });
 
   // Create an Esri line graphic connecting the points
-
   const polyline = new Polyline({
     paths: [
       points.map((point) => [point.coordinates[0], point.coordinates[1]]),
@@ -138,14 +139,15 @@ export const handleDataMultipointChange = ({
 
   const simpleLineSymbol = {
     type: 'simple-line',
-    color: colors.black, // Orange
-    width: 3,
+    color: colors.black,
+    width: 2,
     style: 'dash',
   };
 
   const SimpleFillSymbol = {
     type: 'simple-fill',
-    color: transparentize(0.7, tenantPrimaryColor),
+    color: transparentize(0.3, tenantPrimaryColor),
+    style: 'diagonal-cross',
     outline: {
       color: [0, 0, 0, 0.8],
       width: 2,
@@ -171,6 +173,24 @@ type HandleDataMultipointChangeProps = {
   mapView: MapView | null | undefined;
   inputType: 'point' | 'line' | 'polygon';
   tenantPrimaryColor: string;
+};
+
+// getUserInputPoints
+// Description: Gets the user input points (as GeoJSON) from a MapView
+export const getUserInputPoints = (
+  mapView: MapView | null | undefined
+): GeoJSON.Point[] => {
+  const filteredGraphics: Graphic[] = [];
+  mapView?.graphics.forEach((graphic) => {
+    if (graphic.geometry.type === 'point') {
+      // TODO: Filter on something more specific.
+      filteredGraphics.push(graphic);
+    }
+  });
+
+  return filteredGraphics.map((graphic) =>
+    esriPointToGeoJson(graphic.geometry as __esri.Point)
+  );
 };
 
 // clearPointData

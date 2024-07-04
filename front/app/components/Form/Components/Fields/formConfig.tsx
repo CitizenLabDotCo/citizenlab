@@ -2,12 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
-  PointControl,
-  pointControlTester,
-  LineControl,
-  lineControlTester,
-  polygonControlTester,
-  PolygonControl,
+  MapControl,
+  mapControlTester,
   inputControlTester,
   InputControl,
   textAreaControlTester,
@@ -108,16 +104,8 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
       renderer: SingleAttachmentControl,
     },
     {
-      tester: pointControlTester,
-      renderer: PointControl,
-    },
-    {
-      tester: lineControlTester,
-      renderer: LineControl,
-    },
-    {
-      tester: polygonControlTester,
-      renderer: PolygonControl,
+      tester: mapControlTester,
+      renderer: MapControl,
     },
     ...commonRenderers,
   ];

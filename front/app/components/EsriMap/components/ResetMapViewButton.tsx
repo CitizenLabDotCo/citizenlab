@@ -21,9 +21,10 @@ import { useIntl } from 'utils/cl-intl';
 type Props = {
   mapView?: MapView | null;
   mapConfig?: IMapConfig | null;
+  id?: string;
 };
 
-const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
+const ResetMapViewButton = ({ mapConfig, mapView, id }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
@@ -54,35 +55,28 @@ const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
   };
 
   return (
-    <Box zIndex="999999">
-      <Box
-        zIndex="1000"
-        mt="-72px"
-        ml="16px"
-        w="36px"
-        background={colors.white}
+    <Box id={`reset-view-${id}`}>
+      <Tooltip
+        maxWidth="250px"
+        placement="right"
+        content={formatMessage(messages.goToDefaultMapView)}
+        hideOnClick={true}
+        zIndex={10000000000000000}
       >
-        <Tooltip
-          maxWidth="250px"
-          placement="right"
-          content={formatMessage(messages.goToDefaultMapView)}
-          hideOnClick={true}
-        >
-          <div>
-            <Button
-              icon="gps"
-              buttonStyle="white"
-              iconColor={colors.coolGrey500}
-              bgHoverColor={colors.grey100}
-              borderRadius="0px"
-              padding="7px"
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
-              onClick={goToDefaultMapView}
-              aria-label={formatMessage(messages.goToDefaultMapView)}
-            />
-          </div>
-        </Tooltip>
-      </Box>
+        <div>
+          <Button
+            icon="gps"
+            buttonStyle="white"
+            iconColor={colors.coolGrey500}
+            bgHoverColor={colors.grey100}
+            borderRadius="0px"
+            padding="7px"
+            boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
+            onClick={goToDefaultMapView}
+            aria-label={formatMessage(messages.goToDefaultMapView)}
+          />
+        </div>
+      </Tooltip>
     </Box>
   );
 };

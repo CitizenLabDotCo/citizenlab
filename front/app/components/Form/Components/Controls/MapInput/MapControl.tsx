@@ -29,8 +29,9 @@ import { getSubtextElement } from '../controlUtils';
 import messages from '../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
+import MobileView from './Mobile/MobileView';
 
-const PolygonControl = ({ ...props }: ControlProps) => {
+const MapControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;
 
   const localize = useLocalize();
@@ -69,7 +70,16 @@ const PolygonControl = ({ ...props }: ControlProps) => {
     setMapView(mapView);
   }, []);
 
-  // Handle when the data (point) changes
+  // Handler for when single point data changes
+  const handlePointChange = useCallback(
+    (point?: GeoJSON.Point) => {
+      handleChange(path, point);
+      setDidBlur(true);
+    },
+    [handleChange, path]
+  );
+
+  // Handler for when multiple points data changes (line/polygon)
   const handleMultiPointChange = useCallback(
     (points?: GeoJSON.Point[]) => {
       handleChange(path, points);
@@ -101,24 +111,24 @@ const PolygonControl = ({ ...props }: ControlProps) => {
       </Box>
       {isLoadingMapConfig && uischema.options?.map_config_id && <Spinner />}
       {isMobileOrSmaller ? (
-        // <MobileView
-        //   mapConfig={mapConfig}
-        //   onMapInit={onMapInit}
-        //   mapView={mapView}
-        //   handlePointChange={handleMultiPointChange}
-        //   didBlur={didBlur}
-        //   {...props}
-        // />
-        <h1>Temp</h1> // TODO: Fix mobile view next.
+        <MobileView
+          mapConfig={mapConfig}
+          onMapInit={onMapInit}
+          mapView={mapView}
+          handlePointChange={handlePointChange}
+          didBlur={didBlur}
+          {...props}
+        />
       ) : (
         <DesktopTabletView
           mapConfig={mapConfig}
           mapLayers={mapLayers}
-          inputType="polygon"
+          inputType={uischema?.options?.input_type}
           onMapInit={onMapInit}
           mapView={mapView}
-          handleMultiPointChange={handleMultiPointChange}
+          handlePointChange={handlePointChange}
           didBlur={didBlur}
+          handleMultiPointChange={handleMultiPointChange}
           {...props}
         />
       )}
@@ -126,10 +136,14 @@ const PolygonControl = ({ ...props }: ControlProps) => {
   );
 };
 
-export default withJsonFormsControlProps(PolygonControl);
+export default withJsonFormsControlProps(MapControl);
 
-export const polygonControlTester = (uischema) => {
-  if (uischema?.options?.input_type === 'polygon') {
+export const mapControlTester = (uischema) => {
+  if (
+    uischema?.options?.input_type === 'point' ||
+    uischema?.options?.input_type === 'polygon' ||
+    uischema?.options?.input_type === 'line'
+  ) {
     return 1000;
   }
   return -1;
