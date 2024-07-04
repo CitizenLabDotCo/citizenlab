@@ -13,13 +13,12 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import Error from 'components/UI/Error';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import PublicationStatusLabel from '../PublicationStatusLabel';
@@ -83,22 +82,18 @@ const ProjectRow = ({
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
   const publicationStatus = publication.attributes.publication_status;
+  const { data: project } = useProjectById(projectId);
 
   const { data: parentPublication } = useAdminPublication(
     publication.relationships.parent?.data?.id || null
   );
   const localize = useLocalize();
 
-  if (isNilOrError(authUser)) {
+  if (!authUser || !project) {
     return null;
   }
-  const userCanModerateProject =
-    // This means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(publication.relationships.publication.data.id, {
-      data: authUser.data,
-    });
+
+  const userCanModerateProject = canModerateProject(project.data, authUser);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {

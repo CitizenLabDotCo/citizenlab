@@ -226,7 +226,9 @@ const UserFieldSelection = ({
                           <Text
                             fontSize="s"
                             color={
-                              permissionsFieldsAllowed ? 'primary' : 'disabled'
+                              permissionsFieldsAllowed
+                                ? 'primary'
+                                : 'disabled'
                             }
                           >
                             <FormattedMessage {...messages.required} />
