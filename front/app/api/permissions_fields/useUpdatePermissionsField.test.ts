@@ -2,9 +2,10 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
 
 const data = {
   id: 'customFieldId1',
