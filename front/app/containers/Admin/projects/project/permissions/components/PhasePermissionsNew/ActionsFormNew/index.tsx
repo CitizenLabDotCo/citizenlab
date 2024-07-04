@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
-import { IPermissionData } from 'api/permissions/types';
+import { IPermissionData, IPhasePermissionData } from 'api/permissions/types';
 
 import messages from 'components/admin/ActionsForm/messages';
 import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
@@ -23,7 +23,7 @@ type PostTypeProps =
     };
 
 type SharedProps = {
-  permissions: IPermissionData[];
+  permissions: IPhasePermissionData[];
   phaseId?: string | null;
   onChange: ({
     permission,
@@ -39,20 +39,16 @@ const ActionsFormNew = ({
   permissions,
   postType,
   onChange,
-  projectId,
   phaseId,
 }: Props) => {
-  const handlePermissionChange =
-    (permission: IPermissionData, phaseId?: string | null) => () => {
-      console.log({ phaseId });
-
-      onChange({
-        permission,
-        permittedBy: 'groups', // TODO
-        groupIds: [], // TODO
-        globalCustomFields: false, // TODO
-      });
-    };
+  const handlePermissionChange = (permission: IPermissionData) => () => {
+    onChange({
+      permission,
+      permittedBy: 'groups', // TODO
+      groupIds: [], // TODO
+      globalCustomFields: false, // TODO
+    });
+  };
 
   if (permissions.length === 0) {
     return (
@@ -82,11 +78,10 @@ const ActionsFormNew = ({
             </Title>
             <ActionFormNew
               phaseId={phaseId}
-              projectId={projectId}
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
-              onChange={handlePermissionChange(permission, phaseId)}
+              onChange={handlePermissionChange(permission)}
             />
           </Box>
         );

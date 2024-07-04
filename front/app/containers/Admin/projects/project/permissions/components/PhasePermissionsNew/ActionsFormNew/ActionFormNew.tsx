@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import { IPermissionData } from 'api/permissions/types';
+import { IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
@@ -16,14 +16,13 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
-  projectId: string;
-  permissionData: IPermissionData;
+  permissionData: IPhasePermissionData;
   groupIds?: string[];
   phaseType: 'defaultInput' | 'nativeSurvey';
   onChange: (
     permittedBy:
-      | IPermissionData['attributes']['permitted_by']
-      | IPermissionData['attributes']['global_custom_fields'],
+      | IPhasePermissionData['attributes']['permitted_by']
+      | IPhasePermissionData['attributes']['global_custom_fields'],
     groupIds: Props['groupIds']
   ) => void;
 }
@@ -34,7 +33,6 @@ const showGroupSelect = (permittedBy: PermittedBy) => {
 
 const ActionFormNew = ({
   phaseId,
-  projectId,
   permissionData,
   groupIds,
   phaseType,
@@ -90,7 +88,7 @@ const ActionFormNew = ({
         </Box>
       )}
       <Box mt="28px">
-        <Fields phaseId={phaseId} projectId={projectId} />
+        <Fields phaseId={phaseId} action={action} />
       </Box>
     </form>
   );
