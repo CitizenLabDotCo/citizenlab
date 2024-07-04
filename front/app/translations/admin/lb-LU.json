@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Eng Minimum Unzuel u Stëmmen ass néideg",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Optioun",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Input Manager Tab",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Konfiguréiert d'Wahloptiounen am Input Manager Tab nodeems Dir eng Phase erstallt hutt.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfiguréieren d'Wahloptiounen am {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Participanten",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administrateuren & Manager",
