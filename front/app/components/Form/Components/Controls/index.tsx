@@ -60,10 +60,14 @@ import ImageMultichoiceControl, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
+import LineControl, { lineControlTester } from './MapInput/LineControl';
+import PointControl, { pointControlTester } from './MapInput/PointControl';
+import PolygonControl, {
+  polygonControlTester,
+} from './MapInput/PolygonControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
-import PointControl, { pointControlTester } from './PointControl/PointControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
@@ -86,6 +90,10 @@ export {
   orderedLayoutTester,
   InputControl,
   inputControlTester,
+  LineControl,
+  lineControlTester,
+  PolygonControl,
+  polygonControlTester,
   PointControl,
   pointControlTester,
   TextAreaControl,

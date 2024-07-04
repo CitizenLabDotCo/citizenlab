@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -19,25 +20,34 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
-import { clearPointData, handleDataPointChange } from '../utils';
+import {
+  clearPointData,
+  handleDataPointChange,
+  handleDataMultipointChange,
+} from '../utils';
 
 type Props = {
   mapConfig?: IMapConfig;
+  inputType: 'point' | 'line' | 'polygon';
   mapLayers?: Layer[];
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
-  handlePointChange: (point: GeoJSON.Point | undefined) => void;
+  handlePointChange?: (point: GeoJSON.Point | undefined) => void;
+  handleMultiPointChange?: (points: GeoJSON.Point[] | undefined) => void;
+
   didBlur: boolean;
 };
 
 const DesktopView = ({
   data,
   path,
+  inputType,
   errors,
   mapConfig,
   mapLayers,
   onMapInit,
   handlePointChange,
+  handleMultiPointChange,
   didBlur,
   mapView,
   id,
@@ -49,40 +59,74 @@ const DesktopView = ({
     label: '',
   });
 
-  // When the location point changes, update the address and show a pin on the map
+  // Show graphics on map when location point(s) change
   useEffect(() => {
     if (data) {
-      handleDataPointChange({
-        data,
-        mapView,
-        locale,
-        tenantPrimaryColor: theme.colors.tenantPrimary,
-        setAddress,
-      });
+      console.log({ data });
+
+      if (inputType === 'point') {
+        handleDataPointChange({
+          data,
+          mapView,
+          locale,
+          tenantPrimaryColor: theme.colors.tenantPrimary,
+          setAddress,
+        });
+      } else if (inputType === 'line' || inputType === 'polygon') {
+        handleDataMultipointChange({
+          data,
+          mapView,
+          inputType,
+          tenantPrimaryColor: theme.colors.tenantPrimary,
+        });
+      }
     } else {
       clearPointData(mapView, setAddress);
     }
-  }, [data, locale, mapView, theme.colors.tenantPrimary]);
+  }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
-      // Center the clicked location on the map
-      goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
+      if (inputType === 'point') {
+        // Center the clicked location on the map
+        goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(
+          () => {
+            // Update the form data
+            handlePointChange?.(esriPointToGeoJson(event.mapPoint));
+          }
+        );
+      } else if (inputType === 'line' || inputType === 'polygon') {
+        // Add the clicked location to the line
+        const newPoint = esriPointToGeoJson(event.mapPoint);
+
+        const filteredGraphics: Graphic[] = [];
+        mapView?.graphics.forEach((graphic) => {
+          if (graphic.geometry.type === 'point') {
+            filteredGraphics.push(graphic);
+          }
+        });
+
+        const currentPoints = filteredGraphics.map((graphic) =>
+          esriPointToGeoJson(graphic.geometry as __esri.Point)
+        );
+
         // Update the form data
-        handlePointChange(esriPointToGeoJson(event.mapPoint));
-      });
+        handleMultiPointChange?.([...currentPoints, newPoint]);
+      }
     },
-    [handlePointChange]
+    [handleMultiPointChange, handlePointChange, inputType]
   );
 
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
         <Box mb="12px">
-          <LocationTextInput
-            address={address}
-            handlePointChange={handlePointChange}
-          />
+          {handlePointChange && (
+            <LocationTextInput
+              address={address}
+              handlePointChange={handlePointChange}
+            />
+          )}
         </Box>
         <>
           <EsriMap
@@ -91,7 +135,10 @@ const DesktopView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
+              center:
+                inputType === 'point'
+                  ? data || mapConfig?.data.attributes.center_geojson
+                  : mapConfig?.data.attributes.center_geojson,
               showLegend: true,
               showLayerVisibilityControl: true,
               onInit: onMapInit,

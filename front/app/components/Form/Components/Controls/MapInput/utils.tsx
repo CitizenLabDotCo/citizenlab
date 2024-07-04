@@ -1,8 +1,15 @@
 import Point from '@arcgis/core/geometry/Point';
+import Polyline from '@arcgis/core/geometry/Polyline';
 import Graphic from '@arcgis/core/Graphic';
 import MapView from '@arcgis/core/views/MapView';
+import { colors } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
 
-import { getMapPinSymbol, goToMapLocation } from 'components/EsriMap/utils';
+import {
+  getMapPinSymbol,
+  getShapeSymbol,
+  goToMapLocation,
+} from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -92,6 +99,77 @@ type HandleDataPointChangeProps = {
   locale: string;
   mapView: MapView | null | undefined;
   setAddress?: (address: Option) => void;
+  tenantPrimaryColor: string;
+};
+
+// handleDataLineChange
+// Description: Handles the change of the point data
+export const handleDataMultipointChange = ({
+  data,
+  mapView,
+  inputType,
+  tenantPrimaryColor,
+}: HandleDataMultipointChangeProps) => {
+  const points = data as GeoJSON.Point[];
+  // Create a graphic and add the point and symbol to it
+  const graphics = points.map((point) => {
+    return new Graphic({
+      geometry: new Point({
+        longitude: point.coordinates[0],
+        latitude: point.coordinates[1],
+      }),
+      symbol: getShapeSymbol({
+        shape: 'circle',
+        color: colors.white,
+        sizeInPx: 12,
+        outlineColor: colors.black,
+        outlineWidth: 2,
+      }),
+    });
+  });
+
+  // Create an Esri line graphic connecting the points
+
+  const polyline = new Polyline({
+    paths: [
+      points.map((point) => [point.coordinates[0], point.coordinates[1]]),
+    ],
+  });
+
+  const simpleLineSymbol = {
+    type: 'simple-line',
+    color: colors.black, // Orange
+    width: 3,
+    style: 'dash',
+  };
+
+  const SimpleFillSymbol = {
+    type: 'simple-fill',
+    color: transparentize(0.7, tenantPrimaryColor),
+    outline: {
+      color: [0, 0, 0, 0.8],
+      width: 2,
+      style: 'dash',
+    },
+  };
+
+  const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: inputType === 'line' ? simpleLineSymbol : SimpleFillSymbol,
+  });
+
+  // Add a pin to the clicked location and delete any existing one
+  if (mapView) {
+    mapView.graphics.removeAll();
+    mapView.graphics.add(polylineGraphic);
+    mapView.graphics.addMany(graphics);
+  }
+};
+
+type HandleDataMultipointChangeProps = {
+  data: GeoJSON.Point[];
+  mapView: MapView | null | undefined;
+  inputType: 'point' | 'line' | 'polygon';
   tenantPrimaryColor: string;
 };
 

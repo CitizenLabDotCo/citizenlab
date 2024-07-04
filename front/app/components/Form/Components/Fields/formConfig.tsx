@@ -4,6 +4,10 @@ import {
   LinearScaleControl,
   PointControl,
   pointControlTester,
+  LineControl,
+  lineControlTester,
+  polygonControlTester,
+  PolygonControl,
   inputControlTester,
   InputControl,
   textAreaControlTester,
@@ -106,6 +110,14 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: pointControlTester,
       renderer: PointControl,
+    },
+    {
+      tester: lineControlTester,
+      renderer: LineControl,
+    },
+    {
+      tester: polygonControlTester,
+      renderer: PolygonControl,
     },
     ...commonRenderers,
   ];

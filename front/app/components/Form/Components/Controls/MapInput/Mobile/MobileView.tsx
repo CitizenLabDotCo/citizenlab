@@ -59,7 +59,7 @@ const MobileView = ({
     return parseLayers(mapConfig, localize);
   }, [localize, mapConfig]);
 
-  // When the data (point) changes, update the address and add a pin to the map
+  // When the location point changes, update the address and show graphic on the map
   useEffect(() => {
     if (data) {
       handleDataPointChange({

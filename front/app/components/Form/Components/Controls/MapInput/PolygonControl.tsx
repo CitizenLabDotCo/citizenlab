@@ -29,9 +29,8 @@ import { getSubtextElement } from '../controlUtils';
 import messages from '../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
-import MobileView from './Mobile/MobileView';
 
-const PointControl = ({ ...props }: ControlProps) => {
+const PolygonControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;
 
   const localize = useLocalize();
@@ -71,9 +70,9 @@ const PointControl = ({ ...props }: ControlProps) => {
   }, []);
 
   // Handle when the data (point) changes
-  const handlePointChange = useCallback(
-    (point?: GeoJSON.Point) => {
-      handleChange(path, point);
+  const handleMultiPointChange = useCallback(
+    (points?: GeoJSON.Point[]) => {
+      handleChange(path, points);
       setDidBlur(true);
     },
     [handleChange, path]
@@ -102,21 +101,23 @@ const PointControl = ({ ...props }: ControlProps) => {
       </Box>
       {isLoadingMapConfig && uischema.options?.map_config_id && <Spinner />}
       {isMobileOrSmaller ? (
-        <MobileView
-          mapConfig={mapConfig}
-          onMapInit={onMapInit}
-          mapView={mapView}
-          handlePointChange={handlePointChange}
-          didBlur={didBlur}
-          {...props}
-        />
+        // <MobileView
+        //   mapConfig={mapConfig}
+        //   onMapInit={onMapInit}
+        //   mapView={mapView}
+        //   handlePointChange={handleMultiPointChange}
+        //   didBlur={didBlur}
+        //   {...props}
+        // />
+        <h1>Temp</h1> // TODO: Fix mobile view next.
       ) : (
         <DesktopTabletView
           mapConfig={mapConfig}
           mapLayers={mapLayers}
+          inputType="polygon"
           onMapInit={onMapInit}
           mapView={mapView}
-          handlePointChange={handlePointChange}
+          handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
           {...props}
         />
@@ -125,10 +126,10 @@ const PointControl = ({ ...props }: ControlProps) => {
   );
 };
 
-export default withJsonFormsControlProps(PointControl);
+export default withJsonFormsControlProps(PolygonControl);
 
-export const pointControlTester = (uischema) => {
-  if (uischema?.options?.input_type === 'point') {
+export const polygonControlTester = (uischema) => {
+  if (uischema?.options?.input_type === 'polygon') {
     return 1000;
   }
   return -1;
