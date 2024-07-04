@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 # NOTE: Most of the tests for Phase are in the tests for the sub-class: ProjectPermissionsService
