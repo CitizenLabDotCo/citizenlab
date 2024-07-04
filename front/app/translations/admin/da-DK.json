@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Der kræves et minimum antal stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Mulighed",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Fanen Input Manager",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurer afstemningsmulighederne i {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Deltagere",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratorer og projektledere",
