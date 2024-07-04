@@ -56,6 +56,8 @@ module Permissions
     def lock_fields(permissions_fields)
       # TODO: JS - Hide the correct fields - do in later PR
       # TODO: JS - Add in ordering?
+      # TODO: JS - Add in the groups here too as they will influence whether a field is locked - indeed a field may need to be added
+      # We can create the group relationship in the model, but populate it on the fly here
       # LOCKED_TYPES = {
       #   'posting_idea' => %w[email]
       # }.freeze
