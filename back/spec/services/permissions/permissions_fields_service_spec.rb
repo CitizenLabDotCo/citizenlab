@@ -6,7 +6,7 @@ describe Permissions::PermissionsFieldsService do
   let(:service) { described_class.new(permission) }
 
   before do
-    create(:custom_field_gender, enabled: true)
+    create(:custom_field_gender, enabled: true, required: false)
     SettingsService.new.activate_feature! 'custom_permitted_by'
   end
 
@@ -30,6 +30,9 @@ describe Permissions::PermissionsFieldsService do
           expect(service.fields.count).to eq 3
           expect(service.fields.pluck(:field_type)).to match_array(%w[name email custom_field])
           expect(service.fields.pluck(:id)).to match_array([nil, nil, nil])
+          expect(service.fields.pluck(:enabled)).to match_array([true, true, true])
+          expect(service.fields.pluck(:required)).to match_array([true, true, false])
+          expect(service.fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
         end
 
         it 'returns disabled built fields only disabled when permitted_by "everyone"' do
@@ -37,12 +40,22 @@ describe Permissions::PermissionsFieldsService do
           expect(service.fields.count).to eq 2
           expect(service.fields.pluck(:field_type)).to match_array(%w[name email])
           expect(service.fields.pluck(:id)).to match_array([nil, nil])
+          expect(service.fields.pluck(:required)).to match_array([false, false])
+          expect(service.fields.pluck(:enabled)).to match_array([false, false])
+          expect(service.fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
         end
 
-
+        it 'returns disabled built fields only disabled when permitted_by "everyone_confirmed_email"' do
+          permission.update!(permitted_by: 'everyone_confirmed_email')
+          expect(service.fields.count).to eq 2
+          expect(service.fields.pluck(:field_type)).to match_array(%w[name email])
+          expect(service.fields.pluck(:id)).to match_array([nil, nil])
+          expect(service.fields.pluck(:enabled)).to match_array([false, true])
+          expect(service.fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => false, 'confirmed' => true })
+        end
       end
 
-      context ' feature flag is NOT enabled' do
+      context 'feature flag is NOT enabled' do
         it 'returns only custom fields if feature flag is NOT enabled' do
           SettingsService.new.deactivate_feature! 'custom_permitted_by'
           _email_field = create(:permissions_field, permission: permission, field_type: 'email')

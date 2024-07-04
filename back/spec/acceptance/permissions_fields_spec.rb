@@ -52,7 +52,7 @@ resource 'PermissionsField' do
 
       expect(response_data[:id]).to eq id
       expect(response_data.dig(:attributes, :created_at)).to be_present
-      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled verified locked created_at updated_at])
+      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config locked created_at updated_at])
     end
   end
 

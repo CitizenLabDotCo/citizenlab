@@ -25,7 +25,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def update
     @permission.assign_attributes(permission_params)
     authorize @permission
-    permitted_by_change = @permission.permitted_by_changed?(to: 'custom') ? @permission.permitted_by_was : nil;
+    permitted_by_change = @permission.permitted_by_changed?(to: 'custom') ? @permission.permitted_by_was : nil
     if @permission.save
       insert_fields_for_custom_permitted_by(permitted_by_change) if permitted_by_change
       render json: serialize(@permission), status: :ok

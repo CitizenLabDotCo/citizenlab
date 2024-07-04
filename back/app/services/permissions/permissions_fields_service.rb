@@ -90,9 +90,12 @@ module Permissions
           field
         end
       when 'everyone_confirmed_email'
-        # Turn off password
-        default_fields.find{ |f| f.field_type == 'email' }.config['password'] = false
-        default_fields
+        # Turn off custom_fields, name & password
+        fields = default_fields.reject { |f| f[:field_type] == 'custom_field' }
+        fields.find { |f| f.field_type == 'name' }.enabled = false
+        fields.find { |f| f.field_type == 'name' }.required = false
+        fields.find { |f| f.field_type == 'email' }.config['password'] = false
+        fields
       else
         default_fields
       end
