@@ -4,9 +4,8 @@ import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
-
 import DefaultField from './DefaultField';
+import messages from './messages';
 
 const Fields = () => {
   return (

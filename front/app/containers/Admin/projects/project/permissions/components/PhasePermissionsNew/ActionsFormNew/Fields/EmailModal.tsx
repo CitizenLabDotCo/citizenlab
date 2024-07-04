@@ -12,7 +12,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   opened: boolean;
@@ -35,7 +35,7 @@ const EmailModal = ({ opened, onClose }: Props) => {
     >
       <Box p="32px">
         <Text mt="0" mb="12px" fontWeight="bold">
-          Setting password
+          {formatMessage(messages.settingPassword)}
         </Text>
         <Radio
           name={'required'}
@@ -43,17 +43,17 @@ const EmailModal = ({ opened, onClose }: Props) => {
           currentValue={'required'}
           onChange={() => {}}
           mb="4px"
-          label="Required"
+          label={formatMessage(messages.required)}
         />
         <Radio
           name={'not-required'}
           value={'not-required'}
           currentValue={'required'}
           onChange={() => {}}
-          label="Not required"
+          label={formatMessage(messages.notRequired)}
         />
         <Text mt="28px" mb="12px" fontWeight="bold">
-          Email confirmation code
+          {formatMessage(messages.emailConfirmationCode)}
         </Text>
         <Radio
           name={'required'}
@@ -61,18 +61,18 @@ const EmailModal = ({ opened, onClose }: Props) => {
           currentValue={'required'}
           onChange={() => {}}
           mb="4px"
-          label="Required"
+          label={formatMessage(messages.required)}
         />
         <Radio
           name={'not-required'}
           value={'not-required'}
           currentValue={'required'}
           onChange={() => {}}
-          label="Not required"
+          label={formatMessage(messages.notRequired)}
         />
         <Box w="100%" display="flex" mt="32px">
           <Button width="auto" onClick={() => {}}>
-            Save rules
+            {formatMessage(messages.saveRules)}
           </Button>
         </Box>
       </Box>
