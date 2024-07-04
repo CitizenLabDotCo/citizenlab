@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "الحد الأدنى لعدد الأصوات المطلوبة",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "خيار",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "علامة التبويب \"مدير الإدخال\"",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "قم بتكوين خيارات التصويت في علامة تبويب مدير الإدخال بعد إنشاء المرحلة.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "تكوين خيارات التصويت في {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "مشاركون",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "المشرفين والمديرين",
