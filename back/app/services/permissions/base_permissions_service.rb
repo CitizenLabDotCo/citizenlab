@@ -25,11 +25,14 @@ module Permissions
       user_blocked: 'user_blocked'
     }.freeze
 
-    def initialize
+    def initialize(user)
+      @user = user
       @timeline_service = TimelineService.new
     end
 
     private
+
+    attr_reader :user
 
     def supported_action?(action)
       return true if SUPPORTED_ACTIONS.include? action
@@ -38,7 +41,7 @@ module Permissions
     end
 
     # User methods
-    def user_denied_reason(permission, user, scope = nil)
+    def user_denied_reason(permission, scope = nil)
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
       return USER_DENIED_REASONS[:user_blocked] if user.blocked?
@@ -48,12 +51,12 @@ module Permissions
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
       return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
-      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission, user)
+      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
 
       nil
     end
 
-    def denied_when_permitted_by_groups?(permission, user)
+    def denied_when_permitted_by_groups?(permission)
       permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
     end
 
@@ -61,7 +64,7 @@ module Permissions
       @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
     end
 
-    def user_can_moderate_something?(user)
+    def user_can_moderate_something?
       @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
     end
   end

@@ -43,9 +43,8 @@ module Permissions
     }.freeze
 
     def initialize(phase, user)
-      super()
+      super(user)
       @phase ||= phase
-      @user ||= user # TODO: Pass to super
     end
 
     def denied_reason_for_phase(action, project: phase&.project, reaction_mode: nil)
@@ -74,12 +73,12 @@ module Permissions
       return unless supported_action? action
 
       permission = find_permission(action)
-      user_denied_reason(permission, user, project) # TODO
+      user_denied_reason(permission, project) # TODO
     end
 
     private
 
-    attr_reader :phase, :user
+    attr_reader :phase
 
     # Phase methods
     def posting_idea_denied_reason_for_phase
