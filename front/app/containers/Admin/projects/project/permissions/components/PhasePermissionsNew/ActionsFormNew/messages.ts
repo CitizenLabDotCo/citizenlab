@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation',
     defaultMessage: 'Restrict participation to user group(s)',
   },
+  whatInformation: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.whatInformation',
+    defaultMessage: 'What information is asked from participants?',
+  },
 });

@@ -11,6 +11,7 @@ import GroupSelect from 'components/admin/ActionsForm/GroupSelect';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import CardButtons from './CardButtons';
+import Fields from './Fields';
 import messages from './messages';
 
 interface Props {
@@ -84,6 +85,9 @@ const ActionFormNew = ({
           />
         </Box>
       )}
+      <Box mt="20px">
+        <Fields />
+      </Box>
     </form>
   );
 };

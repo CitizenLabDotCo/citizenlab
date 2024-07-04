@@ -24,6 +24,11 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
+  const handleUpdate = (permittedBy: PermittedBy) => (e) => {
+    e.preventDefault();
+    onUpdate(permittedBy);
+  };
+
   return (
     <>
       {isSurveyAction && (
@@ -34,7 +39,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
           subtitle={formatMessage(
             permissionsMessages.permissionsAnyoneLabelDescription
           )}
-          onClick={() => onUpdate('everyone')}
+          onClick={handleUpdate('everyone')}
           selected={permittedBy === 'everyone'}
         />
       )}
@@ -45,7 +50,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         subtitle={formatMessage(
           actionFormMessages.permissionsEmailConfirmLabelDescription
         )}
-        onClick={() => onUpdate('everyone_confirmed_email')}
+        onClick={handleUpdate('everyone_confirmed_email')}
         selected={permittedBy === 'everyone_confirmed_email'}
         disabled={!userConfirmationEnabled}
         height="100%"
@@ -57,7 +62,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         subtitle={formatMessage(
           actionFormMessages.permissionsUsersLabelDescription
         )}
-        onClick={() => onUpdate('users')}
+        onClick={handleUpdate('users')}
         selected={permittedBy === 'users'}
       />
       <CardButton
@@ -65,7 +70,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         iconName="cog"
         title={formatMessage(messages.custom)}
         subtitle={formatMessage(messages.customSubtitle)}
-        onClick={() => onUpdate('custom')}
+        onClick={handleUpdate('custom')}
         selected={permittedBy === 'custom'}
       />
     </>
