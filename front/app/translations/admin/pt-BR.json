@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "É necessário um número mínimo de votos",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcao",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Aba do Gerenciador de entrada",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure as opções de votação na guia Gerenciador de entrada depois de criar uma fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configurar as opções de votação no {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Participantes",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administradores e gerentes",
