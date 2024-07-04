@@ -1266,6 +1266,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "custom_permitted_by": {
+        "type": "object",
+        "title": "Custom permitted by",
+        "description": "In beta: Allows admins to use the new completely flexible permissions system.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

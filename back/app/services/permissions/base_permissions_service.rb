@@ -81,7 +81,7 @@ module Permissions
     end
 
     def denied_when_permitted_by_groups?(permission, user)
-      permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
+      %w[groups custom].include?(permission.permitted_by) && permission.groups && !user.in_any_groups?(permission.groups)
     end
 
     def user_requirements_service

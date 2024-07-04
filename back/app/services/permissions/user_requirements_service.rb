@@ -23,10 +23,10 @@ class Permissions::UserRequirementsService
     if permission.global_custom_fields
       registration_fields
     else
-      permission.permissions_custom_fields.map do |permissions_custom_field|
-        permissions_custom_field.custom_field.tap do |field|
+      permission.permissions_fields.map do |permissions_field|
+        permissions_field.custom_field.tap do |field|
           field.enabled = true # Need to overide this to ensure it gets displayed when not enabled at platform level
-          field.required = permissions_custom_field.required
+          field.required = permissions_field.required
         end
       end
     end

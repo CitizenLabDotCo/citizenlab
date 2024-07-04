@@ -10,9 +10,12 @@ class WebApi::V1::PermissionsController < ApplicationController
       .filter_enabled_actions(permission_scope)
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
-    @permissions = @permissions.includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
+    @permissions = @permissions.includes(:permission_scope, :custom_fields, permissions_fields: [:custom_field])
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
+    convert_custom_permissions(@permissions)
+    @permissions.reload
+
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_fields custom_fields])
   end
 
   def show
@@ -22,7 +25,9 @@ class WebApi::V1::PermissionsController < ApplicationController
   def update
     @permission.assign_attributes(permission_params)
     authorize @permission
+    permitted_by_change = @permission.permitted_by_changed?(to: 'custom') ? @permission.permitted_by_was : nil
     if @permission.save
+      insert_fields_for_custom_permitted_by(permitted_by_change) if permitted_by_change
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
@@ -47,7 +52,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     WebApi::V1::PermissionSerializer.new(
       permission,
       params: jsonapi_serializer_params,
-      include: %i[permissions_custom_fields custom_fields]
+      include: %i[permissions_fields custom_fields]
     ).serializable_hash
   end
 
@@ -73,5 +78,19 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def permission_params
     params.require(:permission).permit(:permitted_by, :global_custom_fields, group_ids: [])
+  end
+
+  # Insert default fields if none present and permitted_by is changed to 'custom'
+  def insert_fields_for_custom_permitted_by(permitted_by_change)
+    return unless @permission.permitted_by == 'custom' && @permission.permissions_fields.empty?
+
+    Permissions::PermissionsFieldsService.new(@permission).insert_default_fields_for_permitted_by(permitted_by_change)
+  end
+
+  # Feature flagged: Convert any current permissions that should now be permitted_by: "custom"
+  def convert_custom_permissions(permissions)
+    permissions.each do |permission|
+      Permissions::PermissionsFieldsService.new(permission).convert_permission_to_custom_permitted_by
+    end
   end
 end

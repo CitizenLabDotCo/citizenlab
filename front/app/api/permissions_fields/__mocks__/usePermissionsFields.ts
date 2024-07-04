@@ -1,9 +1,9 @@
-import { IPermissionsCustomFieldData } from '../types';
+import { IPermissionsFieldData } from '../types';
 
-export const permissionsCustomFieldsData: IPermissionsCustomFieldData[] = [
+export const permissionsFieldsData: IPermissionsFieldData[] = [
   {
     id: 'customFieldId1',
-    type: 'permissions_custom_field',
+    type: 'permissions_field',
     attributes: {
       required: false,
       created_at: 'created-at',
@@ -26,7 +26,7 @@ export const permissionsCustomFieldsData: IPermissionsCustomFieldData[] = [
   },
   {
     id: 'customFieldId2',
-    type: 'permissions_custom_field',
+    type: 'permissions_field',
     attributes: {
       required: false,
       created_at: 'created-at',
@@ -50,5 +50,5 @@ export const permissionsCustomFieldsData: IPermissionsCustomFieldData[] = [
 ];
 
 export default jest.fn(() => {
-  return { data: { data: permissionsCustomFieldsData } };
+  return { data: { data: permissionsFieldsData } };
 });

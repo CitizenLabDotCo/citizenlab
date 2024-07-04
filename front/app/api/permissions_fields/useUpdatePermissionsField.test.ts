@@ -2,13 +2,14 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import useUpdatePermissionsCustomField from './useUpdatePermissionsCustomField';
 
 const data = {
   id: 'customFieldId1',
-  type: 'permissions_custom_field',
+  type: 'permissions_field',
   attributes: {
     required: true,
     created_at: 'created-at',
@@ -30,21 +31,21 @@ const data = {
   },
 };
 
-const apiPath = '*/permissions_custom_fields/:id';
+const apiPath = '*/permissions_fields/:id';
 const server = setupServer(
   http.patch(apiPath, () => {
     return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
-describe('useUpdatePermissionsCustomField', () => {
+describe('useUpdatePermissionsField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        useUpdatePermissionsCustomField({
+        useUpdatePermissionsField({
           action: 'taking_poll',
           projectId: '1',
         }),
@@ -70,7 +71,7 @@ describe('useUpdatePermissionsCustomField', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        useUpdatePermissionsCustomField({
+        useUpdatePermissionsField({
           action: 'taking_poll',
           projectId: '1',
         }),

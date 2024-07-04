@@ -68,4 +68,13 @@ RSpec.describe Permission do
       end
     end
   end
+
+  describe 'permitted_by "custom"' do
+    let(:groups) { create_list(:group, 2) }
+    let(:permission) { create(:permission, permitted_by: 'custom', groups: groups) }
+
+    it 'permissions are valid' do
+      expect(permission).to be_valid
+    end
+  end
 end

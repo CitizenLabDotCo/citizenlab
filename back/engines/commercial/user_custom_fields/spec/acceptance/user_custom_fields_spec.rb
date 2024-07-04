@@ -27,7 +27,7 @@ resource 'User Custom Fields' do
     example 'List all custom fields with the projects that they are used in' do
       phase_project = create(:project_with_phases)
       phase_permission = create(:permission, permission_scope: phase_project.phases.first)
-      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: phase_permission)
+      create(:permissions_field, custom_field: @custom_fields[0], permission: phase_permission)
 
       do_request
       assert_status 200
@@ -283,13 +283,13 @@ resource 'User Custom Fields' do
 
       example 'Delete a custom field, user saved values and permission relationships' do
         permission = create(:permission)
-        permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
+        permissions_field = create(:permissions_field, custom_field: custom_field, permission: permission)
         user_with_fields = create(:user, custom_field_values: { new_field: 'a value' })
 
         do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { PermissionsField.find(permissions_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user_with_fields.reload.custom_field_values).to eq({})
       end
 

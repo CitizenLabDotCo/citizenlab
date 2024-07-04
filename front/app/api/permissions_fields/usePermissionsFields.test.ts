@@ -2,30 +2,28 @@ import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsCustomFieldsData } from './__mocks__/usePermissionsCustomFields';
-import usePermissionsCustomFields from './usePermissionsCustomFields';
+import { permissionsFieldsData } from './__mocks__/usePermissionsFields';
 
-const apiPath = '*/permissions/:action/permissions_custom_fields';
+const apiPath = '*/permissions/:action/permissions_fields';
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json(
-      { data: permissionsCustomFieldsData },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: permissionsFieldsData }, { status: 200 });
   })
 );
 
-describe('usePermissionsCustomFields', () => {
+describe('usePermissionsFields', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        usePermissionsCustomFields({
+        usePermissionsFields({
           projectId: 'dummyId',
           action: 'taking_survey',
         }),
@@ -39,7 +37,7 @@ describe('usePermissionsCustomFields', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(permissionsCustomFieldsData);
+    expect(result.current.data?.data).toEqual(permissionsFieldsData);
   });
 
   it('returns error correctly', async () => {
@@ -51,7 +49,7 @@ describe('usePermissionsCustomFields', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        usePermissionsCustomFields({
+        usePermissionsFields({
           projectId: 'dummyId',
           action: 'taking_survey',
         }),
