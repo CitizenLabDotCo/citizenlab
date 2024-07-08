@@ -129,12 +129,14 @@ const DesktopView = ({
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
-        <Box mb="12px">
-          <LocationTextInput
-            address={address}
-            handlePointChange={handleLocationInputChange}
-          />
-        </Box>
+        {inputType === 'point' && (
+          <Box mb="12px">
+            <LocationTextInput
+              address={address}
+              handlePointChange={handleLocationInputChange}
+            />
+          </Box>
+        )}
         <>
           {(inputType === 'line' || inputType === 'polygon') && (
             <UndoButton

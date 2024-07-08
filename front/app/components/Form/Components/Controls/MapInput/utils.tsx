@@ -131,9 +131,19 @@ export const handleDataMultipointChange = ({
   });
 
   // Create an Esri line graphic connecting the points
+  const pointsForLine = points.map((point) => ({
+    type: 'Point',
+    coordinates: [point.coordinates[0], point.coordinates[1]],
+  }));
+  if (inputType === 'polygon') {
+    pointsForLine.push(points[0]);
+  }
   const polyline = new Polyline({
     paths: [
-      points.map((point) => [point.coordinates[0], point.coordinates[1]]),
+      pointsForLine.map((point) => [
+        point.coordinates[0],
+        point.coordinates[1],
+      ]),
     ],
   });
 
