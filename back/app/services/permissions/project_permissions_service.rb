@@ -4,8 +4,8 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
-    def initialize(project, user)
-      super(user, user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false))
+    def initialize(project, user, user_requirements_service: nil)
+      super(user, user_requirements_service: user_requirements_service)
       @project ||= project
     end
 
