@@ -1,3 +1,4 @@
+require 'rbconfig'
 # This file is not used by specs. It should be run manually.
 # See the instructions in back/engines/commercial/id_vienna_saml/README.md.
 
@@ -193,7 +194,11 @@ def create_html_page_with_saml_form
   File.write('./saml_form.html', html)
   puts
   puts "\e[32mAlso created HTML page with SAML form.\e[0m"
-  `google-chrome ./saml_form.html`
+  if /darwin/.match?(RbConfig::CONFIG['host_os'])
+    `open -a 'google chrome' ./saml_form.html`
+  else
+    `google-chrome ./saml_form.html`
+  end
   sleep 1
   `rm ./saml_form.html`
 end
