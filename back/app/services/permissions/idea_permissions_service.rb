@@ -67,7 +67,7 @@ module Permissions
 
     private
 
-    attr_reader :idea, :project_permissions_service
+    attr_reader :idea
 
     def project_permissions_service
       @project_permissions_service ||= ProjectPermissionsService.new(idea.project, user, user_requirements_service: user_requirements_service)
@@ -76,18 +76,5 @@ module Permissions
     def idea_in_current_phase?(current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
     end
-
-    # TODO: Delete
-    # def posting_limit_reached?(phase, user)
-    #   return true if phase.posting_limited? &&
-    #                  phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
-
-    #   if phase.posting_limited? && phase.allow_anonymous_participation?
-    #     author_hash = Idea.create_author_hash user.id, phase.project.id, true
-    #     return phase.ideas.where(author_hash: author_hash).or(phase.ideas.where(author: user)).size >= phase.posting_limited_max
-    #   end
-
-    #   false
-    # end
   end
 end
