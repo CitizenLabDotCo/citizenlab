@@ -302,7 +302,7 @@ lb:
       header: "Äre Bestätegungscode"
       header_message: "Gudde Moie(n) %{firstName}!"
       confirm_email_address: "Bestätegt Är E-Mail-Adress"
-      thanks_for_signing_up: "Merci, datt Dir Iech op der participativer Plattform %{organizationName} ugemellt hutt."
+      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w.e.g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}an:"
       best_regards: "Mat beschte Gréiss,"
       ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir Dës E-Mail ignoréieren."
       expire_code: "Dëse Code leeft of an:"
