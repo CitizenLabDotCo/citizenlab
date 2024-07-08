@@ -302,7 +302,7 @@ ach:
       header: "crwdns2618569:0crwdne2618569:0"
       header_message: "crwdns2618571:0%{firstName}crwdne2618571:0"
       confirm_email_address: "crwdns2618573:0crwdne2618573:0"
-      thanks_for_signing_up: "crwdns2618575:0%{organizationName}crwdne2618575:0"
+      thanks_for_signing_up1: "crwdns2619851:0%{organizationName}crwdne2619851:0"
       best_regards: "crwdns2618577:0crwdne2618577:0"
       ignore_email: "crwdns2618579:0crwdne2618579:0"
       expire_code: "crwdns2618581:0crwdne2618581:0"
