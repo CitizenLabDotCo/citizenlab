@@ -4,14 +4,14 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
-import { IProjectData, ProjectSurveyDisabledReason } from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 
@@ -42,21 +42,6 @@ interface Props {
   className?: string;
 }
 
-const disabledMessages: {
-  [key in ProjectSurveyDisabledReason]: MessageDescriptor;
-} = {
-  project_inactive: messages.surveyDisabledProjectInactive,
-  project_not_visible: messages.surveyDisabledNotPermitted,
-  not_survey: messages.surveyDisabledNotActivePhase,
-  user_not_active: messages.surveyDisabledNotActiveUser,
-  user_not_verified: messages.surveyDisabledNotVerified,
-  user_missing_requirements: messages.surveyDisabledNotActiveUser,
-  user_not_signed_in: messages.surveyDisabledMaybeNotPermitted,
-  user_not_in_group: globalMessages.notInGroup,
-  user_not_permitted: messages.surveyDisabledNotPermitted,
-  user_blocked: messages.surveyDisabledNotPermitted,
-};
-
 const Survey = ({
   project,
   phaseId,
@@ -67,6 +52,10 @@ const Survey = ({
   const { data: authUser } = useAuthUser();
   const { enabled, disabled_reason } =
     project.attributes.action_descriptors.taking_survey;
+
+  const disabledMessage =
+    getPermissionsDisabledMessage('taking_survey', disabled_reason) || null;
+
   const email =
     !isNilOrError(authUser) && authUser.data.attributes.email
       ? authUser.data.attributes.email
@@ -79,9 +68,7 @@ const Survey = ({
       action="taking_survey"
       enabled={enabled}
       phaseId={phaseId}
-      disabledMessage={
-        disabled_reason ? disabledMessages[disabled_reason] : null
-      }
+      disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
         <ProjectPageSectionTitle>

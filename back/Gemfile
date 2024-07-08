@@ -157,6 +157,11 @@ gem 'combine_pdf', '~> 1.0.26'
 
 # Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:
 #   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
+#   warning: .../.rbenv/versions/3.3.1/lib/ruby/3.3.0/drb.rb was loaded from the standard
+#   library, but will no longer be part of the default gems since Ruby 3.4.0. Add drb to
+#   your Gemfile or gemspec. Also contact author of activesupport-7.0.8.4 to add drb into
+#   its gemspec.
+#   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
 #   warning: .../.rbenv/versions/3.3.1/lib/ruby/3.3.0/mutex_m.rb was loaded from
 #   the standard library, but will no longer be part of the default gems since Ruby 3.4.0.
 #   Add mutex_m to your Gemfile or gemspec. Also contact author of activesupport-7.0.8.4
@@ -166,8 +171,9 @@ gem 'combine_pdf', '~> 1.0.26'
 #   which will no longer be part of the default gems since Ruby 3.4.0. Add nkf to your
 #   Gemfile or gemspec. Also contact author of httpi-3.0.1 to add nkf into its gemspec.
 #
-# They are likely not direct dependencies, hence we can remove them once the dependent
-# gems are updated.
+# They are not direct dependencies, hence we can remove them once the dependent gems are
+# updated.
+gem 'drb'
 gem 'nkf'
 gem 'mutex_m'
 

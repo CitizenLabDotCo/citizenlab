@@ -4,7 +4,7 @@ import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import BillingInfo from './BillingInfo';
+import SeatInfo from '.';
 
 type MockAppConfigurationType = {
   data: {
@@ -60,7 +60,7 @@ jest.mock('api/seats/useSeats', () => () => {
 describe('BillingInfo', () => {
   const showsCorrectNumbers = () => {
     it('shows correct numbers of seat usage for admins', () => {
-      render(<BillingInfo seatType="admin" />);
+      render(<SeatInfo seatType="admin" />);
 
       expect(screen.getByText('Admin seats')).toBeInTheDocument();
 
@@ -79,7 +79,7 @@ describe('BillingInfo', () => {
     });
 
     it('shows correct numbers of seat usage for moderators', () => {
-      render(<BillingInfo seatType="moderator" />);
+      render(<SeatInfo seatType="moderator" />);
       expect(screen.getByText('Manager seats')).toBeInTheDocument();
 
       // Remaining seats
@@ -117,7 +117,7 @@ describe('BillingInfo', () => {
     it('shows correct descriptive breakdown for total seats when the user has not exceeded the limit', () => {
       mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
 
-      render(<BillingInfo seatType="admin" />);
+      render(<SeatInfo seatType="admin" />);
 
       // Remaining seats
       expect(screen.getByText('Remaining seats')).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('BillingInfo', () => {
       mockUserSeatsData.data.attributes.admins_number = 10;
       mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
 
-      render(<BillingInfo seatType="admin" />);
+      render(<SeatInfo seatType="admin" />);
 
       // Remaining seats
       expect(screen.getByText('Remaining seats')).toBeInTheDocument();
@@ -167,12 +167,12 @@ describe('BillingInfo', () => {
     });
 
     it('shows nothing for admin seats when maximum_admins_number is unlimited (null)', () => {
-      render(<BillingInfo seatType="admin" />);
+      render(<SeatInfo seatType="admin" />);
       expect(screen.queryByText('Admin seats')).not.toBeInTheDocument();
     });
 
     it('shows nothing for moderator seats when maximum_moderators_number is unlimited (null)', () => {
-      render(<BillingInfo seatType="moderator" />);
+      render(<SeatInfo seatType="moderator" />);
       expect(screen.queryByText('Manager seats')).not.toBeInTheDocument();
     });
   });

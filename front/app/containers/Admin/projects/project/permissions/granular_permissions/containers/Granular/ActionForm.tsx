@@ -7,6 +7,7 @@ import {
   colors,
   Title,
   CardButton,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -50,9 +51,7 @@ const ActionForm = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
-  const emailConfirmPermissionEnabled = useFeatureFlag({
-    name: 'permission_option_email_confirmation',
-  });
+  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   const groupsOptions = () => {
     if (!groups) {
@@ -128,7 +127,15 @@ const ActionForm = ({
                 selected={permittedBy === 'everyone'}
               />
             )}
-            {emailConfirmPermissionEnabled && (
+            <Tooltip
+              // user_confirmation needs to be enabled for this option to work
+              disabled={userConfirmationEnabled}
+              content={
+                <FormattedMessage
+                  {...messages.userConfirmationRequiredTooltip}
+                />
+              }
+            >
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
@@ -140,8 +147,10 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
+                disabled={!userConfirmationEnabled}
+                height="100%"
               />
-            )}
+            </Tooltip>
             <CardButton
               id="e2e-permission-registered-users"
               iconName="user-circle"

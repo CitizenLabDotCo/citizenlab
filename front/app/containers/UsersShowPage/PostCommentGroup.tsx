@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
@@ -130,6 +131,9 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const { data: user } = useUserById(userId);
   const post = initiative || idea;
 
@@ -138,12 +142,8 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   }
 
   const { slug, title_multiloc } = post.data.attributes;
-  const projectId: string | null =
-    postType === 'idea' && 'project' in post.data.relationships
-      ? post.data.relationships.project.data.id
-      : null;
   const userCanModerate = {
-    idea: canModerateProject(projectId, user),
+    idea: project ? canModerateProject(project.data, user) : false,
     initiative: canModerateInitiative(user),
   }[postType];
 

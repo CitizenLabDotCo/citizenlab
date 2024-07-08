@@ -302,7 +302,7 @@ fi:
       header: "Vahvistuskoodisi"
       header_message: "Hei %{firstName}!"
       confirm_email_address: "Vahvista sähköpostiosoitteesi"
-      thanks_for_signing_up: "Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan %{organizationName}:n osallistumisalustalla:"
+      thanks_for_signing_up1: "Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan %{organizationName}:n osallistumisalustalla:"
       best_regards: "Parhain terveisin,"
       ignore_email: "Jos et pyytänyt koodia, voit jättää tämän sähköpostin huomiotta."
       expire_code: "Tämä koodi vanhenee vuonna "

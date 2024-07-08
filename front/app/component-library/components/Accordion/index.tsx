@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import useInstanceId from '../../hooks/useInstanceId';
 import { colors, isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
@@ -111,6 +112,7 @@ const Accordion = ({
   ...rest
 }: AccordionProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
+  const uuid = useInstanceId();
 
   useEffect(() => {
     setIsExpanded(isOpenByDefault);
@@ -127,8 +129,8 @@ const Accordion = ({
         as="button"
         padding="0"
         aria-expanded={isExpanded}
-        aria-controls="collapsed-section"
-        id="accordion-title"
+        aria-controls={`collapsed-section-${uuid}`}
+        id={`accordion-title-${uuid}`}
         className={isExpanded ? 'expanded' : 'collapsed'}
         onClick={handleChange}
       >
@@ -144,9 +146,9 @@ const Accordion = ({
         classNames={`expanded`}
       >
         <CollapseContainer
-          id="collapsed-section"
+          id={`collapsed-section-${uuid}`}
           role="region"
-          aria-labelledby="accordion-title"
+          aria-labelledby={`accordion-title-${uuid}`}
           aria-live="polite"
           transitionHeight={transitionHeightPx}
           timeout={timeoutMilliseconds}

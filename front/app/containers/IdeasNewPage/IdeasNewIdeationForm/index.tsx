@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
-import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
@@ -69,17 +68,16 @@ interface FormValues {
 
 interface Props {
   project: IProject;
+  phaseId: string | undefined;
 }
 
-const IdeasNewIdeationForm = ({ project }: Props) => {
+const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const localize = useLocalize();
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
   const { data: authUser } = useAuthUser();
-  const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
@@ -165,11 +163,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
 
     // If the user is an admin or project moderator, we allow them to post to a specific phase
     const phase_ids =
-      phaseId &&
-      !isNilOrError(authUser) &&
-      canModerateProject(project.data.id, { data: authUser.data })
-        ? [phaseId]
-        : null;
+      phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
 
     const idea = await addIdea({
       ...data,

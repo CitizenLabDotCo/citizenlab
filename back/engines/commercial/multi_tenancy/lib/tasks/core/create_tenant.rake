@@ -46,10 +46,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        permission_option_email_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         permissions_custom_fields: {
           enabled: true,
           allowed: true
@@ -246,10 +242,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_management: {
-          enabled: true,
-          allowed: true
-        },
         moderation: {
           enabled: true,
           allowed: true
@@ -282,10 +274,6 @@ namespace :cl2_back do
           enabled: false,
           allowed: false,
           duration: 90
-        },
-        seat_based_billing: {
-          enabled: true,
-          allowed: true
         },
         public_api_tokens: {
           enabled: true,
@@ -324,6 +312,10 @@ namespace :cl2_back do
           allowed: true
         },
         multi_language_platform: {
+          enabled: true,
+          allowed: true
+        },
+        customisable_homepage_banner: {
           enabled: true,
           allowed: true
         }

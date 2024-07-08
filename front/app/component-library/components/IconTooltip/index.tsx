@@ -4,6 +4,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
+import useInstanceId from '../../hooks/useInstanceId';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {
@@ -94,13 +95,15 @@ const IconTooltip: FC<Props> = memo<Props>(
     transform,
     ...rest
   }) => {
+    const uuid = useInstanceId();
+
     return (
       <Tooltip
         placement={placement || 'right-end'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
         content={
-          <ContentWrapper id="tooltip-content" tippytheme={theme}>
+          <ContentWrapper id={`tooltip-content-${uuid}`} tippytheme={theme}>
             {content}
           </ContentWrapper>
         }
@@ -108,7 +111,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         <Box
           as="button"
           className={`${className || ''} tooltip-icon`}
-          aria-describedby="tooltip-content"
+          aria-describedby={`tooltip-content-${uuid}`}
           data-testid={testEnv('tooltip-icon-button')}
           p="0px"
           type="button"

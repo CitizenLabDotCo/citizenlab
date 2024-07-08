@@ -94,6 +94,12 @@ class Tenant < ApplicationRecord
     Current.tenant
   end
 
+  def self.safe_current
+    Current.tenant
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
   def self.settings(*path)
     ErrorReporter.report_msg('Tenant::settings is deprecated. Use AppConfiguration#settings instead.')
     AppConfiguration.instance.settings(*path)
@@ -159,12 +165,6 @@ class Tenant < ApplicationRecord
 
   def self.switch_to(host_name)
     find_by!(host: host_name).switch!
-  end
-
-  def self.switch_each
-    find_each do |tenant|
-      tenant.switch { yield(tenant) }
-    end
   end
 
   def changed_lifecycle_stage?
