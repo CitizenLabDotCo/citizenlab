@@ -63,5 +63,22 @@ module Permissions
     def user_can_moderate_something?
       @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
     end
+
+    def find_permission(action, scope: nil)
+      permission = scope&.permissions&.find { |p| p[:action] == action }
+
+      if permission.blank?
+        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+        if permission.blank? && Permission.available_actions(scope)
+          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+        end
+      end
+
+      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
+
+      permission
+    end
   end
 end

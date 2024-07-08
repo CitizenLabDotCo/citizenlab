@@ -45,7 +45,7 @@ module Permissions
       @phase ||= phase
     end
 
-    def denied_reason_for_phase(action, project: phase&.project, reaction_mode: nil)
+    def denied_reason_for_phase(action, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
@@ -70,8 +70,8 @@ module Permissions
 
       return unless supported_action? action
 
-      permission = find_permission(action)
-      user_denied_reason(permission, project) # TODO
+      permission = find_permission(action, scope: phase)
+      user_denied_reason(permission, phase.project)
     end
 
     private
@@ -164,24 +164,6 @@ module Permissions
 
     def participation_method
       @participation_method ||= Factory.instance.participation_method_for(phase)
-    end
-
-    def find_permission(action)
-      permission = phase&.permissions&.find { |p| p[:action] == action }
-
-      if permission.blank?
-        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
-        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-        if permission.blank? && Permission.available_actions(scope)
-          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-        end
-      end
-
-      raise "Unknown action '#{action}' for phase: #{phase}" unless permission
-
-      permission
     end
   end
 end
