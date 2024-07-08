@@ -129,6 +129,7 @@ const CLSurveyPageLayout = memo(
         pagesRef.current.scrollIntoView({
           block: 'start',
         });
+        pagesRef.current.scrollTop = 0;
       }
     };
 
@@ -205,7 +206,7 @@ const CLSurveyPageLayout = memo(
             h="100%"
             display="flex"
             ref={pagesRef}
-            overflowY={hasAnonymousWarning ? 'scroll' : 'auto'}
+            overflowY={hasAnonymousWarning ? 'auto' : undefined}
             mb={hasAnonymousWarning ? '44px' : undefined}
           >
             {uiPages.map((page, index) => {
