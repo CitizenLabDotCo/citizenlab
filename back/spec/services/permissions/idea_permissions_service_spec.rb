@@ -1,19 +1,16 @@
 require 'rails_helper'
 
 describe Permissions::IdeaPermissionsService do
-  let(:service) { described_class.new }
+  let(:service) { described_class.new(idea, user) }
+  let(:project) { create(:project_with_current_phase) }
+  let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
+  let(:user) { create(:user) }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
+  before { SettingsService.new.activate_feature! 'user_confirmation' }
 
   describe '"commenting_idea" denied_reason_for_idea' do
-    let(:user) { create(:user) }
-
     it 'returns nil when the commenting is allowed in the current phase' do
-      project = create(:project_with_current_phase)
-      idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to be_nil
+      expect(service.denied_reason_for_idea('commenting_idea')).to be_nil
     end
 
     it 'returns `commenting_disabled` when commenting is disabled in the current phase' do
@@ -22,25 +19,25 @@ describe Permissions::IdeaPermissionsService do
         current_phase_attrs: { commenting_enabled: false }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'commenting_disabled'
+      expect(service.denied_reason_for_idea('commenting_idea')).to eq 'commenting_disabled'
     end
 
     it "returns 'project_inactive' when the timeline hasn't started" do
       project = create(:project_with_future_phases)
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea('commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the timeline is over" do
       project = create(:project_with_past_phases)
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea('commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the project is archived" do
       project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea('commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns nil when we're in a participatory budgeting context" do
@@ -49,13 +46,13 @@ describe Permissions::IdeaPermissionsService do
         current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to be_nil
+      expect(service.denied_reason_for_idea('commenting_idea')).to be_nil
     end
 
     it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [project.phases[1]])
-      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'idea_not_in_current_phase'
+      expect(service.denied_reason_for_idea('commenting_idea')).to eq 'idea_not_in_current_phase'
     end
 
     context 'with phase permissions' do
@@ -73,13 +70,13 @@ describe Permissions::IdeaPermissionsService do
       it 'returns `user_not_in_group` commenting is not permitted for the user' do
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'user_not_in_group'
+        expect(service.denied_reason_for_action('commenting_idea')).to eq 'user_not_in_group'
       end
 
       it "returns 'commenting_disabled' when commenting is disabled in the phase" do
         project.phases[2].update!(commenting_enabled: false)
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'commenting_disabled'
+        expect(service.denied_reason_for_action('commenting_idea')).to eq 'commenting_disabled'
       end
     end
   end

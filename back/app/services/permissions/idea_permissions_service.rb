@@ -1,20 +1,20 @@
 module Permissions
-  class IdeaPermissionsService < ProjectPermissionsService
+  class IdeaPermissionsService < BasePermissionsService
     IDEA_DENIED_REASONS = {
       idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
-    def initialize(idea, user)
-      super(user)
+    def initialize(idea, user, user_requirements_service: nil)
+      super(user, user_requirements_service: user_requirements_service)
       @idea ||= idea
     end
 
     def denied_reason_for_idea(action, reaction_mode: nil)
-      reason = super action, user, idea.project, reaction_mode: reaction_mode
+      reason = ProjectPermissionsService.new(idea.project, user).denied_reason_for_project action, reaction_mode: reaction_mode
       return reason if reason
 
       current_phase = @timeline_service.current_phase_not_archived idea.project
-      if current_phase && !idea_in_current_phase?(idea, current_phase)
+      if current_phase && !idea_in_current_phase?(current_phase)
         IDEA_DENIED_REASONS[:idea_not_in_current_phase]
       end
     end
@@ -68,20 +68,23 @@ module Permissions
 
     private
 
-    def idea_in_current_phase?(idea, current_phase)
+    attr_reader :idea
+
+    def idea_in_current_phase?(current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
     end
 
-    def posting_limit_reached?(phase, user)
-      return true if phase.posting_limited? &&
-                     phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
+    # TODO: Delete
+    # def posting_limit_reached?(phase, user)
+    #   return true if phase.posting_limited? &&
+    #                  phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
 
-      if phase.posting_limited? && phase.allow_anonymous_participation?
-        author_hash = Idea.create_author_hash user.id, phase.project.id, true
-        return phase.ideas.where(author_hash: author_hash).or(phase.ideas.where(author: user)).size >= phase.posting_limited_max
-      end
+    #   if phase.posting_limited? && phase.allow_anonymous_participation?
+    #     author_hash = Idea.create_author_hash user.id, phase.project.id, true
+    #     return phase.ideas.where(author_hash: author_hash).or(phase.ideas.where(author: user)).size >= phase.posting_limited_max
+    #   end
 
-      false
-    end
+    #   false
+    # end
   end
 end
