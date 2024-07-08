@@ -302,7 +302,7 @@ it:
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
       confirm_email_address: "Confermare l'indirizzo e-mail"
-      thanks_for_signing_up: "Grazie per esserti iscritto alla piattaforma di partecipazione di %{organizationName}."
+      thanks_for_signing_up1: "Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma di partecipazione %{organizationName}:"
       best_regards: "Cordiali saluti,"
       ignore_email: "Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail."
       expire_code: "Questo codice scadrà tra "
