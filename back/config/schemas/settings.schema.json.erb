@@ -1256,6 +1256,18 @@
         }
       },
 
+      "customisable_homepage_banner": {
+        "type": "object",
+        "title": "Customisable homepage banner",
+        "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "management_feed": {
         "type": "object",
         "title": "Management Feed",
