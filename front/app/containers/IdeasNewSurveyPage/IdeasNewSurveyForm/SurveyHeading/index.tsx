@@ -58,7 +58,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   if (!project) return null;
 
   const showEditSurveyButton =
-    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
+    !isSmallerThanPhone && canModerateProject(project.data, authUser);
   const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
 
   return (
