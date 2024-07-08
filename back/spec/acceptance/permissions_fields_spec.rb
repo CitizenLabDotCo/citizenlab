@@ -13,7 +13,8 @@ resource 'PermissionsField' do
 
   let(:permission_scope) { nil }
   let(:action) { 'visiting' }
-  let(:permission) { create(:permission, permission_scope: permission_scope, action: action) }
+  let(:permitted_by) { 'users' }
+  let(:permission) { create(:permission, permission_scope: permission_scope, action: action, permitted_by: permitted_by) }
 
   get 'web_api/v1/ideas/:idea_id/permissions/:action/permissions_fields' do
     with_options scope: :page do
@@ -26,21 +27,37 @@ resource 'PermissionsField' do
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: project).id }
 
-    example 'List all permissions fields of a permission' do
-      field1, field2 = create_list(:custom_field, 2)
-      [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
-        create(:permissions_field, attributes.merge(permission: permission))
+    context 'feature flag "custom_permitted_by" is NOT enabled' do
+      example 'List all permissions fields of a permission' do
+        field1, field2 = create_list(:custom_field, 2)
+        [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
+          create(:permissions_field, attributes.merge(permission: permission))
+        end
+
+        do_request
+
+        assert_status 200
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
+        expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
+          { data: { id: field1.id, type: 'custom_field' } },
+          { data: { id: field2.id, type: 'custom_field' } }
+        ])
       end
+    end
 
-      do_request
+    context 'feature flag "custom_permitted_by" is enabled' do
+      let!(:permission) { create(:permission, permitted_by: 'users') }
 
-      assert_status 200
-      expect(response_data.size).to eq 2
-      expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
-      expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
-        { data: { id: field1.id, type: 'custom_field' } },
-        { data: { id: field2.id, type: 'custom_field' } }
-      ])
+      example 'List all default permissions fields of a "user" permission' do
+        SettingsService.new.activate_feature! 'custom_permitted_by'
+        Permissions::PermissionsFieldsService.new.enable_default_permissions_fields
+
+        do_request
+
+        assert_status 200
+        expect(response_data.size).to eq 2
+      end
     end
   end
 
