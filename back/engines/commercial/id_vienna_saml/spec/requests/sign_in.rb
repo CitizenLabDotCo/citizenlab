@@ -194,7 +194,7 @@ def create_html_page_with_saml_form
   File.write('./saml_form.html', html)
   puts
   puts "\e[32mAlso created HTML page with SAML form.\e[0m"
-  if /darwin/.match?(RbConfig::CONFIG['host_os'])
+  if RbConfig::CONFIG['host_os'].include?('darwin')
     `open -a 'google chrome' ./saml_form.html`
   else
     `google-chrome ./saml_form.html`
