@@ -7,7 +7,6 @@ import useAddProjectModerator from 'api/project_moderators/useAddProjectModerato
 import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Button from 'components/UI/Button';
 import UserSelect from 'components/UI/UserSelect';
@@ -34,9 +33,6 @@ interface Props {
 
 const UserSearch = memo(({ projectId, label }: Props) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
 
   const [showModal, setShowModal] = useState(false);
@@ -74,10 +70,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const handleAddClick = () => {
     const isSelectedUserAModerator =
       moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal =
-      hasSeatBasedBillingEnabled &&
-      exceedsSeats.moderator &&
-      !isSelectedUserAModerator;
+    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
     if (shouldOpenModal) {
       openModal();
     } else {
@@ -115,15 +108,13 @@ const UserSearch = memo(({ projectId, label }: Props) => {
           data-cy="e2e-add-project-moderator-button"
         />
       </Box>
-      {hasSeatBasedBillingEnabled && (
-        <Suspense fallback={null}>
-          <AddModeratorsModal
-            addModerators={handleOnAddModeratorsClick}
-            showModal={showModal}
-            closeModal={closeModal}
-          />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <AddModeratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+        />
+      </Suspense>
     </Box>
   );
 });

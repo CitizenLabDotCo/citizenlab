@@ -355,10 +355,6 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
-            project_management: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -397,10 +393,6 @@ module MultiTenancy
               allowed: true
             },
             follow: {
-              enabled: true,
-              allowed: true
-            },
-            seat_based_billing: {
               enabled: true,
               allowed: true
             },

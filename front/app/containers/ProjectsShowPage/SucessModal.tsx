@@ -27,8 +27,8 @@ const SuccessModal = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
 
   const [queryParams] = useSearchParams();
-  const [showModalParam] = useState<boolean>(!!queryParams.get('show_modal'));
-  const [phaseIdParam] = useState<string | null>(queryParams.get('phase_id'));
+  const showModalParam = !!queryParams.get('show_modal');
+  const phaseIdParam = queryParams.get('phase_id');
 
   const [showModal, setShowModal] = useState<boolean>(false);
 

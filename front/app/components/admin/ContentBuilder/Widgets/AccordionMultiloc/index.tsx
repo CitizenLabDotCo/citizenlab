@@ -42,7 +42,7 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
       }`}
       isOpenByDefault={openByDefault}
       title={
-        <Box id="e2e-accordion" display="flex">
+        <Box className="e2e-accordion" display="flex">
           <Title variant="h3" color="tenantText">
             {localize(title)}
           </Title>

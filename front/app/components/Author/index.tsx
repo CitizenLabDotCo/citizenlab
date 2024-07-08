@@ -16,7 +16,6 @@ import UserName from 'components/UI/UserName';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -131,46 +130,43 @@ const Author = memo(
   }: Props) => {
     const locale = useLocale();
 
-    if (!isNilOrError(locale)) {
-      return (
-        <Container className={className}>
-          <AuthorContainer>
-            <StyledAvatar
-              userId={authorId}
-              authorHash={authorHash}
-              size={size}
-              isLinkToProfile={isLinkToProfile}
-              moderator={showModeratorStyles}
-              bgColor={avatarBadgeBgColor}
-            />
+    return (
+      <Container className={className}>
+        <AuthorContainer>
+          <StyledAvatar
+            userId={authorId}
+            authorHash={authorHash}
+            size={size}
+            isLinkToProfile={isLinkToProfile}
+            showModeratorStyles={showModeratorStyles}
+            bgColor={avatarBadgeBgColor}
+          />
 
-            <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
-              <AuthorNameContainer
-                className={horizontalLayout ? 'horizontalLayout' : ''}
-              >
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11yPostedBy} />:
-                </ScreenReaderOnly>
-                <UserName
-                  userId={authorId}
-                  isLinkToProfile={isLinkToProfile}
-                  canModerate={showModeratorStyles}
-                  fontWeight={fontWeight}
-                  fontSize={fontSize}
-                  color={color}
-                  underline={underline}
-                  anonymous={anonymous}
-                />
-              </AuthorNameContainer>
-              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                {timeAgo(Date.parse(createdAt), locale)}
-              </TimeAgo>
-            </AuthorMeta>
-          </AuthorContainer>
-        </Container>
-      );
-    }
-    return null;
+          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+            <AuthorNameContainer
+              className={horizontalLayout ? 'horizontalLayout' : ''}
+            >
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11yPostedBy} />:
+              </ScreenReaderOnly>
+              <UserName
+                userId={authorId}
+                isLinkToProfile={isLinkToProfile}
+                showModeratorStyles={showModeratorStyles}
+                fontWeight={fontWeight}
+                fontSize={fontSize}
+                color={color}
+                underline={underline}
+                anonymous={anonymous}
+              />
+            </AuthorNameContainer>
+            <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
+              {timeAgo(Date.parse(createdAt), locale)}
+            </TimeAgo>
+          </AuthorMeta>
+        </AuthorContainer>
+      </Container>
+    );
   }
 );
 

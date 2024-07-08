@@ -80,7 +80,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
     const projectHeaderImageLargeUrl =
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
-      !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
+      !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
       <Container className={className || ''}>

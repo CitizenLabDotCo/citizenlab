@@ -52,6 +52,7 @@ const ParticipationMethodChoice = ({
       }}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
+      height="100%"
     >
       {image && (
         <Image

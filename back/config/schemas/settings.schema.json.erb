@@ -315,18 +315,6 @@
         }
       },
 
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -944,18 +932,6 @@
         }
       },
 
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Downvoting Toggle",
-        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_disliking": {
         "type": "object",
         "title": "Disliking Toggle",
@@ -1104,18 +1080,6 @@
         "type": "object",
         "title": "Mapping question used in in-platform surveys",
         "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "seat_based_billing": {
-        "type": "object",
-        "title": "Seat based billing",
-        "description":  "Enables seat-based billing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

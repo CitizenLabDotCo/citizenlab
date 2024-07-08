@@ -99,7 +99,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           buttonStyle="text"
           p="0px"
           my="auto"
-          id="e2e-event-previews-scroll-left"
+          className="e2e-event-previews-scroll-left"
         />
       </Box>
       <StyledContainer ref={containerRef} role={containerRole}>
@@ -118,7 +118,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
           buttonStyle="text"
           p="0px"
-          id="e2e-event-previews-scroll-right"
+          className="e2e-event-previews-scroll-right"
         />
       </Box>
     </Box>

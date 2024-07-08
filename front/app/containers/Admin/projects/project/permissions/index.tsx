@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { Section, SectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 
@@ -36,10 +34,6 @@ const ProjectPermissions = () => {
 
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
-
-  const isProjectManagementEnabled = useFeatureFlag({
-    name: 'project_management',
-  });
 
   if (phase && project) {
     return (
@@ -86,9 +80,7 @@ const ProjectPermissions = () => {
             ) : null
           }
         </Outlet>
-        {isProjectManagementEnabled && (
-          <ProjectManagement projectId={projectId} />
-        )}
+        <ProjectManagement projectId={projectId} />
       </>
     );
   }

@@ -2149,6 +2149,7 @@
   "app.containers.AdminPage.groups.permissions.selectValueError": "Valitse vastaustyyppi",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestions": "Kysy alustatason rekisteröintikysymyksiä",
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Käytä tätä asetusta, jos nimen, sukunimen ja vastausten kerääminen alustatason demografisiin kysymyksiin on sinulle tärkeää. Se voi lisätä osallistumisen esteitä.",
+  "app.containers.AdminPage.groups.permissions.userConfirmationRequiredTooltip": "Tämä vaihtoehto edellyttää, että käyttäjän vahvistustoiminto on käytössä. Ota ensin yhteyttä GovSuccess-päällikköösi ottaaksesi käyttäjän vahvistuksen käyttöön.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription": "Vastaukset demografisiin kysymyksiin tallennetaan käyttäjäprofiileihin. Kysymyksiä esitetään vain käyttäjille, jotka eivät ole vastanneet niihin aiemmin. Vastaukset näihin kysymyksiin ovat saatavilla myös osallistumistietojen viennin kautta, joka on sekä projektipäälliköiden että ylläpitäjien käytettävissä.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Esitä kysymyksiä osallistujille",
   "app.containers.AdminPage.new.createAProject": "Luo projekti",
