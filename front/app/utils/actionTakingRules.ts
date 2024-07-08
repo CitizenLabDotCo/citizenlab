@@ -5,7 +5,6 @@ import { IUserData } from 'api/users/types';
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
 interface ActionPermissionHide {
@@ -139,7 +138,7 @@ export const getIdeaPostingRules = ({
     const { disabled_reason, future_enabled_at, enabled } =
       project.attributes.action_descriptors.posting_idea;
 
-    if (signedIn && canModerateProject(project.id, { data: authUser })) {
+    if (authUser && canModerateProject(project, { data: authUser })) {
       return {
         show: true,
         enabled: true,

@@ -14,15 +14,6 @@ module MultiTenancy
           title_multiloc
           visible_to
         ]
-
-        attribute(:admin_publication_attributes, nested: true) do |project|
-          publication = project.admin_publication
-          {
-            'publication_status' => publication.publication_status,
-            'ordering' => publication.ordering,
-            'parent_ref' => Ref.new(publication, :parent)
-          }
-        end
       end
     end
   end

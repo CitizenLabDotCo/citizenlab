@@ -15,6 +15,7 @@ import useProjectById from 'api/projects/useProjectById';
 import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
+import useObserveEvent from 'hooks/useObserveEvent';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -25,9 +26,8 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import ConfirmationModal from './ConfirmationModal';
-import useObserveEvent from 'hooks/useObserveEvent';
+import messages from './messages';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -169,7 +169,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
             handleClick();
           }}
           processing={isLoading}
-          id="e2e-event-attendance-button"
+          className="e2e-event-attendance-button"
         >
           {getButtonText()}
         </Button>

@@ -58,7 +58,7 @@ const Image = ({ alt = {}, image }: Props) => {
     <PageBreakBox
       width="100%"
       display="flex"
-      id="e2e-image"
+      className="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
       maxWidth="1200px"

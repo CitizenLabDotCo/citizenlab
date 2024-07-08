@@ -15,7 +15,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { PhaseActionForm } from '../../components/PhaseActionForm';
+import PhaseActionForm from '../../components/PhaseActionForm';
 
 import messages from './messages';
 import { HandlePermissionChangeProps } from './utils';
@@ -54,48 +54,54 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
 
   const isSinglePhase = !phaseNumber;
 
-  return (
-    <Accordion
-      timeoutMilliseconds={1000}
-      transitionHeightPx={1700}
-      isOpenByDefault={isSinglePhase}
-      title={
-        <Title
-          id="e2e-granular-permissions-phase-accordion"
-          variant="h3"
-          color="primary"
-          my="20px"
-          style={{ fontWeight: 500 }}
-        >
-          {!isSinglePhase && (
+  const phaseActionForm = (
+    <Box
+      display="flex"
+      flex={'1'}
+      flexDirection="column"
+      background={colors.white}
+      minHeight="100px"
+    >
+      <PhaseActionForm
+        phase={phase}
+        onChange={handlePermissionChange}
+        projectId={project.id}
+      />
+    </Box>
+  );
+
+  if (isSinglePhase) {
+    return phaseActionForm;
+  } else {
+    return (
+      <Accordion
+        timeoutMilliseconds={1000}
+        transitionHeightPx={1700}
+        isOpenByDefault={false}
+        title={
+          <Title
+            id="e2e-granular-permissions-phase-accordion"
+            variant="h3"
+            color="primary"
+            my="20px"
+            style={{ fontWeight: 500 }}
+          >
             <>
               <FormattedMessage {...messages.phase} />
               {` ${phaseNumber}: `}
             </>
-          )}
-          <T value={phase.attributes.title_multiloc} />
-        </Title>
-      }
-      key={phase.id}
-      onChange={() => {
-        setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
-      }}
-    >
-      <Box
-        display="flex"
-        flex={'1'}
-        flexDirection="column"
-        background={colors.white}
-        minHeight="100px"
+            <T value={phase.attributes.title_multiloc} />
+          </Title>
+        }
+        key={phase.id}
+        onChange={() => {
+          setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
+        }}
       >
-        <PhaseActionForm
-          phase={phase}
-          onChange={handlePermissionChange}
-          projectId={project.id}
-        />
-      </Box>
-    </Accordion>
-  );
+        {phaseActionForm}
+      </Accordion>
+    );
+  }
 };
 
 export default PhasePermissions;

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { parse } from 'qs';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -33,9 +32,11 @@ const IdeasNewPage = () => {
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
-  const { phase_id } = parse(location.search, {
-    ignoreQueryPrefix: true,
-  }) as { [key: string]: string };
+  const [searchParams] = useSearchParams();
+  const phaseIdFromSearchParams = searchParams.get('phase_id');
+  // If we reach this component by hitting ideas/new directly, without a phase_id,
+  // we'll still get to this component, so we try to get the phase id from getCurrentPhase.
+  const phaseId = phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
@@ -64,8 +65,11 @@ const IdeasNewPage = () => {
   const currentPhase = getCurrentPhase(phases.data);
   const participationMethod = getParticipationMethod(
     project.data,
-    phases?.data,
-    phase_id
+    phases.data,
+    // No particular reason why this needs to be phaseIdFromSearchParams,
+    // I just wanted to keep this part as it was while refactoring some other parts
+    // to reduce the chances of introducing bugs. But it could probably be phaseId instead.
+    phaseIdFromSearchParams || undefined
   );
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
@@ -81,7 +85,7 @@ const IdeasNewPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: phase_id || getCurrentPhase(phases?.data)?.id || '',
+          id: phaseId || '',
         },
       });
     };
@@ -104,16 +108,16 @@ const IdeasNewPage = () => {
     we are redirecting /ideas/new requests to the new /surveys/new URL. This code can be removed
     once we've verified all surveys started before the date this got merged have been completed.
   */
-  if (currentPhase && participationMethod === 'native_survey') {
+  if (participationMethod === 'native_survey' && typeof phaseId === 'string') {
     return (
       <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${currentPhase.id}`}
+        to={`/projects/${slug}/surveys/new?phase_id=${phaseId}`}
         replace
       />
     );
   }
 
-  return <IdeasNewIdeationForm project={project} />;
+  return <IdeasNewIdeationForm project={project} phaseId={phaseId} />;
 };
 
 export default IdeasNewPage;

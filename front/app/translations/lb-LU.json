@@ -1659,6 +1659,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "De Prozentsaz vun de Participanten déi dës Optioun gewielt hunn.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "De Prozentsaz vun de Stëmmen, déi dës Optioun krut.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Käschten:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Méi weisen",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total Likes: {likesCount}, Total Dislikes: {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Dir hutt Är Dislike fir dësen Input erfollegräich annuléiert.",
   "app.containers.ReactionControl.cancelLikeSuccess": "Dir hutt Äre Like fir dësen Input erfollegräich annuléiert.",

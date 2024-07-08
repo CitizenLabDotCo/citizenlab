@@ -134,10 +134,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            permission_option_email_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true
@@ -359,10 +355,6 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
-            project_management: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -404,10 +396,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            seat_based_billing: {
-              enabled: true,
-              allowed: true
-            },
             public_api_tokens: {
               enabled: true,
               allowed: true
@@ -445,6 +433,10 @@ module MultiTenancy
               allowed: true
             },
             multi_language_platform: {
+              enabled: true,
+              allowed: true
+            },
+            customisable_homepage_banner: {
               enabled: true,
               allowed: true
             },

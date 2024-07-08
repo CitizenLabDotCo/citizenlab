@@ -1659,6 +1659,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "El porcentaje de participantes que eligieron esta opción.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "El porcentaje de votos totales que recibió esta opción.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Coste:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Mostrar más",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de ''me gustas': {likesCount}Total de 'no me gustas': {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Has cancelado correctamente tu aversión a esta entrada.",
   "app.containers.ReactionControl.cancelLikeSuccess": "Has cancelado correctamente tu like para esta entrada.",

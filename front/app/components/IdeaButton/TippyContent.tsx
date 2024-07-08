@@ -70,7 +70,7 @@ const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
 
   return (
     <TooltipContent
-      id="tooltip-content"
+      id="tooltip-content-idea-button"
       className="e2e-disabled-tooltip"
       inMap={inMap}
     >

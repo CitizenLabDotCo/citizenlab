@@ -1659,6 +1659,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Bu seçeneği işaretleyen katılımcıların yüzdesi.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Bu seçeneğin aldığı toplam oyların yüzdesi.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Maliyet:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Daha fazla göster",
   "app.containers.ReactionControl.a11y_likesDislikes": "Toplam beğeni: {likesCount}, total dislikees: {dislikesCount}",
   "app.containers.ReactionControl.cancelDislikeSuccess": "Bu girişten hoşlanmama durumunuzu başarıyla iptal ettiniz.",
   "app.containers.ReactionControl.cancelLikeSuccess": "Bu girdi için beğeninizi başarıyla iptal ettiniz.",

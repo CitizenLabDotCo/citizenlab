@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -37,15 +37,15 @@ const StyledSurveyTitle = styled(Text)`
 
 type Props = {
   titleText: string | React.ReactNode;
+  phaseId: string;
 };
 
-const SurveyHeading = ({ titleText }: Props) => {
+const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
 
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const openModal = () => {
@@ -58,10 +58,7 @@ const SurveyHeading = ({ titleText }: Props) => {
   if (!project) return null;
 
   const showEditSurveyButton =
-    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
-  const phaseId =
-    searchParams.get('phase_id') ||
-    project.data.relationships.current_phase?.data?.id;
+    !isSmallerThanPhone && canModerateProject(project.data, authUser);
   const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
 
   return (

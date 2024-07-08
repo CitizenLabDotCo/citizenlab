@@ -27,11 +27,17 @@ module UserConfirmation
   end
 
   def confirm!
-    return if !confirmation_required? && !new_email
+    return unless confirmation_required? || new_email
 
     confirm_new_email if new_email.present?
     confirm
     save!
+
+    # Cancel any other pending email changes initiated with the same email to prevent
+    # those users from becoming invalid due to email validations.
+    User
+      .where(new_email: email)
+      .update_all(new_email: nil, email_confirmation_code: nil, updated_at: Time.zone.now)
   end
 
   def reset_confirmation_and_counts
@@ -44,10 +50,6 @@ module UserConfirmation
     end
     self.confirmation_required = true
     self.email_confirmation_code_sent_at = nil
-  end
-
-  def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil?
   end
 
   def email_confirmation_code_expiration_at
