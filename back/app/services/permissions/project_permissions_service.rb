@@ -12,7 +12,7 @@ module Permissions
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        super action, user, phase, project: project, reaction_mode: reaction_mode
+        super(action, user, phase, project: project, reaction_mode: reaction_mode)
       end
     end
 
@@ -33,6 +33,8 @@ module Permissions
       taking_poll_disabled_reason = denied_reason_for_action 'taking_poll', user, project
       voting_disabled_reason = denied_reason_for_action 'voting', user, project
       attending_event_disabled_reason = denied_reason_for_action 'attending_event', user, project
+      volunteering_disabled_reason = denied_reason_for_action 'volunteering', user, project
+
       {
         posting_idea: {
           enabled: !posting_disabled_reason,
@@ -79,6 +81,10 @@ module Permissions
         attending_event: {
           enabled: !attending_event_disabled_reason,
           disabled_reason: attending_event_disabled_reason
+        },
+        volunteering: {
+          enabled: !volunteering_disabled_reason,
+          disabled_reason: volunteering_disabled_reason
         }
       }
     end
