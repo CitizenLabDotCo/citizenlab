@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Un nombre minimum de votes est requis",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Option",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Gestion des contributions",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configurez les options de vote dans l'onglet Gestionnaire d'entrée après avoir créé une phase.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configurez les options de vote dans l'onglet « Gestion des contributions » après avoir créé une phase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configurez les options de vote dans l'onglet {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Participants",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administrateurs et gestionnaires",
