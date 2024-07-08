@@ -20,7 +20,6 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_fields(permission)
-    # ##### return [] ##### TODO: Fix performance
     if permission.global_custom_fields
       registration_fields
     else

@@ -40,8 +40,8 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
-    def initialize(phase, user)
-      super(user)
+    def initialize(phase, user, user_requirements_service: nil)
+      super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
     end
 

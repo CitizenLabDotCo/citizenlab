@@ -15,7 +15,7 @@ module Permissions
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        PhasePermissionsService.new(phase, user).denied_reason_for_phase action, project: project, reaction_mode: reaction_mode
+        PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase action, project: project, reaction_mode: reaction_mode
       end
     end
 
@@ -23,7 +23,7 @@ module Permissions
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
       @timeline_service.future_phases(project, time).find do |phase| 
-        !PhasePermissionsService.new(phase, user).denied_reason_for_phase(action, reaction_mode: reaction_mode)
+        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase(action, reaction_mode: reaction_mode)
       end
     end
 
