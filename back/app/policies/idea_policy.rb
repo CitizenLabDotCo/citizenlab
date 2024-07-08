@@ -39,7 +39,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
     return false if !active? && record.participation_method_on_creation.sign_in_required_for_posting?
 
-    reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
+    reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_project 'posting_idea'
     raise_not_authorized(reason) if reason
 
     (!user || owner?) && ProjectPolicy.new(user, record.project).show?
@@ -67,7 +67,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
 
-    posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea' 
+    posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_project 'posting_idea' 
     raise_not_authorized(posting_denied_reason) if posting_denied_reason && EXCLUDED_REASONS_FOR_UPDATE.exclude?(posting_denied_reason)
     true
   end
