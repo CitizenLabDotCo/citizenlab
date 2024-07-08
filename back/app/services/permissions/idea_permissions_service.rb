@@ -19,8 +19,7 @@ module Permissions
       end
     end
 
-    def denied_reason_for_idea_reaction(reaction, reaction_mode: nil)
-      reaction_mode ||= reaction.mode
+    def denied_reason_for_reaction_mode(reaction_mode)
       denied_reason_for_idea('reacting_idea', reaction_mode: reaction_mode)
     end
 
