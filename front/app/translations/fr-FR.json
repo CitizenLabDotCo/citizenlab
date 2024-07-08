@@ -693,7 +693,7 @@
   "app.components.formBuilder.formField.deleteFieldWithLogicConfirmationQuestion": "La suppression de cette page entraînera également la suppression de la logique qui lui est associée. Êtes-vous sûr de vouloir la supprimer ?",
   "app.components.formBuilder.formField.deleteResultsInfo": "Cette action est irréversible",
   "app.components.formBuilder.goToPageInputLabel": "Puis la page suivante est :",
-  "app.components.formBuilder.helmetTitle": "Générateur de formulaires",
+  "app.components.formBuilder.helmetTitle": "Éditeur de formulaires",
   "app.components.formBuilder.imageFileUpload": "Téléchargement d’image",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logique invalide",
   "app.components.formBuilder.labels": "Étiquettes",
