@@ -15,6 +15,7 @@ module Permissions
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
+        phase.project = project if phase # Performance optimization (keep preloaded relationships)
         PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase action, reaction_mode: reaction_mode
       end
     end

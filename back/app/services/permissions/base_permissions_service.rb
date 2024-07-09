@@ -76,9 +76,5 @@ module Permissions
     def denied_when_permitted_by_groups?(permission)
       permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
     end
-
-    def user_can_moderate_something?
-      @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
-    end
   end
 end
