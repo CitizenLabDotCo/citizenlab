@@ -37,7 +37,7 @@ class PermissionsField < ApplicationRecord
   validates :permission, presence: true
   validates :custom_field, presence: true, if: -> { field_type == 'custom_field' }
   validates :permission_id, uniqueness: { scope: :custom_field_id }, if: -> { custom_field_id.present? }
-  validates :permission_id, uniqueness: { scope: :field_type }, if: -> { field_type != 'custom_field' }
+  # validates :permission_id, uniqueness: { scope: :field_type }, if: -> { field_type != 'custom_field' }
   validates :field_type, presence: true, inclusion: { in: FIELD_TYPES }
   validate :validate_config_keys
 

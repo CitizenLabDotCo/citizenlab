@@ -5,13 +5,15 @@ module Permissions
     # To be called from rake task when enabling custom_permitted_by feature flag or on tenant creation
     def change_permissions_to_custom
       if custom_permitted_by_enabled?
-        permissions = Permission.all
+        permissions = Permission.where.not(permission_scope: nil)
         permissions.each do |permission|
           if !permission.global_custom_fields
             if permission.permitted_by == 'everyone_confirmed_email'
-              # Set to 'custom' & insert 'everyone_confirmed_email' default fields
-              permission.update!(permitted_by: 'custom')
-              fields = default_fields(permitted_by: 'everyone_confirmed_email', permission: permission)
+              if PermissionsField.find_by(permission: permission).present? # Used because the method is overridden in the model
+                # Set to 'custom' & insert 'everyone_confirmed_email' default fields
+                permission.update!(permitted_by: 'custom')
+                fields = default_fields(permitted_by: 'everyone_confirmed_email', permission: permission)
+              end
             elsif permission.permitted_by == 'users' || permission.permitted_by == 'groups'
               # Set to 'custom' & insert 'users' default fields without custom fields
               permission.update!(permitted_by: 'custom')
@@ -24,7 +26,13 @@ module Permissions
           end
 
           # Save the default fields
-          fields.each(&:save!) if fields.present?
+          if fields.present?
+            pp permission
+            fields.each do |field|
+              pp field
+              field.save!
+            end
+          end
         end
       end
     end

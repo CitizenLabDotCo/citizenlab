@@ -67,7 +67,14 @@ describe Permissions::PermissionsFieldsService do
           expect(permission.permissions_fields.count).to eq 0
         end
 
-        it 'changes permitted_by to custom and inserts default fields if global_custom_fields is false' do
+        it 'does nothing if global_custom_fields is false but there are no fields' do
+          service.change_permissions_to_custom
+          permission.reload
+          expect(permission.permitted_by).to eq 'everyone_confirmed_email'
+          expect(permission.permissions_fields.count).to eq 0
+        end
+
+        it 'changes permitted_by to custom and inserts default fields if global_custom_fields is false and there are fields' do
           permission.update!(global_custom_fields: false)
           create(:permissions_field, custom_field: create(:custom_field_birthyear), permission: permission)
           service.change_permissions_to_custom
