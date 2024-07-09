@@ -21,9 +21,13 @@ class Events::AttendancePolicy < ApplicationPolicy
   end
 
   def create?
-    active? &&
-      user.id == record.attendee_id &&
-      ProjectPolicy.new(user, record.event.project).show?
+    return false unless active?
+    return false unless user.id == record.attendee_id
+
+    reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'attending_event', user, record.event.project
+    return false if reason
+
+    ProjectPolicy.new(user, record.event.project).show?
   end
 
   def destroy?
