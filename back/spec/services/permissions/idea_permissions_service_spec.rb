@@ -126,7 +126,7 @@ describe Permissions::IdeaPermissionsService do
       let(:current_phase_attrs) { { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 } }
       let(:idea) { create(:idea, project: project, phases: project.phases) }
 
-      it "returns `reacting_not_supported`" do
+      it 'returns `reacting_not_supported`' do
         expect(service.denied_reason_for_idea('reacting_idea')).to eq 'reacting_not_supported'
       end
     end
@@ -188,7 +188,7 @@ describe Permissions::IdeaPermissionsService do
     context "when the timeline hasn't started" do
       let(:project) { create(:project_with_future_phases) }
 
-      it "returns `project_inactive`" do
+      it 'returns `project_inactive`' do
         expect(service.denied_reason_for_reaction_mode('up')).to eq 'project_inactive'
         expect(service.denied_reason_for_reaction_mode('down')).to eq 'project_inactive'
       end
@@ -206,7 +206,7 @@ describe Permissions::IdeaPermissionsService do
     context "when we're in a voting (budgeting) context" do
       let(:project) { create(:single_phase_budgeting_project) }
 
-      it "returns `reacting_not_supported`" do
+      it 'returns `reacting_not_supported`' do
         expect(service.denied_reason_for_reaction_mode('up')).to eq 'reacting_not_supported'
         expect(service.denied_reason_for_reaction_mode('down')).to eq 'reacting_not_supported'
       end
@@ -217,7 +217,7 @@ describe Permissions::IdeaPermissionsService do
       let(:idea_phases) { project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last] }
       let(:idea) { create(:idea, project: project, phases: idea_phases) }
 
-      it "returns `idea_not_in_current_phase`" do
+      it 'returns `idea_not_in_current_phase`' do
         expect(service.denied_reason_for_reaction_mode('up')).to eq 'idea_not_in_current_phase'
         expect(service.denied_reason_for_reaction_mode('down')).to eq 'idea_not_in_current_phase'
       end
@@ -293,7 +293,7 @@ describe Permissions::IdeaPermissionsService do
           .find_by(action: 'reacting_idea')
       end
 
-      let 'when the user is not signed in' do
+      context 'when the user is not signed in' do
         let(:user) { nil }
 
         it 'returns `user_not_signed_in` when user needs to be signed in' do

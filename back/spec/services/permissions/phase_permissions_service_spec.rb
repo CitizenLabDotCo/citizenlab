@@ -30,14 +30,14 @@ describe Permissions::PhasePermissionsService do
     end
 
     context 'when the like limit was reached for that phase' do
-      let(:phases_config) do 
-        { 
+      let(:phases_config) do
+        {
           sequence: 'xxcxx',
           c: { reacting_enabled: true },
-          x: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 } 
+          x: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 }
         }
       end
-      
+
       it 'returns `reacting_like_limited_max_reached`' do
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
         ideas.each do |idea|

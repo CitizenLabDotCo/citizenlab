@@ -12,7 +12,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when posting is disabled' do
       let(:current_phase_attrs) { { posting_enabled: false } }
 
-      it 'returns `posting_disabled` ' do
+      it 'returns `posting_disabled`' do
         expect(service.denied_reason_for_project('posting_idea')).to eq 'posting_disabled'
       end
     end
@@ -20,7 +20,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when we\'re in an ideation context' do
       let(:current_phase_attrs) { { participation_method: 'ideation' } }
 
-      it "returns `nil`" do
+      it 'returns `nil`' do
         expect(service.denied_reason_for_project('posting_idea')).to be_nil
       end
     end
@@ -34,7 +34,7 @@ describe Permissions::ProjectPermissionsService do
         }
       end
 
-      it "returns `nil`" do
+      it 'returns `nil`' do
         expect(service.denied_reason_for_project('posting_idea')).to be_nil
       end
     end
@@ -42,7 +42,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when we\'re not in an ideation or native_survey context' do
       let(:current_phase_attrs) { { participation_method: 'information' } }
 
-      it "returns `posting_not_supported`" do
+      it 'returns `posting_not_supported`' do
         expect(service.denied_reason_for_project('posting_idea')).to eq 'posting_not_supported'
       end
     end
@@ -66,7 +66,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when the project is archived' do
       let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
 
-      it "returns 'project_inactive' " do
+      it 'returns `project_inactive`' do
         expect(service.denied_reason_for_project('posting_idea')).to eq 'project_inactive'
       end
     end
@@ -239,7 +239,7 @@ describe Permissions::ProjectPermissionsService do
     context "when the timeline hasn't started yet" do
       let(:project) { create(:project_with_future_phases) }
 
-      it "returns `project_inactive`" do
+      it 'returns `project_inactive`' do
         expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
         expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
       end
@@ -257,7 +257,7 @@ describe Permissions::ProjectPermissionsService do
     context "when we're in a participatory budgeting context" do
       let(:current_phase_attrs) { { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 } }
 
-      it "returns `reacting_not_supported`" do
+      it 'returns `reacting_not_supported`' do
         expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'reacting_not_supported'
         expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'reacting_not_supported'
       end
@@ -320,7 +320,7 @@ describe Permissions::ProjectPermissionsService do
       end
     end
 
-    context 'when the active context is not a survey' do
+    context 'when the timeline has past' do
       let(:project) { create(:project_with_past_phases) }
 
       it 'returns `project_inactive`' do
@@ -331,7 +331,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when the project is archived' do
       let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
 
-      it 'returns `project_inactive` ' do
+      it 'returns `project_inactive`' do
         expect(service.denied_reason_for_project('taking_survey')).to eq 'project_inactive'
       end
     end
@@ -348,29 +348,25 @@ describe Permissions::ProjectPermissionsService do
         group.save!
         expect(service.denied_reason_for_project('taking_survey')).to be_nil
       end
-    end
 
-    context 'when taking the survey is allowed' do
-      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
-      let(:user) { nil }
-
-      it 'returns `user_not_signed_in` when user needs to be signed in' do
-        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
-        permission.update!(permitted_by: 'users')
-        expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_signed_in'
-      end
-    end
-
-    context 'when taking the survey is allowed' do
-      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
-
-      it 'returns `user_not_in_group` when taking the survey is not permitted' do
+      it 'returns `user_not_in_group` when the user is not member of a permitted group' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
         permission.update!(
           permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
         expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_in_group'
+      end
+    end
+
+    context 'when the user is not signed in' do
+      let(:user) { nil }
+      let(:project) { create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true }) }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
+        permission.update!(permitted_by: 'users')
+        expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_signed_in'
       end
     end
   end
@@ -764,7 +760,7 @@ describe Permissions::ProjectPermissionsService do
         end
       end
 
-      context 'when the user is in a project group' do
+      context 'when the user is a project moderator' do
         let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
 
         it 'returns nil' do

@@ -22,7 +22,7 @@ module Permissions
     # Future enabled phases
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
-      @timeline_service.future_phases(project, time).find do |phase| 
+      @timeline_service.future_phases(project, time).find do |phase|
         !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase(action, reaction_mode: reaction_mode)
       end
     end
