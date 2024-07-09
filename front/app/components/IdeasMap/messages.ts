@@ -74,4 +74,9 @@ export default defineMessages({
     defaultMessage:
       '{noOfComments, plural, =0 {, no comments.} one {, 1 comment.} other {, # comments.}}',
   },
+  ideaNavigationDescription: {
+    id: 'app.components.IdeasMap.ideaNavigationDescription',
+    defaultMessage:
+      'Scroll to select an idea and view it on the map. Click the idea on the map to see its details.',
+  },
 });
