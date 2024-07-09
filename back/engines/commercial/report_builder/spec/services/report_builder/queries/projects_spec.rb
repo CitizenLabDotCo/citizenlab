@@ -8,7 +8,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
   describe '#run_query' do
     before_all do
       # 2020
-      past_project = create(:project)
+      past_project = create(:single_phase_ideation_project)
       create(:phase, project: past_project, start_at: Date.new(2020, 2, 1), end_at: Date.new(2020, 3, 1))
 
       # 2021

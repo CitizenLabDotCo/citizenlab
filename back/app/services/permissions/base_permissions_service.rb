@@ -91,7 +91,7 @@ module Permissions
     end
 
     def user_can_moderate_something?(user)
-      @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
+      @user_can_moderate_something ||= user.admin? || UserRoleService.new.moderates_something?(user)
     end
   end
 end
