@@ -39,6 +39,7 @@ resource 'PermissionsField' do
         assert_status 200
         expect(response_data.size).to eq 2
         expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
+        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to eq %w[custom_field custom_field]
         expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
           { data: { id: field1.id, type: 'custom_field' } },
           { data: { id: field2.id, type: 'custom_field' } }
@@ -47,16 +48,18 @@ resource 'PermissionsField' do
     end
 
     context 'feature flag "custom_permitted_by" is enabled' do
-      let!(:permission) { create(:permission, permitted_by: 'users') }
+      before { permission } # Create permission
 
       example 'List all default permissions fields of a "user" permission' do
         SettingsService.new.activate_feature! 'custom_permitted_by'
-        Permissions::PermissionsFieldsService.new.enable_default_permissions_fields
+        Permissions::PermissionsFieldsService.new.create_or_update_default_fields
 
         do_request
 
         assert_status 200
         expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
+        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email]
       end
     end
   end

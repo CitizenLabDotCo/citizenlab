@@ -47,7 +47,7 @@ class Permission < ApplicationRecord
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
-  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
+  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }, if: -> { action != 'visiting' } # TODO: JS - add another validation for visiting
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create

@@ -5,21 +5,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   before_action :set_permissions_field, only: %i[show update destroy]
 
   def index
-    pp "AUTHORIZE PERMISSIONS FIELD"
     authorize PermissionsField.new(permission: permission)
-
     permissions_fields = Permissions::PermissionsFieldsService.new.fields(permission)
-
-    pp permissions_fields
     permissions_fields = paginate permissions_fields
-
-    pp permissions_fields
-
     permissions_fields = permissions_fields.includes(:custom_field)
-    pp permissions_fields
-
-
-    binding.pry
 
     render json: linked_json(
       permissions_fields,
