@@ -40,6 +40,7 @@ resource 'Permissions' do
         expect(response_data.size).to eq Permission.enabled_actions(@phase).size
       end
 
+      # TODO: JS - Fix this - now does a query per permission
       example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @phase.permissions.first
         field2 = create(:custom_field)

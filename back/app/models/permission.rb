@@ -60,7 +60,7 @@ class Permission < ApplicationRecord
     # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
     return super if permitted_by == 'custom'
 
-    # TODO: JS - Is there a more efficient way to do this?
+    # TODO: JS - Is there a more efficient way to do this? Can we cache the visiting actions? Do we need to?
     permission = Permission.find_by(action: 'visiting', permitted_by: permitted_by)
     PermissionsField.where(permission: permission)
   end
