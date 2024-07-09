@@ -53,6 +53,7 @@ import IdeaMapCard from './IdeaMapCard';
 import IdeasAtLocationPopup from './IdeasAtLocationPopup';
 import InstructionMessage from './InstructionMessage';
 import messages from './messages';
+import MobileIdeaNav from './MobileIdeaNav';
 import StartIdeaButton from './StartIdeaButton';
 import {
   InnerContainer,
@@ -475,6 +476,12 @@ const IdeasMap = memo<Props>(
     return (
       <>
         <StyledMapContainer ref={containerRef}>
+          {isTabletOrSmaller && (
+            <MobileIdeaNav
+              ideaMarkers={ideaMarkers}
+              onSelectIdea={onSelectIdeaFromList}
+            />
+          )}
           <InnerContainer
             leftMargin={innerContainerLeftMargin}
             isPostingEnabled={true}
