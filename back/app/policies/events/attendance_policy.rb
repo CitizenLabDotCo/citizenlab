@@ -25,7 +25,7 @@ class Events::AttendancePolicy < ApplicationPolicy
     return false unless user.id == record.attendee_id
 
     reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'attending_event', user, record.event.project
-    raise_not_authorized(reason) if reason
+    return false if reason
 
     ProjectPolicy.new(user, record.event.project).show?
   end
