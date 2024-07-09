@@ -2,13 +2,6 @@
 
 FactoryBot.define do
   factory :cause, class: 'Volunteering::Cause' do
-    # phase do
-    #   create(
-    #     :volunteering_phase,
-    #     start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-    #     end_at: nil
-    #   )
-    # end
     phase { create(:volunteering_phase) }
     sequence(:title_multiloc) do |n|
       {
