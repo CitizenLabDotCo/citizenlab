@@ -25,9 +25,13 @@ module Volunteering
     end
 
     def create?
-      user&.active? &&
-        (record.user_id == user.id) &&
-        ProjectPolicy.new(user, record.cause.phase.project).show?
+      return false unless user&.active?
+      return false unless record.user_id == user.id
+
+      reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'volunteering', user, record.cause.phase.project
+      return false if reason
+
+      ProjectPolicy.new(user, record.cause.phase.project).show?
     end
 
     def destroy?
