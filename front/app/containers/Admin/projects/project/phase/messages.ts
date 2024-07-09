@@ -123,6 +123,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent',
     defaultMessage: '<b>Attending event:</b>  {participants}',
   },
+  volunteering: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',
+    defaultMessage: '<b>Volunteering:</b>  {participants}',
+  },
   and: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
     defaultMessage: 'and',
