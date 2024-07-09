@@ -212,6 +212,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
           items: {
             type: 'array',
             minItems: 2,
+            maxItems: 2,
             items: {
               type: 'number'
             }

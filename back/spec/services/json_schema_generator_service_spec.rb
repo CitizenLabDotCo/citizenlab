@@ -487,6 +487,7 @@ RSpec.describe JsonSchemaGeneratorService do
             items: {
               type: 'array',
               minItems: 2,
+              maxItems: 2,
               items: {
                 type: 'number'
               }
