@@ -157,7 +157,7 @@ const CLSurveyPageLayout = memo(
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
-        onSubmit?.(data, false);
+        onSubmit?.({ data }, false);
         setCurrentStep(currentStep + 1);
 
         setIsLoading(false);
