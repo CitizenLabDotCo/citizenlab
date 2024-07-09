@@ -8,7 +8,7 @@ namespace :single_use do
       if service.custom_permitted_by_enabled?
         service.create_or_update_default_fields
         service.change_permissions_to_custom
-        Rails.logger.info "Migrated permissions fields."
+        Rails.logger.info 'Migrated permissions fields.'
       else
         Rails.logger.info "Feature flag 'custom_permitted_by' is not enabled."
       end
