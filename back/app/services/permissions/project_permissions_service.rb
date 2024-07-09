@@ -9,14 +9,14 @@ module Permissions
       @project ||= project
     end
 
-    def denied_reason_for_project(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil)
       project_visible_reason = project_visible_disabled_reason
       if project_visible_reason
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
         phase.project = project if phase # Performance optimization (keep preloaded relationships)
-        PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase action, reaction_mode: reaction_mode
+        PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action action, reaction_mode: reaction_mode
       end
     end
 
@@ -24,20 +24,20 @@ module Permissions
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
       @timeline_service.future_phases(project, time).find do |phase|
-        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_phase(action, reaction_mode: reaction_mode)
+        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action(action, reaction_mode: reaction_mode)
       end
     end
 
     def action_descriptors
-      posting_disabled_reason = denied_reason_for_project 'posting_idea'
-      commenting_disabled_reason = denied_reason_for_project 'commenting_idea'
-      reacting_disabled_reason = denied_reason_for_project 'reacting_idea'
-      liking_disabled_reason = denied_reason_for_project 'reacting_idea', reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_project 'reacting_idea', reaction_mode: 'down'
-      annotating_document_disabled_reason = denied_reason_for_project 'annotating_document'
-      taking_survey_disabled_reason = denied_reason_for_project 'taking_survey'
-      taking_poll_disabled_reason = denied_reason_for_project 'taking_poll'
-      voting_disabled_reason = denied_reason_for_project 'voting'
+      posting_disabled_reason = denied_reason_for_action 'posting_idea'
+      commenting_disabled_reason = denied_reason_for_action 'commenting_idea'
+      reacting_disabled_reason = denied_reason_for_action 'reacting_idea'
+      liking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
+      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
+      annotating_document_disabled_reason = denied_reason_for_action 'annotating_document'
+      taking_survey_disabled_reason = denied_reason_for_action 'taking_survey'
+      taking_poll_disabled_reason = denied_reason_for_action 'taking_poll'
+      voting_disabled_reason = denied_reason_for_action 'voting'
       {
         posting_idea: {
           enabled: !posting_disabled_reason,

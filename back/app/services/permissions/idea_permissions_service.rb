@@ -9,8 +9,8 @@ module Permissions
       @idea ||= idea
     end
 
-    def denied_reason_for_idea(action, reaction_mode: nil)
-      reason = project_permissions_service.denied_reason_for_project action, reaction_mode: reaction_mode
+    def denied_reason_for_action(action, reaction_mode: nil)
+      reason = project_permissions_service.denied_reason_for_action action, reaction_mode: reaction_mode
       return reason if reason
 
       current_phase = @timeline_service.current_phase_not_archived idea.project
@@ -20,15 +20,15 @@ module Permissions
     end
 
     def denied_reason_for_reaction_mode(reaction_mode)
-      denied_reason_for_idea('reacting_idea', reaction_mode: reaction_mode)
+      denied_reason_for_action('reacting_idea', reaction_mode: reaction_mode)
     end
 
     def action_descriptors
-      commenting_disabled_reason = denied_reason_for_idea 'commenting_idea'
-      liking_disabled_reason = denied_reason_for_idea 'reacting_idea', reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_idea 'reacting_idea', reaction_mode: 'down'
-      cancelling_reactions_disabled_reason = denied_reason_for_idea 'reacting_idea'
-      voting_disabled_reason = denied_reason_for_idea 'voting'
+      commenting_disabled_reason = denied_reason_for_action 'commenting_idea'
+      liking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
+      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
+      cancelling_reactions_disabled_reason = denied_reason_for_action 'reacting_idea'
+      voting_disabled_reason = denied_reason_for_action 'voting'
       comment_reacting_disabled_reason = commenting_disabled_reason
 
       {

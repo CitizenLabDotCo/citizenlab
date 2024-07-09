@@ -45,24 +45,24 @@ module Permissions
       @phase ||= phase
     end
 
-    def denied_reason_for_phase(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
       when 'posting_idea'
-        posting_idea_denied_reason_for_phase
+        posting_idea_denied_reason_for_action
       when 'commenting_idea'
-        commenting_idea_denied_reason_for_phase
+        commenting_idea_denied_reason_for_action
       when 'reacting_idea'
-        reacting_denied_reason_for_phase(reaction_mode: reaction_mode)
+        reacting_denied_reason_for_action(reaction_mode: reaction_mode)
       when 'voting'
-        voting_denied_reason_for_phase
+        voting_denied_reason_for_action
       when 'annotating_document'
-        annotating_document_denied_reason_for_phase
+        annotating_document_denied_reason_for_action
       when 'taking_survey'
-        taking_survey_denied_reason_for_phase
+        taking_survey_denied_reason_for_action
       when 'taking_poll'
-        taking_poll_denied_reason_for_phase
+        taking_poll_denied_reason_for_action
       else
         raise "Unsupported action: #{action}"
       end
@@ -79,7 +79,7 @@ module Permissions
     attr_reader :phase
 
     # Phase methods
-    def posting_idea_denied_reason_for_phase
+    def posting_idea_denied_reason_for_action
       if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
@@ -89,7 +89,7 @@ module Permissions
       end
     end
 
-    def commenting_idea_denied_reason_for_phase
+    def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
         COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
       elsif !phase.commenting_enabled
@@ -97,7 +97,7 @@ module Permissions
       end
     end
 
-    def reacting_denied_reason_for_phase(reaction_mode: nil)
+    def reacting_denied_reason_for_action(reaction_mode: nil)
       if !phase.ideation?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
@@ -111,19 +111,19 @@ module Permissions
       end
     end
 
-    def taking_survey_denied_reason_for_phase
+    def taking_survey_denied_reason_for_action
       unless phase.survey?
         TAKING_SURVEY_DENIED_REASONS[:not_survey]
       end
     end
 
-    def annotating_document_denied_reason_for_phase
+    def annotating_document_denied_reason_for_action
       unless phase.document_annotation?
         ANNOTATING_DOCUMENT_DENIED_REASONS[:not_document_annotation]
       end
     end
 
-    def taking_poll_denied_reason_for_phase
+    def taking_poll_denied_reason_for_action
       if !phase.poll?
         TAKING_POLL_DENIED_REASONS[:not_poll]
       elsif user && phase.poll_responses.exists?(user: user)
@@ -131,7 +131,7 @@ module Permissions
       end
     end
 
-    def voting_denied_reason_for_phase
+    def voting_denied_reason_for_action
       unless phase.voting?
         VOTING_DENIED_REASONS[:not_voting]
       end

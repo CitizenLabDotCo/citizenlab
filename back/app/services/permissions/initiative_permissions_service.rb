@@ -2,15 +2,15 @@
 
 module Permissions
   class InitiativePermissionsService < BasePermissionsService
-    def denied_reason_for_initiative(action)
+    def denied_reason_for_action(action)
       permission = find_permission(action)
       user_denied_reason(permission)
     end
 
     def action_descriptors
-      posting_disabled_reason = denied_reason_for_initiative 'posting_initiative'
-      commenting_disabled_reason = denied_reason_for_initiative 'commenting_initiative'
-      reacting_disabled_reason = denied_reason_for_initiative 'reacting_initiative'
+      posting_disabled_reason = denied_reason_for_action 'posting_initiative'
+      commenting_disabled_reason = denied_reason_for_action 'commenting_initiative'
+      reacting_disabled_reason = denied_reason_for_action 'reacting_initiative'
 
       descriptors = {
         posting_initiative: { disabled_reason: posting_disabled_reason },

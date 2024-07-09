@@ -106,7 +106,7 @@ describe IdeaPolicy do
     context 'when there is a posting idea disabled reason' do
       before do
         allow_any_instance_of(Permissions::ProjectPermissionsService)
-          .to receive(:denied_reason_for_project).and_return(disabled_reason)
+          .to receive(:denied_reason_for_action).and_return(disabled_reason)
       end
 
       described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|

@@ -6,7 +6,7 @@ describe Permissions::ProjectPermissionsService do
   let(:project) { create(:project_with_current_phase, current_phase_attrs: current_phase_attrs) }
   let(:current_phase_attrs) { {} }
 
-  describe '"posting_idea" denied_reason_for_project' do
+  describe '"posting_idea" denied_reason_for_action' do
     let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
 
     context 'for a verified user' do
@@ -16,7 +16,7 @@ describe Permissions::ProjectPermissionsService do
         permission = project.phases.first.permissions.find_by(action: 'posting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.denied_reason_for_project('posting_idea')).to be_nil
+        expect(service.denied_reason_for_action('posting_idea')).to be_nil
       end
 
       it 'returns `user_not_in_group` when not permitted and a permitted group requires verification' do
@@ -30,7 +30,7 @@ describe Permissions::ProjectPermissionsService do
           ]
         )
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.denied_reason_for_project('posting_idea')).to eq 'user_not_in_group'
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_in_group'
       end
     end
 
@@ -38,7 +38,7 @@ describe Permissions::ProjectPermissionsService do
       permission = project.phases.first.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_project('posting_idea')).to eq 'user_not_verified'
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_verified'
     end
 
     context 'when the user is not signed in' do
@@ -48,7 +48,7 @@ describe Permissions::ProjectPermissionsService do
         permission = project.phases.first.permissions.find_by(action: 'posting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.denied_reason_for_project('posting_idea')).to eq 'user_not_signed_in'
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_signed_in'
       end
     end
 
@@ -56,7 +56,7 @@ describe Permissions::ProjectPermissionsService do
       permission = project.phases.first.permissions.find_by(action: 'posting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'admins_moderators', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_project('posting_idea')).to eq 'user_not_permitted'
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_permitted'
     end
   end
 
@@ -67,7 +67,7 @@ describe Permissions::ProjectPermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'commenting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', group_ids: [create(:group).id, verified_members.id])
-      expect(service.denied_reason_for_project('commenting_idea')).to eq 'user_not_verified'
+      expect(service.denied_reason_for_action('commenting_idea')).to eq 'user_not_verified'
     end
   end
 
@@ -80,8 +80,8 @@ describe Permissions::ProjectPermissionsService do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'user_not_verified'
-        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'user_not_verified'
+        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to eq 'user_not_verified'
+        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to eq 'user_not_verified'
       end
     end
 
@@ -94,8 +94,8 @@ describe Permissions::ProjectPermissionsService do
         permission = project.phases.first.permissions.find_by(action: 'reacting_idea')
         group = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), group])
-        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'up')).to eq 'user_not_signed_in'
-        expect(service.denied_reason_for_project('reacting_idea', reaction_mode: 'down')).to eq 'user_not_signed_in'
+        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to eq 'user_not_signed_in'
+        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to eq 'user_not_signed_in'
       end
     end
   end
@@ -107,7 +107,7 @@ describe Permissions::ProjectPermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'annotating_document')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_project('annotating_document')).to eq 'user_not_verified'
+      expect(service.denied_reason_for_action('annotating_document')).to eq 'user_not_verified'
     end
   end
 
@@ -118,7 +118,7 @@ describe Permissions::ProjectPermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_project('taking_survey')).to eq 'user_not_verified'
+      expect(service.denied_reason_for_action('taking_survey')).to eq 'user_not_verified'
     end
   end
 
@@ -129,7 +129,7 @@ describe Permissions::ProjectPermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_project('taking_poll')).to eq 'user_not_verified'
+      expect(service.denied_reason_for_action('taking_poll')).to eq 'user_not_verified'
     end
   end
 end
