@@ -779,7 +779,7 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 5 queries for 5 ideation projects with default user permissions' do
+    it 'does not run more than 3 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
       5.times do
         phase = TimelineService.new.current_phase(create(:project_with_current_phase))
@@ -805,10 +805,10 @@ describe Permissions::ProjectPermissionsService do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
         end
-      end.not_to exceed_query_limit(5) # Down from an original 470
+      end.not_to exceed_query_limit(3) # Down from an original 470
     end
 
-    it 'does not run more than 8 queries for 5 ideation projects with group based user permissions' do
+    it 'does not run more than 6 queries for 5 ideation projects with group based user permissions' do
       user = create(:user)
       group = create(:group)
       create(:membership, group: group, user: user)
@@ -837,7 +837,7 @@ describe Permissions::ProjectPermissionsService do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
         end
-      end.not_to exceed_query_limit(8) # Down from an original 490
+      end.not_to exceed_query_limit(6) # Down from an original 490
     end
   end
 end
