@@ -16,7 +16,17 @@ resource 'Volunteering Volunteers' do
     post 'web_api/v1/causes/:cause_id/volunteers' do
       ValidationErrorHelper.new.error_fields(self, Volunteering::Volunteer)
 
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
 
       example_request 'Create a volunteer with the current user' do
@@ -69,7 +79,17 @@ resource 'Volunteering Volunteers' do
     end
 
     delete 'web_api/v1/causes/:cause_id/volunteers' do
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
       let!(:volunteer) { create(:volunteer, user: @user, cause: cause) }
 
