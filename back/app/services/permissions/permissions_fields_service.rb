@@ -25,7 +25,7 @@ module Permissions
               # Set to 'custom' & insert 'everyone_confirmed_email' default fields
               permission.update!(permitted_by: 'custom')
               fields = default_fields(permitted_by: 'everyone_confirmed_email', permission: permission)
-            elsif %w[users groups].include?(permission.permitted_by)
+            elsif permission.permitted_by == 'users' || permission.permitted_by == 'groups'
               # Set to 'custom' & insert 'users' default fields without custom fields
               permission.update!(permitted_by: 'custom')
               fields = default_fields(permitted_by: 'users', permission: permission).reject { |f| f[:field_type] == 'custom_field' }
@@ -37,9 +37,7 @@ module Permissions
           end
 
           # Save the default fields
-          fields.each do |field|
-            field.save!
-          end
+          fields.each(&:save!) if fields.present?
         end
       end
     end
@@ -73,12 +71,10 @@ module Permissions
 
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
     def create_default_fields_for_custom_permitted_by(permission: nil, previous_permitted_by: 'users')
-      return unless permission&.permitted_by == 'custom' && permission&.permissions_fields.empty?
+      return unless permission&.permitted_by == 'custom' && permission&.permissions_fields&.empty?
 
       fields = default_fields(permitted_by: previous_permitted_by, permission: permission)
-      fields.each do |field|
-        field.save!
-      end
+      fields.each(&:save!)
     end
 
     def custom_permitted_by_enabled?

@@ -111,6 +111,9 @@ describe Permissions::PermissionsFieldsService do
 
   # TODO: JS - Fix these tests and make them cover everything
   describe '#change_permissions_to_custom' do
+
+    before { permission } # Create permission
+
     context 'feature flag is enabled' do
       context 'permitted_by is "group" and no custom fields saved' do
         let(:permission) { create(:permission, permitted_by: 'groups') }
