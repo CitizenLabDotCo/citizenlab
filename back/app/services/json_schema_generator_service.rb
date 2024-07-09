@@ -188,6 +188,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
         coordinates: {
           type: 'array',
           minItems: 2,
+          maxItems: 2,
           items: {
             type: 'number'
           }

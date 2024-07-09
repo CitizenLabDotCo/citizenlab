@@ -459,6 +459,7 @@ RSpec.describe JsonSchemaGeneratorService do
           coordinates: {
             type: 'array',
             minItems: 2,
+            maxItems: 2,
             items: {
               type: 'number'
             }
