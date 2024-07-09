@@ -8,25 +8,31 @@ RSpec.describe ReportBuilder::Queries::Projects do
   describe '#run_query' do
     before_all do
       # 2020
-      past_project = create(:single_phase_ideation_project)
-      create(:phase, project: past_project, start_at: Date.new(2020, 2, 1), end_at: Date.new(2020, 3, 1))
+      past_project = create(:project)
+      create(
+        :phase,
+        project: past_project,
+        start_at: Date.new(2020, 2, 1),
+        end_at: Date.new(2020, 3, 1),
+        with_permissions: true
+      )
 
       # 2021
       @project1 = create(:project)
-      create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
+      create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1), with_permissions: true)
 
       @project2 = create(:project)
-      create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
-      create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil)
+      create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1), with_permissions: true)
+      create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil, with_permissions: true)
 
       # 2022
       @project3 = create(:project)
-      create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil)
+      create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil, with_permissions: true)
 
       # Project not published (should be filtered out)
       project4 = create(:project)
       project4.admin_publication.update!(publication_status: 'draft')
-      create(:phase, project: project4, start_at: Date.new(2022, 2, 1), end_at: nil)
+      create(:phase, project: project4, start_at: Date.new(2022, 2, 1), end_at: nil, with_permissions: true)
 
       # Empty project
       create(:project)
