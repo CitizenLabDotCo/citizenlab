@@ -184,7 +184,9 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
-  const showSearch = !(selectedView === 'map') && showSearchbar;
+  const showSearch = smallerThanTablet
+    ? showSearchbar
+    : !(selectedView === 'map');
 
   if (isLoading) return <Spinner />;
 
