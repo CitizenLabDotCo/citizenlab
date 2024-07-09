@@ -443,6 +443,10 @@ module MultiTenancy
             remove_vendor_branding: {
               enabled: false,
               allowed: true
+            },
+            custom_permitted_by: {
+              enabled: true,
+              allowed: true
             }
           })
         )
