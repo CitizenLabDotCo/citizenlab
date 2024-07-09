@@ -53,6 +53,18 @@ class Permission < ApplicationRecord
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
 
+  def permissions_fields
+    # To support the old permitted_by values and screens
+    return super.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
+
+    # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
+    return super if permitted_by == 'custom'
+
+    # TODO: JS - Is there a more efficient way to do this?
+    permission = Permission.find_by(action: 'visiting', permitted_by: permitted_by)
+    PermissionsField.where(permission: permission)
+  end
+
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
 
@@ -99,5 +111,9 @@ class Permission < ApplicationRecord
 
   def update_global_custom_fields
     self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
+  end
+
+  def custom_permitted_by_enabled?
+    @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
   end
 end

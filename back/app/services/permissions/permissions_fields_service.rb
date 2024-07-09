@@ -2,19 +2,6 @@
 
 module Permissions
   class PermissionsFieldsService
-    def fields(permission)
-      if custom_permitted_by_enabled?
-        if permission.permitted_by != 'custom'
-          # Use the global visiting permission so we get the default fields
-          permission = Permission.where(action: 'visiting', permitted_by: permission.permitted_by).first
-        end
-        permission.permissions_fields
-      else
-        # To support the old permitted_by values and screens
-        permission.permissions_fields.where(field_type: 'custom_field')
-      end
-    end
-
     # To be called from rake task when enabling custom_permitted_by feature flag or on tenant creation
     def change_permissions_to_custom
       if custom_permitted_by_enabled?
