@@ -395,11 +395,12 @@ describe Permissions::IdeaPermissionsService do
       # First check ideas length sure all the 'ideas' queries are preloaded
       expect(ideas.length).to eq 5
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user = create(:user)
       expect do
         ideas.each do |idea|
           described_class.new(idea, user, user_requirements_service: user_requirements_service).action_descriptors
         end
-      end.not_to exceed_query_limit(14) # Down from an original 486
+      end.not_to exceed_query_limit(7) # Down from an original 486
     end
   end
 end
