@@ -11,6 +11,7 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
+    Permissions::PermissionsFieldsService.new.create_or_update_default_fields
   end
 
   let(:project_id) { @project.id }
@@ -39,6 +40,7 @@ resource 'Permissions' do
         expect(response_data.size).to eq Permission.enabled_actions(@phase).size
       end
 
+      # TODO: JS - Fix this - now does a query per permission
       example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @phase.permissions.first
         field2 = create(:custom_field)
@@ -81,45 +83,6 @@ resource 'Permissions' do
           )
         end
       end
-
-      context 'when "custom_permitted_by" feature is enabled' do
-        before { SettingsService.new.activate_feature! 'custom_permitted_by' }
-
-        example 'permitted_by "group" is updated to "custom" before being returned' do
-          @phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'groups')
-
-          do_request
-          assert_status 200
-          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
-          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
-          # 3 fields - 3 built-in only
-          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 3
-        end
-
-        example 'permitted_by "everyone_confirmed_email" is updated to "custom"' do
-          @phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'everyone_confirmed_email')
-
-          do_request
-          assert_status 200
-          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
-          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
-          # 2 fields - 2 built-in (no password)
-          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 2
-        end
-
-        example 'permitted_by "user" is updated to "custom" if any custom fields have been added' do
-          permission = @phase.permissions.find_by(action: 'posting_idea')
-          permission.update!(global_custom_fields: false)
-          create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
-
-          do_request
-          assert_status 200
-          expect(response_data.size).to eq Permission.enabled_actions(@phase).size
-          expect(response_data.dig(0, :attributes, :permitted_by)).to eq 'custom'
-          # 4 fields - 3 built-in & 1 custom
-          expect(response_data.dig(0, :relationships, :permissions_fields, :data).length).to eq 4
-        end
-      end
     end
 
     get 'web_api/v1/permissions' do
@@ -130,8 +93,8 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(nil).size
+        expect(response_data.size).to eq 7
+        expect(response_data.map { |d| d.dig(:attributes, :action) }.uniq).to match_array Permission.available_actions(nil)
       end
     end
 
@@ -187,7 +150,7 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
-          expect(response_data.dig(:relationships, :permissions_fields, :data).count).to eq 3
+          expect(response_data.dig(:relationships, :permissions_fields, :data).count).to eq 2
         end
       end
     end

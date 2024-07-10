@@ -2,80 +2,87 @@
 
 module Permissions
   class PermissionsFieldsService
-    def initialize(permission)
-      @permission = permission
-    end
-
-    def fields
+    # To be called from rake task when enabling custom_permitted_by feature flag or on tenant creation
+    def change_permissions_to_custom
       if custom_permitted_by_enabled?
-        fields = @permission.permitted_by == 'custom' ? @permission.permissions_fields : default_fields(permitted_by: @permission.permitted_by)
-        lock_fields(fields)
-      else
-        # To support the old permitted_by values and screens
-        @permission.permissions_fields.where(field_type: 'custom_field')
-      end
-    end
+        permissions = Permission.where.not(permission_scope: nil)
+        permissions.each do |permission|
+          if !permission.global_custom_fields
+            if permission.permitted_by == 'everyone_confirmed_email'
+              if PermissionsField.find_by(permission: permission).present? # Used because the method is overridden in the model
+                # Set to 'custom' & insert 'everyone_confirmed_email' default fields
+                permission.update!(permitted_by: 'custom')
+                fields = default_fields(permitted_by: 'everyone_confirmed_email', permission: permission)
+              end
+            elsif permission.permitted_by == 'users' || permission.permitted_by == 'groups'
+              # Set to 'custom' & insert 'users' default fields without custom fields
+              permission.update!(permitted_by: 'custom')
+              fields = default_fields(permitted_by: 'users', permission: permission).reject { |f| f[:field_type] == 'custom_field' }
+            end
+          elsif permission.permitted_by == 'groups'
+            # Set to 'custom' & insert 'users' default fields
+            permission.update!(permitted_by: 'custom')
+            fields = default_fields(permitted_by: 'users', permission: permission)
+          end
 
-    # Insert default fields for new permissions
-    # Called only when changing a permitted_by to 'custom' + in tests
-    def insert_default_fields(fields: default_fields)
-      return unless custom_permitted_by_enabled? && @permission.permitted_by == 'custom'
-
-      fields.each(&:save!)
-    end
-
-    def insert_default_fields_for_permitted_by(permitted_by)
-      insert_default_fields(fields: default_fields(permitted_by: permitted_by))
-    end
-
-    # Update permissions and insert the correct default fields for EXISTING permitted_by values
-    # This is feature flagged at the moment - called only from the permissions controller
-    # TODO: JS - When enabled for all users this will need to be need called from a rake task instead
-    def convert_permission_to_custom_permitted_by
-      if custom_permitted_by_enabled?
-        if !@permission.global_custom_fields && @permission.permitted_by == 'everyone_confirmed_email'
-          # Set to custom & insert fields without custom fields from 'everyone_confirmed_email' defaults
-          @permission.update!(permitted_by: 'custom')
-          fields = default_fields(permitted_by: 'everyone_confirmed_email').reject { |f| f[:field_type] == 'custom_field' }
-          insert_default_fields(fields: fields)
-        elsif %w[users groups].include?(@permission.permitted_by) && !@permission.global_custom_fields
-          # Set to 'custom' & insert default fields without custom fields
-          @permission.update!(permitted_by: 'custom')
-          fields = default_fields.reject { |f| f[:field_type] == 'custom_field' }
-          insert_default_fields(fields: fields)
-        elsif @permission.permitted_by == 'groups'
-          # Set to 'custom' & insert default fields
-          @permission.update!(permitted_by: 'custom')
-          insert_default_fields
+          # Save the default fields
+          if fields.present?
+            fields.each(&:save!)
+          end
         end
       end
     end
 
-    private
+    # TODO: JS - Call this from the user custom fields controller as well as the rake task - after save
+    def create_or_update_default_fields
+      %w[users everyone everyone_confirmed_email].each do |permitted_by|
+        permission = Permission.find_or_create_by!(action: 'visiting', permitted_by: permitted_by)
+        fields = default_fields(permitted_by: permitted_by, permission: permission)
 
-    def lock_fields(permissions_fields)
-      # TODO: JS - Hide the correct fields - do in later PR
-      # TODO: JS - Add in ordering?
-      # LOCKED_TYPES = {
-      #   'posting_idea' => %w[email]
-      # }.freeze
-      #
-      # def locked
-      #   LOCKED_TYPES[permission.action]&.include?(field_type)
-      # end
-      # Email is locked + required if password is added
-      permissions_fields
+        # Save or update the default fields for the 'visiting' permissions
+        fields.each do |field|
+          existing_field = PermissionsField.find_by(permission: permission, field_type: field.field_type, custom_field: field.custom_field)
+          if existing_field
+            existing_field.update!(field.attributes.except('id', 'created_at', 'updated_at', 'locked'))
+          else
+            field.save!
+          end
+        end
+
+        # Remove custom_fields that have been disabled/removed
+        custom_field_ids = fields.select { |f| f.field_type == 'custom_field' }.map(&:custom_field_id)
+        all_fields = permission.permissions_fields
+        all_fields.each do |field|
+          if field.custom_field_id.present? && custom_field_ids.exclude?(field.custom_field_id)
+            field.destroy!
+          end
+        end
+      end
     end
 
-    def default_fields(permitted_by: 'users')
+    # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
+    def create_default_fields_for_custom_permitted_by(permission: nil, previous_permitted_by: 'users')
+      return unless permission&.permitted_by == 'custom' && permission&.permissions_fields&.empty?
+
+      fields = default_fields(permitted_by: previous_permitted_by, permission: permission)
+      fields.each(&:save!)
+    end
+
+    def custom_permitted_by_enabled?
+      @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
+    end
+
+    private
+
+    def default_fields(permitted_by: 'users', permission: nil)
       # Built in fields
-      name_field = PermissionsField.new(field_type: 'name', required: true, enabled: true, permission: @permission)
-      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, locked: true, permission: @permission, config: { password: true, confirmed: true })
+      name_field = PermissionsField.new(field_type: 'name', required: true, enabled: true, permission: permission)
+      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, locked: true, permission: permission, config: { password: true, confirmed: true })
 
       # Global custom fields
       custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
       custom_permissions_fields = custom_fields.map do |field|
-        PermissionsField.new(field_type: 'custom_field', custom_field: field, required: field.required, enabled: true, permission: @permission)
+        PermissionsField.new(field_type: 'custom_field', custom_field: field, required: field.required, enabled: true, permission: permission)
       end
 
       default_fields = [email_field, name_field] + custom_permissions_fields
@@ -99,10 +106,6 @@ module Permissions
       else
         default_fields
       end
-    end
-
-    def custom_permitted_by_enabled?
-      @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
     end
   end
 end

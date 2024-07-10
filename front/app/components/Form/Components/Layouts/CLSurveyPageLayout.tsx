@@ -67,6 +67,9 @@ const CLSurveyPageLayout = memo(
     const hasPreviousPage = currentStep !== 0;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+    const hasAnonymousWarning = document.getElementById(
+      'anonymous-survey-warning'
+    );
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -126,6 +129,7 @@ const CLSurveyPageLayout = memo(
         pagesRef.current.scrollIntoView({
           block: 'start',
         });
+        pagesRef.current.scrollTop = 0;
       }
     };
 
@@ -198,7 +202,13 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box display="flex" flexDirection="column" height="100%">
-          <Box h="100%" display="flex" ref={pagesRef}>
+          <Box
+            h="100%"
+            display="flex"
+            ref={pagesRef}
+            overflowY={hasAnonymousWarning ? 'auto' : undefined}
+            mb={hasAnonymousWarning ? '44px' : undefined}
+          >
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,

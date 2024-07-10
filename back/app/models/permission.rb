@@ -47,11 +47,23 @@ class Permission < ApplicationRecord
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
-  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
+  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }, if: -> { action != 'visiting' } # TODO: JS - add another validation for visiting
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
+
+  def permissions_fields
+    # To support the old permitted_by values and screens
+    return super.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
+
+    # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
+    return super if permitted_by == 'custom'
+
+    # TODO: JS - Is there a more efficient way to do this? Can we cache the visiting actions? Do we need to?
+    permission = Permission.find_by(action: 'visiting', permitted_by: permitted_by)
+    PermissionsField.where(permission: permission)
+  end
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -99,5 +111,9 @@ class Permission < ApplicationRecord
 
   def update_global_custom_fields
     self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
+  end
+
+  def custom_permitted_by_enabled?
+    @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
   end
 end

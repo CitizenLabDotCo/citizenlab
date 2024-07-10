@@ -6,7 +6,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   def index
     authorize PermissionsField.new(permission: permission)
-    permissions_fields = Permissions::PermissionsFieldsService.new(permission).fields
+    permissions_fields = permission.permissions_fields
     permissions_fields = paginate permissions_fields
     permissions_fields = permissions_fields.includes(:custom_field)
 

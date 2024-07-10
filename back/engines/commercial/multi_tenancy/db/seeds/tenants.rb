@@ -436,12 +436,20 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            customisable_homepage_banner: {
+              enabled: true,
+              allowed: true
+            },
             management_feed: {
               enabled: true,
               allowed: true
             },
             remove_vendor_branding: {
               enabled: false,
+              allowed: true
+            },
+            custom_permitted_by: {
+              enabled: true,
               allowed: true
             }
           })

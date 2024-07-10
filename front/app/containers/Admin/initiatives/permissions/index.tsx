@@ -2,21 +2,19 @@ import React from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
+import { IGlobalPermissionData } from 'api/permissions/types';
+import usePermissions from 'api/permissions/usePermissions';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ActionsForm from 'components/admin/ActionsForm';
+import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ActionsForm from 'components/admin/ActionsForm';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
-
 import messages from './messages';
-
-import usePermissions from 'api/permissions/usePermissions';
-import { IGlobalPermissionData } from 'api/permissions/types';
 
 const filterPermissions = (permissions: IGlobalPermissionData[]) => {
   const initiativePermissions = permissions.filter((permission) =>

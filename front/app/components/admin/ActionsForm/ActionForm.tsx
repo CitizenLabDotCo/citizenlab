@@ -42,11 +42,16 @@ const ActionForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
 
   const handlePermittedByUpdate =
     (value: IPermissionData['attributes']['permitted_by']) => (e) => {
       e.preventDefault();
-      onChange(value, groupIds);
+      if (isGranularPermissionsEnabled) {
+        onChange(value, groupIds);
+      }
     };
 
   const handleGroupIdsUpdate = (groups: string[]) => {
@@ -72,8 +77,6 @@ const ActionForm = ({
       {permittedBy !== 'admins_moderators' && (
         <Box mt="20px">
           <Box display="flex" gap="16px" mb="20px">
-            {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
-            If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
               <CardButton
                 iconName="user-circle"
@@ -88,11 +91,19 @@ const ActionForm = ({
               />
             )}
             <Tooltip
-              // user_confirmation needs to be enabled for this option to work
-              disabled={userConfirmationEnabled}
+              // user_confirmation needs to be enabled for this option to work and granular permissions should be turned on to give users this feature
+              disabled={
+                isGranularPermissionsEnabled
+                  ? userConfirmationEnabled
+                  : permittedBy === 'everyone_confirmed_email'
+                  ? true
+                  : isGranularPermissionsEnabled
+              }
               content={
                 <FormattedMessage
-                  {...messages.userConfirmationRequiredTooltip}
+                  {...(isGranularPermissionsEnabled
+                    ? messages.userConfirmationRequiredTooltip
+                    : messages.granularPermissionsOffMessage)}
                 />
               }
             >
@@ -105,7 +116,9 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
-                disabled={!userConfirmationEnabled}
+                disabled={
+                  isGranularPermissionsEnabled ? !userConfirmationEnabled : true
+                }
                 height="100%"
               />
             </Tooltip>
