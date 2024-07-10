@@ -302,7 +302,7 @@ pl:
       header: "Twój kod potwierdzający"
       header_message: "Cześć %{firstName}!"
       confirm_email_address: "Potwierdź swój adres e-mail"
-      thanks_for_signing_up: "Dziękujemy za rejestrację na platformy do partycypacji %{organizationName}."
+      thanks_for_signing_up1: "Dziękujemy za Twój udział. Wprowadź ten kod potwierdzający w oknie na platformie uczestnictwa %{organizationName}:"
       best_regards: "Pozdrawiam,"
       ignore_email: "Jeśli nie prosiłeś o kod, możesz bezpiecznie zignorować ten e-mail."
       expire_code: "Kod ten straci ważność w "

@@ -182,7 +182,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      ...(canModerateProject(project.data.id, authUser)
+      ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
@@ -289,6 +289,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                   w="100%"
                   px={isSmallerThanPhone ? '16px' : '24px'}
                   mt="12px"
+                  id="anonymous-survey-warning"
                 >
                   <Warning icon="shield-checkered">
                     {formatMessage(messages.anonymousSurveyMessage)}

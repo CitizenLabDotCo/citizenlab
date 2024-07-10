@@ -302,7 +302,7 @@ ar-MA:
       header: "رمز التأكيد الخاص بك"
       header_message: "مرحبًا %{firstName}!"
       confirm_email_address: "أكد عنوان بريدك الألكتروني"
-      thanks_for_signing_up: "نشكرك على تسجيل الاشتراك في منصة المشاركة الخاصة بمؤسسة %{organizationName}."
+      thanks_for_signing_up1: "أشكركم على مشاركتكم. الرجاء إدخال رمز التأكيد هذا في نافذة منصة المشاركة %{organizationName}:"
       best_regards: "أطيب التحيات،"
       ignore_email: "إذا لم تطلب رمزًا ، فيمكنك تجاهل هذا البريد الإلكتروني بأمان."
       expire_code: "ستنتهي صلاحية هذا الرمز في "

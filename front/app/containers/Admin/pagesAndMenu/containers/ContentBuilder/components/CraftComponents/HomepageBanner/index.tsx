@@ -18,6 +18,7 @@ import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import homepageMessages from 'containers/HomePage/messages';
@@ -33,6 +34,7 @@ import Fragment from 'components/Fragment';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -211,6 +213,11 @@ const HomepageBannerSettings = () => {
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
   const [initialRender, setInitialRender] = useState(true);
 
+  const customHomepageBannerAllowed = useFeatureFlag({
+    name: 'customisable_homepage_banner',
+    onlyCheckAllowed: true,
+  });
+
   useEffect(() => {
     if (image?.imageUrl && initialRender) {
       (async () => {
@@ -340,6 +347,11 @@ const HomepageBannerSettings = () => {
       flexDirection="column"
       gap="16px"
     >
+      <Warning>
+        <Text color="primary" m="0px">
+          {formatMessage(messages.customizationNotAvailable)}
+        </Text>
+      </Warning>
       <LayoutSettingField
         bannerLayout={homepageSettings.banner_layout}
         onChange={(value) => {
@@ -352,6 +364,7 @@ const HomepageBannerSettings = () => {
       />
       <div data-cy="e2e-banner-avatar-toggle">
         <Toggle
+          disabled={!customHomepageBannerAllowed}
           label={
             <Box>
               <Text m={'0px'} color="primary">
@@ -373,32 +386,38 @@ const HomepageBannerSettings = () => {
         />
       </div>
 
-      <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
-      {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
-      imageFiles.length > 0 ? (
-        <ImageCropperContainer
-          image={imageFiles[0] || null}
-          onComplete={handleOnAdd}
-          aspectRatioWidth={3}
-          aspectRatioHeight={1}
-          onRemove={handleOnRemove}
-        />
-      ) : (
-        <ImagesDropzone
-          id="bannerImage"
-          images={imageFiles}
-          imagePreviewRatio={1 / 2}
-          maxImagePreviewWidth="360px"
-          objectFit="contain"
-          acceptedFileTypes={{
-            'image/*': ['.jpg', '.jpeg', '.png'],
-          }}
-          onAdd={(images) => {
-            setImageFiles(images);
-            handleOnAdd(images[0].base64);
-          }}
-          onRemove={handleOnRemove}
-        />
+      {customHomepageBannerAllowed && (
+        <>
+          <Label htmlFor="bannerImage">
+            {formatMessage(messages.bannerImage)}
+          </Label>
+          {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
+          imageFiles.length > 0 ? (
+            <ImageCropperContainer
+              image={imageFiles[0] || null}
+              onComplete={handleOnAdd}
+              aspectRatioWidth={3}
+              aspectRatioHeight={1}
+              onRemove={handleOnRemove}
+            />
+          ) : (
+            <ImagesDropzone
+              id="bannerImage"
+              images={imageFiles}
+              imagePreviewRatio={1 / 2}
+              maxImagePreviewWidth="360px"
+              objectFit="contain"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+              }}
+              onAdd={(images) => {
+                setImageFiles(images);
+                handleOnAdd(images[0].base64);
+              }}
+              onRemove={handleOnRemove}
+            />
+          )}
+        </>
       )}
 
       <Box
@@ -502,6 +521,7 @@ const HomepageBannerSettings = () => {
                   label={<FormattedMessage {...labelMessage} />}
                   id={`cta-type-${option}`}
                   name={`cta-type-${option}`}
+                  disabled={!customHomepageBannerAllowed}
                 />
                 {option === 'customized_button' &&
                   homepageSettings.banner_cta_signed_out_type ===
@@ -622,6 +642,7 @@ const HomepageBannerSettings = () => {
                   label={<FormattedMessage {...labelMessage} />}
                   name={`cta-type-${option}`}
                   id={`cta-type-${option}`}
+                  disabled={!customHomepageBannerAllowed}
                 />
                 {option === 'customized_button' &&
                   homepageSettings.banner_cta_signed_in_type ===

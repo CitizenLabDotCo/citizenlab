@@ -932,18 +932,6 @@
         }
       },
 
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Downvoting Toggle",
-        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_disliking": {
         "type": "object",
         "title": "Disliking Toggle",
@@ -1260,6 +1248,18 @@
         "type": "object",
         "title": "Multi-language platform",
         "description": "Enables the ability to add multiple languages on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customisable_homepage_banner": {
+        "type": "object",
+        "title": "Customisable homepage banner",
+        "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

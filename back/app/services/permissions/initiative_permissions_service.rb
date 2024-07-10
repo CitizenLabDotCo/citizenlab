@@ -2,11 +2,10 @@
 
 module Permissions
   class InitiativePermissionsService < BasePermissionsService
-    def action_descriptors(user)
-      # TODO: JS - nothing here about reacting being enabled or not?? Is that possible, have we missed some code?
-      posting_disabled_reason = denied_reason_for_action 'posting_initiative', user
-      commenting_disabled_reason = denied_reason_for_action 'commenting_initiative', user
-      reacting_disabled_reason = denied_reason_for_action 'reacting_initiative', user
+    def action_descriptors
+      posting_disabled_reason = denied_reason_for_action 'posting_initiative'
+      commenting_disabled_reason = denied_reason_for_action 'commenting_initiative'
+      reacting_disabled_reason = denied_reason_for_action 'reacting_initiative'
 
       descriptors = {
         posting_initiative: { disabled_reason: posting_disabled_reason },

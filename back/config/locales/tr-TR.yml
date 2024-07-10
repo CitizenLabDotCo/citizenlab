@@ -302,7 +302,7 @@ tr:
       header: "Onay Kodunuz"
       header_message: "Merhaba %{firstName}!"
       confirm_email_address: "E-posta adresinizi onaylayın"
-      thanks_for_signing_up: "%{organizationName} katılım platformuna kaydolduğunuz için teşekkür ederiz."
+      thanks_for_signing_up1: "Katılımınız için teşekkür ederiz. Lütfen bu onay kodunu %{organizationName}'un katılım platformundaki pencereye girin:"
       best_regards: "Saygılarımla,"
       ignore_email: "Eğer bir kod talep etmediyseniz, bu e-postayı güvenle göz ardı edebilirsiniz."
       expire_code: "Bu kodun geçerlilik süresi "

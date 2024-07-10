@@ -161,6 +161,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
           duration={[200, 0]}
           visible={visible}
           onClickOutside={hide}
+          theme="dark"
           content={
             <List className="e2e-more-actions-list">
               {actions.map((action, index) => {

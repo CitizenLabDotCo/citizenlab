@@ -58,6 +58,20 @@ const mockUserData: IUserData = {
   },
 };
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
+
 // Needed to render moreActionsMenu
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
