@@ -13,6 +13,7 @@
 #  field_type      :string           default("custom_field")
 #  enabled         :boolean          default(TRUE), not null
 #  config          :jsonb            not null
+#  ordering        :integer          default(0)
 #
 # Indexes
 #
@@ -31,6 +32,8 @@ class PermissionsField < ApplicationRecord
   # This attribute will be calculated but not persisted
   attribute :locked, :boolean, default: false
 
+  acts_as_list column: :ordering, top_of_list: 0, scope: :permission
+
   belongs_to :permission
   belongs_to :custom_field, optional: true
 
@@ -42,6 +45,10 @@ class PermissionsField < ApplicationRecord
   validate :validate_config_keys
 
   before_destroy :prevent_destroy
+
+  def can_be_reordered?
+    field_type == 'custom_field'
+  end
 
   private
 

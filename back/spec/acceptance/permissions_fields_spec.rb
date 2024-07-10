@@ -72,7 +72,7 @@ resource 'PermissionsField' do
 
       expect(response_data[:id]).to eq id
       expect(response_data.dig(:attributes, :created_at)).to be_present
-      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config locked created_at updated_at])
+      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config ordering locked created_at updated_at])
     end
   end
 
@@ -112,6 +112,32 @@ resource 'PermissionsField' do
 
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :required)).to be true
+    end
+  end
+
+  patch 'web_api/v1/permissions_fields/:id/reorder' do
+    with_options scope: :permissions_field do
+      parameter :ordering, 'The position, starting from 0, where the permissions field should be at. Fields after will move down.', required: true
+    end
+
+    before do
+      permission = create(:permission, action: 'commenting_idea', permitted_by: 'custom')
+      @permissions_fields = create_list(:permissions_field, 3, permission: permission)
+    end
+
+    let(:permissions_field) { create(:permissions_field, required: false) }
+    let(:id) { @permissions_fields.last.id }
+    let(:ordering) { 1 }
+
+    example 'Reorder a permissions field' do
+      expect(@permissions_fields.last.ordering).to eq 2
+
+      do_request
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
+      expect(PermissionsField.order(:ordering)[1].id).to eq id
+      expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
     end
   end
 

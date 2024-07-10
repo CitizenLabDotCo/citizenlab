@@ -21,13 +21,16 @@ describe Permissions::PermissionsFieldsService do
       expect(Permission.where(action: 'visiting', permitted_by: 'everyone_confirmed_email').count).to eq 1
     end
 
-    it 'creates default fields for all permissions with permitted_by "users", "everyone" and "everyone_confirmed_email"' do
+    it 'creates default fields in correct order for all permissions with permitted_by "users", "everyone" and "everyone_confirmed_email"' do
       service.create_or_update_default_fields
 
       expect(PermissionsField.count).to eq 7 # 3 for 'users', 2 for 'everyone', 2 for 'everyone_confirmed_email
       expect(PermissionsField.where(field_type: 'name').count).to eq 3
       expect(PermissionsField.where(field_type: 'email').count).to eq 3
       expect(PermissionsField.where(field_type: 'custom_field').count).to eq 1
+      expect(PermissionsField.where(field_type: 'name').pluck(:ordering)).to eq [0, 0, 0]
+      expect(PermissionsField.where(field_type: 'email').pluck(:ordering)).to eq [1, 1, 1]
+      expect(PermissionsField.where(field_type: 'custom_field').pluck(:ordering)).to eq [2]
     end
 
     it 'updates existing fields if they change at a global level' do
