@@ -256,7 +256,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
   end
 
   def current_phase_input_term
@@ -265,11 +265,19 @@ class Idea < ApplicationRecord
   end
 
   def last_past_phase_input_term
-    past_phases = TimelineService.new.past_phases(project).select { |phase| phases_ids.include? phase.id }
+    past_phases = TimelineService.new.past_phases(project).select { |phase| phase_ids.include? phase.id }
     past_phases_with_input_term = past_phases.select do |phase|
       Factory.instance.participation_method_for(phase).supports_input_term?
     end
     past_phases_with_input_term.last&.input_term
+  end
+
+  def first_future_phase_input_term
+    future_phases = TimelineService.new.future_phases(project).select { |phase| phase_ids.include? phase.id }
+    future_phases_with_input_term = future_phases.select do |phase|
+      Factory.instance.participation_method_for(phase).supports_input_term?
+    end
+    future_phases_with_input_term.first&.input_term
   end
 end
 
