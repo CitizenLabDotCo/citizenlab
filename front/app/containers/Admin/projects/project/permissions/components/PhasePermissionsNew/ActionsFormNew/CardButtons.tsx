@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CardButton } from '@citizenlab/cl2-component-library';
+import { CardButton, Box } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
 
@@ -32,50 +32,58 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
   return (
     <>
       {isSurveyAction && (
+        <Box>
+          <CardButton
+            id="e2e-permission-anyone"
+            iconName="user-circle"
+            title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
+            subtitle={formatMessage(
+              permissionsMessages.permissionsAnyoneLabelDescription
+            )}
+            onClick={handleUpdate('everyone')}
+            selected={permittedBy === 'everyone'}
+            height="100%"
+          />
+        </Box>
+      )}
+      <Box>
         <CardButton
-          id="e2e-permission-anyone"
-          iconName="user-circle"
-          title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
+          id="e2e-permission-email-confirmed-users"
+          iconName="email"
+          title={formatMessage(actionFormMessages.permissionsEmailConfirmLabel)}
           subtitle={formatMessage(
-            permissionsMessages.permissionsAnyoneLabelDescription
+            actionFormMessages.permissionsEmailConfirmLabelDescription
           )}
-          onClick={handleUpdate('everyone')}
-          selected={permittedBy === 'everyone'}
+          onClick={handleUpdate('everyone_confirmed_email')}
+          selected={permittedBy === 'everyone_confirmed_email'}
+          disabled={!userConfirmationEnabled}
           height="100%"
         />
-      )}
-      <CardButton
-        id="e2e-permission-email-confirmed-users"
-        iconName="email"
-        title={formatMessage(actionFormMessages.permissionsEmailConfirmLabel)}
-        subtitle={formatMessage(
-          actionFormMessages.permissionsEmailConfirmLabelDescription
-        )}
-        onClick={handleUpdate('everyone_confirmed_email')}
-        selected={permittedBy === 'everyone_confirmed_email'}
-        disabled={!userConfirmationEnabled}
-        height="100%"
-      />
-      <CardButton
-        id="e2e-permission-registered-users"
-        iconName="user-check"
-        title={formatMessage(actionFormMessages.permissionsUsersLabel)}
-        subtitle={formatMessage(
-          actionFormMessages.permissionsUsersLabelDescription
-        )}
-        onClick={handleUpdate('users')}
-        selected={permittedBy === 'users'}
-        height="100%"
-      />
-      <CardButton
-        id="e2e-permission-custom"
-        iconName="cog"
-        title={formatMessage(messages.custom)}
-        subtitle={formatMessage(messages.customSubtitle)}
-        onClick={handleUpdate('custom')}
-        selected={permittedBy === 'custom'}
-        height="100%"
-      />
+      </Box>
+      <Box>
+        <CardButton
+          id="e2e-permission-registered-users"
+          iconName="user-check"
+          title={formatMessage(actionFormMessages.permissionsUsersLabel)}
+          subtitle={formatMessage(
+            actionFormMessages.permissionsUsersLabelDescription
+          )}
+          onClick={handleUpdate('users')}
+          selected={permittedBy === 'users'}
+          height="100%"
+        />
+      </Box>
+      <Box>
+        <CardButton
+          id="e2e-permission-custom"
+          iconName="cog"
+          title={formatMessage(messages.custom)}
+          subtitle={formatMessage(messages.customSubtitle)}
+          onClick={handleUpdate('custom')}
+          selected={permittedBy === 'custom'}
+          height="100%"
+        />
+      </Box>
     </>
   );
 };
