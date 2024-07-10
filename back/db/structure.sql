@@ -2890,7 +2890,8 @@ CREATE TABLE public.permissions_fields (
     updated_at timestamp(6) without time zone NOT NULL,
     field_type character varying DEFAULT 'custom_field'::character varying,
     enabled boolean DEFAULT true NOT NULL,
-    config jsonb DEFAULT '{}'::jsonb NOT NULL
+    config jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ordering integer DEFAULT 0
 );
 
 
@@ -7495,6 +7496,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240516113700'),
 ('20240606112752'),
 ('20240612134240'),
-('20240701143612');
+('20240701143612'),
+('20240710101033');
 
 

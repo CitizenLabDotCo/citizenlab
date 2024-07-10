@@ -33,7 +33,6 @@ module Permissions
       end
     end
 
-    # TODO: JS - Call this from the user custom fields controller as well as the rake task - after save
     def create_or_update_default_fields
       %w[users everyone everyone_confirmed_email].each do |permitted_by|
         permission = Permission.find_or_create_by!(action: 'visiting', permitted_by: permitted_by)
@@ -85,9 +84,9 @@ module Permissions
         PermissionsField.new(field_type: 'custom_field', custom_field: field, required: field.required, enabled: true, permission: permission)
       end
 
-      default_fields = [email_field, name_field] + custom_permissions_fields
+      default_fields = [name_field, email_field] + custom_permissions_fields
 
-      case permitted_by
+      fields = case permitted_by
       when 'everyone'
         # Remove custom fields and disable all fields
         fields = default_fields.reject { |f| f[:field_type] == 'custom_field' }
@@ -105,6 +104,12 @@ module Permissions
         fields
       else
         default_fields
+      end
+
+      # Return with ordering
+      fields.map.with_index do |field, index|
+        field.ordering = index
+        field
       end
     end
   end

@@ -2,11 +2,11 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_field, only: %i[show update destroy]
+  before_action :set_permissions_field, only: %i[show update destroy reorder]
 
   def index
     authorize PermissionsField.new(permission: permission)
-    permissions_fields = permission.permissions_fields
+    permissions_fields = permission.permissions_fields.order(:ordering)
     permissions_fields = paginate permissions_fields
     permissions_fields = permissions_fields.includes(:custom_field)
 
@@ -56,6 +56,20 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     end
   end
 
+  def reorder
+    # TODO: JS - add block on reorder for built-in fields
+    # can_be_reordered? is a method we can use in the PermissionsField model
+    authorize @permissions_field
+    if @permissions_field.insert_at(permission_params_for_update[:ordering])
+      render json: WebApi::V1::PermissionsFieldSerializer.new(
+        @permissions_field,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: @permissions_field.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     sidefx.before_destroy @permissions_field, current_user
     permissions_field = @permissions_field.destroy
@@ -94,6 +108,6 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required, :verified, :enabled)
+    params.require(:permissions_field).permit(:required, :verified, :enabled, :ordering)
   end
 end

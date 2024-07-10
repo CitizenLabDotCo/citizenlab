@@ -17,6 +17,10 @@ class PermissionsFieldPolicy < ApplicationPolicy
     moderate?
   end
 
+  def reorder?
+    moderate?
+  end
+
   def destroy?
     moderate?
   end
