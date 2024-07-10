@@ -43,6 +43,7 @@ module UserCustomFields
       SideFxCustomFieldService.new.before_create(@custom_field, current_user)
 
       if @custom_field.save
+        Permissions::PermissionsFieldsService.new.create_or_update_default_fields if @custom_field.enabled
         SideFxCustomFieldService.new.after_create(@custom_field, current_user)
         render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params), status: :created
       else
@@ -55,6 +56,7 @@ module UserCustomFields
       authorize @custom_field, policy_class: UserCustomFieldPolicy
       SideFxCustomFieldService.new.before_update @custom_field, current_user
       if @custom_field.save
+        Permissions::PermissionsFieldsService.new.create_or_update_default_fields
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
         render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params), status: :ok
       else
