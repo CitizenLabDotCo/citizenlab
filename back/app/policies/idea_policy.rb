@@ -68,7 +68,11 @@ class IdeaPolicy < ApplicationPolicy
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
 
     posting_denied_reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'posting_idea', user, record.project
-    raise_not_authorized(posting_denied_reason) if posting_denied_reason && EXCLUDED_REASONS_FOR_UPDATE.exclude?(posting_denied_reason)
+
+    if posting_denied_reason
+      ignored_reasons = record.will_be_published? ? [] : EXCLUDED_REASONS_FOR_UPDATE
+      raise_not_authorized(posting_denied_reason) unless posting_denied_reason.in?(ignored_reasons)
+    end
     true
   end
 
