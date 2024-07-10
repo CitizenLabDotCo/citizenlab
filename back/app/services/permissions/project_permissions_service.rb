@@ -1,11 +1,14 @@
 module Permissions
-  class ProjectPermissionsService < BasePermissionsService
+  class ProjectPermissionsService < PhasePermissionsService
     PROJECT_DENIED_REASONS = {
       project_not_visible: 'project_not_visible'
     }.freeze
 
     def initialize(project, user, user_requirements_service: nil)
-      super(user, user_requirements_service: user_requirements_service)
+      @timeline_service = TimelineService.new
+      phase = @timeline_service.current_phase_not_archived project
+      phase.project = project if phase # Performance optimization (keep preloaded relationships)
+      super(phase, user, user_requirements_service: user_requirements_service)
       @project ||= project
     end
 
@@ -14,9 +17,7 @@ module Permissions
       if project_visible_reason
         project_visible_reason
       else
-        phase = @timeline_service.current_phase_not_archived project
-        phase.project = project if phase # Performance optimization (keep preloaded relationships)
-        PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action action, reaction_mode: reaction_mode
+        super(action, reaction_mode: reaction_mode)
       end
     end
 
