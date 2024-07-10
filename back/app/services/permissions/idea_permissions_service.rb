@@ -1,19 +1,19 @@
 module Permissions
-  class IdeaPermissionsService < BasePermissionsService
+  class IdeaPermissionsService < ProjectPermissionsService
     IDEA_DENIED_REASONS = {
       idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
     def initialize(idea, user, user_requirements_service: nil)
-      super(user, user_requirements_service: user_requirements_service)
+      super(idea.project, user, user_requirements_service: user_requirements_service)
       @idea ||= idea
     end
 
     def denied_reason_for_action(action, reaction_mode: nil)
-      reason = project_permissions_service.denied_reason_for_action action, reaction_mode: reaction_mode
+      reason = super
       return reason if reason
 
-      current_phase = @timeline_service.current_phase_not_archived idea.project
+      current_phase = @timeline_service.current_phase_not_archived project
       if current_phase && !idea_in_current_phase?(current_phase)
         IDEA_DENIED_REASONS[:idea_not_in_current_phase]
       end
@@ -35,7 +35,7 @@ module Permissions
         commenting_idea: {
           enabled: !commenting_disabled_reason,
           disabled_reason: commenting_disabled_reason,
-          future_enabled_at: commenting_disabled_reason && project_permissions_service.future_enabled_phase('commenting_idea')&.start_at
+          future_enabled_at: commenting_disabled_reason && future_enabled_phase('commenting_idea')&.start_at
         },
         reacting_idea: {
           enabled: !liking_disabled_reason,
@@ -44,23 +44,23 @@ module Permissions
           up: {
             enabled: !liking_disabled_reason,
             disabled_reason: liking_disabled_reason,
-            future_enabled_at: liking_disabled_reason && project_permissions_service.future_enabled_phase('reacting_idea', reaction_mode: 'up')&.start_at
+            future_enabled_at: liking_disabled_reason && future_enabled_phase('reacting_idea', reaction_mode: 'up')&.start_at
           },
           down: {
             enabled: !disliking_disabled_reason,
             disabled_reason: disliking_disabled_reason,
-            future_enabled_at: disliking_disabled_reason && project_permissions_service.future_enabled_phase('reacting_idea', reaction_mode: 'down')&.start_at
+            future_enabled_at: disliking_disabled_reason && future_enabled_phase('reacting_idea', reaction_mode: 'down')&.start_at
           }
         },
         comment_reacting_idea: {
           enabled: !comment_reacting_disabled_reason,
           disabled_reason: comment_reacting_disabled_reason,
-          future_enabled_at: comment_reacting_disabled_reason && project_permissions_service.future_enabled_phase('commenting_idea')&.start_at
+          future_enabled_at: comment_reacting_disabled_reason && future_enabled_phase('commenting_idea')&.start_at
         },
         voting: {
           enabled: !voting_disabled_reason,
           disabled_reason: voting_disabled_reason,
-          future_enabled_at: voting_disabled_reason && project_permissions_service.future_enabled_phase('voting')&.start_at
+          future_enabled_at: voting_disabled_reason && future_enabled_phase('voting')&.start_at
         }
       }
     end
@@ -68,10 +68,6 @@ module Permissions
     private
 
     attr_reader :idea
-
-    def project_permissions_service
-      @project_permissions_service ||= ProjectPermissionsService.new(idea.project, user, user_requirements_service: user_requirements_service)
-    end
 
     def idea_in_current_phase?(current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
