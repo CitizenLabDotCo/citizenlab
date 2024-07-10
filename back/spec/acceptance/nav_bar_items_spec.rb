@@ -106,7 +106,7 @@ resource 'NavBarItems' do
         let(:title_multiloc) { build(:nav_bar_item).title_multiloc }
         let(:static_page_id) { create(:static_page).id }
 
-        example_request 'Add a custom NavBarItem' do
+        example_request 'Add a custom page NavBarItem' do
           expect(response_status).to eq 201
           json_response = json_parse response_body
 
@@ -136,7 +136,7 @@ resource 'NavBarItems' do
         let(:project_title_multiloc) { { 'en' => 'Referenda' } }
         let(:project_id) { create(:project, title_multiloc: project_title_multiloc).id }
 
-        example_request 'Adding a custom project NavBarItem without title, will use the page title instead' do
+        example_request 'Adding a custom project NavBarItem without title, will use the project title instead' do
           expect(response_status).to eq 201
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes, :code)).to eq code
