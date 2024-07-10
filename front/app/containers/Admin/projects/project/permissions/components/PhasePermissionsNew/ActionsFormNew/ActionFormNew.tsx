@@ -39,7 +39,7 @@ const ActionFormNew = ({
   onChange,
 }: Props) => {
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
-    onChange(permittedBy, []); // TODO
+    onChange(permittedBy, []); // TODO GROUPS?
   };
 
   const {
