@@ -3,10 +3,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import useCauses from 'api/causes/useCauses';
-import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
-
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import CauseCard from './CauseCard';
 
@@ -25,26 +22,12 @@ const Volunteering = memo<Props>(({ projectId, phaseId, className }) => {
     phaseId,
   });
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
 
-  if (causes && phase) {
-    const disabledPhase =
-      phase &&
-      pastPresentOrFuture([
-        phase.data.attributes.start_at,
-        phase.data.attributes.end_at,
-      ]) !== 'present';
-    const disabledProject =
-      project && project.data.attributes.publication_status !== 'published';
-
+  if (causes && project) {
     return (
       <Container className={className} id="volunteering">
         {causes.data.map((cause) => (
-          <CauseCard
-            key={cause.id}
-            cause={cause}
-            disabled={disabledPhase || disabledProject}
-          />
+          <CauseCard key={cause.id} cause={cause} project={project} />
         ))}
       </Container>
     );

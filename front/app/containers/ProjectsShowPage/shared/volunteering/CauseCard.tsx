@@ -13,11 +13,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+import { IProject } from 'api/projects/types';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -27,6 +27,7 @@ import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { ScreenReaderOnly } from 'utils/a11y';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
@@ -165,10 +166,10 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
-  disabled?: boolean;
+  project: IProject;
 }
 
-const CauseCard = ({ cause, className, disabled }: Props) => {
+const CauseCard = ({ cause, className, project }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
@@ -191,6 +192,13 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     params: { cause },
   } as const;
 
+  const { disabled_reason } =
+    project.data.attributes.action_descriptors.volunteering;
+
+  const blocked = !!disabled_reason;
+  const blockedAndUnfixable =
+    blocked && !isFixableByAuthentication(disabled_reason);
+
   const handleOnVolunteerButtonClick = async () => {
     const phaseId = cause.relationships.phase.data.id;
 
@@ -200,12 +208,9 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
       id: phaseId,
     };
 
-    const response = await getAuthenticationRequirements(context);
-    const { requirements } = response.data.attributes;
-
-    if (requirements.permitted) {
+    if (!blocked) {
       volunteer();
-    } else {
+    } else if (!blockedAndUnfixable) {
       triggerAuthenticationFlow({
         successAction,
         context,
@@ -270,7 +275,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
 
         <ActionWrapper>
           <Tooltip
-            disabled={!disabled}
+            disabled={!blockedAndUnfixable}
             placement="bottom"
             content={formatMessage(messages.notOpenParticipation)}
           >
@@ -280,7 +285,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
                 buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
                 fullWidth={smallerThanSmallTablet}
-                disabled={disabled}
+                disabled={blockedAndUnfixable}
               >
                 {isVolunteer ? (
                   <FormattedMessage {...messages.withdrawVolunteerButton} />
