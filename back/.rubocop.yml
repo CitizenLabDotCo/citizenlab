@@ -100,6 +100,9 @@ RSpec/MultipleExpectations:
 Style/DoubleNegation:
   Enabled: false
 
+Performance/Casecmp:
+  Enabled: false
+
 Style/NegatedIf:
   Enabled: false
 
