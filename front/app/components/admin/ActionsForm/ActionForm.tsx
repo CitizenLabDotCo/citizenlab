@@ -103,6 +103,7 @@ const ActionForm = ({
                   onClick={handlePermittedByUpdate('everyone')}
                   selected={permittedBy === 'everyone'}
                   height="100%"
+                  disabled={!isGranularPermissionsEnabled}
                 />
               </CardButtonTooltip>
             )}
@@ -124,7 +125,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
                 disabled={
-                  isGranularPermissionsEnabled ? !userConfirmationEnabled : true
+                  !isGranularPermissionsEnabled || !userConfirmationEnabled
                 }
                 height="100%"
               />
@@ -140,6 +141,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('users')}
                 selected={permittedBy === 'users'}
                 height="100%"
+                disabled={!isGranularPermissionsEnabled}
               />
             </CardButtonTooltip>
             <CardButtonTooltip selected={permittedBy === 'groups'}>
@@ -155,6 +157,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('groups')}
                 selected={permittedBy === 'groups'}
                 height="100%"
+                disabled={!isGranularPermissionsEnabled}
               />
             </CardButtonTooltip>
           </Box>
