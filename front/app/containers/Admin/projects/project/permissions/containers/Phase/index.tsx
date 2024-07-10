@@ -12,6 +12,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -26,6 +28,9 @@ const Phase = () => {
     phaseId?: string;
   };
   const [search] = useSearchParams();
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
   const newSystemActive = !!search.get('new_system');
 
   const { data: phase } = usePhase(phaseId || null);
@@ -51,7 +56,7 @@ const Phase = () => {
       <Text color="coolGrey600" pb="8px">
         <FormattedMessage {...messages.participationRequirementsSubtitle} />
       </Text>
-      {newSystemActive ? (
+      {isGranularPermissionsEnabled && newSystemActive ? (
         <PhasePermissionsNew project={project.data} phase={phase.data} />
       ) : (
         <PhasePermissions project={project.data} phase={phase.data} />
