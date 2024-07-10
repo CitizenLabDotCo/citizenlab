@@ -12,8 +12,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -33,11 +31,7 @@ const Phase = () => {
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
 
-  const isGranularPermissionsEnabled = useFeatureFlag({
-    name: 'granular_permissions',
-  });
-
-  if (!isGranularPermissionsEnabled || !phase || !project) return null;
+  if (!phase || !project) return null;
 
   return (
     <Box mb="48px">
