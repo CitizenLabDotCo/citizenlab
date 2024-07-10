@@ -53,7 +53,7 @@ class NavBarItem < ApplicationRecord
       .or(result.where(static_page: { slug: %w[information faq] }))
   }
 
-  def custom
+  def custom?
     code == "custom"
   end
 
@@ -76,14 +76,14 @@ class NavBarItem < ApplicationRecord
   end
 
   def fallback_title_multiloc
-    key_code = custom? ? static_page.code : code
+    key_code = page? ? static_page.code : code
     key = "nav_bar_items.#{key_code}.title"
     if I18n.exists? key
       MultilocService.new.i18n_to_multiloc key
-    elsif custom?
+    elsif page?
       static_page.title_multiloc
     elsif project?
-      {}
+      project.title_multiloc
     end
   end
 end

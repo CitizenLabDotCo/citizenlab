@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.containers.createCustomPageButton',
     defaultMessage: 'Create custom page',
   },
+  addProject: {
+    id: 'app.modules.navbar.admin.containers.addProject',
+    defaultMessage: 'Add project to navbar',
+  },
 });

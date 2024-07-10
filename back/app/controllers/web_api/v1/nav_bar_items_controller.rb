@@ -15,6 +15,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
 
   def create
     @item = NavBarItem.new permitted_attributes NavBarItem
+    byebug
     authorize @item
     add_nav_bar_item
   end

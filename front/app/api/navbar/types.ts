@@ -49,6 +49,7 @@ export interface INavbarItemAdd {
   code: TNavbarItemCode;
   static_page_id?: string;
   title_multiloc?: Multiloc;
+  project_id?: string;
 }
 
 export interface INavbarItemUpdate {
