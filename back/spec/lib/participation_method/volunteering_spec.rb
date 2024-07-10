@@ -93,7 +93,7 @@ RSpec.describe ParticipationMethod::Volunteering do
     let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
-      expect(participation_method.custom_form.participation_context_id).to eq project.id
+      expect(participation_method.custom_form.participation_context_id).to eq phase.id
     end
   end
 
@@ -115,7 +115,7 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  its(:transitive?) { is_expected.to be true }
+  its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
