@@ -8,6 +8,7 @@ import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
 import { getNavbarItemSlug } from 'api/navbar/util';
+import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
@@ -22,7 +23,6 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -34,8 +34,9 @@ const VisibleNavbarItemList = ({
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const projectSlugById = useProjectSlugById();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
+  if (!navbarItems || !pageSlugById || !projectSlugById) {
     return null;
   }
 
@@ -63,7 +64,9 @@ const VisibleNavbarItemList = ({
       getNavbarItemSlug(
         navbarItem.attributes.code,
         pageSlugById,
-        navbarItem.relationships.static_page.data?.id
+        navbarItem.relationships.static_page.data?.id,
+        projectSlugById,
+        navbarItem.relationships.project.data?.id
       ) || '/'
     );
   };

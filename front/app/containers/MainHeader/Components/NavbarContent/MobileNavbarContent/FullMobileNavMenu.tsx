@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -100,6 +101,7 @@ const FullMobileNavMenu = ({
 }: Props) => {
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const projectSlugById = useProjectSlugById();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -107,7 +109,8 @@ const FullMobileNavMenu = ({
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems.data,
-    pageSlugById
+    pageSlugById,
+    projectSlugById
   );
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');

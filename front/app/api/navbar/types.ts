@@ -34,6 +34,9 @@ export interface INavbarItem {
     static_page: {
       data: IRelationship | null;
     };
+    project: {
+      data: IRelationship | null;
+    };
   };
 }
 
