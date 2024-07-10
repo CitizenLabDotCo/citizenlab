@@ -119,8 +119,8 @@ export default defineMessages({
     defaultMessage:
       'Only platform admins, folder managers and project managers can take the action',
   },
-  granularPermissionsOffMessage: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage',
+  granularPermissionsOffText: {
+    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffText',
     defaultMessage:
       'Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.',
   },
