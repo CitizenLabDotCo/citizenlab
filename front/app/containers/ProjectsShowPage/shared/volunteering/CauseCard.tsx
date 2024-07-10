@@ -13,8 +13,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
@@ -192,13 +192,24 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
   } as const;
 
   const handleOnVolunteerButtonClick = async () => {
-    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
+    const phaseId = cause.relationships.phase.data.id;
+
+    const context: AuthenticationContext = {
+      type: 'phase',
+      action: 'volunteering',
+      id: phaseId,
+    };
+
+    const response = await getAuthenticationRequirements(context);
     const { requirements } = response.data.attributes;
 
     if (requirements.permitted) {
       volunteer();
     } else {
-      triggerAuthenticationFlow({ successAction });
+      triggerAuthenticationFlow({
+        successAction,
+        context,
+      });
     }
   };
 
