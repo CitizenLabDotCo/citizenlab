@@ -54,7 +54,7 @@ const ActionFormNew = ({
     <form>
       <Box mb="20px">
         <AdminCollaboratorToggle
-          enabled={permittedBy === 'admins_moderators'}
+          checked={permittedBy === 'admins_moderators'}
           id={`participation-permission-admins-${permissionId}`}
           onChange={() => {
             handlePermittedByUpdate(
