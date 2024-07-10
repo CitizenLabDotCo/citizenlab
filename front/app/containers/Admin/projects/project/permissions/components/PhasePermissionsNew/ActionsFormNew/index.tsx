@@ -3,6 +3,7 @@ import React from 'react';
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData, IPhasePermissionData } from 'api/permissions/types';
+import { PermittedBy } from 'api/phase_permissions/types';
 
 import messages from 'components/admin/ActionsForm/messages';
 import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
@@ -41,14 +42,15 @@ const ActionsFormNew = ({
   onChange,
   phaseId,
 }: Props) => {
-  const handlePermissionChange = (permission: IPermissionData) => () => {
-    onChange({
-      permission,
-      permittedBy: 'groups', // TODO
-      groupIds: [], // TODO
-      globalCustomFields: false, // TODO
-    });
-  };
+  const handlePermissionChange =
+    (permission: IPermissionData) =>
+    (permittedBy: PermittedBy, groupIds: string[]) => {
+      onChange({
+        permission,
+        permittedBy,
+        groupIds,
+      });
+    };
 
   if (permissions.length === 0) {
     return (

@@ -25,8 +25,6 @@ const Fields = ({ phaseId, action }: Props) => {
         <FormattedMessage {...messages.whatInformation} />
       </Title>
       <Box mt="20px">
-        {/* <DefaultField fieldName="Name" /> */}
-        {/* <DefaultField fieldName="Email" /> */}
         <FieldsList phaseId={phaseId} action={action} />
       </Box>
       <Box mt="20px" w="100%" display="flex">

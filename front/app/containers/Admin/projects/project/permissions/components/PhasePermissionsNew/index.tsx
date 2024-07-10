@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -18,7 +19,25 @@ interface Props {
 }
 
 const PhasePermissionsNew = ({ project, phase }: Props) => {
-  const handlePermissionChange = () => {}; // TODO
+  const { mutate: updatePhasePermission } = useUpdatePhasePermission(phase.id);
+
+  const handlePermissionChange = ({
+    permission,
+    permittedBy,
+    groupIds,
+    globalCustomFields,
+  }: HandlePermissionChangeProps) => {
+    updatePhasePermission({
+      permissionId: permission.id,
+      phaseId: phase.id,
+      action: permission.attributes.action,
+      permission: {
+        permitted_by: permittedBy,
+        group_ids: groupIds,
+        global_custom_fields: globalCustomFields,
+      },
+    });
+  };
 
   return (
     <Box
