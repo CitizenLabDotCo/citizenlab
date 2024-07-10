@@ -81,11 +81,24 @@ const MapControl = ({ ...props }: ControlProps) => {
 
   // Handler for when multiple points data changes (line/polygon)
   const handleMultiPointChange = useCallback(
-    (points?: GeoJSON.Point[]) => {
-      handleChange(path, points);
+    (coordinates?: number[][]) => {
+      // Convert points to a GeoJSON LineString or Polygon
+      if (coordinates) {
+        const type =
+          uischema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
+        const geometry = {
+          type,
+          coordinates: type === 'LineString' ? coordinates : [coordinates],
+        };
+        handleChange(path, geometry);
+      } else {
+        handleChange(path, undefined);
+      }
+
+      // handleChange(path, points);
       setDidBlur(true);
     },
-    [handleChange, path]
+    [handleChange, path, uischema.options?.input_type]
   );
 
   return (
@@ -102,9 +115,13 @@ const MapControl = ({ ...props }: ControlProps) => {
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
             <Box my="auto">
-              {isTabletOrSmaller
-                ? formatMessage(messages.tapOnMapToAdd)
-                : formatMessage(messages.clickOnMapToAdd)}
+              {isTabletOrSmaller // TODO: Cleanup and add to util or function
+                ? uischema?.options?.input_type === 'point'
+                  ? formatMessage(messages.tapOnMapToAddOrType)
+                  : formatMessage(messages.tapOnMapMultipleToAdd)
+                : uischema?.options?.input_type === 'point'
+                ? formatMessage(messages.clickOnMapToAddOrType)
+                : formatMessage(messages.clickOnMapMultipleToAdd)}
             </Box>
           </Box>
         </Label>
@@ -116,7 +133,9 @@ const MapControl = ({ ...props }: ControlProps) => {
           onMapInit={onMapInit}
           mapView={mapView}
           handlePointChange={handlePointChange}
+          handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
+          inputType={uischema?.options?.input_type}
           {...props}
         />
       ) : (
@@ -146,5 +165,6 @@ export const mapControlTester = (uischema) => {
   ) {
     return 1000;
   }
+
   return -1;
 };

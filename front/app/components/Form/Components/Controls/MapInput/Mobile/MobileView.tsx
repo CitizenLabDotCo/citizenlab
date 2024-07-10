@@ -19,7 +19,11 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
-import { clearPointData, handleDataPointChange } from '../utils';
+import {
+  clearPointData,
+  updateMultiPointsDataAndDisplay,
+  updatePointDataAndDisplay,
+} from '../utils';
 
 import FullscreenMapInput from './FullscreenMapInput';
 
@@ -28,7 +32,9 @@ type Props = {
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
+  handleMultiPointChange?: (points: number[][] | undefined) => void;
   didBlur: boolean;
+  inputType: 'point' | 'line' | 'polygon';
 };
 
 const MobileView = ({
@@ -36,6 +42,8 @@ const MobileView = ({
   onMapInit,
   mapView,
   handlePointChange,
+  handleMultiPointChange,
+  inputType,
   didBlur,
   id,
   ...props
@@ -59,10 +67,10 @@ const MobileView = ({
     return parseLayers(mapConfig, localize);
   }, [localize, mapConfig]);
 
-  // When the location point changes, update the address and show graphic on the map
+  // Show graphics on map when location point(s) change
   useEffect(() => {
-    if (data) {
-      handleDataPointChange({
+    if (inputType === 'point' && data) {
+      updatePointDataAndDisplay({
         data,
         mapView,
         locale,
@@ -70,24 +78,35 @@ const MobileView = ({
         setAddress,
       });
       setShowMapOverlay(false);
+    } else if ((inputType === 'line' || inputType === 'polygon') && data) {
+      updateMultiPointsDataAndDisplay({
+        data,
+        mapView,
+        inputType,
+        tenantPrimaryColor: theme.colors.tenantPrimary,
+      });
+      setShowMapOverlay(false);
     } else {
       clearPointData(mapView, setAddress);
       setShowMapOverlay(true);
     }
-  }, [data, locale, mapView, theme.colors.tenantPrimary]);
+  }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
         <Box mb="12px" zIndex="10">
-          <LocationTextInput
-            address={address}
-            handlePointChange={handlePointChange}
-          />
+          {inputType === 'point' && (
+            <LocationTextInput
+              address={address}
+              handlePointChange={handlePointChange}
+            />
+          )}
         </Box>
         <Box position="relative">
           <MapOverlay
             showMapOverlay={showMapOverlay}
+            inputType={inputType}
             handleShowFullscreenMap={() => {
               setShowFullscreenMap(true);
             }}
@@ -98,7 +117,10 @@ const MobileView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
+              center:
+                inputType === 'point'
+                  ? data || mapConfig?.data.attributes.center_geojson
+                  : data?.[0] || mapConfig?.data.attributes.center_geojson,
               showLegend: false,
               showLayerVisibilityControl: false,
               showZoomControls: false,
@@ -119,6 +141,8 @@ const MobileView = ({
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
           handlePointChange={handlePointChange}
+          handleMultiPointChange={handleMultiPointChange}
+          inputType={inputType}
           {...props}
         />
       )}

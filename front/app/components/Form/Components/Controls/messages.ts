@@ -32,19 +32,27 @@ export default defineMessages({
     defaultMessage:
       "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   },
-  tapOnMapToAdd: {
-    id: 'app.components.form.controls.tapOnMapToAdd2',
+  tapOnMapToAddOrType: {
+    id: 'app.components.form.controls.tapOnMapToAddOrType',
     defaultMessage:
       'Tap on the map or type an address below to add your answer.',
   },
-  tapOnFullscreenMapToAdd: {
-    id: 'app.components.form.controls.tapOnFullscreenMapToAdd',
-    defaultMessage: 'Tap on the map to add your answer.',
+  tapOnMapMultipleToAdd: {
+    id: 'app.components.form.controls.tapOnMapMultipleToAdd',
+    defaultMessage: 'Tap on the map multiple times to add your answer.',
   },
-  clickOnMapToAdd: {
-    id: 'app.components.form.controls.clickOnMapToAdd',
+  tapOnFullscreenMapToAdd: {
+    id: 'app.components.form.controls.tapOnFullscreenMapToAdd2',
+    defaultMessage: 'Tap on the map multiple times to draw.',
+  },
+  clickOnMapToAddOrType: {
+    id: 'app.components.form.controls.clickOnMapToAddOrType',
     defaultMessage:
       'Click on the map or type an address below to add your answer.',
+  },
+  clickOnMapMultipleToAdd: {
+    id: 'app.components.form.controls.clickOnMapMultipleToAdd',
+    defaultMessage: 'Click on the map multiple times to add your answer.',
   },
   addressInputAriaLabel: {
     id: 'app.components.form.controls.addressInputAriaLabel',
@@ -58,6 +66,14 @@ export default defineMessages({
     id: 'app.components.form.controls.tapToAddAPoint',
     defaultMessage: 'Tap to add a point',
   },
+  tapToAddALine: {
+    id: 'app.components.form.controls.tapToAddALine',
+    defaultMessage: 'Tap to add a line',
+  },
+  tapToAddAnArea: {
+    id: 'app.components.form.controls.tapToAddAnArea',
+    defaultMessage: 'Tap to add an area',
+  },
   back: {
     id: 'app.components.form.controls.back',
     defaultMessage: 'Back',
@@ -65,5 +81,9 @@ export default defineMessages({
   confirm: {
     id: 'app.components.form.controls.confirm',
     defaultMessage: 'Confirm',
+  },
+  minimumCoordinates: {
+    id: 'app.components.form.controls.minimumCoordinates',
+    defaultMessage: 'A minimum of {numPoints} points is required',
   },
 });

@@ -21,10 +21,10 @@ import { useIntl } from 'utils/cl-intl';
 type Props = {
   mapView?: MapView | null;
   mapConfig?: IMapConfig | null;
-  id?: string;
+  resetButtonRef?: React.RefObject<HTMLDivElement>;
 };
 
-const ResetMapViewButton = ({ mapConfig, mapView, id }: Props) => {
+const ResetMapViewButton = ({ mapConfig, mapView, resetButtonRef }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
@@ -55,13 +55,12 @@ const ResetMapViewButton = ({ mapConfig, mapView, id }: Props) => {
   };
 
   return (
-    <Box id={`reset-view-${id}`}>
+    <Box ref={resetButtonRef}>
       <Tooltip
         maxWidth="250px"
         placement="right"
         content={formatMessage(messages.goToDefaultMapView)}
         hideOnClick={true}
-        zIndex={10000000000000000}
       >
         <div>
           <Button
@@ -71,6 +70,9 @@ const ResetMapViewButton = ({ mapConfig, mapView, id }: Props) => {
             bgHoverColor={colors.grey100}
             borderRadius="0px"
             padding="7px"
+            width="32px"
+            height="32px"
+            iconSize="20px"
             boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
             onClick={goToDefaultMapView}
             aria-label={formatMessage(messages.goToDefaultMapView)}

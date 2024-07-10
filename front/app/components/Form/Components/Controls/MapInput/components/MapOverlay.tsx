@@ -11,11 +11,28 @@ import TapHere from './TapImage.svg';
 type Props = {
   showMapOverlay: boolean;
   handleShowFullscreenMap: () => void;
+  inputType: 'point' | 'line' | 'polygon';
 };
 
-const MapOverlay = ({ showMapOverlay, handleShowFullscreenMap }: Props) => {
+const MapOverlay = ({
+  showMapOverlay,
+  handleShowFullscreenMap,
+  inputType,
+}: Props) => {
   const { formatMessage } = useIntl();
 
+  const getOverlayText = () => {
+    switch (inputType) {
+      case 'point':
+        return formatMessage(messages.tapToAddAPoint);
+      case 'line':
+        return formatMessage(messages.tapToAddALine);
+      case 'polygon':
+        return formatMessage(messages.tapToAddAnArea);
+      default:
+        return '';
+    }
+  };
   return (
     <>
       <Box
@@ -45,7 +62,7 @@ const MapOverlay = ({ showMapOverlay, handleShowFullscreenMap }: Props) => {
         >
           <img src={TapHere} alt="Tap to access the map" />
           <Text m="0px" pt="8px" color="white" style={{ fontWeight: 600 }}>
-            {formatMessage(messages.tapToAddAPoint)}
+            {getOverlayText()}
           </Text>
         </Box>
       )}
