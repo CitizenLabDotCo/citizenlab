@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Valor numérico",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Escolha múltipla (seleccionar uma)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Resposta curta",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "A alteração de permissões granulares não faz parte da sua licença. Entre em contato com o seu gerente do GovSuccess para saber mais sobre isso.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Quem pode contribuir (por fase do projeto)?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Tem certeza de que deseja remover este grupo do projeto?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Selecione um ou mais grupos",

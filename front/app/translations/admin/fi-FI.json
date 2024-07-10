@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Numeerinen arvo",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Monivalinta (valitse yksi)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Lyhyt vastaus",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Yksityiskohtaisten käyttöoikeuksien muuttaminen ei ole osa käyttöoikeuttasi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Mitä eri käyttäjät voivat tehdä?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Haluatko varmasti poistaa tämän ryhmän projektista?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Valitse yksi tai useampi ryhmä",

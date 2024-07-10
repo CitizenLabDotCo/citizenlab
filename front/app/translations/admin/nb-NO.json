@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Numerisk verdi",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Flervalg (velg ett)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Kort svar",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Endring av granulære tillatelser er ikke en del av lisensen din. Ta kontakt med din GovSuccess Manager for å lære mer om det.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Hva kan ulike brukere gjøre?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Er du sikker på at du vil fjerne denne gruppen fra prosjektet?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Velg én eller flere grupper",

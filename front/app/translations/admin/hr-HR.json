@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Numerička vrijednost",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Višestruki izbor (odaberite jedan)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Kratak odgovor",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Promjena detaljnih dopuštenja nije dio vaše licence. Obratite se svom GovSuccess Manageru kako biste saznali više o tome.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Što mogu različiti korisnici?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Jeste li sigurni da želite ukloniti ovu grupu iz projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Odaberite jednu ili više grupa",

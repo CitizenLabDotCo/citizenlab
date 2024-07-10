@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Skaitliskā vērtība",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Vairākas izvēles (izvēlieties vienu)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Īsa atbilde",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Granulāro atļauju maiņa nav licences daļa. Lūdzu, sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Ko var dažādi lietotāji izdarīt?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties šo grupu izņemt no projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Izvēlēties vienu vai vairākas grupas",

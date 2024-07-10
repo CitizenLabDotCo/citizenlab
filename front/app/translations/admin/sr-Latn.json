@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Нумеричка вредност",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Вишеструки избор (изаберите један)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Кратак одговор",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Ko može dati doprinos (po projektnoj fazi)?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Da li ste sigurni da želite da uklonite ovu grupu iz projekta?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Odaberite jednu ili više grupa",

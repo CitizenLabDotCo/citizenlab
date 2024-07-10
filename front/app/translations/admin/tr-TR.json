@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Sayısal değer",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Çoktan seçmeli (birini seçin)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Kısa cevap",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Ayrıntılı izinleri değiştirmek lisansınızın bir parçası değildir. Bu konuda daha fazla bilgi edinmek için lütfen GovSuccess Yöneticinizle iletişime geçin.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Farklı kullanıcılar ne yapabilir?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Bu grubu projeden kaldırmak istediğinizden emin misiniz?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Bir veya daha fazla grup seçin",

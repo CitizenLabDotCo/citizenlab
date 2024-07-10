@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Numeric value",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Multiple choice (select one)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Short answer",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "What can different users do?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Are you sure you want to remove this group from the project?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Select one or more groups",

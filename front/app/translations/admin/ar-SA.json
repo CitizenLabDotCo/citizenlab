@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "قيمة عددية",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "اختيار من متعدد (اختر واحدا)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "اجابة قصيرة",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "لا يعد تغيير الأذونات الدقيقة جزءًا من الترخيص الخاص بك. يرجى الاتصال بمدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الموضوع.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "من يمكنه المساهمة (لكل مرحلة من مراحل المشروع)؟",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "هل تريد حذف هذه المجموعة من المشروع بالتأكيد؟",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "تحديد مجموعة واحدة أو أكثر",

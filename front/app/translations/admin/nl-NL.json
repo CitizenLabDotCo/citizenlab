@@ -2115,7 +2115,6 @@
   "app.containers.AdminPage.groups.permissions.fieldType_number": "Numerieke waarde",
   "app.containers.AdminPage.groups.permissions.fieldType_select": "Meerkeuze (kies er één)",
   "app.containers.AdminPage.groups.permissions.fieldType_text": "Kort antwoord",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage": "Het wijzigen van granulaire rechten maakt geen deel uit van je licentie. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Wie kan deelnemen (per projectfase)?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Weet je zeker dat je deze groep uit dit project wilt verwijderen?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Selecteer één of meer groepen",
