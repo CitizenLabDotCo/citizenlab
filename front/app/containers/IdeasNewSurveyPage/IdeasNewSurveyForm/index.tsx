@@ -166,15 +166,15 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   }
 
   const handleDraftIdeas = async (data: FormValues) => {
-    if (data.publication_status === 'draft') {
+    if (data.publication_status === 'published') {
+      return onSubmit(data, true);
+    } else {
       if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
       return onSubmit(data, false);
-    } else {
-      return onSubmit(data, true);
     }
   };
 
