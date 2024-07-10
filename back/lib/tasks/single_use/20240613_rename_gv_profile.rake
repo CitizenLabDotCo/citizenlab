@@ -5,7 +5,7 @@ namespace :gv_transition do
     Tenant.safe_switch_each do |tenant|
       default_moderators = User.where(email: %w[moderator@citizenlab.co moderator@govocal.com])
       default_moderators.each do |moderator|
-        if moderator.first_name.downcase == 'citizenlab'
+        if moderator.first_name&.downcase == 'citizenlab'
           old_v = moderator.first_name
           new_v = 'Go Vocal'
           moderator.first_name = new_v
