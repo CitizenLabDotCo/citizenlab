@@ -30,7 +30,7 @@ const AdminCollaboratorToggle = ({ checked, id, onChange }: Props) => {
     <Tooltip
       placement="bottom-start"
       disabled={isGranularPermissionsEnabled}
-      content={<FormattedMessage {...messages.granularPermissionsOffMessage} />}
+      content={<FormattedMessage {...messages.granularPermissionsOffText} />}
     >
       <Box w="fit-content">
         <Toggle
