@@ -13,12 +13,7 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil)
-      project_visible_reason = project_visible_disabled_reason
-      if project_visible_reason
-        project_visible_reason
-      else
-        super(action, reaction_mode: reaction_mode)
-      end
+      project_visible_disabled_reason || super(action, reaction_mode: reaction_mode)
     end
 
     # Future enabled phases
