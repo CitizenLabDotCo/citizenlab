@@ -122,6 +122,8 @@ const ActionsFormWrapper = ({
   projectId,
 }: ActionsFormWrapperProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
+  console.log({ permissions });
+
   if (!permissions) {
     return null;
   }
