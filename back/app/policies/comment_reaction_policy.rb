@@ -25,9 +25,9 @@ class CommentReactionPolicy < ApplicationPolicy
 
     reason = case record.reactable&.post_type
     when 'Idea'
-      Permissions::IdeaPermissionsService.new.denied_reason_for_action 'commenting_idea', user, record.reactable.post
+      Permissions::IdeaPermissionsService.new(record.reactable.post, user).denied_reason_for_action 'commenting_idea'
     when 'Initiative'
-      Permissions::InitiativePermissionsService.new.denied_reason_for_action 'commenting_initiative', user
+      Permissions::InitiativePermissionsService.new(user).denied_reason_for_action 'commenting_initiative'
     else
       raise ArgumentError, "Comment reacting policy not implemented for #{record.reactable&.post_type}"
     end
