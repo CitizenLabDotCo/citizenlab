@@ -57,6 +57,9 @@ const UserFieldSelection = ({
     name: 'permissions_custom_fields',
     onlyCheckAllowed: true,
   });
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
   const { data: globalRegistrationFields } = useUserCustomFields();
   const initialFields = usePermissionsCustomFields({
     projectId,
@@ -121,8 +124,9 @@ const UserFieldSelection = ({
     permission.attributes.permitted_by !== 'everyone_confirmed_email';
 
   const showQuestions =
-    !permission.attributes.global_custom_fields ||
-    permission.attributes.permitted_by === 'everyone_confirmed_email';
+    isGranularPermissionsEnabled &&
+    (!permission.attributes.global_custom_fields ||
+      permission.attributes.permitted_by === 'everyone_confirmed_email');
 
   return (
     <Tooltip
@@ -153,43 +157,59 @@ const UserFieldSelection = ({
         <Box>
           {showQuestionToggle && (
             <Box mb="10px">
-              <Toggle
-                checked={permission.attributes.global_custom_fields}
-                disabled={!permissionsCustomFieldsAllowed}
-                onChange={() => {
-                  onChange({
-                    phaseId,
-                    permission,
-                    groupIds,
-                    globalCustomFields:
-                      !permission.attributes.global_custom_fields,
-                  });
-                }}
-                label={
-                  <Box display="flex">
-                    <span
-                      style={{
-                        color: permissionsCustomFieldsAllowed
-                          ? colors.primary
-                          : colors.disabled,
-                      }}
-                    >
-                      <FormattedMessage
-                        {...messages.useExistingRegistrationQuestions}
-                      />
-                    </span>
-                    {permissionsCustomFieldsAllowed && (
-                      <IconTooltip
-                        ml="4px"
-                        icon="info-solid"
-                        content={formatMessage(
-                          messages.useExistingRegistrationQuestionsDescription
-                        )}
-                      />
-                    )}
-                  </Box>
+              <Tooltip
+                placement="bottom-start"
+                disabled={isGranularPermissionsEnabled}
+                content={
+                  <FormattedMessage
+                    {...messages.granularPermissionsOffMessage}
+                  />
                 }
-              />
+              >
+                <Toggle
+                  checked={permission.attributes.global_custom_fields}
+                  disabled={
+                    isGranularPermissionsEnabled
+                      ? !permissionsCustomFieldsAllowed
+                      : true
+                  }
+                  onChange={() => {
+                    if (isGranularPermissionsEnabled) {
+                      onChange({
+                        phaseId,
+                        permission,
+                        groupIds,
+                        globalCustomFields:
+                          !permission.attributes.global_custom_fields,
+                      });
+                    }
+                  }}
+                  label={
+                    <Box display="flex">
+                      <span
+                        style={{
+                          color: permissionsCustomFieldsAllowed
+                            ? colors.primary
+                            : colors.disabled,
+                        }}
+                      >
+                        <FormattedMessage
+                          {...messages.useExistingRegistrationQuestions}
+                        />
+                      </span>
+                      {permissionsCustomFieldsAllowed && (
+                        <IconTooltip
+                          ml="4px"
+                          icon="info-solid"
+                          content={formatMessage(
+                            messages.useExistingRegistrationQuestionsDescription
+                          )}
+                        />
+                      )}
+                    </Box>
+                  }
+                />
+              </Tooltip>
             </Box>
           )}
           {showQuestions && (

@@ -289,6 +289,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                   w="100%"
                   px={isSmallerThanPhone ? '16px' : '24px'}
                   mt="12px"
+                  id="anonymous-survey-warning"
                 >
                   <Warning icon="shield-checkered">
                     {formatMessage(messages.anonymousSurveyMessage)}

@@ -7,8 +7,6 @@ import GetGlobalPermissions, {
 
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,9 +23,8 @@ interface DataProps {
 
 const PermissionsInitiatives = ({ permissions }: DataProps) => {
   const { mutate: updateGlobalPermission } = useUpdatePermission();
-  const featureEnabled = useFeatureFlag({ name: 'granular_permissions' });
 
-  if (!featureEnabled || isNilOrError(permissions)) return null;
+  if (isNilOrError(permissions)) return null;
 
   const initiativePermissions = permissions.filter((permission) =>
     [
