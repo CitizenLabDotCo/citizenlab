@@ -54,6 +54,10 @@ export type ProjectDocumentAnnotationDisabledReason =
 
 export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
 
+export type ProjectVolunteeringDisabledReason =
+  | 'not_volunteering'
+  | ProjectDisabledReason;
+
 export type IdeaReactingDisabledReason =
   | 'idea_not_in_current_phase'
   | ProjectReactingDisabledReason;
