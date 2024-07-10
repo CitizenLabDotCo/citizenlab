@@ -8,8 +8,7 @@ import { FieldSelectionModal } from 'components/admin/ActionsForm/UserFieldSelec
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import CustomFields from './CustomFields';
-import DefaultField from './DefaultField';
+import FieldsList from './FieldsList';
 import messages from './messages';
 
 interface Props {
@@ -26,9 +25,9 @@ const Fields = ({ phaseId, action }: Props) => {
         <FormattedMessage {...messages.whatInformation} />
       </Title>
       <Box mt="20px">
-        <DefaultField fieldName="Name" />
-        <DefaultField fieldName="Email" />
-        <CustomFields phaseId={phaseId} action={action} />
+        {/* <DefaultField fieldName="Name" /> */}
+        {/* <DefaultField fieldName="Email" /> */}
+        <FieldsList phaseId={phaseId} action={action} />
       </Box>
       <Box mt="20px" w="100%" display="flex">
         <Button

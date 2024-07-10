@@ -46,8 +46,13 @@ export interface IPermissionsFieldData {
   id: string;
   type: 'permissions_field';
   attributes: {
-    required: boolean;
+    config: Record<string, any>;
     created_at: string;
+    enabled: boolean;
+    field_type: 'name' | 'email' | 'custom_field';
+    locked: boolean;
+    ordering: number;
+    required: boolean;
     updated_at: string;
   };
   relationships: {
@@ -61,7 +66,7 @@ export interface IPermissionsFieldData {
       data: {
         id: string;
         type: 'custom_field';
-      };
+      } | null;
     };
   };
 }

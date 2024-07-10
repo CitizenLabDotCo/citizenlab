@@ -99,7 +99,7 @@ const UserFieldSelection = ({
   ) => {
     return globalRegistrationFields?.data.find(
       (globalField) =>
-        globalField.id === field?.relationships?.custom_field?.data.id
+        globalField.id === field.relationships.custom_field.data?.id
     )?.attributes.title_multiloc[locale];
   };
 

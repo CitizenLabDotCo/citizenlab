@@ -37,9 +37,13 @@ export const SelectionScreen = ({
 }: SelectionScreenProps) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
+
   const selectedFieldIds = new Set(
-    selectedFields?.map((field) => field.relationships.custom_field.data.id)
+    selectedFields
+      ?.map((field) => field.relationships.custom_field.data?.id)
+      .filter((id) => id !== null) as string[]
   );
+
   const { data: authUser } = useAuthUser();
   const userIsAdmin = authUser && isAdmin(authUser);
 
