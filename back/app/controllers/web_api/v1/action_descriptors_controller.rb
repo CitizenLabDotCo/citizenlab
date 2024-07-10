@@ -5,7 +5,7 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
-    descriptors = Permissions::InitiativePermissionsService.new.action_descriptors(current_user)
+    descriptors = Permissions::InitiativePermissionsService.new(current_user).action_descriptors
     render(json: raw_json(descriptors))
   end
 end
