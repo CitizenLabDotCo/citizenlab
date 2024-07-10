@@ -102,6 +102,7 @@ const ActionForm = ({
                   )}
                   onClick={handlePermittedByUpdate('everyone')}
                   selected={permittedBy === 'everyone'}
+                  height="100%"
                 />
               </CardButtonTooltip>
             )}
@@ -138,6 +139,7 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('users')}
                 selected={permittedBy === 'users'}
+                height="100%"
               />
             </CardButtonTooltip>
             <CardButtonTooltip selected={permittedBy === 'groups'}>
@@ -152,6 +154,7 @@ const ActionForm = ({
                 )}
                 onClick={handlePermittedByUpdate('groups')}
                 selected={permittedBy === 'groups'}
+                height="100%"
               />
             </CardButtonTooltip>
           </Box>

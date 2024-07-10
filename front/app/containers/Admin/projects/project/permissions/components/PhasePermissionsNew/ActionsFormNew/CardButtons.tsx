@@ -43,6 +43,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
             )}
             onClick={handleUpdate('everyone')}
             selected={permittedBy === 'everyone'}
+            height="100%"
           />
         </CardButtonTooltip>
       )}
@@ -70,6 +71,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
           )}
           onClick={handleUpdate('users')}
           selected={permittedBy === 'users'}
+          height="100%"
         />
       </CardButtonTooltip>
       <CardButtonTooltip selected={permittedBy === 'custom'}>
@@ -80,6 +82,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
           subtitle={formatMessage(messages.customSubtitle)}
           onClick={handleUpdate('custom')}
           selected={permittedBy === 'custom'}
+          height="100%"
         />
       </CardButtonTooltip>
     </>
