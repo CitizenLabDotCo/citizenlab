@@ -11,21 +11,23 @@
 #  static_page_id :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  project_id     :string
+#  project_id     :uuid
 #
 # Indexes
 #
 #  index_nav_bar_items_on_code            (code)
 #  index_nav_bar_items_on_ordering        (ordering)
+#  index_nav_bar_items_on_project_id      (project_id)
 #  index_nav_bar_items_on_static_page_id  (static_page_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
-  CODES = %w[home projects proposals events all_input custom project].freeze
+  CODES = %w[home projects proposals events all_input custom].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
