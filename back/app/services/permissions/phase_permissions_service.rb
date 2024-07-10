@@ -70,8 +70,7 @@ module Permissions
 
       return unless supported_action? action
 
-      permission = find_permission(action, scope: phase)
-      user_denied_reason(permission, phase.project)
+      super(action, scope: phase)
     end
 
     private

@@ -30,6 +30,11 @@ module Permissions
       @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
     end
 
+    def denied_reason_for_action(action, scope: nil)
+      permission = find_permission(action, scope: scope)
+      user_denied_reason(permission)
+    end
+
     private
 
     attr_reader :user, :user_requirements_service
