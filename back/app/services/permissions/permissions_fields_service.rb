@@ -27,9 +27,7 @@ module Permissions
 
           # Save the default fields
           if fields.present?
-            fields.each do |field|
-              field.save!
-            end
+            fields.each(&:save!)
           end
         end
       end

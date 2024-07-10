@@ -68,6 +68,7 @@ describe Permissions::PermissionsFieldsService do
         end
 
         it 'does nothing if global_custom_fields is false but there are no fields' do
+          permission.update!(global_custom_fields: false)
           service.change_permissions_to_custom
           permission.reload
           expect(permission.permitted_by).to eq 'everyone_confirmed_email'
