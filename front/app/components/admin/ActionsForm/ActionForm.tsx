@@ -19,6 +19,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AdminCollaboratorToggle from './AdminCollaboratorToggle';
+import CardButtonTooltip from './CardButtonTooltip';
 import GroupSelect from './GroupSelect';
 import messages from './messages';
 
@@ -90,14 +91,7 @@ const ActionForm = ({
         <Box mt="20px">
           <Box display="flex" gap="16px" mb="20px">
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-              <Tooltip
-                disabled={
-                  permittedBy === 'everyone' ?? isGranularPermissionsEnabled
-                }
-                content={
-                  <FormattedMessage {...messages.granularPermissionsOffText} />
-                }
-              >
+              <CardButtonTooltip selected={permittedBy === 'everyone'}>
                 <CardButton
                   iconName="user-circle"
                   title={formatMessage(
@@ -109,7 +103,7 @@ const ActionForm = ({
                   onClick={handlePermittedByUpdate('everyone')}
                   selected={permittedBy === 'everyone'}
                 />
-              </Tooltip>
+              </CardButtonTooltip>
             )}
             <Tooltip
               disabled={!everyoneConfirmedEmailTooltipMessage}
@@ -134,12 +128,7 @@ const ActionForm = ({
                 height="100%"
               />
             </Tooltip>
-            <Tooltip
-              disabled={permittedBy === 'users' ?? isGranularPermissionsEnabled}
-              content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
-              }
-            >
+            <CardButtonTooltip selected={permittedBy === 'users'}>
               <CardButton
                 id="e2e-permission-registered-users"
                 iconName="user-check"
@@ -150,15 +139,8 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('users')}
                 selected={permittedBy === 'users'}
               />
-            </Tooltip>
-            <Tooltip
-              disabled={
-                permittedBy === 'groups' ?? isGranularPermissionsEnabled
-              }
-              content={
-                <FormattedMessage {...messages.granularPermissionsOffText} />
-              }
-            >
+            </CardButtonTooltip>
+            <CardButtonTooltip selected={permittedBy === 'groups'}>
               <CardButton
                 id="e2e-permission-user-groups"
                 iconName="group"
@@ -171,7 +153,7 @@ const ActionForm = ({
                 onClick={handlePermittedByUpdate('groups')}
                 selected={permittedBy === 'groups'}
               />
-            </Tooltip>
+            </CardButtonTooltip>
           </Box>
           {permittedBy === 'groups' && (
             <Box
