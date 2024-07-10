@@ -11,6 +11,7 @@
 #  static_page_id :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  project_id     :string
 #
 # Indexes
 #
@@ -24,16 +25,18 @@
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
-  CODES = %w[home projects proposals events all_input custom].freeze
+  CODES = %w[home projects proposals events all_input custom project].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
   belongs_to :static_page, optional: true
+  belongs_to :project, optional: true
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, if: ->(item) { !item.custom? }
-  validates :static_page, presence: true, if: :custom?
+  validates :static_page, presence: true, if: :page?
+  validates :project, presence: true, if: :project?
 
   before_validation :set_code, on: :create
 
@@ -48,8 +51,16 @@ class NavBarItem < ApplicationRecord
       .or(result.where(static_page: { slug: %w[information faq] }))
   }
 
-  def custom?
-    code == 'custom'
+  def custom
+    code == "custom"
+  end
+
+  def page?
+    code == 'custom' && static_page_id.present?
+  end
+
+  def project? 
+    code == 'custom' && project_id.present?
   end
 
   def title_multiloc_with_fallback
@@ -69,6 +80,8 @@ class NavBarItem < ApplicationRecord
       MultilocService.new.i18n_to_multiloc key
     elsif custom?
       static_page.title_multiloc
+    elsif project?
+      {}
     end
   end
 end

@@ -8,4 +8,6 @@ class WebApi::V1::NavBarItemSerializer < WebApi::V1::BaseSerializer
   end
 
   belongs_to :static_page, serializer: WebApi::V1::StaticPageSerializer
+  belongs_to :project, serializer: ::WebApi::V1::ProjectSerializer
+
 end
