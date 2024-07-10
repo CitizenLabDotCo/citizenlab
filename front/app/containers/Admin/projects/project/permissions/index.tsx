@@ -12,10 +12,10 @@ import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ProjectManagement from './containers/ProjectManagement';
-import ProjectVisibility from './containers/ProjectVisibility';
-import Granular from './granular_permissions/containers/Granular';
-import PhasePermissions from './granular_permissions/containers/Granular/PhasePermissions';
+import PhasePermissions from './components/PhasePermissions';
+import Granular from './containers/Project/Granular';
+import ProjectManagement from './containers/Project/ProjectManagement';
+import ProjectVisibility from './containers/Project/ProjectVisibility';
 import messages from './messages';
 
 const StyledSection = styled(Section)`

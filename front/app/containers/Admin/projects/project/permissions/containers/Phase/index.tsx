@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Title,
   Text,
@@ -7,15 +8,19 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
+
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import PhasePermissions from '../../components/PhasePermissions';
 import PhasePermissionsNew from '../../components/PhasePermissionsNew';
 import messages from '../../messages';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 const Phase = () => {
   const { projectId, phaseId } = useParams() as {

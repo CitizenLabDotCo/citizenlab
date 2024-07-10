@@ -24,6 +24,8 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import oldFormMessages from 'components/admin/ActionsForm/messages';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 
@@ -160,7 +162,7 @@ const UserFieldSelection = ({
                 disabled={isGranularPermissionsEnabled}
                 content={
                   <FormattedMessage
-                    {...messages.granularPermissionsOffMessage}
+                    {...oldFormMessages.granularPermissionsOffText}
                   />
                 }
               >
