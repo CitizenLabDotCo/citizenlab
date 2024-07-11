@@ -27,15 +27,8 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   const { mutate: reorderPermissionsField } = useReorderPermissionsField();
 
-  console.log(permissionFields);
-
-  // const { emailField, nameField, customFields } =
-  // separateFields(permissionFields);
-
   return (
     <>
-      {/* {emailField && <DefaultField fieldName={'Email'} />} */}
-      {/* {nameField && <DefaultField fieldName={'Name'} />} */}
       {permissionFields && (
         <SortableList
           items={permissionFields.data}
