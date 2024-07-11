@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Add project to navbar',
   },
   navBarMaxItems: {
-    id: 'app.modules.navbar.admin.containers.navBarMaxItems',
-    defaultMessage: 'You can only add up to 7 items to the navigation bar',
+    id: 'app.modules.navbar.admin.containers.navBarMaxItemsNumber',
+    defaultMessage: 'You can only add up to 5 items to the navigation bar',
   },
 });
