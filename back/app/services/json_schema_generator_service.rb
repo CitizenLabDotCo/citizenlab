@@ -224,29 +224,28 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
   def visit_polygon(_field)
     {
+      required: %w[type coordinates],
       type: 'object',
-        required: %w[type coordinates],
-        type: 'object',
-        properties: {
-          type: {
-            type: 'string',
-            enum: ['Polygon']
-          },
-          "coordinates": {
-            type: "array",
+      properties: {
+        type: {
+          type: 'string',
+          enum: ['Polygon']
+        },
+        coordinates: {
+          type: 'array',
+          items: {
+            type: 'array',
+            minItems: 4,
             items: {
-              type: "array",
-              minItems: 4,
+              type: 'array',
+              minItems: 2,
               items: {
-                type: "array",
-                minItems: 2,
-                items: {
-                  type: "number"
-                }
+                type: 'number'
               }
             }
-          },
+          }
         }
+      }
     }
   end
 
