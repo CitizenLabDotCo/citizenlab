@@ -315,7 +315,7 @@ class CustomField < ApplicationRecord
 
   def input_term
     phase = if resource.participation_context.instance_of?(Project)
-      TimelineService.new.current_or_last_can_contain_ideas_phase(resource.participation_context)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
     else
       resource.participation_context
     end
