@@ -39,7 +39,9 @@ export interface IPermissionsFieldAdd {
 
 export interface IPermissionCustomFieldUpdate {
   id: string;
-  required: boolean;
+  required?: boolean;
+  verified?: boolean;
+  enabled?: boolean;
 }
 
 export interface IPermissionsFieldData {

@@ -18,11 +18,13 @@ import {
 const updatePermissionsField = ({
   id,
   required,
+  verified,
+  enabled,
 }: IPermissionCustomFieldUpdate) =>
   fetcher<IPermissionsField>({
     path: `/permissions_fields/${id}`,
     action: 'patch',
-    body: { required },
+    body: { required, verified, enabled },
   });
 
 const useUpdatePermissionsField = ({
