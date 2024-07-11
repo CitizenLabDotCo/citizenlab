@@ -3,10 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import {
-  IPermissionsFieldData,
-  IPermissionsFields,
-} from 'api/permissions_fields/types';
+import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 import useReorderPermissionsField from 'api/permissions_fields/useReorderPermissionsField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -22,26 +19,6 @@ interface Props {
   action: IPhasePermissionAction;
 }
 
-const separateFields = (fields?: IPermissionsFields) => {
-  if (!fields) return {};
-
-  const emailField = fields.data.find(
-    (field) => field.attributes.field_type === 'email'
-  );
-  const nameField = fields.data.find(
-    (field) => field.attributes.field_type === 'name'
-  );
-  const customFields = fields.data.filter(
-    (field) => field.attributes.field_type === 'custom_field'
-  );
-
-  return {
-    emailField,
-    nameField,
-    customFields,
-  };
-};
-
 const FieldsList = ({ phaseId, action }: Props) => {
   const { data: permissionFields } = usePermissionsFields({
     phaseId,
@@ -50,34 +27,42 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   const { mutate: reorderPermissionsField } = useReorderPermissionsField();
 
-  const { emailField, nameField, customFields } =
-    separateFields(permissionFields);
+  console.log(permissionFields);
+
+  // const { emailField, nameField, customFields } =
+  // separateFields(permissionFields);
 
   return (
     <>
-      {emailField && <DefaultField fieldName={'Email'} />}
-      {nameField && <DefaultField fieldName={'Name'} />}
-      {customFields && (
+      {/* {emailField && <DefaultField fieldName={'Email'} />} */}
+      {/* {nameField && <DefaultField fieldName={'Name'} />} */}
+      {permissionFields && (
         <SortableList
-          items={customFields}
+          items={permissionFields.data}
+          lockFirstNItems={2}
           onReorder={(fieldId, newOrder) => {
             reorderPermissionsField({ id: fieldId, ordering: newOrder });
           }}
         >
-          {({ itemsList, handleDragRow, handleDropRow }) => (
+          {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
             <>
-              {itemsList.map((field: IPermissionsFieldData, index: number) => (
-                <SortableRow
-                  id={field.id}
-                  key={field.id}
-                  index={field.attributes.ordering}
-                  moveRow={handleDragRow}
-                  dropRow={handleDropRow}
-                  isLastItem={index === itemsList.length - 1}
-                >
-                  <DraggableField field={field} key={field.id} />
-                </SortableRow>
+              {lockedItemsList?.map((field: IPermissionsFieldData) => (
+                <DefaultField fieldName={field.id} key={field.id} />
               ))}
+              {itemsList.map((field: IPermissionsFieldData, index: number) => {
+                return (
+                  <SortableRow
+                    key={field.id}
+                    id={field.id}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={handleDropRow}
+                    isLastItem={index === itemsList.length - 1}
+                  >
+                    <DraggableField field={field} key={field.id} />
+                  </SortableRow>
+                );
+              })}
             </>
           )}
         </SortableList>
