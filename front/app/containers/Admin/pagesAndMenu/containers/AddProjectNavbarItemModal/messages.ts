@@ -1,13 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  emptyTitleError: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyTitleError',
-    defaultMessage: 'The title cannot be empty',
+  title: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title',
+    defaultMessage: 'Add project',
   },
-  navbarItemTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemTitle',
-    defaultMessage: 'Title',
+  emptyNameError: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameError',
+    defaultMessage: 'The name cannot be empty',
+  },
+  navbarItemName: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName',
+    defaultMessage: 'Name',
   },
   savePage: {
     id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage',
@@ -16,5 +20,14 @@ export default defineMessages({
   emptyProjectError: {
     id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError',
     defaultMessage: 'The project cannot be empty',
+  },
+  warning: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning',
+    defaultMessage:
+      'The navigation bar will only show projects to which users have access.',
+  },
+  resultingUrl: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl',
+    defaultMessage: 'Resulting URL',
   },
 });
