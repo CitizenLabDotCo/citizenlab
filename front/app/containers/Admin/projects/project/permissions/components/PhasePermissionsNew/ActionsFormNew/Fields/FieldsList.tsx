@@ -8,6 +8,10 @@ import {
   IPermissionsFields,
 } from 'api/permissions_fields/types';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+import useReorderPermissionsField from 'api/permissions_fields/useReorderPermissionsField';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
@@ -44,6 +48,8 @@ const FieldsList = ({ phaseId, action }: Props) => {
     action,
   });
 
+  const { mutate: reorderPermissionsField } = useReorderPermissionsField();
+
   const { emailField, nameField, customFields } =
     separateFields(permissionFields);
 
@@ -52,7 +58,12 @@ const FieldsList = ({ phaseId, action }: Props) => {
       {emailField && <DefaultField fieldName={'Email'} />}
       {nameField && <DefaultField fieldName={'Name'} />}
       {customFields && (
-        <SortableList items={customFields} onReorder={() => {}}>
+        <SortableList
+          items={customFields}
+          onReorder={(fieldId, newOrder) => {
+            reorderPermissionsField({ id: fieldId, ordering: newOrder });
+          }}
+        >
           {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
               {itemsList.map((field: IPermissionsFieldData, index: number) => (
@@ -64,16 +75,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
                   dropRow={handleDropRow}
                   isLastItem={index === itemsList.length - 1}
                 >
-                  <Box
-                    w="100%"
-                    display="flex"
-                    alignItems="center"
-                    marginRight="20px"
-                  >
-                    <Text m="0" mt="4px" fontSize="m" color="primary">
-                      Test
-                    </Text>
-                  </Box>
+                  <DraggableField field={field} key={field.id} />
                 </SortableRow>
               ))}
             </>
@@ -81,6 +83,20 @@ const FieldsList = ({ phaseId, action }: Props) => {
         </SortableList>
       )}
     </>
+  );
+};
+
+const DraggableField = ({ field }: { field: IPermissionsFieldData }) => {
+  const customFieldId = field.relationships.custom_field.data?.id;
+  const { data: customField } = useUserCustomField(customFieldId);
+  const localize = useLocalize();
+
+  return (
+    <Box w="100%" display="flex" alignItems="center" marginRight="20px">
+      <Text m="0" mt="4px" fontSize="m" color="primary">
+        {localize(customField?.data.attributes.title_multiloc)}
+      </Text>
+    </Box>
   );
 };
 
