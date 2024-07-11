@@ -9,14 +9,13 @@ export default function getNavbarItemPropsArray(
   projectSlugById?: TProjectSlugById
 ) {
   return navbarItems.map((navbarItem) => {
-    const linkTo =
-      getNavbarItemSlug(
-        navbarItem.attributes.code,
-        pageSlugById,
-        navbarItem.relationships.static_page.data?.id,
-        projectSlugById,
-        navbarItem.relationships.project.data?.id
-      ) || '/';
+    const linkTo = getNavbarItemSlug(
+      navbarItem.attributes.code,
+      pageSlugById,
+      navbarItem.relationships.static_page.data?.id,
+      projectSlugById,
+      navbarItem.relationships.project.data?.id
+    );
 
     const navigationItemTitle = navbarItem.attributes.title_multiloc;
 

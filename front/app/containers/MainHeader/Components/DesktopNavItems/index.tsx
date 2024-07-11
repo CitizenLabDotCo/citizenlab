@@ -70,15 +70,17 @@ const DesktopNavItems = () => {
               />
             );
           }
-
-          return (
-            <DesktopNavbarItem
-              linkTo={linkTo}
-              onlyActiveOnIndex={onlyActiveOnIndex}
-              navigationItemTitle={navigationItemTitle}
-              key={i}
-            />
-          );
+          if (linkTo) {
+            return (
+              <DesktopNavbarItem
+                linkTo={linkTo}
+                onlyActiveOnIndex={onlyActiveOnIndex}
+                navigationItemTitle={navigationItemTitle}
+                key={i}
+              />
+            );
+          }
+          return null;
         })}
       </NavbarItems>
     </Container>

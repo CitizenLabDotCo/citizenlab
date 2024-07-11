@@ -149,16 +149,19 @@ const FullMobileNavMenu = ({
               {navbarItemPropsArray.map((navbarItemProps) => {
                 const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
                   navbarItemProps;
-                return (
-                  <FullMobileNavMenuItem
-                    key={linkTo}
-                    linkTo={linkTo}
-                    onlyActiveOnIndex={onlyActiveOnIndex}
-                    navigationItemTitle={localize(navigationItemTitle)}
-                    onClick={handleOnMenuItemClick(linkTo)}
-                    scrollToTop
-                  />
-                );
+                if (linkTo) {
+                  return (
+                    <FullMobileNavMenuItem
+                      key={linkTo}
+                      linkTo={linkTo}
+                      onlyActiveOnIndex={onlyActiveOnIndex}
+                      navigationItemTitle={localize(navigationItemTitle)}
+                      onClick={handleOnMenuItemClick(linkTo)}
+                      scrollToTop
+                    />
+                  );
+                }
+                return null;
               })}
               <FullMobileNavMenuItem
                 linkTo={'/projects?focusSearch=true'}
