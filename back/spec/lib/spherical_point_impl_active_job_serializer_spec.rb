@@ -7,7 +7,7 @@ RSpec.describe SphericalPointImplActiveJobSerializer do
   describe '#serialize' do
     it 'correctly serializes a RGeo::Geographic::SphericalPointImpl object' do
       serializer = described_class.send(:new)
-      expect(serializer.serialize(point)).to eq(serialized_point)
+      expect(serializer.serialize(point)).to include(serialized_point)
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe SphericalPointImplActiveJobSerializer do
       TestJob.perform_later(point)
       jobs = QueJob.by_args({ job_class: 'TestJob' })
       expect(jobs.count).to eq 1
-      expect(jobs.first.args['arguments']).to eq([serialized_point])
+      expect(jobs.first.args['arguments'].first).to include(serialized_point)
     end
   end
 end

@@ -2,10 +2,10 @@
 # https://api.rubyonrails.org/classes/ActiveJob/Serializers/ObjectSerializer.html
 class SphericalPointImplActiveJobSerializer < ActiveJob::Serializers::ObjectSerializer
   def serialize(point)
-    {
+    super(
       'x' => point.x,
       'y' => point.y
-    }
+    )
   end
 
   def deserialize(hash)
