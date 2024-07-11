@@ -37,9 +37,9 @@ const FieldsList = ({ phaseId, action }: Props) => {
             <>
               {lockedItemsList?.map((field: IPermissionsFieldData) => (
                 <DefaultField
+                  key={field.id}
                   field={field}
                   phaseId={phaseId}
-                  key={field.id}
                   action={action}
                 />
               ))}
@@ -53,7 +53,12 @@ const FieldsList = ({ phaseId, action }: Props) => {
                     dropRow={handleDropRow}
                     isLastItem={index === itemsList.length - 1}
                   >
-                    <CustomField field={field} key={field.id} />
+                    <CustomField
+                      key={field.id}
+                      field={field}
+                      phaseId={phaseId}
+                      action={action}
+                    />
                   </SortableRow>
                 );
               })}

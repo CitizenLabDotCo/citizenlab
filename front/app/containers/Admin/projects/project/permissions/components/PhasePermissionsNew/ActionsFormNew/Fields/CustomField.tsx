@@ -8,7 +8,9 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
+import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
+import useDeletePermissionsField from 'api/permissions_fields/useDeletePermissionsField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
@@ -17,11 +19,22 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const CustomField = ({ field }: { field: IPermissionsFieldData }) => {
+interface Props {
+  field: IPermissionsFieldData;
+  phaseId: string;
+  action: IPhasePermissionAction;
+}
+
+const CustomField = ({ field, phaseId, action }: Props) => {
   const customFieldId = field.relationships.custom_field.data?.id;
   const { data: customField } = useUserCustomField(customFieldId);
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
+  const { mutate: deletePermissionsField } = useDeletePermissionsField({
+    phaseId,
+    action,
+  });
 
   return (
     <Box
@@ -59,6 +72,7 @@ const CustomField = ({ field }: { field: IPermissionsFieldData }) => {
           a11y_buttonActionMessage="TODO"
           onClick={(e) => {
             e?.preventDefault();
+            deletePermissionsField(field.id);
           }}
         />
       </Box>
