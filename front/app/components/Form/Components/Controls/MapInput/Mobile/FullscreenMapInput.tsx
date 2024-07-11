@@ -40,6 +40,7 @@ import {
   updatePointDataAndDisplay,
   handleMapClickMultipoint,
   handleMapClickPoint,
+  zoomToUserInputExtent,
 } from '../utils';
 
 type Props = {
@@ -49,6 +50,7 @@ type Props = {
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: 'point' | 'line' | 'polygon';
+  mapViewSurveyPage?: MapView | null;
 };
 
 const FullscreenMapInput = memo<Props>(
@@ -58,6 +60,7 @@ const FullscreenMapInput = memo<Props>(
     data,
     handlePointChange,
     handleMultiPointChange,
+    mapViewSurveyPage,
     inputType,
     ...props
   }: ControlProps & Props) => {
@@ -120,7 +123,11 @@ const FullscreenMapInput = memo<Props>(
         });
       } else if (inputType === 'line' || inputType === 'polygon') {
         updateMultiPointsDataAndDisplay({
-          data,
+          data:
+            // If we have a polygon, we want to remove the duplicated first point which closed the line
+            inputType === 'polygon'
+              ? data?.coordinates?.[0]?.slice(0, -1)
+              : data?.coordinates,
           mapView,
           inputType,
           tenantPrimaryColor: theme.colors.tenantPrimary,
@@ -139,6 +146,7 @@ const FullscreenMapInput = memo<Props>(
 
     // Handle back button click
     const handleBack = () => {
+      zoomToUserInputExtent(mapViewSurveyPage);
       setShowFullscreenMap(false);
     };
 
@@ -150,7 +158,10 @@ const FullscreenMapInput = memo<Props>(
         case 'line':
           return data?.coordinates?.length && data.coordinates.length >= 2;
         case 'polygon':
-          return data?.coordinates?.length && data.coordinates.length >= 3;
+          return (
+            data?.coordinates?.[0]?.length &&
+            data?.coordinates?.[0]?.length >= 4
+          );
       }
     };
 

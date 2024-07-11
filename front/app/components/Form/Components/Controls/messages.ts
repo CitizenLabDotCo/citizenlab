@@ -38,12 +38,12 @@ export default defineMessages({
       'Tap on the map or type an address below to add your answer.',
   },
   tapOnMapMultipleToAdd: {
-    id: 'app.components.form.controls.tapOnMapMultipleToAdd',
-    defaultMessage: 'Tap on the map multiple times to add your answer.',
+    id: 'app.components.form.controls.tapOnMapMultipleToAdd2',
+    defaultMessage: 'Tap on the map to add your answer.',
   },
   tapOnFullscreenMapToAdd: {
-    id: 'app.components.form.controls.tapOnFullscreenMapToAdd2',
-    defaultMessage: 'Tap on the map multiple times to draw.',
+    id: 'app.components.form.controls.tapOnFullscreenMapToAdd3',
+    defaultMessage: 'Tap on the map to draw.',
   },
   clickOnMapToAddOrType: {
     id: 'app.components.form.controls.clickOnMapToAddOrType',
@@ -83,7 +83,7 @@ export default defineMessages({
     defaultMessage: 'Confirm',
   },
   minimumCoordinates: {
-    id: 'app.components.form.controls.minimumCoordinates',
-    defaultMessage: 'A minimum of {numPoints} points is required',
+    id: 'app.components.form.controls.minimumCoordinates2',
+    defaultMessage: 'A minimum of {numPoints} map points is required.',
   },
 });

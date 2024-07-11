@@ -14,12 +14,14 @@ import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
+import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
 import {
+  checkCoordinateErrors,
   clearPointData,
   updateMultiPointsDataAndDisplay,
   updatePointDataAndDisplay,
@@ -53,6 +55,7 @@ const MobileView = ({
   const theme = useTheme();
   const locale = useLocale();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   // state variables
   const [showFullscreenMapInput, setShowFullscreenMap] = useState(false);
@@ -80,10 +83,15 @@ const MobileView = ({
       setShowMapOverlay(false);
     } else if ((inputType === 'line' || inputType === 'polygon') && data) {
       updateMultiPointsDataAndDisplay({
-        data,
+        data:
+          // If we have a polygon, we want to remove the duplicated first point which closed the line
+          inputType === 'polygon'
+            ? data?.coordinates?.[0]?.slice(0, -1)
+            : data?.coordinates,
         mapView,
         inputType,
         tenantPrimaryColor: theme.colors.tenantPrimary,
+        zoomToInputExtent: true,
       });
       setShowMapOverlay(false);
     } else {
@@ -132,7 +140,15 @@ const MobileView = ({
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
-        ajvErrors={errors}
+        ajvErrors={
+          errors ||
+          checkCoordinateErrors({
+            data,
+            inputType,
+            schema: props.schema,
+            formatMessage,
+          })
+        }
         fieldPath={path}
         didBlur={didBlur}
       />
@@ -143,6 +159,7 @@ const MobileView = ({
           handlePointChange={handlePointChange}
           handleMultiPointChange={handleMultiPointChange}
           inputType={inputType}
+          mapViewSurveyPage={mapView}
           {...props}
         />
       )}

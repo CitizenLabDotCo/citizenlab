@@ -95,8 +95,9 @@ const DesktopView = ({
       } else if (inputType === 'line' || inputType === 'polygon') {
         updateMultiPointsDataAndDisplay({
           data:
+            // If we have a polygon, we want to remove the duplicated first point which closed the line
             inputType === 'polygon'
-              ? data?.coordinates?.[0]
+              ? data?.coordinates?.[0]?.slice(0, -1)
               : data?.coordinates,
           mapView,
           inputType,

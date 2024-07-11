@@ -150,11 +150,12 @@ export const updateMultiPointsDataAndDisplay = ({
   mapView,
   inputType,
   tenantPrimaryColor,
+  zoomToInputExtent,
 }: UpdateMultiPointsDataAndDisplayProps) => {
   const coordinates = data;
 
   // Create graphics for the user input points
-  const graphics = coordinates.map((coordinates) => {
+  const graphics = coordinates?.map((coordinates) => {
     return new Graphic({
       geometry: new Point({
         longitude: coordinates[0],
@@ -171,7 +172,7 @@ export const updateMultiPointsDataAndDisplay = ({
   });
 
   // Create an Esri line graphic connecting the points
-  const pointsForLine = coordinates.map((coordinates) => [
+  const pointsForLine = coordinates?.map((coordinates) => [
     coordinates[0],
     coordinates[1],
   ]);
@@ -227,6 +228,11 @@ export const updateMultiPointsDataAndDisplay = ({
       graphicsLayer.add(polylineGraphic);
       graphicsLayer.addMany(graphics);
       mapView.map.add(graphicsLayer);
+
+      // If set, zoom to the extent of the user input
+      if (zoomToInputExtent) {
+        zoomToUserInputExtent(mapView);
+      }
     }
   }
 };
@@ -236,6 +242,7 @@ type UpdateMultiPointsDataAndDisplayProps = {
   mapView: MapView | null | undefined;
   inputType: 'point' | 'line' | 'polygon';
   tenantPrimaryColor: string;
+  zoomToInputExtent?: boolean;
 };
 
 // getUserInputPoints
@@ -304,4 +311,26 @@ type CheckCoordinateErrorsProps = {
   inputType: 'point' | 'line' | 'polygon';
   schema: JsonSchema;
   formatMessage: (message: any, values?: any) => string;
+};
+
+// zoomToUserInputExtent
+// Description: Zooms to the given extent
+export const zoomToUserInputExtent = (mapView: MapView | undefined | null) => {
+  // if (!mapView) {
+  //   return
+  // };
+  // const userInputLayer = mapView.map?.layers?.find(
+  //   (layer) => layer.title === 'User Input'
+  // );
+  // // Get line graphic
+  // const graphics = (userInputLayer as GraphicsLayer)?.graphics;
+  // if (graphics?.length && graphics.length > 1) {
+  //   const extent = graphics.find(
+  //     (graphic) => graphic.geometry.type === 'polyline'
+  //   )?.geometry?.extent;
+  //   if (extent) {
+  //     mapView.extent = extent;
+  //     mapView.zoom = mapView.zoom - 1;
+  //   }
+  // }
 };

@@ -86,10 +86,17 @@ const MapControl = ({ ...props }: ControlProps) => {
       if (coordinates) {
         const type =
           uischema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
+
+        if (type === 'Polygon') {
+          // Close the line to form a polygon
+          coordinates.push(coordinates[0]);
+        }
+
         const geometry = {
           type,
           coordinates: type === 'LineString' ? coordinates : [coordinates],
         };
+
         handleChange(path, geometry);
       } else {
         handleChange(path, undefined);
