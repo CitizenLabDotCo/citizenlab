@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.editButton',
     defaultMessage: 'Edit',
   },
+  navBarMaxItems: {
+    id: 'app.containers.Admin.PagesAndMenu.navBarMaxItems',
+    defaultMessage: 'You can only add up to 7 items to the navigation bar',
+  },
 });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
@@ -24,20 +24,27 @@ const PagesMenu = () => {
     return null;
   }
 
+  const disabledAddProjectToNavbarButton = navbarItems.data.length >= 7;
+
   return (
     <SectionFormWrapper
       title={formatMessage(messages.pageHeader)}
       subtitle={formatMessage(messages.pageSubtitle)}
       rightSideCTA={
         <Box display="flex" gap="16px">
-          <Button
-            icon="link"
-            buttonStyle="text"
-            onClick={() => setAddProjectModalIsOpen(true)}
-            disabled={navbarItems.data.length >= 7}
+          <Tooltip
+            content={formatMessage(messages.navBarMaxItems)}
+            disabled={!disabledAddProjectToNavbarButton}
           >
-            {formatMessage(messages.addProject)}
-          </Button>
+            <Button
+              icon="link"
+              buttonStyle="text"
+              onClick={() => setAddProjectModalIsOpen(true)}
+              disabled={disabledAddProjectToNavbarButton}
+            >
+              {formatMessage(messages.addProject)}
+            </Button>
+          </Tooltip>
           <Button
             buttonStyle="admin-dark"
             icon="plus-circle"
