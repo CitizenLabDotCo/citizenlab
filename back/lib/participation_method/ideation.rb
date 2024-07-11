@@ -335,6 +335,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_posting_inputs?
+      true
+    end
+
     def supports_assignment?
       true
     end

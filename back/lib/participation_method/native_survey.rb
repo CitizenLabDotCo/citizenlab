@@ -102,6 +102,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_posting_inputs?
+      true
+    end
+
     def supports_survey_form?
       true
     end

@@ -15,6 +15,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_posting_inputs?
+      false
+    end
+
     def supports_reacting?
       false
     end

@@ -69,7 +69,7 @@ module ParticipationMethod
       false
     end
 
-    def posting_allowed? # TODO: Rename to posting_supported?
+    def posting_allowed? # TODO: Remove as we already have supports_posting_inputs?
       false
     end
 
@@ -112,6 +112,10 @@ module ParticipationMethod
 
     def supports_toxicity_detection?
       true
+    end
+
+    def supports_posting_inputs?
+      false
     end
 
     def supports_idea_form?
