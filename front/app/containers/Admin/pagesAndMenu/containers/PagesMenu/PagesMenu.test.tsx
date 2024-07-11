@@ -12,6 +12,7 @@ jest.mock('./messages', () => ({
   pageSubtitle: { id: 'tile', defaultMessage: 'menu subtitle' },
   createCustomPageButton: { id: 'id', defaultMessage: 'create page' },
   addProject: { id: 'add', defaultMessage: 'add project' },
+  navBarMaxItems: { id: 'max', defaultMessage: 'max items' },
 }));
 
 describe('<PagesMenu />', () => {
