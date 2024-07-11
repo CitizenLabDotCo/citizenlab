@@ -43,5 +43,21 @@ RSpec.describe EmailCampaigns::Campaigns::EventRegistrationConfirmation do
         image_url: event.project.header_bg.url
       })
     end
+
+    context 'when event has location' do
+      before { event.update!(location_point: 'POINT (1.0 2.0)') }
+
+      it 'can be processed by ActiveJob', :active_job_que_adapter do
+        stub_const 'TestJob', Class.new(ApplicationJob) do
+          def run(commands); end
+        end
+
+        commands = campaign.generate_commands(recipient: recipient, activity: activity)
+
+        TestJob.perform_later(commands)
+        jobs = QueJob.by_args({ job_class: 'TestJob' })
+        expect(jobs.count).to eq 1
+      end
+    end
   end
 end
