@@ -20,7 +20,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def phase
-    @phase ||= TimelineService.new.current_and_future_phases(project).select { |phase| Factory.instance.participation_method_for(phase).transitive? }.first
+    @phase ||= TimelineService.new.current_or_backup_transitive_phase(project)
   end
 
   def input_term

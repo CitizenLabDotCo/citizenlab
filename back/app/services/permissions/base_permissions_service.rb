@@ -23,7 +23,6 @@ module Permissions
       user_blocked: 'user_blocked'
     }.freeze
 
-
     def initialize(user, user_requirements_service: nil)
       @user = user
       @user_requirements_service = user_requirements_service
