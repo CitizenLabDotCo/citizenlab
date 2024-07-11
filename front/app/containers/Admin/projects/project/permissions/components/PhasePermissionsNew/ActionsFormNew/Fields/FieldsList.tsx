@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
@@ -76,8 +76,13 @@ const DraggableField = ({ field }: { field: IPermissionsFieldData }) => {
 
   return (
     <Box w="100%" display="flex" alignItems="center" marginRight="20px">
-      <Text m="0" mt="4px" fontSize="m" color="primary">
-        {localize(customField?.data.attributes.title_multiloc)}
+      <Text m="0" mt="4px" fontSize="m">
+        {/* Has to be a span with style, because the SortableRow styled 
+        component has a p selector that overrides any colors defined on the
+        Text component */}
+        <span style={{ color: colors.primary }}>
+          {localize(customField?.data.attributes.title_multiloc)}
+        </span>
       </Text>
     </Box>
   );
