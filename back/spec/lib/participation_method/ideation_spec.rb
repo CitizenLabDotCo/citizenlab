@@ -156,12 +156,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#posting_allowed?' do
-    it 'returns true' do
-      expect(participation_method.posting_allowed?).to be true
-    end
-  end
-
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
@@ -224,6 +218,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
+  its(:supports_posting_inputs?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }

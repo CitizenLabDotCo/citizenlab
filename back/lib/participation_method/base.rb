@@ -69,10 +69,6 @@ module ParticipationMethod
       false
     end
 
-    def posting_allowed? # TODO: Remove as we already have supports_posting_inputs?
-      false
-    end
-
     def update_if_published?
       true
     end

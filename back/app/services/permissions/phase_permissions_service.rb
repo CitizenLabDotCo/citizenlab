@@ -79,7 +79,7 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_action
-      if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
+      if !participation_method.supports_posting_inputs?
         POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]

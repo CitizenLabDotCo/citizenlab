@@ -82,10 +82,6 @@ module ParticipationMethod
       true
     end
 
-    def posting_allowed?
-      true
-    end
-
     def update_if_published?
       false
     end

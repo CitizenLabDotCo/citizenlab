@@ -11,10 +11,6 @@ module ParticipationMethod
       %w[random]
     end
 
-    def posting_allowed?
-      false
-    end
-
     def supports_posting_inputs?
       false
     end

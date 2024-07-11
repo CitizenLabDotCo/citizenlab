@@ -75,12 +75,6 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#posting_allowed?' do
-    it 'returns false' do
-      expect(participation_method.posting_allowed?).to be false
-    end
-  end
-
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
@@ -109,6 +103,7 @@ RSpec.describe ParticipationMethod::None do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

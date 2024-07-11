@@ -167,7 +167,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:never_show?) { is_expected.to be false }
-  its(:posting_allowed?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:update_if_published?) { is_expected.to be true }
   its(:sign_in_required_for_posting?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }

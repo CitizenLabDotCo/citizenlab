@@ -315,10 +315,6 @@ module ParticipationMethod
       %w[trending random popular -new new]
     end
 
-    def posting_allowed?
-      true
-    end
-
     def supports_exports?
       true
     end
