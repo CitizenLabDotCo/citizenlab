@@ -8,20 +8,39 @@ import {
   Toggle,
 } from '@citizenlab/cl2-component-library';
 
+import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPermissionsFieldData } from 'api/permissions_fields/types';
+import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
+
 import { useIntl } from 'utils/cl-intl';
 
 import EmailModal from './EmailModal';
 import messages from './messages';
 
 interface Props {
-  fieldName: string;
+  field: IPermissionsFieldData;
+  phaseId: string;
+  action: IPhasePermissionAction;
 }
 
-const noop = () => {};
+const getFieldNameMessage = (field: IPermissionsFieldData) => {
+  if (field.attributes.field_type === 'name') return messages.name;
+  if (field.attributes.field_type === 'email') return messages.email;
+  return undefined;
+};
 
-const DefaultField = ({ fieldName }: Props) => {
+const DefaultField = ({ field, phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { mutate: updatePermissionsField } = useUpdatePermissionsField({
+    phaseId,
+    action,
+  });
+
+  const fieldNameMessage = getFieldNameMessage(field);
+
+  if (!fieldNameMessage) return null;
 
   return (
     <>
@@ -34,7 +53,7 @@ const DefaultField = ({ fieldName }: Props) => {
         alignItems="center"
       >
         <Text m="0" fontSize="m" color="primary">
-          {fieldName}
+          {formatMessage(fieldNameMessage)}
         </Text>
         <Box display="flex" flexDirection="row">
           <Button
@@ -50,7 +69,15 @@ const DefaultField = ({ fieldName }: Props) => {
           <Box
             mb="-4px" // cancel out te bottom margin of the Toggle
           >
-            <Toggle checked onChange={noop} />
+            <Toggle
+              checked={field.attributes.enabled}
+              onChange={() => {
+                updatePermissionsField({
+                  id: field.id,
+                  enabled: !field.attributes.enabled,
+                });
+              }}
+            />
           </Box>
         </Box>
       </Box>

@@ -37,4 +37,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion',
     defaultMessage: 'Add a question',
   },
+  name: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.name',
+    defaultMessage: 'Name',
+  },
+  email: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.email',
+    defaultMessage: 'Email',
+  },
 });
