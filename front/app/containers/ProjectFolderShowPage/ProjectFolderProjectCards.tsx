@@ -39,7 +39,7 @@ const ListItem = styled.li<{ isEven: boolean }>`
   `};
 `;
 
-const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
+const StyledProjectCard = styled(ProjectCard)`
   flex-grow: 1;
   width: 100%;
 `;
@@ -77,7 +77,6 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
               <StyledProjectCard
                 projectId={item.relationships.publication.data.id}
                 size="small"
-                isEven={index % 2 !== 1}
                 hideDescriptionPreview={hideDescriptionPreview}
               />
             </ListItem>
