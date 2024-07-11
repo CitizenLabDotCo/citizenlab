@@ -33,6 +33,7 @@ import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname, getLabel } from 'utils/JSONFormUtils';
 
 import messages from '../../messages';
+import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
@@ -40,7 +41,6 @@ import {
   updatePointDataAndDisplay,
   handleMapClickMultipoint,
   handleMapClickPoint,
-  zoomToUserInputExtent,
 } from '../utils';
 
 type Props = {
@@ -60,7 +60,6 @@ const FullscreenMapInput = memo<Props>(
     data,
     handlePointChange,
     handleMultiPointChange,
-    mapViewSurveyPage,
     inputType,
     ...props
   }: ControlProps & Props) => {
@@ -77,6 +76,7 @@ const FullscreenMapInput = memo<Props>(
     const [mapView, setMapView] = useState<MapView | null>(null);
     const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
+    const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
     const modalPortalElement = document.getElementById('modal-portal');
     const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
@@ -110,7 +110,15 @@ const FullscreenMapInput = memo<Props>(
         mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
         mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       }
-    }, [id, inputType, mapView?.ui, resetButtonRef, undoButtonRef]);
+      mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+    }, [
+      id,
+      inputType,
+      instructionRef,
+      mapView?.ui,
+      resetButtonRef,
+      undoButtonRef,
+    ]);
 
     // Show graphics on map when location point(s) change
     useEffect(() => {
@@ -146,7 +154,6 @@ const FullscreenMapInput = memo<Props>(
 
     // Handle back button click
     const handleBack = () => {
-      zoomToUserInputExtent(mapViewSurveyPage);
       setShowFullscreenMap(false);
     };
 
@@ -211,6 +218,11 @@ const FullscreenMapInput = memo<Props>(
                   resetButtonRef={resetButtonRef}
                   mapConfig={mapConfig}
                   mapView={mapView}
+                />
+                <InstructionAnimation
+                  instructionRef={instructionRef}
+                  inputType={inputType}
+                  data={data}
                 />
               </Box>
               <Box

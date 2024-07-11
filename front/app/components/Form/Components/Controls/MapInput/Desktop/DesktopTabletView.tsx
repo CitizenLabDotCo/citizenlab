@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../../../ErrorDisplay';
+import InstructionAnimation from '../components/InstructionAnimation';
 import LocationTextInput from '../components/LocationTextInput';
 import UndoButton from '../components/UndoButton';
 import {
@@ -65,9 +66,10 @@ const DesktopView = ({
     label: '',
   });
 
-  // Refs for undo and reset buttons
+  // Refs for custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
+  const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
@@ -79,7 +81,15 @@ const DesktopView = ({
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
     }
-  }, [id, inputType, mapView?.ui, resetButtonRef, undoButtonRef]);
+    mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+  }, [
+    id,
+    inputType,
+    instructionRef,
+    mapView?.ui,
+    resetButtonRef,
+    undoButtonRef,
+  ]);
 
   // Show graphics on map when location point(s) change
   useEffect(() => {
@@ -169,6 +179,11 @@ const DesktopView = ({
               resetButtonRef={resetButtonRef}
               mapConfig={mapConfig}
               mapView={mapView}
+            />
+            <InstructionAnimation
+              instructionRef={instructionRef}
+              inputType={inputType}
+              data={data}
             />
           </Box>
         </>

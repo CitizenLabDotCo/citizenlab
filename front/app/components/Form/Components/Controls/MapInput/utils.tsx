@@ -150,7 +150,6 @@ export const updateMultiPointsDataAndDisplay = ({
   mapView,
   inputType,
   tenantPrimaryColor,
-  zoomToInputExtent,
 }: UpdateMultiPointsDataAndDisplayProps) => {
   const coordinates = data;
 
@@ -230,9 +229,9 @@ export const updateMultiPointsDataAndDisplay = ({
       mapView.map.add(graphicsLayer);
 
       // If set, zoom to the extent of the user input
-      if (zoomToInputExtent) {
-        zoomToUserInputExtent(mapView);
-      }
+      // if (zoomToInputExtent) {
+      //   zoomToUserInputExtent(mapView);
+      // }
     }
   }
 };
@@ -315,22 +314,22 @@ type CheckCoordinateErrorsProps = {
 
 // zoomToUserInputExtent
 // Description: Zooms to the given extent
-export const zoomToUserInputExtent = (mapView: MapView | undefined | null) => {
-  // if (!mapView) {
-  //   return
-  // };
-  // const userInputLayer = mapView.map?.layers?.find(
-  //   (layer) => layer.title === 'User Input'
-  // );
-  // // Get line graphic
-  // const graphics = (userInputLayer as GraphicsLayer)?.graphics;
-  // if (graphics?.length && graphics.length > 1) {
-  //   const extent = graphics.find(
-  //     (graphic) => graphic.geometry.type === 'polyline'
-  //   )?.geometry?.extent;
-  //   if (extent) {
-  //     mapView.extent = extent;
-  //     mapView.zoom = mapView.zoom - 1;
-  //   }
-  // }
-};
+// export const zoomToUserInputExtent = (mapView: MapView | undefined | null) => {
+// if (!mapView) {
+//   return
+// };
+// const userInputLayer = mapView.map?.layers?.find(
+//   (layer) => layer.title === 'User Input'
+// );
+// // Get line graphic
+// const graphics = (userInputLayer as GraphicsLayer)?.graphics;
+// if (graphics?.length && graphics.length > 1) {
+//   const extent = graphics.find(
+//     (graphic) => graphic.geometry.type === 'polyline'
+//   )?.geometry?.extent;
+//   if (extent) {
+//     mapView.extent = extent;
+//     mapView.zoom = mapView.zoom - 1;
+//   }
+// }
+// };

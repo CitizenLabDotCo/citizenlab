@@ -100,6 +100,15 @@ const MobileView = ({
     }
   }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
+  const getMapCenter = () => {
+    if (inputType === 'point') {
+      return data || mapConfig?.data.attributes.center_geojson;
+    } else if (inputType === 'line') {
+      return mapConfig?.data.attributes.center_geojson;
+    } else if (inputType === 'polygon') {
+      return mapConfig?.data.attributes.center_geojson;
+    }
+  };
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
@@ -125,10 +134,7 @@ const MobileView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center:
-                inputType === 'point'
-                  ? data || mapConfig?.data.attributes.center_geojson
-                  : data?.[0] || mapConfig?.data.attributes.center_geojson,
+              center: getMapCenter(),
               showLegend: false,
               showLayerVisibilityControl: false,
               showZoomControls: false,
