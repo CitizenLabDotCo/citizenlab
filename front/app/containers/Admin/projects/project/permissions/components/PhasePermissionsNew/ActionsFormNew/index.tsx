@@ -69,7 +69,7 @@ const ActionsFormNew = ({
         const last = index === permissions.length - 1;
 
         return (
-          <Box key={permission.id} mb={last ? '0px' : '20px'}>
+          <Box key={permission.id} mb={last ? '0px' : '60px'}>
             <Title variant="h3" color="primary">
               <FormattedMessage
                 {...getPermissionActionSectionSubtitle({
