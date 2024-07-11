@@ -36,7 +36,7 @@ const VisibleNavbarItemList = ({
   const pageSlugById = useCustomPageSlugById();
   const projectSlugById = useProjectSlugById();
 
-  if (!navbarItems || !pageSlugById || !projectSlugById) {
+  if (!navbarItems) {
     return null;
   }
 
