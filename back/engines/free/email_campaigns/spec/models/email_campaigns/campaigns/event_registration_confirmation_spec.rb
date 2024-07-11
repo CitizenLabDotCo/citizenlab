@@ -48,9 +48,9 @@ RSpec.describe EmailCampaigns::Campaigns::EventRegistrationConfirmation do
       before { event.update!(location_point: 'POINT (1.0 2.0)') }
 
       it 'can be processed by ActiveJob', :active_job_que_adapter do
-        stub_const 'TestJob', Class.new(ApplicationJob) do
+        stub_const 'TestJob', (Class.new(ApplicationJob) do
           def run(commands); end
-        end
+        end)
 
         commands = campaign.generate_commands(recipient: recipient, activity: activity)
 

@@ -23,9 +23,9 @@ RSpec.describe SphericalPointImplActiveJobSerializer do
 
   describe 'integration with ActiveJob', :active_job_que_adapter do
     before do
-      stub_const 'TestJob', Class.new(ApplicationJob) do
+      stub_const 'TestJob', (Class.new(ApplicationJob) do
         def run(point); end
-      end
+      end)
     end
 
     it 'correctly processes passed point object' do
