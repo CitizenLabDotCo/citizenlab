@@ -69,8 +69,7 @@ const Svg = ({
       width={width}
       fill={fill}
       transform={transform}
-      // https://www.tpgi.com/using-aria-enhance-svg-accessibility/
-      aria-labelledby={titleId}
+      {...(title ? { 'aria-labelledby': titleId } : {})}
       {...rest}
     >
       {title && <title id={titleId}>{title}</title>}
