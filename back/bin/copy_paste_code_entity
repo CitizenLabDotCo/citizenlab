@@ -33,10 +33,11 @@ def replace_name(content, source_code_entity, target_code_entity)
   content.gsub(source_code_entity, target_code_entity)
     .gsub(source_code_entity.camelize, target_code_entity.camelize)
     .gsub(source_code_entity.camelize(:lower), target_code_entity.camelize(:lower))
+    .gsub(source_code_entity.upcase, target_code_entity.upcase)
 end
 
 def includes_name?(content, name)
-  content.match?(/#{name}|#{name.camelize}|#{name.camelize(:lower)}/)
+  content.match?(/#{name}|#{name.camelize}|#{name.camelize(:lower)}|#{name.upcase}/)
 end
 
 FileUtils.chdir APP_ROOT do
