@@ -920,7 +920,5 @@ describe Permissions::UserRequirementsService do
       expect(fields.first.key).to eq 'gender'
       expect(fields.first.required).to eq true
     end
-
-
   end
 end
