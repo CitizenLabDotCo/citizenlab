@@ -16,7 +16,6 @@ describe Permissions::UserRequirementsService do
       create(:custom_field_gender, required: false)
       create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
       create(:custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field')
-      Permissions::PermissionsFieldsService.new.create_or_update_default_fields
     end
 
     let(:user) do
@@ -894,7 +893,6 @@ describe Permissions::UserRequirementsService do
 
     before do
       create(:custom_field_gender, enabled: true, required: false)
-      Permissions::PermissionsFieldsService.new.create_or_update_default_fields
       Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(
         permission: permission,
         previous_permitted_by: 'user'

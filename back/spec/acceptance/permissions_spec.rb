@@ -11,7 +11,6 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    Permissions::PermissionsFieldsService.new.create_or_update_default_fields
   end
 
   let(:project_id) { @project.id }

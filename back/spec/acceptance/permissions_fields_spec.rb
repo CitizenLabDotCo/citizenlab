@@ -52,14 +52,16 @@ resource 'PermissionsField' do
 
       example 'List all default permissions fields of a "user" permission' do
         SettingsService.new.activate_feature! 'custom_permitted_by'
-        Permissions::PermissionsFieldsService.new.create_or_update_default_fields
+        custom_field = create(:custom_field_gender, required: false, enabled: true)
 
         do_request
 
         assert_status 200
-        expect(response_data.size).to eq 2
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
-        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email]
+        expect(response_data.size).to eq 3
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true, false]
+        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email custom_field]
+        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id, permission.id]
+        expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
       end
     end
   end
@@ -72,7 +74,7 @@ resource 'PermissionsField' do
 
       expect(response_data[:id]).to eq id
       expect(response_data.dig(:attributes, :created_at)).to be_present
-      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config ordering locked created_at updated_at])
+      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config ordering locked title_multiloc created_at updated_at])
     end
   end
 

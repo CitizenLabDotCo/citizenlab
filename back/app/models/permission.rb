@@ -54,20 +54,20 @@ class Permission < ApplicationRecord
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
 
-  def permissions_fields
-    # To support the old permitted_by values and screens
-    return super.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
-
-    # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
-    return super if permitted_by == 'custom'
-
-    # Admins and moderators should require the same platform level fields as 'users'
-    visiting_permitted_by = permitted_by == 'admins_moderators' ? 'users' : permitted_by
-
-    # TODO: JS - Is there a more efficient way to do this? Can we cache the visiting actions? Do we need to?
-    permission = Permission.find_by(action: 'visiting', permitted_by: visiting_permitted_by)
-    PermissionsField.where(permission: permission)
-  end
+  # def permissions_fields
+  #   # To support the old permitted_by values and screens
+  #   return super.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
+  #
+  #   # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
+  #   return super if permitted_by == 'custom'
+  #
+  #   # Admins and moderators should require the same platform level fields as 'users'
+  #   visiting_permitted_by = permitted_by == 'admins_moderators' ? 'users' : permitted_by
+  #
+  #   # TODO: JS - Is there a more efficient way to do this? Can we cache the visiting actions? Do we need to?
+  #   permission = Permission.find_by(action: 'visiting', permitted_by: visiting_permitted_by)
+  #   PermissionsField.where(permission: permission)
+  # end
 
   def global_custom_fields
     return false if permitted_by == 'custom'

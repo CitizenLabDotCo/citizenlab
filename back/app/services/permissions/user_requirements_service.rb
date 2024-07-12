@@ -7,7 +7,7 @@ class Permissions::UserRequirementsService
   end
 
   def requirements(permission, user)
-    requirements = custom_permitted_by_enabled? ? base_requirements_new(permission) : base_requirements(permission)
+    requirements = base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
@@ -20,10 +20,10 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    if permission.global_custom_fields && !custom_permitted_by_enabled?
+    if permission.global_custom_fields && !permissions_fields_service.custom_permitted_by_enabled?
       registration_fields
     else
-      permission.permissions_fields.where(field_type: 'custom_field').map do |permissions_field|
+      permissions_fields_service.fields_for_permission(permission).select { |f| f[:field_type] == 'custom_field' }.map do |permissions_field|
         permissions_field.custom_field.tap do |field|
           field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
           field.required = permissions_field.required
@@ -58,6 +58,9 @@ class Permissions::UserRequirementsService
   end
 
   def base_requirements(permission)
+    return base_requirements_new(permission) if permissions_fields_service.custom_permitted_by_enabled?
+
+    # Legacy requirements - without custom permitted_by
     everyone = base_requirements_template(permission)
 
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
@@ -98,8 +101,9 @@ class Permissions::UserRequirementsService
     base = base_requirements_template(permission)
     return base if permission.permitted_by == 'everyone'
 
-    email_field = permission.permissions_fields.find_by(field_type: 'email')
-    name_field = permission.permissions_fields.find_by(field_type: 'name')
+    fields = permissions_fields_service.fields_for_permission(permission)
+    email_field = fields.find { |f| f[:field_type] == 'email' }
+    name_field = fields.find { |f| f[:field_type] == 'name' }
 
     base.deep_dup.tap do |requirements|
       requirements[:built_in][:first_name] = name_field.enabled ? 'require' : 'dont_ask'
@@ -167,8 +171,8 @@ class Permissions::UserRequirementsService
     @registration_fields ||= CustomField.registration.enabled.order(:ordering)
   end
 
-  def custom_permitted_by_enabled?
-    @custom_permitted_by_enabled ||= app_configuration.feature_activated?('custom_permitted_by')
+  def permissions_fields_service
+    @permission_fields_service ||= Permissions::PermissionsFieldsService.new
   end
 end
 

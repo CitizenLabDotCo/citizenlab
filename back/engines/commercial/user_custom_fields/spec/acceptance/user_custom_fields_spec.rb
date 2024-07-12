@@ -165,7 +165,6 @@ resource 'User Custom Fields' do
         let(:enabled) { custom_field.enabled }
 
         example 'Create an enabled custom field' do
-          Permissions::PermissionsFieldsService.new.create_or_update_default_fields
           current_permission_field_count = PermissionsField.all.count
 
           do_request
@@ -233,9 +232,6 @@ resource 'User Custom Fields' do
         before { field } # Ensure field created before example runs
 
         example 'Update & enable a custom field' do
-          Permissions::PermissionsFieldsService.new.create_or_update_default_fields
-          current_permission_field_count = PermissionsField.all.count
-
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
@@ -243,9 +239,6 @@ resource 'User Custom Fields' do
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :required)).to match required
           expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
-          # It also adds permissions fields when enabled
-          expect(PermissionsField.all.count).to be > current_permission_field_count
-          expect(PermissionsField.all.pluck(:custom_field_id)).to include id
         end
       end
 
@@ -256,9 +249,6 @@ resource 'User Custom Fields' do
         before { field } # Ensure field created before example runs
 
         example 'Update & disable a custom field' do
-          Permissions::PermissionsFieldsService.new.create_or_update_default_fields
-          current_permission_field_count = PermissionsField.all.count
-
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
@@ -266,9 +256,6 @@ resource 'User Custom Fields' do
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :required)).to match required
           expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
-          # It also removes permissions fields when disabled
-          expect(PermissionsField.all.count).to be < current_permission_field_count
-          expect(PermissionsField.all.pluck(:custom_field_id)).not_to include id
         end
       end
 
