@@ -1,3 +1,5 @@
+import { Multiloc } from 'typings';
+
 import {
   IGlobalPermissionAction,
   IPhasePermissionAction,
@@ -55,6 +57,7 @@ export interface IPermissionsFieldData {
     locked: boolean;
     ordering: number;
     required: boolean;
+    title_multiloc?: Multiloc;
     updated_at: string;
   };
   relationships: {

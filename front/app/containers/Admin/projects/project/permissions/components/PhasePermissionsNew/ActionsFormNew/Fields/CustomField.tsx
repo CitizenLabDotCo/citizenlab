@@ -11,7 +11,6 @@ import {
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import useDeletePermissionsField from 'api/permissions_fields/useDeletePermissionsField';
-import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -27,8 +26,6 @@ interface Props {
 }
 
 const CustomField = ({ field, phaseId, action }: Props) => {
-  const customFieldId = field.relationships.custom_field.data?.id;
-  const { data: customField } = useUserCustomField(customFieldId);
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,7 +35,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
     action,
   });
 
-  const fieldName = localize(customField?.data.attributes.title_multiloc);
+  const fieldName = localize(field.attributes.title_multiloc);
 
   return (
     <>
