@@ -2,14 +2,23 @@
 # https://api.rubyonrails.org/classes/ActiveJob/Serializers/ObjectSerializer.html
 class SphericalPointImplActiveJobSerializer < ActiveJob::Serializers::ObjectSerializer
   def serialize(point)
-    super(
+    hash = {
       'x' => point.x,
       'y' => point.y
-    )
+    }
+    hash['z'] = point.z if point.z
+    hash['m'] = point.m if point.m
+
+    super(hash)
   end
 
   def deserialize(hash)
-    RGeo::Geographic.spherical_factory(srid: 4326).point(hash['x'], hash['y'])
+    factory = RGeo::Geographic.spherical_factory(srid: 4326, has_z_coordinate: !!hash['z'], has_m_coordinate: !!hash['m'])
+    attrs = [hash['x'], hash['y']]
+    attrs << hash['z'] if hash['z']
+    attrs << hash['m'] if hash['m']
+
+    factory.point(*attrs)
   end
 
   private
