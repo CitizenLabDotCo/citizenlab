@@ -50,6 +50,10 @@ class PermissionsField < ApplicationRecord
     field_type == 'custom_field'
   end
 
+  def title_multiloc
+    custom_field&.title_multiloc || {}
+  end
+
   private
 
   # Validate that which keys are allowed in the config field

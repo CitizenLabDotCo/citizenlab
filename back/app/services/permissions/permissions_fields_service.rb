@@ -2,6 +2,12 @@
 
 module Permissions
   class PermissionsFieldsService
+    def fields_for_permission(permission)
+      return permission.permissions_fields if permission.permitted_by == 'custom'
+
+      default_fields(permitted_by: permission.permitted_by, permission: permission)
+    end
+
     # To be called from rake task when enabling custom_permitted_by feature flag or on tenant creation
     def change_permissions_to_custom
       if custom_permitted_by_enabled?
@@ -28,32 +34,6 @@ module Permissions
           # Save the default fields
           if fields.present?
             fields.each(&:save!)
-          end
-        end
-      end
-    end
-
-    def create_or_update_default_fields
-      %w[users everyone everyone_confirmed_email].each do |permitted_by|
-        permission = Permission.find_or_create_by!(action: 'visiting', permitted_by: permitted_by)
-        fields = default_fields(permitted_by: permitted_by, permission: permission)
-
-        # Save or update the default fields for the 'visiting' permissions
-        fields.each do |field|
-          existing_field = PermissionsField.find_by(permission: permission, field_type: field.field_type, custom_field: field.custom_field)
-          if existing_field
-            existing_field.update!(field.attributes.except('id', 'created_at', 'updated_at', 'locked'))
-          else
-            field.save!
-          end
-        end
-
-        # Remove custom_fields that have been disabled/removed
-        custom_field_ids = fields.select { |f| f.field_type == 'custom_field' }.map(&:custom_field_id)
-        all_fields = permission.permissions_fields
-        all_fields.each do |field|
-          if field.custom_field_id.present? && custom_field_ids.exclude?(field.custom_field_id)
-            field.destroy!
           end
         end
       end

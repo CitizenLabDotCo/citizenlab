@@ -37,8 +37,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :action_descriptors do |object, params|
-    @idea_permissions_service = params[:permissions_service] || Permissions::IdeaPermissionsService.new
-    @idea_permissions_service.action_descriptors object, current_user(params)
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups: false)
+    Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
   has_many :topics
