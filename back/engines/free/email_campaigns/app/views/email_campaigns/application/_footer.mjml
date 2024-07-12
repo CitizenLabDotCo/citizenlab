@@ -36,13 +36,19 @@
 
     <mj-text color="#84939E" padding-bottom="20px">
       <p style="font-size: 12px;">
-        <%= format_message('statement', component: 'footer', escape_html: false, values: {
+        <%= format_message('recipient_statement', component: 'footer', escape_html: false, values: {
           organizationName: organization_name,
-          organizationLink: "<a href='#{home_url}' style='color: #84939E; text-decoration: underline;'>#{app_configuration.host}</a>",
-          unsubscribeLink: "<a href='#{unsubscribe_url(app_configuration, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
+          organizationLink: "<a href='#{home_url}' style='color: #84939E; text-decoration: underline;'>#{app_configuration.host}</a>"
         }) %>
+
+        <% if show_unsubscribe_link? %>
+          <%= format_message('unsubscribe_statement', component: 'footer', escape_html: false, values: {
+            unsubscribeLink: "<a href='#{unsubscribe_url(app_configuration, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
+          }) %>
+        <% end %>
       </p>
     </mj-text>
+
     <% unless remove_vendor_branding? %>
       <mj-text color="#84939E">
         <span style="font-style: italic;
