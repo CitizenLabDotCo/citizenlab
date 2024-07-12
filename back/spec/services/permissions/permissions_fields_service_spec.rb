@@ -103,4 +103,37 @@ describe Permissions::PermissionsFieldsService do
       end
     end
   end
+
+  describe '#create_default_fields_for_custom_permitted_by' do
+    let(:permission) { create(:permission, permitted_by: 'custom') }
+
+    context 'permitted_by is "custom" and has no fields' do
+      it 'creates default fields for the permission in the correct order' do
+        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+        fields = permission.permissions_fields
+        expect(fields.count).to eq 3
+        expect(fields.pluck(:field_type)).to eq %w[name email custom_field]
+        expect(fields.pluck(:ordering)).to eq [0, 1, 2]
+        expect(fields.pluck(:required)).to eq [true, true, false]
+      end
+    end
+
+    context 'permitted_by is not "custom"' do
+      it 'does nothing' do
+        permission.update!(permitted_by: 'users')
+        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+        expect(permission.permissions_fields).to be_empty
+      end
+    end
+
+    context 'permission already has fields' do
+      it 'does not add fields' do
+        service.create_default_fields_for_custom_permitted_by(permission: permission)
+        num_permissions_fields = permission.permissions_fields.count
+
+        service.create_default_fields_for_custom_permitted_by(permission: permission)
+        expect(permission.permissions_fields.count).to eq num_permissions_fields
+      end
+    end
+  end
 end
