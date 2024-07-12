@@ -151,11 +151,8 @@ resource 'PermissionsField' do
       example '[Error] Field cannot be reordered' do
         do_request
 
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
-        expect(PermissionsField.order(:ordering)[1].id).to eq id
-        expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
+        expect(response_status).to eq 422
+        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{:error=>"only field types of custom_field can be reordered"}]
       end
     end
   end
