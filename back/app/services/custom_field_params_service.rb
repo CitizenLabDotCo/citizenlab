@@ -27,7 +27,8 @@ class CustomFieldParamsService
   end
 
   def extract_custom_field_values_from_params!(params, custom_fields)
-    custom_field_params = params.dig(params.keys[0], :custom_field_values) || params
+    custom_field_params = params.dig(:idea, :custom_field_values) || params.dig(:user, :custom_field_values)
+    custom_field_params ||= params
     strong_custom_field_params = custom_field_params.permit(custom_field_values_params(custom_fields))
 
     weak_custom_field_params = {}
