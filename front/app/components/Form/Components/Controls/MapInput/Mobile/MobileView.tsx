@@ -20,6 +20,7 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
+import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
   checkCoordinateErrors,
   clearPointData,
@@ -142,6 +143,12 @@ const MobileView = ({
             }}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
           />
+          {inputType !== 'point' && data && (
+            <RemoveAnswerButton
+              mapView={mapView}
+              handleMultiPointChange={handleMultiPointChange}
+            />
+          )}
         </Box>
       </Box>
       <ErrorDisplay

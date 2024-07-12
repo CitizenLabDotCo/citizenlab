@@ -51,8 +51,8 @@ export default defineMessages({
       'Click on the map or type an address below to add your answer.',
   },
   clickOnMapMultipleToAdd: {
-    id: 'app.components.form.controls.clickOnMapMultipleToAdd',
-    defaultMessage: 'Click on the map multiple times to add your answer.',
+    id: 'app.components.form.controls.clickOnMapMultipleToAdd2',
+    defaultMessage: 'Click on the map to draw.',
   },
   addressInputAriaLabel: {
     id: 'app.components.form.controls.addressInputAriaLabel',

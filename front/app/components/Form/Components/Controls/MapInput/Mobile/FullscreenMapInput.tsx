@@ -102,14 +102,9 @@ const FullscreenMapInput = memo<Props>(
       [handleMultiPointChange, handlePointChange, inputType]
     );
 
-    // Add undo and reset buttons to the map
+    // Add custom UI elements to the map
     useEffect(() => {
-      if (inputType === 'point') {
-        mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
-      } else {
-        mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
-        mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
-      }
+      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
     }, [
       id,
@@ -205,15 +200,6 @@ const FullscreenMapInput = memo<Props>(
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
               />
               <Box>
-                {inputType !== 'point' && (
-                  <UndoButton
-                    handleMultiPointChange={handleMultiPointChange}
-                    mapView={mapView}
-                    undoButtonRef={undoButtonRef}
-                    undoEnabled={data}
-                    inputType={inputType}
-                  />
-                )}
                 <ResetMapViewButton
                   resetButtonRef={resetButtonRef}
                   mapConfig={mapConfig}
@@ -262,13 +248,25 @@ const FullscreenMapInput = memo<Props>(
                   width="100vw"
                   justifyContent="flex-end"
                 >
-                  <Button
-                    icon="arrow-left"
-                    buttonStyle="secondary-outlined"
-                    onClick={handleBack}
-                  >
-                    {formatMessage(messages.back)}
-                  </Button>
+                  {!data && (
+                    <Button
+                      icon="arrow-left"
+                      buttonStyle="secondary-outlined"
+                      onClick={handleBack}
+                    >
+                      {formatMessage(messages.back)}
+                    </Button>
+                  )}
+                  {data && inputType !== 'point' && (
+                    <UndoButton
+                      handleMultiPointChange={handleMultiPointChange}
+                      mapView={mapView}
+                      undoButtonRef={undoButtonRef}
+                      undoEnabled={data}
+                      inputType={inputType}
+                      buttonStyle="secondary"
+                    />
+                  )}
                   <Button
                     mr="20px"
                     onClick={() => {

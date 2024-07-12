@@ -7,6 +7,7 @@ import {
   Box,
   colors,
   Tooltip,
+  ButtonStyles,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,6 +22,7 @@ type UndoButtonProps = {
   undoEnabled: boolean;
   inputType: 'point' | 'line' | 'polygon';
   undoButtonRef?: RefObject<HTMLDivElement>;
+  buttonStyle?: ButtonStyles;
 };
 const UndoButton = ({
   undoButtonRef,
@@ -28,6 +30,7 @@ const UndoButton = ({
   mapView,
   undoEnabled,
   inputType,
+  buttonStyle,
 }: UndoButtonProps) => {
   const { formatMessage } = useIntl();
   const [disabled, setDisabled] = useState(true);
@@ -59,7 +62,7 @@ const UndoButton = ({
       {(inputType === 'line' || inputType === 'polygon') && (
         <Tooltip
           maxWidth="250px"
-          placement="right"
+          placement={buttonStyle ? 'top' : 'right'}
           content={formatMessage(messages.undo)}
           hideOnClick={true}
         >
@@ -69,18 +72,21 @@ const UndoButton = ({
               onClick={() => {
                 undoLatest();
               }}
-              width="32px"
-              height="32px"
-              buttonStyle="white"
-              iconColor={colors.coolGrey500}
-              bgHoverColor={colors.grey100}
+              width={buttonStyle ? undefined : '32px'}
+              height={buttonStyle ? undefined : '32px'}
+              buttonStyle={buttonStyle || 'white'}
+              iconColor={buttonStyle ? undefined : colors.coolGrey500}
+              bgHoverColor={buttonStyle ? undefined : colors.grey100}
               opacityDisabled="0.6"
-              borderRadius="0px"
-              padding="7px"
-              iconSize="20px"
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
+              borderRadius={buttonStyle ? undefined : '0px'}
+              padding={buttonStyle ? undefined : '7px'}
+              iconSize={buttonStyle ? undefined : '20px'}
+              boxShadow={
+                buttonStyle ? undefined : '0px 2px 2px rgba(0, 0, 0, 0.2)'
+              }
               disabled={disabled}
-              aria-label={formatMessage(messages.undo)}
+              text={buttonStyle ? formatMessage(messages.undo) : undefined}
+              aria-label={formatMessage(messages.undoLastPoint)}
             />
           </div>
         </Tooltip>

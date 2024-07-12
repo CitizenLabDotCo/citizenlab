@@ -21,6 +21,7 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import ErrorDisplay from '../../../ErrorDisplay';
 import InstructionAnimation from '../components/InstructionAnimation';
 import LocationTextInput from '../components/LocationTextInput';
+import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
@@ -165,6 +166,12 @@ const DesktopView = ({
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
           />
+          {inputType !== 'point' && data && (
+            <RemoveAnswerButton
+              mapView={mapView}
+              handleMultiPointChange={handleMultiPointChange}
+            />
+          )}
           <Box>
             {inputType !== 'point' && (
               <UndoButton
