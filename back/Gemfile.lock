@@ -148,6 +148,14 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_id_austria
+  specs:
+    id_id_austria (0.1.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+      verification
+
+PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -1292,6 +1300,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
+  id_id_austria!
   id_id_card_lookup!
   id_nemlog_in!
   id_oostende_rrn!

@@ -11,11 +11,11 @@ module IdIdAustria
     end
 
     def self.feature_title
-      'MitID (IdAustria) Login'
+      'ID Austria Login'
     end
 
     def self.feature_description
-      'Allow users to authenticate with a MitID (via IdAustria) account.'
+      'Allow users to authenticate with a ID Austria account.'
     end
 
     def self.allowed_by_default

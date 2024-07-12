@@ -4,37 +4,27 @@ module IdIdAustria
   module IdAustriaVerification
     include Verification::VerificationMethod
 
-    DK_MIT_ID = 'DK MitID'
-    DEFAULT_UID_FIELD_PATTERN = '%{uuid}'
-
     def verification_method_type
       :omniauth
     end
 
     def id
-      '5768eff0-05ce-5f55-a657-3284d38d102a'
+      '91068f8a-c4a5-4fc8-ab3e-ca2eb74f9c3c'
     end
 
     def name
       'id_austria'
     end
 
-    def name_for_hashing
-      config[:method_name_for_hashing].presence || config[:identity_source].presence || super
-    end
-
     def config_parameters
       %i[
-        identity_source
         birthday_custom_field_key
         birthyear_custom_field_key
         municipality_code_custom_field_key
-        domain
+        environment
         client_id
         client_secret
         method_name_multiloc
-        uid_field_pattern
-        method_name_for_hashing
         minimum_age
       ]
     end
@@ -44,12 +34,6 @@ module IdIdAustria
         method_name_multiloc: {
           '$ref': '#/definitions/multiloc_string',
           description: 'The name this verification method will have in the UI'
-        },
-        identity_source: {
-          private: true,
-          type: 'string',
-          description: 'Which identity source is configured in IdAustria?',
-          enum: [DK_MIT_ID]
         },
         birthday_custom_field_key: {
           private: true,
@@ -64,18 +48,13 @@ module IdIdAustria
         municipality_code_custom_field_key: {
           private: true,
           type: 'string',
-          description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
+          description: 'The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
         },
-        uid_field_pattern: {
+        environment: {
           private: true,
           type: 'string',
-          description: 'Pattern used for getting UID value. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|id_austria-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
-          default: DEFAULT_UID_FIELD_PATTERN
-        },
-        method_name_for_hashing: {
-          private: true,
-          type: 'string',
-          description: 'If present, this method name will be used for hashing. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Leave empty to use the default MitID value. Example: auth0.'
+          enum: %w[test production],
+          description: 'The environment to use for the ID Austria login'
         },
         minimum_age: {
           private: true,
@@ -86,6 +65,7 @@ module IdIdAustria
     end
 
     # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb
+    # TODO: JS - is there a minimum age?
     def entitled?(auth)
       minimum_age = config[:minimum_age]
       return true if minimum_age.blank?
@@ -102,20 +82,22 @@ module IdIdAustria
       ]
     end
 
-    def profile_to_uid(auth)
-      case config[:identity_source]
-      when DK_MIT_ID
-        uid_pattern = config[:uid_field_pattern].presence || DEFAULT_UID_FIELD_PATTERN
-        uid_pattern % auth.extra.raw_info.to_h.symbolize_keys
-      else
-        raise "Unsupported identity source #{config[:identity_source]}"
-      end
-    end
+    # TODO: JS - check if we get back a uuid field from the ID Austria API - won't necessarily notice in dev!
+    # def profile_to_uid(auth)
+    #   case config[:identity_source]
+    #   when DK_MIT_ID
+    #     uid_pattern = config[:uid_field_pattern].presence || DEFAULT_UID_FIELD_PATTERN
+    #     uid_pattern % auth.extra.raw_info.to_h.symbolize_keys
+    #   else
+    #     raise "Unsupported identity source #{config[:identity_source]}"
+    #   end
+    # end
 
     def locked_attributes
       []
     end
 
+    # TODO: JS - which fields are locked?
     def locked_custom_fields
       [
         config[:birthday_custom_field_key].presence,

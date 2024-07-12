@@ -5,34 +5,32 @@ module IdIdAustria
     include IdAustriaVerification
 
     def profile_to_user_attrs(auth)
-      case config[:identity_source]
-      when DK_MIT_ID
-        custom_field_values = {}
+      custom_field_values = {}
 
-        # Handle birthdate
-        # birthdate is already in YYYY-MM-DD, tak Denmark
-        birthdate = auth.extra.raw_info['birthdate']
-        if (birthday_key = config[:birthday_custom_field_key]) && birthdate
-          custom_field_values[birthday_key] = birthdate
-        end
-        if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
-          custom_field_values[birthyear_key] = Date.parse(birthdate).year
-        end
-
-        # Handle municipality_code
-        municipality_code = auth.extra.raw_info.dig('address_details', 'municipality_code')
-        if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code.present?
-          custom_field_values[municipality_code_key] = municipality_code
-        end
-
-        first_name, *last_name = auth.extra.raw_info.name.split
-        {
-          first_name: first_name,
-          last_name: last_name.join(' '),
-          locale: AppConfiguration.instance.closest_locale_to('da-DK'),
-          custom_field_values: custom_field_values
-        }
+      # Handle birthdate
+      # birthdate is already in YYYY-MM-DD
+      # TODO: JS - add in all the fields that are useful to us
+      birthdate = auth.extra.raw_info['birthdate']
+      if (birthday_key = config[:birthday_custom_field_key]) && birthdate
+        custom_field_values[birthday_key] = birthdate
       end
+      if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
+        custom_field_values[birthyear_key] = Date.parse(birthdate).year
+      end
+
+      # Handle municipality_code
+      municipality_code = auth.extra.raw_info.dig('address_details', 'municipality_code')
+      if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code.present?
+        custom_field_values[municipality_code_key] = municipality_code
+      end
+
+      first_name, *last_name = auth.extra.raw_info.name.split
+      {
+        first_name: first_name,
+        last_name: last_name.join(' '),
+        locale: AppConfiguration.instance.closest_locale_to('de-DE'),
+        custom_field_values: custom_field_values
+      }
     end
 
     # @param [AppConfiguration] configuration
@@ -41,28 +39,26 @@ module IdIdAustria
 
       options = env['omniauth.strategy'].options
 
-      # Here we assume IdAustria is configured to use a 'static scope'. In the UI,
-      # in August 2023, the `Enable dynamic scopes` toggle in the `General` tab
-      # of the application needs to be turned off.
-      # More info here: https://docs.id_austria.com/verify/getting-started/oidc-intro/#the-scope-parameter
-      options[:scope] = %i[openid]
+      options[:scope] = %i[openid profile]
 
-      # it gets configuration from the default https://your.id_austria.domain/.well-known/openid-configuration
+      # it gets configuration from the default https://eid2.oesterreich.gv.at/.well-known/openid-configuration
       options[:discovery] = true
 
       options[:response_type] = :code
-      options[:acr_values] = acr_values
+      # options[:acr_values] = acr_values # TODO: JS - check if needed
       options[:issuer] = issuer
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
-        host: config[:domain],
+        scheme: 'https',
+        host: host,
+        port: 443,
         redirect_uri: "#{configuration.base_backend_uri}/auth/id_austria/callback"
       }
     end
 
     def email_always_present?
-      false
+      false # TODO: JS - check if email is always returned?
     end
 
     def verification_prioritized?
@@ -70,7 +66,7 @@ module IdIdAustria
     end
 
     def email_confirmed?(_auth)
-      false
+      true
     end
 
     def filter_auth_to_persist(_auth)
@@ -81,6 +77,7 @@ module IdIdAustria
     end
 
     def logout_url(_user)
+      # TODO: JS - is there a logout URL? Or can we remove completely?
       # We don't need to logout from IdAustria, we set this URL only to refresh UI on our side.
       # Otherwise, the "Sign up" modal is shown after signout.
       # Steps to reproduce:
@@ -91,20 +88,28 @@ module IdIdAustria
       Frontend::UrlService.new.home_url
     end
 
+    def host
+      case AppConfiguration.instance.settings('id_austria', 'environment')
+      when 'test'
+        'eid2.oesterreich.gv.at'
+      when 'production'
+        'eid.oesterreich.gv.at'
+      end
+    end
+
     def issuer
-      "https://#{config[:domain]}"
+      "https://#{host}"
     end
 
     private
 
-    # See https://docs.id_austria.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
-    def acr_values
-      case config[:identity_source]
-      when DK_MIT_ID
-        'urn:grn:authn:dk:mitid:substantial'
-      else
-        raise "Unsupported identity source #{config[:identity_source]}"
-      end
-    end
+    # def acr_values
+    #   case config[:identity_source]
+    #   when DK_MIT_ID
+    #     'urn:grn:authn:dk:mitid:substantial'
+    #   else
+    #     raise "Unsupported identity source #{config[:identity_source]}"
+    #   end
+    # end
   end
 end
