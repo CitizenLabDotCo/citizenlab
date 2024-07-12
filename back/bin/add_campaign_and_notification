@@ -3,15 +3,13 @@
 # Usage:
 # back/bin/add_campaign_and_notification initiative_resubmitted_for_review new_cosponsor_added
 #
-# First argument is the name of a campaign (underscored) that should be used as an example (source).
-# Second argument is the name of a campaign (underscored) that should be added (target).
+# First argument is the name of a code entity (underscored) that should be used as an example (source).
+# Second argument is the name of a code entity (underscored) that should be added (target).
 #
-# This script copies all git-added files containing the name of the source campaign
-# and replaces the source campaign name with the target campaign name.
-# In all git-added files that contain a line with the source campaign name, it adds the same line,
-# but with the target campaign name.
-#
-# Despite its name, this script can be used in general to copy-paste any code, not only campaigns.
+# This script copies all git-added files containing the name of the source name
+# and replaces the source code entity name with the target source entity name.
+# In all git-added files that contain a line with the source code entity name, it adds the same line,
+# but with the target code entity name.
 #
 # Requirements:
 # - Ruby and installed activesupport gem
@@ -27,29 +25,28 @@ def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
 end
 
-source_campaign = ARGV[0] # underscored
-target_campaign = ARGV[1] # underscored
+source_code_entity = ARGV[0] # underscored
+target_code_entity = ARGV[1] # underscored
 
-def replace_campaign(content, source_campaign, target_campaign)
-  content.gsub(source_campaign, target_campaign)
-    .gsub(source_campaign.camelize, target_campaign.camelize)
-    .gsub(source_campaign.camelize(:lower), target_campaign.camelize(:lower))
+def replace_name(content, source_code_entity, target_code_entity)
+  content.gsub(source_code_entity, target_code_entity)
+    .gsub(source_code_entity.camelize, target_code_entity.camelize)
+    .gsub(source_code_entity.camelize(:lower), target_code_entity.camelize(:lower))
 end
 
-def includes_campaign?(content, campaign)
-  content.match?(/#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}/)
-
+def includes_name?(content, name)
+  content.match?(/#{name}|#{name.camelize}|#{name.camelize(:lower)}/)
 end
 
 FileUtils.chdir APP_ROOT do
   all_files = `git ls-files`.split("\n")
-  new_files = all_files.select { |file| includes_campaign?(file, source_campaign) }
+  new_files = all_files.select { |file| includes_name?(file, source_code_entity) }
 
   new_files.each do |source_file|
-    result_file = replace_campaign(source_file, source_campaign, target_campaign)
+    result_file = replace_name(source_file, source_code_entity, target_code_entity)
     FileUtils.mkdir_p File.dirname(result_file)
 
-    result_content = replace_campaign(File.read(source_file), source_campaign, target_campaign)
+    result_content = replace_name(File.read(source_file), source_code_entity, target_code_entity)
 
     File.write(result_file, result_content)
   end
@@ -59,7 +56,7 @@ FileUtils.chdir APP_ROOT do
       (file.include?('/translations/') && !file.include?('/translations/en.json'))
       false
     else
-      includes_campaign?(File.read(file), source_campaign)
+      includes_name?(File.read(file), source_code_entity)
     end
   rescue ArgumentError => e
     raise unless e.message == 'invalid byte sequence in UTF-8'
@@ -68,8 +65,8 @@ FileUtils.chdir APP_ROOT do
   files_to_edit.each do |file|
     lines = File.read(file).split("\n")
     content = lines.each_with_index do |line, i|
-      if includes_campaign?(line, source_campaign)
-        lines[i] = [replace_campaign(line, source_campaign, target_campaign), line].join("\n")
+      if includes_name?(line, source_code_entity)
+        lines[i] = [replace_name(line, source_code_entity, target_code_entity), line].join("\n")
       end
     end.join("\n") + "\n"
     File.write(file, content)
