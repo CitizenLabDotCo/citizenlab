@@ -310,7 +310,27 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params(custom_form, user_can_moderate_project)
+    idea_params = params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+    weak_custom_field_params(custom_form).each { |k, v| idea_params[:custom_field_values][k] = v }
+
+    idea_params
+  end
+
+  def strong_idea_params(custom_form, user_can_moderate_project)
     params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+  end
+
+  def weak_custom_field_params(custom_form)
+    all_params = params.require(:idea).permit!
+    weak_custom_field_params = {}
+
+    allowed_custom_fields(custom_form).each do |cf|
+      next unless cf.input_type == 'line' || cf.input_type == 'polygon'
+
+      weak_custom_field_params[cf.key] = all_params[:custom_field_values][cf.key]
+    end
+
+    weak_custom_field_params
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
@@ -341,7 +361,7 @@ class WebApi::V1::IdeasController < ApplicationController
       location_point_geojson: [:type, { coordinates: [] }]
     }
 
-    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
+    allowed_custom_fields = allowed_custom_fields(custom_form)
     custom_field_values_params = params_service.custom_field_values_params(allowed_custom_fields)
     if custom_field_values_params.any?
       complex_attributes[:custom_field_values] = custom_field_values_params
@@ -364,6 +384,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def submittable_custom_fields(custom_form)
     IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
+  end
+
+  def allowed_custom_fields(custom_form)
+    submittable_custom_fields(custom_form).reject(&:built_in?)
   end
 
   def authorize_project_or_ideas
