@@ -122,22 +122,41 @@ resource 'PermissionsField' do
 
     before do
       permission = create(:permission, action: 'commenting_idea', permitted_by: 'custom')
-      @permissions_fields = create_list(:permissions_field, 3, permission: permission)
+      @permissions_fields =
+        [create(:permissions_field, permission: permission, field_type: 'name')] +
+          create_list(:permissions_field, 3, permission: permission)
     end
 
     let(:permissions_field) { create(:permissions_field, required: false) }
-    let(:id) { @permissions_fields.last.id }
-    let(:ordering) { 1 }
 
-    example 'Reorder a permissions field' do
-      expect(@permissions_fields.last.ordering).to eq 2
+    context 'Field can be reordered' do
+      let(:id) { @permissions_fields.last.id }
+      let(:ordering) { 1 }
 
-      do_request
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
-      expect(PermissionsField.order(:ordering)[1].id).to eq id
-      expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
+      example 'Reorder a permissions field' do
+        expect(@permissions_fields.last.ordering).to eq 3
+
+        do_request
+        expect(response_status).to eq 200
+        expect(response_data.dig(:attributes, :ordering)).to match ordering
+        expect(PermissionsField.order(:ordering)[1].id).to eq id
+        expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..3).to_a
+      end
+    end
+
+    context 'Field cannot be reordered' do
+      let(:id) { @permissions_fields.first.id }
+      let(:ordering) { 3 }
+
+      example '[Error] Field cannot be reordered' do
+        do_request
+
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
+        expect(PermissionsField.order(:ordering)[1].id).to eq id
+        expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
+      end
     end
   end
 

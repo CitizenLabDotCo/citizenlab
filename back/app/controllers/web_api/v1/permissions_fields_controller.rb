@@ -57,10 +57,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def reorder
-    # TODO: JS - add block on reorder for built-in fields
-    # can_be_reordered? is a method we can use in the PermissionsField model
     authorize @permissions_field
-    if @permissions_field.insert_at(permission_params_for_update[:ordering])
+    @permissions_field.errors.add(:permissions_field, 'only field types of custom_field can be reordered') unless @permissions_field.can_be_reordered?
+
+    if @permissions_field.can_be_reordered? && @permissions_field.insert_at(permission_params_for_update[:ordering])
       render json: WebApi::V1::PermissionsFieldSerializer.new(
         @permissions_field,
         params: jsonapi_serializer_params
