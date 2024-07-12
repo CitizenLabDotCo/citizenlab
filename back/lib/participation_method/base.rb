@@ -134,6 +134,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_serializing?(_attribute)
+      false
+    end
+
     # Should an admin be able to set permissions for disabled actions?
     def return_disabled_actions?
       false

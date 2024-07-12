@@ -190,6 +190,18 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#supports_serializing?' do
+    it 'returns false for all attributes' do
+      %i[
+          voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count 
+          voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+          native_survey_title_multiloc native_survey_button_multiloc
+        ].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be false
+        end
+    end
+  end
+
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.size).to be 8
