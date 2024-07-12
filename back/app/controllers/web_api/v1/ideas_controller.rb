@@ -312,7 +312,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_params(custom_form, user_can_moderate_project)
     idea_params = params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
 
-    allowed_custom_fields = allowed_custom_fields(custom_form)
+    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
     custom_field_values = params_service.extract_custom_field_values_from_params!(params, allowed_custom_fields)
     idea_params[:custom_field_values] = custom_field_values || {}
 
@@ -364,10 +364,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def submittable_custom_fields(custom_form)
     IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
-  end
-
-  def allowed_custom_fields(custom_form)
-    submittable_custom_fields(custom_form).reject(&:built_in?)
   end
 
   def authorize_project_or_ideas
