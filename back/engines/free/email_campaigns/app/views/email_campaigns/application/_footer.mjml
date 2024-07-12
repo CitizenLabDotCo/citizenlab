@@ -5,28 +5,28 @@
       <% if show_unsubscribe_link? %>
         <a
           href="<%= unsubscribe_url(app_configuration, campaign.id, user.id) %>"
-          style="color: #84939E; text-decoration: none; margin-right: 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_unsubscribe', component: 'footer') %>
         </a>
-        |
+        <span style="margin: 0 10px;">|</span>
       <% end %>
 
       <% if show_terms_link? %>
         <a
           href="<%= terms_conditions_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin: 0 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_terms_conditions', component: 'footer') %>
         </a>
-        |
+      <span style="margin: 0 10px;">|</span>
       <% end %>
 
 
       <% if show_privacy_policy_link? %>
         <a
           href="<%= privacy_policy_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin-left: 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_privacy_policy', component: 'footer') %>
         </a>
