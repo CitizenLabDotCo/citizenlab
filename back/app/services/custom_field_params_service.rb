@@ -11,6 +11,8 @@ class CustomFieldParamsService
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
       when 'point'
         fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
+      when 'line', 'polygon'
+        nil
       when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
         fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
       else
