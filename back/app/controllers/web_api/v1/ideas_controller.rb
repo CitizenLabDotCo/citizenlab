@@ -310,27 +310,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params(custom_form, user_can_moderate_project)
-    idea_params = strong_idea_params(custom_form, user_can_moderate_project)
-    weak_custom_field_params(custom_form).each { |k, v| idea_params[:custom_field_values][k] = v }
+    idea_params = params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+
+    allowed_custom_fields = allowed_custom_fields(custom_form)
+    custom_field_values = params_service.extract_custom_field_values_from_params!(params, allowed_custom_fields)
+    idea_params[:custom_field_values] = custom_field_values || {}
 
     idea_params
-  end
-
-  def strong_idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
-  end
-
-  def weak_custom_field_params(custom_form)
-    all_params = params.require(:idea).permit!
-    weak_custom_field_params = {}
-
-    allowed_custom_fields(custom_form).each do |custom_field|
-      next unless custom_field.input_type == 'line' || custom_field.input_type == 'polygon'
-
-      weak_custom_field_params[custom_field.key] = all_params[:custom_field_values][custom_field.key]
-    end
-
-    weak_custom_field_params
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
@@ -356,16 +342,10 @@ class WebApi::V1::IdeasController < ApplicationController
     simple_attributes
   end
 
-  def idea_complex_attributes(custom_form, submittable_field_keys)
+  def idea_complex_attributes(_custom_form, submittable_field_keys)
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
-
-    allowed_custom_fields = allowed_custom_fields(custom_form)
-    custom_field_values_params = params_service.custom_field_values_params(allowed_custom_fields)
-    if custom_field_values_params.any?
-      complex_attributes[:custom_field_values] = custom_field_values_params
-    end
 
     if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES

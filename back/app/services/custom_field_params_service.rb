@@ -24,14 +24,27 @@ class CustomFieldParamsService
     end
   end
 
-  def extract_custom_field_values_from_params!(params, fields)
-    extra_field_values = fields.each_with_object({}) do |field, accu|
-      next if field.built_in?
+  def extract_custom_field_values_from_params!(params, custom_fields)
+    custom_field_params = params.dig(:idea, :custom_field_values) || params
+    strong_custom_field_params = custom_field_params.permit(custom_field_values_params(custom_fields))
 
-      given_value = params.delete field.key
-      next if !given_value || !field.enabled?
+    weak_custom_field_params = {}
 
-      accu[field.key] = given_value
+    custom_fields.each do |custom_field|
+      next unless custom_field.input_type == 'line' || custom_field.input_type == 'polygon'
+
+      weak_custom_field_params[custom_field.key] = custom_field_params[custom_field.key].permit!
+    end
+
+    custom_field_params = strong_custom_field_params.merge(weak_custom_field_params)
+
+    extra_field_values = custom_fields.each_with_object({}) do |custom_field, accu|
+      next if custom_field.built_in?
+
+      given_value = custom_field_params.delete custom_field.key
+      next if !given_value || !custom_field.enabled?
+
+      accu[custom_field.key] = given_value
     end
 
     reject_other_text_values(extra_field_values)
