@@ -310,7 +310,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params(custom_form, user_can_moderate_project)
-    idea_params = params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+    idea_params = strong_idea_params(custom_form, user_can_moderate_project)
     weak_custom_field_params(custom_form).each { |k, v| idea_params[:custom_field_values][k] = v }
 
     idea_params
@@ -324,10 +324,10 @@ class WebApi::V1::IdeasController < ApplicationController
     all_params = params.require(:idea).permit!
     weak_custom_field_params = {}
 
-    allowed_custom_fields(custom_form).each do |cf|
-      next unless cf.input_type == 'line' || cf.input_type == 'polygon'
+    allowed_custom_fields(custom_form).each do |custom_field|
+      next unless custom_field.input_type == 'line' || custom_field.input_type == 'polygon'
 
-      weak_custom_field_params[cf.key] = all_params[:custom_field_values][cf.key]
+      weak_custom_field_params[custom_field.key] = all_params[:custom_field_values][custom_field.key]
     end
 
     weak_custom_field_params
