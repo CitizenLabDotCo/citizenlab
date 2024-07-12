@@ -71,6 +71,10 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
+            id_austria_login: {
+              allowed: true,
+              enabled: true
+            },
             criipto_login: {
               allowed: true,
               enabled: true
@@ -340,6 +344,14 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   method_name_multiloc: { en: 'MitID (Criipto)' }
+                },
+                {
+                  name: 'id_austria',
+                  domain: 'cl-test.id_austria.id',
+                  environment: 'test',
+                  client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
+                  method_name_multiloc: { en: 'ID Austria' }
                 }
               ]
             },

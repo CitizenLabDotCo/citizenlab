@@ -126,6 +126,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  id_austria_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   criipto_login?: {
     allowed: boolean;
     enabled: boolean;

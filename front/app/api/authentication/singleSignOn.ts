@@ -17,6 +17,7 @@ export interface SSOProviderMap {
   google: 'google';
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
+  id_austria: 'id_austria';
   criipto: 'criipto';
 }
 

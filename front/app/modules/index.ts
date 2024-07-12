@@ -20,6 +20,7 @@ import idBogusConfiguration from './commercial/id_bogus';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
+import idIdAustriaConfiguration from './commercial/id_id_austria';
 import idCriiptoConfiguration from './commercial/id_criipto';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
@@ -114,6 +115,9 @@ export default loadModules([
   },
   {
     configuration: idCowConfiguration,
+  },
+  {
+    configuration: idIdAustriaConfiguration,
   },
   {
     configuration: idCriiptoConfiguration,

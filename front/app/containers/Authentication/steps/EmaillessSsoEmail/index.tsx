@@ -37,6 +37,7 @@ interface Props {
   }) => Promise<void>;
 }
 
+// TODO: JS - check if ID austria returns email
 // Some SSO providers don't return the email (ClaveUnica, Criipto MitID). We call such providers "emailless".
 const EmaillessSsoEmail = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();

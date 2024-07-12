@@ -6,6 +6,7 @@ export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;
 
 export const verificationTypesLeavingPlatform = [
   'auth0',
+  'id_austria',
   'criipto',
   'bosa_fas',
   'clave_unica',
