@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 
 # Usage:
-# back/bin/add_campaign_and_notification initiative_resubmitted_for_review new_cosponsor_added
+# back/bin/copy_paste_code_entity initiative_resubmitted_for_review new_cosponsor_added # copy campaign and notification
+# back/bin/copy_paste_code_entity criipto id_austria # copy SSO/ID provider
 #
 # First argument is the name of a code entity (underscored) that should be used as an example (source).
 # Second argument is the name of a code entity (underscored) that should be added (target).
 #
 # This script copies all git-added files containing the name of the source name
-# and replaces the source code entity name with the target source entity name.
+# and replaces the source code entity name with the target code entity name.
 # In all git-added files that contain a line with the source code entity name, it adds the same line,
 # but with the target code entity name.
 #
