@@ -17,8 +17,8 @@ class ApplicationMailer < ActionMailer::Base
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
-  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url, :home_url, :tenant_logo_url,
-    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
+    :home_url, :tenant_logo_url, :show_terms_link?, :show_privacy_policy_link?, :format_message,
     :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
@@ -150,10 +150,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def app_settings
     to_deep_struct(app_configuration.settings)
-  end
-
-  def show_unsubscribe_link?
-    true
   end
 
   def show_terms_link?

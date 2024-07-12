@@ -4,6 +4,8 @@ module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'
 
+    helper_method :show_unsubscribe_link?
+
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
 
