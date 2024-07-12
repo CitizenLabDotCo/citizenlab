@@ -7,7 +7,7 @@ class Permissions::UserRequirementsService
   end
 
   def requirements(permission, user)
-    requirements = base_requirements(permission)
+    requirements = custom_permitted_by_enabled? ? base_requirements_new(permission) : base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
     permitted = requirements.values.none? do |subrequirements|
@@ -19,13 +19,13 @@ class Permissions::UserRequirementsService
     }
   end
 
-  def requirements_fields(permission)
-    if permission.global_custom_fields
+  def requirements_custom_fields(permission)
+    if permission.global_custom_fields && !custom_permitted_by_enabled?
       registration_fields
     else
-      permission.permissions_fields.map do |permissions_field|
+      permission.permissions_fields.where(field_type: 'custom_field').map do |permissions_field|
         permissions_field.custom_field.tap do |field|
-          field.enabled = true # Need to overide this to ensure it gets displayed when not enabled at platform level
+          field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
           field.required = permissions_field.required
         end
       end
@@ -39,14 +39,14 @@ class Permissions::UserRequirementsService
 
   private
 
-  def base_requirements(permission)
-    everyone = {
+  def base_requirements_template(permission)
+    {
       built_in: {
         first_name: 'dont_ask',
         last_name: 'dont_ask',
         email: 'dont_ask'
       },
-      custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
+      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
       onboarding: { topics_and_areas: 'dont_ask' },
       special: {
         password: 'dont_ask',
@@ -55,10 +55,14 @@ class Permissions::UserRequirementsService
         group_membership: 'dont_ask'
       }
     }
+  end
+
+  def base_requirements(permission)
+    everyone = base_requirements_template(permission)
 
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
       requirements[:built_in][:email] = 'require'
-      requirements[:custom_fields] = requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
+      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
       requirements[:special][:confirmation] = 'require' if app_configuration.feature_activated?('user_confirmation')
     end
 
@@ -86,6 +90,35 @@ class Permissions::UserRequirementsService
       groups
     else # users | admins_moderators'
       users
+    end
+  end
+
+  # Requirements driven by the new permissions fields (currently feature flagged)
+  def base_requirements_new(permission)
+    base = base_requirements_template(permission)
+    return base if permission.permitted_by == 'everyone'
+
+    email_field = permission.permissions_fields.find_by(field_type: 'email')
+    name_field = permission.permissions_fields.find_by(field_type: 'name')
+
+    base.deep_dup.tap do |requirements|
+      requirements[:built_in][:first_name] = name_field.enabled ? 'require' : 'dont_ask'
+      requirements[:built_in][:last_name] = name_field.enabled ? 'require' : 'dont_ask'
+      requirements[:built_in][:email] = email_field.enabled ? 'require' : 'dont_ask'
+
+      if email_field.enabled
+        requirements[:special][:password] = 'require' if email_field.config['password']
+        requirements[:special][:confirmation] = 'require' if email_field.config['confirmed'] && app_configuration.feature_activated?('user_confirmation')
+      end
+
+      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
+
+      requirements[:special][:group_membership] = 'require' if @check_groups && permission.permitted_by == 'custom' && permission.groups.present?
+
+      # TODO: JS - will need changing when onboarding is implemented as a permissions_field
+      requirements[:onboarding].transform_values! { 'ask' } if (permission.permitted_by == 'users' || permission.permitted_by == 'admins_moderators') && onboarding_possible?
+
+      # TODO: JS - implement verification
     end
   end
 
@@ -132,6 +165,10 @@ class Permissions::UserRequirementsService
 
   def registration_fields
     @registration_fields ||= CustomField.registration.enabled.order(:ordering)
+  end
+
+  def custom_permitted_by_enabled?
+    @custom_permitted_by_enabled ||= app_configuration.feature_activated?('custom_permitted_by')
   end
 end
 
