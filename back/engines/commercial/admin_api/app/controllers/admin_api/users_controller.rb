@@ -59,15 +59,17 @@ module AdminApi
       @user = User.find(params[:id])
     end
 
-    def allowed_custom_field_keys
+    def allowed_custom_field_values
       enabled_fields = CustomField.registration.enabled
-      CustomFieldParamsService.new.custom_field_values_params(enabled_fields)
+
+      CustomFieldParamsService.new.extract_custom_field_values_from_params!(params, enabled_fields)
     end
 
     def user_params
       params
         .require(:user)
         .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: %i[type project_id])
+        .merge(custom_field_values: allowed_custom_field_values)
     end
 
     def confirm_user?
