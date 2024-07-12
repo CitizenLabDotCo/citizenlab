@@ -9,7 +9,7 @@ class SphericalPointImplActiveJobSerializer < ActiveJob::Serializers::ObjectSeri
   end
 
   def deserialize(hash)
-    RGeo::Geographic.spherical_factory.point(hash['x'], hash['y'])
+    RGeo::Geographic.spherical_factory(srid: 4326).point(hash['x'], hash['y'])
   end
 
   private

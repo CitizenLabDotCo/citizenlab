@@ -1,13 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe SphericalPointImplActiveJobSerializer do
-  let(:point) { RGeo::Geographic.spherical_factory.point(1.0, 2.0) }
+  let(:point) do
+    factory = Event.new(location_point: 'POINT (1.0 2.0)').location_point.factory
+    factory.point(1.0, 2.0)
+  end
   let(:serialized_point) { { 'x' => 1.0, 'y' => 2.0 } }
 
   describe '#serialize' do
     it 'correctly serializes a RGeo::Geographic::SphericalPointImpl object' do
       serializer = described_class.send(:new)
-      expect(serializer.serialize(point)).to include(serialized_point)
+      expect(serializer.serialize(point).except('_aj_serialized')).to eq(serialized_point)
     end
   end
 
@@ -15,9 +18,18 @@ RSpec.describe SphericalPointImplActiveJobSerializer do
     it 'correctly deserializes a hash to a RGeo::Geographic::SphericalPointImpl object' do
       serializer = described_class.send(:new)
       deserialized_point = serializer.deserialize(serialized_point)
+
       expect(deserialized_point).to be_a(RGeo::Geographic::SphericalPointImpl)
+
       expect(deserialized_point.x).to eq(1.0)
+      expect(deserialized_point.x).to eq(point.x)
       expect(deserialized_point.y).to eq(2.0)
+      expect(deserialized_point.y).to eq(point.y)
+
+      expect(deserialized_point.z).to eq(point.z)
+      expect(deserialized_point.z).to be_nil
+      expect(deserialized_point.m).to eq(point.m)
+      expect(deserialized_point.m).to be_nil
     end
   end
 
@@ -32,7 +44,7 @@ RSpec.describe SphericalPointImplActiveJobSerializer do
       TestJob.perform_later(point)
       jobs = QueJob.by_args({ job_class: 'TestJob' })
       expect(jobs.count).to eq 1
-      expect(jobs.first.args['arguments'].first).to include(serialized_point)
+      expect(jobs.first.args['arguments'].first.except('_aj_serialized')).to eq(serialized_point)
     end
   end
 end
