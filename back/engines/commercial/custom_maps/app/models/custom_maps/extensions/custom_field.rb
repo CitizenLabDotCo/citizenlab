@@ -9,6 +9,8 @@ module CustomMaps
         base.has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable, dependent: :destroy
       end
 
+      WEAK_PARAMS_INPUT_TYPES = %w[line polygon].freeze
+
       def supports_map_config?
         %w[point line polygon].include?(input_type)
       end
