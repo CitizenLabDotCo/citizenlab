@@ -10,9 +10,10 @@ module CustomMaps
       end
 
       WEAK_PARAMS_INPUT_TYPES = %w[line polygon].freeze
+      MAP_CONFIG_INPUT_TYPES = %w[point line polygon].freeze
 
       def supports_map_config?
-        %w[point line polygon].include?(input_type)
+        MAP_CONFIG_INPUT_TYPES.include?(input_type)
       end
     end
   end
