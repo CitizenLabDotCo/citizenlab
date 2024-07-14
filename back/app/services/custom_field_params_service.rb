@@ -26,16 +26,6 @@ class CustomFieldParamsService
     end
   end
 
-  # Because strong params don't support nested arrays, and we will receive nested arrays in some
-  # GeoJSON representations, (e.g for input_type of 'line' or 'polygon',) we need to use weak params for them.
-  def weak_extra_custom_field_params(custom_field_params, custom_fields)
-    custom_fields.each_with_object({}) do |field, accu|
-      next unless CustomField::WEAK_PARAMS_INPUT_TYPES.include?(field.input_type) && custom_field_params[field.key]
-
-      accu[field.key] = custom_field_params[field.key].permit!
-    end
-  end
-
   def extract_custom_field_values_from_params!(params, custom_fields)
     custom_field_params = params.dig(:idea, :custom_field_values) || params.dig(:user, :custom_field_values)
     custom_field_params ||= params
@@ -74,6 +64,16 @@ class CustomFieldParamsService
   end
 
   private
+
+  # Because strong params don't support nested arrays, and we will receive nested arrays in some
+  # GeoJSON representations, (e.g for input_type of 'line' or 'polygon',) we need to use weak params for them.
+  def weak_extra_custom_field_params(custom_field_params, custom_fields)
+    custom_fields.each_with_object({}) do |field, accu|
+      next unless CustomField::WEAK_PARAMS_INPUT_TYPES.include?(field.input_type) && custom_field_params[field.key]
+
+      accu[field.key] = custom_field_params[field.key].permit!
+    end
+  end
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)
