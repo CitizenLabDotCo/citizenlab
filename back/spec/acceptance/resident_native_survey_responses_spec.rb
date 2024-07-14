@@ -387,8 +387,10 @@ resource 'Ideas' do
             expect(IdeaFile.count).to eq 1
 
             # Verify that the custom field value is still the existing referenced file.
-            expect(input.reload.custom_field_values['custom_field_name2'])
-              .to eq({ 'id' => existing_file.id, 'name' => 'existing_file.pdf' })
+            expect(input.reload.custom_field_values).to eq({
+              'custom_field_name1' => 'Cat',
+              'custom_field_name2' => { 'id' => existing_file.id, 'name' => 'existing_file.pdf' }
+            })
           end
         end
 
@@ -415,8 +417,9 @@ resource 'Ideas' do
             new_idea_file = IdeaFile.first
 
             # Verify that the custom field value is saved correctly.
-            expect(input.reload.custom_field_values['custom_field_name2'])
-              .to eq({ 'id' => new_idea_file.id, 'name' => file_name })
+            expect(input.reload.custom_field_values).to eq({
+              'custom_field_name1' => 'Cat', 'custom_field_name2' => { 'id' => new_idea_file.id, 'name' => file_name }
+            })
           end
         end
       end

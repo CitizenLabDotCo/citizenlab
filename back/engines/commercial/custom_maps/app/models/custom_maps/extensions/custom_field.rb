@@ -13,7 +13,7 @@ module CustomMaps
       MAP_CONFIG_INPUT_TYPES = %w[point line polygon].freeze
 
       def supports_map_config?
-        MAP_CONFIG_INPUT_TYPES.include?(input_type)
+        MAP_CONFIG_INPUT_TYPES.include? input_type
       end
     end
   end
