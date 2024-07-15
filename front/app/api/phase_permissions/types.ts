@@ -1,6 +1,9 @@
 import { IRelationship } from 'typings';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import {
+  IGlobalPermissionAction,
+  IPhasePermissionAction,
+} from 'api/permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -11,7 +14,7 @@ export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 export type IUpdatePermissionObject = {
   permissionId: string;
   phaseId: string;
-  action: string;
+  action: IGlobalPermissionAction | IPhasePermissionAction;
   permission: Partial<IPermissionUpdate>;
 };
 
