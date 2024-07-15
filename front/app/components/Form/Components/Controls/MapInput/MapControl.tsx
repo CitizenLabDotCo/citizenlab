@@ -105,6 +105,18 @@ const MapControl = ({ ...props }: ControlProps) => {
     [handleChange, path, uischema.options?.input_type]
   );
 
+  const getInstructionMessage = () => {
+    if (isTabletOrSmaller) {
+      return uischema?.options?.input_type === 'point'
+        ? formatMessage(messages.tapOnMapToAddOrType)
+        : formatMessage(messages.tapOnMapMultipleToAdd);
+    } else {
+      return uischema?.options?.input_type === 'point'
+        ? formatMessage(messages.clickOnMapToAddOrType)
+        : formatMessage(messages.clickOnMapMultipleToAdd);
+    }
+  };
+
   return (
     <>
       <Box>
@@ -118,15 +130,7 @@ const MapControl = ({ ...props }: ControlProps) => {
         <Label>
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
-            <Box my="auto">
-              {isTabletOrSmaller // TODO: Cleanup and add to util or function
-                ? uischema?.options?.input_type === 'point'
-                  ? formatMessage(messages.tapOnMapToAddOrType)
-                  : formatMessage(messages.tapOnMapMultipleToAdd)
-                : uischema?.options?.input_type === 'point'
-                ? formatMessage(messages.clickOnMapToAddOrType)
-                : formatMessage(messages.clickOnMapMultipleToAdd)}
-            </Box>
+            <Box my="auto">{getInstructionMessage()}</Box>
           </Box>
         </Label>
       </Box>
