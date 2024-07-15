@@ -12,10 +12,11 @@ import DefaultField from './DefaultField';
 
 interface Props {
   phaseId: string;
+  disableEditing: boolean;
   action: IPhasePermissionAction;
 }
 
-const FieldsList = ({ phaseId, action }: Props) => {
+const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
   const { data: permissionFields } = usePermissionsFields({
     phaseId,
     action,
@@ -42,6 +43,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
                     field={field}
                     phaseId={phaseId}
                     action={action}
+                    disableEditing={disableEditing}
                   />
                 );
               })}
@@ -60,6 +62,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
                       field={field}
                       phaseId={phaseId}
                       action={action}
+                      disableEditing={disableEditing}
                     />
                   </SortableRow>
                 );

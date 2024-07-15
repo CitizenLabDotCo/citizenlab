@@ -15,10 +15,11 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
+  disableEditing: boolean;
   action: IPhasePermissionAction;
 }
 
-const Fields = ({ phaseId, action }: Props) => {
+const Fields = ({ phaseId, disableEditing, action }: Props) => {
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsFields({
     phaseId,
@@ -39,7 +40,11 @@ const Fields = ({ phaseId, action }: Props) => {
         <FormattedMessage {...messages.whatInformation} />
       </Title>
       <Box mt="20px">
-        <FieldsList phaseId={phaseId} action={action} />
+        <FieldsList
+          phaseId={phaseId}
+          disableEditing={disableEditing}
+          action={action}
+        />
       </Box>
       <Box mt="20px" w="100%" display="flex">
         <Button

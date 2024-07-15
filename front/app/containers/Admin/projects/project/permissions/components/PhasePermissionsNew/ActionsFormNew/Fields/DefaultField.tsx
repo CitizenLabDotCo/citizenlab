@@ -17,14 +17,10 @@ import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissio
 
 import { useIntl } from 'utils/cl-intl';
 
+import Tooltip from '../Tooltip';
+
 import EmailModal from './EmailModal';
 import messages from './messages';
-
-interface Props {
-  field: IPermissionsFieldData;
-  phaseId: string;
-  action: IPhasePermissionAction;
-}
 
 const getFieldNameMessage = (
   field_type: IPermissionsFieldData['attributes']['field_type']
@@ -40,7 +36,14 @@ const isEmailConfig = (
   return 'password' in config && 'confirmed' in config;
 };
 
-const DefaultField = ({ field, phaseId, action }: Props) => {
+interface Props {
+  field: IPermissionsFieldData;
+  phaseId: string;
+  disableEditing: boolean;
+  action: IPhasePermissionAction;
+}
+
+const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
   const { field_type, config, enabled } = field.attributes;
 
   const { formatMessage } = useIntl();
@@ -68,29 +71,34 @@ const DefaultField = ({ field, phaseId, action }: Props) => {
           {formatMessage(fieldNameMessage)}
         </Text>
         <Box display="flex" flexDirection="row">
-          <Button
-            icon="edit"
-            buttonStyle="text"
-            p="0"
-            m="0"
-            mr="22px"
-            onClick={() => setIsModalOpen(true)}
-          >
-            {formatMessage(messages.edit)}
-          </Button>
-          <Box
-            mb="-4px" // cancel out te bottom margin of the Toggle
-          >
-            <Toggle
-              checked={enabled}
-              onChange={() => {
-                updatePermissionsField({
-                  id: field.id,
-                  enabled: !enabled,
-                });
-              }}
-            />
-          </Box>
+          {field_type === 'email' && (
+            <Button
+              icon="edit"
+              buttonStyle="text"
+              p="0"
+              m="0"
+              mr="22px"
+              onClick={() => setIsModalOpen(true)}
+            >
+              {formatMessage(messages.edit)}
+            </Button>
+          )}
+          <Tooltip disabled={!disableEditing} placement="left">
+            <Box
+              mb="-4px" // cancel out te bottom margin of the Toggle
+            >
+              <Toggle
+                checked={enabled}
+                disabled={disableEditing}
+                onChange={() => {
+                  updatePermissionsField({
+                    id: field.id,
+                    enabled: !enabled,
+                  });
+                }}
+              />
+            </Box>
+          </Tooltip>
         </Box>
       </Box>
       {field_type === 'email' && isEmailConfig(config) && (

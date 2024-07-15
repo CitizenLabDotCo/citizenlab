@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import CardButtons from './CardButtons';
 import Fields from './Fields';
 import messages from './messages';
+import Tooltip from './Tooltip';
 
 interface Props {
   phaseId: string;
@@ -85,14 +86,7 @@ const ActionFormNew = ({
            * a Box of exactly the same size as the child component
            */}
           <Box w="300px">
-            <Tooltip
-              content={
-                <FormattedMessage {...messages.disableEditingExplanation} />
-              }
-              disabled={!disableEditing}
-              placement="right"
-              theme="dark"
-            >
+            <Tooltip disabled={!disableEditing}>
               <GroupSelect
                 groupIds={groupIds}
                 disabled={disableEditing}
@@ -105,7 +99,11 @@ const ActionFormNew = ({
         </Box>
       )}
       <Box mt="28px">
-        <Fields phaseId={phaseId} action={action} />
+        <Fields
+          phaseId={phaseId}
+          action={action}
+          disableEditing={disableEditing}
+        />
       </Box>
     </form>
   );

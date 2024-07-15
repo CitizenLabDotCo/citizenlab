@@ -30,13 +30,15 @@ const StyledIcon = styled(Icon)<{
 
 const StyledBox = styled(Box)<{
   iconColorOnHover: string;
+  disabled: boolean;
 }>`
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   &:hover,
   &:focus {
     ${StyledIcon} {
-      fill: ${({ iconColorOnHover }) => iconColorOnHover};
+      ${({ disabled, iconColorOnHover }) =>
+        disabled ? '' : `fill: ${iconColorOnHover};`}
     }
   }
 `;
@@ -56,6 +58,7 @@ export type IconButtonProps = {
   ariaControls?: string;
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
+  disabled?: boolean;
   iconRef?: React.Ref<any>;
 } & BoxPositionProps &
   BoxMarginProps &
@@ -78,6 +81,7 @@ const IconButton = ({
   buttonType,
   transform,
   iconRef,
+  disabled = false,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -93,6 +97,7 @@ const IconButton = ({
       alignItems="center"
       justifyContent="center"
       role="button"
+      disabled={disabled}
       ref={iconRef}
       {...rest}
     >

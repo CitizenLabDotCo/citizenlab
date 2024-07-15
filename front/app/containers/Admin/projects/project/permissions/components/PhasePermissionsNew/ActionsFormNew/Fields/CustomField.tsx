@@ -16,16 +16,19 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import Tooltip from '../Tooltip';
+
 import CustomFieldModal from './CustomFieldModal';
 import messages from './messages';
 
 interface Props {
   field: IPermissionsFieldData;
   phaseId: string;
+  disableEditing: boolean;
   action: IPhasePermissionAction;
 }
 
-const CustomField = ({ field, phaseId, action }: Props) => {
+const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,18 +69,21 @@ const CustomField = ({ field, phaseId, action }: Props) => {
           >
             {formatMessage(messages.edit)}
           </Button>
-          <IconButton
-            iconName="delete"
-            iconColor={colors.grey700}
-            iconColorOnHover={colors.black}
-            iconWidth="20px"
-            mr="8px"
-            a11y_buttonActionMessage="TODO"
-            onClick={(e) => {
-              e?.preventDefault();
-              deletePermissionsField(field.id);
-            }}
-          />
+          <Tooltip disabled={!disableEditing} placement="left">
+            <IconButton
+              iconName="delete"
+              iconColor={colors.grey700}
+              iconColorOnHover={colors.black}
+              iconWidth="20px"
+              mr="8px"
+              a11y_buttonActionMessage="TODO"
+              disabled={disableEditing}
+              onClick={(e) => {
+                e?.preventDefault();
+                deletePermissionsField(field.id);
+              }}
+            />
+          </Tooltip>
         </Box>
       </Box>
       <CustomFieldModal

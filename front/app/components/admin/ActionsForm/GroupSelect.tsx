@@ -18,11 +18,11 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface Props {
   groupIds?: string[];
-  disabled: boolean;
+  disabled?: boolean;
   onChange: (groups: string[]) => void;
 }
 
-const GroupSelect = ({ groupIds, disabled, onChange }: Props) => {
+const GroupSelect = ({ groupIds, disabled = false, onChange }: Props) => {
   const { data: groups } = useGroups({});
   const localize = useLocalize();
 
