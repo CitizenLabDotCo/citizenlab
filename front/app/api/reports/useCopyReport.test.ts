@@ -1,20 +1,18 @@
 import { renderHook, act } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
-
 import { apiPathReport, reportsData } from './__mocks__/_mockServer';
-
 import useCopyReport from './useCopyReport';
 
 const reportData = reportsData[0];
-const apiCopyPath = apiPathReport + '/copy';
+const apiCopyPath = `${apiPathReport}/copy`;
 
 const server = setupServer(
-  rest.post(apiCopyPath, (_req, res, ctx) => {
-    return res(ctx.status(201), ctx.json({ data: reportData }));
+  http.post(apiCopyPath, () => {
+    return HttpResponse.json({ data: reportData }, { status: 201 });
   })
 );
 
@@ -37,7 +35,7 @@ describe('useCopyReport', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiCopyPath, (_req, res, ctx) => res(ctx.status(500)))
+      http.post(apiCopyPath, () => HttpResponse.json(null, { status: 500 }))
     );
 
     const { result, waitFor } = renderHook(() => useCopyReport(), {

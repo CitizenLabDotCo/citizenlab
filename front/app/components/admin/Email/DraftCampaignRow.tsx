@@ -59,7 +59,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
       </Box>
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
-        <Button linkTo={editLink} buttonStyle="secondary" icon="edit">
+        <Button linkTo={editLink} buttonStyle="secondary-outlined" icon="edit">
           <FormattedMessage {...messages.manageButtonLabel} />
         </Button>
       </Box>

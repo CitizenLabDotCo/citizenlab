@@ -84,9 +84,9 @@ export default defineMessages({
     defaultMessage: 'Two rows',
   },
   twoRowBannerTooltip: {
-    id: 'app.containers.ContentBuilder.homepage.twoRowBannerTooltip',
+    id: 'app.containers.ContentBuilder.homepage.twoRowBannerTooltip1',
     defaultMessage:
-      'This banner is in particular useful which images that don’t work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our { link }.',
+      "This banner is in particular useful with images that don't work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our { link }.",
   },
   twoRowBannerTooltipLink: {
     id: 'app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink',
@@ -138,5 +138,10 @@ export default defineMessages({
   signedInDescription: {
     id: 'app.containers.ContentBuilder.homepage.signedInDescription',
     defaultMessage: 'This is how registered users see the banner.',
+  },
+  customizationNotAvailable: {
+    id: 'app.containers.ContentBuilder.homepage.customizationNotAvailable',
+    defaultMessage:
+      'Customizing settings other than the text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });

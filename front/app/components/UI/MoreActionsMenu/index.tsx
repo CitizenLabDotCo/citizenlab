@@ -8,8 +8,8 @@ import {
   colors,
   fontSizes,
   media,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -156,12 +156,12 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <Container className={className || ''}>
-        <Tippy
+        <Tooltip
           placement="bottom"
-          interactive={true}
           duration={[200, 0]}
           visible={visible}
           onClickOutside={hide}
+          theme="dark"
           content={
             <List className="e2e-more-actions-list">
               {actions.map((action, index) => {
@@ -215,7 +215,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
             />
             {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
           </MoreOptionsButton>
-        </Tippy>
+        </Tooltip>
       </Container>
     );
   }

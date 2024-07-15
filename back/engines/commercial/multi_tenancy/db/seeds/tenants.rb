@@ -32,7 +32,8 @@ module MultiTenancy
               maximum_moderators_number: 2,
               additional_admins_number: 1,
               additional_moderators_number: 1,
-              population: 27_500
+              population: 27_500,
+              google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
               allowed: true,
@@ -133,19 +134,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            permission_option_email_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true
             },
             anonymous_participation: {
-              enabled: true,
-              allowed: true
-            },
-            representativeness: {
               enabled: true,
               allowed: true
             },
@@ -166,10 +159,6 @@ module MultiTenancy
               allowed: true
             },
             widgets: {
-              enabled: true,
-              allowed: true
-            },
-            admin_project_templates: {
               enabled: true,
               allowed: true
             },
@@ -366,37 +355,11 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
-            project_management: {
-              enabled: true,
-              allowed: true
-            },
-            project_visibility: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
             },
-            texting: {
-              enabled: true,
-              allowed: true,
-              from_number: '+12345678912',
-              monthly_sms_segments_limit: 100_000
-            },
-            native_surveys: {
-              enabled: true,
-              allowed: true
-            },
             input_form_mapping_question: {
-              enabled: true,
-              allowed: true
-            },
-            analytics: {
-              enabled: true,
-              allowed: true
-            },
-            visitors_dashboard: {
               enabled: true,
               allowed: true
             },
@@ -430,10 +393,6 @@ module MultiTenancy
               allowed: true
             },
             follow: {
-              enabled: true,
-              allowed: true
-            },
-            seat_based_billing: {
               enabled: true,
               allowed: true
             },
@@ -477,8 +436,16 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            customisable_homepage_banner: {
+              enabled: true,
+              allowed: true
+            },
             management_feed: {
               enabled: true,
+              allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
               allowed: true
             }
           })

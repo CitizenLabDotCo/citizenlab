@@ -1,11 +1,11 @@
 import { IBasket } from 'api/baskets/types';
 import { IBasketsIdeas } from 'api/baskets_ideas/types';
-import { IdeaVotingDisabledReason } from 'api/ideas/types';
 
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import {
   ActionDescriptorFutureEnabled,
-  isFixableByAuthentication,
-} from 'utils/actionDescriptors';
+  IdeaVotingDisabledReason,
+} from 'utils/actionDescriptors/types';
 
 export const isButtonEnabled = (
   basket: IBasket | undefined,

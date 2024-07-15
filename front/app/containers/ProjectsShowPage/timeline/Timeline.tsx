@@ -14,10 +14,10 @@ import {
   colors,
   fontSizes,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-import { darken, rgba } from 'polished';
-import styled, { css } from 'styled-components';
+import { darken } from 'polished';
+import styled, { css, keyframes } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -42,9 +42,14 @@ const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
 
 const grey = colors.textSecondary;
-const greenTransparent = rgba(colors.success, 0.15);
-const green = colors.success;
-const darkGreen = colors.green700;
+const greenTransparent = '#CAE0CD';
+const darkGreen = '#096F03';
+
+const blink = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+`;
 
 const RtlBox = styled(Box)`
   ${isRtl`
@@ -85,7 +90,22 @@ const Phases = styled.div`
 
 const phaseBarHeight = '24px';
 
-const PhaseBar = styled.button`
+const BlinkingDot = styled.span<{ isSelected: boolean }>`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background-color: ${({ isSelected }) =>
+    isSelected ? colors.white : darkGreen};
+  border-radius: 50%;
+  animation: ${blink} 1s linear infinite;
+  animation-iteration-count: 5;
+`;
+
+const PhaseBar = styled.button<{
+  showArrow: boolean;
+  isCurrentPhase?: boolean;
+}>`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
   color: ${darken(0.1, colors.textSecondary)};
@@ -102,6 +122,25 @@ const PhaseBar = styled.button`
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: ${({ isCurrentPhase }) =>
+      isCurrentPhase ? darkGreen : colors.coolGrey700};
+    ${(props) =>
+      props.showArrow
+        ? 'clip-path: polygon(0 0, calc(100% - 10px) 0, calc(100% - 10px) 100%, 0 100%);'
+        : ''};
+  }
+
+  &:hover ${BlinkingDot} {
+    background-color: ${colors.white};
+  }
 `;
 
 const PhaseArrow = styled(Arrow)`
@@ -178,7 +217,7 @@ const currentPhaseBar = css`
 
 const currentSelectedPhaseBar = css`
   ${PhaseBar} {
-    background: ${green};
+    background: ${darkGreen};
     color: #fff;
   }
   ${PhaseText} {
@@ -373,7 +412,12 @@ const Timeline = ({
                       ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
                       tabIndex={isSelectedPhase ? 0 : -1}
                       id={`phase-tab-${phaseNumber}`}
+                      showArrow={showArrow}
+                      isCurrentPhase={isCurrentPhase}
                     >
+                      {isCurrentPhase && (
+                        <BlinkingDot isSelected={isSelectedPhase} />
+                      )}
                       <span aria-hidden>{phaseNumber}</span>
                       <ScreenReaderOnly>
                         <FormattedMessage
@@ -403,8 +447,7 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last
                   >
-                    <Tippy
-                      interactive={true}
+                    <Tooltip
                       visible={tooltipVisible}
                       placement="bottom-start"
                       content={
@@ -426,6 +469,7 @@ const Timeline = ({
                         }}
                         role="tab"
                         id="new-phase"
+                        showArrow={false}
                       >
                         <span aria-hidden>
                           <PlusIcon name="plus" height="16px" />
@@ -434,7 +478,7 @@ const Timeline = ({
                           <FormattedMessage {...messages.newPhase} />
                         </ScreenReaderOnly>
                       </PhaseBar>
-                    </Tippy>
+                    </Tooltip>
                   </PhaseContainer>
                 </Box>
               )}

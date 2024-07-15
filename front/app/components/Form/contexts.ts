@@ -7,7 +7,7 @@ import { ApiErrorGetter, FormData } from './typings';
 export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
 
 export const FormContext = createContext<{
-  showAllErrors: boolean;
+  showAllErrors?: boolean;
   getApiErrorMessage: ApiErrorGetter;
   inputId?: string | undefined;
   onSubmit?: (

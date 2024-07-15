@@ -101,7 +101,7 @@ describe('Native survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // Auth modal opens correctly
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').find('button').click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
@@ -156,7 +156,7 @@ describe('Native survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // Auth modal opens correctly
-      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').find('button').click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
@@ -199,7 +199,9 @@ describe('Native survey permissions', () => {
 
       // Expect button to be disabled
       cy.wait(5000);
-      cy.get('#e2e-cta-button').find('button').should('be.disabled');
+      cy.get('.e2e-idea-button')
+        .find('button')
+        .should('have.attr', 'aria-disabled', 'true');
     });
 
     // it('lets you participate if you exit flow after confirming email, but then return', () => {

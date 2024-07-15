@@ -5,8 +5,8 @@ import {
   fontSizes,
   Box,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { darken } from 'polished';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -77,7 +77,7 @@ interface Props extends StyleProps {
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
   anonymous?: boolean;
-  canModerate?: boolean;
+  showModeratorStyles?: boolean;
 }
 
 const UserName = ({
@@ -90,7 +90,7 @@ const UserName = ({
   underline,
   italic,
   color,
-  canModerate,
+  showModeratorStyles,
   anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -106,7 +106,7 @@ const UserName = ({
 
   if (anonymous) {
     return (
-      <Tippy
+      <Tooltip
         placement="top-start"
         maxWidth={'260px'}
         theme={'dark'}
@@ -125,7 +125,7 @@ const UserName = ({
         >
           {formatMessage(messages.anonymous)}
         </Name>
-      </Tippy>
+      </Tooltip>
     );
   }
 
@@ -156,7 +156,7 @@ const UserName = ({
 
     const classNames = `
       ${className || ''}
-      ${canModerate ? 'canModerate' : ''}
+      ${showModeratorStyles ? 'canModerate' : ''}
       ${isLinkToProfile ? 'isLinkToProfile' : ''}
       e2e-username
     `;

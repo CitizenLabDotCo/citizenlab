@@ -5,8 +5,8 @@ import {
   Button,
   colors,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -25,9 +25,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
-import { customAjv } from 'components/Form';
 import { FormData } from 'components/Form/typings';
-import { isValidData } from 'components/Form/utils';
+import { customAjv, isValidData } from 'components/Form/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
@@ -282,9 +281,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         justifyContent="flex-end"
       >
         {ideaId && (
-          <Tippy
+          <Tooltip
             disabled={!disabledReason}
-            interactive={true}
             placement="top"
             content={disabledReason || <></>}
           >
@@ -300,7 +298,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
                 <FormattedMessage {...messages.approve} />
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         )}
       </Box>
     </>

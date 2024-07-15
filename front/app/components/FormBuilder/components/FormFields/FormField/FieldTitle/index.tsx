@@ -80,13 +80,12 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
           textOverflow="ellipsis"
           overflow="hidden"
         >
-          <Box display="flex">
+          <Box display="flex" alignItems="center">
             <T value={field.title_multiloc} />
             {lockedAttributes?.enabled && (
               <IconTooltip
                 placement="top-start"
                 iconColor={colors.coolGrey500}
-                mb="4px"
                 iconSize="16px"
                 ml="4px"
                 icon="lock"

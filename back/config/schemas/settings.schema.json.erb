@@ -119,6 +119,11 @@
             "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "google_search_console_meta_attribute": {
+            "title": "Google Search Console Meta Attribute",
+            "description": "Set this token to verify the ownership of the platform in Google Search Console. The value you should set is the content of the \"content\"= HTML tag attribute in meta tag Google provides.",
+            "type": ["string", "null"]
+          },
           "custom_onboarding_message": {
             "title": "Header Banner Call-to-Action Text",
             "description": "Optional Call-to-Action text for signed in users, shown on a banner on the top of the homepage. Accompanied by a Call-to-Action (CTA) button. If this field is left blank, 'Header banner non-call to action' text is shown in the banner.",
@@ -133,7 +138,7 @@
           },
           "custom_onboarding_link": {
             "title": "Header Banner CTA Link",
-            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.citizenlab.co/initiatives should be inputted here as /initiatives).",
+            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.govocal.com/initiatives should be inputted here as /initiatives).",
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
@@ -302,30 +307,6 @@
         "type": "object",
         "title": "Project Folders",
         "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility",
-        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -932,18 +913,6 @@
         }
       },
 
-      "admin_project_templates": {
-        "type": "object",
-        "title": "Project Templates",
-        "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "custom_accessibility_statement_link": {
         "type": "object",
         "title": "Custom A11y Statement Link",
@@ -960,18 +929,6 @@
             "type": "string",
             "format": "uri"
           }
-        }
-      },
-
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Downvoting Toggle",
-        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1119,58 +1076,10 @@
         }
       },
 
-      "representativeness": {
-        "type": "object",
-        "title": "Representativeness",
-        "description": "Enables the representativeness dashboard.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "native_surveys": {
-        "type": "object",
-        "title": "Allow in-platform surveys",
-        "description":  "",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "input_form_mapping_question": {
         "type": "object",
         "title": "Mapping question used in in-platform surveys",
         "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "seat_based_billing": {
-        "type": "object",
-        "title": "Seat based billing",
-        "description":  "Enables seat-based billing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "visitors_dashboard": {
-        "type": "object",
-        "title": "Visitors dashboard",
-        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1200,18 +1109,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "permission_option_email_confirmation": {
-        "type": "object",
-        "title": "Registration via email confirmation",
-        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1359,6 +1256,18 @@
         }
       },
 
+      "customisable_homepage_banner": {
+        "type": "object",
+        "title": "Customisable homepage banner",
+        "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "management_feed": {
         "type": "object",
         "title": "Management Feed",
@@ -1393,10 +1302,7 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
-
-    "permission_option_email_confirmation": ["user_confirmation"],
     "power_bi": ["public_api_tokens"],
-
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],

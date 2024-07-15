@@ -128,7 +128,7 @@ namespace :setup_and_support do
       locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
       cf = CustomField.find args[:id]
       options.each do |option|
-        cfo = cf.options.create!(title_multiloc: { locale => option })
+        cfo = cf.options.find_or_create_by!(title_multiloc: { locale => option })
         cfo.move_to_bottom
       end
     end
@@ -299,7 +299,7 @@ namespace :setup_and_support do
     old_secret = args[:old_secret]
     new_secret = args[:new_secret]
 
-    Tenant.switch_each do
+    Tenant.safe_switch_each do
       puts "Updating tenant #{Tenant.current.host}"
       settings = AppConfiguration.instance.settings
 
@@ -320,7 +320,7 @@ namespace :setup_and_support do
 
   desc 'Set custom map tile provider to null if it is the default'
   task remove_vanilla_tile_providers: [:environment] do |_t|
-    Tenant.switch_each do
+    Tenant.safe_switch_each do
       puts "Updating tenant #{Tenant.current.host}"
       settings = AppConfiguration.instance.settings
 

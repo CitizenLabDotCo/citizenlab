@@ -5,8 +5,8 @@ import {
   colors,
   stylingConsts,
   useBreakpoint,
+  useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -19,6 +19,7 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import projectsKeys from 'api/projects/keys';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
@@ -29,14 +30,17 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import Warning from 'components/UI/Warning';
 
+import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
+import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -64,16 +68,16 @@ interface FormValues {
 
 interface Props {
   project: IProject;
+  phaseId: string | undefined;
 }
 
-const IdeasNewSurveyForm = ({ project }: Props) => {
+const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
-  const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
@@ -97,6 +101,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
+
+  // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
+  useWindowSize();
 
   /*
     TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
@@ -161,15 +168,15 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   }
 
   const handleDraftIdeas = async (data: FormValues) => {
-    if (data.publication_status === 'draft') {
-      if (allowAnonymousPosting || isNilOrError(authUser)) {
+    if (data.publication_status === 'published') {
+      return onSubmit(data, true);
+    } else {
+      if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
       return onSubmit(data, false);
-    } else {
-      return onSubmit(data, true);
     }
   };
 
@@ -177,16 +184,29 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      ...(canModerateProject(project.data.id, authUser)
+      ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
+    const handleOnError = () => {
+      // If an error happens, it's likely some permission issues.
+      // We refetch the project to use the correct action descriptors.
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.all(),
+      });
+    };
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
-      ? await updateIdea({ id: ideaId, requestBody })
-      : await addIdea(requestBody);
+      ? await updateIdea(
+          { id: ideaId, requestBody },
+          {
+            onError: handleOnError,
+          }
+        )
+      : await addIdea(requestBody, { onError: handleOnError });
+
     setIdeaId(idea.data.id);
 
     const ideaAttributes = idea.data.attributes;
@@ -262,6 +282,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            phaseId={phaseId}
           />
         </Box>
         <main id="e2e-idea-new-page">
@@ -274,10 +295,22 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               background={colors.white}
               maxWidth="700px"
               w="100%"
-              // TODO: recalculate on resize
+              // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
+              {allowAnonymousPosting && (
+                <Box
+                  w="100%"
+                  px={isSmallerThanPhone ? '16px' : '24px'}
+                  mt="12px"
+                  id="anonymous-survey-warning"
+                >
+                  <Warning icon="shield-checkered">
+                    {formatMessage(messages.anonymousSurveyMessage)}
+                  </Warning>
+                </Box>
+              )}
               <Form
                 schema={schema}
                 uiSchema={uiSchema}

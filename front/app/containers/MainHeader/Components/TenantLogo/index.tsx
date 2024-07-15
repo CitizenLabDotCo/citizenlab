@@ -28,8 +28,20 @@ const TenantLogo = () => {
 
     if (tenantLogo) {
       return (
-        <Link to="/" onlyActiveOnIndex={true}>
-          <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
+        <Link
+          to="/"
+          onlyActiveOnIndex={true}
+          /* The aria-label here is used when there is no clear
+           * 'text-like' element as a child of the Link component,
+           * making it unclear for screen readers what the link point to.
+           * https://stackoverflow.com/a/53765144/7237112
+           */
+          aria-label={formatMessage(messages.logoAltText)}
+        >
+          {/* Used as main heading in case page has no headings for a11y.See https://html.com/semantic-markup/ */}
+          <h1>
+            <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
+          </h1>
         </Link>
       );
     }

@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      permission_service: Permissions::ProjectPermissionsService.new
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
     }
 
     render json: linked_json(
@@ -181,7 +181,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     ActiveRecord::Base.transaction do
       set_folder
       authorize @project
-      @project.save
+      saved = @project.save
+      check_publication_inconsistencies! if saved
+      saved
     end
   end
 
@@ -194,5 +196,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
+  end
+
+  def check_publication_inconsistencies!
+    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
+    if Project.all.any? { |project| !project.valid? }
+      raise 'Project change would lead to inconsistencies!'
+    end
   end
 end

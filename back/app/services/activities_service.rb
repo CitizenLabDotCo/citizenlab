@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class ActivitiesService
-  def create_periodic_activities(now: Time.zone.now, since: 1.hour)
-    now = Time.zone.at(now)
-    now = now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
+  def create_periodic_activities(now: Time.current, since: 1.hour)
+    now = AppConfiguration.timezone.at(now)
     last_time = now - since
 
     create_phase_started_activities now, last_time
@@ -32,11 +31,6 @@ class ActivitiesService
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
-      if phase.ends_before?(now + 1.day)
-        raise "Invalid phase started event would have been generated for phase\
-               #{phase.id} with now=#{now} and last_time=#{last_time}"
-      end
-
       LogActivityJob.perform_later(phase, 'started', nil, start_date.to_time)
     end
   end

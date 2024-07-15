@@ -73,7 +73,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         ) : (
           <Button
             id="e2e-ideation-see-ideas-button"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             onClick={scrollToIdeas}
             fontWeight="500"
             bgColor={theme.colors.white}

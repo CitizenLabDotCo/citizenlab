@@ -80,7 +80,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
     const projectHeaderImageLargeUrl =
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
-      !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
+      !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
       <Container className={className || ''}>
@@ -108,7 +108,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                     <EditButton
                       icon="edit"
                       linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       padding="6px 12px"
                     >
                       {formatMessage(messages.editProject)}

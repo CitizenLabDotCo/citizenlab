@@ -50,20 +50,49 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(home_attributes['title_multiloc']).to be_blank
     end
 
-    it 'can deal with projects without admin publication' do
-      # The changes introduced by ticket CL-793 can be
-      # reverted once the issue with projects losing their
-      # admin publications is solved.
+    it 'can deal with nested admin publications in projects' do
+      create(:project, title_multiloc: { 'en' => 'top-project' })
+      create(
+        :project,
+        title_multiloc: { 'en' => 'nested-project' },
+        folder: create(:project_folder, title_multiloc: { 'en' => 'folder' }).tap do |folder|
+          folder.admin_publication.move_to_bottom
+        end
+      )
 
-      project = create(:project)
-      project.admin_publication.delete
-      expect(project.reload).to be_present
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
+      template = serializer.run(deserializer_format: true)
 
-      template = tenant_serializer.run(deserializer_format: true)
-
-      expect(template['models']).to be_present
-      expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(Project.count).to eq 2
+        expect(AdminPublication.count).to eq 3
+        expect(ProjectFolders::Folder.count).to eq 1
+        top_project = Project.find_by(title_multiloc: { 'en' => 'top-project' })
+        folder = ProjectFolders::Folder.find_by(title_multiloc: { 'en' => 'folder' })
+        nested_project = Project.find_by(title_multiloc: { 'en' => 'nested-project' })
+        expect(top_project.admin_publication.ordering).to eq 0
+        expect(folder.admin_publication.ordering).to eq 1
+        expect(nested_project.admin_publication.ordering).to eq 0
+        expect(nested_project.folder).to eq folder
+      end
     end
+
+    # TODO: Re-enable after fixing inconsistent data on templates.
+    # it "fails when there's a missing publication" do
+    #   create(:project).admin_publication.delete
+
+    #   expect do
+    #     serializer = described_class.new(Tenant.current, uploads_full_urls: true)
+    #     template = serializer.run(deserializer_format: true)
+
+    #     tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+    #     tenant.switch do
+    #       MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+    #     end
+    #   end.to raise_error(RuntimeError) # Error class subject to change
+    # end
 
     it 'can deal with missing authors' do
       idea = create(:idea, author: nil)

@@ -26,7 +26,7 @@ namespace :cl2back do
 
     puts "live_run: #{live_run ? 'true' : 'false'}"
 
-    Tenant.switch_each do |tenant|
+    Tenant.safe_switch_each do |tenant|
       puts "Processing tenant: #{tenant.name}..."
 
       option = CustomFieldOption.find_by(key: option_key)
@@ -58,7 +58,7 @@ namespace :cl2back do
 
     puts "live_run: #{live_run ? 'true' : 'false'}"
 
-    Tenant.switch_each do |tenant|
+    Tenant.safe_switch_each do |tenant|
       puts "Processing tenant: #{tenant.name}..."
 
       option = CustomFieldOption.find_by(key: option_key)

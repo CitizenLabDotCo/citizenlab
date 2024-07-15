@@ -76,7 +76,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:13-3.4"
+      - image: "postgis/postgis:16-3.4"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -111,7 +111,7 @@ commands:
       # version available in the source repositories is 1.3.3, which has been broken by
       # a change of SSL certificate. For more information, see:
       # https://github.com/lastpass/lastpass-cli/issues/653
-      - run: sudo .circleci/install_lpass.sh v1.3.5
+      - run: sudo .circleci/install_lpass.sh v1.5.0
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
@@ -242,9 +242,8 @@ jobs:
       - wait-for-postgres
       - run: bin/rails db:create db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+          circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" \
+            | circleci tests run --command="xargs bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml" --verbose --split-by=timings
       - store_test_results:
           path: spec/reports
 
@@ -551,9 +550,7 @@ jobs:
           name: Run tests with JUnit as reporter
           command: |
             cd citizenlab/front
-            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
-            echo $TEST_FILES
-            npm run test:ci -- $TEST_FILES
+            npx jest --listTests | circleci tests run --command="JEST_JUNIT_ADD_FILE_ATTRIBUTE=true xargs npx jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --" --split-by=timings
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
@@ -648,7 +645,7 @@ jobs:
       - run:
           command: npm install lighthouse-ci@1.13.1
       - run:
-          command: npx lighthouse-ci@1.13.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.13.1 https://demo.stg.govocal.com --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse
@@ -712,18 +709,16 @@ jobs:
           docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
           cd front
+          mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run -e $(cat ../front/cypress.ci.env | envsubst | sed ':a;N;$!ba;s/\n/ -e /g') front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # Uncomment to save XML reports
-      # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker-compose run --name cypress_run -e $(cat ../front/cypress.ci.env | envsubst | sed ':a;N;$!ba;s/\n/ -e /g') front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
-      # ToDo: fix it. Reporting doesn't work atm.
-      # - run: |
-      #     mkdir -p front/reports
-      #     docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+      - run: |
+          mkdir -p front/reports
+          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with

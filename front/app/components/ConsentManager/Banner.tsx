@@ -107,10 +107,18 @@ interface Props {
 
 const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
   return (
-    <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
+    <Container
+      tabIndex={0}
+      role="dialog"
+      id="e2e-cookie-banner"
+      // aria-labelledby helps screen readers find
+      // the title of the dialog
+      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
+      aria-labelledby="cookie-banner-title"
+    >
       <ContentContainer mode="page">
         <ContentContainerInner>
-          <Left>
+          <Left id="cookie-banner-title">
             <FormattedMessage
               {...messages.mainText}
               values={{

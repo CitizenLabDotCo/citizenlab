@@ -35,6 +35,7 @@ export type IAppConfigurationSettingsCore = {
     | 'not_applicable';
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
+  google_search_console_meta_attribute?: string | null;
   signup_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
@@ -134,7 +135,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  admin_project_templates?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
@@ -173,9 +173,6 @@ export interface IAppConfigurationSettings {
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  project_visibility?: AppConfigurationFeature;
-  project_management?: AppConfigurationFeature;
-  idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
@@ -208,15 +205,9 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
-  representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  native_surveys?: AppConfigurationFeature;
-  analytics?: AppConfigurationFeature;
-  visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
-  permission_option_email_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
@@ -225,7 +216,6 @@ export interface IAppConfigurationSettings {
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
-  seat_based_billing?: AppConfigurationFeature;
   internal_commenting?: AppConfigurationFeature;
   follow?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
@@ -240,6 +230,7 @@ export interface IAppConfigurationSettings {
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;
+  customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
 }
 

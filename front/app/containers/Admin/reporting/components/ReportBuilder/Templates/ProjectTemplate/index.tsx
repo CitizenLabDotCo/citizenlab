@@ -26,7 +26,6 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
-import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
@@ -116,12 +115,12 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       return withoutSpacing`
         <ul>
           <li>
-            <b>${formatMessage(aboutMessages.projectLabel)}</b>:
+            <b>${formatMessage(messages.projectLabel)}</b>:
             ${` ${projectTitle?.[locale] ?? ''}`}
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>
-            <b>${formatMessage(aboutMessages.managerLabel)}</b>:
+            <b>${formatMessage(messages.managerLabel)}</b>:
             ${` ${projectModerator}`}
           </li>
         </ul>

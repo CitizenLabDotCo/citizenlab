@@ -83,7 +83,7 @@ const AdminProjectFolderEdition = () => {
       <TopContainer>
         <GoBackButton onClick={goBack} />
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
           linkTo={`/folders/${projectFolder.data.attributes.slug}`}

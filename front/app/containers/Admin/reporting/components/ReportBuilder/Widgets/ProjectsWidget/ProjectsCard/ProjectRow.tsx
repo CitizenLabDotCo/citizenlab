@@ -34,7 +34,7 @@ interface Props {
 const MESSAGES: Record<ProjectStatus, MessageDescriptor> = {
   finished: messages.finished,
   active: messages.active,
-  stale: messages.stale,
+  'open-ended': messages.openEnded,
   planned: messages.planned,
 };
 
@@ -50,7 +50,7 @@ const LABEL_STYLE: Record<
     background: colors.green100,
     color: colors.green500,
   },
-  stale: {
+  'open-ended': {
     background: colors.grey100,
     color: colors.coolGrey600,
   },

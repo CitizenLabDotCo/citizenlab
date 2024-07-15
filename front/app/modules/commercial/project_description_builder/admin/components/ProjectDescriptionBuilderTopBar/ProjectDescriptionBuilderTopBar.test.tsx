@@ -165,7 +165,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       screen.getByTestId('contentBuilderTopBarSaveButton')
     ).getByRole('button');
 
-    expect(saveButton).toBeDisabled();
+    expect(saveButton).toHaveAttribute('aria-disabled', 'true');
     rerender(
       <Editor>
         <ProjectDescriptionBuilderTopBar
@@ -178,7 +178,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       </Editor>
     );
 
-    expect(saveButton).not.toBeDisabled();
+    expect(saveButton).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   it('calls setPreviewEnabled correctly on toggle change when previewEnabled is false', async () => {

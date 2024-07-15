@@ -250,7 +250,7 @@ const InternalParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator
+        showModeratorStyles
       />
       <FormContainer
         className="ideaCommentForm"
@@ -287,7 +287,7 @@ const InternalParentCommentForm = ({
               <CancelButton
                 disabled={processing}
                 onClick={close}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 padding={smallerThanTablet ? '6px 12px' : undefined}
               >
                 <FormattedMessage {...commentsMessages.cancel} />

@@ -137,8 +137,13 @@ export default defineMessages({
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',
   },
   votingNotPermitted: {
-    id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
-    defaultMessage: "You don't have the rights to vote on this proposal.",
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted1',
+    defaultMessage:
+      'Unfortunately, you cannot vote on this proposal. Read why in {link}.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.InitiativesShow.VoteControl.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
   a11y_timeLeft: {
     id: 'app.containers.InitiativesShow.VoteControl.a11y_timeLeft',

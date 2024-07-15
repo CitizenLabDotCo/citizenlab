@@ -38,7 +38,7 @@ class Tenant < ApplicationRecord
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
-  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) }
+  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) } # Use safe_switch_each instead
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     ids = AppConfiguration
@@ -62,6 +62,11 @@ class Tenant < ApplicationRecord
       host&.tr('.', '_')
     end
 
+    def by_schema_name!(schema_name)
+      host = schema_name_to_host(schema_name)
+      find_by!(host: host)
+    end
+
     # Reorder tenants by most important tenants (active) first
     def prioritize(tenants)
       priority_order = %w[active trial demo expired_trial churned not_applicable]
@@ -72,10 +77,27 @@ class Tenant < ApplicationRecord
       ordered_ids = ordered_tenants.pluck(:id)
       tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) }
     end
+
+    def safe_switch_each(scope: nil)
+      scope ||= not_deleted.where.not(creation_finalized_at: nil)
+      prioritize(scope).each do |tenant|
+        next if !Tenant.exists?(id: tenant.id)
+
+        tenant.switch do
+          yield tenant
+        end
+      end
+    end
   end
 
   def self.current
-    Current.tenant || find_by!(host: schema_name_to_host(Apartment::Tenant.current))
+    Current.tenant
+  end
+
+  def self.safe_current
+    Current.tenant
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 
   def self.settings(*path)
@@ -143,12 +165,6 @@ class Tenant < ApplicationRecord
 
   def self.switch_to(host_name)
     find_by!(host: host_name).switch!
-  end
-
-  def self.switch_each
-    find_each do |tenant|
-      tenant.switch { yield(tenant) }
-    end
   end
 
   def changed_lifecycle_stage?

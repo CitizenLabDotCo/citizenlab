@@ -7,26 +7,21 @@ import {
   media,
   Button,
 } from '@citizenlab/cl2-component-library';
-import {
-  createAjv,
-  JsonSchema7,
-  isCategorization,
-  Layout,
-} from '@jsonforms/core';
+import { JsonSchema7, isCategorization, Layout } from '@jsonforms/core';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
-import useObserveEvent from 'hooks/useObserveEvent';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';
+import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData } from './utils';
+import { sanitizeFormData, isValidData, customAjv } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -44,33 +39,16 @@ const Title = styled.h1`
   `}
 `;
 
-const InvisibleSubmitButton = styled.button`
-  visibility: hidden;
-`;
-
-export const customAjv = createAjv({
-  useDefaults: 'empty',
-  removeAdditional: true,
-});
-// The image key word is used for the image choice option
-customAjv.addKeyword('image');
-
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
   onSubmit: (formData: FormData) => void | Promise<any>;
   initialFormData: FormData;
   title?: ReactElement;
-  /** The event name on which the form should automatically submit, as received from the eventEmitter. If this is set, no submit button is displayed. */
-  submitOnEvent?: string;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */
   getAjvErrorMessage: AjvErrorGetter;
-  /**
-   * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
-   */
-  onChange?: (formData: FormData) => void;
   /**
    * Idea id for update form, used to load and udpate image and files.
    */
@@ -87,13 +65,11 @@ const Form = memo(
     initialFormData,
     title,
     inputId,
-    submitOnEvent,
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
     layout,
     footer,
-    onChange,
     onSubmit,
   }: Props) => {
     const { formatMessage } = useIntl();
@@ -127,18 +103,12 @@ const Form = memo(
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
-    const handleChange = (data: FormData) => {
-      setData(data);
-      onChange?.(data);
-    };
-
     const handleSubmit = async (formData?: any, showErrors = true) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
       setData(sanitizedFormData);
-      onChange?.(sanitizedFormData);
       setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
@@ -154,21 +124,12 @@ const Form = memo(
       setScrollToError(true);
     };
 
-    useObserveEvent(submitOnEvent, handleSubmit);
-
     return (
       /*
         This form should contain as few styles as possible!
         Customization should happen in places where this component is imported!
       */
-      <Box
-        id={uiSchema?.options?.formId}
-        as="form"
-        display="flex"
-        flexDirection="column"
-        // This is necessary for the form to grow with the content and still be scrollable
-        height="100%"
-      >
+      <FormWrapper formId={uiSchema.options?.formId}>
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           /*
@@ -188,14 +149,12 @@ const Form = memo(
             setShowAllErrors={setShowAllErrors}
             schema={schema}
             uiSchema={uiSchema}
-            ajv={customAjv}
             getApiErrorMessage={getApiErrorMessage}
             getAjvErrorMessage={getAjvErrorMessage}
             inputId={inputId}
             config={config}
             locale={locale}
-            setFormData={setData}
-            onChange={handleChange}
+            onChange={setData}
             onSubmit={handleSubmit}
           />
           {footer && (
@@ -216,8 +175,6 @@ const Form = memo(
                 )}
                 processing={loading}
               />
-            ) : submitOnEvent ? (
-              <InvisibleSubmitButton onClick={handleSubmit} />
             ) : (
               <Button onClick={handleSubmit}>
                 {formatMessage(messages.save)}
@@ -225,7 +182,7 @@ const Form = memo(
             )}
           </>
         )}
-      </Box>
+      </FormWrapper>
     );
   }
 );

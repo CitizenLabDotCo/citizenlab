@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IProjects, IProjectData, IProject } from '../types';
 
@@ -32,7 +32,7 @@ export const project1: IProjectData = {
     },
     header_bg: {
       large:
-        'https://demo.stg.citizenlab.co/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
+        'https://demo.stg.govocal.com/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
     action_descriptors: {
       posting_idea: {
@@ -256,10 +256,10 @@ export const project2: IProjectData = {
 export const projects: IProjects = {
   data: [project1, project2],
   links: {
-    self: 'http://demo.stg.citizenlab.co/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
+    self: 'http://demo.stg.govocal.com/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
     first:
-      'http://demo.stg.citizenlab.co/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
-    last: 'http://demo.stg.citizenlab.co/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
+      'http://demo.stg.govocal.com/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
+    last: 'http://demo.stg.govocal.com/web_api/v1/projects?filter_can_moderate=true&page%5Bnumber%5D=1&page%5Bsize%5D=250&publication_statuses%5B%5D=draft&publication_statuses%5B%5D=published&publication_statuses%5B%5D=archived',
     prev: null,
     next: null,
   },
@@ -402,19 +402,19 @@ export const apiPathBySlug = '/web_api/v1/projects/by_slug/:slug';
 export const apiPathAll = '/web_api/v1/projects';
 
 const endpoints = {
-  'GET projects/:id': rest.get(apiPathById, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project1 }));
+  'GET projects/:id': http.get(apiPathById, () => {
+    return HttpResponse.json({ data: project1 }, { status: 200 });
   }),
-  'GET projects/by_slug/:slug': rest.get(apiPathBySlug, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project2 }));
+  'GET projects/by_slug/:slug': http.get(apiPathBySlug, () => {
+    return HttpResponse.json({ data: project2 }, { status: 200 });
   }),
-  'GET projects': rest.get(apiPathAll, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projects));
+  'GET projects': http.get(apiPathAll, () => {
+    return HttpResponse.json(projects, { status: 200 });
   }),
 };
 
-export const votingProjectHandler = rest.get(apiPathById, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(votingProject));
+export const votingProjectHandler = http.get(apiPathById, () => {
+  return HttpResponse.json(votingProject, { status: 200 });
 });
 
 export default endpoints;

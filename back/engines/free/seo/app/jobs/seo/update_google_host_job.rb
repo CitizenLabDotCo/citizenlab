@@ -9,7 +9,7 @@ module Seo
       url  = "https://#{host}"
 
       GoogleHandler.new.tap do |handler|
-        handler.verify_domain(host) unless url.end_with? 'citizenlab.co'
+        handler.verify_domain(host) if %w[citizenlab.co govocal.com].none? { |gv_domain| url.end_with?(gv_domain) }
         handler.submit_to_search_console(url)
         handler.submit_sitemap(url)
       end

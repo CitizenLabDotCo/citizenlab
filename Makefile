@@ -53,10 +53,10 @@ psql:
 	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
 
 # Run it with:
-# make add-campaign-and-notification source=initiative_resubmitted_for_review target=new_cosponsor_added
-# See back/bin/add_campaign_and_notification for details.
-add-campaign-and-notification:
-	back/bin/add_campaign_and_notification ${source} ${target}
+# make copy-paste-code-entity source=initiative_resubmitted_for_review target=new_cosponsor_added
+# See back/bin/copy_paste_code_entity for details.
+copy-paste-code-entity:
+	back/bin/copy_paste_code_entity ${source} ${target}
 
 blint back-lint-autocorrect:
 	docker compose run web bundle exec rubocop -P --format simple --autocorrect
@@ -69,7 +69,7 @@ r rspec:
 # Usage example:
 # make feature-toggle feature=initiative_cosponsors enabled=true
 feature-toggle:
-	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.first; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests

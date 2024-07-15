@@ -68,6 +68,7 @@ import {
 import Text, { TextProps } from './components/Text';
 import Title, { TitleProps } from './components/Title';
 import Toggle from './components/Toggle';
+import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
 import {
@@ -126,6 +127,7 @@ export type {
   ButtonContainerProps,
   ButtonProps,
   ButtonStyles,
+  TooltipProps,
 };
 
 export {
@@ -188,4 +190,5 @@ export {
   Text,
   Title,
   ListItem,
+  Tooltip,
 };
