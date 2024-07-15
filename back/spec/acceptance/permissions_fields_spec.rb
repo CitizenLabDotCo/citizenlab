@@ -107,11 +107,11 @@ resource 'PermissionsField' do
     end
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
-    let(:permissions_field) { create(:permissions_field, field_type: 'email', required: false, enabled: false, config: {password: true, confirmed: true}) }
+    let(:permissions_field) { create(:permissions_field, field_type: 'email', required: false, enabled: false, config: { password: true, confirmed: true }) }
     let(:id) { permissions_field.id }
     let(:required) { true }
     let(:enabled) { true }
-    let(:config) { {password: false, confirmed: false} }
+    let(:config) { { password: false, confirmed: false } }
 
     example_request 'Update a permissions custom field' do
       assert_status 200
