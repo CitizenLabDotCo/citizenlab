@@ -25,7 +25,7 @@ FactoryBot.define do
     end
 
     trait :by_custom do
-      permitted_by { 'everyone_confirmed_email' }
+      permitted_by { 'custom' }
     end
 
     factory :global_permission do

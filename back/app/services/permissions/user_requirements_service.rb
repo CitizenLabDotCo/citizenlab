@@ -172,7 +172,7 @@ class Permissions::UserRequirementsService
   end
 
   def permissions_fields_service
-    @permission_fields_service ||= Permissions::PermissionsFieldsService.new
+    @permissions_fields_service ||= Permissions::PermissionsFieldsService.new
   end
 end
 

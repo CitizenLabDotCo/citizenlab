@@ -102,18 +102,22 @@ resource 'PermissionsField' do
   patch 'web_api/v1/permissions_fields/:id' do
     with_options scope: :permissions_field do
       parameter :required, 'Whether filling out the field is mandatory'
+      parameter :enabled, 'Is this field enabled? Delete should be used instead field_type = "custom_field"'
+      parameter :config, 'Configuration for the field - only allowed currently on field_type = "email"'
     end
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
-    let(:permissions_field) { create(:permissions_field, required: false) }
+    let(:permissions_field) { create(:permissions_field, field_type: 'email', required: false, enabled: false, config: {password: true, confirmed: true}) }
     let(:id) { permissions_field.id }
     let(:required) { true }
+    let(:enabled) { true }
+    let(:config) { {password: false, confirmed: false} }
 
     example_request 'Update a permissions custom field' do
       assert_status 200
-
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :attributes, :required)).to be true
+      expect(response_data.dig(:attributes, :required)).to be true
+      expect(response_data.dig(:attributes, :enabled)).to be true
+      expect(response_data.dig(:attributes, :config)).to eq config
     end
   end
 
@@ -126,7 +130,7 @@ resource 'PermissionsField' do
       permission = create(:permission, action: 'commenting_idea', permitted_by: 'custom')
       @permissions_fields =
         [create(:permissions_field, permission: permission, field_type: 'name')] +
-          create_list(:permissions_field, 3, permission: permission)
+        create_list(:permissions_field, 3, permission: permission)
     end
 
     let(:permissions_field) { create(:permissions_field, required: false) }
@@ -154,7 +158,7 @@ resource 'PermissionsField' do
         do_request
 
         expect(response_status).to eq 422
-        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{:error=>"only field types of custom_field can be reordered"}]
+        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
       end
     end
   end

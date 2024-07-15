@@ -39,7 +39,6 @@ resource 'Permissions' do
         expect(response_data.size).to eq Permission.enabled_actions(@phase).size
       end
 
-      # TODO: JS - Fix this - now does a query per permission
       example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @phase.permissions.first
         field2 = create(:custom_field)
@@ -59,11 +58,10 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse response_body
         permission_data = json_response[:data].find { |d| d[:id] == permission.id }
-        ordered_permissions_field_ids = permission.permissions_fields.sort_by do |permissions_field|
-          permissions_field.custom_field.ordering
-        end.map(&:id)
+        ordered_permissions_field_ids = permission.permissions_fields.pluck(:id)
+
         expect(permission_data.dig(:relationships, :custom_fields)).to eq(
-          { data: [field1, field2, field3].map { |field| { id: field.id, type: 'custom_field' } } }
+          { data: [field2, field1, field3].map { |field| { id: field.id, type: 'custom_field' } } }
         )
         expect(permission_data.dig(:relationships, :permissions_fields)).to eq(
           { data: ordered_permissions_field_ids.map { |id| { id: id, type: 'permissions_field' } } }
@@ -92,8 +90,8 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        expect(response_data.size).to eq 7
-        expect(response_data.map { |d| d.dig(:attributes, :action) }.uniq).to match_array Permission.available_actions(nil)
+        expect(response_data.size).to eq 5
+        expect(response_data.map { |d| d.dig(:attributes, :action) }).to match_array Permission.available_actions(nil)
       end
     end
 

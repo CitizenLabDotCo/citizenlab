@@ -851,12 +851,11 @@ describe Permissions::UserRequirementsService do
     end
 
     context 'when onboarding is not possible (there are no topics or areas assigned to projects)' do
-      context 'when permitted_by is set to users' do
-        let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: true) }
+      context 'when permitted_by is set to "custom" from "users"' do
+        let(:permission) { create(:permission, permitted_by: 'custom', global_custom_fields: true) }
 
         before do
-          field = CustomField.find_by code: 'birthyear'
-          create(:permissions_field, permission: permission, custom_field: field, required: false)
+          Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
         end
 
         it 'permits a fully registered confirmed resident' do
@@ -904,7 +903,7 @@ describe Permissions::UserRequirementsService do
       expect(fields.count).to eq 1
       expect(fields.first.class.name).to eq 'CustomField'
       expect(fields.first.key).to eq 'gender'
-      expect(fields.first.required).to eq false
+      expect(fields.first.required).to be false
     end
 
     it 'returns required values of the permission field' do
@@ -916,7 +915,7 @@ describe Permissions::UserRequirementsService do
       expect(fields.count).to eq 1
       expect(fields.first.class.name).to eq 'CustomField'
       expect(fields.first.key).to eq 'gender'
-      expect(fields.first.required).to eq true
+      expect(fields.first.required).to be true
     end
   end
 end

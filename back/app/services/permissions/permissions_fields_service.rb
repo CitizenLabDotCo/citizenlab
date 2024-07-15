@@ -3,6 +3,7 @@
 module Permissions
   class PermissionsFieldsService
     def fields_for_permission(permission)
+      return permission.permissions_fields.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
       return permission.permissions_fields if permission.permitted_by == 'custom'
 
       default_fields(permitted_by: permission.permitted_by, permission: permission)
@@ -86,8 +87,9 @@ module Permissions
         default_fields
       end
 
-      # Return with ordering
+      # Return with ordering & an ID
       fields.map.with_index do |field, index|
+        field.id = SecureRandom.uuid
         field.ordering = index
         field
       end

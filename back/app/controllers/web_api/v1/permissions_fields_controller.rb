@@ -113,10 +113,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_create
-    params.require(:permissions_field).permit(:required, :custom_field_id, :field_type, :verified, :enabled)
+    params.require(:permissions_field).permit(:required, :custom_field_id, :field_type, :enabled)
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required, :verified, :enabled, :ordering)
+    params.require(:permissions_field).permit(:required, :enabled, :ordering, config: {})
   end
 end
