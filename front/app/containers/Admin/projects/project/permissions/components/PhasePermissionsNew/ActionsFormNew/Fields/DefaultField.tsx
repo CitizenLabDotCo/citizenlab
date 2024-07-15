@@ -105,6 +105,7 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
         <EmailModal
           opened={isModalOpen}
           config={config}
+          disableEditing={disableEditing}
           onClose={() => setIsModalOpen(false)}
           onUpdateConfig={(config) =>
             updatePermissionsField({

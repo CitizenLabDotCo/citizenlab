@@ -8,16 +8,26 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import parentMessages from '../messages';
+import Tooltip from '../Tooltip';
+
 import messages from './messages';
 
 interface Props {
   opened: boolean;
   config: EmailConfig;
+  disableEditing: boolean;
   onClose: () => void;
   onUpdateConfig: (config: EmailConfig) => void;
 }
 
-const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
+const EmailModal = ({
+  opened,
+  config,
+  disableEditing,
+  onClose,
+  onUpdateConfig,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -31,45 +41,56 @@ const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
       }
       close={onClose}
     >
-      <Box p="32px">
-        <Text mt="0" mb="12px" fontWeight="bold">
-          {formatMessage(messages.settingPassword)}
-        </Text>
-        <Radio
-          name={'required'}
-          value={true}
-          currentValue={config.password}
-          onChange={() => onUpdateConfig({ ...config, password: true })}
-          mb="4px"
-          label={formatMessage(messages.required)}
-        />
-        <Radio
-          name={'not-required'}
-          value={false}
-          currentValue={config.password}
-          onChange={() => {
-            onUpdateConfig({ ...config, password: false });
-          }}
-          label={formatMessage(messages.notRequired)}
-        />
-        <Text mt="28px" mb="12px" fontWeight="bold">
-          {formatMessage(messages.emailConfirmationCode)}
-        </Text>
-        <Radio
-          name={'required'}
-          value={true}
-          currentValue={config.confirmed}
-          onChange={() => onUpdateConfig({ ...config, confirmed: true })}
-          mb="4px"
-          label={formatMessage(messages.required)}
-        />
-        <Radio
-          name={'not-required'}
-          value={false}
-          currentValue={config.confirmed}
-          onChange={() => onUpdateConfig({ ...config, confirmed: false })}
-          label={formatMessage(messages.notRequired)}
-        />
+      <Box p="32px" w="248px">
+        <Tooltip
+          disabled={!disableEditing}
+          message={parentMessages.disableEditingExplanationFromModal}
+        >
+          <Box>
+            <Text mt="0" mb="12px" fontWeight="bold">
+              {formatMessage(messages.settingPassword)}
+            </Text>
+            <Radio
+              name={'required'}
+              value={true}
+              currentValue={config.password}
+              onChange={() => onUpdateConfig({ ...config, password: true })}
+              mb="4px"
+              disabled={disableEditing}
+              label={formatMessage(messages.required)}
+            />
+            <Radio
+              name={'not-required'}
+              value={false}
+              currentValue={config.password}
+              onChange={() => {
+                onUpdateConfig({ ...config, password: false });
+              }}
+              disabled={disableEditing}
+              label={formatMessage(messages.notRequired)}
+            />
+            <Text mt="28px" mb="12px" fontWeight="bold">
+              {formatMessage(messages.emailConfirmationCode)}
+            </Text>
+            <Radio
+              name={'required'}
+              value={true}
+              currentValue={config.confirmed}
+              onChange={() => onUpdateConfig({ ...config, confirmed: true })}
+              mb="4px"
+              disabled={disableEditing}
+              label={formatMessage(messages.required)}
+            />
+            <Radio
+              name={'not-required'}
+              value={false}
+              currentValue={config.confirmed}
+              onChange={() => onUpdateConfig({ ...config, confirmed: false })}
+              disabled={disableEditing}
+              label={formatMessage(messages.notRequired)}
+            />
+          </Box>
+        </Tooltip>
       </Box>
     </Modal>
   );

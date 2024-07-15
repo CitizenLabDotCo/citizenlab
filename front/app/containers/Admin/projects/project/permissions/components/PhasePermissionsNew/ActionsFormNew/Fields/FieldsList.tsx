@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 import useReorderPermissionsField from 'api/permissions_fields/useReorderPermissionsField';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SortableList, SortableRow, Row } from 'components/admin/ResourceList';
 
 import CustomField from './CustomField';
 import DefaultField from './DefaultField';
@@ -48,6 +50,26 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                 );
               })}
               {itemsList.map((field: IPermissionsFieldData, index: number) => {
+                const fieldMarkup = (
+                  <CustomField
+                    key={field.id}
+                    field={field}
+                    phaseId={phaseId}
+                    action={action}
+                    disableEditing={disableEditing}
+                  />
+                );
+
+                if (disableEditing) {
+                  return (
+                    <Row key={field.id}>
+                      <Box py="8px" w="100%">
+                        {fieldMarkup}
+                      </Box>
+                    </Row>
+                  );
+                }
+
                 return (
                   <SortableRow
                     key={field.id}
@@ -57,13 +79,7 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                     dropRow={handleDropRow}
                     isLastItem={index === itemsList.length - 1}
                   >
-                    <CustomField
-                      key={field.id}
-                      field={field}
-                      phaseId={phaseId}
-                      action={action}
-                      disableEditing={disableEditing}
-                    />
+                    {fieldMarkup}
                   </SortableRow>
                 );
               })}

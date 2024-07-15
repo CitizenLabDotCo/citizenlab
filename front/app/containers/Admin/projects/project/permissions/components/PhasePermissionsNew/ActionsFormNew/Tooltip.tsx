@@ -5,21 +5,27 @@ import {
   TooltipProps,
 } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
   disabled: boolean;
   placement?: TooltipProps['placement'];
+  message?: MessageDescriptor;
   children: TooltipProps['children'];
 }
 
-const Tooltip = ({ disabled, placement = 'right', children }: Props) => {
+const Tooltip = ({
+  disabled,
+  placement = 'right',
+  message = messages.disableEditingExplanation,
+  children,
+}: Props) => {
   return (
     <BaseTooltip
       disabled={disabled}
-      content={<FormattedMessage {...messages.disableEditingExplanation} />}
+      content={<FormattedMessage {...message} />}
       placement={placement}
       theme="dark"
     >
