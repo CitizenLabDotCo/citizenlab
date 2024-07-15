@@ -81,7 +81,11 @@ const PointLocationQuestion = ({
             heatmap={showHeatMap}
             onInit={setMapView}
           />
-          <ResetMapViewButton mapView={mapView} mapConfig={mapConfig} />
+          <ResetMapViewButton
+            mapView={mapView}
+            mapConfig={mapConfig}
+            resetButtonRef={resetButtonRef}
+          />
         </>
       )}
     </Box>

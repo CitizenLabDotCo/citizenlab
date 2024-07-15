@@ -47,6 +47,7 @@ const InstructionAnimation = ({
   };
 
   const onClick = () => {
+    // For accessibility reasons, the animation must stop once it's clicked.
     lottieRef?.current?.stop();
   };
 

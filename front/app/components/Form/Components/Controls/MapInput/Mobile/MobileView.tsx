@@ -106,8 +106,10 @@ const MobileView = ({
     if (inputType === 'point') {
       return data || mapConfig?.data.attributes.center_geojson;
     } else if (inputType === 'line') {
+      // TODO: Make this center of graphic
       return mapConfig?.data.attributes.center_geojson;
     } else if (inputType === 'polygon') {
+      // TODO: Make this center of graphic
       return mapConfig?.data.attributes.center_geojson;
     }
   };
