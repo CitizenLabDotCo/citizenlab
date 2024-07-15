@@ -39,18 +39,27 @@ export interface IPermissionsFieldAdd {
   action: string;
 }
 
+export type EmailConfig = {
+  password: boolean;
+  confirmed: boolean;
+};
+
 export interface IPermissionCustomFieldUpdate {
   id: string;
   required?: boolean;
   verified?: boolean;
   enabled?: boolean;
+  config?: EmailConfig;
 }
 
 export interface IPermissionsFieldData {
   id: string;
   type: 'permissions_field';
   attributes: {
-    config: Record<string, any>;
+    config: Record<string, never> | EmailConfig;
+    // Is an EmailConfig if field_type is 'email'
+    // Is an empty object otherwise
+
     created_at: string;
     enabled: boolean;
     field_type: 'name' | 'email' | 'custom_field';

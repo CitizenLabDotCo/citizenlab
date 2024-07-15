@@ -35,14 +35,16 @@ const FieldsList = ({ phaseId, action }: Props) => {
         >
           {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
             <>
-              {lockedItemsList?.map((field: IPermissionsFieldData) => (
-                <DefaultField
-                  key={field.id}
-                  field={field}
-                  phaseId={phaseId}
-                  action={action}
-                />
-              ))}
+              {lockedItemsList?.map((field: IPermissionsFieldData) => {
+                return (
+                  <DefaultField
+                    key={field.id}
+                    field={field}
+                    phaseId={phaseId}
+                    action={action}
+                  />
+                );
+              })}
               {itemsList.map((field: IPermissionsFieldData, index: number) => {
                 return (
                   <SortableRow

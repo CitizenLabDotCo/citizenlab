@@ -8,6 +8,8 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
+import { EmailConfig } from 'api/permissions_fields/types';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -16,10 +18,12 @@ import messages from './messages';
 
 interface Props {
   opened: boolean;
+  config: EmailConfig;
   onClose: () => void;
+  onUpdateConfig: (config: EmailConfig) => void;
 }
 
-const EmailModal = ({ opened, onClose }: Props) => {
+const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -39,17 +43,20 @@ const EmailModal = ({ opened, onClose }: Props) => {
         </Text>
         <Radio
           name={'required'}
-          value={'required'}
-          currentValue={'required'}
-          onChange={() => {}}
+          value={true}
+          currentValue={config.password}
+          onChange={() => onUpdateConfig({ ...config, password: true })}
           mb="4px"
           label={formatMessage(messages.required)}
         />
         <Radio
           name={'not-required'}
-          value={'not-required'}
-          currentValue={'required'}
-          onChange={() => {}}
+          value={false}
+          currentValue={config.password}
+          onChange={() => {
+            console.log({ ...config, password: false });
+            onUpdateConfig({ ...config, password: false });
+          }}
           label={formatMessage(messages.notRequired)}
         />
         <Text mt="28px" mb="12px" fontWeight="bold">
@@ -57,16 +64,16 @@ const EmailModal = ({ opened, onClose }: Props) => {
         </Text>
         <Radio
           name={'required'}
-          value={'required'}
-          currentValue={'required'}
+          value={true}
+          currentValue={config.confirmed}
           onChange={() => {}}
           mb="4px"
           label={formatMessage(messages.required)}
         />
         <Radio
           name={'not-required'}
-          value={'not-required'}
-          currentValue={'required'}
+          value={false}
+          currentValue={config.confirmed}
           onChange={() => {}}
           label={formatMessage(messages.notRequired)}
         />
