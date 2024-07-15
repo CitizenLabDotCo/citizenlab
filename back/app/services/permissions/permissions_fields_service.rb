@@ -3,6 +3,7 @@
 module Permissions
   class PermissionsFieldsService
     def fields_for_permission(permission)
+      return permission.permissions_fields.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
       return permission.permissions_fields if permission.permitted_by == 'custom'
 
       default_fields(permitted_by: permission.permitted_by, permission: permission)

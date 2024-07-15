@@ -904,7 +904,7 @@ describe Permissions::UserRequirementsService do
       expect(fields.count).to eq 1
       expect(fields.first.class.name).to eq 'CustomField'
       expect(fields.first.key).to eq 'gender'
-      expect(fields.first.required).to eq false
+      expect(fields.first.required).to be false
     end
 
     it 'returns required values of the permission field' do
@@ -916,7 +916,7 @@ describe Permissions::UserRequirementsService do
       expect(fields.count).to eq 1
       expect(fields.first.class.name).to eq 'CustomField'
       expect(fields.first.key).to eq 'gender'
-      expect(fields.first.required).to eq true
+      expect(fields.first.required).to be true
     end
   end
 end

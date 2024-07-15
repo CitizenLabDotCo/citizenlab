@@ -126,7 +126,7 @@ resource 'PermissionsField' do
       permission = create(:permission, action: 'commenting_idea', permitted_by: 'custom')
       @permissions_fields =
         [create(:permissions_field, permission: permission, field_type: 'name')] +
-          create_list(:permissions_field, 3, permission: permission)
+        create_list(:permissions_field, 3, permission: permission)
     end
 
     let(:permissions_field) { create(:permissions_field, required: false) }
@@ -154,7 +154,7 @@ resource 'PermissionsField' do
         do_request
 
         expect(response_status).to eq 422
-        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{:error=>"only field types of custom_field can be reordered"}]
+        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
       end
     end
   end

@@ -12,67 +12,63 @@ describe Permissions::PermissionsFieldsService do
 
   # TODO: JS - Seems to be some leakage between tests, need to investigate
   describe '#fields_for_permission' do
-    # describe 'permission_fields' do
-    #   context '"custom_permitted_by" feature flag is enabled' do
-    #     before { SettingsService.new.activate_feature! 'custom_permitted_by' }
-    #
-    #     it 'returns platform default fields when permitted_by "users"' do
-    #       permission = create(:permission, permitted_by: 'users')
-    #
-    #       fields = permission.permissions_fields
-    #       expect(fields.count).to eq 2
-    #       expect(fields.pluck(:field_type)).to match_array(%w[name email])
-    #       expect(fields.pluck(:enabled)).to match_array([true, true])
-    #       expect(fields.pluck(:required)).to match_array([true, true])
-    #       expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-    #     end
-    #
-    #     it 'returns disabled built-in fields when permitted_by "everyone"' do
-    #       permission = create(:permission, permitted_by: 'everyone')
-    #
-    #       fields = permission.permissions_fields
-    #       expect(fields.count).to eq 2
-    #       expect(fields.pluck(:field_type)).to match_array(%w[name email])
-    #       expect(fields.pluck(:required)).to match_array([false, false])
-    #       expect(fields.pluck(:enabled)).to match_array([false, false])
-    #       expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-    #     end
-    #
-    #     it 'returns built fields with only email & not password when permitted_by "everyone_confirmed_email"' do
-    #       permission = create(:permission, permitted_by: 'everyone_confirmed_email')
-    #
-    #       fields = permission.permissions_fields
-    #       expect(fields.count).to eq 2
-    #       expect(fields.pluck(:field_type)).to match_array(%w[name email])
-    #       expect(fields.pluck(:enabled)).to match_array([false, true])
-    #       expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => false, 'confirmed' => true })
-    #     end
-    #   end
-    #
-    #   context '"custom_permitted_by" feature flag is NOT enabled' do
-    #     before { SettingsService.new.deactivate_feature! 'custom_permitted_by' }
-    #
-    #     it 'returns no fields by default' do
-    #       permission = create(:permission, permitted_by: 'users')
-    #       expect(permission.permissions_fields).to be_empty
-    #     end
-    #
-    #     it 'returns only field_type: custom_field if feature flag is NOT enabled' do
-    #       SettingsService.new.deactivate_feature! 'custom_permitted_by'
-    #       permission = create(:permission, permitted_by: 'users')
-    #       _email_field = create(:permissions_field, permission: permission, field_type: 'email')
-    #       birth_year_field = create(:permissions_field, permission: permission, field_type: 'custom_field', custom_field: create(:custom_field_birthyear))
-    #
-    #       fields = permission.permissions_fields
-    #       expect(fields.count).to eq 1
-    #       expect(fields.first.field_type).to eq 'custom_field'
-    #       expect(fields.first.id).to eq birth_year_field.id
-    #     end
-    #   end
-    # end
+    context '"custom_permitted_by" feature flag is enabled' do
+      it 'returns platform default fields when permitted_by "users"' do
+        permission = create(:permission, permitted_by: 'users')
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 3
+        expect(fields.pluck(:field_type)).to match_array(%w[name email custom_field])
+        expect(fields.pluck(:enabled)).to match_array([true, true, true])
+        expect(fields.pluck(:required)).to match_array([true, true, false])
+        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
+      end
+
+      it 'returns disabled built-in fields when permitted_by "everyone"' do
+        permission = create(:permission, permitted_by: 'everyone')
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 2
+        expect(fields.pluck(:field_type)).to match_array(%w[name email])
+        expect(fields.pluck(:required)).to match_array([false, false])
+        expect(fields.pluck(:enabled)).to match_array([false, false])
+        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
+      end
+
+      it 'returns built fields with only email & not password when permitted_by "everyone_confirmed_email"' do
+        permission = create(:permission, permitted_by: 'everyone_confirmed_email')
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 2
+        expect(fields.pluck(:field_type)).to match_array(%w[name email])
+        expect(fields.pluck(:enabled)).to match_array([false, true])
+        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => false, 'confirmed' => true })
+      end
+    end
+
+    context '"custom_permitted_by" feature flag is NOT enabled' do
+      before { SettingsService.new.deactivate_feature! 'custom_permitted_by' }
+
+      it 'returns no fields by default' do
+        permission = create(:permission, permitted_by: 'users')
+        expect(service.fields_for_permission(permission)).to be_empty
+      end
+
+      it 'returns only field_type: custom_field if feature flag is NOT enabled' do
+        permission = create(:permission, permitted_by: 'users')
+        email_field = create(:permissions_field, permission: permission, field_type: 'email')
+        birth_year_field = create(:permissions_field, permission: permission, field_type: 'custom_field', custom_field: create(:custom_field_birthyear))
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 1
+        expect(fields.first.field_type).to eq 'custom_field'
+        expect(fields.pluck(:id)).to include birth_year_field.id
+        expect(fields.pluck(:id)).not_to include email_field.id
+      end
+    end
   end
 
-  # TODO: JS - Fix these tests and make them cover everything
+  # TODO: JS - Add more tests and make them cover everything
   describe '#change_permissions_to_custom' do
     before { permission } # Create permission
 
