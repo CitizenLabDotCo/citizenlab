@@ -209,6 +209,29 @@ const PhaseParticipationConfig = ({
   >(phase?.data.attributes.voting_term_plural_multiloc || null);
 
   useEffect(() => {
+    const participationConfig = {
+      participation_method,
+      posting_enabled,
+      commenting_enabled,
+      reacting_enabled,
+      reacting_like_method,
+      reacting_like_limited_max,
+      reacting_dislike_enabled,
+      reacting_dislike_method,
+      allow_anonymous_participation,
+      voting_method,
+      voting_min_total,
+      voting_max_total,
+      voting_max_votes_per_idea,
+      survey_embed_url,
+      survey_service,
+      document_annotation_embed_url,
+      poll_anonymous,
+      presentation_mode,
+      ideas_order,
+      input_term,
+    };
+
     const validate = () => {
       const {
         noLikingLimitError,
@@ -220,26 +243,7 @@ const PhaseParticipationConfig = ({
         isValidated,
       } = validatePhaseConfig(
         {
-          participation_method,
-          posting_enabled,
-          commenting_enabled,
-          reacting_enabled,
-          reacting_like_method,
-          reacting_like_limited_max,
-          reacting_dislike_enabled,
-          reacting_dislike_method,
-          allow_anonymous_participation,
-          voting_method,
-          voting_min_total,
-          voting_max_total,
-          voting_max_votes_per_idea,
-          survey_embed_url,
-          survey_service,
-          document_annotation_embed_url,
-          poll_anonymous,
-          presentation_mode,
-          ideas_order,
-          input_term,
+          ...participationConfig,
           appConfig,
         },
         formatMessage
@@ -259,28 +263,7 @@ const PhaseParticipationConfig = ({
       .observeEvent('getPhaseParticipationConfig')
       .pipe(filter(() => validate()))
       .subscribe(() => {
-        const output = getOutput({
-          participation_method,
-          posting_enabled,
-          commenting_enabled,
-          reacting_enabled,
-          reacting_like_method,
-          reacting_like_limited_max,
-          reacting_dislike_enabled,
-          reacting_dislike_method,
-          allow_anonymous_participation,
-          voting_method,
-          voting_min_total,
-          voting_max_total,
-          voting_max_votes_per_idea,
-          survey_embed_url,
-          survey_service,
-          document_annotation_embed_url,
-          poll_anonymous,
-          presentation_mode,
-          ideas_order,
-          input_term,
-        });
+        const output = getOutput(participationConfig);
         onSubmit(output);
       });
     return () => subscription.unsubscribe();

@@ -528,7 +528,6 @@ const AdminProjectsProjectGeneral = () => {
                     onSubmit={handlePhaseParticipationConfigSubmit}
                     onChange={handlePhaseParticipationConfigChange}
                     apiErrors={apiErrors}
-                    appConfig={appConfig}
                   />
                 </ParticipationContextWrapper>
               </CSSTransition>

@@ -13,7 +13,6 @@ import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignName } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
@@ -89,7 +88,6 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
 const AdminPhaseEdit = () => {
-  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, phaseId } = useParams() as {
@@ -558,7 +556,6 @@ const AdminPhaseEdit = () => {
             onSubmit={handlePhaseParticipationConfigSubmit}
             onChange={handlePhaseParticipationConfigChange}
             apiErrors={errors}
-            appConfig={appConfig}
           />
           {phaseAttrs.participation_method === 'native_survey' && (
             <>
