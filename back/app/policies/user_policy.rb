@@ -118,6 +118,7 @@ class UserPolicy < ApplicationPolicy
 
   private
 
+  # TODO: Use a call to CustomFieldParamsService.new.extract_custom_field_values_from_params! instead, but how?
   def allowed_custom_field_keys
     CustomFieldParamsService.new.custom_field_values_params allowed_custom_fields
   end

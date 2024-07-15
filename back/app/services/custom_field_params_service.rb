@@ -1,16 +1,18 @@
 class CustomFieldParamsService
-  def custom_field_values_params(allowed_fields)
+  def custom_field_values_params(custom_fields)
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    allowed_fields.each do |field|
+    custom_fields.each do |field|
       # Perhaps we could apply the visitor pattern here
       case field.input_type
       when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
-      when 'point', 'line', 'polygon'
+      when 'point'
         fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
+      when *CustomField::WEAK_PARAMS_INPUT_TYPES # Include nested arrays, which are not supported by strong params
+        nil
       when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
         fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
       else
@@ -24,11 +26,18 @@ class CustomFieldParamsService
     end
   end
 
-  def extract_custom_field_values_from_params!(params, fields)
-    extra_field_values = fields.each_with_object({}) do |field, accu|
+  def extract_custom_field_values_from_params!(params, custom_fields)
+    custom_field_params = params.dig(:idea, :custom_field_values) || params.dig(:user, :custom_field_values)
+    custom_field_params ||= params
+
+    strong_custom_field_params = custom_field_params.permit(custom_field_values_params(custom_fields))
+    weak_custom_field_params = weak_extra_custom_field_params(custom_field_params, custom_fields)
+    custom_field_params = strong_custom_field_params.merge(weak_custom_field_params)
+
+    extra_field_values = custom_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 
-      given_value = params.delete field.key
+      given_value = custom_field_params.delete field.key
       next if !given_value || !field.enabled?
 
       accu[field.key] = given_value
@@ -55,6 +64,16 @@ class CustomFieldParamsService
   end
 
   private
+
+  # Because strong params don't support nested arrays, and we will receive nested arrays in some
+  # GeoJSON representations, (e.g for input_type of 'line' or 'polygon',) we need to use weak params for them.
+  def weak_extra_custom_field_params(custom_field_params, custom_fields)
+    custom_fields.each_with_object({}) do |field, accu|
+      next unless CustomField::WEAK_PARAMS_INPUT_TYPES.include?(field.input_type) && custom_field_params[field.key]
+
+      accu[field.key] = custom_field_params[field.key].permit!
+    end
+  end
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)

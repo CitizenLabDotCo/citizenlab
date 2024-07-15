@@ -310,7 +310,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+    idea_params = params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+
+    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
+    custom_field_values = params_service.extract_custom_field_values_from_params!(params, allowed_custom_fields)
+    idea_params[:custom_field_values] = custom_field_values || {}
+
+    idea_params
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
@@ -336,16 +342,10 @@ class WebApi::V1::IdeasController < ApplicationController
     simple_attributes
   end
 
-  def idea_complex_attributes(custom_form, submittable_field_keys)
+  def idea_complex_attributes(_custom_form, submittable_field_keys)
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
-
-    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
-    custom_field_values_params = params_service.custom_field_values_params(allowed_custom_fields)
-    if custom_field_values_params.any?
-      complex_attributes[:custom_field_values] = custom_field_values_params
-    end
 
     if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
