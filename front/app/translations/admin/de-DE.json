@@ -781,7 +781,7 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Geben Sie einen Namen für alle Sprachen an",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Das Projekt kann nicht leer sein",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName": "Name",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "projekte",
+  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl": "Resultierende URL",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Speichern",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Projekt hinzufügen",
