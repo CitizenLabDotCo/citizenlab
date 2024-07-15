@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  scrollLeft: {
-    id: 'app.components.HorizontalScroll.scrollLeft',
-    defaultMessage: 'Scroll left',
+  scrollLeftLabel: {
+    id: 'app.components.HorizontalScroll.scrollLeftLabel',
+    defaultMessage: 'Scroll left.',
   },
-  scrollRight: {
-    id: 'app.components.HorizontalScroll.scrollRight',
-    defaultMessage: 'Scroll right',
+  scrollRightLabel: {
+    id: 'app.components.HorizontalScroll.scrollRightLabel',
+    defaultMessage: 'Scroll right.',
   },
 });

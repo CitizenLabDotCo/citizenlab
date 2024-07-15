@@ -105,7 +105,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           p="0px"
           my="auto"
           className="e2e-event-previews-scroll-left"
-          ariaLabel={formatMessage(messages.scrollLeft)}
+          ariaLabel={formatMessage(messages.scrollLeftLabel)}
         />
       </Box>
       <StyledContainer ref={containerRef} role={containerRole}>
@@ -125,7 +125,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           buttonStyle="text"
           p="0px"
           className="e2e-event-previews-scroll-right"
-          ariaLabel={formatMessage(messages.scrollRight)}
+          ariaLabel={formatMessage(messages.scrollRightLabel)}
         />
       </Box>
     </Box>
