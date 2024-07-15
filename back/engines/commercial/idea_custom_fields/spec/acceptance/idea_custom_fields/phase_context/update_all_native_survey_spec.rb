@@ -3016,40 +3016,34 @@ resource 'Idea Custom Fields' do
         # by sending a separate request to delete the map_config, using DELETE ...map_configs/:id.
         # i.e. map_config_id: nil, map_config_id: '', or ommitting map_config_id param will not remove the relation.
         example 'Absence of map_config_id does not remove existing relation', document: false do
-          custom_field1 = create(:custom_field_point, resource: custom_form)
+          custom_field1 = create(:custom_field_page, resource: custom_form)
           map_config1 = create(:map_config, mappable_id: custom_field1.id, mappable_type: 'CustomField')
           custom_field2 = create(:custom_field_point, resource: custom_form)
           map_config2 = create(:map_config, mappable_id: custom_field2.id, mappable_type: 'CustomField')
           custom_field3 = create(:custom_field_point, resource: custom_form)
           map_config3 = create(:map_config, mappable_id: custom_field3.id, mappable_type: 'CustomField')
+          custom_field4 = create(:custom_field_point, resource: custom_form)
+          map_config4 = create(:map_config, mappable_id: custom_field4.id, mappable_type: 'CustomField')
 
           request = {
             custom_fields: [
-              { input_type: 'page' },
               {
                 id: custom_field1.id,
-                title_multiloc: { 'en' => 'Updated point custom field 1' },
-                description_multiloc: { 'en' => 'Updated point custom field 1 description' },
-                input_type: 'point',
-                required: false,
-                enabled: false
-              },
-              {
-                id: custom_field2.id,
-                title_multiloc: { 'en' => 'Updated point custom field 2' },
-                description_multiloc: { 'en' => 'Updated point custom field 2 description' },
-                input_type: 'point',
-                required: false,
-                enabled: false,
+                input_type: 'page',
                 map_config_id: nil
               },
               {
+                id: custom_field2.id,
+                input_type: 'point'
+              },
+              {
                 id: custom_field3.id,
-                title_multiloc: { 'en' => 'Updated point custom field 3' },
-                description_multiloc: { 'en' => 'Updated point custom field 3 description' },
                 input_type: 'point',
-                required: false,
-                enabled: false,
+                map_config_id: nil
+              },
+              {
+                id: custom_field4.id,
+                input_type: 'point',
                 map_config_id: ''
               }
             ]
@@ -3061,6 +3055,7 @@ resource 'Idea Custom Fields' do
           expect(custom_field1.reload.map_config).to eq(map_config1)
           expect(custom_field2.reload.map_config).to eq(map_config2)
           expect(custom_field3.reload.map_config).to eq(map_config3)
+          expect(custom_field4.reload.map_config).to eq(map_config4)
         end
       end
     end
