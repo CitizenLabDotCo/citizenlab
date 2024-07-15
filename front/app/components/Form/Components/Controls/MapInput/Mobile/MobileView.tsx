@@ -85,7 +85,8 @@ const MobileView = ({
     } else if ((inputType === 'line' || inputType === 'polygon') && data) {
       updateMultiPointsDataAndDisplay({
         data:
-          // If we have a polygon, we want to remove the duplicated first point which closed the line
+          // If we have a polygon, we want to first remove the last point which we added
+          // when we saved the data to close the line (duplicated first point to form a polygon).
           inputType === 'polygon'
             ? data?.coordinates?.[0]?.slice(0, -1)
             : data?.coordinates,
