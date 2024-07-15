@@ -144,7 +144,6 @@ const ActionsForm = ({
                     permission={permission}
                     projectId={projectId}
                     phaseId={phaseId}
-                    initiativeContext={postType === 'initiative'}
                     onChange={onChange}
                   />
                 </Box>

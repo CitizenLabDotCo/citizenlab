@@ -38,7 +38,6 @@ type UserFieldSelectionProps = {
   permission: IPermissionData;
   projectId?: string | null;
   phaseId?: string | null;
-  initiativeContext?: boolean;
   onChange: ({
     permission,
     permittedBy,
@@ -51,7 +50,6 @@ const UserFieldSelection = ({
   permission,
   projectId,
   phaseId,
-  initiativeContext,
   onChange,
 }: UserFieldSelectionProps) => {
   const { formatMessage } = useIntl();
@@ -66,26 +64,22 @@ const UserFieldSelection = ({
   const initialFields = usePermissionsFields({
     projectId,
     phaseId,
-    initiativeContext,
     action: permission.attributes.action,
   });
   const { mutate: addPermissionCustomField, isLoading } =
     useAddPermissionsField({
       phaseId,
       projectId,
-      initiativeContext,
       action: permission.attributes.action,
     });
   const { mutate: updatePermissionCustomField } = useUpdatePermissionsField({
     projectId,
     phaseId,
-    initiativeContext,
     action: permission.attributes.action,
   });
   const { mutate: deletePermissionsField } = useDeletePermissionsField({
     projectId,
     phaseId,
-    initiativeContext,
     action: permission.attributes.action,
   });
 
@@ -108,7 +102,6 @@ const UserFieldSelection = ({
       custom_field_id: field.id,
       required: false,
       phaseId,
-      initiativeContext,
       projectId,
       action: permission.attributes.action,
     });

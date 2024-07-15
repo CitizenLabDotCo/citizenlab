@@ -38,7 +38,6 @@ const AccessRightsNotice = ({
   const { data: permissionCustomFields } = usePermissionsFields({
     projectId,
     phaseId,
-    initiativeContext: false,
     action: 'posting_idea',
   });
 

@@ -2,19 +2,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { isInitiativeAction } from 'api/initiative_action_descriptors/utils';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventsKeys from './keys';
 import { IPermissionsFields, EventsKeys, IListParameters } from './types';
 
-const fetchEvents = ({
+const fetchPermissionsFields = ({
   phaseId,
-  initiativeContext,
   projectId,
   action,
 }: IListParameters) => {
   return fetcher<IPermissionsFields>({
-    path: initiativeContext
+    path: isInitiativeAction(action)
       ? `/permissions/${action}/permissions_fields`
       : phaseId
       ? `/phases/${phaseId}/permissions/${action}/permissions_fields`
@@ -25,7 +26,6 @@ const fetchEvents = ({
 
 const usePermissionsFields = ({
   phaseId,
-  initiativeContext,
   projectId,
   action,
 }: IListParameters) => {
@@ -33,12 +33,10 @@ const usePermissionsFields = ({
     {
       queryKey: eventsKeys.list({
         phaseId,
-        initiativeContext,
         projectId,
         action,
       }),
-      queryFn: () =>
-        fetchEvents({ phaseId, initiativeContext, projectId, action }),
+      queryFn: () => fetchPermissionsFields({ phaseId, projectId, action }),
     }
   );
 };

@@ -14,7 +14,6 @@ const deletePermissionsField = (id: string) =>
 const useDeletePermissionsField = ({
   phaseId,
   projectId,
-  initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
@@ -26,7 +25,6 @@ const useDeletePermissionsField = ({
         queryKey: permissionsFieldsKeys.list({
           phaseId,
           projectId,
-          initiativeContext,
           action,
         }),
       });

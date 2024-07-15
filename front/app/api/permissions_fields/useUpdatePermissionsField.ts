@@ -28,7 +28,6 @@ const updatePermissionsField = ({
 const useUpdatePermissionsField = ({
   phaseId,
   projectId,
-  initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
@@ -40,7 +39,6 @@ const useUpdatePermissionsField = ({
           queryKey: permissionsFieldsKeys.list({
             phaseId,
             projectId,
-            initiativeContext,
             action,
           }),
         });

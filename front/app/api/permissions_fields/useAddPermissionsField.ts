@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { isInitiativeAction } from 'api/initiative_action_descriptors/utils';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsFieldsKeys from './keys';
@@ -12,7 +14,7 @@ import {
 
 const addPermissionsField = async (parameters: IPermissionsFieldAdd) =>
   fetcher<IPermissionsField>({
-    path: parameters.initiativeContext
+    path: isInitiativeAction(parameters.action)
       ? `/permissions/${parameters.action}/permissions_fields`
       : parameters.phaseId
       ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_fields`
@@ -27,7 +29,6 @@ const addPermissionsField = async (parameters: IPermissionsFieldAdd) =>
 const useAddPermissionsField = ({
   phaseId,
   projectId,
-  initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
@@ -38,7 +39,6 @@ const useAddPermissionsField = ({
         queryKey: permissionsFieldsKeys.list({
           phaseId,
           projectId,
-          initiativeContext,
           action,
         }),
       });
