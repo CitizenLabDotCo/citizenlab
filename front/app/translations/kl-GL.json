@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Misileeqqigit, ajornartorsiut aaqqinngippat, attavigitigut",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Uatsinni ajornartorsiuteqarpoq, utoqqatserpugut",
   "app.components.HookForm.Feedback.successMessage": "Formip ikkunnera iluatsippoq",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Scroll left.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Scroll right.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideas have loaded.",
   "app.components.IdeaCards.showMore": "Allanik takusaqarit",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Idékort toqqoruk.",
