@@ -187,25 +187,27 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
-        <Box my="8px">
-          <Warning>
-            <FormattedMessage
-              {...messages.linePolygonMapWarning}
-              values={{
-                accessibilityStatement: (
-                  <a
-                    href={'/pages/accessibility-statement'}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ textDecoration: 'underline' }}
-                  >
-                    <FormattedMessage {...messages.accessibilityStatement} />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
+        {field?.input_type !== 'point' && (
+          <Box my="8px">
+            <Warning>
+              <FormattedMessage
+                {...messages.linePolygonMapWarning}
+                values={{
+                  accessibilityStatement: (
+                    <a
+                      href={'/pages/accessibility-statement'}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ textDecoration: 'underline' }}
+                    >
+                      <FormattedMessage {...messages.accessibilityStatement} />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
         <Button
           data-cy="e2e-configure-map-button"
           mt="16px"
