@@ -73,7 +73,6 @@ const ResetMapViewButton = ({ mapConfig, mapView, resetButtonRef }: Props) => {
             width="32px"
             height="32px"
             iconSize="20px"
-            boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
             onClick={goToDefaultMapView}
             aria-label={formatMessage(messages.goToDefaultMapView)}
           />
