@@ -42,3 +42,4 @@ export function getNavbarItemSlug(
 }
 
 export const MAX_TITLE_LENGTH = 25;
+export const MAX_NAVBAR_ITEMS = 7;

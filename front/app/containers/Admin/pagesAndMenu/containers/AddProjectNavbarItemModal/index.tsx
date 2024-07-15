@@ -105,7 +105,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
             <Box display="flex" gap="32px" flexDirection="column">
               <Select
                 name="projectId"
-                label="Project"
+                label={formatMessage(messages.project)}
                 options={projectOptions}
               />
               <Box>

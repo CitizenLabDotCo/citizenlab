@@ -76,7 +76,7 @@ class NavBarItem < ApplicationRecord
   end
 
   def fallback_title_multiloc
-    page? ? static_page.code : code
+    key_code = page? ? static_page.code : code
     key_code = project? ? nil : code
     key = "nav_bar_items.#{key_code}.title"
     if I18n.exists? key

@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.resultingUrl',
     defaultMessage: 'Resulting URL',
   },
+  project: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project',
+    defaultMessage: 'Project',
+  },
 });

@@ -4,6 +4,7 @@ import { Box, Tooltip } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
@@ -24,7 +25,7 @@ const PagesMenu = () => {
     return null;
   }
 
-  const disabledAddProjectToNavbarButton = navbarItems.data.length >= 7;
+  const disabledAddProjectToNavbarButton = navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
   return (
     <SectionFormWrapper
