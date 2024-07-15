@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import permissionsFieldsKeys from '../permissions_fields/keys';
+
 import phasePermissionKeys from './keys';
 import { IPCPermission, IUpdatePermissionObject } from './types';
 
@@ -31,6 +33,10 @@ const useUpdatePhasePermission = (phaseId?: string | null) => {
           queryKey: phasePermissionKeys.list({ phaseId }),
         });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: permissionsFieldsKeys.all(),
+      });
     },
   });
 };

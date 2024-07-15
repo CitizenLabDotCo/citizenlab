@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.emailConfirmationCode',
     defaultMessage: 'Email confirmation code',
   },
-  saveRules: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.saveRules',
-    defaultMessage: 'Save rules',
-  },
   addAQuestion: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion',
     defaultMessage: 'Add a question',

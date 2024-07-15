@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Title,
-  Box,
-  Text,
-  Radio,
-  Button,
-} from '@citizenlab/cl2-component-library';
+import { Title, Box, Text, Radio } from '@citizenlab/cl2-component-library';
 
 import { EmailConfig } from 'api/permissions_fields/types';
 
@@ -54,7 +48,6 @@ const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
           value={false}
           currentValue={config.password}
           onChange={() => {
-            console.log({ ...config, password: false });
             onUpdateConfig({ ...config, password: false });
           }}
           label={formatMessage(messages.notRequired)}
@@ -66,7 +59,7 @@ const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
           name={'required'}
           value={true}
           currentValue={config.confirmed}
-          onChange={() => {}}
+          onChange={() => onUpdateConfig({ ...config, confirmed: true })}
           mb="4px"
           label={formatMessage(messages.required)}
         />
@@ -74,14 +67,9 @@ const EmailModal = ({ opened, config, onClose, onUpdateConfig }: Props) => {
           name={'not-required'}
           value={false}
           currentValue={config.confirmed}
-          onChange={() => {}}
+          onChange={() => onUpdateConfig({ ...config, confirmed: false })}
           label={formatMessage(messages.notRequired)}
         />
-        <Box w="100%" display="flex" mt="32px">
-          <Button width="auto" buttonStyle="admin-dark" onClick={() => {}}>
-            {formatMessage(messages.saveRules)}
-          </Button>
-        </Box>
       </Box>
     </Modal>
   );
