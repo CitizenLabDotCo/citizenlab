@@ -79,30 +79,27 @@ const MapControl = ({ ...props }: ControlProps) => {
     [handleChange, path]
   );
 
-  // Handler for when multiple points data changes (line/polygon)
+  // Handler for when multiple point data changes (line/polygon)
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
-      // Convert points to a GeoJSON LineString or Polygon
+      // Convert the points to a GeoJSON LineString or GeoJSON Polygon
       if (coordinates) {
         const type =
           uischema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
 
-        if (type === 'Polygon') {
-          // Close the line to form a polygon
-          coordinates.push(coordinates[0]);
-        }
+        // Add an extra coordinate to close the line to form a polygon
+        type === 'Polygon' && coordinates.push(coordinates[0]);
 
-        const geometry = {
+        // Create the GeoJSON object
+        const geoJSONObject = {
           type,
+          // Polygons use a double-nested array structure
           coordinates: type === 'LineString' ? coordinates : [coordinates],
         };
-
-        handleChange(path, geometry);
+        handleChange(path, geoJSONObject);
       } else {
         handleChange(path, undefined);
       }
-
-      // handleChange(path, points);
       setDidBlur(true);
     },
     [handleChange, path, uischema.options?.input_type]

@@ -37,10 +37,9 @@ import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
-  updateMultiPointsDataAndDisplay,
-  updatePointDataAndDisplay,
   handleMapClickMultipoint,
   handleMapClickPoint,
+  updateDataAndDisplay,
 } from '../utils';
 
 type Props = {
@@ -64,21 +63,21 @@ const FullscreenMapInput = memo<Props>(
     ...props
   }: ControlProps & Props) => {
     const { uischema, path, id, schema, required } = props;
-
     const theme = useTheme();
     const locale = useLocale();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
-    const clientHeight = window.innerHeight;
 
-    // State & variables
+    const clientHeight = window.innerHeight;
     const bottomSectionRef = useRef<HTMLDivElement>(null);
     const [mapView, setMapView] = useState<MapView | null>(null);
+    const modalPortalElement = document.getElementById('modal-portal');
+    const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
+
+    // Create refs for custom UI elements
     const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
-    const modalPortalElement = document.getElementById('modal-portal');
-    const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
     // Create map layers from map configuration to load in
     const mapLayers = useMemo(() => {
@@ -95,7 +94,8 @@ const FullscreenMapInput = memo<Props>(
       (event: any, mapView: MapView) => {
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handlePointChange);
-        } else if (inputType === 'line' || inputType === 'polygon') {
+        } else {
+          // Line or polygon input
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
@@ -115,30 +115,20 @@ const FullscreenMapInput = memo<Props>(
       undoButtonRef,
     ]);
 
-    // Show graphics on map when location point(s) change
+    // Show graphic(s) on the map for user input
     useEffect(() => {
-      if (inputType === 'point' && data) {
-        updatePointDataAndDisplay({
+      if (data) {
+        updateDataAndDisplay({
           data,
           mapView,
-          locale,
-          tenantPrimaryColor: theme.colors.tenantPrimary,
-        });
-      } else if (inputType === 'line' || inputType === 'polygon') {
-        updateMultiPointsDataAndDisplay({
-          data:
-            // If we have a polygon, we want to remove the duplicated first point which closed the line
-            inputType === 'polygon'
-              ? data?.coordinates?.[0]?.slice(0, -1)
-              : data?.coordinates,
-          mapView,
           inputType,
-          tenantPrimaryColor: theme.colors.tenantPrimary,
+          locale,
+          theme,
         });
       } else {
         clearPointData(mapView);
       }
-    }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
+    }, [data, inputType, locale, mapView, theme]);
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
@@ -158,11 +148,12 @@ const FullscreenMapInput = memo<Props>(
         case 'point':
           return !(data?.address === '');
         case 'line':
+          // Has 2 or more points
           return data?.coordinates?.length && data.coordinates.length >= 2;
         case 'polygon':
+          // Has 4 or more points (3 + 1 duplicated first point to close the polygon)
           return (
-            data?.coordinates?.[0]?.length &&
-            data?.coordinates?.[0]?.length >= 4
+            data?.coordinates?.[0]?.length && data.coordinates?.[0].length >= 4
           );
       }
     };
@@ -187,7 +178,7 @@ const FullscreenMapInput = memo<Props>(
                 initialData={{
                   zoom: Number(mapConfig?.data.attributes.zoom_level),
                   center:
-                    inputType === 'point'
+                    inputType === 'point' // TODO: Clean up this logic + set to extent of the data instead.
                       ? data || mapConfig?.data.attributes.center_geojson
                       : data?.[0] || mapConfig?.data.attributes.center_geojson,
                   showLegend: layerCount > 0,
@@ -257,16 +248,17 @@ const FullscreenMapInput = memo<Props>(
                       {formatMessage(messages.back)}
                     </Button>
                   )}
-                  {data && inputType !== 'point' && (
-                    <UndoButton
-                      handleMultiPointChange={handleMultiPointChange}
-                      mapView={mapView}
-                      undoButtonRef={undoButtonRef}
-                      undoEnabled={data}
-                      inputType={inputType}
-                      buttonStyle="secondary"
-                    />
-                  )}
+                  {data &&
+                    inputType !== 'point' && ( // Only show for line/polygon input
+                      <UndoButton
+                        handleMultiPointChange={handleMultiPointChange}
+                        mapView={mapView}
+                        undoButtonRef={undoButtonRef}
+                        undoEnabled={data}
+                        inputType={inputType}
+                        buttonStyle="secondary"
+                      />
+                    )}
                   <Button
                     mr="20px"
                     onClick={() => {

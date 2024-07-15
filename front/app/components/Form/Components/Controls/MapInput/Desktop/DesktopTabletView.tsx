@@ -25,11 +25,10 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
-  updatePointDataAndDisplay,
   handleMapClickMultipoint,
   handleMapClickPoint,
-  updateMultiPointsDataAndDisplay,
   checkCoordinateErrors,
+  updateDataAndDisplay,
 } from '../utils';
 
 type Props = {
@@ -66,23 +65,23 @@ const DesktopView = ({
     value: '',
     label: '',
   });
+  const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
-  // Refs for custom UI elements
+  // Create refs for custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
 
-  const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
-
-  // Add undo and reset buttons to the map
+  // Add custom UI elements to the map
   useEffect(() => {
-    if (inputType === 'point') {
-      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
-    } else {
+    mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+    if (inputType !== 'point') {
+      // Only add for line/polygon input
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+      return;
     }
-    mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
   }, [
     id,
     inputType,
@@ -92,47 +91,37 @@ const DesktopView = ({
     undoButtonRef,
   ]);
 
-  // Show graphics on map when location point(s) change
+  // Show graphic(s) on the map for user input
   useEffect(() => {
     if (data) {
-      if (inputType === 'point') {
-        updatePointDataAndDisplay({
-          data,
-          mapView,
-          locale,
-          tenantPrimaryColor: theme.colors.tenantPrimary,
-          setAddress,
-        });
-      } else if (inputType === 'line' || inputType === 'polygon') {
-        updateMultiPointsDataAndDisplay({
-          data:
-            // If we have a polygon, we want to remove the duplicated first point which closed the line
-            inputType === 'polygon'
-              ? data?.coordinates?.[0]?.slice(0, -1)
-              : data?.coordinates,
-          mapView,
-          inputType,
-          tenantPrimaryColor: theme.colors.tenantPrimary,
-        });
-      }
+      updateDataAndDisplay({
+        data,
+        mapView,
+        inputType,
+        locale,
+        theme,
+        setAddress,
+      });
     } else {
+      // Clear the map if there is no data
       clearPointData(mapView, setAddress);
     }
-  }, [data, id, inputType, locale, mapView, theme.colors.tenantPrimary]);
+  }, [data, id, inputType, locale, mapView, theme]);
 
   // When the user clicks on the map, update the form data
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
       if (inputType === 'point') {
         handleMapClickPoint(event, mapView, handlePointChange);
-      } else if (inputType === 'line' || inputType === 'polygon') {
+      } else {
+        // Line or polygon input
         handleMapClickMultipoint(event, mapView, handleMultiPointChange);
       }
     },
     [handleMultiPointChange, handlePointChange, inputType]
   );
 
-  // Handle when an address is entered in the text input
+  // Handle typed address input
   const handleLocationInputChange = (point: Point | undefined) => {
     inputType === 'point' && handlePointChange?.(point);
   };
@@ -155,6 +144,7 @@ const DesktopView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
+              // TODO: Cleanup this logic + set to extent of the data instead.
               center:
                 inputType === 'point'
                   ? data || mapConfig?.data.attributes.center_geojson
@@ -166,14 +156,15 @@ const DesktopView = ({
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
           />
-          {inputType !== 'point' && data && (
-            <RemoveAnswerButton
-              mapView={mapView}
-              handleMultiPointChange={handleMultiPointChange}
-            />
-          )}
+          {inputType !== 'point' &&
+            data && ( // Only show for line/polygon input
+              <RemoveAnswerButton
+                mapView={mapView}
+                handleMultiPointChange={handleMultiPointChange}
+              />
+            )}
           <Box>
-            {inputType !== 'point' && (
+            {inputType !== 'point' && ( // Only show for line/polygon input
               <UndoButton
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}

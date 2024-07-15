@@ -312,6 +312,55 @@ type CheckCoordinateErrorsProps = {
   formatMessage: (message: any, values?: any) => string;
 };
 
+// getCoordinatesFromMultiPointData
+// Description: Gets the coordinates from the data
+export const getCoordinatesFromMultiPointData = (
+  data: any,
+  inputType: 'point' | 'line' | 'polygon'
+) => {
+  return inputType === 'polygon'
+    ? data?.coordinates?.[0]?.slice(0, -1)
+    : data?.coordinates;
+};
+
+// updateDataAndDisplay
+// Description: Updates the data and display
+export const updateDataAndDisplay = ({
+  data,
+  mapView,
+  inputType,
+  locale,
+  theme,
+  setAddress,
+}: UpdateDataAndDisplayProps) => {
+  if (inputType === 'point') {
+    updatePointDataAndDisplay({
+      data,
+      mapView,
+      locale,
+      tenantPrimaryColor: theme.colors.tenantPrimary,
+      setAddress,
+    });
+  } else {
+    // We have a line or polygon input
+    updateMultiPointsDataAndDisplay({
+      data: getCoordinatesFromMultiPointData(data, inputType),
+      mapView,
+      inputType,
+      tenantPrimaryColor: theme.colors.tenantPrimary,
+    });
+  }
+};
+
+type UpdateDataAndDisplayProps = {
+  data: any;
+  mapView: MapView | null | undefined;
+  inputType: 'point' | 'line' | 'polygon';
+  locale: string;
+  theme: any;
+  setAddress?: (address: Option) => void;
+};
+
 // zoomToUserInputExtent
 // Description: Zooms to the given extent
 // export const zoomToUserInputExtent = (mapView: MapView | undefined | null) => {
