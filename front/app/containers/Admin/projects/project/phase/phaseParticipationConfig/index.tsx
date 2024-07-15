@@ -79,16 +79,6 @@ interface Props {
   apiErrors: ApiErrors;
 }
 
-export interface State extends IPhaseParticipationConfig {
-  noLikingLimitError: JSX.Element | null;
-  noDislikingLimitError: JSX.Element | null;
-  minTotalVotesError: string | null;
-  maxTotalVotesError: string | null;
-  maxVotesPerOptionError: string | null;
-  voteTermError: string | null;
-  loaded: boolean;
-}
-
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
   single_voting: 1,
   multiple_voting: 10,
