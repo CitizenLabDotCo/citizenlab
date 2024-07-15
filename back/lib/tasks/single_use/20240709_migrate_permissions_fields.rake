@@ -4,8 +4,8 @@ namespace :single_use do
     Tenant.safe_switch_each do |tenant|
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
 
-      service = Permissions::PermissionsFieldsService.new
-      if service.custom_permitted_by_enabled?
+      service = Tasks::SingleUse::Services::CustomPermissionsMigrationService.new
+      if service.permissions_fields_service.custom_permitted_by_enabled?
         service.change_permissions_to_custom
         Rails.logger.info 'Migrated permissions fields.'
       else
