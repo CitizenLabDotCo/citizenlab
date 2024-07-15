@@ -123,15 +123,17 @@ const PhaseParticipationConfig = ({
     useState<ParticipationMethod>(
       phase?.data.attributes.participation_method || 'ideation'
     );
+
   const [posting_enabled, setPostingEnabled] = useState<
     IPhaseParticipationConfig['posting_enabled']
-  >(phase?.data.attributes.posting_enabled || true);
+  >(phase?.data.attributes.posting_enabled ?? true);
+
   const [commenting_enabled, setCommentingEnabled] = useState<
     IPhaseParticipationConfig['commenting_enabled']
-  >(phase?.data.attributes.commenting_enabled || true);
+  >(phase?.data.attributes.commenting_enabled ?? true);
   const [reacting_enabled, setReactingEnabled] = useState<
     IPhaseParticipationConfig['reacting_enabled']
-  >(phase?.data.attributes.reacting_enabled || true);
+  >(phase?.data.attributes.reacting_enabled ?? true);
   const [reacting_like_method, setReactingLikeMethod] = useState<
     IPhaseParticipationConfig['reacting_like_method']
   >(phase?.data.attributes.reacting_like_method || 'unlimited');
@@ -146,7 +148,7 @@ const PhaseParticipationConfig = ({
   >(phase?.data.attributes.reacting_dislike_limited_max || null);
   const [reacting_dislike_enabled, setReactingDislikeEnabled] = useState<
     IPhaseParticipationConfig['reacting_dislike_enabled']
-  >(phase?.data.attributes.reacting_dislike_enabled || true);
+  >(phase?.data.attributes.reacting_dislike_enabled ?? true);
   const [allow_anonymous_participation, setAllowAnonymousParticipation] =
     useState<IPhaseParticipationConfig['allow_anonymous_participation']>(
       phase?.data.attributes.allow_anonymous_participation || false
