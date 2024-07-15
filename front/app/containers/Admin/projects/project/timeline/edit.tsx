@@ -548,14 +548,12 @@ const AdminPhaseEdit = () => {
             )}
           </SectionField>
 
-          {phase && (
-            <PhaseParticipationConfig
-              phase={phase}
-              onSubmit={handlePhaseParticipationConfigSubmit}
-              onChange={handlePhaseParticipationConfigChange}
-              apiErrors={errors}
-            />
-          )}
+          <PhaseParticipationConfig
+            phase={phase}
+            onSubmit={handlePhaseParticipationConfigSubmit}
+            onChange={handlePhaseParticipationConfigChange}
+            apiErrors={errors}
+          />
           {phaseAttrs.participation_method === 'native_survey' && (
             <>
               <SectionField>
