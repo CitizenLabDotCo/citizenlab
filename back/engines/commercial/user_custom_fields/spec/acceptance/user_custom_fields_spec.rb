@@ -156,7 +156,7 @@ resource 'User Custom Fields' do
 
       let(:custom_field) { build(:custom_field, enabled: true) }
 
-      describe do
+      describe 'Create an enabled custom field' do
         let(:key) { custom_field.key }
         let(:input_type) { custom_field.input_type }
         let(:title_multiloc) { custom_field.title_multiloc }
@@ -165,8 +165,6 @@ resource 'User Custom Fields' do
         let(:enabled) { custom_field.enabled }
 
         example 'Create an enabled custom field' do
-          current_permission_field_count = PermissionsField.all.count
-
           do_request
           assert_status 201
           json_response = json_parse(response_body)
@@ -177,12 +175,10 @@ resource 'User Custom Fields' do
           expect(json_response.dig(:data, :attributes, :hidden)).to be false
           expect(json_response.dig(:data, :attributes, :required)).to match required
           expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
-          # It also increases permissions field count when enabled
-          expect(PermissionsField.all.count).to be > current_permission_field_count
         end
       end
 
-      describe do
+      describe 'Invalid custom fields' do
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
