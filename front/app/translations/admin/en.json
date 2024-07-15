@@ -778,7 +778,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOn1": "Enable the {emailCampaignName} email campaign setting?",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOff": "Yes, turn off",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Yes, turn on",
-  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameError": "The name cannot be empty",
+  "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Provide a name for all languages",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "The project cannot be empty",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName": "Name",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.project": "Project",
