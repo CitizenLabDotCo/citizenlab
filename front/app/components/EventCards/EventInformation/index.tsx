@@ -13,6 +13,8 @@ import styled, { useTheme } from 'styled-components';
 import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
@@ -64,6 +66,7 @@ interface Props {
 const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
+  const localize = useLocalize();
 
   // event image
   const { data: eventImage } = useEventImage(event);
@@ -239,6 +242,12 @@ const EventInformation = ({ event }: Props) => {
             bgColor={theme.colors.tenantPrimary}
             linkTo={`/events/${event.id}`}
             scrollToTop
+            // For accessibility, we need to add an aria-label to the button
+            // to provide context for screen readers. Using the same "Read more" text
+            // for multiple links/buttons is not accessible because it doesn't convey
+            // the unique purpose of each link. Screen readers will not differentiate
+            // between the links, making it difficult for users to navigate.
+            ariaLabel={localize(event.attributes.title_multiloc)}
           >
             {formatMessage(messages.readMore)}
           </Button>
