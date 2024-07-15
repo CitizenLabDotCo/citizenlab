@@ -1,6 +1,6 @@
 import { omitBy, isNil } from 'lodash-es';
 
-import { State, IPhaseParticipationConfig } from '..';
+import { IPhaseParticipationConfig } from '..';
 
 export default ({
   participation_method,
@@ -26,7 +26,7 @@ export default ({
   ideas_order,
   input_term,
   document_annotation_embed_url,
-}: State) => {
+}: IPhaseParticipationConfig) => {
   let output: IPhaseParticipationConfig = {} as any;
 
   if (participation_method === 'information') {
