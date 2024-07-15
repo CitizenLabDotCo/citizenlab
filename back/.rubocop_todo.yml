@@ -373,6 +373,8 @@ RSpec/NamedSubject:
 # Configuration parameters: AllowedGroups.
 RSpec/NestedGroups:
   Max: 5
+  Exclude:
+    - 'spec/services/permissions/user_requirements_service_new_spec.rb'
 
 # Offense count: 33
 # Configuration parameters: AllowedPatterns.
