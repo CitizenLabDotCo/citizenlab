@@ -42,7 +42,6 @@ class Permission < ApplicationRecord
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
-  # TODO: JS - removed ordering from here - but that will affect behaviour of existing - add to controller for old
   has_many :permissions_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_fields
 
@@ -53,21 +52,6 @@ class Permission < ApplicationRecord
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
-
-  # def permissions_fields
-  #   # To support the old permitted_by values and screens
-  #   return super.where(field_type: 'custom_field') unless custom_permitted_by_enabled?
-  #
-  #   # Use the global visiting permission to return the default fields for all permitted_by values except 'custom'
-  #   return super if permitted_by == 'custom'
-  #
-  #   # Admins and moderators should require the same platform level fields as 'users'
-  #   visiting_permitted_by = permitted_by == 'admins_moderators' ? 'users' : permitted_by
-  #
-  #   # TODO: JS - Is there a more efficient way to do this? Can we cache the visiting actions? Do we need to?
-  #   permission = Permission.find_by(action: 'visiting', permitted_by: visiting_permitted_by)
-  #   PermissionsField.where(permission: permission)
-  # end
 
   def global_custom_fields
     return false if permitted_by == 'custom'
@@ -102,10 +86,6 @@ class Permission < ApplicationRecord
     actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
     sql += "ELSE #{actions.size} END"
     sql
-  end
-
-  def action_config
-    Factory.instance.action_config_for(action)
   end
 
   private
