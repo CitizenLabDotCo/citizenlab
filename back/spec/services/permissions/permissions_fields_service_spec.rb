@@ -119,8 +119,11 @@ describe Permissions::PermissionsFieldsService do
         end
 
         it 'changes permitted_by to custom and inserts default fields if global_custom_fields is false and there are fields' do
+          SettingsService.new.deactivate_feature! 'custom_permitted_by' # Turned off so we can create test data
           permission.update!(global_custom_fields: false)
           create(:permissions_field, custom_field: create(:custom_field_birthyear), permission: permission)
+
+          SettingsService.new.activate_feature! 'custom_permitted_by'
           service.change_permissions_to_custom
           permission.reload
           expect(permission.permitted_by).to eq 'custom'
