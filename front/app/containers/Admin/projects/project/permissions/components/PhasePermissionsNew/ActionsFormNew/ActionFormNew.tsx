@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
@@ -50,6 +50,8 @@ const ActionFormNew = ({
   const isSurveyAction =
     phaseType === 'nativeSurvey' && action === 'posting_idea';
 
+  const disableEditing = permittedBy !== 'custom';
+
   return (
     <form>
       <Box mb="20px">
@@ -79,13 +81,27 @@ const ActionFormNew = ({
           <Title variant="h4" color="primary">
             <FormattedMessage {...messages.restrictParticipation} />
           </Title>
-          <GroupSelect
-            groupIds={groupIds}
-            disabled={permittedBy !== 'custom'}
-            onChange={(groups) => {
-              onChange(permissionData.attributes.permitted_by, groups);
-            }}
-          />
+          {/* For some reason this tooltip doesn't work properly unless I put it in
+           * a Box of exactly the same size as the child component
+           */}
+          <Box w="300px">
+            <Tooltip
+              content={
+                <FormattedMessage {...messages.disableEditingExplanation} />
+              }
+              disabled={!disableEditing}
+              placement="right"
+              theme="dark"
+            >
+              <GroupSelect
+                groupIds={groupIds}
+                disabled={disableEditing}
+                onChange={(groups) => {
+                  onChange(permissionData.attributes.permitted_by, groups);
+                }}
+              />
+            </Tooltip>
+          </Box>
         </Box>
       )}
       <Box mt="28px">
