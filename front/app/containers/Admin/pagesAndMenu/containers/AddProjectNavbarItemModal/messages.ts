@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Add project',
   },
   emptyNameError: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameError',
-    defaultMessage: 'The name cannot be empty',
+    id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText',
+    defaultMessage: 'Provide a name for all languages',
   },
   navbarItemName: {
     id: 'app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName',

@@ -21,7 +21,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
 
@@ -48,7 +48,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
 
   const schema = object({
     projectId: string().required(formatMessage(messages.emptyProjectError)),
-    titleMultiloc: validateAtLeastOneLocale(
+    titleMultiloc: validateMultilocForEveryLocale(
       formatMessage(messages.emptyNameError)
     ),
   });
