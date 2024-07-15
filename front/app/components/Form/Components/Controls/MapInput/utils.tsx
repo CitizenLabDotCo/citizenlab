@@ -163,7 +163,7 @@ export const updateMultiPointsDataAndDisplay = ({
       symbol: getShapeSymbol({
         shape: 'circle',
         color: tenantPrimaryColor,
-        sizeInPx: 14,
+        sizeInPx: 12,
         outlineColor: colors.white,
         outlineWidth: 2,
       }),
@@ -186,14 +186,14 @@ export const updateMultiPointsDataAndDisplay = ({
   });
 
   // Create styles for the line and fill
-  const simpleLineSymbol = {
+  const simpleDashedLineSymbol = {
     type: 'simple-line',
     color: colors.black,
     width: 2,
     style: 'dash',
   };
 
-  const SimpleFillSymbol = {
+  const crossFillSymbolWithDash = {
     type: 'simple-fill',
     color: transparentize(0.3, tenantPrimaryColor),
     style: 'diagonal-cross',
@@ -207,15 +207,14 @@ export const updateMultiPointsDataAndDisplay = ({
   // Create the line graphic
   const polylineGraphic = new Graphic({
     geometry: polyline,
-    symbol: inputType === 'line' ? simpleLineSymbol : SimpleFillSymbol,
+    symbol:
+      inputType === 'line' ? simpleDashedLineSymbol : crossFillSymbolWithDash,
   });
 
   // Add all graphics to the map
   if (mapView) {
     // Remove any existing user input graphics
-    const userInputLayer = mapView?.map?.layers?.find(
-      (layer) => layer.title === 'User Input'
-    ) as GraphicsLayer;
+    const userInputLayer = getUserInputGraphicsLayer(mapView);
 
     if (userInputLayer) {
       userInputLayer.removeAll();
@@ -227,11 +226,6 @@ export const updateMultiPointsDataAndDisplay = ({
       graphicsLayer.add(polylineGraphic);
       graphicsLayer.addMany(graphics);
       mapView.map.add(graphicsLayer);
-
-      // If set, zoom to the extent of the user input
-      // if (zoomToInputExtent) {
-      //   zoomToUserInputExtent(mapView);
-      // }
     }
   }
 };
@@ -252,9 +246,8 @@ export const getUserInputPoints = (
   const filteredGraphics: Graphic[] = [];
 
   // We store all user input data in a graphics layer called 'User Input'
-  const userGraphicsLayer = mapView?.map.layers.find(
-    (layer) => layer.title === 'User Input'
-  ) as GraphicsLayer;
+  const userGraphicsLayer = getUserInputGraphicsLayer(mapView);
+
   userGraphicsLayer?.graphics?.forEach((graphic) => {
     if (graphic.geometry.type === 'point') {
       // We just want a list of the points
@@ -361,24 +354,14 @@ type UpdateDataAndDisplayProps = {
   setAddress?: (address: Option) => void;
 };
 
-// zoomToUserInputExtent
-// Description: Zooms to the given extent
-// export const zoomToUserInputExtent = (mapView: MapView | undefined | null) => {
-// if (!mapView) {
-//   return
-// };
-// const userInputLayer = mapView.map?.layers?.find(
-//   (layer) => layer.title === 'User Input'
-// );
-// // Get line graphic
-// const graphics = (userInputLayer as GraphicsLayer)?.graphics;
-// if (graphics?.length && graphics.length > 1) {
-//   const extent = graphics.find(
-//     (graphic) => graphic.geometry.type === 'polyline'
-//   )?.geometry?.extent;
-//   if (extent) {
-//     mapView.extent = extent;
-//     mapView.zoom = mapView.zoom - 1;
-//   }
-// }
-// };
+// getUserInputGraphicsLayer
+// Description: Gets the user input graphics layer
+export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
+  if (mapView) {
+    return mapView?.map?.layers?.find(
+      (layer) => layer.title === 'User Input'
+    ) as GraphicsLayer;
+  }
+
+  return;
+};

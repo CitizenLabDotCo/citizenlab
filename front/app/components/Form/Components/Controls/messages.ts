@@ -38,7 +38,7 @@ export default defineMessages({
       'Tap on the map or type an address below to add your answer.',
   },
   tapOnMapMultipleToAdd: {
-    id: 'app.components.form.controls.tapOnMapMultipleToAdd2',
+    id: 'app.components.form.controls.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
   tapOnFullscreenMapToAdd: {

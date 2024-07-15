@@ -22,8 +22,9 @@ import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
 import EsriMap from 'components/EsriMap';
 import { goToMapLocation, parseLayers } from 'components/EsriMap/utils';
 import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
@@ -186,6 +187,25 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
+        <Box my="8px">
+          <Warning>
+            <FormattedMessage
+              {...messages.linePolygonMapWarning}
+              values={{
+                accessibilityStatement: (
+                  <a
+                    href={'/pages/accessibility-statement'}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ textDecoration: 'underline' }}
+                  >
+                    <FormattedMessage {...messages.accessibilityStatement} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
         <Button
           data-cy="e2e-configure-map-button"
           mt="16px"

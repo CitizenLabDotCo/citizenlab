@@ -1,6 +1,5 @@
 import React, { RefObject, useEffect, useState } from 'react';
 
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import MapView from '@arcgis/core/views/MapView';
 import {
   Button,
@@ -12,7 +11,7 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getUserInputPoints } from '../utils';
+import { getUserInputGraphicsLayer, getUserInputPoints } from '../utils';
 
 import messages from './messages';
 
@@ -42,14 +41,13 @@ const UndoButton = ({
 
     // If removing final point, set the data to undefined & clear the map
     if (currentPoints.length === 1) {
-      const userInputLayer = mapView?.map.layers.find(
-        (layer) => layer.title === 'User Input'
-      ) as GraphicsLayer;
-      userInputLayer.removeAll();
+      const userInputLayer = getUserInputGraphicsLayer(mapView);
 
-      mapView?.map.layers.remove(userInputLayer);
-
-      handleMultiPointChange?.(undefined);
+      if (userInputLayer) {
+        userInputLayer.removeAll();
+        mapView?.map?.layers?.remove(userInputLayer);
+        handleMultiPointChange?.(undefined);
+      }
     }
   };
 

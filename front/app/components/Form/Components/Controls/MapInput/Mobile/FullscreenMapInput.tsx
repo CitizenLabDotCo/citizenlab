@@ -50,6 +50,7 @@ type Props = {
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: 'point' | 'line' | 'polygon';
   mapViewSurveyPage?: MapView | null;
+  questionPageMapView?: MapView | null;
 };
 
 const FullscreenMapInput = memo<Props>(
@@ -60,6 +61,7 @@ const FullscreenMapInput = memo<Props>(
     handlePointChange,
     handleMultiPointChange,
     inputType,
+    questionPageMapView,
     ...props
   }: ControlProps & Props) => {
     const { uischema, path, id, schema, required } = props;
@@ -262,6 +264,9 @@ const FullscreenMapInput = memo<Props>(
                   <Button
                     mr="20px"
                     onClick={() => {
+                      if (questionPageMapView && mapView) {
+                        questionPageMapView.extent = mapView.extent;
+                      }
                       setShowFullscreenMap(false);
                     }}
                     disabled={!isConfirmEnabled()}

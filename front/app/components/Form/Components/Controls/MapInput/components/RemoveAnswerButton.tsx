@@ -1,10 +1,11 @@
 import React from 'react';
 
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
+
+import { getUserInputGraphicsLayer } from '../utils';
 
 import messages from './messages';
 
@@ -24,9 +25,7 @@ const RemoveAnswerButton = ({ mapView, handleMultiPointChange }: Props) => {
         px="12px"
         onClick={() => {
           // Clear user graphics from map view
-          const userInputLayer = mapView?.map.layers.find((layer) => {
-            return layer.title === 'User Input';
-          }) as GraphicsLayer;
+          const userInputLayer = getUserInputGraphicsLayer(mapView);
           userInputLayer?.removeAll();
           // Clear data
           handleMultiPointChange && handleMultiPointChange(undefined);

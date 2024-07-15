@@ -24,6 +24,7 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
   checkCoordinateErrors,
   clearPointData,
+  getUserInputGraphicsLayer,
   updateMultiPointsDataAndDisplay,
   updatePointDataAndDisplay,
 } from '../utils';
@@ -102,17 +103,22 @@ const MobileView = ({
     }
   }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
+  // If there is a user input graphics layer, zoom to the extent of the drawing
+  useEffect(() => {
+    const graphicsLayer = getUserInputGraphicsLayer(mapView);
+    if (graphicsLayer?.graphics) {
+      mapView?.goTo(graphicsLayer.graphics);
+    }
+  }, [mapView, mapView?.map?.layers]);
+
   const getMapCenter = () => {
     if (inputType === 'point') {
       return data || mapConfig?.data.attributes.center_geojson;
-    } else if (inputType === 'line') {
-      // TODO: Make this center of graphic
-      return mapConfig?.data.attributes.center_geojson;
-    } else if (inputType === 'polygon') {
-      // TODO: Make this center of graphic
+    } else {
       return mapConfig?.data.attributes.center_geojson;
     }
   };
+
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
@@ -176,6 +182,7 @@ const MobileView = ({
           handleMultiPointChange={handleMultiPointChange}
           inputType={inputType}
           mapViewSurveyPage={mapView}
+          questionPageMapView={mapView}
           {...props}
         />
       )}

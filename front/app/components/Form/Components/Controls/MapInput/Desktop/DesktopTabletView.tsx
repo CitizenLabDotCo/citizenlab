@@ -144,11 +144,10 @@ const DesktopView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              // TODO: Cleanup this logic + set to extent of the data instead.
               center:
                 inputType === 'point'
                   ? data || mapConfig?.data.attributes.center_geojson
-                  : data?.[0] || mapConfig?.data.attributes.center_geojson,
+                  : mapConfig?.data.attributes.center_geojson,
               showLegend: layerCount > 0,
               showLayerVisibilityControl: layerCount > 0,
               onInit: onMapInit,
