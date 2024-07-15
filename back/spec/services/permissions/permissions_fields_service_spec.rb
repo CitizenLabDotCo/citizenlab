@@ -13,36 +13,52 @@ describe Permissions::PermissionsFieldsService do
   # TODO: JS - Seems to be some leakage between tests, need to investigate
   describe '#fields_for_permission' do
     context '"custom_permitted_by" feature flag is enabled' do
-      it 'returns platform default fields when permitted_by "users"' do
+      it 'returns non-persisted default fields when permitted_by "users"' do
         permission = create(:permission, permitted_by: 'users')
 
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 3
+        expect(fields.map(&:persisted?)).to match_array [false, false, false]
         expect(fields.pluck(:field_type)).to match_array(%w[name email custom_field])
         expect(fields.pluck(:enabled)).to match_array([true, true, true])
         expect(fields.pluck(:required)).to match_array([true, true, false])
         expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
       end
 
-      it 'returns disabled built-in fields when permitted_by "everyone"' do
+      it 'returns non-persisted & disabled default fields without custom fields when permitted_by "everyone"' do
         permission = create(:permission, permitted_by: 'everyone')
 
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
+        expect(fields.map(&:persisted?)).to match_array [false, false]
         expect(fields.pluck(:field_type)).to match_array(%w[name email])
         expect(fields.pluck(:required)).to match_array([false, false])
         expect(fields.pluck(:enabled)).to match_array([false, false])
         expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
       end
 
-      it 'returns built fields with only email & not password when permitted_by "everyone_confirmed_email"' do
+      it 'returns non-persisted default fields with only email & not password when permitted_by "everyone_confirmed_email"' do
         permission = create(:permission, permitted_by: 'everyone_confirmed_email')
 
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
+        expect(fields.map(&:persisted?)).to match_array [false, false]
         expect(fields.pluck(:field_type)).to match_array(%w[name email])
         expect(fields.pluck(:enabled)).to match_array([false, true])
         expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => false, 'confirmed' => true })
+      end
+
+      it 'returns persisted fields when permitted_by "custom"' do
+        permission = create(:permission, permitted_by: 'custom')
+        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 3
+        expect(fields.map(&:persisted?)).to match_array [true, true, true]
+        expect(fields.pluck(:field_type)).to match_array(%w[name email custom_field])
+        expect(fields.pluck(:enabled)).to match_array([true, true, true])
+        expect(fields.pluck(:required)).to match_array([true, true, false])
+        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
       end
     end
 

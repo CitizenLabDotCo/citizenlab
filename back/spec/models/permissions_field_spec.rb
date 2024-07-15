@@ -18,6 +18,32 @@ RSpec.describe PermissionsField do
     end
   end
 
+  describe '#prevent_non_custom_permitted_by' do
+    context 'custom permitted_by is NOT enabled' do
+      it 'is valid for ALL permitted_by values' do
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'users'))).to be_valid
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'everyone_confirmed_email'))).to be_valid
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'groups'))).to be_valid
+      end
+    end
+
+    context 'custom permitted_by is enabled' do
+      before do
+        SettingsService.new.activate_feature! 'custom_permitted_by'
+      end
+
+      it 'is not valid when permitted_by is NOT "custom"' do
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'users'))).not_to be_valid
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'everyone_confirmed_email'))).not_to be_valid
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'groups'))).not_to be_valid
+      end
+
+      it 'is valid when permitted_by is "custom"' do
+        expect(build(:permissions_field, permission: create(:permission, permitted_by: 'custom'))).to be_valid
+      end
+    end
+  end
+
   describe '#destroy' do
     it 'allows field_type: "custom_field" to be destroyed' do
       field = create(:permissions_field, field_type: 'custom_field')

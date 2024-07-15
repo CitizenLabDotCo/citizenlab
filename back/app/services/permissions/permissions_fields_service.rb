@@ -87,8 +87,9 @@ module Permissions
         default_fields
       end
 
-      # Return with ordering
+      # Return with ordering & an ID
       fields.map.with_index do |field, index|
+        field.id = SecureRandom.uuid
         field.ordering = index
         field
       end

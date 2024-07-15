@@ -43,6 +43,7 @@ class PermissionsField < ApplicationRecord
   validates :permission_id, uniqueness: { scope: :field_type }, if: -> { field_type != 'custom_field' }
   validates :field_type, presence: true, inclusion: { in: FIELD_TYPES }
   validate :validate_config_keys
+  validate :prevent_non_custom_permitted_by
 
   before_destroy :prevent_destroy
 
@@ -66,6 +67,15 @@ class PermissionsField < ApplicationRecord
     elsif config != {}
       errors.add(:config, 'can only be present if field_type is email')
     end
+  end
+
+  # Only allow fields with a 'custom' permitted_by to be saved
+  def prevent_non_custom_permitted_by
+    return unless Permissions::PermissionsFieldsService.new.custom_permitted_by_enabled?
+    return if permission&.permitted_by == 'custom'
+
+    errors.add(:permission, 'only fields with a permitted_by of "custom" can be saved')
+    throw :abort
   end
 
   # Only custom_fields can be destroyed - other fields should be enabled/disabled

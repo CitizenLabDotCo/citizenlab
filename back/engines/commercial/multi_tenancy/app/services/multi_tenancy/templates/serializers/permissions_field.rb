@@ -7,8 +7,9 @@ module MultiTenancy
         attributes %i[
           required
           field_type
-          verified
+          config
           enabled
+          ordering
         ]
 
         ref_attributes %i[custom_field permission]
