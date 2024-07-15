@@ -548,15 +548,14 @@ const AdminPhaseEdit = () => {
             )}
           </SectionField>
 
-          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
-            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            PhaseParticipationConfig needs to be refactored to functional component. */}
-          <PhaseParticipationConfig
-            phase={phase}
-            onSubmit={handlePhaseParticipationConfigSubmit}
-            onChange={handlePhaseParticipationConfigChange}
-            apiErrors={errors}
-          />
+          {phase && (
+            <PhaseParticipationConfig
+              phase={phase}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
+              apiErrors={errors}
+            />
+          )}
           {phaseAttrs.participation_method === 'native_survey' && (
             <>
               <SectionField>
