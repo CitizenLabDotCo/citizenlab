@@ -2921,6 +2921,43 @@ resource 'Idea Custom Fields' do
           expect(new_custom_field.input_type).to eq('point')
         end
 
+        example "Relating map_config(s) with 'page' custom field(s)" do
+          field_to_update = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page field' })
+          request = {
+            custom_fields: [
+              {
+                input_type: 'page',
+                title_multiloc: { 'en' => 'Inserted page custom field' },
+                description_multiloc: { 'en' => 'Inserted page custom field description' },
+                required: false,
+                enabled: true,
+                map_config_id: map_config1.id
+              },
+              {
+                id: field_to_update.id,
+                input_type: 'page',
+                title_multiloc: { 'en' => 'Updated page custom field' },
+                description_multiloc: { 'en' => 'Updated page custom field description' },
+                required: false,
+                enabled: true,
+                map_config_id: map_config2.id
+              }
+            ]
+          }
+
+          do_request request
+          assert_status 200
+
+          new_custom_field = map_config1.reload.mappable
+          expect(new_custom_field.title_multiloc).to eq({ 'en' => 'Inserted page custom field' })
+          expect(new_custom_field.input_type).to eq('page')
+
+          updated_custom_field = CustomField.find(field_to_update.id)
+          expect(updated_custom_field.map_config).to eq(map_config2)
+          expect(updated_custom_field.title_multiloc).to eq({ 'en' => 'Updated page custom field' })
+          expect(new_custom_field.input_type).to eq('page')
+        end
+
         example '[errors] Responds with multiple numbered errors when such errors present', document: false do
           custom_field_point_with_map_config = create(:custom_field_point, resource: custom_form)
           create(:map_config, mappable_id: custom_field_point_with_map_config.id, mappable_type: 'CustomField')
