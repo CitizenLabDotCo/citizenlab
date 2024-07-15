@@ -81,6 +81,7 @@ const ActionFormNew = ({
           </Title>
           <GroupSelect
             groupIds={groupIds}
+            disabled={permittedBy !== 'custom'}
             onChange={(groups) => {
               onChange(permissionData.attributes.permitted_by, groups);
             }}

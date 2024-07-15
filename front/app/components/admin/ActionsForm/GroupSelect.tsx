@@ -18,10 +18,11 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface Props {
   groupIds?: string[];
+  disabled: boolean;
   onChange: (groups: string[]) => void;
 }
 
-const GroupSelect = ({ groupIds, onChange }: Props) => {
+const GroupSelect = ({ groupIds, disabled, onChange }: Props) => {
   const { data: groups } = useGroups({});
   const localize = useLocalize();
 
@@ -39,6 +40,7 @@ const GroupSelect = ({ groupIds, onChange }: Props) => {
   return (
     <StyledMultipleSelect
       value={groupIds ?? []}
+      disabled={disabled}
       options={groupsOptions()}
       onChange={(options) => onChange(options.map((o) => o.value))}
       placeholder={<FormattedMessage {...messages.selectGroups} />}
