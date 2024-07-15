@@ -58,7 +58,7 @@ const InstructionAnimation = ({
   return (
     <StyledBox
       ref={instructionRef}
-      maxWidth="100px"
+      maxWidth="150px"
       onClick={onClick}
       tenantColor={theme.colors.tenantPrimary}
     >
