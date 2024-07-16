@@ -10,6 +10,8 @@ import { FieldSelectionModal } from 'components/admin/ActionsForm/UserFieldSelec
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import Tooltip from '../Tooltip';
+
 import FieldsList from './FieldsList';
 import messages from './messages';
 
@@ -47,16 +49,19 @@ const Fields = ({ phaseId, disableEditing, action }: Props) => {
         />
       </Box>
       <Box mt="20px" w="100%" display="flex">
-        <Button
-          buttonStyle="admin-dark"
-          icon="plus-circle"
-          onClick={(e) => {
-            e.preventDefault();
-            setShowSelectionModal(true);
-          }}
-        >
-          <FormattedMessage {...messages.addAQuestion} />
-        </Button>
+        <Tooltip disabled={!disableEditing}>
+          <Button
+            buttonStyle="admin-dark"
+            disabled={disableEditing}
+            icon="plus-circle"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowSelectionModal(true);
+            }}
+          >
+            <FormattedMessage {...messages.addAQuestion} />
+          </Button>
+        </Tooltip>
         {selectedCustomFields && (
           <FieldSelectionModal
             showSelectionModal={showSelectionModal}
