@@ -59,6 +59,7 @@ module Analysis
       phase || project
     end
 
+    # TODO: Move participation method logic
     def participation_method
       if phase
         phase.participation_method
@@ -87,7 +88,7 @@ module Analysis
     # The linked project or phase should be a valid form context (the
     # participation_context the custom_form is associated with)
     def project_or_phase_form_context
-      # TODO: Delegate to participation method
+      # TODO: Move participation method logic
       if phase && %w[native_survey proposals].exclude?(phase.participation_method)
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed phase is not associated with a form definition.')
       elsif project && project.phases.none? { |phase| %w[ideation voting].include?(phase.participation_method) }

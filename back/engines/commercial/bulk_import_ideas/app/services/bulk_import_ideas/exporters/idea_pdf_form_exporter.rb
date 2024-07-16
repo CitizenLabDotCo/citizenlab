@@ -161,7 +161,7 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      participation_method = @phase.participation_method
+      participation_method = @phase.participation_method # TODO: Move participation method logic
       personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
       pdf.text I18n.with_locale(@locale) {
         I18n.t(
