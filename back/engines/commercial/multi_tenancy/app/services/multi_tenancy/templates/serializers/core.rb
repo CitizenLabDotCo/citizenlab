@@ -76,7 +76,7 @@ module MultiTenancy
                 "remote_#{attr_name}_url",
                 if: proc { |_record, serialization_params| serialization_params[:uploads_full_urls] }
               ) do |record, _serialization_params|
-                record.public_send("#{attr_name}_url")
+                record.public_send(:"#{attr_name}_url")
               end
             end
           end
