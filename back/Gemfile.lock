@@ -114,7 +114,7 @@ PATH
   specs:
     id_cow (0.1.0)
       rails (~> 7.0)
-      savon (>= 2.12, < 2.15)
+      savon (>= 2.12, < 2.16)
       verification
 
 PATH
@@ -153,7 +153,7 @@ PATH
     id_id_card_lookup (0.1.0)
       admin_api
       rails (~> 7.0)
-      savon (>= 2.12, < 2.15)
+      savon (>= 2.12, < 2.16)
       verification
 
 PATH
@@ -283,7 +283,7 @@ PATH
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
-      savon (>= 2.12, < 2.15)
+      savon (>= 2.12, < 2.16)
 
 PATH
   remote: engines/free/document_annotation
@@ -440,10 +440,11 @@ GEM
       tzinfo (~> 2.0)
     acts_as_list (1.1.0)
       activerecord (>= 4.2)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     aes_key_wrap (1.1.0)
-    akami (1.3.1)
+    akami (1.3.3)
+      base64
       gyoku (>= 0.4.0)
       nokogiri
     amq-protocol (2.3.2)
@@ -490,7 +491,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
-    builder (3.2.4)
+    builder (3.3.0)
     bullet (7.1.6)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
@@ -712,8 +713,11 @@ GEM
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
-    httpi (3.0.1)
-      rack
+    httpi (4.0.4)
+      base64
+      mutex_m
+      nkf
+      rack (>= 2.0, < 4)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     icalendar (2.10.1)
@@ -813,7 +817,7 @@ GEM
     nanoid (2.0.0)
     net-http (0.4.1)
       uri
-    net-imap (0.4.11)
+    net-imap (0.4.14)
       date
       net-protocol
     net-pop (0.1.2)
@@ -835,7 +839,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
-    nori (2.6.0)
+    nori (2.7.0)
+      bigdecimal
     oauth2 (1.4.9)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -1116,15 +1121,15 @@ GEM
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
-    savon (2.14.0)
+    savon (2.15.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
-      httpi (>= 2.4.5)
+      httpi (>= 4, < 5)
       mail (~> 2.5)
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
-      wasabi (~> 3.4)
+      wasabi (>= 3.7, < 6)
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -1206,10 +1211,10 @@ GEM
       activemodel (>= 3.0.0)
       public_suffix
     vcr (6.2.0)
-    wasabi (3.8.0)
+    wasabi (5.0.2)
       addressable
-      httpi (~> 3.0)
-      nokogiri (>= 1.4.2)
+      faraday (~> 2.8)
+      nokogiri (>= 1.13.9)
     webfinger (2.1.2)
       activesupport
       faraday (~> 2.0)
