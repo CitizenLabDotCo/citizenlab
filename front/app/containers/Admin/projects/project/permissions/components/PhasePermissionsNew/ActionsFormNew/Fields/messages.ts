@@ -54,13 +54,18 @@ export default defineMessages({
     defaultMessage: 'Field status',
   },
   nameCannotBeControlledYet: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.nameCannotBeControlledYet1',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.nameCannotBeControlledYet2',
     defaultMessage:
-      'The first and last name cannot be controlled yet- this will only be possible in the future.',
+      'The first and last name cannot be controlled yet with this toggle— this will only be possible in the future.',
   },
   emailConfirmationCannotBeControlledYet: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.emailCannotBeControlledYet1',
+    defaultMessage:
+      'The email confirmation setting cannot be controlled yet with this setting— this will only be possible in the future.',
+  },
+  emailCannotBeControlledYet: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.emailCannotBeControlledYet',
     defaultMessage:
-      'The email confirmation setting cannot be controlled yet- this will only be possible in the future.',
+      'Email authentication cannot be controlled yet with this toggle— this will only be possible in the future.',
   },
 });

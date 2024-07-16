@@ -58,11 +58,12 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
   const fieldNameMessage = getFieldNameMessage(field_type);
   if (!fieldNameMessage) return null;
 
-  const showTooltipAndDisableToggle = field_type === 'name' || disableEditing;
-  const customTooltipMessage =
-    field_type === 'name' && disableEditing === false
-      ? messages.nameCannotBeControlledYet
-      : undefined;
+  const customTooltipMessage = (() => {
+    if (disableEditing) return undefined; // default message
+    if (field_type === 'name') return messages.nameCannotBeControlledYet;
+    if (field_type === 'email') return messages.emailCannotBeControlledYet;
+    return undefined;
+  })();
 
   return (
     <>
@@ -79,7 +80,7 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
           {formatMessage(fieldNameMessage)}
         </Text>
         <Box display="flex" flexDirection="row">
-          {field_type === 'email' && (
+          {field_type === 'email' && enabled && (
             <Button
               icon="edit"
               buttonStyle="text"
@@ -92,7 +93,7 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
             </Button>
           )}
           <Tooltip
-            disabled={!showTooltipAndDisableToggle}
+            disabled={false}
             placement="left"
             message={customTooltipMessage}
           >
@@ -101,7 +102,7 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
             >
               <Toggle
                 checked={enabled}
-                disabled={showTooltipAndDisableToggle}
+                disabled={true}
                 onChange={() => {
                   updatePermissionsField({
                     id: field.id,
