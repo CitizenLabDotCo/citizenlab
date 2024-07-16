@@ -9,37 +9,6 @@ module Permissions
       default_fields(permitted_by: permission.permitted_by, permission: permission)
     end
 
-    # To be called from rake task when enabling custom_permitted_by feature flag or on tenant creation
-    def change_permissions_to_custom
-      if custom_permitted_by_enabled?
-        permissions = Permission.where.not(permission_scope: nil)
-        permissions.each do |permission|
-          if !permission.global_custom_fields
-            if permission.permitted_by == 'everyone_confirmed_email'
-              if PermissionsField.find_by(permission: permission).present? # Used because the method is overridden in the model
-                # Set to 'custom' & insert 'everyone_confirmed_email' default fields
-                permission.update!(permitted_by: 'custom')
-                fields = default_fields(permitted_by: 'everyone_confirmed_email', permission: permission)
-              end
-            elsif permission.permitted_by == 'users' || permission.permitted_by == 'groups'
-              # Set to 'custom' & insert 'users' default fields without custom fields
-              permission.update!(permitted_by: 'custom')
-              fields = default_fields(permitted_by: 'users', permission: permission).reject { |f| f[:field_type] == 'custom_field' }
-            end
-          elsif permission.permitted_by == 'groups'
-            # Set to 'custom' & insert 'users' default fields
-            permission.update!(permitted_by: 'custom')
-            fields = default_fields(permitted_by: 'users', permission: permission)
-          end
-
-          # Save the default fields
-          if fields.present?
-            fields.each(&:save!)
-          end
-        end
-      end
-    end
-
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
     def create_default_fields_for_custom_permitted_by(permission: nil, previous_permitted_by: 'users')
       return unless permission&.permitted_by == 'custom' && permission&.permissions_fields&.empty?
@@ -47,12 +16,6 @@ module Permissions
       fields = default_fields(permitted_by: previous_permitted_by, permission: permission)
       fields.each(&:save!)
     end
-
-    def custom_permitted_by_enabled?
-      @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
-    end
-
-    private
 
     def default_fields(permitted_by: 'users', permission: nil)
       # Built in fields
@@ -93,6 +56,10 @@ module Permissions
         field.ordering = index
         field
       end
+    end
+
+    def custom_permitted_by_enabled?
+      @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
     end
   end
 end
