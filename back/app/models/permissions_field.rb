@@ -37,6 +37,11 @@ class PermissionsField < ApplicationRecord
   belongs_to :permission
   belongs_to :custom_field, optional: true
 
+  has_many :groups, through: :permission
+
+
+           # SELECT id FROM TAG_TABLE WHERE position(tag_name:var_char in 'aaaaaaaaaaa')>0;
+
   validates :permission, presence: true
   validates :custom_field, presence: true, if: -> { field_type == 'custom_field' }
   validates :permission_id, uniqueness: { scope: :custom_field_id }, if: -> { custom_field_id.present? }

@@ -48,10 +48,12 @@ resource 'PermissionsField' do
     end
 
     context 'feature flag "custom_permitted_by" is enabled' do
-      before { permission } # Create permission
-
-      example 'List all default permissions fields of a "user" permission' do
+      before do
         SettingsService.new.activate_feature! 'custom_permitted_by'
+        permission # Create permission
+      end
+
+      example 'List default permissions fields of a "user" permission' do
         custom_field = create(:custom_field_gender, required: false, enabled: true)
 
         do_request
@@ -62,6 +64,38 @@ resource 'PermissionsField' do
         expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email custom_field]
         expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id, permission.id]
         expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+      end
+
+      example 'List all persisted permissions fields and associated groups of a "custom" permission' do
+        permission.update!(permitted_by: 'custom')
+        Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+
+        # Permissions field not associated with any group
+        create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
+
+        # Permissions field associated with one group
+        custom_field = create(:custom_field_text, :for_registration, enabled: true, required: false)
+        associated_group = create(:smart_group, slug: 'used', rules: [
+          { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
+        ])
+        not_used_group = create(:smart_group, slug: 'not-used', rules: [
+          { ruleType: 'custom_field_text', customFieldId: SecureRandom.uuid, predicate: 'is', value: 'xyz' }
+        ])
+        permission.groups << associated_group
+        permission.groups << not_used_group
+        create(:permissions_field, permission: permission, custom_field: custom_field)
+
+        do_request
+
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true, true, true]
+        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email custom_field custom_field]
+        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id, permission.id, permission.id]
+        expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+        expect(response_data.last.dig(:relationships, :groups, :data).count).to eq 1
+        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
+        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
       end
     end
   end
