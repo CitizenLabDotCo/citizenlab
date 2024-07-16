@@ -241,16 +241,6 @@ class Phase < ApplicationRecord
   end
 
   # Used for validations (which are hard to delegate through the participation method)
-  def ideation?
-    participation_method == 'ideation'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def proposals?
-    participation_method == 'proposals'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
   def information?
     participation_method == 'information'
   end
