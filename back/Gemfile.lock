@@ -1006,7 +1006,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.0)
+    rexml (3.3.2)
       strscan
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
@@ -1354,6 +1354,7 @@ DEPENDENCIES
   remove_vendor_branding!
   report_builder!
   rest-client
+  rexml (~> 3.3.2)
   rgeo-geojson
   rinku (~> 2)
   ros-apartment
