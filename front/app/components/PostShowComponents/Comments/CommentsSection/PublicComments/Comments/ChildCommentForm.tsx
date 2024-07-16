@@ -10,6 +10,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -86,6 +87,7 @@ const ChildCommentForm = ({
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const { data: project } = useProjectById(projectId);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -309,7 +311,7 @@ const ChildCommentForm = ({
   };
 
   const userCanModerate = {
-    idea: canModerateProject(projectId, authUser),
+    idea: project ? canModerateProject(project.data, authUser) : false,
     initiative: canModerateInitiative(authUser),
   }[postType];
 
@@ -323,7 +325,7 @@ const ChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={userCanModerate}
+          showModeratorStyles={userCanModerate}
         />
         <FormContainer
           onClickOutside={onCancel}

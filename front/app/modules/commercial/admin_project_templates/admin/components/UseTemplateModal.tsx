@@ -315,9 +315,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   ]
                 : []),
               ...projectFolders.data
-                .filter((folder) =>
-                  userModeratesFolder(authUser.data, folder.id)
-                )
+                .filter((folder) => userModeratesFolder(authUser, folder.id))
                 .map((folder) => {
                   return {
                     value: folder.id,
@@ -343,7 +341,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     );
 
     const isSelectDisabled = !!(
-      isProjectFolderModerator(authUser.data) &&
+      isProjectFolderModerator(authUser) &&
       folderOptions &&
       folderOptions.length === 1
     );

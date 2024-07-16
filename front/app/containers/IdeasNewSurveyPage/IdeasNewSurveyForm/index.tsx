@@ -19,6 +19,7 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import projectsKeys from 'api/projects/keys';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
@@ -32,6 +33,7 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
@@ -166,15 +168,15 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   }
 
   const handleDraftIdeas = async (data: FormValues) => {
-    if (data.publication_status === 'draft') {
+    if (data.publication_status === 'published') {
+      return onSubmit(data, true);
+    } else {
       if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
       return onSubmit(data, false);
-    } else {
-      return onSubmit(data, true);
     }
   };
 
@@ -182,16 +184,29 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      ...(canModerateProject(project.data.id, authUser)
+      ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
+    const handleOnError = () => {
+      // If an error happens, it's likely some permission issues.
+      // We refetch the project to use the correct action descriptors.
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.all(),
+      });
+    };
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
-      ? await updateIdea({ id: ideaId, requestBody })
-      : await addIdea(requestBody);
+      ? await updateIdea(
+          { id: ideaId, requestBody },
+          {
+            onError: handleOnError,
+          }
+        )
+      : await addIdea(requestBody, { onError: handleOnError });
+
     setIdeaId(idea.data.id);
 
     const ideaAttributes = idea.data.attributes;
@@ -289,6 +304,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                   w="100%"
                   px={isSmallerThanPhone ? '16px' : '24px'}
                   mt="12px"
+                  id="anonymous-survey-warning"
                 >
                   <Warning icon="shield-checkered">
                     {formatMessage(messages.anonymousSurveyMessage)}

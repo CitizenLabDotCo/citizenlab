@@ -501,7 +501,7 @@ const IdeasMap = memo<Props>(
                 (layer) => layer.id === hoveredLayerId
               )}
             />
-            {phaseId && projectId && (
+            {phaseId && (
               <StartIdeaButton
                 modalPortalElement={startIdeaButtonNode}
                 latlng={clickedMapLocation}

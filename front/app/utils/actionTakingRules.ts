@@ -1,7 +1,8 @@
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData, ProjectPostingDisabledReason } from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
+import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { canModerateProject } from './permissions/rules/projectPermissions';
@@ -24,30 +25,20 @@ interface ActionPermissionDisabled<DisabledReasons> {
   disabledReason: DisabledReasons;
   authenticationRequirements: null;
 }
-interface ActionPermissionMaybe {
+interface ActionPermissionMaybe<DisabledReasons> {
   show: true;
   enabled: 'maybe';
-  disabledReason: null;
+  disabledReason: DisabledReasons | null;
   authenticationRequirements: AuthenticationRequirements;
 }
 
 export type ActionPermission<DisabledReasons> =
   | ActionPermissionHide
-  | ActionPermissionMaybe
+  | ActionPermissionMaybe<DisabledReasons>
   | ActionPermissionEnabled
   | ActionPermissionDisabled<DisabledReasons>;
 
 /* ----------- Idea Posting ------------ */
-
-// When disabled, these are the reasons to explain to the user
-export type IIdeaPostingDisabledReason =
-  | 'notPermitted'
-  | 'postingDisabled'
-  | 'postingLimitedMaxReached'
-  | 'projectInactive'
-  | 'notActivePhase'
-  | 'futureEnabled'
-  | 'notInGroup';
 
 // When disabled but user might get access, here are the next steps for this user
 export type AuthenticationRequirements =
@@ -61,7 +52,7 @@ const ideaPostingDisabledReason = (
   signedIn: boolean,
   futureEnabled: string | null
 ): {
-  disabledReason: IIdeaPostingDisabledReason | null;
+  disabledReason: ProjectPostingDisabledReason | null;
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
@@ -72,7 +63,7 @@ const ideaPostingDisabledReason = (
       };
     case 'user_not_in_group':
       return {
-        disabledReason: 'notInGroup',
+        disabledReason: backendReason,
         authenticationRequirements: null,
       };
     case 'user_not_verified':
@@ -87,29 +78,29 @@ const ideaPostingDisabledReason = (
           };
     case 'user_not_signed_in':
       return {
-        disabledReason: null,
+        disabledReason: backendReason,
         authenticationRequirements: 'sign_in_up',
       };
     case 'project_inactive':
       return {
-        disabledReason: futureEnabled ? 'futureEnabled' : 'projectInactive',
+        disabledReason: futureEnabled ? 'future_enabled' : backendReason,
         authenticationRequirements: null,
       };
     case 'posting_disabled':
       return {
-        disabledReason: 'postingDisabled',
+        disabledReason: backendReason,
         authenticationRequirements: null,
       };
     // Only applicable to taking surveys at the moment.
     // Not configurable via admin UI, determined in BE
     case 'posting_limited_max_reached':
       return {
-        disabledReason: 'postingLimitedMaxReached',
+        disabledReason: backendReason,
         authenticationRequirements: null,
       };
     case 'user_not_permitted' || 'user_blocked':
       return {
-        disabledReason: 'notPermitted',
+        disabledReason: backendReason,
         authenticationRequirements: null,
       };
     case 'user_not_active':
@@ -119,7 +110,7 @@ const ideaPostingDisabledReason = (
       };
     default:
       return {
-        disabledReason: 'notPermitted',
+        disabledReason: 'user_not_permitted',
         authenticationRequirements: null,
       };
   }
@@ -140,14 +131,14 @@ export const getIdeaPostingRules = ({
   project: IProjectData | null | undefined;
   phase: IPhaseData | undefined;
   authUser: IUserData | undefined;
-}): ActionPermission<IIdeaPostingDisabledReason> => {
+}): ActionPermission<ProjectPostingDisabledReason> => {
   const signedIn = !!authUser;
 
   if (project) {
     const { disabled_reason, future_enabled_at, enabled } =
       project.attributes.action_descriptors.posting_idea;
 
-    if (signedIn && canModerateProject(project.id, { data: authUser })) {
+    if (authUser && canModerateProject(project, { data: authUser })) {
       return {
         show: true,
         enabled: true,
@@ -175,7 +166,7 @@ export const getIdeaPostingRules = ({
         };
       }
 
-      // if not in current phase
+      // if not in current phase - not sure this is possible to trigger
       if (
         pastPresentOrFuture([
           phase.attributes.start_at,
@@ -185,7 +176,7 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: 'notActivePhase',
+          disabledReason: 'inactive_phase',
           authenticationRequirements: null,
         };
       }
@@ -217,7 +208,7 @@ export const getIdeaPostingRules = ({
       authenticationRequirements: null,
       show: true,
       enabled: false,
-    } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+    } as ActionPermissionDisabled<ProjectPostingDisabledReason>;
     // TODO enforce the validity of this by adding a test to ensure either action or disabledReason is not null
   }
   // if !project
