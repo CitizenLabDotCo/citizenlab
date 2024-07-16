@@ -8,10 +8,11 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import parentMessages from '../messages';
-import Tooltip from '../Tooltip';
+import parentMessages from '../../messages';
+import Tooltip from '../../Tooltip';
+import fieldsMessages from '../messages';
 
-import messages from './messages';
+import emailMessages from './messages';
 
 interface Props {
   opened: boolean;
@@ -32,7 +33,7 @@ const EmailModal = ({
 
   const emailConfirmationDisabledMessage = disableEditing
     ? parentMessages.disableEditingExplanationFromModal
-    : messages.emailConfirmationCannotBeControlledYet;
+    : emailMessages.emailConfirmationCannotBeControlledYet;
 
   return (
     <Modal
@@ -40,7 +41,7 @@ const EmailModal = ({
       niceHeader
       header={
         <Title variant="h3" m="0" ml="32px">
-          {formatMessage(messages.emailAndPasswordHeader)}
+          {formatMessage(emailMessages.emailAndPasswordHeader)}
         </Title>
       }
       close={onClose}
@@ -53,7 +54,7 @@ const EmailModal = ({
           >
             <>
               <Text mt="0" mb="12px" fontWeight="bold">
-                {formatMessage(messages.settingPassword)}
+                {formatMessage(emailMessages.settingPassword)}
               </Text>
               <Radio
                 name={'required'}
@@ -62,7 +63,7 @@ const EmailModal = ({
                 onChange={() => onUpdateConfig({ ...config, password: true })}
                 mb="4px"
                 disabled={disableEditing}
-                label={formatMessage(messages.required)}
+                label={formatMessage(fieldsMessages.required)}
               />
               <Radio
                 name={'not-required'}
@@ -72,14 +73,14 @@ const EmailModal = ({
                   onUpdateConfig({ ...config, password: false });
                 }}
                 disabled={disableEditing}
-                label={formatMessage(messages.notRequired)}
+                label={formatMessage(fieldsMessages.notRequired)}
               />
             </>
           </Tooltip>
           <Tooltip disabled={false} message={emailConfirmationDisabledMessage}>
             <>
               <Text mt="28px" mb="12px" fontWeight="bold">
-                {formatMessage(messages.emailConfirmationCode)}
+                {formatMessage(emailMessages.emailConfirmationCode)}
               </Text>
               <Radio
                 name={'required'}
@@ -88,7 +89,7 @@ const EmailModal = ({
                 onChange={() => onUpdateConfig({ ...config, confirmed: true })}
                 mb="4px"
                 disabled={true}
-                label={formatMessage(messages.required)}
+                label={formatMessage(fieldsMessages.required)}
               />
               <Radio
                 name={'not-required'}
@@ -96,7 +97,7 @@ const EmailModal = ({
                 currentValue={config.confirmed}
                 onChange={() => onUpdateConfig({ ...config, confirmed: false })}
                 disabled={true}
-                label={formatMessage(messages.notRequired)}
+                label={formatMessage(fieldsMessages.notRequired)}
               />
             </>
           </Tooltip>

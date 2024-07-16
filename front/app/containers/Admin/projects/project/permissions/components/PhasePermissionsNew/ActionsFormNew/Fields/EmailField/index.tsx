@@ -17,24 +17,24 @@ import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissio
 
 import { useIntl } from 'utils/cl-intl';
 
-import Tooltip from '../Tooltip';
+import Tooltip from '../../Tooltip';
+import { DISABLED_COLOR } from '../constants';
+import messages from '../messages';
 
-import { DISABLED_COLOR } from './constants';
 import EmailModal from './EmailModal';
-import messages from './messages';
-
-const getFieldNameMessage = (
-  field_type: IPermissionsFieldData['attributes']['field_type']
-) => {
-  if (field_type === 'name') return messages.name;
-  if (field_type === 'email') return messages.email;
-  return undefined;
-};
+import emailMessages from './messages';
 
 const isEmailConfig = (
   config: IPermissionsFieldData['attributes']['config']
 ): config is EmailConfig => {
   return 'password' in config && 'confirmed' in config;
+};
+
+const getEmailMessage = ({ confirmed, password }: EmailConfig) => {
+  if (confirmed && password) return emailMessages.emailConfirmationAndPassword;
+  if (confirmed && !password) return emailMessages.emailConfirmation;
+  if (!confirmed && password) return emailMessages.password;
+  return emailMessages.emailOnly;
 };
 
 interface Props {
@@ -44,8 +44,8 @@ interface Props {
   action: IPhasePermissionAction;
 }
 
-const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
-  const { field_type, config, enabled } = field.attributes;
+const EmailField = ({ field, phaseId, disableEditing, action }: Props) => {
+  const { config, enabled } = field.attributes;
 
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,15 +55,12 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
     action,
   });
 
-  const fieldNameMessage = getFieldNameMessage(field_type);
-  if (!fieldNameMessage) return null;
+  const customTooltipMessage = disableEditing
+    ? undefined
+    : emailMessages.emailCannotBeControlledYet;
 
-  const customTooltipMessage = (() => {
-    if (disableEditing) return undefined; // default message
-    if (field_type === 'name') return messages.nameCannotBeControlledYet;
-    if (field_type === 'email') return messages.emailCannotBeControlledYet;
-    return undefined;
-  })();
+  // Type guard, should always be true
+  if (!isEmailConfig(config)) return null;
 
   return (
     <>
@@ -82,22 +79,18 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
             fontSize="m"
             color={disableEditing ? 'grey800' : 'primary'}
           >
-            {formatMessage(fieldNameMessage)}
+            {formatMessage(emailMessages.email)}
           </Text>
-          {field_type === 'name' && (
-            <Text
-              m="0"
-              fontSize="s"
-              color={disableEditing ? 'grey700' : 'grey800'}
-            >
-              {formatMessage(
-                field.attributes.enabled ? messages.required : messages.notAsked
-              )}
-            </Text>
-          )}
+          <Text
+            m="0"
+            fontSize="s"
+            color={disableEditing ? 'grey700' : 'grey800'}
+          >
+            {formatMessage(getEmailMessage(config))}
+          </Text>
         </Box>
         <Box display="flex" flexDirection="row">
-          {field_type === 'email' && enabled && (
+          {enabled && (
             <Button
               icon="edit"
               buttonStyle="text"
@@ -131,22 +124,20 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
           </Tooltip>
         </Box>
       </Box>
-      {field_type === 'email' && isEmailConfig(config) && (
-        <EmailModal
-          opened={isModalOpen}
-          config={config}
-          disableEditing={disableEditing}
-          onClose={() => setIsModalOpen(false)}
-          onUpdateConfig={(config) =>
-            updatePermissionsField({
-              id: field.id,
-              config,
-            })
-          }
-        />
-      )}
+      <EmailModal
+        opened={isModalOpen}
+        config={config}
+        disableEditing={disableEditing}
+        onClose={() => setIsModalOpen(false)}
+        onUpdateConfig={(config) =>
+          updatePermissionsField({
+            id: field.id,
+            config,
+          })
+        }
+      />
     </>
   );
 };
 
-export default DefaultField;
+export default EmailField;
