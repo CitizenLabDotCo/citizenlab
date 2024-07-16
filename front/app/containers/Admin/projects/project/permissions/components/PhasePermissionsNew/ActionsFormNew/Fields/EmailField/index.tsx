@@ -30,7 +30,12 @@ const isEmailConfig = (
   return 'password' in config && 'confirmed' in config;
 };
 
-const getEmailMessage = ({ confirmed, password }: EmailConfig) => {
+const getEmailMessage = (
+  enabled: boolean,
+  { confirmed, password }: EmailConfig
+) => {
+  if (!enabled) return messages.notAsked;
+
   if (confirmed && password) return emailMessages.emailConfirmationAndPassword;
   if (confirmed && !password) return emailMessages.emailConfirmation;
   if (!confirmed && password) return emailMessages.password;
@@ -65,7 +70,8 @@ const EmailField = ({ field, phaseId, disableEditing, action }: Props) => {
   return (
     <>
       <Box
-        py="18px"
+        pt="14px"
+        pb="13px"
         borderTop={stylingConsts.border}
         display="flex"
         flexDirection="row"
@@ -86,7 +92,7 @@ const EmailField = ({ field, phaseId, disableEditing, action }: Props) => {
             fontSize="s"
             color={disableEditing ? 'grey700' : 'grey800'}
           >
-            {formatMessage(getEmailMessage(config))}
+            {formatMessage(getEmailMessage(enabled, config))}
           </Text>
         </Box>
         <Box display="flex" flexDirection="row">

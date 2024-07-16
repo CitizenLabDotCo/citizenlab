@@ -42,7 +42,8 @@ const NameField = ({ field, phaseId, disableEditing, action }: Props) => {
   return (
     <>
       <Box
-        py="18px"
+        pt="14px"
+        pb="13px"
         borderTop={stylingConsts.border}
         display="flex"
         flexDirection="row"

@@ -81,7 +81,7 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                       bgColor={DISABLED_COLOR}
                       disableNestedStyles
                     >
-                      <Box w="100%" pt="1px" pb="1px">
+                      <Box w="100%" pt="2px" pb="1px">
                         {fieldMarkup}
                       </Box>
                     </Row>
