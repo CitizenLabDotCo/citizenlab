@@ -4,55 +4,57 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'hoplr authentication' do
-  before do
-    OmniAuth.config.test_mode = true
-    OmniAuth.config.mock_auth[:hoplr] = OmniAuth::AuthHash.new(
-      {
-        'provider' => 'hoplr',
-        'uid' => '817624',
-        'info' => {
-          'name' => 'Developer Govocal',
+  let(:auth_hash) do
+    {
+      'provider' => 'hoplr',
+      'uid' => '817624',
+      'info' => {
+        'name' => 'Developer Govocal',
+        'email' => 'developers+sso@citizenlab.co',
+        'email_verified' => false,
+        'nickname' => nil,
+        'first_name' => 'Developer',
+        'last_name' => 'Govocal',
+        'gender' => nil,
+        'image' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
+        'phone' => nil,
+        'urls' => { 'website' => nil }
+      },
+      'credentials' => {
+        'id_token' => 'eyJhbGciOiJSUzI1NiIsImtpZCI6IlMwOEJKVlRWRUpOT0cxRlZUWlZCNTI5QkU3S1lUQ1hIRzRQV0otX0oiLCJ0eXAiOiJKV1QifQ.eyJvaV9hdV9pZCI6IjRlZTBlZWM1LTZlYzYtNDY4MS1hOTk0LTMwZjhhNmNhNTliZiIsInN1YiI6IjgxNzYyNCIsImVtYWlsIjoiZGV2ZWxvcGVycytzc29AY2l0aXplbmxhYi5jbyIsIm5hbWUiOiJEZXZlbG9wZXIgR292b2NhbCIsImdpdmVuX25hbWUiOiJEZXZlbG9wZXIiLCJmYW1pbHlfbmFtZSI6Ikdvdm9jYWwiLCJwaWN0dXJlIjoiaHR0cHM6Ly9kZXZob3BscnN0b3JhZ2UuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9kZWZhdWx0dXNlci5qcGciLCJsb2NhbGUiOiJubCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiYXpwIjoibmNXOU13cFNGZ3RkaDUmS28zd0RKIiwibm9uY2UiOiJiMTE2YTc2Njg4ZGJjYmUwYzIzY2M4Yzk4ZjFmYWYyNiIsImF0X2hhc2giOiJWdTdHYTFHOHUxeVVkS192WlUycnF3Iiwib2lfdGtuX2lkIjoiMTUyZTkwZjItMmU4Zi00MTdkLWFlNmQtMTliMjcyYWE0Y2EyIiwiYXVkIjoibmNXOU13cFNGZ3RkaDUmS28zd0RKIiwiZXhwIjoxNzIxMTQ2OTcwLCJpc3MiOiJodHRwczovL3Rlc3QuaG9wbHIuY29tLyIsImlhdCI6MTcyMTE0NTc3MH0.d7rEJw347nm_7cjXLVLg5Cx_Vrf3NjiP0EDyaSa_6herybUOEP07uqICzrraYrxgLqtFlPA8B80dypfqcOHyypw9TMc96X1kVV6TZrucyhx3MkAEqrLcd38WarBV9WNKbr2SEYImD1KD4bRQetjzJNn-0KXi6hMjjXLGY0nbVC7EnbRcig4_R9sPKOE58bMlnX8pGPqlg4yI6SXnTfAY2lcspyATybH1ps0fPp3B6o20AXAW5c_jHrJMNnt9TvLI-Ozw00VUTxxj9VUJD_MR5F8KJp-J2E7w6IeeRYammZqHO4qVYtKdhxoysXfKJwt-Gq-ZkqDUqwqUULV1qFqPcA',
+        'token' => 'xxx',
+        'refresh_token' => nil,
+        'expires_in' => 3599,
+        'scope' => 'openid email profile email_verified'
+      },
+      'extra' => {
+        'raw_info' => {
+          'sub' => '817624',
           'email' => 'developers+sso@citizenlab.co',
+          'family_name' => 'Govocal',
+          'given_name' => 'Developer',
+          'iss' => 'https://test.hoplr.com/',
+          'neighbourhood' => '2133',
+          'aud' => 'ncW9MxxSFxxdh5&Ko3wDJ',
+          'oi_au_id' => '4ee0eec5-1234-4681-a994-30f8a6ca59bf',
+          'name' => 'Developer Govocal',
+          'picture' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
+          'locale' => 'nl',
           'email_verified' => false,
-          'nickname' => nil,
-          'first_name' => 'Developer',
-          'last_name' => 'Govocal',
-          'gender' => nil,
-          'image' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
-          'phone' => nil,
-          'urls' => { 'website' => nil }
-        },
-        'credentials' => {
-          'id_token' => 'eyJhbGciOiJSUzI1NiIsImtpZCI6IlMwOEJKVlRWRUpOT0cxRlZUWlZCNTI5QkU3S1lUQ1hIRzRQV0otX0oiLCJ0eXAiOiJKV1QifQ.eyJvaV9hdV9pZCI6IjRlZTBlZWM1LTZlYzYtNDY4MS1hOTk0LTMwZjhhNmNhNTliZiIsInN1YiI6IjgxNzYyNCIsImVtYWlsIjoiZGV2ZWxvcGVycytzc29AY2l0aXplbmxhYi5jbyIsIm5hbWUiOiJEZXZlbG9wZXIgR292b2NhbCIsImdpdmVuX25hbWUiOiJEZXZlbG9wZXIiLCJmYW1pbHlfbmFtZSI6Ikdvdm9jYWwiLCJwaWN0dXJlIjoiaHR0cHM6Ly9kZXZob3BscnN0b3JhZ2UuYmxvYi5jb3JlLndpbmRvd3MubmV0L2ltYWdlcy9kZWZhdWx0dXNlci5qcGciLCJsb2NhbGUiOiJubCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiYXpwIjoibmNXOU13cFNGZ3RkaDUmS28zd0RKIiwibm9uY2UiOiJiMTE2YTc2Njg4ZGJjYmUwYzIzY2M4Yzk4ZjFmYWYyNiIsImF0X2hhc2giOiJWdTdHYTFHOHUxeVVkS192WlUycnF3Iiwib2lfdGtuX2lkIjoiMTUyZTkwZjItMmU4Zi00MTdkLWFlNmQtMTliMjcyYWE0Y2EyIiwiYXVkIjoibmNXOU13cFNGZ3RkaDUmS28zd0RKIiwiZXhwIjoxNzIxMTQ2OTcwLCJpc3MiOiJodHRwczovL3Rlc3QuaG9wbHIuY29tLyIsImlhdCI6MTcyMTE0NTc3MH0.d7rEJw347nm_7cjXLVLg5Cx_Vrf3NjiP0EDyaSa_6herybUOEP07uqICzrraYrxgLqtFlPA8B80dypfqcOHyypw9TMc96X1kVV6TZrucyhx3MkAEqrLcd38WarBV9WNKbr2SEYImD1KD4bRQetjzJNn-0KXi6hMjjXLGY0nbVC7EnbRcig4_R9sPKOE58bMlnX8pGPqlg4yI6SXnTfAY2lcspyATybH1ps0fPp3B6o20AXAW5c_jHrJMNnt9TvLI-Ozw00VUTxxj9VUJD_MR5F8KJp-J2E7w6IeeRYammZqHO4qVYtKdhxoysXfKJwt-Gq-ZkqDUqwqUULV1qFqPcA',
-          'token' => 'xxx',
-          'refresh_token' => nil,
-          'expires_in' => 3599,
-          'scope' => 'openid email profile email_verified'
-        },
-        'extra' => {
-          'raw_info' => {
-            'sub' => '817624',
-            'email' => 'developers+sso@citizenlab.co',
-            'family_name' => 'Govocal',
-            'given_name' => 'Developer',
-            'iss' => 'https://test.hoplr.com/',
-            'neighbourhood' => '2133',
-            'aud' => 'ncW9MxxSFxxdh5&Ko3wDJ',
-            'oi_au_id' => '4ee0eec5-1234-4681-a994-30f8a6ca59bf',
-            'name' => 'Developer Govocal',
-            'picture' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
-            'locale' => 'nl',
-            'email_verified' => false,
-            'azp' => 'ncW9MwpSFgxxx5&Ko3wDJ',
-            'nonce' => 'b116a76688abcde0c23cc8c98f1faf26',
-            'at_hash' => 'Vu7Ga123u1yUdK_vZU2rqw',
-            'oi_tkn_id' => '152e90f2-2e8f-1234-ae6d-19b272aa4ca2',
-            'exp' => 1_721_146_970,
-            'iat' => 1_721_145_770
-          }
+          'azp' => 'ncW9MwpSFgxxx5&Ko3wDJ',
+          'nonce' => 'b116a76688abcde0c23cc8c98f1faf26',
+          'at_hash' => 'Vu7Ga123u1yUdK_vZU2rqw',
+          'oi_tkn_id' => '152e90f2-2e8f-1234-ae6d-19b272aa4ca2',
+          'exp' => 1_721_146_970,
+          'iat' => 1_721_145_770
         }
       }
-    )
+    }
+  end
+
+  before do
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:hoplr] = OmniAuth::AuthHash.new(auth_hash)
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
