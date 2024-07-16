@@ -303,9 +303,9 @@ const PhaseParticipationConfig = ({
     setPostingEnabled(ideationOrNativeSurvey ? true : null);
     setCommentingEnabled(ideationOrVoting ? true : null);
     setReactingEnabled(ideationOrNativeSurvey ? true : null);
-    setReactingLikeMethod(ideationOrNativeSurvey ? 'unlimited' : null);
-    setReactingDislikeEnabled(ideationOrNativeSurvey ? true : null);
-    setReactingDislikeMethod(ideationOrNativeSurvey ? 'unlimited' : null);
+    setReactingLikeMethod(ideation ? 'unlimited' : null);
+    setReactingDislikeEnabled(ideation ? true : null);
+    setReactingDislikeMethod(ideation ? 'unlimited' : null);
     setAllowAnonymousParticipation(ideationOrNativeSurvey ? false : null);
     setVotingMethod(voting ? 'single_voting' : null);
     setPresentationMode(ideationOrVoting ? 'card' : null);
