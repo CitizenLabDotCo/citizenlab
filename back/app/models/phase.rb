@@ -82,7 +82,7 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
-  before_validation :set_participation_method, on: :create
+  # before_validation :set_participation_method, on: :create
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
 
