@@ -187,7 +187,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
       ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
-      publication_status: rawData.publication_status || 'published',
+      publication_status: data.publication_status || 'published',
     };
 
     // Update or add the idea depending on if we have an existing draft idea
@@ -245,7 +245,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
       if (typeof data[key] === 'object') {
         for (const subKey in data[key]) {
           if (['Point', 'LineString', 'Polygon'].includes(data[key][subKey])) {
-            const coordinates = data[key]['coordinates'].flat();
+            const coordinates = data[key]['coordinates'].flat(2);
             let coordinatesString = '';
 
             for (let i = 0; i < coordinates.length; i++) {
