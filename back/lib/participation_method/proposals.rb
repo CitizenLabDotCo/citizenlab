@@ -6,9 +6,9 @@ module ParticipationMethod
       false
     end
 
-    def assign_defaults(_)
-      super # TODO: default status and publication status
-    end
+    # def assign_defaults(_)
+    #   super # TODO: default status and publication status
+    # end
 
     def budget_in_form?(_)
       false
@@ -18,12 +18,12 @@ module ParticipationMethod
       false
     end
 
-    def update_if_published?
-      super # TODO: if no reviewing and no reactions + toggle
-    end
+    # def update_if_published?
+    #   super # TODO: if no reviewing and no reactions + toggle
+    # end
 
-    def supports_status?
-      super # TODO: separate proposal statuses
-    end
+    # def supports_status?
+    #   super # TODO: separate proposal statuses
+    # end
   end
 end
