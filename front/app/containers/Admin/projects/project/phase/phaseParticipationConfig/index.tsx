@@ -293,18 +293,20 @@ const PhaseParticipationConfig = ({
     participation_method: ParticipationMethod
   ) => {
     const ideation = participation_method === 'ideation';
+    const native_survey = participation_method === 'native_survey';
     const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
     const ideationOrVoting = ideation || voting;
+    const ideationOrNativeSurvey = ideation || native_survey;
 
     setParticipationMethod(participation_method);
-    setPostingEnabled(ideation ? true : null);
+    setPostingEnabled(ideationOrNativeSurvey ? true : null);
     setCommentingEnabled(ideationOrVoting ? true : null);
-    setReactingEnabled(ideation ? true : null);
-    setReactingLikeMethod(ideation ? 'unlimited' : null);
-    setReactingDislikeEnabled(ideation ? true : null);
-    setReactingDislikeMethod(ideation ? 'unlimited' : null);
-    setAllowAnonymousParticipation(ideation ? false : null);
+    setReactingEnabled(ideationOrNativeSurvey ? true : null);
+    setReactingLikeMethod(ideationOrNativeSurvey ? 'unlimited' : null);
+    setReactingDislikeEnabled(ideationOrNativeSurvey ? true : null);
+    setReactingDislikeMethod(ideationOrNativeSurvey ? 'unlimited' : null);
+    setAllowAnonymousParticipation(ideationOrNativeSurvey ? false : null);
     setVotingMethod(voting ? 'single_voting' : null);
     setPresentationMode(ideationOrVoting ? 'card' : null);
     setSurveyEmbedUrl(null);
