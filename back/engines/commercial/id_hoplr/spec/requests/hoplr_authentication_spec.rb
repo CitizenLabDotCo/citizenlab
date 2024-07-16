@@ -11,7 +11,7 @@ context 'hoplr authentication' do
       'info' => {
         'name' => 'Developer Govocal',
         'email' => 'developers+sso@citizenlab.co',
-        'email_verified' => false,
+        'email_verified' => email_verified,
         'nickname' => nil,
         'first_name' => 'Developer',
         'last_name' => 'Govocal',
@@ -40,7 +40,7 @@ context 'hoplr authentication' do
           'name' => 'Developer Govocal',
           'picture' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
           'locale' => 'nl',
-          'email_verified' => false,
+          'email_verified' => email_verified,
           'azp' => 'ncW9MwpSFgxxx5&Ko3wDJ',
           'nonce' => 'b116a76688abcde0c23cc8c98f1faf26',
           'at_hash' => 'Vu7Ga123u1yUdK_vZU2rqw',
@@ -51,6 +51,8 @@ context 'hoplr authentication' do
       }
     }
   end
+
+  let(:email_verified) { false }
 
   before do
     OmniAuth.config.test_mode = true
@@ -94,8 +96,24 @@ context 'hoplr authentication' do
 
     expect(response).to redirect_to('/en/complete-signup?random-passthrough-param=somevalue')
 
-    expect_user_to_have_attributes(User.last)
+    user = User.last
+    expect_user_to_have_attributes(user)
     expect(cookies[:cl2_jwt]).to be_present
+
+    expect(user[:confirmation_required]).to be(true)
+  end
+
+  context 'when email is verified' do
+    let(:email_verified) { true }
+
+    it 'creates user that does not require email confirmation' do
+      get '/auth/hoplr?random-passthrough-param=somevalue'
+      follow_redirect!
+
+      user = User.last
+      expect_user_to_have_attributes(user)
+      expect(user[:confirmation_required]).to be(false)
+    end
   end
 
   context 'when user already exists' do
@@ -106,6 +124,21 @@ context 'hoplr authentication' do
       follow_redirect!
 
       expect_user_to_have_attributes(user.reload)
+      expect(user[:confirmation_required]).to be(false)
+    end
+
+    context "when existing user's email is not confirmed" do
+      before { user.update_columns(confirmation_required: true) }
+
+      context 'when email is verified' do
+        let(:email_verified) { true }
+
+        it 'does not update confirmation_required' do
+          get '/auth/hoplr?random-passthrough-param=somevalue'
+          follow_redirect!
+          expect(User.last[:confirmation_required]).to be(true)
+        end
+      end
     end
   end
 end
