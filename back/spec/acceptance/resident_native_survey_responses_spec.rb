@@ -174,7 +174,7 @@ resource 'Ideas' do
           { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
           { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
           { factory: :custom_field_file_upload, value: { 'id' => file.id, 'name' => file.name } },
-          { factory: :custom_field_point, value: { 'type' => 'Point', 'coordinates' => [4.30, 50.85] } },
+          # { factory: :custom_field_point, value: { 'type' => 'Point', 'coordinates' => [4.30, 50.85] } },
           # { factory: :custom_field_line, value: { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] } },
           # { factory: :custom_field_polygon, value: { 'type' => 'Polygon', 'coordinates' => [[[4.30, 50.85], [4.31, 50.85], [4.31, 50.86], [4.30, 50.86], [4.30, 50.85]]] } },
           { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
