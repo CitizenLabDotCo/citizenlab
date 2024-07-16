@@ -292,9 +292,6 @@ class Idea < ApplicationRecord
       custom_field = custom_fields.find { |field| field.key == key }
       next unless CustomField::GEOGRAPHIC_INPUT_TYPES.include?(custom_field.input_type) && value.is_a?(String)
 
-      puts 'custom_field_value:'
-      pp value
-
       # TODO: What to do when parsing fails? N.B. will raise RGeo::Error::ParseError
       custom_field_values[key] = wkt_string_to_geojson(value)
     end
