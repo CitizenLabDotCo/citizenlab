@@ -2,6 +2,7 @@ lv:
   email_campaigns:
     campaign_type_description:
       "manual": Oficiālie ziņojumi
+      "manual_project_participants": Oficiāli paziņojumi projekta dalībniekiem
       "admin_rights_received": Saņemtās administratora tiesības
       "comment_deleted_by_admin": Mana komentāra dzēšana
       "comment_marked_as_spam": Ziņot par surogātpastu komentārā
@@ -50,8 +51,10 @@ lv:
       "assignee_digest": Nedēļas pārskats par piešķirtajām idejām
       "user_digest": Nedēļas pārskats
       "voting_basket_submitted": Balsošanas apstiprināšana
+      "native_survey_not_submitted": Aptauja nav iesniegta
       "voting_basket_not_submitted": Neiesniegtās balsis
       "voting_last_chance": Pēdējā iespēja balsot
+      "voting_phase_started": Jauns projekta posms ar balsošanu
       "voting_results": Balsošanas rezultāti
       "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
     general:
@@ -74,7 +77,7 @@ lv:
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
-      "statement": "Šo e-pastu jums nosūtīja CitizenLab %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
+      "statement": "Šo e-pastu jums nosūtīja Go Vocal %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
       "unsubscribe_text": "atteikties"
     follow:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
@@ -504,6 +507,13 @@ lv:
       event_description: 'Paldies par dalību. Jūsu balsis ir reģistrētas. Apmeklējiet %{organizationName} platformu, lai redzētu un pārvaldītu savas balsis.'
       cta_see_votes_submitted: 'Skatīt iesniegtos balsojumus'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Gandrīz ir! Nosūtiet savas atbildes'
+      preheader: 'Jūs neesat aizpildījis savu aptaujas atbildi %{organizationName}dalības platformā.'
+      title_native_survey_not_submitted: 'Gandrīz ir! Nosūtiet savas atbildes'
+      body_native_survey_not_submitted: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Iesniegšana beigsies %{phaseEndDate}. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
+      body_native_survey_not_submitted_no_date: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
+      cta_complete_your_survey_response: 'Turpiniet atbildēt uz aptaujas jautājumiem'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Jūs neiesūtījāt savas balsis'
       preheader: 'Jūs neiesniedzāt savas balsis %{organizationName}dalības platformā.'
@@ -550,6 +560,7 @@ lv:
         admins: 'Administratoriem'
         admins_and_managers: 'Administratoriem un vadītājiem'
         managers: 'Vadītājiem'
+        project_participants: 'Projekta dalībniekiem'
         registered_users: 'Reģistrētiem lietotājiem'
       recipient_segment:
         admins: 'Administratori'
@@ -573,12 +584,13 @@ lv:
         user_who_registers: 'Lietotājs, kas reģistrējas'
         user_who_was_invited: 'Lietotājs, kurš tika uzaicināts'
         users_who_engaged_with_the_project: 'Lietotāji, kas iesaistījās projektā'
-        users_who_follow_the_proposal: 'Lietotājs, kas seko priekšlikumam'
-        users_who_follow_the_input: 'Lietotājs, kas seko ievades datiem'
+        users_who_follow_the_proposal: 'Lietotāji, kas seko priekšlikumam'
+        users_who_follow_the_input: 'Lietotāji, kas seko ievades'
         users_who_follow_the_project: 'Lietotāji, kas seko projektam'
         user_who_voted: 'Lietotājs, kas balsoja'
         user_with_unsubmitted_votes: 'Lietotājs, kurš nav iesniedzis savu balsojumu'
         users_who_engaged_but_not_voted: 'Lietotāji, kas iesaistījās projektā, bet nav balsojuši'
+        user_with_unsubmitted_survey: 'Lietotājs, kurš ir sācis, bet nav iesniedzis savu aptauju'
       content_type:
         comments: 'Komentāri'
         content_moderation: 'Satura moderēšana'
@@ -591,6 +603,7 @@ lv:
         proposals: 'Priekšlikumi'
         reactions: 'Reakcijas'
         voting: 'Balsošana'
+        surveys: 'Aptaujas'
       trigger:
         comment_is_deleted: 'Komentārs ir dzēsts'
         comment_is_flagged_as_spam: 'Komentārs ir atzīmēts kā surogātpasts'
@@ -639,3 +652,4 @@ lv:
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
         registration_to_event: 'Reģistrācija pasākumam'
+        survey_1_day_after_draft_saved: '1 diena pēc tam, kad lietotājs pēdējo reizi saglabājis aptaujas melnrakstu.'

@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { IInputsData } from 'api/analysis_inputs/types';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-
 import {
   Box,
   Title,
@@ -11,18 +8,22 @@ import {
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
+
+import { IInputsData } from 'api/analysis_inputs/types';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import { xor } from 'lodash-es';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
+import tracks from '../tracks';
 
 type Props = {
   customFieldId: string;
@@ -68,7 +69,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       size="s"
       margin="0"
       padding="1px"
@@ -110,7 +111,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
     case 'title_multiloc':
       return (
         <Box>
-          <Title variant="h3">
+          <Title variant="h3" my="0px">
             <T
               value={input.attributes[customField.data.attributes.key]}
               supportHtml={true}
@@ -131,7 +132,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       if (input.attributes.location_description) {
         return (
           <Box>
-            <Title variant="h5">
+            <Title variant="h5" m="0px">
               <T value={customField.data.attributes.title_multiloc} />
             </Title>
             <Text>{input.attributes.location_description}</Text>
@@ -147,7 +148,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'text':
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text m="0">
@@ -161,7 +162,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'linear_scale': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -187,7 +188,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiline_text': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text whiteSpace="pre-line">
@@ -201,7 +202,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'select': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -228,7 +229,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiselect': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
@@ -258,7 +259,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'checkbox': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
@@ -274,7 +275,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'date': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>

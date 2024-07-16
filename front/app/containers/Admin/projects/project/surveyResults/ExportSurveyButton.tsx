@@ -1,24 +1,20 @@
-// Libraries
 import React from 'react';
 
-// typings
-import { IParticipationContextType } from 'typings';
-
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
-// components
-import Button from 'components/UI/Button';
 import { exportSurveyResults } from 'api/survey_results/utils';
 
-// i18n
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
+import tracks from './tracks';
+
 interface Props {
-  type: IParticipationContextType;
-  id: string;
+  phaseId: string;
 }
 
 interface State {
@@ -54,7 +50,7 @@ export default class ExportSurveyButton extends React.PureComponent<
     const { exporting } = this.state;
     return (
       <Button
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         icon="download"
         onClick={this.handleExportSurveyResults}
         processing={exporting}

@@ -1,59 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useSurveyResults from './useSurveyResults';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { SurveyResultsType } from './types';
 
-let apiPath = '*projects/:projectId/survey_results';
+import endpoints, {
+  phaseApiPath,
+  surveyResultsResponse,
+} from './__mocks__/_mockServer';
+import useSurveyResults from './useSurveyResults';
 
-const resultsData: SurveyResultsType = {
-  data: {
-    type: 'survey_results',
-    attributes: {
-      results: [],
-      totalSubmissions: 5,
-    },
-  },
-};
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: resultsData }));
-  })
+  endpoints['GET projects/:id/survey_results'],
+  endpoints['GET phases/:id/survey_results']
 );
 
 describe('useSurveyResults', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly for project', async () => {
-    const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId' }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(resultsData);
-  });
-
   it('returns data correctly for phase', async () => {
-    apiPath = '*phases/:phaseId/survey_results';
-    server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: resultsData }));
-      })
-    );
-
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -64,18 +32,17 @@ describe('useSurveyResults', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(resultsData);
+    expect(result.current.data?.data).toEqual(surveyResultsResponse.data);
   });
   it('returns error correctly', async () => {
-    apiPath = '*phases/:phaseId/survey_results';
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(phaseApiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

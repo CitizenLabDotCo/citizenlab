@@ -10,7 +10,7 @@ FactoryBot.define do
     end
 
     name { Faker::Address.city }
-    sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
+    sequence(:host) { |n| "tenant-#{n}.govocal.com" }
     style { {} }
     settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
 
@@ -33,6 +33,7 @@ FactoryBot.define do
   factory :test_tenant, class: 'Tenant' do
     name { 'test-tenant' }
     host { 'example.org' }
+    creation_finalized_at { Time.now }
     style { {} }
     settings do
       SettingsService.new.minimal_required_settings(

@@ -2,6 +2,7 @@ da:
   email_campaigns:
     campaign_type_description:
       "manual": Officielle beskeder
+      "manual_project_participants": Officielle meddelelser til projektdeltagerne
       "admin_rights_received": Administratorrettigheder modtaget
       "comment_deleted_by_admin": Sletning af min kommentar
       "comment_marked_as_spam": Rapportering af kommentar-spam
@@ -50,8 +51,10 @@ da:
       "assignee_digest": Ugentlig oversigt over tildelte ideer
       "user_digest": Ugentlig oversigt
       "voting_basket_submitted": Bekræftelse af afstemning
+      "native_survey_not_submitted": Undersøgelse ikke indsendt
       "voting_basket_not_submitted": Stemmer ikke afgivet
       "voting_last_chance": Sidste chance for at stemme
+      "voting_phase_started": Ny projektfase med afstemning
       "voting_results": Afstemningsresultater
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine forslag
     general:
@@ -74,7 +77,7 @@ da:
       "link_terms_conditions": "Betingelser og vilkår"
       "link_unsubscribe": "Afmeld abonnement"
       "powered_by": "Drevet af"
-      "statement": "Denne e-mail blev sendt til dig fra CitizenLab på vegne af %{organizationName}, fordi du har registreret en bruger på %{organizationLink}. Du kan %{unsubscribeLink}, hvis du ikke ønsker at modtage disse e-mails i fremtiden."
+      "statement": "Denne e-mail blev sendt til dig fra Go Vocal på vegne af %{organizationName}, fordi du har registreret en bruger på %{organizationLink}. Du kan %{unsubscribeLink}, hvis du ikke ønsker at modtage disse e-mails i fremtiden."
       "unsubscribe_text": "afmeld abonnement"
     follow:
       "unfollow_here": "Du har modtaget denne meddelelse på grund af et emne, du følger. <a href=\"%{unfollow_url}\">Du kan fjerne den her.</a>"
@@ -504,6 +507,13 @@ da:
       event_description: 'Tak for din deltagelse. Dine stemmer er blevet registreret. Besøg platformen %{organizationName} for at se og administrere dine stemmer.'
       cta_see_votes_submitted: 'Se afgivne stemmer'
       cta_message: 'Klik på knappen nedenfor for at deltage'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Næsten i mål! Indsend dine svar'
+      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på borgerinddragelsesplatformen %{organizationName}'
+      title_native_survey_not_submitted: 'Så er vi der næsten! Indsend dine svar'
+      body_native_survey_not_submitted: 'Du begyndte at dele dine svar på %{phaseTitle} , men har ikke indsendt dem. Indsendelserne lukker på %{phaseEndDate}. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
+      body_native_survey_not_submitted_no_date: 'Du er begyndt at dele dine svar på %{phaseTitle} , men har ikke sendt dem. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
+      cta_complete_your_survey_response: 'Fortsæt din besvarelse af undersøgelsen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har ikke indsendt dine stemmer'
       preheader: 'Du har ikke afgivet din stemme på borgerinddragelsesplatformen fra %{organizationName}'
@@ -550,6 +560,7 @@ da:
         admins: 'Til administratorer'
         admins_and_managers: 'Til administratorer og projektledere'
         managers: 'Til projektledere'
+        project_participants: 'Til projektdeltagere'
         registered_users: 'Til registrerede brugere'
       recipient_segment:
         admins: 'Administratorer'
@@ -579,6 +590,7 @@ da:
         user_who_voted: 'Bruger der stemte'
         user_with_unsubmitted_votes: 'Bruger der ikke har afgivet sin stemme'
         users_who_engaged_but_not_voted: 'Brugere der har engageret sig i projektet, men ikke har stemt'
+        user_with_unsubmitted_survey: 'Bruger, der har startet, men ikke indsendt sin undersøgelse'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderation af indhold'
@@ -591,6 +603,7 @@ da:
         proposals: 'Forslag'
         reactions: 'Stemmer'
         voting: 'Afstemning'
+        surveys: 'Undersøgelser'
       trigger:
         comment_is_deleted: 'Kommentar er slettet'
         comment_is_flagged_as_spam: 'Kommentar er markeret som spam'
@@ -639,3 +652,4 @@ da:
         7_days_after_invite_is_sent: '7 dage efter at invitationen er sendt'
         7_days_before_the_project_changes_phase: '7 dage før projektet ændre fase'
         registration_to_event: 'Tilmelding til en begivenhed'
+        survey_1_day_after_draft_saved: '1 dag efter at brugeren sidst gemte undersøgelsen i kladden'

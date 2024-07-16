@@ -35,7 +35,8 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
 
     it 'does not include native survey responses' do
       IdeaStatus.create_defaults
-      response = create(:idea, project: create(:continuous_native_survey_project))
+      project = create(:single_phase_native_survey_project)
+      response = create(:idea, project: project, creation_phase: project.phases.first)
 
       command = campaign.generate_commands(recipient: admin).first
       expect(
@@ -85,7 +86,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
 
   describe 'content_worth_sending?' do
     let(:campaign) { build(:admin_digest_campaign) }
-    let(:project) { create(:continuous_project, participation_method: 'ideation') }
+    let(:project) { create(:single_phase_ideation_project) }
 
     it 'returns false when no significant stats' do
       expect(campaign.send(:content_worth_sending?, {})).to be false

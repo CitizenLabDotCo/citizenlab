@@ -123,8 +123,6 @@ resource 'Users' do
           'allowed' => true,
           'enabled' => true,
           'enable_signup' => true,
-          'phone' => true,
-          'phone_email_pattern' => 'phone+__PHONE__@test.com',
           'minimum_length' => 6
         }
         AppConfiguration.instance.update!(settings: settings)
@@ -155,11 +153,8 @@ resource 'Users' do
         end
 
         context 'when the user_confirmation module is active' do
-          let(:success) { double }
-
           before do
-            allow(SendConfirmationCode).to receive(:call).and_return(success)
-            allow(success).to receive(:success?).and_return(true)
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
             SettingsService.new.activate_feature! 'user_confirmation'
           end
 
@@ -173,8 +168,18 @@ resource 'Users' do
             assert_status 201
             json_response = json_parse(response_body)
             user = User.order(:created_at).last
-            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+          end
+        end
+
+        context 'when the user_avatars module is inactive' do
+          before { SettingsService.new.deactivate_feature!('user_avatars') }
+
+          example_request 'Create a user without avatar' do
+            assert_status 201
+            user = User.find(response_data[:id])
+            expect(user.avatar).to be_blank
           end
         end
 
@@ -185,8 +190,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -209,8 +213,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -253,51 +256,14 @@ resource 'Users' do
             assert_status 422
           end
         end
-
-        context 'with phone password_login turned on' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['password_login'] = {
-              'allowed' => true,
-              'enabled' => true,
-              'enable_signup' => true,
-              'phone' => true,
-              'phone_email_pattern' => 'phone+__PHONE__@test.com',
-              'minimum_length' => 6
-            }
-            AppConfiguration.instance.update!(settings: settings)
-          end
-
-          describe 'email registration' do
-            let(:email) { 'someone@citizenlab.co' }
-
-            example 'Register with email when an email is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: email)).to be_present
-            end
-          end
-
-          describe 'phone registration' do
-            let(:email) { '+32 487 36 58 98' }
-
-            example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
-            end
-          end
-        end
       end
 
       context 'light registration without a password' do
         let(:email) { Faker::Internet.email }
         let(:locale) { 'en' }
-        let(:success) { double }
 
         before do
-          allow(SendConfirmationCode).to receive(:call).and_return(success)
-          allow(success).to receive(:success?).and_return(true)
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
@@ -305,7 +271,7 @@ resource 'Users' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
             user = User.order(:created_at).last
-            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
@@ -324,7 +290,7 @@ resource 'Users' do
               do_request
               assert_status 200
               expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(SendConfirmationCode).to have_received(:call).with(user: existing_user).once
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(existing_user).once
             end
 
             context 'when the request tries to pass additional changed attributes', document: false do
@@ -379,7 +345,7 @@ resource 'Users' do
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
-        parameter :can_admin, 'Return only admins', required: false
+        parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -437,6 +403,66 @@ resource 'Users' do
 
           sorted_last_names = User.pluck(:last_name).sort
           expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
+        end
+
+        example 'List all users sorted by last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(:last_active_at).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
+        example 'List all users sorted by last_active_at lists nil values first', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.last
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.first).to eq inactive_user.email
+        end
+
+        example 'List all users sorted by -last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(last_active_at: :desc).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
+        example 'List all users sorted by -last_active_at lists nil values last', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.first
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
         end
 
         example 'List all users in group' do
@@ -563,6 +589,19 @@ resource 'Users' do
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
+        end
+
+        example 'List all moderators who are not admins' do
+          p = create(:project)
+          m1 = create(:project_moderator, projects: [p])
+          m2 = create(:project_moderator)
+          f = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: p.id }])
+          create(:user)
+
+          do_request(can_moderate: true, can_admin: false)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to match_array [m1.id, m2.id, f.id]
         end
 
         example 'List all admins' do
@@ -755,11 +794,11 @@ resource 'Users' do
         end
       end
 
-      put 'web_api/v1/users/:id' do
+      patch 'web_api/v1/users/:id' do
         with_options scope: 'user' do
           parameter :first_name, 'User full name'
           parameter :last_name, 'User full name'
-          parameter :email, 'E-mail address'
+          parameter :email, 'E-mail address. Can only be changed directly when user confirmation is turned off.'
           parameter :password, 'Password'
           parameter :locale, 'Locale. Should be one of the tenants locales'
           parameter :avatar, 'Base64 encoded avatar image'
@@ -774,7 +813,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project, with_permissions: true) }
+          let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -786,12 +825,12 @@ resource 'Users' do
               }
             ])
 
-            project.permissions.find_by(action: 'posting_idea')
+            project.phases.first.permissions.find_by(action: 'posting_idea')
               .update!(permitted_by: 'groups', groups: [old_timers])
           end
 
           context 'on a resident' do
-            let(:resident) { create(:user) }
+            let(:resident) { create(:user, email: 'original@email.com') }
             let(:id) { resident.id }
             let(:roles) { [type: 'admin'] }
 
@@ -807,22 +846,42 @@ resource 'Users' do
                 config = AppConfiguration.instance
                 config.settings['core']['maximum_admins_number'] = 2
                 config.settings['core']['additional_admins_number'] = 0
-                config.settings['seat_based_billing'] = { enabled: true, allowed: true }
                 config.save!
               end
 
               context 'when limit is reached' do
                 before { create(:admin) } # to reach limit of 2
 
-                example_request 'Increments additional seats', document: false do
+                example 'Increments additional seats', document: false do
+                  do_request
                   assert_status 200
                   expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(1)
                 end
               end
 
-              example_request 'Does not increment additional seats if limit is not reached', document: false do
+              example 'Does not increment additional seats if limit is not reached', document: false do
+                do_request
                 assert_status 200
                 expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(0)
+              end
+            end
+
+            describe 'when confirmation is turned off' do
+              before { SettingsService.new.deactivate_feature! 'user_confirmation' }
+
+              example 'Email can be changed', document: false do
+                do_request(user: { email: 'changed@email.com' })
+                assert_status 200
+                expect(resident.reload.email).to eq 'changed@email.com'
+              end
+            end
+
+            describe 'when confirmation is turned on' do
+              before { SettingsService.new.activate_feature! 'user_confirmation' }
+
+              example 'Email cannot be changed', document: false do
+                do_request(user: { email: 'changed@email.com' })
+                expect(resident.reload.email).to eq 'original@email.com'
               end
             end
           end
@@ -977,7 +1036,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project) }
+          let(:project) { create(:single_phase_ideation_project) }
           let(:onboarding) { { topics_and_areas: 'satisfied' } }
 
           example_request 'Update a user' do
@@ -996,37 +1055,91 @@ resource 'Users' do
             end
 
             example_request '[error] is not allowed' do
-              json_response = json_parse(response_body)
-              assert_status 422
               expect(@user.reload.email).not_to eq(email)
-              expect(json_response[:errors][:email][0][:error]).to eq 'change_not_permitted'
+              assert_status 422
+            end
+
+            context 'when email was empty' do # see User#allows_empty_email?
+              before { @user.update_columns(email: nil) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
+            end
+
+            context 'when new_email was set properly' do
+              before { @user.update!(new_email: email) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
             end
           end
 
           context 'when the user_confirmation module is not active' do
             example_request 'is allowed' do
-              json_response = json_parse(response_body)
+              expect(@user.reload.email).to eq(email)
               assert_status 200
+              json_response = json_parse(response_body)
               expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end
         end
 
         describe do
-          example "Update a user's custom field values" do
+          example "Set a user's custom field values" do
             cf = create(:custom_field)
             do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
           end
 
-          example "Clear out a user's custom field value" do
+          example "Clear out a user's custom field value if set to nil" do
             cf = create(:custom_field)
+            cf2 = create(:custom_field)
             @user.update!(custom_field_values: { cf.key => 'somevalue' })
 
-            do_request(user: { custom_field_values: {} })
+            do_request(user: { custom_field_values: {
+              cf.key => nil,
+              cf2.key => 'another_value'
+            } })
+
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({})
+            expect(@user.reload.custom_field_values).to eq({
+              cf2.key => 'another_value'
+            })
+          end
+
+          example "Add to user's existing custom field values" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: { cf2.key => 'another_value' } })
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'somevalue',
+              cf2.key => 'another_value'
+            })
+          end
+
+          example "Replace a user's existing custom field value" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: {
+              cf.key => 'new_value',
+              cf2.key => 'another_value'
+            } })
+
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'new_value',
+              cf2.key => 'another_value'
+            })
           end
 
           example 'Cannot modify values of hidden custom fields' do
@@ -1067,12 +1180,32 @@ resource 'Users' do
           end
         end
 
-        describe do
+        describe 'when user_avatars is enabled' do
+          before { SettingsService.new.activate_feature!('user_avatars') }
+
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
             expect(@user.reload.avatar_url).to be_present
             do_request user: { avatar: nil }
             expect(@user.reload.avatar_url).to be_nil
+          end
+        end
+
+        describe 'when user_avatars is disabled' do
+          before { SettingsService.new.deactivate_feature!('user_avatars') }
+
+          example 'The user avatar can be removed' do
+            @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
+            expect(@user.reload.avatar_url).to be_present
+            do_request user: { avatar: nil }
+            expect(@user.reload.avatar_url).to be_nil
+          end
+
+          example 'The user avatar cannot be updated', document: false do
+            @user.remove_avatar!
+            avatar = png_image_as_base64('lorem-ipsum.jpg')
+            do_request(user: { avatar: avatar })
+            expect(@user.reload.avatar).to be_blank
           end
         end
 
@@ -1212,7 +1345,8 @@ resource 'Users' do
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')
-          create(:idea, author: @user, project: create(:continuous_native_survey_project))
+          survey_project = create(:single_phase_native_survey_project)
+          create(:idea, author: @user, project: survey_project, creation_phase: survey_project.phases.first)
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)

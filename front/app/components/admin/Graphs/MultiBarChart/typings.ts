@@ -1,7 +1,9 @@
 import React from 'react';
+
 import {
   BaseProps,
-  AxisProps,
+  XAxisProps,
+  YAxisProps,
   KeyOfType,
   Cell,
   BaseLabels,
@@ -14,8 +16,8 @@ export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
   mapping: Mapping<Row>;
   bars?: Bars;
   layout?: Layout;
-  xaxis?: AxisProps;
-  yaxis?: AxisProps;
+  xaxis?: XAxisProps;
+  yaxis?: YAxisProps;
   labels?: boolean | Labels | ((props: LabelConfig) => React.ReactNode);
 }
 

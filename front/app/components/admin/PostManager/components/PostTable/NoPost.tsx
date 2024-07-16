@@ -1,17 +1,14 @@
 import React from 'react';
+
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// i18n
-import messages from '../../messages';
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// components
-import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
 import { ManagerType } from '../..';
+import messages from '../../messages';
 
 export const NoPostPage = styled.div`
   display: flex;
@@ -91,7 +88,7 @@ export default (props: Props) => (
     <NoPostDescription>
       <FormattedMessage {...messages.resetInputFiltersDescription} />
     </NoPostDescription>
-    <Button buttonStyle="cl-blue" onClick={props.handleSeeAll}>
+    <Button buttonStyle="admin-dark" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />
     </Button>
   </NoPostPage>

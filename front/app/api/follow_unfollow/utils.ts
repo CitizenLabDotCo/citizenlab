@@ -1,13 +1,15 @@
 import { QueryClient } from '@tanstack/react-query';
-import projectsKeys from 'api/projects/keys';
+
+import areasKeys from 'api/areas/keys';
 import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
+import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
+import projectsKeys from 'api/projects/keys';
 import topicsKeys from 'api/topics/keys';
-import areasKeys from 'api/areas/keys';
+
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';
-import meKeys from 'api/me/keys';
 
 export const invalidateFollowQueries = (
   queryClient: QueryClient,

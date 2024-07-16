@@ -1,22 +1,9 @@
-import {
-  Locale,
-  Multiloc,
-  GraphqlLocale,
-  IParticipationContextType,
-} from 'typings';
 import { trim, isUndefined } from 'lodash-es';
-import { removeUrlLocale } from 'utils/locale';
-import { viewportWidths } from 'utils/styleUtils';
+import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
 
-export function capitalizeParticipationContextType(
-  type: IParticipationContextType
-) {
-  if (type === 'project') {
-    return 'Project';
-  } else {
-    return 'Phase';
-  }
-}
+import { locales } from 'containers/App/constants';
+
+import { removeUrlLocale } from './removeUrlLocale';
 
 type Nil = undefined | null;
 export type NilOrError = Nil | Error;
@@ -92,7 +79,7 @@ export function isPage(pageKey: pageKeys, pathName: string) {
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
     case 'native_survey':
-      return pathnameWithoutLocale.endsWith('/survey');
+      return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -103,6 +90,32 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/events/');
   }
 }
+
+export const isIdeaShowPage = (urlSegments: string[]) => {
+  const firstUrlSegment = urlSegments[0];
+  const secondUrlSegment = urlSegments[1];
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+  return (
+    urlSegments.length === 3 &&
+    locales.includes(firstUrlSegment) &&
+    secondUrlSegment === 'ideas' &&
+    lastUrlSegment !== 'new'
+  );
+};
+
+export const isInitiativeShowPage = (urlSegments: string[]) => {
+  const firstUrlSegment = urlSegments[0];
+  const secondUrlSegment = urlSegments[1];
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+  return (
+    urlSegments.length === 3 &&
+    locales.includes(firstUrlSegment) &&
+    secondUrlSegment === 'initiatives' &&
+    lastUrlSegment !== 'new'
+  );
+};
 
 export function stopPropagation(event) {
   event.stopPropagation();
@@ -122,7 +135,7 @@ export function stripHtmlTags(str: string | null | undefined) {
 }
 
 // e.g. 'en-GB' -> 'enGb'
-export function convertToGraphqlLocale(locale: Locale) {
+export function convertToGraphqlLocale(locale: SupportedLocale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;
   return (newLocale.substring(0, length) +
@@ -163,18 +176,8 @@ export function endsWith(
   return false;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(f): f is Function {
-  return f instanceof Function;
-}
-
 export function isString(s: unknown): s is string {
   return typeof s === 'string';
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isOrReturnsString(s: any, ...args: any[]): s is Function {
-  return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
 export const isTopBarNavActive = (
@@ -194,10 +197,6 @@ export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
 
 export function removeFocusAfterMouseClick(event: React.MouseEvent) {
   event.preventDefault();
-}
-
-export function isDesktop(windowWidth: number) {
-  return windowWidth > viewportWidths.tablet;
 }
 
 export const keys = <T extends object>(obj: T) =>
@@ -221,4 +220,21 @@ export const isObject = (
   v: any
 ): v is Record<string | number | symbol, any> => {
   return Object.prototype.toString.call(v) === '[object Object]';
+};
+
+// Src: https://stackoverflow.com/a/28056903
+export function hexToRGBA(hex: string, alpha: number) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha) {
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  } else {
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+}
+
+export const classNames = (...classes: (string | undefined)[]) => {
+  return classes.filter(Boolean).join(' ');
 };

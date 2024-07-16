@@ -1,25 +1,20 @@
-// Libraries
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// Components
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
-
-// events
-import { deleteCommentModalClosed } from '../events';
-
-// Styling
+import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
 
-import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
 import { IInternalCommentData } from 'api/internal_comments/types';
+import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
 import useAuthUser from 'api/me/useAuthUser';
+
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { deleteCommentModalClosed } from '../events';
 
 const Container = styled.div`
   display: flex;
@@ -70,6 +65,7 @@ const InternalCommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
@@ -140,6 +136,7 @@ const InternalCommentsMoreActions = ({
           showLabel={false}
           actions={actions}
           data-cy="e2e-internal-comments-more-actions"
+          ref={moreActionsButtonRef}
         />
       </Container>
 
@@ -147,12 +144,16 @@ const InternalCommentsMoreActions = ({
         opened={modalVisible_delete}
         close={closeDeleteModal}
         className="e2e-comment-deletion-modal"
+        returnFocusRef={moreActionsButtonRef}
         header={
           <FormattedMessage {...commentsMessages.confirmCommentDeletion} />
         }
       >
         <ButtonsWrapper>
-          <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
+          <CancelButton
+            buttonStyle="secondary-outlined"
+            onClick={closeDeleteModal}
+          >
             <FormattedMessage
               {...commentsMessages.commentDeletionCancelButton}
             />

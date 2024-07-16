@@ -1,5 +1,7 @@
 import { IRelationship, ILinks } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import commentsKeys from './keys';
 
 export type InternalCommentsKeys = Keys<typeof commentsKeys>;

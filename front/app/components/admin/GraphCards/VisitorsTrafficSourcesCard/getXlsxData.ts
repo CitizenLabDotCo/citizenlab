@@ -1,23 +1,3 @@
-// services
-import { QuerySchema, Query } from 'api/analytics/types';
-
-// i18n
-import messages from './messages';
-import referrerTypeMessages from './useVisitorReferrerTypes/messages';
-import { getTranslations as getReferrerTranslations } from './useVisitorReferrers/translations';
-
-// utils
-import { getProjectFilter, getDateFilter } from '../_utils/query';
-import { reportError } from 'utils/loggingUtils';
-
-import { roundPercentages } from 'utils/math';
-
-// typings
-import { ProjectId, Dates } from '../typings';
-import { ReferrerListResponse } from './useVisitorReferrers/typings';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { FormatMessage } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
 import {
   cloneDeep,
   forOwn,
@@ -27,6 +7,23 @@ import {
   isString,
   isArray,
 } from 'lodash-es';
+import { FormatMessage } from 'typings';
+
+import { QuerySchema, Query } from 'api/analytics/types';
+
+import { XlsxData } from 'components/admin/ReportExportMenu';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+import { reportError } from 'utils/loggingUtils';
+import { roundPercentages } from 'utils/math';
+
+import { getProjectFilter, getDateFilter } from '../_utils/query';
+import { ProjectId, Dates } from '../typings';
+
+import messages from './messages';
+import { getTranslations as getReferrerTranslations } from './useVisitorReferrers/translations';
+import { ReferrerListResponse } from './useVisitorReferrers/typings';
+import referrerTypeMessages from './useVisitorReferrerTypes/messages';
 
 type QueryParameters = ProjectId & Dates;
 
@@ -62,7 +59,6 @@ const query = ({
   const query: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { ICommentsByTopicParams } from './types';
 
 const baseKey = { type: 'comments_by_topic' };

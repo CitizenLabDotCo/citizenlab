@@ -1,39 +1,31 @@
 import React from 'react';
 
-// components
 import { Button } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
-
-// hooks
-import { useTheme } from 'styled-components';
-import useEvents from 'api/events/useEvents';
-
-// utils
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
-import { getCurrentPhase } from 'api/phases/utils';
-import { scrollToElement } from 'utils/scroll';
 import moment from 'moment';
+import { useTheme } from 'styled-components';
 
-// intl
+import useEvents from 'api/events/useEvents';
+import { getCurrentPhase } from 'api/phases/utils';
+
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
 import messages from '../messages';
 
-export const EventsCTABar = ({ phases, project }: CTABarProps) => {
-  const projectType = project?.attributes.process_type;
+const EventsCTABar = ({ phases, project }: CTABarProps) => {
   const { data: events } = useEvents({
     projectIds: [project.id],
     currentAndFutureOnly: true,
     sort: 'start_at',
-    ongoing_during:
-      projectType === 'timeline'
-        ? [
-            moment(getCurrentPhase(phases)?.attributes.start_at).toString() ||
-              null,
-            moment(getCurrentPhase(phases)?.attributes.end_at)
-              .add(1, 'day')
-              .toString() || null,
-          ]
-        : undefined,
+    ongoing_during: [
+      moment(getCurrentPhase(phases)?.attributes.start_at).toString() || null,
+      moment(getCurrentPhase(phases)?.attributes.end_at)
+        .add(1, 'day')
+        .toString() || null,
+    ],
   });
   const theme = useTheme();
   const currentPhase = getCurrentPhase(phases);
@@ -45,11 +37,12 @@ export const EventsCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      project={project}
       CTAButton={
         <Button
           id="e2e-cta-bar-see-events"
-          onClick={() => scrollToElement({ id: 'project-events' })}
+          onClick={() =>
+            scrollToElement({ id: 'e2e-events-section-project-page' })
+          }
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}
@@ -63,3 +56,5 @@ export const EventsCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default EventsCTABar;

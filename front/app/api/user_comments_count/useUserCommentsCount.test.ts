@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useUserCommentsCount from './useUserCommentsCount';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUserCommentsCount from './useUserCommentsCount';
 
 const apiPath = '*/users/:userId/comments_count';
 
@@ -17,8 +17,8 @@ const statData = {
   },
 };
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: statData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: statData }, { status: 200 });
   })
 );
 
@@ -44,8 +44,8 @@ describe('useUserCommentsCount', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

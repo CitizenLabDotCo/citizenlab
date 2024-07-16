@@ -1,15 +1,17 @@
 import { MouseEvent, FC } from 'react';
-import { TFieldName } from 'components/UI/Error';
+
+import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
+import { TableCellProps } from 'semantic-ui-react';
+
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
 } from 'containers/App/constants';
-import { TableCellProps } from 'semantic-ui-react';
-import {
-  TAppConfigurationSetting,
-  TAppConfigurationSettingWithEnabled,
-} from 'api/app_configuration/types';
-import { WrappedComponentProps } from 'react-intl';
+
+import { TFieldName } from 'components/UI/Error';
 
 declare global {
   interface Function {
@@ -49,14 +51,12 @@ export type ILocationInfo =
       };
     };
 
-export type IParticipationContextType = 'project' | 'phase';
-
 export interface ITab {
   name: string;
   label: string;
-  url: string;
+  url: RouteType;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSettingWithEnabled;
+  feature?: TAppConfigurationSetting;
   statusLabel?: string;
 }
 
@@ -66,6 +66,7 @@ export type CellConfiguration<ComponentProps> = {
   onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
+  width?: number;
   Component: FC<ComponentProps>;
 };
 
@@ -108,17 +109,17 @@ export function isIOption(
   return maybeOption !== null;
 }
 
-export type Locale = keyof typeof appLocalePairs;
+export type SupportedLocale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
 
 export type Multiloc = {
-  [key in Locale]?: string;
+  [key in SupportedLocale]?: string;
 };
 
 export type GraphqlMultiloc = {
   content: string;
-  locale: Locale;
+  locale: SupportedLocale;
 }[];
 
 export type MultilocFormValues = {

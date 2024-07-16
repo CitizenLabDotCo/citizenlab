@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 
-// api
-import useUserById from 'api/users/useUserById';
+import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
+import useUserById from 'api/users/useUserById';
 
-// components
 import BaseUserSelect from './BaseUserSelect';
 import OptionLabel from './OptionLabel';
-
-// typings
-import { IUserData } from 'api/users/types';
 import { Option } from './typings';
 import { optionIsUser } from './utils';
 
 interface Props {
   selectedUserId: string | null;
-  placeholder: string;
-  id: string;
-  inputId: string;
+  placeholder?: string;
+  id?: string;
+  inputId?: string;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;

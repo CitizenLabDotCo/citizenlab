@@ -1,5 +1,5 @@
 import React from 'react';
-// components
+
 import {
   Box,
   Title,
@@ -8,11 +8,13 @@ import {
   colors,
   Button,
 } from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
-// intl
-import messages from './messages';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type Props = {
   onCloseModal: () => void;

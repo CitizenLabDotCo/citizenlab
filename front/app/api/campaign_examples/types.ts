@@ -1,6 +1,7 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import campaignExamplesKeys from './keys';
 
 export type CampaignExamplesKeys = Keys<typeof campaignExamplesKeys>;
@@ -14,7 +15,7 @@ export interface ICampaignExampleData {
   type: 'example';
   attributes: {
     mail_body_html: string;
-    locale: Locale;
+    locale: SupportedLocale;
     subject: string;
     created_at: string;
     updated_at: string;

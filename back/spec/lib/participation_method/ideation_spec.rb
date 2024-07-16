@@ -3,43 +3,46 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Ideation do
-  subject(:participation_method) { described_class.new context }
+  subject(:participation_method) { described_class.new phase }
 
-  let(:context) { create(:continuous_project) }
+  let(:phase) { create(:phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:context) { build(:continuous_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:phase) }
 
     it 'sets the posting method to unlimited' do
-      participation_method.assign_defaults_for_participation_context
-      expect(context.posting_method).to eq 'unlimited'
-      expect(context.ideas_order).to eq 'trending'
+      participation_method.assign_defaults_for_phase
+      expect(phase.posting_method).to eq 'unlimited'
+      expect(phase.ideas_order).to eq 'trending'
     end
   end
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     let(:input) { create(:idea) }
 
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil
       input.title_multiloc = { 'en' => 'Changed title' }
-      participation_method.assign_slug(input)
-      input.reload
-      expect(input.slug).to eq 'changed-title'
+
+      expect(participation_method.generate_slug(input)).to eq 'changed-title'
     end
   end
 
   describe '#create_default_form!' do
     it 'creates a default form' do
-      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
-      expect { participation_method.create_default_form! }.to change(CustomField, :count)
+      form = nil
+      expect { form = participation_method.create_default_form! }
+        .to change(CustomForm, :count).by(1)
+        .and change(CustomField, :count).by_at_least(1)
+
+      expect(form.participation_context).to eq phase.project
     end
   end
 
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq %w[
         ideation_section1
         title_multiloc
@@ -85,8 +88,8 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#budget_in_form?' do
     let(:c) { { participation_method: 'voting', voting_method: 'budgeting' } }
-    let(:context) do
-      project = create(
+    let(:project) do
+      create(
         :project_with_current_phase,
         phases_config: {
           sequence: 'xc',
@@ -94,19 +97,11 @@ RSpec.describe ParticipationMethod::Ideation do
           c: c
         }
       )
-      project.phases.first
     end
+    let(:phase) { project.phases.first }
 
     it 'returns false for a resident and a timeline project with a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
-    end
-
-    describe do
-      let(:context) { create(:continuous_project, participation_method: 'ideation') }
-
-      it 'returns false for a moderator and a timeline project without a budgeting phase' do
-        expect(participation_method.budget_in_form?(create(:admin))).to be false
-      end
     end
 
     describe do
@@ -168,9 +163,9 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
+  describe '#update_if_published?' do
+    it 'returns true' do
+      expect(participation_method.update_if_published?).to be true
     end
   end
 
@@ -183,7 +178,7 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#custom_form' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
-    let(:context) { project.phases.first }
+    let(:phase) { project.phases.first }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
@@ -257,6 +252,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:additional_export_columns) { is_expected.to eq [] }
 end

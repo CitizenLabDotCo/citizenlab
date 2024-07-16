@@ -1,3 +1,4 @@
+import { data } from 'cypress/types/jquery';
 import { randomString } from '../../../support/commands';
 
 describe('Copy projects outside folder', () => {
@@ -8,7 +9,6 @@ describe('Copy projects outside folder', () => {
 
   beforeEach(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -27,7 +27,7 @@ describe('Copy projects outside folder', () => {
   });
 
   it('allows user to copy project', () => {
-    cy.visit('/admin/projects/');
+    cy.visit('/admin/projects/all');
     cy.acceptCookies();
 
     cy.get('#e2e-admin-projects-list-unsortable')
@@ -71,7 +71,6 @@ describe('Copy projects inside folder', () => {
 
   beforeEach(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -93,8 +92,10 @@ describe('Copy projects inside folder', () => {
   });
 
   it('allows user to copy project in folder', () => {
+    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
+    cy.intercept(`**/projects/${projectId}/copy`).as('copyProject');
+
     cy.apiCreateFolder({
-      type: 'continuous',
       title: folderTitle,
       descriptionPreview: folderShortDescription,
       description: randomString(),
@@ -104,8 +105,17 @@ describe('Copy projects inside folder', () => {
       folderId = folder.body.data.id;
       cy.apiAddProjectsToFolder([projectId], folderId);
 
-      cy.visit('/admin/projects/');
+      cy.visit('/admin/projects/all');
       cy.acceptCookies();
+
+      cy.wait('@getAdminPublications');
+      cy.wait(5000);
+
+      cy.get('#e2e-admin-projects-list-unsortable')
+        .children()
+        .first()
+        .contains(folderTitle)
+        .click({ force: true });
 
       cy.get('#e2e-admin-projects-list-unsortable')
         .children()
@@ -114,9 +124,6 @@ describe('Copy projects inside folder', () => {
 
       cy.get('[data-testid="moreOptionsButton"]').eq(1).should('exist');
       cy.get('[data-testid="moreOptionsButton"]').eq(1).click();
-
-      cy.intercept(`**/projects/${projectId}/copy`).as('copyProject');
-      cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
 
       cy.contains('Copy project').should('exist');
       cy.contains('Copy project').click();

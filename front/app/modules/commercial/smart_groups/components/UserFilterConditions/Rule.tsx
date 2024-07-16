@@ -1,18 +1,18 @@
 import React, { PureComponent, Fragment } from 'react';
+
+import { colors } from '@citizenlab/cl2-component-library';
 import { pick, clone, omit } from 'lodash-es';
-import FieldSelector, { FieldDescriptor } from './FieldSelector';
-import PredicateSelector from './PredicateSelector';
-import ValueSelector from './ValueSelector';
-import Button from 'components/UI/Button';
-import { TRule, ruleTypeConstraints } from './rules';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import FieldSelector, { FieldDescriptor } from './FieldSelector';
+import messages from './messages';
+import PredicateSelector from './PredicateSelector';
+import { TRule, ruleTypeConstraints } from './rules';
+import ValueSelector from './ValueSelector';
 
 const Container = styled.div`
   display: flex;

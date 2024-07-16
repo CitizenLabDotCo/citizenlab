@@ -1,9 +1,13 @@
 import React from 'react';
-import { render, screen, waitFor, userEvent } from 'utils/testUtils/rtl';
-import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
-import FollowUnfollow from './index';
+
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
 import { IUser } from 'api/users/types';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { render, screen, waitFor, userEvent } from 'utils/testUtils/rtl';
+
+import FollowUnfollow from './index';
 
 let mockAuthUser: IUser | undefined = { data: mockAuthUserData };
 jest.mock('api/me/useAuthUser', () => () => ({

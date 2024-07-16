@@ -1,7 +1,10 @@
-import { Query } from 'api/analytics/types';
 import moment from 'moment';
-import { ProposalsCardLabels, proposalsConfig } from './config';
+
+import { Query } from 'api/analytics/types';
+
 import { StatCardData } from '../StatCard/useStatCard/typings';
+
+import { ProposalsCardLabels, proposalsConfig } from './config';
 
 describe('Proposals card data parsing', () => {
   beforeAll(() => {
@@ -85,6 +88,7 @@ describe('Proposals card data parsing', () => {
             'dimension_type.name': 'initiative',
             publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
+            'dimension_status.code': 'threshold_reached',
             'dimension_date_created.date': {
               from: '2020-10-31',
               to: '2021-10-31',
@@ -100,6 +104,7 @@ describe('Proposals card data parsing', () => {
             'dimension_type.name': 'initiative',
             publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
+            'dimension_status.code': 'threshold_reached',
             'dimension_date_created.date': {
               from: '2022-10-24',
               to: '2022-10-31',
@@ -147,6 +152,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            'dimension_status.code': 'threshold_reached',
             publication_status: 'published',
           },
         },
@@ -155,6 +161,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            'dimension_status.code': 'threshold_reached',
             publication_status: 'published',
             'dimension_date_created.date': {
               from: '2022-10-01',

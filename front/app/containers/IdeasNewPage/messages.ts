@@ -1,95 +1,29 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ideaFormTitle: {
-    id: 'app.containers.IdeasNewPage.ideaFormTitle',
-    defaultMessage: 'Add new idea',
+  ideaNewMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.ideaNewMetaTitle1',
+    defaultMessage: 'Add new idea to project | {orgName}',
   },
-  optionFormTitle: {
-    id: 'app.containers.IdeasNewPage.optionFormTitle',
-    defaultMessage: 'Add new option',
+  optionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.optionMetaTitle1',
+    defaultMessage: 'Add new option to project | {orgName}',
   },
-  contributionFormTitle: {
-    id: 'app.containers.IdeasNewPage.contributionFormTitle',
-    defaultMessage: 'Add new contribution',
+  projectMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.projectMetaTitle1',
+    defaultMessage: 'Add new project to project | {orgName}',
   },
-  projectFormTitle: {
-    id: 'app.containers.IdeasNewPage.projectFormTitle',
-    defaultMessage: 'Add new project',
+  questionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.questionMetaTitle1',
+    defaultMessage: 'Add new question to project | {orgName}',
   },
-  questionFormTitle: {
-    id: 'app.containers.IdeasNewPage.questionFormTitle',
-    defaultMessage: 'Add new question',
+  issueMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.issueMetaTitle1',
+    defaultMessage: 'Add new issue to project | {orgName}',
   },
-  issueFormTitle: {
-    id: 'app.containers.IdeasNewPage.issueFormTitle',
-    defaultMessage: 'Add new issue',
-  },
-  submitNewIdea: {
-    id: 'app.containers.IdeasNewPage.submitNewIdea',
-    defaultMessage: 'Submit',
-  },
-  submitApiError: {
-    id: 'app.containers.IdeasNewPage.submitApiError',
-    defaultMessage:
-      'There was an issue submitting the form. Please check for any errors and try again.',
-  },
-  submitSurvey: {
-    id: 'app.components.form.ErrorDisplay.submitSurvey',
-    defaultMessage: 'Submit survey',
-  },
-  anonymousSurveyMessage: {
-    id: 'app.components.form.anonymousSurveyMessage',
-    defaultMessage: 'All responses to this survey are anonymized',
-  },
-  or: {
-    id: 'app.containers.IdeasNewPage.or',
-    defaultMessage: 'Or',
-  },
-  goBack: {
-    id: 'app.containers.IdeasNewPage.goBack',
-    defaultMessage: 'Go back',
-  },
-  editSurvey: {
-    id: 'app.containers.IdeasNewPage.editSurvey',
-    defaultMessage: 'Edit survey',
-  },
-  shareViaMessenger: {
-    id: 'app.containers.IdeasNewPage.shareViaMessenger',
-    defaultMessage: 'Share via Messenger',
-  },
-  shareOnTwitter: {
-    id: 'app.containers.IdeasNewPage.shareOnTwitter',
-    defaultMessage: 'Share on Twitter',
-  },
-  fileUploadError: {
-    id: 'app.containers.IdeasNewPage.fileUploadError',
-    defaultMessage:
-      'A file failed to upload. Please check the file size and format and try again.',
-  },
-  ideaNewMetaTitle: {
-    id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
-    defaultMessage: 'Add new idea | {projectName}',
-  },
-  optionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.optionMetaTitle',
-    defaultMessage: 'Add new option | {projectName}',
-  },
-  projectMetaTitle: {
-    id: 'app.containers.IdeasNewPage.projectMetaTitle',
-    defaultMessage: 'Add new project | {projectName}',
-  },
-  questionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.questionMetaTitle',
-    defaultMessage: 'Add new question | {projectName}',
-  },
-  issueMetaTitle: {
-    id: 'app.containers.IdeasNewPage.issueMetaTitle',
-    defaultMessage: 'Add new issue | {projectName}',
-  },
-  contributionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.contributionMetaTitle',
-    defaultMessage: 'Add new contribution | {projectName}',
+  contributionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.contributionMetaTitle1',
+    defaultMessage: 'Add new contribution to project | {orgName}',
   },
   ideaNewMetaDescription: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
@@ -332,9 +266,8 @@ export default defineMessages({
     defaultMessage: 'The issue title must be less than {limit} characters long',
   },
   ajv_error_issue_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2',
-    defaultMessage:
-      'The comment title must be more than {limit} characters long',
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength',
+    defaultMessage: 'The issue title must be more than {limit} characters long',
   },
   ajv_error_issue_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength',
@@ -363,24 +296,12 @@ export default defineMessages({
       'The option description must be less than {limit} characters long',
   },
   ajv_error_option_body_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength1',
     defaultMessage:
-      'The issue description must be more than {limit} characters long',
+      'The option description must be more than {limit} characters long',
   },
-  leaveSurveyConfirmationQuestion: {
-    id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
-    defaultMessage: 'Are you sure you want to leave this survey?',
-  },
-  leaveSurveyText: {
-    id: 'app.containers.IdeasNewPage.leaveSurveyText',
-    defaultMessage: "Your answers won't be saved.",
-  },
-  confirmLeaveSurveyButtonText: {
-    id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
-    defaultMessage: 'Yes, I want to leave the survey',
-  },
-  cancelLeaveSurveyButtonText: {
-    id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
-    defaultMessage: 'Cancel',
+  ajv_error_number_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_number_required',
+    defaultMessage: 'This field is required, please enter a valid number',
   },
 });

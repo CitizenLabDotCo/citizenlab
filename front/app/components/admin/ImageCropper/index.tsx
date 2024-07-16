@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import Cropper from 'react-easy-crop';
+
 import { Box } from '@citizenlab/cl2-component-library';
+import Cropper, { Point } from 'react-easy-crop';
 import { UploadFile } from 'typings';
-import getCroppedImage from './getCroppedImage';
+
 import RemoveImageButton from 'components/UI/RemoveImageButton';
+
+import getCroppedImage from './getCroppedImage';
 
 type ImageCropperProps = {
   image: UploadFile | null;
@@ -21,10 +24,11 @@ const ImageCropper = ({
   onRemove,
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [cropChanged, setCropChanged] = useState(false);
 
   const onCropComplete = useCallback(
     async (_, croppedAreaPixels) => {
-      if (image) {
+      if (image && cropChanged) {
         try {
           const croppedImage = await getCroppedImage(
             image.base64,
@@ -32,13 +36,19 @@ const ImageCropper = ({
           );
 
           onComplete(croppedImage);
+          setCropChanged(false);
         } catch (e) {
           console.error(e);
         }
       }
     },
-    [image, onComplete]
+    [image, onComplete, cropChanged]
   );
+
+  const handleCropChange = useCallback((location: Point) => {
+    setCropChanged(true);
+    setCrop(location);
+  }, []);
 
   return (
     <Box
@@ -54,7 +64,7 @@ const ImageCropper = ({
             crop={crop}
             zoom={1}
             aspect={aspectRatioWidth / aspectRatioHeight}
-            onCropChange={setCrop}
+            onCropChange={handleCropChange}
             onCropComplete={onCropComplete}
             objectFit="contain"
           />

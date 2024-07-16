@@ -1,39 +1,32 @@
-// Libraries
 import React from 'react';
 
-// Components
-import { SectionField } from 'components/admin/Section';
+import { Button, Label } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { string, object, array, number } from 'yup';
 
+import adminUsersMessages from 'containers/Admin/users/messages';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 
-import { Button, Label } from '@citizenlab/cl2-component-library';
-import { HookFormUserFilterConditions } from '../../components/UserFilterConditions';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import adminUsersMessages from 'containers/Admin/users/messages';
-
-// Styling
-import styled from 'styled-components';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, array, number } from 'yup';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import { HookFormUserFilterConditions } from '../../components/UserFilterConditions';
+import { TRule } from '../../components/UserFilterConditions/rules';
+
+import messages from './messages';
 
 const SSectionField = styled(SectionField)`
   max-width: 570px;
 `;
-
-// Typings
-import { Multiloc } from 'typings';
-import { TRule } from '../../components/UserFilterConditions/rules';
 
 export interface RulesFormValues {
   rules: TRule[];

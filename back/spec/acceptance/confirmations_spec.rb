@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Confirmations' do
-  explanation 'User can confirm their phones or emails using a 6 digit code'
+  explanation 'User can confirm their emails using a 6 digit code'
 
   before do
     set_api_content_type
@@ -27,8 +27,8 @@ resource 'Confirmations' do
       let(:user) { create(:user_with_confirmation) }
 
       before do
-        header_token_for(user)
-        SendConfirmationCode.call(user: user)
+        header_token_for user
+        RequestConfirmationCodeJob.perform_now user
       end
 
       example 'returns an ok status passing the right code' do

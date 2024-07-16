@@ -1,26 +1,21 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { capitalize } from 'lodash-es';
 
-// components
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
+import { capitalize } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
+import useAreas from 'api/areas/useAreas';
+
+import useLocalize from 'hooks/useLocalize';
+
 import FilterSelector from 'components/FilterSelector';
 
-// styling
-import { colors } from 'utils/styleUtils';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// i18n
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useAreas from 'api/areas/useAreas';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// services
-import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectAreasProps {
   selectedAreas: string[];

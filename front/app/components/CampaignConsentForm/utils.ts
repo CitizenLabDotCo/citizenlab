@@ -1,4 +1,3 @@
-// typings
 import { CampaignConsent, GroupedCampaignConsent } from './typings';
 
 export const groupCampaignsConsent = (campaignConsents) => {

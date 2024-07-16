@@ -1,34 +1,44 @@
-// i18n
-import messages from './messages';
-import voteInputMessages from 'components/VoteInputs/_shared/messages';
-
-// utils
-import { isNil } from 'utils/helperUtils';
-
-// typings
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
-import { TCurrency } from 'api/app_configuration/types';
 import { FormatMessage } from 'typings';
+
+import { TCurrency } from 'api/app_configuration/types';
+import { IPhaseData } from 'api/phases/types';
+
 import { Localize } from 'hooks/useLocalize';
 
-export const getDisabledExplanation = (
+import voteInputMessages from 'components/VoteInputs/_shared/messages';
+
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { DisabledReason } from 'utils/actionDescriptors/types';
+import { isNil } from 'utils/helperUtils';
+
+import messages from './messages';
+
+export const getVoteSubmissionDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
-  participationContext: IProjectData | IPhaseData,
+  phase: IPhaseData,
+  permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
-  const { voting_method } = participationContext.attributes;
-  const maxVotes = participationContext.attributes.voting_max_total;
+  const { voting_method } = phase.attributes;
+  const maxVotes = phase.attributes.voting_max_total;
 
-  const votesExceedLimit =
-    maxVotes && numberOfVotesCast !== undefined
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsMessage = getPermissionsDisabledMessage(
+    action,
+    permissionsDisabledReason
+  );
+  if (permissionsMessage) return formatMessage(permissionsMessage);
+
+  const maxNumberOfVotesExceeded =
+    typeof maxVotes === 'number' && numberOfVotesCast !== undefined
       ? numberOfVotesCast > maxVotes
       : false;
 
   if (voting_method === 'single_voting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.votesExceedLimit, {
@@ -45,7 +55,7 @@ export const getDisabledExplanation = (
   }
 
   if (voting_method === 'multiple_voting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.votesExceedLimit, {
@@ -55,7 +65,7 @@ export const getDisabledExplanation = (
     }
 
     if (numberOfVotesCast === 0) {
-      const { voting_term_plural_multiloc } = participationContext.attributes;
+      const { voting_term_plural_multiloc } = phase.attributes;
 
       const votesTerm = voting_term_plural_multiloc
         ? localize(voting_term_plural_multiloc)
@@ -68,7 +78,7 @@ export const getDisabledExplanation = (
   }
 
   if (voting_method === 'budgeting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.budgetExceedsLimit, {
@@ -79,7 +89,7 @@ export const getDisabledExplanation = (
 
     if (numberOfVotesCast === 0) return formatMessage(messages.nothingInBasket);
 
-    const minBudget = participationContext.attributes.voting_min_total ?? 0;
+    const minBudget = phase.attributes.voting_min_total ?? 0;
     const minBudgetRequired = minBudget > 0;
     const minBudgetReached =
       numberOfVotesCast !== undefined ? numberOfVotesCast >= minBudget : false;
@@ -100,11 +110,11 @@ export const getDisabledExplanation = (
 export const getVotesCounter = (
   formatMessage: FormatMessage,
   localize: Localize,
-  participationContext: IProjectData | IPhaseData,
+  phase: IPhaseData,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
-  const { voting_method, voting_max_total } = participationContext.attributes;
+  const { voting_method, voting_max_total } = phase.attributes;
 
   if (voting_method === 'single_voting') {
     if (isNil(voting_max_total)) {
@@ -129,7 +139,7 @@ export const getVotesCounter = (
     const votesLeft = voting_max_total - numberOfVotesCast;
 
     const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-      participationContext.attributes;
+      phase.attributes;
 
     const voteTerm = voting_term_singular_multiloc
       ? localize(voting_term_singular_multiloc)

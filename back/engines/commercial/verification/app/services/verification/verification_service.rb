@@ -2,23 +2,12 @@
 
 module Verification
   class VerificationService
-    @all_methods = []
-
-    class << self
-      attr_reader :all_methods
-
-      def add_method(verification_method)
-        @all_methods.reject! { |m| m.id == verification_method.id }
-        @all_methods << verification_method
-      end
-    end
-
     def initialize(sfxv_service = SideFxVerificationService.new)
       @sfxv_service = sfxv_service
     end
 
     def all_methods
-      self.class.all_methods
+      ::Verification.all_methods
     end
 
     def method_by_name(name)
@@ -65,25 +54,21 @@ module Verification
 
     def verify_sync(user:, method_name:, verification_parameters:)
       method = method_by_name(method_name)
-      response = method.verify_sync verification_parameters
+      response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
       user.update_merging_custom_fields!(
         user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
       )
-      make_verification(user: user, method_name: method_name, uid: uid)
+      make_verification(user:, method:, uid:)
     end
 
     def verify_omniauth(user:, auth:)
       method = method_by_name(auth.provider)
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
-      uid = if method.respond_to?(:profile_to_uid)
-        method.profile_to_uid(auth)
-      else
-        auth['uid']
-      end
-      make_verification(user: user, method_name: method.name, uid: uid)
+      uid = method.profile_to_uid(auth)
+      make_verification(user:, method:, uid:)
     end
 
     def locked_attributes(user)
@@ -112,10 +97,17 @@ module Verification
       custom_fields.uniq
     end
 
+    def verifications_by_uid(uid, method)
+      ::Verification::Verification.where(
+        active: true,
+        hashed_uid: hashed_uid(uid, method.name_for_hashing)
+      )
+    end
+
     private
 
-    def make_verification(user:, method_name:, uid:)
-      existing_users = existing_verified_users(user, uid, method_name)
+    def make_verification(user:, uid:, method:)
+      existing_users = existing_verified_users(user, uid, method)
       taken = existing_users.present?
 
       if taken
@@ -128,8 +120,8 @@ module Verification
       end
 
       verification = ::Verification::Verification.new(
-        method_name: method_name,
-        hashed_uid: hashed_uid(uid, method_name),
+        method_name: method.name_for_hashing,
+        hashed_uid: hashed_uid(uid, method.name_for_hashing),
         user: user,
         active: true
       )
@@ -143,17 +135,14 @@ module Verification
       verification
     end
 
-    def existing_verified_users(user, uid, method_name)
-      ::Verification::Verification.where(
-        active: true,
-        hashed_uid: hashed_uid(uid, method_name)
-      )
+    def existing_verified_users(user, uid, method)
+      verifications_by_uid(uid, method)
         .where.not(user: user)
         .includes(:user).map(&:user)
     end
 
-    def hashed_uid(uid, method_name)
-      Digest::SHA256.hexdigest "#{method_name}-#{uid}"
+    def hashed_uid(uid, method_name_for_hashing)
+      Digest::SHA256.hexdigest "#{method_name_for_hashing}-#{uid}"
     end
   end
 end

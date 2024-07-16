@@ -1,21 +1,30 @@
 import React from 'react';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+import { Segment, Menu, Popup } from 'semantic-ui-react';
+import styled from 'styled-components';
+
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+import { ITopicData } from 'api/topics/types';
+
+import { ManagerType } from 'components/admin/PostManager';
+
+import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
+
+import messages from '../../messages';
+
 import PhasesMenu from './FilterSidebarPhases';
-import TopicsMenu from './FilterSidebarTopics';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
-import messages from '../../messages';
-import { Icon } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { ITopicData } from 'api/topics/types';
-import { useIntl } from 'utils/cl-intl';
-import { ManagerType } from 'components/admin/PostManager';
+import TopicsMenu from './FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -40,7 +49,7 @@ interface Props {
   onChangePhaseFilter?: (arg: string | null) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
-  onChangeStatusFilter?: (arg: string) => void;
+  onChangeStatusFilter: (arg: string) => void;
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
@@ -65,9 +74,28 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
+  const { projectId } = useParams();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
     onChangeActiveFilterMenu(data.id);
+  };
+
+  if (!authUser) return null;
+
+  const getLinkToTagManager = (): RouteType | null => {
+    // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
+    if (type === 'ProjectIdeas' && typeof projectId === 'string') {
+      return `/admin/projects/${projectId}/settings/tags`;
+    } else if (isAdmin(authUser)) {
+      // For admins, both for /admin/ideas (type 'AllIdeas') and /admin/initiatives, we show the link to the platform-wide tag manager
+      return '/admin/settings/topics';
+    } else {
+      // Don't show the link to the platform-wide tag manager if the user is not an admin.
+      // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,
+      // but just for their folders/projects).
+      return null;
+    }
   };
 
   const tabName = (
@@ -128,6 +156,7 @@ const FilterSidebar = ({
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
+          linkToTagManager={getLinkToTagManager()}
         />
       ),
     }),
@@ -179,6 +208,7 @@ const FilterSidebar = ({
             active={activeFilterMenu === item.key}
             onClick={handleItemClick}
             className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
+            data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
           >
             {item.name}
           </Menu.Item>

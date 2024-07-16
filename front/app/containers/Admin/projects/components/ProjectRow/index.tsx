@@ -1,8 +1,27 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import {
+  IconNames,
+  StatusLabel,
+  Spinner,
+  Box,
+  colors,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// components
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Error from 'components/UI/Error';
+
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import PublicationStatusLabel from '../PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
@@ -10,33 +29,18 @@ import {
   RowButton,
   ActionsRowContainer,
 } from '../StyledComponents';
-import PublicationStatusLabel from '../PublicationStatusLabel';
-import {
-  IconNames,
-  StatusLabel,
-  Spinner,
-  Box,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import GroupsTag from './GroupsTag';
+
 import AdminTag from './AdminTag';
+import GroupsTag from './GroupsTag';
 import ManageButton from './ManageButton';
-
-// resources
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-// types
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export const StyledStatusLabel = styled(StatusLabel)`
-  margin-right: 5px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  height: 20px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-weight: bold;
+  font-size: 10px;
 `;
 
 const Container = styled.div`
@@ -59,6 +63,8 @@ export interface Props {
   hidePublicationStatusLabel?: boolean;
   className?: string;
   hideMoreActions?: boolean;
+  folderId?: string | null;
+  showParent?: boolean;
 }
 
 const ProjectRow = ({
@@ -67,26 +73,27 @@ const ProjectRow = ({
   hidePublicationStatusLabel,
   className,
   hideMoreActions = false,
+  folderId,
+  showParent = false,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
-  const { data: project } = useProjectById(projectId);
   const publicationStatus = publication.attributes.publication_status;
-  const folderId = project?.data.attributes.folder_id;
+  const { data: project } = useProjectById(projectId);
 
-  if (isNilOrError(authUser)) {
+  const { data: parentPublication } = useAdminPublication(
+    publication.relationships.parent?.data?.id || null
+  );
+  const localize = useLocalize();
+
+  if (!authUser || !project) {
     return null;
   }
-  const userCanModerateProject =
-    // This means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(publication.relationships.publication.data.id, {
-      data: authUser.data,
-    });
+
+  const userCanModerateProject = canModerateProject(project.data, authUser);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -99,29 +106,56 @@ const ProjectRow = ({
   return (
     <Container className={className} data-testid="projectRow">
       <RowContent className="e2e-admin-projects-list-item">
-        <RowContentInner className="expand primary">
-          <RowTitle value={publication.attributes.publication_title_multiloc} />
-          {(isBeingCopyied || isBeingDeleted) && (
-            <Box mr="12px">
-              <Spinner size="20px" color={colors.grey400} />
-            </Box>
-          )}
-          {publication.attributes.publication_visible_to === 'groups' && (
-            <GroupsTag
-              projectId={projectId}
-              userCanModerateProject={userCanModerateProject}
+        <Box display="flex" flexDirection="column">
+          <RowContentInner className="expand primary">
+            <RowTitle
+              value={publication.attributes.publication_title_multiloc}
             />
-          )}
-          {publication.attributes.publication_visible_to === 'admins' && (
-            <AdminTag
-              projectId={projectId}
-              userCanModerateProject={userCanModerateProject}
-            />
-          )}
-          {!hidePublicationStatusLabel && (
-            <PublicationStatusLabel publicationStatus={publicationStatus} />
-          )}
-        </RowContentInner>
+            {(isBeingCopyied || isBeingDeleted) && (
+              <Box mr="12px">
+                <Spinner size="20px" color={colors.grey400} />
+              </Box>
+            )}
+          </RowContentInner>
+          <Box display="flex" gap="4px" alignItems="stretch">
+            {parentPublication && showParent && (
+              <Box
+                display="flex"
+                gap="4px"
+                alignItems="center"
+                mr="4px"
+                color={colors.textSecondary}
+              >
+                <Icon
+                  name="folder-solid"
+                  width="20px"
+                  height="20px"
+                  fill={colors.textSecondary}
+                />
+                <span>
+                  {localize(
+                    parentPublication.data.attributes.publication_title_multiloc
+                  )}
+                </span>
+              </Box>
+            )}
+            {publication.attributes.publication_visible_to === 'groups' && (
+              <GroupsTag
+                projectId={projectId}
+                userCanModerateProject={userCanModerateProject}
+              />
+            )}
+            {publication.attributes.publication_visible_to === 'admins' && (
+              <AdminTag
+                projectId={projectId}
+                userCanModerateProject={userCanModerateProject}
+              />
+            )}
+            {!hidePublicationStatusLabel && (
+              <PublicationStatusLabel publicationStatus={publicationStatus} />
+            )}
+          </Box>
+        </Box>
         <ActionsRowContainer>
           {actions.map((action) => {
             if (action === 'manage') {
@@ -149,7 +183,7 @@ const ProjectRow = ({
                   onClick={action.handler(
                     publication.relationships.publication.data.id
                   )}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   icon={action.icon}
                   processing={action.processing}
                 >
@@ -161,6 +195,7 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}
             />

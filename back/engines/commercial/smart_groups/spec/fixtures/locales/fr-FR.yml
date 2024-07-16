@@ -67,6 +67,8 @@ fr:
       voted_comment_in: "Voté pour un commentaire sur une idée avec statut est un de %{value}"
       not_voted_comment_in: "N'as pas voté pour un commentaire sur une idée avec statut %{value}"
     participated_in_project:
+      follows_something: "Suit quelque chose dans l'un des projets suivants %{value}"
+      not_follows_something: "Ne suit rien dans le projet %{value}"
       in: "Participation à une idée dans l'un des projets %{value}"
       not_in: "Pas de participation dans une idée dans le projet %{value}"
       posted_in: "Posté une idée dans l'un des projets %{value}"
@@ -79,6 +81,8 @@ fr:
       not_voted_comment_in: "N'as pas voté pour un commentaire sur une idée dans le projet %{value}"
       budgeted_in: "Dépensé un budget dans l'un des projets %{value}"
       not_budgeted_in: "N'as pas dépensé un budget dans le projet %{value}"
+      registered_to_an_event: "Est inscrit à un événement dans l'un des projets suivants %{value}"
+      not_registered_to_an_event: "N'est inscrit à aucun événement dans le projet %{value}"
     participated_in_topic:
       in: "Participation dans une idée avec thème est un de %{value}"
       not_in: "Pas de participation dans une idée avec thème %{value}"

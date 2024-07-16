@@ -1,23 +1,17 @@
-// services
+import useAnalytics from 'api/analytics/useAnalytics';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
 
-// parse
-import { parseTableData } from './parse';
-
-// utils
-import { referrersListQuery, referrersTotalQuery } from './query';
 import { getPageNumberFromUrl } from '../../_utils/pagination';
 
-// typings
+import { parseTableData } from './parse';
+import { referrersListQuery, referrersTotalQuery } from './query';
+import { getTranslations } from './translations';
 import {
   QueryParameters,
   ReferrerListResponse,
   ReferrerTotalsResponse,
 } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
 
 export default function useVisitorReferrers({
   projectId,

@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import pollOptionsKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import pollOptionsKeys from './keys';
 
 export type PollOptionsKeys = Keys<typeof pollOptionsKeys>;
 

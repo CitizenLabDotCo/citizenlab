@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { isString } from 'utils/helperUtils';
+
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField, StyledMultipleSelect } from './styling';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { IOption, isIOption } from 'typings';
+
+import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
-import { IAreaData } from 'api/areas/types';
-import { useParams } from 'react-router-dom';
-import { TOnProjectAttributesDiffChangeFunction } from '..';
-import { LabelHeaderDescription } from '../../participationContext/components/shared/labels';
 
-// styles
-import styled from 'styled-components';
+import useLocalize from 'hooks/useLocalize';
+
+import { SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isString } from 'utils/helperUtils';
+
+import { TOnProjectAttributesDiffChangeFunction } from '..';
+import { LabelHeaderDescription } from '../../phase/phaseParticipationConfig/components/shared/labels';
+import messages from '../messages';
+
+import { StyledSectionField, StyledMultipleSelect } from './styling';
 
 interface Props {
   areaIds: string[] | undefined;
@@ -187,7 +192,6 @@ const GeographicAreaInputs = ({
             options={areaOptions}
             value={selectedAreaValues}
             onChange={handleAreaSelectionChange}
-            disabled={areaType !== 'selection'}
           />
         )}
       </StyledSectionField>

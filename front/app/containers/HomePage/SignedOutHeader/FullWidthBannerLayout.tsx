@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
 import {
   Container,
   Header,
@@ -6,30 +9,32 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
+
 import HeaderContent from './HeaderContent';
-import { IHomepageSettingsData } from 'api/home_page/types';
 
 interface Props {
   className?: string;
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
   const homepageSettingColor =
-    homepageSettings.attributes.banner_signed_out_header_overlay_color;
+    homepageSettings.banner_signed_out_header_overlay_color;
   const homepageSettingOpacity =
-    homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
+    homepageSettings.banner_signed_out_header_overlay_opacity;
 
   return (
     <Container
       data-testid="full-width-banner-layout"
+      data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-out-header ${className}`}
     >
       <Header id="hook-header">
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-testid="full-width-banner-layout-header-image"
+            data-cy="e2e-full-width-banner-layout-header-image"
             src={headerImage || null}
           />
           {homepageSettingColor &&
@@ -42,7 +47,7 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
             )}
         </HeaderImage>
 
-        <HeaderContent fontColors="light" />
+        <HeaderContent fontColors="light" homepageSettings={homepageSettings} />
       </Header>
     </Container>
   );

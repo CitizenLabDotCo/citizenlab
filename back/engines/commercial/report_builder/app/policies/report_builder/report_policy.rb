@@ -11,20 +11,79 @@ module ReportBuilder
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+        raise Pundit::NotAuthorizedError unless user&.active?
 
-        @scope.all
+        if user.admin?
+          @scope.all
+        elsif user.project_or_folder_moderator?
+          @scope.where(owner: user)
+        else
+          raise Pundit::NotAuthorizedError
+        end
       end
     end
 
-    def allowed?
-      admin? && active?
+    def show?
+      return false unless active?
+
+      if admin?
+        true
+      elsif user.project_or_folder_moderator?
+        if record.phase?
+          PhasePolicy.new(user, record.phase).active_moderator?
+        else
+          record.owner == user
+        end
+      else
+        false
+      end
     end
 
-    alias show? allowed?
-    alias create? allowed?
-    alias update? allowed?
-    alias destroy? allowed?
-    alias layout? allowed?
+    def layout?
+      if admin?
+        true
+      elsif user.present? && user.project_or_folder_moderator?
+        if record.phase?
+          if PhasePolicy.new(user, record.phase).show?
+            record.public? || access_to_data?
+          else
+            false
+          end
+        else
+          record.owner == user && access_to_data?
+        end
+      else
+        phase_public_and_accessible?
+      end
+    end
+
+    def write?
+      return false unless active?
+
+      if admin?
+        true
+      elsif user.project_or_folder_moderator?
+        if record.phase?
+          PhasePolicy.new(user, record.phase).update? && access_to_data?
+        else
+          record.owner == user && access_to_data?
+        end
+      else
+        false
+      end
+    end
+
+    alias create? write?
+    alias copy? write?
+    alias update? write?
+    alias destroy? write?
+
+    def access_to_data?
+      ReportBuilder::Permissions::ReportPermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
+    end
+
+    def phase_public_and_accessible?
+      record.public? && PhasePolicy.new(user, record.phase).show?
+    end
   end
 end

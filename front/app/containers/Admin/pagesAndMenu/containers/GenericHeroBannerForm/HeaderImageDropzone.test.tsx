@@ -1,7 +1,10 @@
 import React from 'react';
-import HeaderImageDropzone from './HeaderImageDropzone';
-import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+
 import { UploadFile } from 'typings';
+
+import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+
+import HeaderImageDropzone from './HeaderImageDropzone';
 
 const file = new File(['file'], 'file.jpeg', {
   type: 'image/jpeg',

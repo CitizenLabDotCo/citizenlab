@@ -10,9 +10,6 @@ resource 'Avatars' do
     header 'Content-Type', 'application/json'
     @user_without_avatar = create(:user, avatar: nil)
     @users_with_avatar = create_list(:user, 6)
-    home_page = HomePage.new
-    home_page.banner_avatars_enabled = true
-    home_page.save!
   end
 
   get 'web_api/v1/avatars' do
@@ -22,6 +19,10 @@ resource 'Avatars' do
 
     response_field :total, 'The total count of users in the given context, including those without avatar', scope: :meta
 
+    before do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     example_request 'List random user avatars' do
       assert_status 200
       json_response = json_parse(response_body)
@@ -30,21 +31,6 @@ resource 'Avatars' do
       expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
       expect(json_response[:data].pluck(:id)).not_to include(@user_without_avatar)
       expect(json_response.dig(:meta, :total)).to eq 7
-    end
-
-    describe do
-      before do
-        home_page = HomePage.first
-        home_page.banner_avatars_enabled = false
-        home_page.save!
-      end
-
-      example_request 'Returns empty response for disabled banner_avatars_enabled' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 0
-        expect(json_response.dig(:meta, :total)).to eq 0
-      end
     end
 
     describe do

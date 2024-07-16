@@ -1,19 +1,14 @@
-// libraries
 import React from 'react';
+
 import { isEmpty } from 'lodash-es';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
+import { IGraphFormat } from 'typings';
 
-// styling
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-
-// components
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -21,16 +16,12 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-// resources
-
-// utils
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
-import { IGraphFormat } from 'typings';
+import messages from '../../messages';
 
 interface Props {
   serie?: IGraphFormat | null | Error;

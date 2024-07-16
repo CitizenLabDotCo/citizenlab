@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePhasePermission from './useUpdatePhasePermission';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IPCPermissionData } from './types';
+import useUpdatePhasePermission from './useUpdatePhasePermission';
 
 export const data: IPCPermissionData = {
   id: '5d14ece5feb0',
@@ -33,8 +32,8 @@ export const data: IPCPermissionData = {
 
 const apiPath = '*phases/:phaseId/permissions/:action';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -68,8 +67,8 @@ describe('useUpdatePhasePermission', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

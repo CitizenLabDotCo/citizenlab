@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
 import inputsKeys from './keys';
 import { IInputs, IInputsQueryParams, InputsKeys } from './types';
 
@@ -25,7 +27,7 @@ const useInfiniteAnalysisInputs = ({
   queryParams,
 }: {
   analysisId: string;
-  queryParams: IInputsQueryParams;
+  queryParams?: IInputsQueryParams;
 }) => {
   return useInfiniteQuery<IInputs, CLErrors, IInputs, InputsKeys>({
     queryKey: inputsKeys.list({ analysisId, filters: queryParams }),

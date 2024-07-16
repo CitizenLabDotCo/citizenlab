@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-// components
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
-import FullScreenReport from '../FullScreenReport';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../../messages';
-import { FormattedMessage } from '../../../../../utils/cl-intl';
+
+import Report from './Report';
 
 const PreparingBox = styled(Box)`
   position: fixed;
@@ -32,10 +37,17 @@ const EVENTS = [
   'mouseout',
 ];
 
-const PrintReport = () => {
+export interface Props {
+  reportId: string;
+  _print?: boolean; // only used to disable printing in storybook
+}
+
+export const PrintReport = ({ reportId, _print = true }: Props) => {
   const [isPrintReady, setIsPrintReady] = useState(false);
 
   useEffect(() => {
+    if (!_print) return;
+
     if (isPrintReady) {
       window.print();
     } else {
@@ -43,9 +55,11 @@ const PrintReport = () => {
         setIsPrintReady(true);
       }, 5000);
     }
-  }, [isPrintReady]);
+  }, [_print, isPrintReady]);
 
   useEffect(() => {
+    if (!_print) return;
+
     const blockEvent = (e: MouseEvent) => {
       e.stopPropagation();
       e.stopImmediatePropagation();
@@ -61,11 +75,11 @@ const PrintReport = () => {
         document.removeEventListener(event, blockEvent);
       });
     };
-  }, []);
+  }, [_print]);
 
   return (
     <>
-      {!isPrintReady && (
+      {!isPrintReady && _print && (
         <PreparingBox>
           <Spinner />
           <Text color="primary">
@@ -73,9 +87,20 @@ const PrintReport = () => {
           </Text>
         </PreparingBox>
       )}
-      <FullScreenReport />
+      <Report reportId={reportId} />
     </>
   );
 };
 
-export default PrintReport;
+const PrintReportWrapper = () => {
+  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const { reportId } = useParams();
+
+  if (!reportBuilderEnabled || reportId === undefined) {
+    return null;
+  }
+
+  return <PrintReport reportId={reportId} />;
+};
+
+export default PrintReportWrapper;

@@ -8,8 +8,7 @@ FactoryBot.define do
     insight_attributes do
       {
         filters: {},
-        analysis: create(:analysis),
-        bookmarked: false
+        analysis: create(:analysis)
       }
     end
   end

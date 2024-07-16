@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.SearchInput.searchLabel',
     defaultMessage: 'Search',
   },
-  a11y_searchResultsHaveChanged: {
-    id: 'app.containers.SearchInput.a11y_searchResultsHaveChanged',
+  a11y_searchResultsHaveChanged1: {
+    id: 'app.containers.SearchInput.a11y_searchResultsHaveChanged1',
     defaultMessage:
-      '{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.',
+      '{numberOfSearchResults, plural, =0 {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.',
   },
 });

@@ -1,19 +1,21 @@
 import React from 'react';
-import { returnFileSize } from 'utils/fileUtils';
+
+import {
+  colors,
+  fontSizes,
+  media,
+  Icon,
+  IconButton,
+} from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// components
-import { Icon, IconButton } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { returnFileSize } from 'utils/fileUtils';
+
+import messages from './messages';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;

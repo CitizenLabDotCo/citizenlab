@@ -1,27 +1,22 @@
-// Libraries
 import React from 'react';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import { snakeCase } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
 
-// typings
-import { IParticipationContextType } from 'typings';
-
-// components
-import Button from 'components/UI/Button';
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
-// i18n
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { snakeCase } from 'lodash-es';
+import tracks from './tracks';
 
 interface Props {
-  participationContextType: IParticipationContextType;
-  participationContextId: string;
-  participationContextName: string;
+  phaseId: string;
+  phaseName: string;
   className?: string;
 }
 
@@ -47,18 +42,16 @@ class ExportPollButton extends React.PureComponent<
   handleExportPollResults = async () => {
     const {
       intl: { formatMessage, formatDate },
-      participationContextName,
-      participationContextId,
-      participationContextType,
+      phaseName,
+      phaseId,
     } = this.props;
     this.trackExportPoll();
 
     this.setState({ exporting: true });
     await exportPollResponses(
-      participationContextId,
-      participationContextType,
+      phaseId,
       `${formatMessage(messages.pollExportFileName)}_${snakeCase(
-        participationContextName
+        phaseName
       )}_${formatDate(Date.now())}.xlsx`
     );
     this.setState({ exporting: false });
@@ -69,7 +62,7 @@ class ExportPollButton extends React.PureComponent<
     const { exporting } = this.state;
     return (
       <Button
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         icon="download"
         onClick={this.handleExportPollResults}
         processing={exporting}

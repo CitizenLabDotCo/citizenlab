@@ -1,43 +1,45 @@
-// Libraries
-import React, { useState, lazy, Suspense } from 'react';
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import React, { useState, Suspense, useRef } from 'react';
+
+import {
+  Tr,
+  Td,
+  colors,
+  Box,
+  Text,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+import styled from 'styled-components';
 
-// Utils
-import clHistory from 'utils/cl-router/history';
+import { IUserData } from 'api/users/types';
+import useDeleteUser from 'api/users/useDeleteUser';
 
-// Components
-import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import ChangeSeatModal from 'components/admin/SeatBasedBilling/ChangeSeatModal';
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
+import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import BlockUser from 'components/admin/UserBlockModals/BlockUser';
-import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
-import Link from 'utils/cl-router/Link';
 
-const ChangeSeatModal = lazy(
-  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
-);
-
-// Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import blockUserMessages from 'components/admin/UserBlockModals/messages';
-
-// Events --- For error handling
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// Styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useDeleteUser from 'api/users/useDeleteUser';
-import { IUserData } from 'api/users/types';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
+
+import events from './events';
+import messages from './messages';
+import SetSetAsProjectModerator from './SetAsProjectModerator';
+import UserAssignedItems from './UserAssignedItems';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -61,6 +63,8 @@ interface Props {
   authUser: IUserData;
 }
 
+export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
+
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role;
@@ -82,12 +86,16 @@ const UserTableRow = ({
   changeRoles,
   authUser,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
+  const [
+    isSetSetAsProjectModeratorOpened,
+    setIsSetSetAsProjectModeratorOpened,
+  ] = useState(false);
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
-  });
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
   });
 
   const { mutate: deleteUser } = useDeleteUser();
@@ -100,10 +108,15 @@ const UserTableRow = ({
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [isChangingToNormalUser, setIsChangingToNormalUser] = useState(false);
+  const [changingToRoleType, setChangingToRowType] =
+    useState<ChangingRoleTypes>('admin');
 
-  const exceedsSeats = useExceedsSeats()({
+  const exceedsSeatsAdmin = useExceedsSeats()({
     newlyAddedAdminsNumber: 1,
+  });
+
+  const exceedsSeatsModerator = useExceedsSeats()({
+    newlyAddedModeratorsNumber: 1,
   });
 
   const closeChangeSeatModal = () => {
@@ -142,14 +155,25 @@ const UserTableRow = ({
     }
   };
 
-  const changeRoleHandler = (changeToNormalUser: boolean) => {
-    setIsChangingToNormalUser(changeToNormalUser);
+  const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
+    setChangingToRowType(changingToRoleType);
+    const changeToNormalUser = changingToRoleType === 'user';
 
-    // We are showing the modal when setting to a normal user and for admins in i1 and for i2 when admin seats are being exceeded
+    const showModalForAdmin =
+      changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
+    const showModalForModerator =
+      changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
+
     const shouldOpenConfirmationInModal =
-      changeToNormalUser || !hasSeatBasedBillingEnabled || exceedsSeats.admin;
+      changeToNormalUser || showModalForAdmin || showModalForModerator;
+
     if (shouldOpenConfirmationInModal) {
       setShowChangeSeatModal(true);
+      return;
+    }
+
+    // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
+    if (changingToRoleType === 'moderator') {
       return;
     }
 
@@ -190,26 +214,38 @@ const UserTableRow = ({
   const getSeatChangeActions = () => {
     const setAsAdminAction = {
       handler: () => {
-        changeRoleHandler(false);
+        changeRoleHandler('admin');
       },
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
     };
 
+    const setSetAsProjectModeratorAction = {
+      handler: () => {
+        setIsSetSetAsProjectModeratorOpened(true);
+      },
+      label: formatMessage(messages.setAsProjectModerator),
+      icon: 'user-check' as const,
+    };
+
     const setAsNormalUserAction = {
       handler: () => {
-        changeRoleHandler(true);
+        changeRoleHandler('user');
       },
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
     };
 
     if (isUserInRowAdmin) {
-      return [setAsNormalUserAction];
+      return [setAsNormalUserAction, setSetAsProjectModeratorAction];
     } else if (isUserInRowModerator) {
-      return [setAsNormalUserAction, setAsAdminAction];
+      return [
+        setAsNormalUserAction,
+        setAsAdminAction,
+        setSetAsProjectModeratorAction,
+      ];
     } else {
-      return [setAsAdminAction];
+      return [setAsAdminAction, setSetAsProjectModeratorAction];
     }
   };
 
@@ -228,27 +264,52 @@ const UserTableRow = ({
   */
 
   return (
-    <Tr
-      key={userInRow.id}
-      background={selected ? colors.background : undefined}
-      className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
-    >
-      <Td>
-        <Box ml="5px">
+    <>
+      <Tr
+        key={userInRow.id}
+        background={selected ? colors.background : undefined}
+        className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
+      >
+        <Td>
           <Checkbox checked={selected} onChange={toggleSelect} />
-        </Box>
-      </Td>
-      <Td>
-        <Avatar userId={userInRow.id} size={30} />
-      </Td>
-      <Td>
-        <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
-          {getFullName(userInRow)}
-        </StyledLink>
-      </Td>
-      <Td>{userInRow.attributes.email}</Td>
-      <RegisteredAt>
-        {/*
+        </Td>
+        <Td>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Avatar userId={userInRow.id} size={30} />
+            <Box>
+              <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
+                {getFullName(userInRow)}
+              </StyledLink>
+              <Text fontSize="s" m="0px" color="textSecondary">
+                {userInRow.attributes.email}
+              </Text>
+            </Box>
+          </Box>
+        </Td>
+        <Td>
+          <FormattedMessage {...getStatusMessage(userInRow)} />
+          {userInRow.attributes.highest_role !== 'user' && (
+            <Box display="flex">
+              <Button
+                buttonStyle="text"
+                icon="chevron-down"
+                iconPos="right"
+                fontSize={`${fontSizes.s}px`}
+                p="0px"
+                iconSize="18px"
+                onClick={() => setIsAssignedItemsOpened(true)}
+              >
+                <FormattedMessage {...messages.seeAssignedItems} />
+              </Button>
+            </Box>
+          )}
+        </Td>
+        <Td>
+          {userInRow.attributes.last_active_at &&
+            timeAgo(Date.parse(userInRow.attributes.last_active_at), locale)}
+        </Td>
+        <RegisteredAt>
+          {/*
           For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
           but we do in groups they have been added to when invited.
 
@@ -257,52 +318,75 @@ const UserTableRow = ({
           https://citizenlab.atlassian.net/browse/CL-2255
         */}
 
-        {userInRowHasRegistered ? (
-          moment(userInRow.attributes.registration_completed_at).format('LL')
-        ) : (
-          <i>
-            <FormattedMessage {...messages.userInvitationPending} />
-          </i>
-        )}
-      </RegisteredAt>
-      <Td>
-        <FormattedMessage {...getStatusMessage(userInRow)} />
-      </Td>
-      <Td>
-        <MoreActionsMenu
-          showLabel={false}
-          actions={
-            userInRowHasRegistered
-              ? [
-                  showProfileAction,
-                  ...getSeatChangeActions(),
-                  deleteUserAction,
-                  ...userBlockingRelatedActions,
-                ]
-              : [deleteUserAction]
-          }
+          {userInRowHasRegistered ? (
+            moment(userInRow.attributes.registration_completed_at).format('LL')
+          ) : (
+            <i>
+              <FormattedMessage {...messages.userInvitationPending} />
+            </i>
+          )}
+        </RegisteredAt>
+
+        <Td>
+          <MoreActionsMenu
+            showLabel={false}
+            ref={moreActionsButtonRef}
+            actions={
+              userInRowHasRegistered
+                ? [
+                    showProfileAction,
+                    ...getSeatChangeActions(),
+                    deleteUserAction,
+                    ...userBlockingRelatedActions,
+                  ]
+                : [deleteUserAction]
+            }
+          />
+        </Td>
+        <BlockUser
+          user={userInRow}
+          setClose={() => setShowBlockUserModal(false)}
+          open={showBlockUserModal}
+          returnFocusRef={moreActionsButtonRef}
         />
-      </Td>
-      <BlockUser
-        user={userInRow}
-        setClose={() => setShowBlockUserModal(false)}
-        open={showBlockUserModal}
-      />
-      <UnblockUser
-        user={userInRow}
-        setClose={() => setShowUnblockUserModal(false)}
-        open={showUnblockUserModal}
-      />
-      <Suspense fallback={null}>
-        <ChangeSeatModal
-          userToChangeSeat={userInRow}
-          changeRoles={changeRoles}
-          showModal={showChangeSeatModal}
-          closeModal={closeChangeSeatModal}
-          isChangingToNormalUser={isChangingToNormalUser}
+        <UnblockUser
+          user={userInRow}
+          setClose={() => setShowUnblockUserModal(false)}
+          open={showUnblockUserModal}
+          returnFocusRef={moreActionsButtonRef}
         />
-      </Suspense>
-    </Tr>
+        <Suspense fallback={null}>
+          <ChangeSeatModal
+            userToChangeSeat={userInRow}
+            changeRoles={changeRoles}
+            showModal={showChangeSeatModal}
+            closeModal={closeChangeSeatModal}
+            returnFocusRef={moreActionsButtonRef}
+            changingToRoleType={changingToRoleType}
+          />
+        </Suspense>
+        <Modal
+          opened={isAssignedItemsOpened}
+          close={() => setIsAssignedItemsOpened(false)}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
+        >
+          <UserAssignedItems user={userInRow} />
+        </Modal>
+        <Modal
+          opened={isSetSetAsProjectModeratorOpened}
+          close={() => setIsSetSetAsProjectModeratorOpened(false)}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
+        >
+          <SetSetAsProjectModerator
+            user={userInRow}
+            onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
+            onSuccess={() => changeRoleHandler('moderator')}
+          />
+        </Modal>
+      </Tr>
+    </>
   );
 };
 

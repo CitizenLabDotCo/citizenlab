@@ -1,36 +1,30 @@
 import React, { useState, useRef } from 'react';
 
-// components
 import {
   Box,
   Icon,
   Text,
   useBreakpoint,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
-import LanguageSelectorPopup from './LanguageSelectorPopup';
 
-// i18n
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import { colors } from 'utils/styleUtils';
-import { ItemMenu, StyledBox } from './styles';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserData } from 'api/users/types';
+
 import useLocale from 'hooks/useLocale';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import Avatar from 'components/Avatar';
 
-// services
-import signOut from 'api/authentication/sign_in_out/signOut';
-import { IUserData } from 'api/users/types';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
+
+import LanguageSelectorPopup from './LanguageSelectorPopup';
+import messages from './messages';
+import { ItemMenu, StyledBox } from './styles';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();

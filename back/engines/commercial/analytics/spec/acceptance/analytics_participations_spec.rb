@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Analytics - FactParticipations' do
-  explanation 'Queries to summarise participations/active users.'
+  explanation 'Queries to summarise participations.'
 
   before do
     header 'Content-Type', 'application/json'
@@ -14,7 +14,7 @@ resource 'Analytics - FactParticipations' do
   post 'web_api/v1/analytics' do
     before_all do
       # Date dimensions
-      dates = [Date.new(2022, 9, 1), Date.new(2022, 9, 15), Date.new(2022, 10, 1), Date.new(2022, 10, 15)]
+      dates = [Date.new(2022, 9, 2), Date.new(2022, 9, 15), Date.new(2022, 10, 2), Date.new(2022, 10, 15)]
       dates.each do |date|
         create(:dimension_date, date: date)
       end
@@ -29,11 +29,15 @@ resource 'Analytics - FactParticipations' do
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
 
+      male = create(:user, gender: 'male')
+      female = create(:user, gender: 'female')
+      unspecified = create(:user, gender: 'unspecified')
+
       # Create participations (3 by citizens, 1 by admin)
-      idea = create(:idea, created_at: dates[0])
-      create(:comment, created_at: dates[2], post: idea)
-      create(:reaction, created_at: dates[3], user: create(:admin), reactable: idea)
-      create(:initiative, created_at: dates[1])
+      idea = create(:idea, created_at: dates[0], author: male)
+      create(:comment, created_at: dates[2], post: idea, author: female)
+      create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
+      create(:initiative, created_at: dates[1], author: unspecified)
     end
 
     example 'group participations by month' do

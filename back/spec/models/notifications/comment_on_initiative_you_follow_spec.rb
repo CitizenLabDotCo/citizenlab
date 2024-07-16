@@ -18,5 +18,16 @@ RSpec.describe Notifications::CommentOnInitiativeYouFollow do
         comment_id: comment.id
       )
     end
+
+    it 'does not make a notification when follow feature is turned off' do
+      initiative = create(:initiative)
+      create(:follower, followable: initiative)
+      comment = create(:comment, post: initiative)
+      activity = create(:activity, item: comment, action: 'created')
+
+      SettingsService.new.deactivate_feature! 'follow'
+      notifications = described_class.make_notifications_on activity
+      expect(notifications).to be_empty
+    end
   end
 end

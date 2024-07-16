@@ -1,5 +1,7 @@
+import { CraftJson } from 'components/admin/ContentBuilder/typings';
+
 import { Keys } from 'utils/cl-react-query/types';
-import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
+
 import projectDescriptionBuilderKeys from './keys';
 
 export type ProjectDescriptionBuilderKeys = Keys<
@@ -10,7 +12,7 @@ export interface IProjectDescriptionBuilderData {
   type: 'content_builder_layout';
   id: string;
   attributes: {
-    craftjs_jsonmultiloc: JsonMultiloc;
+    craftjs_json: CraftJson;
     code: string;
     enabled: boolean;
   };
@@ -22,6 +24,6 @@ export interface IProjectDescriptionBuilderLayout {
 
 export interface IAddProjectDescriptionBuilderLayout {
   projectId: string;
-  craftjs_jsonmultiloc?: JsonMultiloc;
+  craftjs_json?: CraftJson;
   enabled?: boolean;
 }

@@ -2,18 +2,9 @@
 
 module ParticipationMethod
   class Voting < Ideation
-    def assign_defaults_for_participation_context
-      participation_context.ideas_order ||= 'random'
-      Factory.instance.voting_method_for(participation_context).assign_defaults_for_participation_context
-    end
-
-    def budget_in_form?(user)
-      if participation_context.project.continuous? \
-      && Factory.instance.voting_method_for(participation_context).budget_in_form?(user)
-        return true
-      end
-
-      super
+    def assign_defaults_for_phase
+      phase.ideas_order ||= 'random'
+      Factory.instance.voting_method_for(phase).assign_defaults_for_phase
     end
 
     def allowed_ideas_orders
@@ -33,7 +24,7 @@ module ParticipationMethod
     end
 
     def additional_export_columns
-      Factory.instance.voting_method_for(participation_context).export_columns
+      Factory.instance.voting_method_for(phase).export_columns
     end
   end
 end

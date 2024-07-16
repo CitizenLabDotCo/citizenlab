@@ -1,23 +1,22 @@
 import React from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
+import {
+  useBreakpoint,
+  Box,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import useProjectById from 'api/projects/useProjectById';
 
-// components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
-// routing
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// styling
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import messages from '../messages';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

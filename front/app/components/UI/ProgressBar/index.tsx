@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import warningPattern from './warning_pattern.svg';
+
 import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
+
+import warningPattern from './warning_pattern.svg';
 
 const Container = styled.div``;
 
@@ -26,7 +28,6 @@ const ProgressBarInner: any = styled.div<{ progress: number; color: string }>`
 `;
 
 interface Props {
-  /** Number between 0 and 1 */
   progress: number;
   color: string;
   bgColor: string;
@@ -58,7 +59,7 @@ const ProgressBar = ({
         background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
       >
         <ProgressBarInner
-          progress={progress}
+          progress={progress > 1 ? 1 : progress}
           className={visible ? 'visible' : ''}
           color={color}
         />

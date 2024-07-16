@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
-import QuillEditor from 'components/UI/QuillEditor';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { WrappedComponentProps } from 'react-intl';
-import ErrorDisplay from '../ErrorDisplay';
-import { injectIntl } from 'utils/cl-intl';
+
 import { FormLabel } from 'components/UI/FormComponents';
+import QuillEditor from 'components/UI/QuillEditor';
+
+import { injectIntl } from 'utils/cl-intl';
 import {
   getLabel,
   sanitizeForClassname,
   getFieldNameFromPath,
 } from 'utils/JSONFormUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
 
 const DescriptionControl = ({
@@ -47,7 +52,12 @@ const DescriptionControl = ({
         withCTAButton
         onBlur={() => setDidBlur(true)}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

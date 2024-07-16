@@ -1,4 +1,5 @@
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import { UserCheckResponse } from './types';
 
 const checkUser = (email: string) => {

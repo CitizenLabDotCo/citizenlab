@@ -1,48 +1,45 @@
-// libraries
 import React, { useMemo } from 'react';
+
+import {
+  IconTooltip,
+  Spinner,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import Tippy from '@tippyjs/react';
-import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
 
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
-import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip, Spinner } from '@citizenlab/cl2-component-library';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
 import {
   Row,
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
+import T from 'components/T';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import DeleteStatusButton from '../components/DeleteStatusButton';
+import EditStatusButton from '../components/EditStatusButton';
+
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const DummyButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const DeleteButton = styled(Button)`
-  margin-right: 10px;
 `;
 
 const ColorLabel = styled.span`
@@ -67,7 +64,10 @@ const StyledIconTooltip = styled(IconTooltip)`
 const IdeaStatuses = () => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses();
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
-  const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
+  const customIdeaStatusesAllowed = useFeatureFlag({
+    name: 'custom_idea_statuses',
+    onlyCheckAllowed: true,
+  });
 
   const handleReorder = (id: string, ordering: number) => () => {
     updateIdeaStatus({ id, requestBody: { ordering } });
@@ -75,10 +75,6 @@ const IdeaStatuses = () => {
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus === defaultStatus;
-  };
-
-  const handleDelete = (id: string) => () => {
-    deleteIdeaStatus(id);
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -116,6 +112,11 @@ const IdeaStatuses = () => {
   if (ideaStatuses && defaultStatus) {
     return (
       <Section>
+        {!customIdeaStatusesAllowed && (
+          <Warning>
+            <FormattedMessage {...messages.pricingPlanUpgrade} />
+          </Warning>
+        )}
         <SectionTitle>
           <FormattedMessage {...messages.titleIdeaStatuses1} />
         </SectionTitle>
@@ -123,13 +124,22 @@ const IdeaStatuses = () => {
           <FormattedMessage {...messages.subtitleInputStatuses1} />
         </SectionDescription>
         <ButtonWrapper>
-          <Button
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            linkTo="/admin/settings/statuses/new"
+          <Tooltip
+            placement="top"
+            theme="light"
+            disabled={customIdeaStatusesAllowed}
+            content={<FormattedMessage {...messages.pricingPlanUpgrade} />}
+            trigger="mouseenter"
           >
-            <FormattedMessage {...messages.addIdeaStatus} />
-          </Button>
+            <Button
+              buttonStyle="admin-dark"
+              icon="plus-circle"
+              linkTo="/admin/settings/statuses/new"
+              disabled={!customIdeaStatusesAllowed}
+            >
+              <FormattedMessage {...messages.addIdeaStatus} />
+            </Button>
+          </Tooltip>
         </ButtonWrapper>
 
         <Row>
@@ -144,31 +154,28 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <Tippy
-              placement="top"
-              theme="light"
-              disabled={false}
-              content={
-                <FormattedMessage
-                  {...messages.defaultStatusDeleteButtonTooltip}
-                />
+            {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
+            so it's always disabled. */}
+            <DeleteStatusButton
+              buttonDisabled
+              tooltipContent={
+                customIdeaStatusesAllowed ? (
+                  <FormattedMessage
+                    {...messages.defaultStatusDeleteButtonTooltip}
+                  />
+                ) : (
+                  <FormattedMessage {...messages.pricingPlanUpgrade} />
+                )
               }
-              trigger="mouseenter"
-            >
-              <div>
-                <DummyButton buttonStyle="text" disabled={true} icon="delete">
-                  <FormattedMessage {...messages.deleteButtonLabel} />
-                </DummyButton>
-              </div>
-            </Tippy>
-
-            <Button
+              ideaStatusId={defaultStatus.id}
+            />
+            <EditStatusButton
+              buttonDisabled={!customIdeaStatusesAllowed}
+              tooltipContent={
+                <FormattedMessage {...messages.pricingPlanUpgrade} />
+              }
               linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </Button>
+            />
           </Buttons>
         </Row>
 
@@ -189,44 +196,39 @@ const IdeaStatuses = () => {
                     <T value={ideaStatus.attributes.title_multiloc} />
                   </FlexTextCell>
                   <Buttons>
-                    <Tippy
-                      placement="top"
-                      theme="light"
-                      disabled={isDeletable(ideaStatus)}
-                      content={
-                        <FormattedMessage
-                          {...messages.inputStatusDeleteButtonTooltip}
-                          values={{
-                            manageTab: (
-                              <b>
-                                <FormattedMessage {...messages.manage} />
-                              </b>
-                            ),
-                          }}
-                        />
+                    {customIdeaStatusesAllowed ? (
+                      <DeleteStatusButton
+                        buttonDisabled={!isDeletable(ideaStatus)}
+                        tooltipContent={
+                          <FormattedMessage
+                            {...messages.inputStatusDeleteButtonTooltip}
+                            values={{
+                              manageTab: (
+                                <b>
+                                  <FormattedMessage {...messages.manage} />
+                                </b>
+                              ),
+                            }}
+                          />
+                        }
+                        ideaStatusId={ideaStatus.id}
+                      />
+                    ) : (
+                      <DeleteStatusButton
+                        buttonDisabled
+                        tooltipContent={
+                          <FormattedMessage {...messages.pricingPlanUpgrade} />
+                        }
+                        ideaStatusId={ideaStatus.id}
+                      />
+                    )}
+                    <EditStatusButton
+                      buttonDisabled={!customIdeaStatusesAllowed}
+                      tooltipContent={
+                        <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      trigger="mouseenter"
-                    >
-                      <div>
-                        <DeleteButton
-                          onClick={handleDelete(ideaStatus.id)}
-                          buttonStyle="text"
-                          disabled={!isDeletable(ideaStatus)}
-                          icon="delete"
-                          iconHoverColor={colors.red600}
-                          textHoverColor={colors.red600}
-                        >
-                          <FormattedMessage {...messages.deleteButtonLabel} />
-                        </DeleteButton>
-                      </div>
-                    </Tippy>
-                    <Button
                       linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
+                    />
                   </Buttons>
                 </SortableRow>
               ))}

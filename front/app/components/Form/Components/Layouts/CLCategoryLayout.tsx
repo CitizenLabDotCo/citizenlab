@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import {
   Categorization,
   isCategorization,
@@ -6,9 +8,13 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
-import { FormSection } from 'components/UI/FormComponents';
 import styled, { useTheme } from 'styled-components';
+
+import {
+  extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
+} from 'components/Form/Components/Controls/visibilityUtils';
+import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledFormSection = styled(FormSection)`
@@ -35,7 +41,15 @@ const FormSectionTitleStyled = styled.h2`
 
 const CLCategoryLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
-  ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
+  ({
+    schema,
+    uischema,
+    path,
+    renderers,
+    cells,
+    enabled,
+    data,
+  }: LayoutProps) => {
     const theme = useTheme();
 
     return (
@@ -47,39 +61,51 @@ const CLCategoryLayout = memo(
         padding="0 20px 30px 20px"
         margin="auto"
       >
-        {(uischema as Categorization).elements.map((e, index) => (
-          <StyledFormSection key={index}>
-            <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
-            {e.options && e.options.description && (
-              <Box mb={e.elements.length >= 1 ? '48px' : '28px'}>
-                <QuillEditedContent
-                  fontWeight={400}
-                  textColor={theme.colors.tenantText}
-                >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: e.options.description,
-                    }}
-                  />
-                </QuillEditedContent>
-              </Box>
-            )}
-            {e.elements.map((e, index) => {
-              return (
-                <Box w="100%" mb="40px" key={index}>
-                  <JsonFormsDispatch
-                    renderers={renderers}
-                    cells={cells}
-                    uischema={e}
-                    schema={schema}
-                    path={path}
-                    enabled={enabled}
-                  />
+        {(uischema as Categorization).elements.map((e, index) => {
+          const elements = extractElementsByOtherOptionLogic(e, data);
+          return (
+            <StyledFormSection key={index}>
+              <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
+              {e.options && e.options.description && (
+                <Box mb={e.elements.length >= 1 ? '48px' : '28px'}>
+                  <QuillEditedContent
+                    fontWeight={400}
+                    textColor={theme.colors.tenantText}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: e.options.description,
+                      }}
+                    />
+                  </QuillEditedContent>
                 </Box>
-              );
-            })}
-          </StyledFormSection>
-        ))}
+              )}
+              {elements.map((elementUiSchema, index) => {
+                const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                  elementUiSchema,
+                  data
+                );
+
+                return (
+                  <Box
+                    w="100%"
+                    mb={hasOtherFieldBelow ? '15px' : '40px'}
+                    key={index}
+                  >
+                    <JsonFormsDispatch
+                      renderers={renderers}
+                      cells={cells}
+                      uischema={elementUiSchema}
+                      schema={schema}
+                      path={path}
+                      enabled={enabled}
+                    />
+                  </Box>
+                );
+              })}
+            </StyledFormSection>
+          );
+        })}
       </Box>
     );
   }

@@ -1,24 +1,18 @@
 import React from 'react';
 
-// components
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import { Box, Title, colors, Spinner } from '@citizenlab/cl2-component-library';
-import { SectionDescription } from 'components/admin/Section';
 
-// resources
 import { PublicationStatus } from 'api/projects/types';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import useProjects from 'api/projects/useProjects';
 
+import InputManager from 'components/admin/PostManager/InputManager';
+import { SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 const IdeasTab = () => {
-  const defaultFilterMenu: TFilterMenu = 'projects';
-  const visibleFilterMenus: TFilterMenu[] = [
-    defaultFilterMenu,
-    'topics',
-    'statuses',
-  ];
   const { data: projects, isLoading } = useProjects({
     pageSize: 250,
     sort: 'new',
@@ -40,10 +34,9 @@ const IdeasTab = () => {
             <Spinner />
           </Box>
         )}
-        <PostManager
-          type="AllIdeas"
-          defaultFilterMenu={defaultFilterMenu}
-          visibleFilterMenus={visibleFilterMenus}
+        <InputManager
+          visibleFilterMenus={['projects', 'topics', 'statuses']}
+          defaultFilterMenu="projects"
           projects={projects?.data}
         />
       </Box>

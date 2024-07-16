@@ -1,32 +1,26 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
-// services
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
+
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import CodeSentMessage from './CodeSentMessage';
-import FooterNotes from './FooterNotes';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
 
-// errors
+import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-// typings
 import { State, SetError } from '../../typings';
+
+import CodeSentMessage from './CodeSentMessage';
+import FooterNotes from './FooterNotes';
+import messages from './messages';
 
 interface Props {
   state: State;
@@ -108,6 +102,7 @@ const EmailConfirmation = ({
         setCodeResent(true);
       })
       .catch((_errors) => {
+        setError('resending_code_failed');
         setResendingCode(false);
       });
   };
@@ -120,7 +115,9 @@ const EmailConfirmation = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
-        <Box mt="-8px">
+        {/* Using the key on aria-live to force screen
+          readers to read the message on resend */}
+        <Box mt="-8px" aria-live="assertive" key={`${codeResent}`}>
           <CodeSentMessage email={state.email ?? undefined} />
         </Box>
         <Box>
@@ -128,6 +125,7 @@ const EmailConfirmation = ({
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
+            maxCharCount={4}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

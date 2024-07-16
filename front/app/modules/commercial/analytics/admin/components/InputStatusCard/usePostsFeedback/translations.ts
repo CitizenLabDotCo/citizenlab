@@ -1,5 +1,6 @@
-import messages from './messages';
 import { FormatMessage } from 'typings';
+
+import messages from './messages';
 
 export interface Translations {
   statusChanged: string;

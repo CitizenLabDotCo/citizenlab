@@ -1,18 +1,21 @@
+import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
+
 import {
   Container,
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
-import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
-import React from 'react';
-import { IHomepageSettingsData } from 'api/home_page/types';
-import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const TwoColumnLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
 
   return (
     <Container
@@ -34,7 +37,11 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
           />
         </Box>
       )}
-      <HeaderContent fontColors="dark" align="left" />
+      <HeaderContent
+        fontColors="dark"
+        align="left"
+        homepageSettings={homepageSettings}
+      />
     </Container>
   );
 };

@@ -1,19 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePermissions from './usePermissions';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { permissionsData } from './__mocks__/usePermissions';
+import usePermissions from './usePermissions';
 
 const apiPath = '*permissions';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: permissionsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: permissionsData }, { status: 200 });
   })
 );
 
@@ -36,8 +34,8 @@ describe('usePermissions', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

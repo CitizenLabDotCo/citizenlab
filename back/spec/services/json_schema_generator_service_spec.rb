@@ -50,6 +50,48 @@ RSpec.describe JsonSchemaGeneratorService do
         }
       })
     end
+
+    it 'returns an additional "other" text field when there is an other option present' do
+      create(:custom_field_option, custom_field: field2, key: 'other', other: true)
+      expect(generator.generate_for([page_field, field1, field2])).to eq({
+        'en' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        },
+        'fr-FR' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        },
+        'nl-NL' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        }
+      })
+    end
   end
 
   describe '#visit_text' do
@@ -160,6 +202,16 @@ RSpec.describe JsonSchemaGeneratorService do
           enum: %w[option1 option2]
         })
       end
+
+      it 'returns other option last even if "random_option_ordering" is true' do
+        create(:custom_field_option, custom_field: field, key: 'other', other: true)
+        create(:custom_field_option, custom_field: field, key: 'option3')
+        create(:custom_field_option, custom_field: field, key: 'option4')
+        field.update!(random_option_ordering: true)
+
+        options = generator.visit_select(field)[:enum]
+        expect(options.last).to eq 'other'
+      end
     end
   end
 
@@ -204,6 +256,22 @@ RSpec.describe JsonSchemaGeneratorService do
           }
         })
       end
+
+      it 'returns options in a random order but with other option always last if "random_option_ordering" is true' do
+        create(:custom_field_option, custom_field: field, key: 'option3')
+        create(:custom_field_option, custom_field: field, key: 'option4')
+        create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+        field.update!(random_option_ordering: true)
+
+        # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
+        attempts = []
+        10.times do
+          options = generator.visit_multiselect(CustomField.find(field.id)).dig(:items, :oneOf).pluck(:const)
+          expect(options.last).to eq 'other'
+          attempts << options
+        end
+        expect(attempts.uniq.size).to be > 1
+      end
     end
 
     context 'when required, and with options' do
@@ -225,6 +293,81 @@ RSpec.describe JsonSchemaGeneratorService do
               {
                 const: 'option2',
                 title: 'youth council'
+              }
+            ]
+          }
+        })
+      end
+    end
+
+    context 'when there are images associated with options' do
+      let(:field) { create(:custom_field_select, input_type: 'multiselect', key: 'field_key', required: true) }
+      let!(:option) { create(:custom_field_option, custom_field: field, key: 'image_option', title_multiloc: { 'en' => 'Image option' }) }
+      let!(:option_image) { create(:custom_field_option_image, custom_field_option: option) }
+
+      it 'does not return images if the select is not an "_image" select' do
+        expect(generator.visit_multiselect(field)).to match({
+          type: 'array',
+          uniqueItems: true,
+          maxItems: 1,
+          minItems: 1,
+          items: {
+            type: 'string',
+            oneOf: [
+              {
+                const: 'image_option',
+                title: 'Image option'
+              }
+            ]
+          }
+        })
+      end
+    end
+  end
+
+  describe '#visit_multiselect_image' do
+    context 'when there are images associated with options' do
+      let(:field) { create(:custom_field_select, input_type: 'multiselect_image', key: 'field_key', required: true) }
+      let!(:option) { create(:custom_field_option, custom_field: field, key: 'image_option', title_multiloc: { 'en' => 'Image option' }) }
+      let!(:option_image) { create(:custom_field_option_image, custom_field_option: option) }
+
+      it 'returns the schema including images for the given field' do
+        expect(generator.visit_multiselect_image(field)).to match({
+          type: 'array',
+          uniqueItems: true,
+          maxItems: 1,
+          minItems: 1,
+          items: {
+            type: 'string',
+            oneOf: [
+              {
+                const: 'image_option',
+                title: 'Image option',
+                image: hash_including(
+                  fb: end_with('.png'),
+                  small: end_with('.png'),
+                  medium: end_with('.png'),
+                  large: end_with('.png')
+                )
+              }
+            ]
+          }
+        })
+      end
+
+      it 'does not return images if the select is not an "_image" select' do
+        field.update!(input_type: 'multiselect')
+        expect(generator.visit_multiselect(field)).to match({
+          type: 'array',
+          uniqueItems: true,
+          maxItems: 1,
+          minItems: 1,
+          items: {
+            type: 'string',
+            oneOf: [
+              {
+                const: 'image_option',
+                title: 'Image option'
               }
             ]
           }
@@ -352,6 +495,9 @@ RSpec.describe JsonSchemaGeneratorService do
       expect(generator.visit_file_upload(field)).to eq({
         type: 'object',
         properties: {
+          id: {
+            type: 'string'
+          },
           content: {
             type: 'string'
           },

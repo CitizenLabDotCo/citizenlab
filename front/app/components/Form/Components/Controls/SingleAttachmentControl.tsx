@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import { Box } from '@citizenlab/cl2-component-library';
+import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import SingleFileUploader, {
   AttachmentFile,
 } from 'components/Form/Components/SingleFileUploader';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
 
-const SingleAttachementControl = ({
+const SingleAttachmentControl = ({
   uischema,
   data,
   handleChange,
@@ -54,12 +59,17 @@ const SingleAttachementControl = ({
         onFileRemove={handleFileOnRemove}
         file={data}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };
 
-export default withJsonFormsControlProps(SingleAttachementControl);
+export default withJsonFormsControlProps(SingleAttachmentControl);
 
 export const singleAttachmentControlTester = (uischema) => {
   if (uischema?.options?.input_type === 'file_upload') {

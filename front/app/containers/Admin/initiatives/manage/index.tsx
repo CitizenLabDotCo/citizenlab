@@ -1,18 +1,19 @@
 import React from 'react';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import ProposalsManager from 'components/admin/PostManager/ProposalsManager';
 import Button from 'components/UI/Button';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import tracks from './tracks';
-import { colors } from 'utils/styleUtils';
 
 const InitiativesManagePage = () => {
-  const defaultFilterMenu = 'statuses';
-  const visibleFilterMenus: TFilterMenu[] = [defaultFilterMenu, 'topics'];
   const { pathname } = useLocation();
 
   const onNewProposal = (pathname: string) => (_event) => {
@@ -42,7 +43,7 @@ const InitiativesManagePage = () => {
         <Box ml="60px">
           <Button
             id="e2e-new-proposal"
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="initiatives"
             linkTo={`/initiatives/new`}
             text={<FormattedMessage {...messages.addNewProposal} />}
@@ -51,10 +52,9 @@ const InitiativesManagePage = () => {
         </Box>
       </Box>
       <Box mb="30px" background={colors.white} p="40px">
-        <PostManager
-          type="Initiatives"
-          visibleFilterMenus={visibleFilterMenus}
-          defaultFilterMenu={defaultFilterMenu}
+        <ProposalsManager
+          visibleFilterMenus={['statuses', 'topics']}
+          defaultFilterMenu="statuses"
         />
       </Box>
     </Box>

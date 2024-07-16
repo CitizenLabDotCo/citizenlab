@@ -1,11 +1,10 @@
 import React from 'react';
 
-// styles
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';

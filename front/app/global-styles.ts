@@ -1,9 +1,15 @@
+import { fontSizes, isRtl, colors } from '@citizenlab/cl2-component-library';
 import { createGlobalStyle } from 'styled-components';
-import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
+  }
+
+  .admin-user-view {
+    .weglot_switcher {
+      margin-right: 80px !important;
+    }
   }
 
   *,

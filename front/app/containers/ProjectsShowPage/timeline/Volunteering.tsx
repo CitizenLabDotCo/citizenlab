@@ -1,11 +1,10 @@
 import React from 'react';
 
-// components
-import Volunteering from '../shared/volunteering';
-
-// styling
 import styled from 'styled-components';
+
 import usePhase from 'api/phases/usePhase';
+
+import Volunteering from '../shared/volunteering';
 
 const Container = styled.div``;
 
@@ -25,7 +24,7 @@ const VolunteeringContainer = ({ projectId, className, phaseId }: Props) => {
           className || ''
         }`}
       >
-        <Volunteering phaseId={phaseId} projectId={projectId} type="phase" />
+        <Volunteering phaseId={phaseId} projectId={projectId} />
       </Container>
     );
   }

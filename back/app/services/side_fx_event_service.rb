@@ -6,12 +6,12 @@ class SideFxEventService
   def before_create(event, current_user); end
 
   def after_create(event, current_user)
-    event.update!(description_multiloc: TextImageService.new.swap_data_images(event, :description_multiloc))
+    event.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(event.description_multiloc, field: :description_multiloc, imageable: event))
     LogActivityJob.perform_later(event, 'created', current_user, event.created_at.to_i)
   end
 
   def before_update(event, _current_user)
-    event.description_multiloc = TextImageService.new.swap_data_images(event, :description_multiloc)
+    event.description_multiloc = TextImageService.new.swap_data_images_multiloc(event.description_multiloc, field: :description_multiloc, imageable: event)
   end
 
   def after_update(event, current_user)
@@ -29,5 +29,9 @@ class SideFxEventService
       Time.now.to_i,
       payload: { event: serialized_event }
     )
+  end
+
+  def after_attendees_xlsx(event, current_user)
+    LogActivityJob.perform_later(event, 'exported_attendees', current_user, Time.now.to_i)
   end
 end

@@ -1,27 +1,25 @@
 import React, { memo } from 'react';
+
+import {
+  Icon,
+  colors,
+  media,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-// components
-import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// utils
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-// resources
-import useAuthUser from 'api/me/useAuthUser';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../admin/containers/messages';
-
-// styling
-import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 
 const Container = styled.div`
   width: 100%;
@@ -120,12 +118,8 @@ const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
         const link = (
-          <a
-            href="mailto:support@citizenlab.co"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FormattedMessage {...messages.citizenlabExpert} />
+          <a href="mailto:support@govocal.com" target="_blank" rel="noreferrer">
+            <FormattedMessage {...messages.govocalExpert} />
           </a>
         );
 

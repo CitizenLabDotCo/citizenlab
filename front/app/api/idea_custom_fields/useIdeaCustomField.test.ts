@@ -1,18 +1,20 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaCustomField from './useIdeaCustomField';
-import { ideaCustomFieldsData } from './__mocks__/useIdeaCustomFields';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideaCustomFieldsData } from './__mocks__/useIdeaCustomFields';
+import useIdeaCustomField from './useIdeaCustomField';
 
 const apiPath = '*/admin/projects/:projectId/custom_fields/:customFieldId';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaCustomFieldsData[0] }));
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: ideaCustomFieldsData[0] },
+      { status: 200 }
+    );
   })
 );
 
@@ -42,8 +44,8 @@ describe('useIdeaCustomField', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
+import { CLErrors } from 'typings';
+
 import initiativesCountKeys from 'api/initiative_counts/keys';
 import initiativeMarkersKeys from 'api/initiative_markers/keys';
-import { CLErrors } from 'typings';
+import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import initiativesKeys from './keys';
 import { IInitiative, IInitiativeAdd } from './types';
 

@@ -2,10 +2,10 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic
+    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering
 
   attribute :description_multiloc do |field|
-    TextImageService.new.render_data_images field, :description_multiloc
+    TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
   end
 
   attribute :answer_visible_to, if: proc { |_object, params|
@@ -25,12 +25,14 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   end
 
   attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|
-    object.input_type == 'linear_scale'
+    object.linear_scale?
   }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
-    object.input_type == 'multiselect'
+    object.multiselect?
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
 end
+
+WebApi::V1::CustomFieldSerializer.include(CustomMaps::Extensions::WebApi::V1::CustomFieldSerializer)

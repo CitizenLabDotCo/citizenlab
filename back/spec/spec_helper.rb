@@ -9,6 +9,7 @@ require 'rspec-parameterized'
 require 'webmock/rspec'
 
 WebMock.allow_net_connect!
+CitizenLab::Scientist::Experiment.raise_on_mismatches = true
 
 if ActiveRecord::Type::Boolean.new.cast(ENV.fetch('COVERAGE', nil))
   require 'simplecov'
@@ -182,7 +183,16 @@ RSpec.configure do |config|
   # rubocop:enable RSpec/BeforeAfterAll
 
   config.before do
-    Apartment::Tenant.switch!('example_org') # Switch into the default tenant
+    Apartment::Tenant.switch!('example_org')
+  end
+
+  config.after do
+    # We invalidate the cached tenant and app_configuration after each test to prevent
+    # state from leaking between tests. However, it could still occur in some edge cases,
+    # such as when an after(:context) hook accesses the tenant or app_configuration. This
+    # is unlikely to happen in practice, and if it does, it should be resolved by
+    # rewriting the test or the hook.
+    Current.reset_tenant
   end
 
   config.around(:each, use_transactional_fixtures: false) do |example|
@@ -199,6 +209,13 @@ RSpec.configure do |config|
   config.around(:each, active_job_inline_adapter: true) do |example|
     initial_queue_adapter = ActiveJob::Base.queue_adapter
     ActiveJob::Base.queue_adapter = :inline
+    example.run
+    ActiveJob::Base.queue_adapter = initial_queue_adapter
+  end
+
+  config.around(:each, active_job_que_adapter: true) do |example|
+    initial_queue_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :que
     example.run
     ActiveJob::Base.queue_adapter = initial_queue_adapter
   end
@@ -222,4 +239,9 @@ RspecApiDocumentation.configure do |config|
   config.request_body_formatter = :json
   config.html_embedded_css_file = 'doc/style.css'
   config.configurations_dir = Pathname.new(ENV['CONFIGURATIONS_DIR']) if ENV['CONFIGURATIONS_DIR']
+end
+
+# Speed up specs
+silence_warnings do
+  BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
 end

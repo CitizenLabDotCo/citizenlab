@@ -2,6 +2,7 @@ sr-Latn:
   email_campaigns:
     campaign_type_description:
       "manual": Zvanične poruke
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Dodela administratorskih prava
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izveštaj o spam komentaru
@@ -50,13 +51,15 @@ sr-Latn:
       "assignee_digest": Nedeljni pregled dodeljenih ideja
       "user_digest": Nedeljni pregled
       "voting_basket_submitted": Confirmation of voting
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Votes not submitted
       "voting_last_chance": Last chance to vote
+      "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
     general:
-      by_author: 'by %{authorName}'
-      author_wrote: '%{authorName} wrote:'
+      by_author: 'od %{authorName}'
+      author_wrote: '%{authorName} piše:'
       cta_goto_idea: 'Go to this idea'
       cta_goto_proposal: 'Go to this proposal'
       cta_goto_project: 'Go to this project'
@@ -72,7 +75,7 @@ sr-Latn:
     footer:
       "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
-      "link_unsubscribe": "Odjavi se"
+      "link_unsubscribe": "Odjavite se"
       "powered_by": "Powered by"
       "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
@@ -185,7 +188,7 @@ sr-Latn:
       subject: 'You have been invited to co-sponsor a proposal'
       preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
     initiative_resubmitted_for_review:
-      by_author: 'by %{authorName}'
+      by_author: 'od %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description_initiative: 'A proposal has been resubmitted for review. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a proposal to review'
@@ -504,6 +507,13 @@ sr-Latn:
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
       cta_see_votes_submitted: 'See votes submitted'
       cta_message: 'Click the button below to participate'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
@@ -550,6 +560,7 @@ sr-Latn:
         admins: 'За администраторе'
         admins_and_managers: 'За администраторе и менаџере'
         managers: 'Менаџерима'
+        project_participants: 'To project participants'
         registered_users: 'За регистроване кориснике'
       recipient_segment:
         admins: 'Админс'
@@ -573,12 +584,13 @@ sr-Latn:
         user_who_registers: 'Корисник који се региструје'
         user_who_was_invited: 'Корисник који је позван'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
-        users_who_follow_the_proposal: 'User who follow the proposal'
-        users_who_follow_the_input: 'User who follow the input'
+        users_who_follow_the_proposal: 'Users who follow the proposal'
+        users_who_follow_the_input: 'Users who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
         user_who_voted: 'User who voted'
         user_with_unsubmitted_votes: 'User who has not submitted their votes'
         users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -591,6 +603,7 @@ sr-Latn:
         proposals: 'Предлози'
         reactions: 'Реакције'
         voting: 'Voting'
+        surveys: 'Surveys'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -639,3 +652,4 @@ sr-Latn:
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
         registration_to_event: 'Registration to an event'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'

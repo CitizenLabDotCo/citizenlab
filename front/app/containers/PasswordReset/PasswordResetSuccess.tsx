@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Components
 import {
   Box,
   Icon,
@@ -9,15 +8,14 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-export const PasswordResetSuccess = () => {
+import messages from './messages';
+
+const PasswordResetSuccess = () => {
   const signIn = () => {
     clHistory.push('/');
     triggerAuthenticationFlow({ flow: 'signin' });
@@ -54,3 +52,5 @@ export const PasswordResetSuccess = () => {
     </Box>
   );
 };
+
+export default PasswordResetSuccess;

@@ -1,27 +1,24 @@
-// Libraries
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// Components
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
+import { DeleteReason, ICommentData } from 'api/comments/types';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
+
 import SpamReportForm from 'containers/SpamReport';
+
 import Button from 'components/UI/Button';
-import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
-// events
 import { deleteCommentModalClosed } from '../events';
+import messages from '../messages';
 
-// Styling
-import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
-
-import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
-import { DeleteReason, ICommentData } from 'api/comments/types';
+import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
 const Container = styled.div`
   display: flex;
@@ -73,6 +70,7 @@ const CommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
@@ -178,13 +176,18 @@ const CommentsMoreActions = ({
   return (
     <>
       <Container className={className || ''}>
-        <MoreActionsMenu showLabel={false} actions={actions} />
+        <MoreActionsMenu
+          showLabel={false}
+          actions={actions}
+          ref={moreActionsButtonRef}
+        />
       </Container>
 
       <Modal
         opened={modalVisible_delete}
         close={closeDeleteModal}
         className="e2e-comment-deletion-modal"
+        returnFocusRef={moreActionsButtonRef}
         header={<FormattedMessage {...messages.confirmCommentDeletion} />}
       >
         {needsToJustifyDeletion ? (
@@ -194,7 +197,10 @@ const CommentsMoreActions = ({
           />
         ) : (
           <ButtonsWrapper>
-            <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
+            <CancelButton
+              buttonStyle="secondary-outlined"
+              onClick={closeDeleteModal}
+            >
               <FormattedMessage {...messages.commentDeletionCancelButton} />
             </CancelButton>
             <AcceptButton
@@ -212,6 +218,7 @@ const CommentsMoreActions = ({
       <Modal
         opened={modalVisible_spam}
         close={closeSpamModal}
+        returnFocusRef={moreActionsButtonRef}
         header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
       >
         <SpamReportForm targetId={comment.id} targetType="comments" />

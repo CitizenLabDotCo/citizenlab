@@ -1,20 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeById from './useInitiativeById';
-import { initiativesData } from './__mocks__/useInitiatives';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*initiatives/:initiativeId';
+import endpoints, { apiPath, initiativesData } from './__mocks__/_mockServer';
+import useInitiativeById from './useInitiativeById';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativesData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET initiatives/:id']);
 
 describe('useInitiativeById', () => {
   beforeAll(() => server.listen());
@@ -38,8 +31,8 @@ describe('useInitiativeById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

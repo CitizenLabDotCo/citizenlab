@@ -1,24 +1,19 @@
 import React from 'react';
 
-// components
+import { colors, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
+
+import { IIdea } from 'api/ideas/types';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
-// styling
-import styled from 'styled-components';
-import { colors, isRtl, fontSizes } from 'utils/styleUtils';
-import { transparentize } from 'polished';
-
-// i18n
-import useLocalize from 'hooks/useLocalize';
-import useLocale from 'hooks/useLocale';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import { timeAgo } from 'utils/dateUtils';
-
-// typings
-import { IIdea } from 'api/ideas/types';
+import { isNilOrError } from 'utils/helperUtils';
 
 const BodyWrapper = styled.div`
   display: flex;

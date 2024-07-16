@@ -1,41 +1,36 @@
 import React, { memo, useCallback } from 'react';
 
-// components
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import {
+  Icon,
+  Spinner,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
 import SelectSort, {
   Sort,
 } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from '../IdeaMapCard';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
 import Centerer from 'components/UI/Centerer';
+import SearchInput from 'components/UI/SearchInput';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import usePhase from 'api/phases/usePhase';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// services
-import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// utils
-import { isFieldEnabled } from 'utils/projectUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
+import IdeaMapCard from '../IdeaMapCard';
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;
@@ -114,133 +109,132 @@ interface Props {
   projectId: string;
   phaseId?: string;
   className?: string;
+  onSelectIdea: (ideaId: string | null) => void;
 }
 
-const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
-  const locale = useLocale();
-  const [searchParams] = useSearchParams();
+const MapIdeasList = memo<Props>(
+  ({ projectId, phaseId, className, onSelectIdea }) => {
+    const locale = useLocale();
+    const [searchParams] = useSearchParams();
 
-  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
-    projectId,
-    phaseId,
-  });
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
+    const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
+      projectId,
+      phaseId,
+    });
+    const { data: phase } = usePhase(phaseId);
 
-  const sort =
-    (searchParams.get('sort') as Sort | null) ??
-    project?.data.attributes.ideas_order ??
-    ideaDefaultSortMethodFallback;
-  const search = searchParams.get('search');
-  const topicsParam = searchParams.get('topics');
-  const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+    const sort =
+      (searchParams.get('sort') as Sort | null) ??
+      phase?.data.attributes.ideas_order ??
+      ideaDefaultSortMethodFallback;
+    const search = searchParams.get('search');
+    const topicsParam = searchParams.get('topics');
+    const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: [projectId],
-    phaseId,
-    sort,
-    search,
-    topics,
-  });
+    const { data: ideaMarkers } = useIdeaMarkers({
+      projectIds: [projectId],
+      phaseId,
+      sort,
+      search,
+      topics,
+    });
 
-  const handleSearchOnChange = useCallback((search: string | null) => {
-    updateSearchParams({ search });
-  }, []);
+    const handleSearchOnChange = useCallback((search: string | null) => {
+      updateSearchParams({ search });
+    }, []);
 
-  const handleSortOnChange = useCallback((sort: Sort) => {
-    updateSearchParams({ sort });
-  }, []);
+    const handleSortOnChange = useCallback((sort: Sort) => {
+      updateSearchParams({ sort });
+    }, []);
 
-  const handleTopicsOnChange = useCallback((topics: string[]) => {
-    topics.length === 0
-      ? updateSearchParams({ topics: undefined })
-      : updateSearchParams({ topics });
-  }, []);
+    const handleTopicsOnChange = useCallback((topics: string[]) => {
+      topics.length === 0
+        ? updateSearchParams({ topics: undefined })
+        : updateSearchParams({ topics });
+    }, []);
 
-  const isFiltered = (search && search.length > 0) || topics.length > 0;
+    const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-  if (isNilOrError(ideaCustomFieldsSchema)) return null;
+    if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
-  const methodConfig =
-    project &&
-    getMethodConfig(
-      phase?.data.attributes?.participation_method ||
-        project?.data.attributes?.participation_method
+    const methodConfig =
+      phase && getMethodConfig(phase.data.attributes?.participation_method);
+
+    const topicsEnabled = isFieldEnabled(
+      'topic_ids',
+      ideaCustomFieldsSchema.data.attributes,
+      locale
     );
 
-  const topicsEnabled = isFieldEnabled(
-    'topic_ids',
-    ideaCustomFieldsSchema.data.attributes,
-    locale
-  );
-
-  return (
-    <Container className={className || ''}>
-      {methodConfig?.showIdeaFilters && (
-        <Header>
-          <DropdownFilters>
-            <SelectSort
-              value={sort}
-              onChange={handleSortOnChange}
-              alignment="left"
-            />
-            {topicsEnabled && (
-              <TopicFilterDropdown
-                selectedTopicIds={topics}
-                onChange={handleTopicsOnChange}
+    return (
+      <Container className={className || ''}>
+        {methodConfig?.showIdeaFilters && (
+          <Header>
+            <DropdownFilters>
+              <SelectSort
+                value={sort}
+                onChange={handleSortOnChange}
                 alignment="left"
-                projectId={projectId}
               />
-            )}
-          </DropdownFilters>
-
-          <StyledSearchInput
-            defaultValue={search ?? undefined}
-            onChange={handleSearchOnChange}
-            a11y_numberOfSearchResults={
-              ideaMarkers && ideaMarkers.data.length > 0
-                ? ideaMarkers.data.length
-                : 0
-            }
-          />
-        </Header>
-      )}
-
-      <IdeaMapCards>
-        {ideaMarkers === undefined && (
-          <Centerer>
-            <Spinner />
-          </Centerer>
-        )}
-
-        {ideaMarkers &&
-          ideaMarkers.data.length > 0 &&
-          ideaMarkers.data.map((ideaMarker) => (
-            <StyledIdeaMapCard
-              projectId={projectId}
-              ideaMarker={ideaMarker}
-              key={ideaMarker.id}
-              phaseId={phaseId}
-            />
-          ))}
-
-        {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
-          <EmptyContainer>
-            <IdeaIcon ariaHidden name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage
-                  {...(isFiltered
-                    ? messages.noFilteredResults
-                    : messages.noResults)}
+              {topicsEnabled && (
+                <TopicFilterDropdown
+                  selectedTopicIds={topics}
+                  onChange={handleTopicsOnChange}
+                  alignment="left"
+                  projectId={projectId}
                 />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
+              )}
+            </DropdownFilters>
+
+            <StyledSearchInput
+              defaultValue={search ?? undefined}
+              onChange={handleSearchOnChange}
+              a11y_numberOfSearchResults={
+                ideaMarkers && ideaMarkers.data.length > 0
+                  ? ideaMarkers.data.length
+                  : 0
+              }
+            />
+          </Header>
         )}
-      </IdeaMapCards>
-    </Container>
-  );
-});
+
+        <IdeaMapCards id="e2e-idea-map-cards">
+          {ideaMarkers === undefined && (
+            <Centerer>
+              <Spinner />
+            </Centerer>
+          )}
+
+          {ideaMarkers &&
+            ideaMarkers.data.length > 0 &&
+            ideaMarkers.data.map((ideaMarker) => (
+              <StyledIdeaMapCard
+                projectId={projectId}
+                idea={ideaMarker}
+                key={ideaMarker.id}
+                phaseId={phaseId}
+                onSelectIdea={onSelectIdea}
+              />
+            ))}
+
+          {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
+            <EmptyContainer>
+              <IdeaIcon ariaHidden name="idea" />
+              <EmptyMessage>
+                <EmptyMessageLine>
+                  <FormattedMessage
+                    {...(isFiltered
+                      ? messages.noFilteredResults
+                      : messages.noResults)}
+                  />
+                </EmptyMessageLine>
+              </EmptyMessage>
+            </EmptyContainer>
+          )}
+        </IdeaMapCards>
+      </Container>
+    );
+  }
+);
 
 export default MapIdeasList;

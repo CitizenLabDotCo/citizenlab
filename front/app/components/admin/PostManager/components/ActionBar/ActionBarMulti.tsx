@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 
-// api
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// components
 import { Button, Icon } from 'semantic-ui-react';
+
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
 import WarningModal from 'components/WarningModal';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
-// typings
 import { ManagerType } from '../..';
+
+import messages from './messages';
 
 interface Props {
   type: ManagerType;
@@ -38,7 +36,6 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const handleDelete = async () => {
     if (type === 'Initiatives') {
       setIsLoadingDeleteInitiative(true);
-      resetSelection();
 
       // Yes, terribly inefficient, but if you try to do this in
       // parallel the database crashes. To do this properly
@@ -47,11 +44,11 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
         await deleteInitiative({ initiativeId });
       }
 
+      resetSelection();
       setIsLoadingDeleteInitiative(false);
       closeWarningModal();
     } else {
       setIsLoadingDeleteIdea(true);
-      resetSelection();
 
       // Yes, terribly inefficient, but if you try to do this in
       // parallel the database crashes. To do this properly
@@ -60,6 +57,7 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
         await deleteIdea(ideaId);
       }
 
+      resetSelection();
       setIsLoadingDeleteIdea(false);
       closeWarningModal();
     }

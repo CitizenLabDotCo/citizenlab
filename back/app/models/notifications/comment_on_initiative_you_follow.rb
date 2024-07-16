@@ -71,6 +71,8 @@ module Notifications
     EVENT_NAME = 'Comment on initiative you follow'
 
     def self.make_notifications_on(activity)
+      return [] unless AppConfiguration.instance.feature_activated? 'follow'
+
       comment = activity.item
       initiator_id = comment&.author_id
 

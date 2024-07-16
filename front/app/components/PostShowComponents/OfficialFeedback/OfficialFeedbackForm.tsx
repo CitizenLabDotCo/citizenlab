@@ -1,39 +1,37 @@
-// libraries
 import React, { useCallback, useEffect, useState } from 'react';
+
+import {
+  Box,
+  Input,
+  LocaleSwitcher,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+import { Multiloc, SupportedLocale } from 'typings';
 
-// components
-import { Box, Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
+import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
+import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import { Section } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
 
-// utils
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage, isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-
-// typings
-import { Multiloc, Locale } from 'typings';
-
-// stylings
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
-import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
-import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
-import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
-import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
-import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 const Container = styled.div``;
 
@@ -121,7 +119,9 @@ const OfficialFeedbackForm = ({
   const { mutate: updateInitiativeOfficialFeedback } =
     useUpdateInitiativeOfficialFeedback();
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const [formValues, setFormValues] = useState<OfficialFeedbackFormValues>({
     bodyMultiloc: {},
     authorMultiloc: {},
@@ -172,11 +172,14 @@ const OfficialFeedbackForm = ({
     );
   }, [locale, formType, feedback, getEmptyFormValues]);
 
-  const handleOnLocaleChange = (locale: Locale) => {
+  const handleOnLocaleChange = (locale: SupportedLocale) => {
     setSelectedLocale(locale);
   };
 
-  const handleBodyOnChange = (body: string, locale: Locale | undefined) => {
+  const handleBodyOnChange = (
+    body: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       setError(false);
       setSuccess(false);
@@ -190,7 +193,10 @@ const OfficialFeedbackForm = ({
     }
   };
 
-  const handleAuthorOnChange = (author: string, locale: Locale | undefined) => {
+  const handleAuthorOnChange = (
+    author: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       setError(false);
       setSuccess(false);
@@ -422,7 +428,7 @@ const OfficialFeedbackForm = ({
 
           {onClose && (
             <CancelButton
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={onClose}
               textColor={formType === 'edit' ? colors.primary : colors.error}
             >

@@ -8,9 +8,9 @@ module EmailCampaigns
       Campaigns::AssigneeDigest,
       Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
-      Campaigns::CommentOnYourComment,
       Campaigns::CommentOnIdeaYouFollow,
       Campaigns::CommentOnInitiativeYouFollow,
+      Campaigns::CommentOnYourComment,
       Campaigns::CosponsorOfYourInitiative,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
@@ -18,7 +18,6 @@ module EmailCampaigns
       Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::InitiativePublished,
-      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InitiativeResubmittedForReview,
       Campaigns::InternalCommentOnIdeaAssignedToYou,
       Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn,
@@ -28,12 +27,15 @@ module EmailCampaigns
       Campaigns::InternalCommentOnUnassignedInitiative,
       Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
+      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
+      Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
+      Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
       Campaigns::NewIdeaForAdmin,
       Campaigns::NewInitiativeForAdmin,
@@ -48,16 +50,25 @@ module EmailCampaigns
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
+      Campaigns::VotingBasketNotSubmitted,
+      Campaigns::VotingBasketSubmitted,
+      Campaigns::VotingLastChance,
+      Campaigns::VotingPhaseStarted,
+      Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
+
+    def campaign_classes
+      CAMPAIGN_CLASSES
+    end
 
     def campaign_types
       campaign_classes.map(&:name)
     end
 
-    def campaign_classes
-      CAMPAIGN_CLASSES
+    def manual_campaign_types
+      campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)
@@ -119,12 +130,12 @@ module EmailCampaigns
     end
 
     def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(options) }
+      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
       campaigns.flat_map do |campaign|
-        recipients = campaign.apply_recipient_filters(options)
+        recipients = campaign.apply_recipient_filters(**options)
         recipients.zip([campaign].cycle)
       end
     end

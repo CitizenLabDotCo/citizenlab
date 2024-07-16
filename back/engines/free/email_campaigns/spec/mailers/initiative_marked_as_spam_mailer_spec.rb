@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::InitiativeMarkedAsSpamMailer do
           post_created_at: initiative.created_at.iso8601,
           post_title_multiloc: initiative.title_multiloc,
           post_author_name: initiative.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
+          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale)),
           initiative_reactions_needed: initiative.reactions_needed,
           initiative_expires_at: initiative.expires_at.iso8601,
           spam_report_reason_code: 'other',
@@ -51,7 +51,7 @@ RSpec.describe EmailCampaigns::InitiativeMarkedAsSpamMailer do
     end
 
     it 'assigns go to initiative CTA' do
-      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
+      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(initiative_url)
     end
   end

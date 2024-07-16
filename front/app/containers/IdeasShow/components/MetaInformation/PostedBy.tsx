@@ -1,26 +1,24 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-// i18n
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const UserWrapper = styled.div`
   display: flex;

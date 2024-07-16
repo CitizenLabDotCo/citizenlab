@@ -10,7 +10,11 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council')
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea({
+          projectId: project?.body.data.id,
+          ideaTitle,
+          ideaContent,
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;

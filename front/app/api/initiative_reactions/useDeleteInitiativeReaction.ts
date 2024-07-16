@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IInitiativeReaction } from './types';
+
 import initiativesKeys from 'api/initiatives/keys';
 
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { IInitiativeReaction } from './types';
+
 const deleteInitiativeReaction = async ({
-  initiativeId: _initiativeId,
   reactionId,
 }: {
-  initiativeId: string;
   reactionId: string;
 }) =>
   fetcher<IInitiativeReaction>({
@@ -15,11 +16,15 @@ const deleteInitiativeReaction = async ({
     action: 'delete',
   });
 
-const useDeleteInitiativeReaction = () => {
+const useDeleteInitiativeReaction = ({
+  initiativeId,
+}: {
+  initiativeId: string;
+}) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteInitiativeReaction,
-    onSuccess: (_data, { initiativeId }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.item({ id: initiativeId }),
       });

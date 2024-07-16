@@ -4,7 +4,11 @@
   <mj-section padding="25px" border="1px solid #EAEAEA" border-radius="5px">
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= count_from(event.statistics.new_users_increase) %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/admin_digest_mailer_spec.rb#L18)
+        an outdated `activities` field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::AdminDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= count_from(event.statistics['new_users_increase']) %>
         <img
           alt="User icon"
           width="29px"
@@ -18,7 +22,11 @@
 
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= count_from(event.statistics.new_ideas_increase) %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/admin_digest_mailer_spec.rb#L18)
+        an outdated `activities` field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::AdminDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= count_from(event.statistics['new_ideas_increase']) %>
         <img
           alt="Idea icon"
           width="24px"
@@ -32,7 +40,11 @@
 
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= count_from(event.statistics.new_comments_increase) %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/admin_digest_mailer_spec.rb#L18)
+        an outdated `activities` field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::AdminDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= count_from(event.statistics['new_comments_increase']) %>
         <img
           alt="Comment icon"
           width="26px"

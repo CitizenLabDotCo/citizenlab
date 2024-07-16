@@ -1,5 +1,6 @@
-import { QueryKeys } from 'utils/cl-react-query/types';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+
+import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseType = { type: 'custom_fields_json_forms_schema' };
 const schemaKeys = {

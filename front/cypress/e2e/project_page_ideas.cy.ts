@@ -120,7 +120,6 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -164,7 +163,7 @@ describe('New timeline project with active ideation phase', () => {
         });
       })
       .then(() => {
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -211,8 +210,14 @@ describe('New timeline project with active ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+      ideaId = '';
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -235,7 +240,6 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -268,7 +272,7 @@ describe('Archived timeline project with ideation phase', () => {
         });
       })
       .then(() => {
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -298,8 +302,14 @@ describe('Archived timeline project with ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+      ideaId = '';
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -311,7 +321,6 @@ describe('timeline project with no active ideation phase', () => {
   before(() => {
     return cy
       .apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: randomString(),
@@ -340,11 +349,12 @@ describe('timeline project with no active ideation phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
     // Click map to open popup
-    cy.get('.leaflet-map-pane').click('bottom', { force: true });
+    cy.get('#e2e-ideas-map').should('exist');
+    cy.wait(1000);
+    cy.get('#e2e-ideas-map').click('center');
+    cy.wait(1000);
     // Add idea button should appear, click it
-    cy.get('.leaflet-popup-content').within(() => {
-      cy.get('#e2e-cta-button').get('button').click({ force: true });
-    });
+    cy.get('#e2e-idea-from-map-button').click();
     // Shold redirect to new idea page with phase id in URL
     cy.url().should('include', `/projects/${projectTitle}/ideas/new`);
     cy.url().should('include', 'phase_id');
@@ -353,7 +363,10 @@ describe('timeline project with no active ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -373,6 +386,8 @@ describe('Ideation CTA bar', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  const phaseTitle = randomString();
+  let firstPhaseId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
@@ -381,59 +396,72 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: description,
           description,
           publicationStatus: 'published',
-          participationMethod: 'ideation',
-          votingMaxTotal: 100,
         })
           .then((project) => {
             projectId = project.body.data.id;
             projectSlug = project.body.data.attributes.slug;
+            return cy.apiCreatePhase({
+              projectId,
+              title: phaseTitle,
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: true,
+              canComment: true,
+              canReact: true,
+              votingMaxTotal: 100,
+            });
           })
-          .then(() => {
-            return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+          .then((phase) => {
+            firstPhaseId = phase.body.data.id;
+            return cy.apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [firstPhaseId],
+            });
           })
           .then((idea) => {
             ideaIdOne = idea.body.data.id;
           })
           .then(() => {
             return cy.apiCreateProject({
-              type: 'continuous',
               title: projectTitle,
               descriptionPreview: description,
               description,
               publicationStatus: 'published',
-              participationMethod: 'ideation',
-              votingMaxTotal: 100,
-              postingEnabled: false,
             });
           })
           .then((restrictedProject) => {
             postingRestrictedProjectId = restrictedProject.body.data.id;
             postingRestrictedProjectSlug =
               restrictedProject.body.data.attributes.slug;
+            return cy.apiCreatePhase({
+              projectId: postingRestrictedProjectId,
+              title: phaseTitle,
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: false,
+              canComment: true,
+              canReact: true,
+              votingMaxTotal: 100,
+            });
           })
-          .then(() => {
-            return cy.apiCreateIdea(
-              postingRestrictedProjectId,
+          .then((anotherPhase) => {
+            return cy.apiCreateIdea({
+              projectId,
               ideaTitle,
-              ideaContent
-            );
+              ideaContent,
+              phaseIds: [firstPhaseId],
+            });
           })
           .then((idea) => {
             ideaIdTwo = idea.body.data.id;
           });
       });
-  });
-
-  after(() => {
-    cy.apiRemoveIdea(ideaIdOne);
-    cy.apiRemoveProject(projectId);
-    cy.apiRemoveIdea(ideaIdTwo);
-    cy.apiRemoveProject(postingRestrictedProjectId);
   });
 
   it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
@@ -446,5 +474,13 @@ describe('Ideation CTA bar', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
+  });
+
+  after(() => {
+    [projectId, postingRestrictedProjectId].forEach((id) => {
+      if (id) {
+        cy.apiRemoveProject(id);
+      }
+    });
   });
 });

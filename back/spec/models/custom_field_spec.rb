@@ -35,8 +35,16 @@ class TestVisitor < FieldVisitorService
     'select from visitor'
   end
 
+  def visit_select_image(_field)
+    'select_image from visitor'
+  end
+
   def visit_multiselect(_field)
     'multiselect from visitor'
+  end
+
+  def visit_multiselect_image(_field)
+    'multiselect_image from visitor'
   end
 
   def visit_checkbox(_field)
@@ -352,53 +360,34 @@ RSpec.describe CustomField do
   end
 
   describe 'title_multiloc behaviour for ideation section 1' do
-    context 'continuous projects' do
-      it 'returns a title containing the project input term regardless of what it is set to' do
-        resource = build(:custom_form)
-        resource.participation_context.update! input_term: 'option'
-        ignored_title = { en: 'anything' }
-        section = described_class.new(
-          resource: resource,
-          input_type: 'section',
-          code: 'ideation_section1',
-          title_multiloc: ignored_title
-        )
-        expected_english_title = 'What is your option?'
-        expect(section.title_multiloc['en']).to eq expected_english_title
-      end
+    it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
+      project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
+      resource = build(:custom_form, participation_context: project)
+      ignored_title = { en: 'anything' }
+      section = described_class.new(
+        resource: resource,
+        input_type: 'section',
+        code: 'ideation_section1',
+        title_multiloc: ignored_title
+      )
+      expected_english_title = 'What is your question?'
+      expect(section.title_multiloc['en']).to eq expected_english_title
     end
 
-    # Do budget too
-    context 'timeline projects' do
-      it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
-        resource = build(:custom_form, participation_context: project)
-        ignored_title = { en: 'anything' }
-        section = described_class.new(
-          resource: resource,
-          input_type: 'section',
-          code: 'ideation_section1',
-          title_multiloc: ignored_title
-        )
-        expected_english_title = 'What is your question?'
-        expect(section.title_multiloc['en']).to eq expected_english_title
-      end
+    it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
+      project = create(:project_with_future_phases)
+      project.phases.last.update! input_term: 'contribution'
+      resource = build(:custom_form, participation_context: project)
 
-      it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
-        project = create(:project_with_future_phases)
-        project.phases.last.update! input_term: 'contribution'
-        resource = build(:custom_form, participation_context: project)
-
-        ignored_title = { en: 'anything' }
-        section = described_class.new(
-          resource: resource,
-          input_type: 'section',
-          code: 'ideation_section1',
-          title_multiloc: ignored_title
-        )
-        expected_english_title = 'What is your contribution?'
-        expect(section.title_multiloc['en']).to eq expected_english_title
-      end
+      ignored_title = { en: 'anything' }
+      section = described_class.new(
+        resource: resource,
+        input_type: 'section',
+        code: 'ideation_section1',
+        title_multiloc: ignored_title
+      )
+      expected_english_title = 'What is your contribution?'
+      expect(section.title_multiloc['en']).to eq expected_english_title
     end
   end
 
@@ -465,6 +454,55 @@ RSpec.describe CustomField do
     it 'cannot be less than 0' do
       field.minimum_select_count = -1
       expect(field.valid?).to be false
+    end
+  end
+
+  describe '#other_option_text_field' do
+    let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
+
+    it 'returns a text field when the field has an other option' do
+      create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { en: 'Something else', 'fr-FR': 'Quelque chose' })
+      other_option_text_field = field.other_option_text_field
+      expect(other_option_text_field).not_to be_nil
+      expect(other_option_text_field.key).to eq 'select_field_other'
+      expect(other_option_text_field.input_type).to eq 'text'
+      expect(other_option_text_field.title_multiloc['en']).to eq "If you picked 'Something else', what are you thinking of?"
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Puisque vous avez choisi « Quelque chose », à quoi pensez-vous ?'
+    end
+
+    it 'returns nil otherwise' do
+      expect(field.other_option_text_field).to be_nil
+    end
+  end
+
+  context 'when point field methods are called' do
+    let(:point_field) { create(:custom_field_point, title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }) }
+    let(:text_field) { create(:custom_field_text) }
+
+    describe '#point_latitude_field' do
+      it "returns a point field when the field has input_type: 'point'" do
+        expect(point_field.point_latitude_field).not_to be_nil
+        expect(point_field.point_latitude_field.key).to eq "#{point_field.key}_latitude"
+        expect(point_field.point_latitude_field.title_multiloc)
+          .to eq({ 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' })
+      end
+
+      it 'returns nil otherwise' do
+        expect(text_field.point_latitude_field).to be_nil
+      end
+    end
+
+    describe '#point_longitude_field' do
+      it "returns a point field when the field has input_type: 'point'" do
+        expect(point_field.point_longitude_field).not_to be_nil
+        expect(point_field.point_longitude_field.key).to eq "#{point_field.key}_longitude"
+        expect(point_field.point_longitude_field.title_multiloc)
+          .to eq({ 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' })
+      end
+
+      it 'returns nil otherwise' do
+        expect(text_field.point_longitude_field).to be_nil
+      end
     end
   end
 end

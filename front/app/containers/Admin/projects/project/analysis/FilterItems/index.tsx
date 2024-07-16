@@ -1,20 +1,24 @@
 import React from 'react';
+
 import {
   Box,
   stylingConsts,
   colors,
   IconButton,
 } from '@citizenlab/cl2-component-library';
+
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import InputFieldFilterItem from './InputFieldFilterItem';
+
+import Tag from '../Tags/Tag';
+
 import AuthorFieldFilterItem from './AuthorFieldFilterItem';
 import EllipsisFilterValue from './EllipsisFilterValue';
-import { useParams } from 'react-router-dom';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import Tag from '../Tags/Tag';
+import InputFieldFilterItem from './InputFieldFilterItem';
 import messages from './messages';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
   if (clause === 'from') {
@@ -29,11 +33,12 @@ const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
 type FilterItemsProps = {
   filters: IInputsFilterParams;
   isEditable: boolean;
+  analysisId: string;
 };
 
 const translationKeys: Record<
   string,
-  { translationKey: MessageDescriptor; predicate: '>' | '<' | '=' }
+  { translationKey: MessageDescriptor; predicate?: '>' | '<' | '=' }
 > = {
   search: {
     translationKey: messages.search,
@@ -71,11 +76,18 @@ const translationKeys: Record<
     translationKey: messages.comments,
     predicate: '<',
   },
+  input_custom_field_no_empty_values: {
+    translationKey: messages.emptyCustomFields,
+  },
+  limit: {
+    translationKey: messages.limit,
+    predicate: '=',
+  },
 };
 
-const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
+const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+
   const { data: tags } = useAnalysisTags({ analysisId });
 
   return (
@@ -147,8 +159,12 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               display="flex"
             >
               <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
-              <Box mx="3px">{translationKeys[key].predicate}</Box>
-              <EllipsisFilterValue>{value}</EllipsisFilterValue>
+              {translationKeys[key].predicate && (
+                <>
+                  <Box mx="3px">{translationKeys[key].predicate}</Box>
+                  <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
+                </>
+              )}
               {isEditable && (
                 <IconButton
                   iconName="close"

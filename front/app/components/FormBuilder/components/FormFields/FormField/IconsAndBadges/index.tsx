@@ -1,28 +1,24 @@
 import React from 'react';
 
-// components
 import {
   Box,
   IconTooltip,
   Text,
   Badge,
   Icon,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
-// styling
-import { colors } from 'utils/styleUtils';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// utils
-import { getTranslatedFieldBadgeLabel } from '../../utils';
-import { getFieldIcon } from './utils';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
-// typings
-import { IFlatCustomField } from 'api/custom_fields/types';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../messages';
+import { getTranslatedFieldBadgeLabel } from '../../utils';
+
+import { getFieldIcon } from './utils';
 
 interface Props {
   field: IFlatCustomField;

@@ -1,27 +1,22 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 
-// components
-import LikeButton from './LikeButton';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// hooks
+import useAddCommentReaction from 'api/comment_reactions/useAddCommentReaction';
+import useCommentReaction from 'api/comment_reactions/useCommentReaction';
+import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReaction';
+import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useAddCommentReaction from 'api/comment_reactions/useAddCommentReaction';
-import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReaction';
-import useCommentReaction from 'api/comment_reactions/useCommentReaction';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { trackLike, trackCancelLike } from './trackReaction';
-
-// typings
-import { ICommentData } from 'api/comments/types';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
+
+import LikeButton from './LikeButton';
+import { trackLike, trackCancelLike } from './trackReaction';
 
 interface Props {
   ideaId: string | undefined;
@@ -121,7 +116,7 @@ const CommentReaction = ({
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const actionDescriptor =
-        idea.data.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptors.comment_reacting_idea;
 
       if (actionDescriptor.enabled) {
         reaction();
@@ -173,7 +168,7 @@ const CommentReaction = ({
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
-        idea.data.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptors.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
       disabled = !commentReactingPermissionInitiative?.enabled;

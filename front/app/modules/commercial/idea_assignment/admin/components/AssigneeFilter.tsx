@@ -1,21 +1,22 @@
 import React, { SyntheticEvent } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 // import { Select } from '@citizenlab/cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUsers } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
+
+import { ManagerType } from 'components/admin/PostManager';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import { ManagerType } from 'components/admin/PostManager';
-import useAuthUser from 'api/me/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
-import useUsers from 'api/users/useUsers';
-import { IUsers } from 'api/users/types';
+
+import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   handleAssigneeFilterChange: (value: string | undefined) => void;

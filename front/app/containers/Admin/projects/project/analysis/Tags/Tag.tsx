@@ -1,10 +1,12 @@
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-
 import React from 'react';
 
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
+
 import { TagType } from 'api/analysis_tags/types';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import { trackEventByName } from 'utils/analytics';
 
 type TagProps = {
   name: string;

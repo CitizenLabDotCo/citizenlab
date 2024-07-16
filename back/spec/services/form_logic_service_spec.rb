@@ -780,4 +780,27 @@ describe FormLogicService do
       end
     end
   end
+
+  describe '#replace_temp_ids_in_field_logic!' do
+    let(:page1) { fields[2] }
+    let(:question1) { fields[3] }
+    let(:option1) { question1.options[0] }
+    let(:option2) { question1.options[1] }
+    let(:page2) { fields[4] }
+
+    before do
+      question1.update!(logic: {
+        'rules' => [
+          { 'if' => option1.id, 'goto_page_id' => page2.id },
+          { 'if' => 'NON_EXISTENT_ID', 'goto_page_id' => page2.id }
+        ]
+      })
+    end
+
+    it 'silently removes rules on select fields with option ids that do not exist' do
+      form_logic.replace_temp_ids!({}, {})
+
+      expect(question1.reload.logic).to eq('rules' => [{ 'if' => option1.id, 'goto_page_id' => page2.id }])
+    end
+  end
 end

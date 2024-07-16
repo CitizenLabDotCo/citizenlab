@@ -67,6 +67,30 @@ describe XlsxService do
       expect(field_idx).to be_present
     end
 
+    it 'handles duplicate user custom field titles' do
+      select1 = create(:custom_field_select, title_multiloc: { 'en' => 'gender' })
+      select2 = create(:custom_field_select, title_multiloc: { 'en' => 'gender' })
+      option1 = create(:custom_field_option, custom_field: select1, title_multiloc: { 'en' => 'Option 1' })
+      option2 = create(:custom_field_option, custom_field: select2, title_multiloc: { 'en' => 'Option 2' })
+
+      users.first.update!(
+        custom_field_values: {
+          select1.key => option1.key,
+          select2.key => option2.key
+        }
+      )
+
+      title_row = worksheet[0].cells.map(&:value)
+      expect(title_row).to include('gender (1)', 'gender (2)')
+      expect(title_row).not_to include('gender')
+
+      column1 = title_row.find_index 'gender (1)'
+      column2 = title_row.find_index 'gender (2)'
+      user_rows = worksheet.map { |row| row.cells.map(&:value) }
+      user_row = user_rows.find { |values| values.include? users.first.id }
+      expect([user_row[column1], user_row[column2]]).to eq ['Option 1', 'Option 2']
+    end
+
     describe do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 
@@ -242,6 +266,17 @@ describe XlsxService do
       expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
       expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
+
+    it 'can convert a hash array with duplicate column names' do
+      hash_array = [
+        { 'a' => 'value a', 'b' => 'value b', 'b__2' => 'value b__2' }
+      ]
+      xlsx = service.hash_array_to_xlsx(hash_array)
+      workbook = RubyXL::Parser.parse_buffer(xlsx)
+      worksheet = workbook.worksheets[0]
+      expect(worksheet[0].cells.map(&:value)).to match %w[a b b]
+      expect(worksheet[1].cells.map(&:value)).to match ['value a', 'value b', 'value b__2']
+    end
   end
 
   describe 'xlsx_to_hash_array' do
@@ -260,6 +295,14 @@ describe XlsxService do
 
     it 'correctly converts an xlsx to a hash array' do
       expect(round_trip_hash_array).to eq hash_array
+    end
+
+    it 'can convert duplicate field titles' do
+      xlsx_file = Rails.root.join('spec/fixtures/example.xlsx').binread
+      xlsx_hash_array = service.xlsx_to_hash_array(xlsx_file)
+      expect(xlsx_hash_array[0].keys).to include 'Duplicate field', 'Duplicate field__2'
+      expect(xlsx_hash_array[0]['Duplicate field']).to eq 'Duplicate field value 1'
+      expect(xlsx_hash_array[0]['Duplicate field__2']).to eq 'Duplicate field value 2'
     end
   end
 

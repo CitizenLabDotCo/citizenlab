@@ -2,6 +2,7 @@ ach:
   email_campaigns:
     campaign_type_description:
       "manual": crwdns208056:0crwdne208056:0
+      "manual_project_participants": crwdns2158330:0crwdne2158330:0
       "admin_rights_received": crwdns208058:0crwdne208058:0
       "comment_deleted_by_admin": crwdns208060:0crwdne208060:0
       "comment_marked_as_spam": crwdns208062:0crwdne208062:0
@@ -50,8 +51,10 @@ ach:
       "assignee_digest": crwdns208144:0crwdne208144:0
       "user_digest": crwdns208146:0crwdne208146:0
       "voting_basket_submitted": crwdns777337:0crwdne777337:0
+      "native_survey_not_submitted": crwdns1866510:0crwdne1866510:0
       "voting_basket_not_submitted": crwdns777339:0crwdne777339:0
       "voting_last_chance": crwdns777341:0crwdne777341:0
+      "voting_phase_started": crwdns1336704:0crwdne1336704:0
       "voting_results": crwdns777343:0crwdne777343:0
       "your_proposed_initiatives_digest": crwdns208148:0crwdne208148:0
     general:
@@ -504,6 +507,13 @@ ach:
       event_description: 'crwdns777433:0%{organizationName}crwdne777433:0'
       cta_see_votes_submitted: 'crwdns777435:0crwdne777435:0'
       cta_message: 'crwdns777437:0crwdne777437:0'
+    native_survey_not_submitted:
+      subject: 'crwdns1866512:0%{organizationName}crwdne1866512:0'
+      preheader: 'crwdns1866514:0%{organizationName}crwdne1866514:0'
+      title_native_survey_not_submitted: 'crwdns1866516:0crwdne1866516:0'
+      body_native_survey_not_submitted: 'crwdns1866518:0%{phaseTitle}crwdnd1866518:0%{phaseEndDate}crwdne1866518:0'
+      body_native_survey_not_submitted_no_date: 'crwdns1866520:0%{phaseTitle}crwdne1866520:0'
+      cta_complete_your_survey_response: 'crwdns1866522:0crwdne1866522:0'
     voting_basket_not_submitted:
       subject: 'crwdns777439:0%{organizationName}crwdne777439:0'
       preheader: 'crwdns777441:0%{organizationName}crwdne777441:0'
@@ -550,6 +560,7 @@ ach:
         admins: 'crwdns748797:0crwdne748797:0'
         admins_and_managers: 'crwdns576955:0crwdne576955:0'
         managers: 'crwdns748799:0crwdne748799:0'
+        project_participants: 'crwdns2158332:0crwdne2158332:0'
         registered_users: 'crwdns522399:0crwdne522399:0'
       recipient_segment:
         admins: 'crwdns522401:0crwdne522401:0'
@@ -579,6 +590,7 @@ ach:
         user_who_voted: 'crwdns777489:0crwdne777489:0'
         user_with_unsubmitted_votes: 'crwdns777491:0crwdne777491:0'
         users_who_engaged_but_not_voted: 'crwdns777493:0crwdne777493:0'
+        user_with_unsubmitted_survey: 'crwdns1866524:0crwdne1866524:0'
       content_type:
         comments: 'crwdns522439:0crwdne522439:0'
         content_moderation: 'crwdns522441:0crwdne522441:0'
@@ -591,6 +603,7 @@ ach:
         proposals: 'crwdns522451:0crwdne522451:0'
         reactions: 'crwdns777495:0crwdne777495:0'
         voting: 'crwdns777497:0crwdne777497:0'
+        surveys: 'crwdns1866526:0crwdne1866526:0'
       trigger:
         comment_is_deleted: 'crwdns522455:0crwdne522455:0'
         comment_is_flagged_as_spam: 'crwdns522457:0crwdne522457:0'
@@ -639,3 +652,4 @@ ach:
         7_days_after_invite_is_sent: 'crwdns522507:0crwdne522507:0'
         7_days_before_the_project_changes_phase: 'crwdns576991:0crwdne576991:0'
         registration_to_event: 'crwdns1061737:0crwdne1061737:0'
+        survey_1_day_after_draft_saved: 'crwdns1866528:0crwdne1866528:0'

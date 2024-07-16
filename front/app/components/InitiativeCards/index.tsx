@@ -1,52 +1,46 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { isNumber } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useState, useCallback, useMemo, lazy } from 'react';
 
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// components
-import InitiativesMap from 'components/InitiativesMap';
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
-import SortFilterDropdown from './SortFilterDropdown';
-import StatusFilterBox from './StatusFilterBox';
-import TopicFilterBox from './TopicFilterBox';
-import SearchInput from 'components/UI/SearchInput';
-import TopBar from 'components/FiltersModal/TopBar';
-import BottomBar from 'components/FiltersModal/BottomBar';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import { ScreenReaderOnly } from 'utils/a11y';
-import EmptyProposals from './EmptyProposals';
-import ProposalsList from './ProposalsList';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// hooks
-import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
-import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
-
-// i18n
-import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
 import {
+  Spinner,
+  useWindowSize,
   media,
   colors,
   fontSizes,
   viewportWidths,
   defaultCardStyle,
-} from 'utils/styleUtils';
+  Box,
+} from '@citizenlab/cl2-component-library';
+import { isNumber } from 'lodash-es';
+import { MessageDescriptor } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// typings
+import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
+
+import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
 import { Sort } from 'components/InitiativeCards/SortFilterDropdown';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import Button from 'components/UI/Button';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import SearchInput from 'components/UI/SearchInput';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+
+import EmptyProposals from './EmptyProposals';
+import messages from './messages';
+import ProposalsList from './ProposalsList';
+import SortFilterDropdown from './SortFilterDropdown';
+import StatusFilterBox from './StatusFilterBox';
+import TopicFilterBox from './TopicFilterBox';
+import tracks from './tracks';
+
+const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
 const gapWidth = 35;
 
@@ -77,38 +71,18 @@ const InitialLoading = styled.div`
   `}
 `;
 
-const MobileSearchInput = styled(SearchInput)`
-  margin-bottom: 20px;
-`;
-
-const MobileFilterButton = styled(Button)``;
-
-const MobileFiltersSidebarWrapper = styled.div`
-  background: ${colors.background};
-  padding: 15px;
-`;
-
 const AboveContent = styled.div<{ filterColumnWidth: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 22px;
-  flex-direction: row-reverse;
 
   ${media.tablet`
     margin-right: 0;
     margin-top: 20px;
   `}
 `;
-
-const AboveContentLeft = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: auto;
-`;
-
-const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -123,18 +97,6 @@ const InitiativesCount = styled.div`
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-`;
-
-const ContentLeft = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-`;
-
 const ContentRight = styled.div<{ filterColumnWidth: number }>`
   flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
   width: ${({ filterColumnWidth }) => filterColumnWidth}px;
@@ -143,10 +105,6 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-items: stretch;
   margin-left: ${gapWidth}px;
-  position: relative;
-`;
-
-const FiltersSidebarContainer = styled.div`
   position: relative;
 `;
 
@@ -181,18 +139,6 @@ const DesktopSearchInput = styled(SearchInput)`
   ${media.tablet`
     display: none;
   `}
-`;
-
-const StyledInitiativesStatusFilter = styled(StatusFilterBox)`
-  margin-bottom: 20px;
-`;
-
-const StyledInitiativesTopicsFilter = styled(TopicFilterBox)`
-  margin-bottom: 0px;
-`;
-
-const StyledViewButtons = styled(ViewButtons)`
-  margin-right: 20px;
 `;
 
 interface Props {
@@ -324,7 +270,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
     selectedInitiativeFilters?.topics;
 
   const filtersSidebar = (
-    <FiltersSidebarContainer className={className}>
+    <Box className={className} position="relative">
       {filtersActive && (
         <ClearFiltersButton onClick={resetFilters}>
           <ClearFiltersText>
@@ -351,16 +297,18 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
         onChange={handleSearchOnChange}
         a11y_numberOfSearchResults={flatInitiatives?.length || 0}
       />
-      <StyledInitiativesStatusFilter
-        selectedStatusId={selectedInitiativeFilters.initiative_status}
-        selectedInitiativeFilters={selectedInitiativeFilters}
-        onChange={handleStatusOnChange}
-      />
-      <StyledInitiativesTopicsFilter
+      <Box mb="20px">
+        <StatusFilterBox
+          selectedStatusId={selectedInitiativeFilters.initiative_status}
+          selectedInitiativeFilters={selectedInitiativeFilters}
+          onChange={handleStatusOnChange}
+        />
+      </Box>
+      <TopicFilterBox
         selectedTopicIds={selectedInitiativeFilters.topics}
         onChange={handleTopicsOnChange}
       />
-    </FiltersSidebarContainer>
+    </Box>
   );
 
   if (isLoading) {
@@ -413,20 +361,22 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                   />
                 }
               >
-                <MobileFiltersSidebarWrapper>
+                <Box background={colors.background} p="15px">
                   {filtersSidebar}
-                </MobileFiltersSidebarWrapper>
+                </Box>
               </FullscreenModal>
 
-              <MobileSearchInput
-                defaultValue={selectedInitiativeFilters.search ?? undefined}
-                placeholder={searchPlaceholder}
-                ariaLabel={searchAriaLabel}
-                onChange={handleSearchOnChange}
-                a11y_numberOfSearchResults={flatInitiatives?.length || 0}
-              />
+              <Box mb="20px">
+                <SearchInput
+                  defaultValue={selectedInitiativeFilters.search ?? undefined}
+                  placeholder={searchPlaceholder}
+                  ariaLabel={searchAriaLabel}
+                  onChange={handleSearchOnChange}
+                  a11y_numberOfSearchResults={flatInitiatives?.length || 0}
+                />
+              </Box>
 
-              <MobileFilterButton
+              <Button
                 buttonStyle="secondary-outlined"
                 onClick={openFiltersModal}
                 icon="filter"
@@ -436,26 +386,10 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
           )}
 
           <AboveContent filterColumnWidth={filterColumnWidth}>
-            {/* This is effectively on the right,
-                with the help of flexbox. The HTML order, however,
-                needed to be like this for a11y (tab order).
-               */}
-
-            {selectedView === 'card' && (
-              <AboveContentRight>
-                <SortFilterDropdown
-                  defaultSortingMethod={selectedInitiativeFilters.sort}
-                  onChange={handleSortOnChange}
-                  alignment="right"
-                />
-              </AboveContentRight>
-            )}
-
-            <AboveContentLeft>
-              <StyledViewButtons
-                onClick={selectView}
-                selectedView={selectedView}
-              />
+            <Box display="flex" alignItems="center" mr="auto">
+              <Box mr="20px">
+                <ViewButtons onClick={selectView} selectedView={selectedView} />
+              </Box>
 
               {!isNilOrError(initiativesFilterCounts) &&
                 biggerThanSmallTablet && (
@@ -469,11 +403,25 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                     />
                   </InitiativesCount>
                 )}
-            </AboveContentLeft>
+            </Box>
+
+            {selectedView === 'card' && (
+              <SortFilterDropdown
+                defaultSortingMethod={selectedInitiativeFilters.sort}
+                onChange={handleSortOnChange}
+                alignment="right"
+              />
+            )}
           </AboveContent>
 
-          <Content>
-            <ContentLeft>
+          <Box display="flex">
+            <Box
+              display="flex"
+              flex="1"
+              flexDirection="column"
+              alignItems="stretch"
+              position="relative"
+            >
               {flatInitiatives?.length > 0 ? (
                 <>
                   {selectedView === 'card' && (
@@ -489,16 +437,15 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                   )}
 
                   {selectedView === 'map' && (
-                    <InitiativesMap
-                      ariaLabelledBy={'view-tab-2'}
-                      id={'view-panel-2'}
-                    />
+                    <Box aria-labelledby={'view-tab-2'} id={'view-panel-2'}>
+                      <InitiativeMap list={flatInitiatives} />
+                    </Box>
                   )}
                 </>
               ) : (
                 <EmptyProposals />
               )}
-            </ContentLeft>
+            </Box>
 
             {biggerThanLargeTablet && (
               <ContentRight
@@ -508,7 +455,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                 {filtersSidebar}
               </ContentRight>
             )}
-          </Content>
+          </Box>
         </>
       )}
     </Container>

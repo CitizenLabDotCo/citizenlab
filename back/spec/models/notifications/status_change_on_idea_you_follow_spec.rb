@@ -25,5 +25,15 @@ RSpec.describe Notifications::StatusChangeOnIdeaYouFollow do
       notifications = described_class.make_notifications_on(activity)
       expect(notifications).to eq []
     end
+
+    it 'does not make a notification when follow feature is turned off' do
+      idea = create(:idea)
+      create(:follower, followable: idea)
+      activity = create(:activity, item: idea, action: 'changed_status')
+
+      SettingsService.new.deactivate_feature! 'follow'
+      notifications = described_class.make_notifications_on activity
+      expect(notifications).to be_empty
+    end
   end
 end

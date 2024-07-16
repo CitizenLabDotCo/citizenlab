@@ -1,30 +1,26 @@
 import React, { useCallback } from 'react';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
   media,
   viewportWidths,
   defaultCardStyle,
-} from 'utils/styleUtils';
+  Icon,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
-// components
+import useAuthUser from 'api/me/useAuthUser';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 import Button from 'components/UI/Button';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { scrollToTop } from 'utils/scroll';
+
 import messages from './messages';
 
 const Container = styled.div`
@@ -171,7 +167,9 @@ const InitiativesCTABox = ({ className }: Props) => {
           fontWeight="500"
           padding="13px 22px"
           linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-          onClick={!authUser ? signUp : undefined}
+          onClick={() => {
+            !authUser ? signUp() : scrollToTop();
+          }}
           fullWidth={smallerThanSmallTablet}
           text={<FormattedMessage {...messages.startInitiative} />}
           className="e2e-initiatives-landing-CTA-new"

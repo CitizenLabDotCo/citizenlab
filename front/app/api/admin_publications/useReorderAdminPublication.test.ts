@@ -1,19 +1,18 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderAdminPublication from './useReorderAdminPublication';
-import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
+import useReorderAdminPublication from './useReorderAdminPublication';
+
 const apiPath = '*admin_publications/:id/reorder';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: mockFolderChildAdminPublicationsList[0] })
+  http.patch(apiPath, () => {
+    return HttpResponse.json(
+      { data: mockFolderChildAdminPublicationsList[0] },
+      { status: 200 }
     );
   })
 );
@@ -42,8 +41,8 @@ describe('useReorderAdminPublication', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

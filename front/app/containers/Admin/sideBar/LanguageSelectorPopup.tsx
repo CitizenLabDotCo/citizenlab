@@ -1,28 +1,22 @@
 import React from 'react';
 
-// components
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
 import { Popup } from 'semantic-ui-react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { shortenedAppLocalePairs } from 'containers/App/constants';
-import messages from './messages';
-
-// hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// services
+import useLocale from 'hooks/useLocale';
+
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+import { getSelectedLocale } from 'containers/MainHeader/Components/LanguageSelector/utils';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { updateLocale } from 'utils/locale';
 
-// styles
+import messages from './messages';
 import { ItemMenu } from './styles';
-import { rgba } from 'polished';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getSelectedLocale } from 'containers/MainHeader/LanguageSelector/utils';
 
 interface Props {
   setIsOpen: (open: boolean) => void;

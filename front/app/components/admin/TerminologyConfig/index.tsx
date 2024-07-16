@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
+
 import { mapValues, lowerCase } from 'lodash-es';
-
-// components
-import Collapse from 'components/UI/Collapse';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import messages from './messages';
-
-// styling
 import styled from 'styled-components';
-
-// typings
 import { Multiloc } from 'typings';
+
+import { ButtonWrapper } from 'components/admin/PageWrapper';
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import Collapse from 'components/UI/Collapse';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.form`
   width: 100%;
@@ -117,7 +113,7 @@ const TerminologyConfig = ({
           <Button
             processing={isLoading}
             onClick={save}
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             type="submit"
           >
             {formatMessage(messages.saveButton)}

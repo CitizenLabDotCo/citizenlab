@@ -1,36 +1,28 @@
-// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// Services
-import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
-import { IUpdatedInternalComment } from 'api/internal_comments/types';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// Components
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// Styling
+import { Button } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
-
-// Typings
 import { CLErrors } from 'typings';
 
+import { IUpdatedInternalComment } from 'api/internal_comments/types';
 import useInternalComment from 'api/internal_comments/useInternalComment';
-import useLocale from 'hooks/useLocale';
-import { Button } from '@citizenlab/cl2-component-library';
+import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
 
-// utils
-import { getMentionRoles } from '../utils';
+import useLocale from 'hooks/useLocale';
+
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import {
   getCommentContent,
   getEditableCommentContent,
 } from 'components/PostShowComponents/Comments/utils';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { getMentionRoles } from '../utils';
 
 const Container = styled.div``;
 
@@ -194,7 +186,7 @@ const InternalCommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary" onClick={cancelEditing}>
+            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
               <FormattedMessage {...commentsMessages.cancelCommentEdit} />
             </Button>
             <Button

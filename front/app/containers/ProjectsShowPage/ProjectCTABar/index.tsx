@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
-// Components
-import {
-  Box,
-  useBreakpoint,
-  useWindowSize,
-} from '@citizenlab/cl2-component-library';
-import MainHeader from 'containers/MainHeader';
-
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-// styles
-import { viewportWidths } from 'utils/styleUtils';
+import MainHeader from 'containers/MainHeader';
 
-// utils
 import {
   getMethodConfig,
   getParticipationMethod,
@@ -26,14 +17,13 @@ import { isNilOrError } from 'utils/helperUtils';
 type ProjectCTABarProps = {
   projectId: string;
 };
-
-export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
-  const { windowWidth } = useWindowSize();
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
+const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +42,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
               actionButtonElement &&
               actionButtonYOffset &&
               window.pageYOffset >
-                actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+                actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
             )
           );
         }
@@ -62,9 +52,8 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return () => {
       isMounted = false;
     };
-  }, [projectId, smallerThanLargeTablet]);
+  }, [projectId, isSmallerThanTablet]);
 
-  const { data: project } = useProjectById(projectId);
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
@@ -78,15 +67,17 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  if (portalElement && isVisible) {
+  // Always stick to bottom of screen if on phone
+  if (portalElement && (isVisible || isSmallerThanPhone)) {
     return createPortal(
       <Box
         width="100vw"
         position="fixed"
-        top="0px"
+        top={isSmallerThanPhone ? undefined : '0px'}
+        bottom={isSmallerThanPhone ? '0px' : undefined}
         zIndex="1000"
         background="#fff"
-        borderBottom="solid 1px #ddd"
+        id="project-cta-bar"
       >
         {!isSmallerThanPhone && (
           <Box height="78px">
@@ -101,3 +92,5 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
   return <>{BarContents}</>;
 };
+
+export default ProjectCTABar;

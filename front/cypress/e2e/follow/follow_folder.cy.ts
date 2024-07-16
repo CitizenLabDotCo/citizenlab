@@ -14,7 +14,6 @@ describe('Follow folder', () => {
 
   before(() => {
     cy.apiCreateFolder({
-      type: 'continuous',
       title: folderTitle,
       descriptionPreview: folderShortDescription,
       description: randomString(),

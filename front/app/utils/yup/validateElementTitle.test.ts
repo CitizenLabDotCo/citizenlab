@@ -1,4 +1,5 @@
 import { object, string } from 'yup';
+
 import validateElementTitle from './validateElementTitle';
 
 describe('validateElementTitle', () => {

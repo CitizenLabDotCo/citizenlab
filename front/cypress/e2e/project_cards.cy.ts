@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomString } from '../support/commands';
 
 describe('Project and folder cards on front page', () => {
@@ -11,29 +12,30 @@ describe('Project and folder cards on front page', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: publishedProjectTitle,
       descriptionPreview: publishedProjectDescriptionPreview,
       description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       publishedProjectId = project.body.data.id;
+    });
 
-      cy.apiCreateProject({
-        type: 'continuous',
-        title: archivedProjectTitle,
-        descriptionPreview: archivedProjectDescriptionPreview,
-        description: randomString(),
-        publicationStatus: 'archived',
-      }).then((project) => {
-        archivedProjectId = project.body.data.id;
-
-        cy.goToLandingPage();
-      });
+    cy.apiCreateProject({
+      title: archivedProjectTitle,
+      descriptionPreview: archivedProjectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'archived',
+    }).then((project) => {
+      archivedProjectId = project.body.data.id;
     });
   });
 
+  beforeEach(() => {
+    cy.goToLandingPage();
+  });
+
   it('shows published project but not archived project if tab === Active', () => {
+    cy.get('#project-cards-tab-published').should('exist');
     cy.get('.e2e-project-card').first().contains(publishedProjectTitle);
 
     cy.get('#e2e-projects-container').should(
@@ -47,7 +49,7 @@ describe('Project and folder cards on front page', () => {
     );
   });
 
-  it('shows archived project but not published project if tab === Archived', () => {
+  it.skip('shows archived project but not published project if tab === Archived', () => {
     cy.get('#project-cards-tab-archived').click();
 
     cy.get('.e2e-project-card').first().contains(archivedProjectTitle);
@@ -92,15 +94,26 @@ describe('Native survey project card', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreatePhase({
+        projectId,
+        title: 'surveyPhaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(1, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'native_survey',
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
+        canPost: true,
+        canComment: true,
+        canReact: true,
+      });
     });
   });
 

@@ -1,31 +1,29 @@
 import React from 'react';
 
-// components
-import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
-import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
-import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
-import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
-import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
-
-// i18n
-import messages from './messages';
-import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
-import { toFullMonth } from 'utils/dateUtils';
-
-// types
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-import { IAppConfiguration } from 'api/app_configuration/types';
-import { VotingMethod } from 'utils/participationContexts';
 import { FormatMessage } from 'typings';
+
+import { IAppConfiguration } from 'api/app_configuration/types';
+import { IPhaseData, VotingMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+
+import { Localize } from 'hooks/useLocalize';
+
+import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
+import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
+import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
+import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
+import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getLocalisedDateString } from 'utils/dateUtils';
+
+import messages from './messages';
+
 /*
   Configuration Specifications
-  
+
   StatusModule:
   - getStatusHeader: Returns header which appears directly above status module
   - getStatusTitle: Returns title for the status module
@@ -53,7 +51,7 @@ export type GetStatusDescriptionProps = {
 
 type IdeaCardVoteInputProps = {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
 };
 
 type IdeaPageVoteInputProps = IdeaCardVoteInputProps & {
@@ -72,12 +70,12 @@ export type VotingMethodConfig = {
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaCardVoteInput: ({
     ideaId,
-    participationContext,
+    phase,
   }: IdeaCardVoteInputProps) => JSX.Element | null;
   getIdeaPageVoteInput: ({
     ideaId,
     compact,
-    participationContext,
+    phase,
   }: IdeaPageVoteInputProps) => JSX.Element | null;
   getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
@@ -106,7 +104,6 @@ const budgetingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
     appConfig,
@@ -114,9 +111,10 @@ const budgetingConfig: VotingMethodConfig = {
     const currency =
       appConfig?.data.attributes.settings.core.currency.toString();
 
+    if (!phase) return null;
+
     if (submissionState === 'hasNotSubmitted') {
-      const participationContext = phase ?? project;
-      const minBudget = participationContext.attributes.voting_min_total;
+      const minBudget = phase.attributes.voting_min_total;
 
       return (
         <>
@@ -126,9 +124,8 @@ const budgetingConfig: VotingMethodConfig = {
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
               currency,
-              optionCount: participationContext.attributes.ideas_count,
-              maxBudget:
-                participationContext.attributes.voting_max_total?.toLocaleString(),
+              optionCount: phase.attributes.ideas_count,
+              maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.budgetingSubmissionInstructionsTotalBudget}
           />
@@ -159,16 +156,27 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.budgetingSubmittedInstructions}
+          />
+        );
+      } else if (phase && !phase.attributes.end_at) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.budgetingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -189,11 +197,10 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget:
-              phase && phase.attributes.voting_max_total?.toLocaleString(),
+            endDate: getLocalisedDateString(phase?.attributes.end_at),
+            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
             currency,
-            optionCount: phase && phase.attributes.ideas_count,
+            optionCount: phase?.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
         />
@@ -216,26 +223,21 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
     <AddToBasketButton
       ideaId={ideaId}
-      participationContext={participationContext}
+      phase={phase}
       buttonStyle="primary-outlined"
     />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AddToBasketBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AddToBasketBox ideaId={ideaId} phase={phase} />;
     } else {
       return (
         <AddToBasketButton
           ideaId={ideaId}
-          participationContext={participationContext}
+          phase={phase}
           buttonStyle="primary"
         />
       );
@@ -266,16 +268,27 @@ const multipleVotingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
     localize,
     formatMessage,
   }: GetStatusDescriptionProps) => {
-    const participationContext = phase || project;
+    const fallbackVoteTerm = formatMessage(messages.vote).toLowerCase();
+    const fallbackVotesTerm = formatMessage(messages.votes).toLowerCase();
+
     const voteTerm =
-      localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
-      formatMessage(messages.votes).toLowerCase();
+      localize(phase?.attributes?.voting_term_singular_multiloc) ??
+      fallbackVoteTerm;
+    const votesTerm =
+      localize(phase?.attributes?.voting_term_plural_multiloc) ??
+      fallbackVotesTerm;
+
+    const maxVotesTerm =
+      phase?.attributes.voting_max_total === 1 ? voteTerm : votesTerm;
+    const maxVotesPerIdeaTerm =
+      phase?.attributes.voting_max_votes_per_idea === 1 ? voteTerm : votesTerm;
+
+    if (!phase) return null;
 
     if (submissionState === 'hasNotSubmitted') {
       return (
@@ -285,10 +298,9 @@ const multipleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              voteTerm,
-              optionCount: participationContext.attributes.ideas_count,
-              totalVotes:
-                participationContext.attributes.voting_max_total?.toLocaleString(),
+              voteTerm: maxVotesTerm,
+              optionCount: phase.attributes.ideas_count,
+              totalVotes: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.cumulativeVotingInstructionsTotalVotes}
           />
@@ -302,8 +314,8 @@ const multipleVotingConfig: VotingMethodConfig = {
               <FormattedMessage
                 {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
                 values={{
-                  maxVotes:
-                    participationContext.attributes.voting_max_votes_per_idea,
+                  maxVotes: phase.attributes.voting_max_votes_per_idea,
+                  voteTerm: maxVotesPerIdeaTerm,
                 }}
               />
             </li>
@@ -317,16 +329,27 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
+          />
+        );
+      } else if (phase) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.votingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -340,18 +363,20 @@ const multipleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (submissionState === 'submissionEnded') {
+    } else if (
+      submissionState === 'submissionEnded' &&
+      phase?.attributes.end_at
+    ) {
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxVotes:
-              phase && phase.attributes.voting_max_total?.toLocaleString(),
-            voteTerm,
-            optionCount: phase && phase.attributes.ideas_count,
+            endDate: getLocalisedDateString(phase?.attributes.end_at),
+            maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
+            voteTerm: maxVotesTerm,
+            optionCount: phase.attributes.ideas_count,
           }}
           {...messages.multipleVotingEnded}
         />
@@ -375,25 +400,17 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
-    <AssignMultipleVotesInput
-      ideaId={ideaId}
-      participationContext={participationContext}
-    />
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
+    <AssignMultipleVotesInput ideaId={ideaId} phase={phase} />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignMultipleVotesBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AssignMultipleVotesBox ideaId={ideaId} phase={phase} />;
     }
     return (
       <AssignMultipleVotesInput
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         fillWidth={true}
       />
     );
@@ -423,12 +440,10 @@ const singleVotingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
   }: GetStatusDescriptionProps) => {
-    const participationContext = phase || project;
-    const totalVotes = participationContext?.attributes.voting_max_total;
+    const totalVotes = phase?.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
       const youCanVoteMessage = totalVotes
@@ -449,7 +464,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              totalVotes: participationContext?.attributes.voting_max_total,
+              totalVotes: phase?.attributes.voting_max_total,
             }}
             {...youCanVoteMessage}
           />
@@ -465,16 +480,27 @@ const singleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
+          />
+        );
+      } else if (phase && !phase.attributes.end_at) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.votingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -491,47 +517,51 @@ const singleVotingConfig: VotingMethodConfig = {
     } else if (submissionState === 'submissionEnded') {
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
-        if (votingMax > 1) {
+        if (votingMax > 1 && phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: getLocalisedDateString(phase?.attributes.end_at),
                 maxVotes: votingMax?.toLocaleString(),
-                optionCount: phase && phase.attributes.ideas_count,
+                optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingEnded}
             />
           );
-        } else {
+        } else if (phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: getLocalisedDateString(phase?.attributes.end_at),
                 maxVotes: votingMax?.toLocaleString(),
-                optionCount: phase && phase.attributes.ideas_count,
+                optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingOneVoteEnded}
             />
           );
+        } else {
+          return null;
         }
-      } else {
+      } else if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />
         );
+      } else {
+        return null;
       }
     }
     return null;
@@ -552,27 +582,22 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
     <AssignSingleVoteButton
       ideaId={ideaId}
-      participationContext={participationContext}
+      phase={phase}
       buttonStyle="primary-outlined"
     />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignSingleVoteBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AssignSingleVoteBox ideaId={ideaId} phase={phase} />;
     }
 
     return (
       <AssignSingleVoteButton
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         buttonStyle="primary"
       />
     );

@@ -12,7 +12,7 @@ class SideFxInitiativeService
   end
 
   def after_create(initiative, user)
-    initiative.update!(body_multiloc: TextImageService.new.swap_data_images(initiative, :body_multiloc))
+    initiative.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(initiative.body_multiloc, field: :body_multiloc, imageable: initiative))
     return unless initiative.published?
 
     after_publish initiative, user
@@ -21,7 +21,7 @@ class SideFxInitiativeService
   end
 
   def before_update(initiative, user)
-    initiative.body_multiloc = TextImageService.new.swap_data_images(initiative, :body_multiloc)
+    initiative.body_multiloc = TextImageService.new.swap_data_images_multiloc(initiative.body_multiloc, field: :body_multiloc, imageable: initiative)
     return unless initiative.publication_status_change == %w[draft published]
 
     before_publish initiative, user
@@ -108,9 +108,9 @@ class SideFxInitiativeService
   end
 
   def after_publish(initiative, user)
-    add_autoreaction initiative, user
-    log_activity_jobs_after_published initiative, user
-    create_followers initiative, user
+    add_autoreaction(initiative, user)
+    log_activity_jobs_after_published(initiative, user)
+    create_followers(initiative, user) unless initiative.anonymous?
   end
 
   def set_assignee(initiative)

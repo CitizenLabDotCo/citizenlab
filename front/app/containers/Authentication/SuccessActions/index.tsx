@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { BehaviorSubject } from 'rxjs';
-import { getAction, SuccessAction } from './actions';
+
 import authUserStream from 'api/me/authUserStream';
 import { IUserData } from 'api/users/types';
+
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+
+import { getAction, SuccessAction } from './actions';
 
 const successAction$ = new BehaviorSubject<SuccessAction | null>(null);
 
@@ -29,9 +34,12 @@ const getAuthUser = () => {
 };
 
 const SuccessActions = () => {
+  const [showFullPageSpinner, setShowFullPageSpinner] = useState(false);
+
   useEffect(() => {
     const subscription = successAction$.subscribe((successAction) => {
       if (successAction === null) return;
+      setShowFullPageSpinner(true);
 
       const action = getAction(successAction);
       successAction$.next(null);
@@ -39,19 +47,24 @@ const SuccessActions = () => {
       const { promise, streamSubscription } = getAuthUser();
 
       promise
-        .then((authUser) => {
-          action(authUser);
+        .then(async (authUser) => {
+          await action(authUser);
         })
         .catch(() => {
           console.error('Failed to fetch authUser');
         })
         .finally(() => {
+          setShowFullPageSpinner(false);
           streamSubscription.unsubscribe();
         });
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  if (showFullPageSpinner) {
+    return <FullPageSpinner zIndex={10000} background />;
+  }
 
   return <></>;
 };

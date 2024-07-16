@@ -1,10 +1,8 @@
-// Libraries
 import React from 'react';
-// Components
-import UserManager from './UserManager';
-import UsersHeader from './UsersHeader';
 
 import messages from './messages';
+import UserManager from './UserManager';
+import UsersHeader from './UsersHeader';
 
 const AllUsers = () => (
   <>

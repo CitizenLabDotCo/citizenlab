@@ -20,7 +20,7 @@ export default defineMessages({
   invitationExpirationWarning: {
     id: 'app.containers.Admin.Invitations.invitationExpirationWarning',
     defaultMessage:
-      'Be aware that invitations expire after 14 days. After this period, you can still resend them.',
+      'Be aware that invitations expire after 30 days. After this period, you can still resend them.',
   },
   invitePeople: {
     id: 'app.containers.Admin.Invitations.invitePeople',

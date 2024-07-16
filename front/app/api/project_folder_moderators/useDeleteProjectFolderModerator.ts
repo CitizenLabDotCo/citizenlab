@@ -1,8 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import projectFolderModeratorsKeys from './keys';
+
+import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
+import userCountKeys from 'api/users_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import projectFolderModeratorsKeys from './keys';
 
 const deleteModerator = ({
   projectFolderId,
@@ -29,6 +34,14 @@ const useDeleteProjectFolderModerator = () => {
       });
 
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
+      });
       invalidateSeatsCache();
     },
   });

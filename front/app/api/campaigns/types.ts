@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import campaignsKeys from './keys';
 import { Multiloc, ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import campaignsKeys from './keys';
 
 export type CampaignsKeys = Keys<typeof campaignsKeys>;
 
@@ -13,6 +15,7 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
+    context_id?: string;
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?
@@ -35,6 +38,16 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    delivery_stats?: {
+      sent: number;
+      bounced: number;
+      failed: number;
+      accepted: number;
+      delivered: number;
+      opened: number;
+      clicked: number;
+      total: number;
+    };
   };
   relationships: {
     author: {
@@ -70,13 +83,14 @@ export interface ICampaign {
 }
 
 type RegisterUserCampaignName =
-  | 'welcome'
   | 'comment_deleted_by_admin'
-  | 'comment_on_your_comment'
   | 'comment_on_idea_you_follow'
   | 'comment_on_initiative_you_follow'
+  | 'comment_on_your_comment'
+  | 'cosponsor_of_your_initiative'
+  | 'event_registration_confirmation'
   | 'idea_published'
-  | 'invite_reminder'
+  | 'invitation_to_cosponsor'
   | 'initiative_published'
   | 'mention_in_official_feedback'
   | 'official_feedback_on_idea_you_follow'
@@ -86,44 +100,55 @@ type RegisterUserCampaignName =
   | 'project_published'
   | 'status_change_on_idea_you_follow'
   | 'status_change_on_initiative_you_follow'
-  | 'user_digest';
+  | 'user_digest'
+  | 'voting_basket_not_submitted'
+  | 'voting_basket_submitted'
+  | 'voting_last_chance'
+  | 'voting_phase_started'
+  | 'voting_results'
+  | 'welcome';
 
 export const internalCommentNotificationTypes = [
-  'mention_in_internal_comment',
-  'internal_comment_on_your_internal_comment',
   'internal_comment_on_idea_assigned_to_you',
-  'internal_comment_on_initiative_assigned_to_you',
-  'internal_comment_on_idea_you_moderate',
   'internal_comment_on_idea_you_commented_internally_on',
+  'internal_comment_on_idea_you_moderate',
+  'internal_comment_on_initiative_assigned_to_you',
   'internal_comment_on_initiative_you_commented_internally_on',
-  'internal_comment_on_unassigned_unmoderated_idea',
   'internal_comment_on_unassigned_initiative',
+  'internal_comment_on_unassigned_unmoderated_idea',
+  'internal_comment_on_your_internal_comment',
+  'mention_in_internal_comment',
 ] as const;
 
 export type InternalCommentType =
   (typeof internalCommentNotificationTypes)[number];
 
 type AdminModeratorCampaignName =
+  | 'admin_digest'
   | 'admin_rights_received'
+  | 'assignee_digest'
   | 'comment_marked_as_spam'
+  | 'idea_assigned_to_you'
   | 'idea_marked_as_spam'
+  | 'inappropriate_content_flagged'
   | 'initiative_assigned_to_you'
   | 'initiative_marked_as_spam'
+  | 'initiative_resubmitted_for_review'
+  | 'moderator_digest'
   | 'new_comment_for_admin'
   | 'new_idea_for_admin'
   | 'new_initiative_for_admin'
   | 'project_folder_moderation_rights_received'
   | 'project_moderation_rights_received'
   | 'threshold_reached_for_admin'
-  | 'admin_digest'
-  | 'moderator_digest'
-  | 'assignee_digest'
   | 'your_proposed_initiatives_digest'
   | InternalCommentType;
 
 export type CampaignName =
   | 'manual'
+  | 'manual_project_participants'
   | 'invite_received'
+  | 'invite_reminder'
   | RegisterUserCampaignName
   | AdminModeratorCampaignName;
 
@@ -141,4 +166,5 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
+  context_id?: string;
 }

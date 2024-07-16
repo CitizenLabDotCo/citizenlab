@@ -1,9 +1,21 @@
 import React from 'react';
+
+import { makeAdmin, makeUser } from 'api/users/__mocks__/useUsers';
+
 import { render, screen } from 'utils/testUtils/rtl';
 
 import ChangeSeatModal from '.';
-import { makeAdmin, makeUser } from 'api/users/__mocks__/useUsers';
 
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
 type MockAppConfigurationType = {
   data: {
     id: string;
@@ -51,10 +63,6 @@ jest.mock('api/seats/useSeats', () => () => {
   };
 });
 
-let mockFeatureFlagData = true;
-
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
-
 describe('ChangeSeatModal', () => {
   const closeModal = jest.fn();
   const changeRoles = jest.fn();
@@ -67,7 +75,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser={false}
+        changingToRoleType="admin"
       />
     );
 
@@ -87,7 +95,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockUser.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser={false}
+        changingToRoleType="admin"
       />
     );
 
@@ -96,27 +104,6 @@ describe('ChangeSeatModal', () => {
     });
 
     expect(buyAdditionalSeatButton).toBeInTheDocument();
-  });
-
-  it('shows confirm text in button when seat_based_billing is off, seats are full and admin is trying to add another admin ', () => {
-    mockFeatureFlagData = false;
-    mockUserSeatsData.data.attributes.admins_number = 7;
-
-    render(
-      <ChangeSeatModal
-        showModal
-        userToChangeSeat={mockUser.data}
-        changeRoles={changeRoles}
-        closeModal={closeModal}
-        isChangingToNormalUser={false}
-      />
-    );
-
-    const confirmButton = screen.getByRole('button', {
-      name: 'Confirm',
-    });
-
-    expect(confirmButton).toBeInTheDocument();
   });
 
   it('shows confirm in button when changing to a normal user', () => {
@@ -128,7 +115,7 @@ describe('ChangeSeatModal', () => {
         userToChangeSeat={mockAdmin.data}
         changeRoles={changeRoles}
         closeModal={closeModal}
-        isChangingToNormalUser
+        changingToRoleType="user"
       />
     );
 

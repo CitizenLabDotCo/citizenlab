@@ -1,9 +1,16 @@
 import React from 'react';
-import { TRule } from '../rules';
+
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import useLocalize from 'hooks/useLocalize';
+
 import useEvents from 'api/events/useEvents';
+
+import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { TRule } from '../rules';
+
 import { generateOptions } from './utils';
 
 export interface Props {
@@ -13,13 +20,18 @@ export interface Props {
 }
 
 const EventValuesSelector = ({ value, onChange }: Props) => {
-  const { data: events } = useEvents({ sort: '-start_at' });
+  const { data: events, isLoading } = useEvents({
+    sort: '-start_at',
+    pageSize: 1000,
+  });
   const localize = useLocalize();
 
   const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
     onChange(optionIds);
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <MultipleSelect

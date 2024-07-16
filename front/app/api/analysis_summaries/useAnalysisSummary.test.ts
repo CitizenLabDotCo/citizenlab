@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisSummary from './useAnalysisSummary';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { summaryData } from './__mocks__/useAnalysisSummary';
 import { ISummaryParams } from './types';
+import useAnalysisSummary from './useAnalysisSummary';
 
 const apiPath = '*/analyses/:analysisId/summaries/:id';
 
@@ -17,8 +16,8 @@ const params: ISummaryParams = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: summaryData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: summaryData }, { status: 200 });
   })
 );
 
@@ -41,8 +40,8 @@ describe('useAnalysisSummary', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

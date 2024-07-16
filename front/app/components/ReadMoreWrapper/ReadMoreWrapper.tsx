@@ -1,30 +1,26 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
+import React, { memo, useCallback, useState, useEffect, useRef } from 'react';
 
-// components
-import Button from 'components/UI/Button';
-import ReactResizeDetector from 'react-resize-detector';
-
-// hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
+  useWindowSize,
+  Box,
   fontSizes,
   colors,
   media,
   viewportWidths,
   isRtl,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import ReactResizeDetector from 'react-resize-detector';
+import styled, { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { Multiloc } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const desktopCollapsedContentMaxHeight = 380;
 const mobileCollapsedContentMaxHeight = 180;
@@ -76,9 +72,9 @@ const ReadMoreWrapper = memo<Props>(
 
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState<number | null>(null);
+    const buttonContainerRef = useRef<HTMLDivElement>(null);
 
     const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
-
     const collapsedContentMaxHeight = smallerThanLargeTablet
       ? mobileCollapsedContentMaxHeight
       : desktopCollapsedContentMaxHeight;
@@ -87,9 +83,30 @@ const ReadMoreWrapper = memo<Props>(
       setExpanded(false);
     }, [value]);
 
+    useEffect(() => {
+      // We use the button container ref because we currently don't support refs
+      // on the buttons themselves. Adding that for this use case would be a bit more complex since
+      // the button component handles links too
+      const container = buttonContainerRef.current;
+      if (!container) return;
+
+      const readMoreButton = container.querySelector<HTMLButtonElement>(
+        `#e2e-project-${contentId}-read-more-button button`
+      );
+      const seeLessButton = container.querySelector<HTMLButtonElement>(
+        `#e2e-project-${contentId}-see-less-button button`
+      );
+
+      const buttonToFocus = readMoreButton || seeLessButton;
+      if (buttonToFocus) {
+        // We move focus to the other button after clicking to make sure the screen reader reads it
+        buttonToFocus.focus();
+      }
+    }, [contentId, expanded]);
+
     const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
       event.preventDefault();
-      setExpanded((expanded) => !expanded);
+      setExpanded((prevExpanded) => !prevExpanded);
     }, []);
 
     const onResize = (
@@ -114,7 +131,6 @@ const ReadMoreWrapper = memo<Props>(
                   <QuillEditedContent
                     fontSize={fontSize}
                     textColor={theme.colors.tenantText}
-                    disableTabbing={!expanded}
                   >
                     <T value={value} supportHtml={true} />
                   </QuillEditedContent>
@@ -132,7 +148,7 @@ const ReadMoreWrapper = memo<Props>(
                     right="0"
                     background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
                   >
-                    <Box position="relative" flex="1">
+                    <Box position="relative" flex="1" ref={buttonContainerRef}>
                       <ReadMoreButton
                         id={`e2e-project-${contentId}-read-more-button`}
                         buttonStyle="text"
@@ -144,6 +160,7 @@ const ReadMoreWrapper = memo<Props>(
                         fontWeight="500"
                         fontSize={`${fontSizes.m}px`}
                         padding="0"
+                        ariaExpanded={expanded}
                       >
                         <FormattedMessage {...messages.readMore} />
                       </ReadMoreButton>
@@ -153,7 +170,12 @@ const ReadMoreWrapper = memo<Props>(
               {contentHeight &&
                 contentHeight > collapsedContentMaxHeight &&
                 expanded && (
-                  <Box display="flex" justifyContent="flex-start" mt="20px">
+                  <Box
+                    display="flex"
+                    justifyContent="flex-start"
+                    mt="20px"
+                    ref={buttonContainerRef}
+                  >
                     <Button
                       id={`e2e-project-${contentId}-see-less-button`}
                       buttonStyle="text"
@@ -165,6 +187,7 @@ const ReadMoreWrapper = memo<Props>(
                       fontWeight="500"
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
+                      ariaExpanded={expanded}
                     >
                       <FormattedMessage {...messages.readLess} />
                     </Button>

@@ -1,10 +1,9 @@
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
 
 const LightningBolt = styled(Icon).attrs({ name: 'flash' })`
   flex: 0 0 24px;
-  fill: ${colors.orange};
+  fill: ${colors.orange500};
   margin-right: 4px;
 `;
 

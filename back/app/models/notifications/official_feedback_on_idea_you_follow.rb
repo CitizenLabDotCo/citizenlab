@@ -71,6 +71,8 @@ module Notifications
     EVENT_NAME = 'Official feedback on idea you follow'
 
     def self.make_notifications_on(activity)
+      return [] unless AppConfiguration.instance.feature_activated? 'follow'
+
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 

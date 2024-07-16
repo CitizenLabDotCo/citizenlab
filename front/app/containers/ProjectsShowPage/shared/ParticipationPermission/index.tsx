@@ -1,20 +1,16 @@
 import React, { ReactNode } from 'react';
 
-// components
-import Warning from 'components/UI/Warning';
-
-// i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
 import styled from 'styled-components';
 
-// utils
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;
@@ -26,10 +22,9 @@ const Container = styled.div`
 
 interface Props {
   id: string;
-  projectId: string;
   phaseId: string | null;
   children: ReactNode;
-  action: IParticipationContextPermissionAction;
+  action: IPhasePermissionAction;
   disabledMessage: MessageDescriptor | null;
   enabled: boolean;
   className?: string;
@@ -37,7 +32,6 @@ interface Props {
 
 const ParticipationPermission = ({
   id,
-  projectId,
   phaseId,
   className,
   children,
@@ -46,17 +40,14 @@ const ParticipationPermission = ({
   enabled,
 }: Props) => {
   const signUpIn = (flow: 'signin' | 'signup') => {
-    const pcType = phaseId ? 'phase' : 'project';
-    const pcId = phaseId ?? projectId;
-
-    if (!pcId || !pcType) return;
+    if (!phaseId) return;
 
     triggerAuthenticationFlow({
       flow,
       context: {
         action,
-        id: pcId,
-        type: pcType,
+        id: phaseId,
+        type: 'phase',
       },
     });
   };

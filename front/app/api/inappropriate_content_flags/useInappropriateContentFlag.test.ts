@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInappropriateContentFlag from './useInappropriateContentFlag';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IInappropriateContentFlagData } from './types';
+import useInappropriateContentFlag from './useInappropriateContentFlag';
 
 const apiPath = '*inappropriate_content_flags/:id';
 
@@ -29,8 +28,8 @@ const data: IInappropriateContentFlagData = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -56,8 +55,8 @@ describe('useInappropriateContentFlag', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

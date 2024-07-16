@@ -1,4 +1,5 @@
 import { Multiloc } from 'typings';
+
 import { RawData } from './typings';
 
 export type AreaValue = {
@@ -13,7 +14,7 @@ const convertDomicileData = (
   data: RawData,
   parseName: (key: string, value?: AreaValue) => string
 ) => {
-  return [...Object.keys(areas), '_blank', 'outside'].map((key) => ({
+  return [...Object.keys(areas), '_blank'].map((key) => ({
     value: data[key],
     name: parseName(key, areas[key]),
   }));

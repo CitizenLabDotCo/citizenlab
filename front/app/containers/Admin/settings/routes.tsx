@@ -1,8 +1,15 @@
 import React, { lazy } from 'react';
-import { Navigate } from 'react-router-dom';
+
 import moduleConfiguration from 'modules';
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
-import registrationRoutes from './registration/routes';
+
+import { AdminRoute } from '../routes';
+
+import registrationRoutes, {
+  registrationRouteTypes,
+} from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(
@@ -24,8 +31,35 @@ const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
 const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 
+export enum settingsRoutes {
+  settings = 'settings',
+  settingsDefault = '',
+  general = 'general',
+  branding = 'branding',
+  policies = 'policies',
+  areas = 'areas',
+  new = 'new',
+  areaId = ':areaId',
+  topics = 'topics',
+  edit = 'edit',
+  topicEdit = ':topicId/edit',
+}
+
+export type settingRouteTypes =
+  | AdminRoute<settingsRoutes.settings>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.general}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.branding}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.policies}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
+  | registrationRouteTypes;
+
 export default () => ({
-  path: 'settings',
+  path: settingsRoutes.settings,
   element: (
     <PageLoading>
       <AdminSettingsIndex />
@@ -33,11 +67,11 @@ export default () => ({
   ),
   children: [
     {
-      path: '',
-      element: <Navigate to="general" />,
+      path: settingsRoutes.settingsDefault,
+      element: <Navigate to="general" replace />,
     },
     {
-      path: 'general',
+      path: settingsRoutes.general,
       element: (
         <PageLoading>
           <AdminSettingsGeneral />
@@ -45,7 +79,7 @@ export default () => ({
       ),
     },
     {
-      path: 'branding',
+      path: settingsRoutes.branding,
       element: (
         <PageLoading>
           <AdminSettingsCustomize />
@@ -53,7 +87,7 @@ export default () => ({
       ),
     },
     {
-      path: 'policies',
+      path: settingsRoutes.policies,
       element: (
         <PageLoading>
           <AdminSettingsPolicies />
@@ -62,7 +96,7 @@ export default () => ({
     },
     registrationRoutes(),
     {
-      path: 'areas',
+      path: settingsRoutes.areas,
       children: [
         {
           index: true,
@@ -73,7 +107,7 @@ export default () => ({
           ),
         },
         {
-          path: 'new',
+          path: settingsRoutes.new,
           element: (
             <PageLoading>
               <AdminAreasNew />
@@ -81,7 +115,7 @@ export default () => ({
           ),
         },
         {
-          path: ':areaId',
+          path: settingsRoutes.areaId,
           element: (
             <PageLoading>
               <AdminAreasEdit />
@@ -91,7 +125,7 @@ export default () => ({
       ],
     },
     {
-      path: 'topics',
+      path: settingsRoutes.topics,
       children: [
         {
           index: true,
@@ -102,7 +136,7 @@ export default () => ({
           ),
         },
         {
-          path: 'new',
+          path: settingsRoutes.new,
           element: (
             <PageLoading>
               <AdminTopicsNewComponent />
@@ -110,7 +144,7 @@ export default () => ({
           ),
         },
         {
-          path: ':topicId/edit',
+          path: settingsRoutes.topicEdit,
           element: (
             <PageLoading>
               <AdminTopicsEditComponent />

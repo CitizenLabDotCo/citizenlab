@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import machineTranslationKeys from './keys';
 import {
   IMachineTranslation,
   MachineTranslationKeys,
   IMachineTranslationByCommentIdParams,
 } from './types';
-import machineTranslationKeys from './keys';
 
 const fetchMachineTranslationByCommentId = ({
   commentId,

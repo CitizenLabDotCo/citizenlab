@@ -1,7 +1,10 @@
-import { PublicationStatus } from 'api/projects/types';
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
-import projectFoldersKeys from './keys';
+
+import { PublicationStatus } from 'api/projects/types';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectFoldersKeys from './keys';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
 export interface IQueryParameters {
@@ -44,13 +47,13 @@ export interface IProjectFolderData {
     followers_count: number;
   };
   relationships: {
-    projects: {
-      data: { id: string; type: 'project' }[];
-    };
     admin_publication: {
       data: IRelationship | null;
     };
     avatars: {
+      data: IRelationship[] | null;
+    };
+    images: {
       data: IRelationship[] | null;
     };
     user_follower: {

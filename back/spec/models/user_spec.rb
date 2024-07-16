@@ -13,6 +13,7 @@ RSpec.describe User do
     subject(:user) { build(:user) }
 
     it { is_expected.to have_many(:ideas).dependent(:nullify) }
+    it { is_expected.to have_many(:idea_imports).dependent(:nullify) }
     it { is_expected.to have_many(:initiatives).dependent(:nullify) }
     it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
     it { is_expected.to have_many(:comments).dependent(:nullify) }
@@ -21,31 +22,35 @@ RSpec.describe User do
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
+
+    it 'nullifies idea import association' do
+      idea_import = create(:idea_import, import_user: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea_import.reload.import_user).to be_nil
+    end
   end
 
   describe '.destroy_all_async' do
-    before { create_list(:user, 2) }
+    before_all { create_list(:user, 2) }
 
-    it 'enqueues a user-deletion job for each user' do
+    it 'enqueues a user-deletion job for each user by default' do
       expect { described_class.destroy_all_async }
         .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
     end
-  end
 
-  describe 'creating a user' do
-    it 'generates a slug' do
-      u = build(:user)
-      u.first_name = 'Not Really_%40)'
-      u.last_name = '286^$@sluggable'
-      u.save
-      expect(u.slug).to eq('not-really--40-286-sluggable')
+    it 'enqueues a user-deletion job for each user in the given scope' do
+      scope = described_class.where(id: described_class.first.id)
+      expect { described_class.destroy_all_async(scope) }
+        .to have_enqueued_job(DeleteUserJob).exactly(scope.count).times
     end
   end
 
-  describe 'creating an invited user' do
-    it 'has correct linking between invite and invitee' do
-      invitee = create(:invited_user)
-      expect(invitee.invitee_invite.invitee.id).to eq invitee.id
+  describe 'generate_slug' do
+    let(:user) { build(:user) }
+
+    it 'generates a slug based on the first and last name' do
+      user.update!(first_name: 'Not Really_%40)', last_name: '286^$@sluggable')
+      expect(user.slug).to eq 'not-really-40-286-sluggable'
     end
 
     it 'does not generate a slug if an invited user' do
@@ -54,13 +59,19 @@ RSpec.describe User do
     end
   end
 
+  describe 'creating an invited user' do
+    it 'has correct linking between invite and invitee' do
+      invitee = create(:invited_user)
+      expect(invitee.invitee_invite.invitee.id).to eq invitee.id
+    end
+  end
+
   describe 'creating a light user - email & locale only' do
-    it 'is valid and generates a slug' do
+    it 'is valid' do
       SettingsService.new.activate_feature! 'user_confirmation'
       u = described_class.new(email: 'test@test.com', locale: 'en')
-      u.save
+      u.save!
       expect(u).to be_valid
-      expect(u.slug).not_to be_nil
     end
 
     it 'is still valid if user confirmation is not turned on' do
@@ -116,33 +127,6 @@ RSpec.describe User do
       expect(blocked_users.count).to eq 2
       expect(blocked_users).to match_array([user1, user3])
       expect(blocked_users).not_to include(user2)
-    end
-  end
-
-  describe 'user password authentication' do
-    it 'should be compatible with meteor encryption' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-
-    it 'should replace the CL1 hash by the CL2 hash' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
-      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to be(true)
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
     end
   end
 
@@ -307,8 +291,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -322,8 +305,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -361,13 +343,6 @@ RSpec.describe User do
     it "is invalid when it's not one of the configured locales" do
       user = build(:user, locale: 'pt')
       expect { user.valid? }.to(change { user.errors[:locale] })
-    end
-  end
-
-  describe 'slug' do
-    it 'is generated on create when not given' do
-      user = create(:user, slug: nil)
-      expect(user.slug).to be_present
     end
   end
 
@@ -552,14 +527,31 @@ RSpec.describe User do
       expect(u.project_folder_moderator?(l2.id)).to be false
     end
 
-    it 'response true when the user is project_folder_moderator and no project_folder_id is passed' do
+    it 'responds true when the user is project_folder_moderator and no project_folder_id is passed' do
       u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
       expect(u.project_folder_moderator?).to be true
     end
 
-    it 'response false when the user is not a project_folder_moderator and no project_folder_id is passed' do
+    it 'responds false when the user is not a project_folder_moderator and no project_folder_id is passed' do
       u = build(:admin)
       expect(u.project_folder_moderator?).to be false
+    end
+  end
+
+  describe 'project_or_folder_moderator?' do
+    it 'responds true when the user has the project_folder_moderator role' do
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
+      expect(u.project_or_folder_moderator?).to be true
+    end
+
+    it 'responds true when the user is project_moderator' do
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
+      expect(u.project_or_folder_moderator?).to be true
+    end
+
+    it 'responds false when the user does not have any moderator roles' do
+      u = build(:user, roles: [])
+      expect(u.project_or_folder_moderator?).to be false
     end
   end
 
@@ -773,7 +765,7 @@ RSpec.describe User do
   end
 
   describe 'super_admin?' do
-    it 'returns true for admins with various citizenlab email variations' do
+    it 'returns true for admins with various Go Vocal and Citizenlab email variations' do
       users = [
         build_stubbed(:admin, email: 'hello@citizenlab.co'),
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
@@ -784,30 +776,41 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
         build_stubbed(:admin, email: 'bigger@citizenlab.us'),
         build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
-        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK')
+        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK'),
+        build_stubbed(:admin, email: 'hello@govocal.com'),
+        build_stubbed(:admin, email: 'hello+admin@govocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.eu'),
+        build_stubbed(:admin, email: 'moderator+admin@govocal.be'),
+        build_stubbed(:admin, email: 'cheese.lover@Govocal.ch'),
+        build_stubbed(:admin, email: 'Fritz+Wurst@Govocal.de'),
+        build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
+        build_stubbed(:admin, email: 'bigger@govocal.us'),
+        build_stubbed(:admin, email: 'magdalena@govocal.cl'),
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
       ]
 
       expect(users).to all be_super_admin
     end
 
-    it 'returns false for non-citizenlab emails' do
+    it 'returns false for non-Go Vocal emails' do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
+        build_stubbed(:admin, email: 'govocal.com@gmail.com'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
     end
 
     it 'returns false for non-admins' do
-      user = build_stubbed(:user, email: 'hello@citizenlab.co')
+      user = build_stubbed(:user, email: 'hello@govocal.com')
       expect(user).not_to be_super_admin
     end
   end
 
   describe 'highest_role' do
     it 'correctly returns the highest role the user posesses' do
-      expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
+      expect(build_stubbed(:admin, email: 'hello@govocal.com').highest_role).to eq :super_admin
       expect(build_stubbed(:admin).highest_role).to eq :admin
       expect(build_stubbed(:user).highest_role).to eq :user
     end
@@ -986,13 +989,19 @@ RSpec.describe User do
   end
 
   describe 'in_any_groups?' do
-    it 'returns truety iff the user is a member of one of the given groups' do
+    it 'returns true if the user is a member of one of the given groups' do
       group1, group2 = create_list(:group, 2)
       user = create(:user, manual_groups: [group1])
       expect(user.in_any_groups?(Group.none)).to be false
       expect(user.in_any_groups?(Group.where(id: group1))).to be true
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be true
       expect(user).not_to be_in_any_groups(Group.where(id: group2))
+    end
+
+    it 'returns false if the user is not in any groups' do
+      group = create(:group)
+      user = create(:user)
+      expect(user.in_any_groups?([group])).to be false
     end
   end
 
@@ -1022,31 +1031,6 @@ RSpec.describe User do
 
     it 'is initialized without a confirmation code' do
       expect(user.email_confirmation_code).to be_nil
-    end
-
-    describe '#should_require_confirmation?' do
-      it 'returns false if the user is an admin' do
-        user.add_role('admin')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a project moderator' do
-        user.add_role('project_moderator', 'project_id' => 'some_id')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a normal user' do
-        expect(user.should_require_confirmation?).to be true
-      end
-
-      it 'returns false if the user registered with a phone number' do
-        enable_phone_login
-        user.email = '343938837373'
-        user.save!
-        expect(user.reload.should_require_confirmation?).to be false
-      end
     end
 
     describe '#confirmation_required?' do
@@ -1080,16 +1064,8 @@ RSpec.describe User do
     end
 
     describe '#set_confirmation_required' do
-      it 'sets the confirmation required field' do
-        user.save!
-        user.set_confirmation_required
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-      end
-
       it 'does not perform a commit to the db' do
-        user.save!
-        user.set_confirmation_required
+        user.validate
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
       end
@@ -1150,13 +1126,14 @@ RSpec.describe User do
       end
     end
 
-    describe '#increment_confirmation_code_reset_count!' do
+    describe '#increment_confirmation_code_reset_count' do
       it 'increments the reset count' do
-        expect { user.increment_confirmation_code_reset_count! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+        expect { user.increment_confirmation_code_reset_count }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
       end
 
       it 'saved the change to the reset count' do
-        expect { user.increment_confirmation_code_reset_count! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+        user.increment_confirmation_code_reset_count
+        expect { user.save! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
       end
     end
 
@@ -1171,87 +1148,29 @@ RSpec.describe User do
       end
     end
 
-    describe '#reset_email!' do
+    describe '#email' do
       let(:email) { 'new_email@email.com' }
-
-      context 'user confirmation is not turned on' do
-        before { SettingsService.new.deactivate_feature! 'user_confirmation' }
-
-        it 'raises a taken error if email already exists' do
-          create(:user, email: 'new_email@email.com')
-          expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-
-        it 'raises an invalid error if email is invalid' do
-          invalid_email = 'newemail_com'
-          expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-
-        it 'saves the change to the email' do
-          expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
-          expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
-        end
-
-        it 'can change the email if the user is not active' do
-          user.update!(registration_completed_at: nil)
-          expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
-        end
-      end
 
       context 'user confirmation is turned on' do
         before { SettingsService.new.activate_feature! 'user_confirmation' }
 
         it 'raises a taken error if email already exists' do
           create(:user, email: 'new_email@email.com')
-          expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
+          expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
         it 'raises an invalid error if email is invalid' do
           invalid_email = 'newemail_com'
-          expect { user.reset_email!(invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
+          expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        it 'resets the confirmation code reset count' do
-          user.increment_confirmation_code_reset_count!
-          user.reload
-          expect { user.reset_email!(email) }.to change(user, :email_confirmation_code_reset_count).from(1).to(0)
-          expect { user.reset_email!(email) }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
-        end
-
-        context 'the user is not active' do
-          it 'saves the changes to the email column' do
-            expect { user.reset_email!(email) }.to change(user, :email).from(user.email).to(email)
-            expect { user.reset_email!(email) }.to change(user, :saved_change_to_email)
-          end
+        context 'when form submitted' do
+          let(:save_options) { { context: :form_submission } }
 
           it 'cannot change the email if the user is passwordless' do
             user.update!(password: nil)
-            expect { user.reset_email!(email) }.to raise_error(ActiveRecord::RecordInvalid)
-          end
-        end
-
-        context 'the user is active' do
-          before do
-            user.update!(registration_completed_at: Time.now)
-            user.confirm!
-          end
-
-          it 'saves the changed email in the new_email column' do
-            expect { user.reset_email!(email) }.to change(user, :new_email).from(nil).to(email)
-          end
-
-          it 'cannot update the email column directly' do
-            expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
-          end
-
-          it 'can update the email column if it was blank' do
-            user.update_columns(email: nil)
-            expect { user.update!(email: email) }.not_to raise_error(ActiveRecord::RecordInvalid)
-          end
-
-          it 'can change the email if the user is passwordless' do
-            user.update!(password: nil)
-            expect { user.reset_email!(email) }.to change(user, :saved_change_to_new_email)
+            user.assign_attributes(email: email)
+            expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
           end
         end
       end
@@ -1261,6 +1180,17 @@ RSpec.describe User do
       it 'should set email confirmed at' do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+      end
+
+      it 'cancels any pending email change initiated with the same email' do
+        new_email = 'new-email@provider.org'
+        user1, user2 = create_list(:user, 2, new_email: new_email, email_confirmation_code: 9999)
+
+        user1.confirm!
+
+        user2.reload
+        expect(user2.new_email).to be_nil
+        expect(user2.email_confirmation_code).to be_nil
       end
     end
   end
@@ -1285,12 +1215,82 @@ RSpec.describe User do
       user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
       expect(user.no_name?).to be false
     end
+  end
 
-    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
-      user = described_class.new(email: 'test@citizenlab.co')
-      user.save
-      expect(user.full_name).to match(/User \d{6}/)
-      expect(user.slug).to match(/user-\d{6}/)
+  describe '#compacted_roles' do
+    let_it_be(:user) { create(:user) }
+
+    let_it_be(:projects_in_folder) { create_list(:project, 2) }
+    let_it_be(:folder) { create(:project_folder, projects: projects_in_folder) }
+
+    # Top-level project (not in a folder)
+    let_it_be(:another_project) { create(:project) }
+
+    let_it_be(:project_in_another_folder) { create(:project) }
+    let_it_be(:another_folder) { create(:project_folder, projects: [project_in_another_folder]) }
+
+    def create_roles(projects, folders, admin: false)
+      projects = Array.wrap(projects)
+      folders = Array.wrap(folders)
+
+      [].tap do |roles|
+        roles << { 'type' => 'admin' } if admin
+        projects.each { |project| roles << { 'type' => 'project_moderator', 'project_id' => project.id } }
+        folders.each { |folder| roles << { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id } }
+      end
+    end
+
+    context 'when the roles are not redundant' do
+      where(:admin?, :projects, :folders) do
+        [
+          [true, nil, nil],
+          [true, ref(:another_project), nil],
+          [true, nil, ref(:folder)],
+          [false, ref(:another_project), ref(:folder)],
+          [false, ref(:projects_in_folder), nil],
+          [false, nil, [ref(:folder), ref(:another_folder)]],
+          [false, ref(:project_in_another_folder), ref(:folder)]
+        ]
+      end
+
+      with_them do
+        it 'does not modify the roles' do
+          user.roles = create_roles(projects, folders, admin: admin?)
+          expect(user.compacted_roles).to match(user.roles)
+        end
+      end
+    end
+
+    context 'when the roles are redundant' do
+      it 'removes redundant roles (1)' do
+        user.roles = create_roles(projects_in_folder, folder)
+        expected_roles = create_roles(nil, folder)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (2)' do
+        projects = projects_in_folder + [another_project]
+        user.roles = create_roles(projects, folder)
+        # only keep projects that are not in the folder
+        expected_roles = create_roles(another_project, folder)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (3)' do
+        folders = [folder, another_folder]
+        user.roles = create_roles(projects_in_folder, folders)
+        # only keep folder roles
+        expected_roles = create_roles(nil, folders)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (4)' do
+        projects = projects_in_folder + [project_in_another_folder, another_project]
+        folders = [folder, another_folder]
+        user.roles = create_roles(projects, folders)
+        expected_roles = create_roles(another_project, folders)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
     end
   end
 
@@ -1309,11 +1309,11 @@ RSpec.describe User do
         expect(described_class.billed_admins).to match_array([admin])
       end
 
-      it 'does not return citizenlab admins' do
+      it 'does not return Go Vocal admins' do
         create(:user)
-        create(:admin, email: 'test@citizenlab.co')
-        non_cl_admin = create(:admin)
-        expect(described_class.billed_admins).to match_array([non_cl_admin])
+        create(:admin, email: 'test@govocal.com')
+        non_gv_admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([non_gv_admin])
       end
 
       it 'does not return project and folder moderators' do
@@ -1340,9 +1340,9 @@ RSpec.describe User do
         expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
 
-      it 'does not return citizenlab moderators' do
+      it 'does not return Go Vocal moderators' do
         create(:user)
-        create(:project_moderator, email: 'test@citizenlab.eu')
+        create(:project_moderator, email: 'test@govocal.eu')
         non_cl_project_moderator = create(:project_moderator)
         expect(described_class.billed_moderators).to match_array([non_cl_project_moderator])
       end
@@ -1364,6 +1364,25 @@ RSpec.describe User do
         create_admin_moderator(:project_folder_moderator)
         expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
+    end
+  end
+
+  context '(super_admins scopes)' do
+    let_it_be(:super_admins) { create_list(:super_admin, 1) }
+    let_it_be(:non_super_admins) do
+      [
+        create(:user),
+        create(:admin),
+        create(:project_moderator, email: 'hello@govocal.com')
+      ]
+    end
+
+    it '.super_admins returns super admins only' do
+      expect(described_class.super_admins).to match_array(super_admins)
+    end
+
+    it '.non_super_admins returns non super admins' do
+      expect(described_class.not_super_admins).to match_array(non_super_admins)
     end
   end
 end

@@ -1,19 +1,18 @@
 import React, { FormEvent } from 'react';
 
-// components
-import Modal from 'components/UI/Modal';
-import Footer from './Footer';
-import Preferences from './Preferences';
-import ContentContainer from './ContentContainer';
 import { Title } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import Modal from 'components/UI/Modal';
 
-// typings
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { TCategory } from '../destinations';
+import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
+
+import ContentContainer from './ContentContainer';
+import Footer from './Footer';
+import Preferences from './Preferences';
 
 interface Props {
   opened: boolean;
@@ -64,8 +63,15 @@ const PreferencesModal = ({
           preferences={preferences}
         />
       ) : (
-        <ContentContainer role="dialog" aria-modal>
-          <Title variant="h5" as="h1">
+        <ContentContainer
+          role="dialog"
+          aria-modal
+          // aria-labelledby helps screen readers find
+          // the title of the dialog
+          // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
+          aria-labelledby="consent-manager-preferences-title"
+        >
+          <Title variant="h5" as="h1" id="consent-manager-preferences-title">
             <FormattedMessage {...messages.confirmation} />
           </Title>
         </ContentContainer>

@@ -1,6 +1,6 @@
-import { IDecodedJwt } from 'utils/auth/jwt';
-
 import { AUTH_PATH } from 'containers/App/constants';
+
+import { IDecodedJwt } from 'utils/auth/jwt';
 
 export default async function logoutUrl(decodedJwt: IDecodedJwt | null) {
   if (decodedJwt?.logout_supported) {

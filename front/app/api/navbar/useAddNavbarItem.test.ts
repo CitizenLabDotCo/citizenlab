@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddNavbarItem from './useAddNavbarItem';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { navbarItemsData } from './__mocks__/useNavbarItems';
+import useAddNavbarItem from './useAddNavbarItem';
 
 const apiPath = '*nav_bar_items';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: navbarItemsData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: navbarItemsData[0] }, { status: 200 });
   })
 );
 
@@ -42,8 +41,8 @@ describe('useAddNavbarItem', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,25 +1,22 @@
 import React, { useRef } from 'react';
+
+import {
+  colors,
+  fontSizes,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 import { isString, isEmpty, capitalize } from 'lodash-es';
-
-// libraries
-import { MentionsInput, Mention, MentionItem } from 'react-mentions';
-
-// components
-import Error from 'components/UI/Error';
-
-// style
-import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
-
-// Utils
-import { extractIdsFromValue } from './utils';
-
-// typings
-import { Locale } from 'typings';
-import { MentionRoles } from 'api/mentions/types';
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
+import styled, { useTheme } from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import getMentions from 'api/mentions/getMentions';
+import { MentionRoles } from 'api/mentions/types';
+
+import Error from 'components/UI/Error';
+
+import { extractIdsFromValue } from './utils';
 
 const Container = styled.div`
   position: relative;
@@ -59,13 +56,13 @@ export interface Props {
   className?: string;
   name: string;
   value?: string | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
-  onChange?: (arg: string, locale: Locale | undefined) => void;
+  onChange?: (arg: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
@@ -131,6 +128,7 @@ const MentionsTextArea = ({
     paddingRight: '1px',
     borderRadius: '3px',
     backgroundColor: transparentize(0.85, theme.colors.tenantText),
+    marginRight: '2px',
   };
 
   const getStyle = () => {
@@ -190,8 +188,13 @@ const MentionsTextArea = ({
     return style;
   };
 
-  const mentionDisplayTransform = (_id, display) => {
-    return `${trigger}${display}`;
+  const mentionDisplayTransform = (_id: string, display: string) => {
+    // If `allowSpaceInQuery` is not used, `appendSpaceOnAdd` adds a space after a mention and then
+    // the space is preserved when a new mention is added.
+    // But if `allowSpaceInQuery` is used, a space is added after adding a mention, but then
+    // removed when a new mention is added.
+    // So, we need a space before a mention to separate words, and `marginRight` to separate mention grey boxes.
+    return ` ${trigger}${display}`;
   };
 
   const handleOnChange = (event) => {
@@ -271,6 +274,7 @@ const MentionsTextArea = ({
           ref={setMentionsInputRef}
           inputRef={textareaElement}
           autoFocus={false}
+          allowSpaceInQuery={true}
         >
           <Mention
             trigger={trigger}

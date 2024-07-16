@@ -1,27 +1,27 @@
 import React from 'react';
 
 // JSON forms
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps } from '@jsonforms/core';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-
-// Components
 import {
   Box,
   Text,
   useBreakpoint,
   Button,
+  colors,
 } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import VerificationIcon from '../VerificationIcon';
-import ErrorDisplay from '../ErrorDisplay';
-import { getSubtextElement } from './controlUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import { colors } from 'utils/styleUtils';
+import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { useTheme } from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const LinearScaleControl = ({
   data,
@@ -84,16 +84,27 @@ const LinearScaleControl = ({
                 <Button
                   py="12px"
                   id={`linear-scale-option-${visualIndex}`}
+                  borderColor={theme.colors.tenantPrimary}
+                  borderHoverColor={theme.colors.tenantPrimary}
                   bgColor={
                     data === visualIndex
-                      ? theme.colors.tenantSecondary
-                      : colors.grey100
+                      ? theme.colors.tenantPrimary
+                      : theme.colors.tenantPrimaryLighten95
+                  }
+                  bgHoverColor={
+                    data === visualIndex
+                      ? theme.colors.tenantPrimary
+                      : theme.colors.tenantPrimaryLighten75
                   }
                   textHoverColor={
-                    data === visualIndex ? 'white' : colors.textPrimary
+                    data === visualIndex
+                      ? colors.white
+                      : theme.colors.tenantPrimary
                   }
                   textColor={
-                    data === visualIndex ? 'white' : colors.textPrimary
+                    data === visualIndex
+                      ? colors.white
+                      : theme.colors.tenantPrimary
                   }
                   width="100%"
                   onClick={() => handleChange(path, visualIndex)}
@@ -138,7 +149,12 @@ const LinearScaleControl = ({
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={false}
+      />
     </>
   );
 };

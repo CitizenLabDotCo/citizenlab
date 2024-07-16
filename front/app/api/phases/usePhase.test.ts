@@ -1,20 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePhase from './usePhase';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { phasesData } from './__mocks__/usePhases';
 
-const apiPath = '*phases/:phaseId';
+import endpoints, { apiPathPhase, phasesData } from './__mocks__/_mockServer';
+import usePhase from './usePhase';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: phasesData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET phases/:id']);
 
 describe('usePhase', () => {
   beforeAll(() => server.listen());
@@ -35,8 +28,8 @@ describe('usePhase', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathPhase, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

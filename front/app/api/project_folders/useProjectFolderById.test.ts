@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectFolderById from './useProjectFolderById';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectFolderData } from './__mocks__/useProjectFolder';
+import useProjectFolderById from './useProjectFolderById';
 
 const apiPath = '*project_folders/:projectFolderId';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectFolderData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: projectFolderData }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useProjectFolderById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -30,14 +30,15 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+      service = IdeaCustomFieldsService.new(@custom_form)
 
+      fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: include_in_index_response
       ).serializable_hash
     end
 
@@ -45,7 +46,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
         params: jsonapi_serializer_params,
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     end
 
@@ -63,13 +64,18 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
     private
+
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def include_in_index_response
+      %i[options options.image]
+    end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
@@ -97,6 +103,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
+          relate_map_config_to_field(field, field_params, errors, index)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -104,8 +111,13 @@ module IdeaCustomFields
     end
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
+      if field_params['code'].nil? && @participation_method.allowed_extra_field_input_types.exclude?(field_params['input_type'])
+        errors[index.to_s] = { input_type: [{ error: 'inclusion', value: field_params['input_type'] }] }
+        return false
+      end
+
       create_params = field_params.except('temp_id').to_h
-      if create_params.key? 'code'
+      if create_params.key?('code') && !create_params['code'].nil?
         default_field = @participation_method.default_fields(@custom_form).find do |field|
           field.code == create_params['code']
         end
@@ -150,6 +162,9 @@ module IdeaCustomFields
       end
     end
 
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def relate_map_config_to_field(_field, _field_params, _errors, _index); end
+
     def delete_field!(field)
       SideFxCustomFieldService.new.before_destroy field, current_user
       field.destroy!
@@ -166,20 +181,21 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
-          if option_params[:id]
+          if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
           else
             option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
             next unless option
           end
+          update_option_image!(option, option_params[:image_id])
           option.move_to_bottom
         end
       end
     end
 
     def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
-      create_params = option_params.except('temp_id')
+      create_params = option_params.except('temp_id', 'image_id')
       option = CustomFieldOption.new create_params.merge(custom_field: field)
       SideFxCustomFieldOptionService.new.before_create option, current_user
       if option.save
@@ -192,8 +208,31 @@ module IdeaCustomFields
       end
     end
 
+    def update_option_image!(option, image_id)
+      return unless image_id
+
+      if image_id == ''
+        option.image.destroy!
+      else
+        begin
+          image = CustomFieldOptionImage.find image_id
+          if image.custom_field_option.present? && image.custom_field_option != option
+            # This request is coming from a form copy request, so create a copy of the image
+            image = image.dup
+            image.save!
+          end
+          option.update!(image: image)
+        rescue ActiveRecord::RecordNotFound
+          # NOTE: catching this exception to stop the transaction failing if the image not found by
+          # This will happen if an image select field is saved in a tab when it has been removed in another.
+        end
+      end
+    end
+
     def update_option!(option, option_params, errors, field_index, option_index)
-      option.assign_attributes option_params
+      update_params = option_params.except('image_id')
+      option.assign_attributes update_params
+
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
         SideFxCustomFieldOptionService.new.after_update option, current_user
@@ -234,6 +273,7 @@ module IdeaCustomFields
         :id,
         :temp_id,
         :code,
+        :key,
         :input_type,
         :required,
         :enabled,
@@ -241,11 +281,22 @@ module IdeaCustomFields
         :select_count_enabled,
         :maximum_select_count,
         :minimum_select_count,
+        :random_option_ordering,
+        :map_config_id,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-          options: [:id, :temp_id, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+          options: [
+            :id,
+            :key,
+            :temp_id,
+            :image_id,
+            :other,
+            {
+              title_multiloc: CL2_SUPPORTED_LOCALES
+            }
+          ],
           logic: {} }
       ])
     end
@@ -281,3 +332,5 @@ module IdeaCustomFields
     end
   end
 end
+
+IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)

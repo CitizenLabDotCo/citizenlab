@@ -1,14 +1,20 @@
 import { Moment } from 'moment';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // Parameters
 export interface ProjectId {
-  projectId: string | undefined;
+  projectId?: string | undefined;
 }
 
 export interface Dates {
   startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
+}
+
+export interface DatesStrings {
+  startAt?: string | null;
+  endAt?: string | null;
 }
 
 export interface Resolution {

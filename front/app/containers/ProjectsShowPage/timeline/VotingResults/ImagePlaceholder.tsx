@@ -1,15 +1,8 @@
 import React from 'react';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
+import { Icon, IconNames, colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { ParticipationMethod, VotingMethod } from 'utils/participationContexts';
+import styled from 'styled-components';
 
 const ImagePlaceholderContainer = styled.div`
   position: absolute;
@@ -29,19 +22,12 @@ const ImagePlaceholderIcon = styled(Icon)`
 `;
 
 interface Props {
-  participationMethod?: ParticipationMethod;
-  votingMethod?: VotingMethod | null;
+  placeholderIconName: IconNames;
 }
 
-const ImagePlaceholder = ({ participationMethod, votingMethod }: Props) => (
+const ImagePlaceholder = ({ placeholderIconName }: Props) => (
   <ImagePlaceholderContainer>
-    <ImagePlaceholderIcon
-      name={
-        participationMethod === 'voting' && votingMethod === 'budgeting'
-          ? 'money-bag'
-          : 'idea'
-      }
-    />
+    <ImagePlaceholderIcon name={placeholderIconName} />
   </ImagePlaceholderContainer>
 );
 

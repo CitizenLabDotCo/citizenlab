@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { truncateMultiloc } from 'utils/textUtils';
+
 import navbarKeys from './keys';
 import { INavbarItems, NavbarKeys, NavbarParameters } from './types';
-import { truncateMultiloc } from 'utils/textUtils';
 import { MAX_TITLE_LENGTH } from './util';
 
 const fetchNavbarItems = ({

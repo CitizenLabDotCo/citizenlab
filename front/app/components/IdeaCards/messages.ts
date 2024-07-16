@@ -93,4 +93,8 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.a11y_totalItems',
     defaultMessage: 'Total items: {ideasCount}',
   },
+  a11y_ideasHaveBeenSorted: {
+    id: 'app.components.IdeaCards.a11y_ideasHaveBeenSorted',
+    defaultMessage: '{sortOder} ideas have loaded.',
+  },
 });

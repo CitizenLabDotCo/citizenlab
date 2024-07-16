@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+
+import { Text } from '@citizenlab/cl2-component-library';
 import AsyncSelect from 'react-select/async';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import fetcher from 'utils/cl-react-query/fetcher';
+
 import useLocale from 'hooks/useLocale';
+
+import selectStyles from 'components/UI/MultipleSelect/styles';
+
 import { useIntl } from 'utils/cl-intl';
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import messages from './messages';
+import { isValidCoordinate } from './utils';
 
 export interface Option {
   label: string;
@@ -68,12 +75,18 @@ const LocationInput = (
         },
       });
 
-      return (
+      const options =
         response.data.attributes.results?.map((item) => ({
           label: item,
           value: item,
-        })) || []
-      );
+        })) || [];
+
+      // Add the inputValue as an option if it is a valid coordinate
+      if (isValidCoordinate(inputValue)) {
+        options.push({ label: inputValue, value: inputValue });
+      }
+
+      return options;
     } catch (error) {
       return [];
     }
@@ -81,15 +94,23 @@ const LocationInput = (
 
   return (
     <AsyncSelect
+      id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
-      styles={selectStyles}
+      styles={selectStyles()}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
       blurInputOnSelect
       menuShouldScrollIntoView={false}
       isClearable
       openMenuOnClick={false}
       {...props}
+      placeholder={
+        props.placeholder ? (
+          <Text m="0" color="coolGrey600">
+            {props.placeholder}
+          </Text>
+        ) : undefined
+      }
     />
   );
 };

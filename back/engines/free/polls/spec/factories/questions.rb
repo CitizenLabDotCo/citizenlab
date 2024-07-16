@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :poll_question, class: 'Polls::Question' do
-    participation_context { create(:continuous_poll_project) }
+    phase { create(:single_phase_poll_project).phases.first }
     question_type { 'single_option' }
     sequence(:title_multiloc) do |n|
       {

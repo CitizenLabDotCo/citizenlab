@@ -18,7 +18,7 @@ FactoryBot.define do
     publication_status { 'published' }
     budget { 750 }
     proposed_budget { 500 }
-    association :project, factory: :continuous_project
+    association :project, factory: :single_phase_ideation_project
     author
     idea_status
     location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
@@ -40,6 +40,7 @@ FactoryBot.define do
   factory :native_survey_response, class: 'Idea' do
     publication_status { 'published' }
     association :idea_status, factory: :idea_status_proposed
-    association :project, factory: :continuous_native_survey_project
+    association :project, factory: :single_phase_native_survey_project
+    creation_phase { project.phases.first }
   end
 end

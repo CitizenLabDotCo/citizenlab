@@ -1,21 +1,18 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
+
+import {
+  useWindowSize,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-
-// components
-import MapIdeasList from './MapIdeasList';
-import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
-import IdeasShow from 'containers/IdeasShow';
-
-// styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+
+import useProjectById from 'api/projects/useProjectById';
+
+import IdeasShow from 'containers/IdeasShow';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
+
+import MapIdeasList from './MapIdeasList';
 
 const timeout = 200;
 
@@ -44,6 +41,9 @@ const InnerOverlay = styled.div<{ right: string }>`
   ${defaultCardStyle};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
   transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
+  &:focus {
+    outline: none;
+  }
 
   &.animation-enter {
     opacity: 0;
@@ -75,8 +75,6 @@ const InnerOverlay = styled.div<{ right: string }>`
   }
 `;
 
-const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
-
 const StyledIdeasShow = styled(IdeasShow)`
   flex: 1;
   overflow-x: hidden;
@@ -93,52 +91,92 @@ interface Props {
   projectId: string;
   phaseId?: string;
   className?: string;
-  deselectIdeaMarker: () => void;
+  onSelectIdea: (ideaId: string | null) => void;
+  selectedIdea?: string | null;
 }
 
 const IdeaMapOverlay = memo<Props>(
-  ({ projectId, phaseId, className, deselectIdeaMarker }) => {
-    const [searchParams] = useSearchParams();
+  ({ projectId, phaseId, className, selectedIdea, onSelectIdea }) => {
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
+    const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
-    const selectedIdeaId = searchParams.get('idea_map_id');
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);
 
+    const overlayRef = useRef<HTMLDivElement | null>(null);
+
     useEffect(() => {
-      if (scrollContainerElement && selectedIdeaId) {
+      if (scrollContainerElement && selectedIdea) {
         scrollContainerElement.scrollTop = 0;
       }
-    }, [scrollContainerElement, selectedIdeaId]);
+    }, [scrollContainerElement, selectedIdea]);
+
+    useEffect(() => {
+      const currentTimeout = timeoutRef.current;
+      // Cleanup the timeout if the component unmounts before the timeout executes
+      return () => {
+        if (currentTimeout) {
+          clearTimeout(currentTimeout);
+        }
+      };
+    }, []);
 
     const handleIdeasShowSetRef = (element: HTMLDivElement) => {
       setScrollContainerElement(element);
     };
 
+    const handleSelectIdea = (ideaId: string | null) => {
+      onSelectIdea(ideaId);
+
+      timeoutRef.current = window.setTimeout(() => {
+        // We move focus from the idea list to the overlay so that user can easily
+        // tab through the idea details in the overlay after selecting an idea
+        overlayRef.current?.focus();
+        // Clear the timeout after it has been used
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = undefined;
+        }
+      }, 0);
+    };
+
     if (project) {
       return (
         <Container className={className || ''}>
-          <StyledIdeasList projectId={projectId} phaseId={phaseId} />
+          {!selectedIdea && (
+            <StyledIdeasList
+              projectId={projectId}
+              phaseId={phaseId}
+              onSelectIdea={handleSelectIdea}
+            />
+          )}
           <CSSTransition
             classNames="animation"
-            in={!!selectedIdeaId}
+            in={!!selectedIdea}
             timeout={timeout}
-            mounOnEnter={true}
+            mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
             exit={true}
           >
-            <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
-              <StyledIdeaShowPageTopBar
-                ideaId={selectedIdeaId ?? undefined}
-                deselectIdeaOnMap={deselectIdeaMarker}
+            <InnerOverlay
+              right={smallerThan1440px ? '-100px' : '-150px'}
+              tabIndex={-1}
+              // Ref to use to focus on the overlay after selecting an idea
+              ref={overlayRef}
+            >
+              <IdeaShowPageTopBar
+                ideaId={selectedIdea ?? undefined}
+                deselectIdeaOnMap={() => {
+                  onSelectIdea(null);
+                }}
                 projectId={projectId}
               />
-              {selectedIdeaId && (
+              {selectedIdea && (
                 <StyledIdeasShow
-                  ideaId={selectedIdeaId}
+                  ideaId={selectedIdea}
                   projectId={projectId}
                   compact={true}
                   setRef={handleIdeasShowSetRef}

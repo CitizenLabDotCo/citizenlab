@@ -1,21 +1,17 @@
 import React, { useMemo } from 'react';
-import { useResizeDetector } from 'react-resize-detector';
 
-// components
-import { ResponsiveContainer } from 'recharts';
-import FakeLegend from './Legend/FakeLegend';
 import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
 import { debounce, isEqual } from 'lodash-es';
-
-// typings
+import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
+
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
 import { Legend } from '../typings';
+
+import FakeLegend from './Legend/FakeLegend';
 
 interface Props {
   width?: number | Percentage;
@@ -68,16 +64,6 @@ const Container = ({
     [graphDimensions, onUpdateGraphDimensions]
   );
 
-  const { ref: resizeRef } = useResizeDetector({ onResize: handleResize });
-
-  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if (ref === null) return;
-    const node = ref.current;
-    if (node === null) return;
-
-    resizeRef.current = node;
-  };
-
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
 
@@ -106,7 +92,7 @@ const Container = ({
       <ResponsiveContainer
         width={parsedWidth}
         height={parsedHeight}
-        ref={handleRef}
+        onResize={handleResize}
       >
         {children}
       </ResponsiveContainer>

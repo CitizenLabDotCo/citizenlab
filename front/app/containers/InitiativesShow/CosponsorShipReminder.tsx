@@ -1,9 +1,13 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import Warning from 'components/UI/Warning';
-import Link from 'utils/cl-router/Link';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
 
 interface Props {
   initiativeId: string;
@@ -24,7 +28,7 @@ const CosponsorShipReminder = ({ initiativeId }: Props) => {
         values={{
           requiredNumberOfCosponsors,
           manageInvitationsLink: (
-            <Link to={`/initiatives/edit/${initiativeId}`}>
+            <Link to={`/initiatives/edit/${initiativeId}`} scrollToTop>
               {formatMessage(messages.manageInvitationsLinkText)}
             </Link>
           ),

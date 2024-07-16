@@ -1,16 +1,21 @@
 import React from 'react';
+
+import {
+  Box,
+  Icon,
+  IconNames,
+  Text,
+  Badge,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// components
-import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-
-// styles
-import { colors } from 'utils/styleUtils';
-
-// services
 import { ICustomFieldInputType } from 'api/custom_fields/types';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   label: string;
@@ -21,6 +26,7 @@ interface Props {
   inputType?: ICustomFieldInputType;
   disabled?: boolean;
   disabledTooltipMessage?: MessageDescriptor;
+  showAIUpsell?: boolean;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -54,6 +60,7 @@ const ToolboxItem = ({
   inputType,
   disabled,
   disabledTooltipMessage,
+  showAIUpsell,
   ...rest
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -63,8 +70,7 @@ const ToolboxItem = ({
   }
 
   return (
-    <Tippy
-      interactive={true}
+    <Tooltip
       placement={'left-start'}
       disabled={!disabled || !disabledTooltipMessage}
       theme={'dark'}
@@ -80,7 +86,6 @@ const ToolboxItem = ({
     >
       <Box
         as="button"
-        aria-describedby="tooltip-content"
         minWidth={!disabled ? '100%' : 'auto'}
         p="0px"
         type="button"
@@ -110,10 +115,33 @@ const ToolboxItem = ({
           >
             {label}
           </Text>
+          {showAIUpsell && (
+            <Tooltip
+              placement="bottom"
+              theme={'dark'}
+              content={
+                <Box style={{ cursor: 'default' }}>
+                  <Text my="8px" color="white" fontSize="s">
+                    {formatMessage(messages.aiUpsellText)}
+                  </Text>
+                </Box>
+              }
+            >
+              <Box mx="6px" w="6px">
+                <Badge
+                  color={colors.teal}
+                  className="inverse"
+                  style={{ padding: '1px 6px' }}
+                >
+                  {formatMessage(messages.ai)}
+                </Badge>
+              </Box>
+            </Tooltip>
+          )}
           {!disabled && <AddIcon />}
         </StyledBox>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

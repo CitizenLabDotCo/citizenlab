@@ -1,24 +1,22 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCauses from './useCauses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { causesData } from './__mocks__/useCauses';
 import { ICauseParameters } from './types';
+import useCauses from './useCauses';
 
 const apiPath = '*/:type/:id/causes';
 
 const params: ICauseParameters = {
-  participationContextType: 'project',
-  participationContextId: '1',
+  phaseId: '1',
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: causesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: causesData }, { status: 200 });
   })
 );
 
@@ -41,8 +39,8 @@ describe('useCauses', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

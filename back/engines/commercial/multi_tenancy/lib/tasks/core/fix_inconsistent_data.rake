@@ -68,9 +68,6 @@ namespace :inconsistent_data do
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        to_fix = Project.where(process_type: 'continuous').all.select do |project|
-          !project.can_contain_ideas? && project.ideas.present?
-        end
         to_fix += Phase.all.select do |phase|
           !phase.can_contain_ideas? && phase.ideas.present?
         end
@@ -109,18 +106,18 @@ namespace :inconsistent_data do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         deleted_keys = {}
-        CustomField.with_resource_type('User').where(input_type: 'multiselect').pluck(:key).each do |key|
+        CustomField.registration.where(input_type: 'multiselect').pluck(:key).each do |key|
           used_keys = User.select("custom_field_values->'#{key}' as user_options").filter_map(&:user_options).flatten.uniq
           deleted_keys[key] =
-            used_keys - CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key)
+            used_keys - CustomField.registration.find_by(key: key).custom_field_options.pluck(:key)
         end
-        CustomField.with_resource_type('User').where(input_type: 'select').pluck(:key).each do |key|
+        CustomField.registration.where(input_type: 'select').pluck(:key).each do |key|
           used_keys = User.select("custom_field_values->'#{key}' as user_option").filter_map(&:user_option).uniq
           deleted_keys[key] =
-            used_keys - (CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
+            used_keys - (CustomField.registration.find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
         end
         deleted_keys.each do |field_key, option_keys|
-          field = CustomField.with_resource_type('User').find_by key: field_key
+          field = CustomField.registration.find_by key: field_key
           raise 'Trying to delete existing option' if field.custom_field_options.exists?(key: option_keys)
 
           option_keys.each do |option_key|
@@ -140,7 +137,7 @@ namespace :inconsistent_data do
         deleted_area_ids = User.all.filter_map(&:domicile).uniq - (outside + Area.ids)
         deleted_area_ids.each do |area_id|
           service.delete_custom_field_option_values area_id,
-            CustomField.with_resource_type('User').find_by(key: 'domicile')
+            CustomField.registration.find_by(key: 'domicile')
         end
       end
     end
@@ -153,7 +150,7 @@ namespace :inconsistent_data do
       Apartment::Tenant.switch(tenant.schema_name) do
         affected_users = User.where("custom_field_values::text LIKE '%null%'")
         affected_users.each do |user|
-          user.update_columns custom_field_values: service.cleanup_custom_field_values!(user.custom_field_values)
+          user.update_columns custom_field_values: service.compact_custom_field_values!(user.custom_field_values)
         end
       end
     end
@@ -256,6 +253,26 @@ namespace :inconsistent_data do
       Apartment::Tenant.switch(tenant.schema_name) do
         EmailCampaigns::Campaigns::Manual.where(sender: 'author').where(author_id: nil)
           .update_all(sender: 'organization')
+      end
+    end
+  end
+
+  task fix_missing_analysis_columns: :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        connection = ActiveRecord::Base.connection
+
+        created_at_exists = connection.column_exists?(:analysis_taggings, :created_at)
+        updated_at_exists = connection.column_exists?(:analysis_taggings, :updated_at)
+
+        next if created_at_exists && updated_at_exists
+
+        if !created_at_exists && !updated_at_exists
+          puts "Columns missing for #{Tenant.name}, adding them now"
+          connection.add_timestamps(:analysis_taggings, null: false, default: Time.now)
+        else
+          raise "#{Tenant.name} is inconsistent: created_at #{created_at_exists}, updated at #{updated_at_exists}"
+        end
       end
     end
   end

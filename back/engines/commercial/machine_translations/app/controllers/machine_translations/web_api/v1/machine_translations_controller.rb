@@ -22,6 +22,8 @@ module MachineTranslations
         }
 
         def show
+          require_feature! 'machine_translations'
+
           set_translation_attributes
           @translation = MachineTranslation.find_by @translation_attributes
 
@@ -30,7 +32,7 @@ module MachineTranslations
             authorize @translation
           else
             begin
-              @translation = MachineTranslationService.new.build_translation_for @translation_attributes
+              @translation = MachineTranslationService.new.build_translation_for(**@translation_attributes)
 
               if @translation.nil?
                 render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity

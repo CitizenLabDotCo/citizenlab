@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-
-import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
-import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
+import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
+
 import GoBackButton from 'components/UI/GoBackButton';
-import Step1 from './Step1';
-import Step2LabelClassification from './Step2LabelClassification';
-import Step2FewShotClassification from './Step2FewShotClassification';
-import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
+
 import { trackEventByName } from 'utils/analytics';
+
+import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
 import tracks from '../../tracks';
+
+import Step1 from './Step1';
+import Step2FewShotClassification from './Step2FewShotClassification';
+import Step2LabelClassification from './Step2LabelClassification';
 
 const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   const [step, setStep] = useState<

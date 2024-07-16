@@ -1,12 +1,11 @@
-// utils
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import {
   getDateFilter,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
 import { QueryParameters } from './typings';
-import { Query, QuerySchema } from 'api/analytics/types';
 
 export const query = ({
   startAtMoment,
@@ -51,13 +50,14 @@ export const query = ({
     },
   };
 
+  const date_group = `dimension_date_sent.${getInterval(resolution)}`;
   const timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
     filters: { ...dateFilter },
-    groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
+    groups: [date_group, 'automated'],
     aggregations: {
       all: 'count',
-      'dimension_date_sent.date': 'first',
+      [date_group]: 'first',
     },
   };
 

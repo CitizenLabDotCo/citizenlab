@@ -1,11 +1,17 @@
 import React from 'react';
+
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
+import { useTheme } from 'styled-components';
+
 import { IAreaData } from 'api/areas/types';
 import useUpdateArea from 'api/areas/useUpdateArea';
+
+import T from 'components/T';
 import Error from 'components/UI/Error';
-import messages from './messages';
+
 import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   area: IAreaData;
@@ -14,12 +20,14 @@ interface Props {
 const UpdateOnboardingArea = ({ area }: Props) => {
   const { mutate: updateArea, isLoading, error } = useUpdateArea();
   const { formatMessage } = useIntl();
-  const color = area.attributes.include_in_onboarding
-    ? colors.success
-    : colors.coolGrey300;
+  const theme = useTheme();
   const iconName = area.attributes.include_in_onboarding
     ? 'check-circle'
     : 'plus-circle';
+  const areaButtonContentColor = area.attributes.include_in_onboarding
+    ? colors.white
+    : theme.colors.tenantPrimary;
+  const className = area.attributes.include_in_onboarding ? 'inverse' : '';
 
   const onClick = () => {
     updateArea({
@@ -30,15 +38,20 @@ const UpdateOnboardingArea = ({ area }: Props) => {
 
   return (
     <>
-      <Badge color={color} onClick={onClick}>
+      <Badge
+        color={theme.colors.tenantPrimary}
+        className={className}
+        onClick={onClick}
+      >
         <Button
           buttonStyle="text"
           icon={iconName}
-          iconColor={color}
           iconPos="right"
           padding="0px"
           my="0px"
           processing={isLoading}
+          textColor={areaButtonContentColor}
+          iconColor={areaButtonContentColor}
         >
           <T value={area.attributes.title_multiloc} />
         </Button>

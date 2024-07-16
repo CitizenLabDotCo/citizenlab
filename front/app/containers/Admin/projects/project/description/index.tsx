@@ -1,42 +1,35 @@
 import React, { memo, useEffect, useCallback, useState } from 'react';
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Hooks
+import { Success, Box, colors } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { Multiloc, SupportedLocale } from 'typings';
+
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-// Components
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
 import {
   Section,
   SectionField,
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-// Styling
-import styled from 'styled-components';
+import messages from './messages';
 
 // Typing
-import { Multiloc, Locale } from 'typings';
-import Outlet from 'components/Outlet';
-
-const Container = styled.div``;
-
-const ButtonContainer = styled.div`
-  display: flex;
-`;
 
 interface Props {
   className?: string;
@@ -57,6 +50,7 @@ const ProjectDescription = memo<
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const [moduleActive, setModuleActive] = useState(false);
   const [touched, setTouched] = useState(false);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   const [success, setSuccess] = useState(false);
   const [formValues, setFormValues] = useState<IFormValues>({
@@ -78,7 +72,7 @@ const ProjectDescription = memo<
   }, [project]);
 
   const handleDescriptionPreviewOnChange = useCallback(
-    (description_preview_multiloc: Multiloc, _locale: Locale) => {
+    (description_preview_multiloc: Multiloc, _locale: SupportedLocale) => {
       setTouched(true);
       setSuccess(false);
       setFormValues((prevFormValues) => ({
@@ -90,7 +84,7 @@ const ProjectDescription = memo<
   );
 
   const handleDescriptionOnChange = useCallback(
-    (description_multiloc: Multiloc, _locale: Locale) => {
+    (description_multiloc: Multiloc, _locale: SupportedLocale) => {
       setTouched(true);
       setSuccess(false);
       setFormValues((prevFormValues) => ({
@@ -130,7 +124,7 @@ const ProjectDescription = memo<
 
   if (!isNilOrError(project)) {
     return (
-      <Container>
+      <Box ref={containerRef}>
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
@@ -157,63 +151,76 @@ const ProjectDescription = memo<
             />
           </SectionField>
 
-          <SectionField>
-            {!moduleActive && (
-              <QuillMultilocWithLocaleSwitcher
-                id="project-description"
+          <Box mb="40px">
+            <SectionField>
+              {!moduleActive && (
+                <QuillMultilocWithLocaleSwitcher
+                  id="project-description"
+                  valueMultiloc={formValues.description_multiloc}
+                  onChange={handleDescriptionOnChange}
+                  label={formatMessage(messages.descriptionLabel)}
+                  labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                  withCTAButton
+                />
+              )}
+              <Outlet
+                id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
+                onMount={setModuleToActive}
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                withCTAButton
               />
-            )}
-            <Outlet
-              id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
-              onMount={setModuleToActive}
-              valueMultiloc={formValues.description_multiloc}
-              onChange={handleDescriptionOnChange}
-              label={formatMessage(messages.descriptionLabel)}
-              labelTooltipText={formatMessage(messages.descriptionTooltip)}
-            />
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={apiError?.description_multiloc}
-            />
-          </SectionField>
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={apiError?.description_multiloc}
+              />
+            </SectionField>
+          </Box>
         </Section>
 
-        <ButtonContainer>
-          <Button
-            buttonStyle="admin-dark"
-            onClick={handleOnSubmit}
-            processing={isLoading}
-            disabled={!touched}
-          >
-            {success ? (
-              <FormattedMessage {...messages.saved} />
-            ) : (
-              <FormattedMessage {...messages.save} />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`} display="flex">
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handleOnSubmit}
+              processing={isLoading}
+              disabled={!touched}
+            >
+              {success ? (
+                <FormattedMessage {...messages.saved} />
+              ) : (
+                <FormattedMessage {...messages.save} />
+              )}
+            </Button>
+
+            {success && (
+              <Success
+                text={formatMessage(messages.saveSuccessMessage)}
+                showBackground={false}
+                showIcon={false}
+              />
             )}
-          </Button>
 
-          {success && (
-            <Success
-              text={formatMessage(messages.saveSuccessMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
-          )}
-
-          {!isEmpty(apiError) && (
-            <Error
-              text={formatMessage(messages.errorMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
-          )}
-        </ButtonContainer>
-      </Container>
+            {!isEmpty(apiError) && (
+              <Error
+                text={formatMessage(messages.errorMessage)}
+                showBackground={false}
+                showIcon={false}
+              />
+            )}
+          </Box>
+        </Box>
+      </Box>
     );
   }
 

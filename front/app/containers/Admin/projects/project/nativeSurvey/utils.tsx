@@ -1,35 +1,32 @@
 import React from 'react';
 
-// api
-import { updateProject } from 'api/projects/useUpdateProject';
+import { Box } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+import { Multiloc } from 'typings';
+
+import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
+import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-// typing
-import { Multiloc } from 'typings';
-import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
-
-// utils
 import { API_PATH } from 'containers/App/constants';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
-import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// intl
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AccessRightsNotice from './AccessRightsNotice';
+import messages from './messages';
+
 export const nativeSurveyConfig: FormBuilderConfig = {
-  formBuilderTitle: messages.survey2,
-  viewFormLinkCopy: messages.viewSurvey2,
-  toolboxTitle: messages.addSurveyContent2,
-  formSavedSuccessMessage: messages.successMessage2,
-  supportArticleLink: messages.supportArticleLink2,
-  formEndPageLogicOption: messages.surveyEnd2,
-  questionLogicHelperText: messages.questionLogicHelperText2,
-  pagesLogicHelperText: messages.pagesLogicHelperText2,
+  formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  formEndPageLogicOption: messages.surveyEnd,
+  questionLogicHelperText: messages.questionLogicHelperText,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,
@@ -49,14 +46,21 @@ export const nativeSurveyConfig: FormBuilderConfig = {
       </Box>
     );
   },
+  getAccessRightsNotice: (projectId, phaseId, handleClose) => {
+    return projectId && phaseId ? (
+      <AccessRightsNotice
+        projectId={projectId}
+        phaseId={phaseId}
+        handleClose={handleClose}
+      />
+    ) : null;
+  },
 };
 
 type FormActionsConfig = {
   phaseId?: string;
-  editFormLink: string;
-  viewFormLink: string;
-  viewFormResults: string;
-  offlineInputsLink: string;
+  editFormLink: RouteType;
+  inputImporterLink: RouteType;
   downloadExcelLink: string;
   downloadPdfLink: string;
   heading?: Multiloc;
@@ -64,48 +68,17 @@ type FormActionsConfig = {
   togglePostingEnabled: () => void;
 };
 
-const getSurveyPhases = (phases: IPhaseData[] | Error | null | undefined) => {
-  return !isNilOrError(phases)
-    ? phases.filter(
-        (phase) => phase.attributes.participation_method === 'native_survey'
-      )
-    : [];
-};
-
 export const getFormActionsConfig = (
   project: IProjectData,
   updatePhase: (phaseData: UpdatePhaseObject) => void,
-  phases?: IPhaseData[] | Error | null | undefined
-): FormActionsConfig[] => {
-  const processType = project.attributes.process_type;
-  if (processType === 'continuous') {
-    return [
-      {
-        editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
-        viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
-        viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
-        offlineInputsLink: `/admin/projects/${project.id}/offline-inputs`,
-        downloadExcelLink: `${API_PATH}/projects/${project.id}/import_ideas/example_xlsx`,
-        downloadPdfLink: `${API_PATH}/projects/${project.id}/custom_fields/to_pdf`,
-        postingEnabled: project.attributes.posting_enabled,
-        togglePostingEnabled: () => {
-          updateProject({
-            projectId: project.id,
-            posting_enabled: !project.attributes.posting_enabled,
-          });
-        },
-      },
-    ];
-  }
-
-  return getSurveyPhases(phases).map((phase) => ({
+  phase: IPhaseData
+): FormActionsConfig => {
+  return {
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
-    viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
-    viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
-    offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
-    downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
-    downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,
+    inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
+    downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
+    downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
     togglePostingEnabled: () => {
@@ -114,5 +87,18 @@ export const getFormActionsConfig = (
         posting_enabled: !phase.attributes.posting_enabled,
       });
     },
-  }));
+  };
+};
+
+// Remove the IDs from the options - for when the form is not persisted
+export const clearOptionIds = (customFields: IFlatCustomField[]) => {
+  return customFields?.map((field: IFlatCustomField) => {
+    if (field.options && field.options.length > 0) {
+      field.options = field.options.map((option: IOptionsType) => {
+        delete option.id;
+        return option;
+      });
+    }
+    return field;
+  });
 };

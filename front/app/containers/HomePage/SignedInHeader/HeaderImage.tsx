@@ -1,8 +1,9 @@
 import React from 'react';
+
+import { Image, Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
-import { Image, Box } from '@citizenlab/cl2-component-library';
-import { media, isRtl } from 'utils/styleUtils';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const HeaderImageContainer = styled.div`
   position: absolute;
@@ -37,26 +38,21 @@ const StyledImage = styled(Image)`
   `}
 `;
 
-const HeaderImage = () => {
-  const { data: homepageSettings } = useHomepageSettings();
+const HeaderImage = ({
+  homepageSettings,
+}: {
+  homepageSettings: Partial<IHomepageBannerSettings>;
+}) => {
   const theme = useTheme();
 
   if (homepageSettings) {
-    const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-      ? homepageSettings.data.attributes.header_bg.large
+    const tenantHeaderImage = homepageSettings.header_bg
+      ? homepageSettings.header_bg.large
       : null;
-    const isFixedBannerLayout =
-      homepageSettings.data.attributes.banner_layout === 'fixed_ratio_layout';
-
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
-          {/*
-            With the fixed ratio layout, the image would be pixeled so we
-            don't show it for that layout.
-            Ticket: https://citizenlab.atlassian.net/browse/CL-2215
-          */}
-          {tenantHeaderImage && !isFixedBannerLayout && (
+          {tenantHeaderImage && (
             <StyledImage
               data-cy="e2e-signed-in-header-image"
               alt="" // Image is decorative, so alt tag is empty
@@ -66,15 +62,16 @@ const HeaderImage = () => {
           {/* Image overlay */}
           <Box
             data-testid="signed-in-header-image-overlay"
+            data-cy="e2e-signed-in-header-image-overlay"
             background={
-              theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
+              homepageSettings.banner_signed_in_header_overlay_color ||
+              theme.colors.tenantPrimary
             }
-            // With this fixed ratio layout, we don't have an image (see above),
-            // so we set opacity to 1.
-            // Ticket: https://citizenlab.atlassian.net/browse/CL-2215
-
             opacity={
-              isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100
+              typeof homepageSettings.banner_signed_in_header_overlay_opacity ===
+              'number'
+                ? homepageSettings.banner_signed_in_header_overlay_opacity / 100
+                : 0.9
             }
             position="absolute"
             top="0"

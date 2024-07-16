@@ -1,59 +1,71 @@
-// Libraries
-import React, { FormEvent, useEffect, useState } from 'react';
-import moment, { Moment } from 'moment';
-import { isEmpty } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
+import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
 
-// Api
+import {
+  Text,
+  CheckboxWithLabel,
+  Box,
+  Title,
+  IconTooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import moment, { Moment } from 'moment';
+import { useParams } from 'react-router-dom';
+import { CLErrors, UploadFile, Multiloc } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { CampaignName } from 'api/campaigns/types';
+import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
-import eventEmitter from 'utils/eventEmitter';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useProjectById from 'api/projects/useProjectById';
 
-// Components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocalize from 'hooks/useLocalize';
+
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+
 import DateRangePicker from 'components/admin/DateRangePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionTitle,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ParticipationContext, {
-  IParticipationContextConfig,
-} from '../participationContext';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
-import { Text } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Typings
-import { CLErrors, UploadFile, Multiloc } from 'typings';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
-
-// Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
-import { useParams } from 'react-router-dom';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
 
-// utils
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+} from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-import useCampaigns from 'api/campaigns/useCampaigns';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
+
 import CampaignRow from './CampaignRow';
-import useLocalize from 'hooks/useLocalize';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import { CampaignName } from 'api/campaigns/types';
+import messages from './messages';
+import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -76,16 +88,18 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
-const AdminProjectTimelineEdit = () => {
+const AdminPhaseEdit = () => {
   const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
-  const { projectId, id: phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
-    id: string;
+    phaseId?: string;
   };
-  const { data: phaseFiles } = usePhaseFiles(phaseId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: project } = useProjectById(projectId);
+  const { data: phaseFiles } = usePhaseFiles(phaseId || null);
+  const { data: phaseData } = usePhase(phaseId || null);
+  const phase = phaseId ? phaseData : undefined;
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
     campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
@@ -104,6 +118,18 @@ const AdminProjectTimelineEdit = () => {
     {}
   );
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
+  const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
+  const { width, containerRef } = useContainerWidthAndHeight();
+  const tenantLocales = useAppConfigurationLocales();
+
+  useEffect(() => {
+    setHasEndDate(phase?.data.attributes.end_at ? true : false);
+    setAttributeDiff({});
+    setSubmitState(phase ? 'enabled' : 'disabled');
+  }, [phase]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -133,6 +159,22 @@ const AdminProjectTimelineEdit = () => {
     });
   };
 
+  const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_title_multiloc: surveyTitle,
+    });
+  };
+
+  const handleSurveyCTAChange = (CTATitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_button_multiloc: CTATitle,
+    });
+  };
+
   const handleEditorOnChange = (description_multiloc: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -154,6 +196,22 @@ const AdminProjectTimelineEdit = () => {
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
+    setHasEndDate(!!endDate);
+
+    if (startDate && phases) {
+      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
+        const iteratedPhaseStartDate = moment(
+          iteratedPhase.attributes.start_at
+        );
+        return iteratedPhaseStartDate.isAfter(startDate);
+      });
+
+      setDisableNoEndDate(hasPhaseWithLaterStartDate);
+
+      if (hasPhaseWithLaterStartDate) {
+        setHasEndDate(true);
+      }
+    }
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -189,11 +247,11 @@ const AdminProjectTimelineEdit = () => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('getParticipationContext');
+    eventEmitter.emit('getPhaseParticipationConfig');
   };
 
   const getAttributeDiff = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     return {
       ...attributeDiff,
@@ -201,15 +259,43 @@ const AdminProjectTimelineEdit = () => {
     };
   };
 
-  const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
+
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
     setSubmitState('enabled');
-    setAttributeDiff(getAttributeDiff(participationContextConfig));
+    setAttributeDiff({
+      ...getAttributeDiff(participationContextConfig),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
+    });
   };
 
-  const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigSubmit = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
     save(projectId, phase?.data, attributeDiff);
@@ -236,8 +322,8 @@ const AdminProjectTimelineEdit = () => {
       .filter((file) => file.remote)
       .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises]).then(
-      () => {
+    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
+      .then(() => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
         setErrors(null);
@@ -246,10 +332,26 @@ const AdminProjectTimelineEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+          const redirectTab = getTimelineTab(phaseResponse);
+          window.scrollTo(0, 0);
+          clHistory.push(
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
+          );
         }
-      }
-    );
+      })
+      .catch(({ errors }) => {
+        // For some reason, the BE adds a 'blank' error
+        // to the file errors array when the real error is
+        // extension_whitelist_error. So if we get that error,
+        // we filter out the blank error and only show the
+        // extension_whitelist_error.
+        errors.file[0].error === 'extension_whitelist_error'
+          ? setErrors({ file: [errors.file[0]] })
+          : setErrors({ ...errors });
+
+        setProcessing(false);
+        setSubmitState('error');
+      });
   };
 
   const save = async (
@@ -260,9 +362,24 @@ const AdminProjectTimelineEdit = () => {
     if (!isEmpty(attributeDiff) && !processing) {
       setProcessing(true);
       if (!isEmpty(attributeDiff)) {
+        const start = getStartDate();
+        const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
+        // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
+        const updatedAttr = {
+          ...attributeDiff,
+          ...(!attributeDiff.start_at &&
+            start && {
+              start_at: start.locale('en').format('YYYY-MM-DD'),
+              end_at:
+                attributeDiff.end_at ||
+                (end ? end.locale('en').format('YYYY-MM-DD') : ''),
+            }),
+        };
+
         if (phase) {
           updatePhase(
-            { phaseId: phase.id, ...attributeDiff },
+            { phaseId: phase.id, ...updatedAttr },
             {
               onSuccess: (response) => {
                 handleSaveResponse(response, false);
@@ -275,7 +392,7 @@ const AdminProjectTimelineEdit = () => {
             {
               projectId,
               campaigns_settings: initialCampaignsSettings,
-              ...attributeDiff,
+              ...updatedAttr,
             },
             {
               onSuccess: (response) => {
@@ -289,10 +406,6 @@ const AdminProjectTimelineEdit = () => {
     }
   };
 
-  const quillMultilocLabel = (
-    <FormattedMessage {...messages.descriptionLabel} />
-  );
-
   const getStartDate = () => {
     const phaseAttrs = phase
       ? { ...phase.data.attributes, ...attributeDiff }
@@ -303,9 +416,14 @@ const AdminProjectTimelineEdit = () => {
     if (!phase) {
       const previousPhase =
         !isNilOrError(phases) && phases.data[phases.data.length - 1];
-      const previousPhaseEndDate = previousPhase
-        ? moment(previousPhase.attributes.end_at)
-        : null;
+      const previousPhaseEndDate =
+        previousPhase && previousPhase.attributes.end_at
+          ? moment(previousPhase.attributes.end_at)
+          : null;
+      const previousPhaseStartDate =
+        previousPhase && previousPhase.attributes.start_at
+          ? moment(previousPhase.attributes.start_at)
+          : null;
 
       // And there's a previous phase (end date) and the phase hasn't been picked/changed
       if (previousPhaseEndDate && !phaseAttrs.start_at) {
@@ -315,8 +433,14 @@ const AdminProjectTimelineEdit = () => {
       } else if (phaseAttrs.start_at) {
         // Take this date as the start date
         startDate = moment(phaseAttrs.start_at);
+      } else if (!previousPhaseEndDate && previousPhaseStartDate) {
+        // If there is no previous end date, then the previous phase is open ended
+        // Set the default start date to the previous start date + 2 days to account for single day phases
+        startDate = previousPhaseStartDate.add(2, 'day');
+      } else if (!startDate) {
+        // If there is no start date at this point, then set the default start date to today
+        startDate = moment();
       }
-      // Otherwise, there is no date yet and it should remain 'null'
 
       // else there is already a phase (which means we're in the edit form)
       // and we take it from the attrs
@@ -331,6 +455,10 @@ const AdminProjectTimelineEdit = () => {
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+  const phasesWithOutCurrentPhase = phases
+    ? phases.data.filter((iteratedPhase) => iteratedPhase.id !== phase?.data.id)
+    : [];
+  const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
     setSubmitState('enabled');
@@ -345,13 +473,25 @@ const AdminProjectTimelineEdit = () => {
     });
   };
 
+  const setNoEndDate = () => {
+    if (endDate) {
+      setSubmitState('enabled');
+      setAttributeDiff({
+        ...attributeDiff,
+        end_at: '',
+      });
+    }
+    setHasEndDate((prevValue) => !prevValue);
+  };
+
+  const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
+
   return (
-    <>
-      <SectionTitle>
+    <Box ref={containerRef}>
+      <Title variant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
         {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
-      </SectionTitle>
-
+      </Title>
       <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
@@ -366,27 +506,7 @@ const AdminProjectTimelineEdit = () => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
-            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            ParticipationContext needs to be refactored to functional component. */}
-          {phase && (
-            <ParticipationContext
-              phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
-          {!phase && (
-            <ParticipationContext
-              phase={undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
+
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.datesLabel} />
@@ -395,13 +515,117 @@ const AdminProjectTimelineEdit = () => {
               startDate={startDate}
               endDate={endDate}
               onDatesChange={handleDateUpdate}
+              startDatePlaceholderText={formatMessage(messages.startDate)}
+              endDatePlaceholderText={formatMessage(messages.endDate)}
+              excludeDates={excludeDates}
+              maxDate={maxEndDate}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
+            <CheckboxWithLabel
+              checked={!hasEndDate}
+              onChange={setNoEndDate}
+              disabled={disableNoEndDate}
+              size="21px"
+              label={
+                <Text>
+                  <FormattedMessage {...messages.noEndDateCheckbox} />
+                </Text>
+              }
+            />
+            {!hasEndDate && (
+              <Warning>
+                <>
+                  <FormattedMessage {...messages.noEndDateWarningTitle} />
+                  <ul>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet1} />
+                    </li>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet2} />
+                    </li>
+                  </ul>
+                </>
+              </Warning>
+            )}
           </SectionField>
 
+          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
+            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
+            PhaseParticipationConfig needs to be refactored to functional component. */}
+          <PhaseParticipationConfig
+            phase={phase}
+            onSubmit={handlePhaseParticipationConfigSubmit}
+            onChange={handlePhaseParticipationConfigChange}
+            apiErrors={errors}
+            appConfig={appConfig}
+          />
+          {phaseAttrs.participation_method === 'native_survey' && (
+            <>
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyTitleLabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_title_multiloc}
+                  onChange={handleSurveyTitleChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_title_multiloc}
+                />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyCTALabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_button_multiloc}
+                  onChange={handleSurveyCTAChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_button_multiloc}
+                />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.previewSurveyCTALabel} />
+                </SubSectionTitle>
+                <Button
+                  width="fit-content"
+                  onClick={(event: MouseEvent) => {
+                    if (phase) {
+                      window.open(
+                        `/projects/${project?.data.attributes.slug}/surveys/new?phase_id=${phaseId}`,
+                        '_blank'
+                      );
+                    }
+                    event.preventDefault();
+                  }}
+                >
+                  {localize(phaseAttrs.native_survey_button_multiloc)}
+                </Button>
+              </SectionField>
+            </>
+          )}
           <SectionField className="fullWidth">
-            <SubSectionTitle>{quillMultilocLabel}</SubSectionTitle>
+            <Box display="flex" alignItems="center">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.descriptionLabel} />
+              </SubSectionTitle>
+              {phases && phases.data.length < 2 && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.emptyDescriptionWarning} />
+                  }
+                />
+              )}
+            </Box>
             <QuillMultilocWithLocaleSwitcher
               id="description"
               valueMultiloc={phaseAttrs.description_multiloc}
@@ -459,19 +683,32 @@ const AdminProjectTimelineEdit = () => {
           )}
         </Section>
 
-        <SubmitWrapper
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveChangesLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Box>
+        </Box>
       </form>
-    </>
+    </Box>
   );
 };
 
-export default AdminProjectTimelineEdit;
+export default AdminPhaseEdit;

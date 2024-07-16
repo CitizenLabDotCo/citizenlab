@@ -1,33 +1,29 @@
-import React, { lazy, Suspense, useEffect } from 'react';
-import clHistory from 'utils/cl-router/history';
+import React, { useEffect } from 'react';
 
-// components
-import Fragment from 'components/Fragment';
-import { Container, Content } from 'components/LandingPages/citizen';
-import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
-import SignedInHeader from './SignedInHeader';
-import SignedOutHeader from './SignedOutHeader';
-const MainContent = lazy(() => import('./MainContent'));
-const InfoSection = lazy(
-  () => import('components/LandingPages/citizen/InfoSection')
-);
-const Footer = lazy(() => import('./Footer'));
-import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
+import { Spinner } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
-// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 import useAuthUser from 'api/me/useAuthUser';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
+
 import useKeyPress from 'hooks/useKeyPress';
 
-// utils
+import CityLogoSection from 'components/CityLogoSection';
+
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-export const adminRedirectPath = '/admin';
+import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
+
+import Viewer from './Viewer';
+
+export const adminRedirectPath: RouteType = '/admin';
 
 const HomePage = () => {
-  const { data: homepageSettings } = useHomepageSettings();
+  const { data: homepageLayout } = useHomepageLayout();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
+
   const pressedLetterAKey = useKeyPress('a');
   const userHasAdminAccess =
     !isNilOrError(authUser) && !isNilOrError(appConfiguration)
@@ -44,46 +40,14 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
-  if (!isNilOrError(homepageSettings)) {
-    return (
-      <Container id="e2e-landing-page">
-        {!isNilOrError(authUser) ? (
-          <SignedInHeader />
-        ) : (
-          <Fragment name="signed-out-header">
-            <SignedOutHeader />
-          </Fragment>
-        )}
+  if (!homepageLayout) return <Spinner />;
 
-        <Content>
-          <Suspense fallback={<LoadingBox />}>
-            {homepageSettings.data.attributes.top_info_section_enabled && (
-              // top info section
-              <InfoSection
-                multilocContent={
-                  homepageSettings.data.attributes.top_info_section_multiloc
-                }
-                fragmentName="pages/homepage_info/top-content"
-              />
-            )}
-            <MainContent />
-            {homepageSettings.data.attributes.bottom_info_section_enabled && (
-              // bottom info section
-              <InfoSection
-                multilocContent={
-                  homepageSettings.data.attributes.bottom_info_section_multiloc
-                }
-                fragmentName="pages/homepage_info/content"
-              />
-            )}
-            <Footer />
-          </Suspense>
-        </Content>
-      </Container>
-    );
-  }
-
-  return null;
+  return (
+    <main id="e2e-landing-page">
+      <Viewer />
+      <CityLogoSection />
+    </main>
+  );
 };
 
 export default HomePage;

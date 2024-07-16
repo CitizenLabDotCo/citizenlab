@@ -1,9 +1,6 @@
+import { orderBy } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
-// utils
-import { orderBy } from 'lodash-es';
-
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const timeSeriesParser =

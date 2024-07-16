@@ -1,13 +1,16 @@
 import React from 'react';
+
 import {
   SearchInput,
   SearchInputProps,
   Label,
 } from '@citizenlab/cl2-component-library';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 export interface Props {
   defaultValue?: string;
@@ -52,7 +55,7 @@ const SearchInputWrapper = ({
       setInputRef={setInputRef}
     />
     <ScreenReaderOnly aria-live="assertive">
-      {formatMessage(messages.a11y_searchResultsHaveChanged, {
+      {formatMessage(messages.a11y_searchResultsHaveChanged1, {
         numberOfSearchResults: a11y_numberOfSearchResults,
       })}
     </ScreenReaderOnly>

@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -41,7 +43,9 @@ module EmailCampaigns
     N_TOP_IDEAS = 12
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
+      start_time = AppConfiguration.timezone.local(2019)
+
+      IceCube::Schedule.new(start_time) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:tuesday).hour_of_day(8)
         )

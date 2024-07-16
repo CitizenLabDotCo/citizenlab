@@ -1,8 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
-import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import {
+  Box,
+  colors,
+  defaultStyles,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 import {
   BarChart,
   Bar,
@@ -13,18 +19,16 @@ import {
   LabelList,
 } from 'recharts';
 
-import {
-  Box,
-  colors,
-  defaultStyles,
-  Title,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
+import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { xor } from 'lodash-es';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 // Custom tooltip is rendered when the user hovers over a bar
@@ -156,7 +160,11 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
         <FormattedMessage {...messages.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
-        <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
+        <BarChart
+          data={chartData}
+          margin={{ top: 20, left: 8, right: 8 }}
+          accessibilityLayer
+        >
           <XAxis dataKey="shortName" interval={0} tickLine={false} />
           <Bar stackId="a" dataKey="filtered" onClick={handleClick}>
             {chartData.map((entry, index) => (

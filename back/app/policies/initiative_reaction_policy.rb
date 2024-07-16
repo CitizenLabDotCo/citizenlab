@@ -36,6 +36,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
   end
 
   def down?
+    # TODO: JS - should this reason be in a permissions service
     raise_not_authorized('dislikes_not_supported')
   end
 
@@ -46,8 +47,6 @@ class InitiativeReactionPolicy < ApplicationPolicy
   private
 
   def reacting_denied_reason(user)
-    :not_signed_in unless user
+    Permissions::InitiativePermissionsService.new(user).denied_reason_for_action 'reacting_initiative'
   end
 end
-
-InitiativeReactionPolicy.prepend(GranularPermissions::Patches::InitiativeReactionPolicy)

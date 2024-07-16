@@ -2,6 +2,7 @@ sr-Cyrl:
   email_campaigns:
     campaign_type_description:
       "manual": Званичне поруке
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Примљена су администраторска права
       "comment_deleted_by_admin": Брисање мог коментара
       "comment_marked_as_spam": Извештај о нежељеној пошти коментара
@@ -50,8 +51,10 @@ sr-Cyrl:
       "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
       "voting_basket_submitted": Потврда гласања
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Гласови нису предати
       "voting_last_chance": Последња прилика за гласање
+      "voting_phase_started": Нова фаза пројекта са гласањем
       "voting_results": Резултати гласања
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     general:
@@ -70,12 +73,12 @@ sr-Cyrl:
         "5": "Недељно, петком у %{hourOfDay}"
         "6": "Седмично, суботом у %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Правила о приватности"
+      "link_privacy_policy": "Правила приватности"
       "link_terms_conditions": "Услови коришћења"
-      "link_unsubscribe": "Откажи претплату"
+      "link_unsubscribe": "Одјавите се"
       "powered_by": "Покреће га"
-      "statement": "Овај е-маил вам је послао ЦитизенЛаб у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
-      "unsubscribe_text": "одјавити се"
+      "statement": "Овај е-маил вам је послао Go Vocal у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
+      "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
     comment_deleted_by_admin:
@@ -504,6 +507,13 @@ sr-Cyrl:
       event_description: 'Хвала на учешћу. Ваши гласови су забележени. Посетите платформу %{organizationName} да бисте видели и управљали својим гласовима.'
       cta_see_votes_submitted: 'Погледајте достављене гласове'
       cta_message: 'Кликните на дугме испод да бисте учествовали'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Нисте послали своје гласове'
       preheader: 'Нисте послали своје гласове на платформи за учешће %{organizationName}'
@@ -550,6 +560,7 @@ sr-Cyrl:
         admins: 'За администраторе'
         admins_and_managers: 'За администраторе и менаџере'
         managers: 'Менаџерима'
+        project_participants: 'To project participants'
         registered_users: 'За регистроване кориснике'
       recipient_segment:
         admins: 'Админс'
@@ -573,12 +584,13 @@ sr-Cyrl:
         user_who_registers: 'Корисник који се региструје'
         user_who_was_invited: 'Корисник који је позван'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
-        users_who_follow_the_proposal: 'Корисник који прати предлог'
-        users_who_follow_the_input: 'Корисник који прати унос'
+        users_who_follow_the_proposal: 'Users who follow the proposal'
+        users_who_follow_the_input: 'Users who follow the input'
         users_who_follow_the_project: 'Корисници који прате пројекат'
         user_who_voted: 'Корисник који је гласао'
         user_with_unsubmitted_votes: 'Корисник који није послао своје гласове'
         users_who_engaged_but_not_voted: 'Корисници који су учествовали у пројекту, али нису гласали'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -591,6 +603,7 @@ sr-Cyrl:
         proposals: 'Предлози'
         reactions: 'Реакције'
         voting: 'Гласање'
+        surveys: 'Surveys'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -639,3 +652,4 @@ sr-Cyrl:
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
         registration_to_event: 'Регистрација на догађај'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'

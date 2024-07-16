@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
+class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
@@ -9,7 +9,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     :followers_count,
     :include_all_areas,
     :internal_role,
-    :process_type,
     :slug,
     :visible_to,
     :created_at,
@@ -25,69 +24,16 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   end
 
   attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images object, :description_multiloc
+    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :action_descriptor do |object, params|
-    @participation_context_service ||= ParticipationContextService.new
-    user = current_user(params)
-    posting_disabled_reason = @participation_context_service.posting_idea_disabled_reason_for_project object, user
-    commenting_disabled_reason = @participation_context_service.commenting_idea_disabled_reason_for_project object, user
-    reacting_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for object, user
-    liking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for object, user, mode: 'up'
-    disliking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for object, user, mode: 'down'
-    annotating_document_disabled_reason = @participation_context_service.annotating_document_disabled_reason_for_project object, user
-    taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
-    taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, user
-    {
-      posting_idea: {
-        enabled: !posting_disabled_reason,
-        disabled_reason: posting_disabled_reason,
-        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_idea_enabled_phase(object, current_user(params))&.start_at
-      },
-      commenting_idea: {
-        enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason
-      },
-      reacting_idea: {
-        enabled: !reacting_disabled_reason,
-        disabled_reason: reacting_disabled_reason,
-        up: {
-          enabled: !liking_disabled_reason,
-          disabled_reason: liking_disabled_reason
-        },
-        down: {
-          enabled: !disliking_disabled_reason,
-          disabled_reason: disliking_disabled_reason
-        }
-      },
-      comment_reacting_idea: {
-        # You can react if you can comment.
-        enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason
-      },
-      annotating_document: {
-        enabled: !annotating_document_disabled_reason,
-        disabled_reason: annotating_document_disabled_reason
-      },
-      taking_survey: {
-        enabled: !taking_survey_disabled_reason,
-        disabled_reason: taking_survey_disabled_reason
-      },
-      taking_poll: {
-        enabled: !taking_poll_disabled_reason,
-        disabled_reason: taking_poll_disabled_reason
-      },
-      voting: {
-        enabled: !voting_disabled_reason,
-        disabled_reason: voting_disabled_reason
-      }
-    }
+  attribute :action_descriptors do |object, params|
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups: false)
+    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
   attribute :avatars_count do |object, params|
@@ -99,17 +45,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     @participants_service.project_participants_count(object)
   end
 
-  attribute :allocated_budget do |object, params|
-    if params[:allocated_budgets]
-      params.dig(:allocated_budgets, object.id)
-    else
-      ParticipationContextService.new.allocated_budget object
-    end
-  end
-
-  attribute :timeline_active, if: proc { |object, _params|
-    object.timeline?
-  } do |object, params|
+  attribute :timeline_active do |object, params|
     if params[:timeline_active]
       params.dig(:timeline_active, object.id)
     else
@@ -125,13 +61,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
-  has_many :permissions
-
-  has_one :user_basket, record_type: :basket, if: proc { |object, params|
-    signed_in? object, params
-  } do |object, params|
-    user_basket object, params
-  end
 
   has_one :user_follower, record_type: :follower, if: proc { |object, params|
     signed_in? object, params
@@ -139,9 +68,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     user_follower object, params
   end
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
-    !object.participation_context?
-  } do |object|
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
 
@@ -149,16 +76,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     # TODO: call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
-  end
-
-  def self.user_basket(object, params)
-    if params[:user_baskets]
-      params.dig(:user_baskets, [object.id, 'Project'])&.first
-    else
-      current_user(params)&.baskets&.find do |basket|
-        basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
-      end
-    end
   end
 
   def self.user_follower(object, params)

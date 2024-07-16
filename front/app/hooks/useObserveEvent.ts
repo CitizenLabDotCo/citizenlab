@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import eventEmitter from 'utils/eventEmitter';
 
 // Hook

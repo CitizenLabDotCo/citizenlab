@@ -33,8 +33,8 @@ describe ContentImageService do
         :data_cl2_content_image_code
       end
 
-      def image_attribute_for_element
-        :src
+      def image_attributes_for_element
+        [:src]
       end
 
       def code_attribute_for_model
@@ -59,19 +59,19 @@ describe ContentImageService do
   let(:service) { subclass.new }
   let(:text_images) { create_list(:text_image, 2) }
 
-  describe 'swap_data_images' do
+  describe 'swap_data_images_multiloc' do
     before { allow(TextImage).to receive(:create!).and_return(text_images[0], text_images[1]) }
 
     it 'returns exactly the same input locales' do
       imageable = build(:user, bio_multiloc: { 'en' => '[]', 'fr-BE' => '[]', 'nl-BE' => '[]', 'de' => '[]' })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output.keys).to match_array %w[en fr-BE nl-BE de]
     end
 
     it 'returns the same multiloc when no images are included' do
       json_str = '[{"type":"furniture"},{"type":"text","value":"My awesome text"}]'
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'fr-BE' => json_str })
     end
 
@@ -86,7 +86,7 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
       expect(TextImage).to have_received(:create!).twice
     end
@@ -101,7 +101,7 @@ describe ContentImageService do
 
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
       output = nil
-      expect { output = service.swap_data_images imageable, :bio_multiloc }.not_to(change(TextImage, :count))
+      expect { output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'en' => expected_json })
     end
 
@@ -109,7 +109,7 @@ describe ContentImageService do
       json_str = '[{"type":"image"}]'
       imageable = build(:user, bio_multiloc: { 'de' => json_str })
       output = nil
-      expect { output = service.swap_data_images imageable, :bio_multiloc }.not_to(change(TextImage, :count))
+      expect { output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'de' => json_str })
     end
 
@@ -123,17 +123,17 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'en' => invalid_json_str, 'de' => valid_json_str })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'en' => invalid_json_str, 'de' => expected_json })
       expect(Sentry).to have_received :capture_exception
       expect(TextImage).to have_received(:create!).once
     end
   end
 
-  describe 'render_data_images' do
+  describe 'render_data_images_multiloc' do
     it 'returns exactly the same input locales' do
       imageable = build(:user, bio_multiloc: { 'en' => '[]', 'fr-BE' => '[]', 'nl-BE' => '[]', 'de' => '[]' })
-      output = service.render_data_images imageable, :bio_multiloc
+      output = service.render_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output.keys).to match_array %w[en fr-BE nl-BE de]
     end
 
@@ -144,7 +144,7 @@ describe ContentImageService do
       ].to_json
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
       expect do
-        service.render_data_images imageable, :bio_multiloc
+        service.render_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       end.not_to exceed_query_limit(1).with(/SELECT.*text_images/)
     end
 
@@ -172,14 +172,14 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
-      output = service.render_data_images imageable, :bio_multiloc
+      output = service.render_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
     end
 
     it 'returns the same multiloc when no images are included' do
       json_str = '[{"type":"furniture"},{"type":"text","value":"My awesome text"}]'
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
-      output = service.render_data_images imageable, :bio_multiloc
+      output = service.render_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'en' => json_str })
     end
 
@@ -201,7 +201,7 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'de' => json_str })
-      output = service.render_data_images imageable, :bio_multiloc
+      output = service.render_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'de' => expected_json })
       expect(Sentry).to have_received :capture_exception
     end
@@ -210,7 +210,7 @@ describe ContentImageService do
       json_str = "[{\"type\":\"image\",\"data_cl2_content_image_code\":\"#{text_images[0].text_reference}\"}]"
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
       allow(service).to receive(:could_include_images?).and_return(false)
-      output = service.render_data_images imageable, :bio_multiloc
+      output = service.render_data_images_multiloc imageable.bio_multiloc, imageable: imageable, field: :bio_multiloc
       expect(output).to eq({ 'en' => json_str })
       expect(service).to have_received :could_include_images?
     end

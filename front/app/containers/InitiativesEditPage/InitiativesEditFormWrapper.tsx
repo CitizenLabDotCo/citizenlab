@@ -1,27 +1,24 @@
 import React from 'react';
-import clHistory from 'utils/cl-router/history';
 
-// services
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
-// geoJson
-import { parsePosition } from 'utils/locationTools';
-
+import { IInitiativeFiles } from 'api/initiative_files/types';
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
-import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
-import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
-import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import { IInitiativeData } from 'api/initiatives/types';
-import InitiativeForm, {
-  FormValues as FormValues2,
-} from 'components/InitiativeForm';
-import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
-import { IInitiativeFiles } from 'api/initiative_files/types';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+
+import InitiativeForm, { FormValues } from 'components/InitiativeForm';
+
+import clHistory from 'utils/cl-router/history';
+import { parsePosition } from 'utils/locationTools';
 
 interface Props {
-  locale: Locale;
+  locale: SupportedLocale;
   initiative: IInitiativeData;
   initiativeImage?: IInitiativeImageData;
   initiativeFiles?: IInitiativeFiles;
@@ -49,7 +46,7 @@ const InitiativesEditFormWrapper = ({
     images,
     header_bg,
     anonymous,
-  }: FormValues2) => {
+  }: FormValues) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 

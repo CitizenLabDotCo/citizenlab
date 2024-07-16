@@ -1,16 +1,14 @@
 import React from 'react';
 
-// Components
-import Button from 'components/UI/Button';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// Utils
-import { ScreenReaderOnly } from 'utils/a11y';
+import { IIdeaData } from 'api/ideas/types';
 
-// Hooks
 import useLocalize from 'hooks/useLocalize';
 
-import { IIdeaData } from 'api/ideas/types';
+import Button from 'components/UI/Button';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 
 interface Props {
   idea: IIdeaData;
@@ -21,21 +19,13 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
-    <Box
-      display="flex"
-      width="100%"
-      flexDirection="row"
-      justifyContent="space-between"
-      mb="14px"
-      alignItems="center"
-      maxWidth="700px"
-      px="20px"
-    >
+    <Box display="flex" maxWidth="700px">
       <Button
         icon="arrow-left-circle"
         linkTo={`/ideas/${idea.attributes.slug}`}
+        scrollToTop
         buttonStyle="text"
-        iconSize="24px"
+        iconSize="28px"
         padding="0"
         textDecorationHover="underline"
         whiteSpace="normal"

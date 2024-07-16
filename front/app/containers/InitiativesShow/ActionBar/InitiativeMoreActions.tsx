@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+
 import styled from 'styled-components';
 
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import WarningModal from 'components/WarningModal';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import warningMessages from 'components/WarningModal/messages';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// hooks
+import { IInitiativeData } from 'api/initiatives/types';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
-// types
-import { IInitiativeData } from 'api/initiatives/types';
+import SpamReportForm from 'containers/SpamReport';
+
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import WarningModal from 'components/WarningModal';
+import warningMessages from 'components/WarningModal/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { usePermission } from 'utils/permissions';
+
+import messages from '../messages';
 
 const Container = styled.div``;
 
@@ -39,6 +35,12 @@ interface Props {
 
 const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   const { formatMessage } = useIntl();
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  const canEditInitiative = usePermission({
+    action: 'edit',
+    item: initiative,
+    context: initiative,
+  });
 
   const [spamModalVisible, setSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
@@ -58,7 +60,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   };
 
   const onEditInitiative = () => {
-    clHistory.push(`/initiatives/edit/${initiative.id}`);
+    clHistory.push(`/initiatives/edit/${initiative.id}`, { scrollToTop: true });
   };
 
   if (!initiative) {
@@ -82,51 +84,39 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
     <>
       <Container className={className}>
         <MoreActionsMenuWrapper>
-          <HasPermission item={initiative} action="edit" context={initiative}>
-            <MoreActionsMenu
-              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-              color={color}
-              id={id}
-              actions={[
-                {
-                  label: <FormattedMessage {...messages.reportAsSpam} />,
-                  handler: openSpamModal,
-                },
-                ...(initiative.attributes.editing_locked
-                  ? []
-                  : [
-                      {
-                        label: (
-                          <FormattedMessage {...messages.editInitiative} />
-                        ),
-                        handler: onEditInitiative,
-                      },
-                    ]),
-                {
-                  label: <FormattedMessage {...messages.deleteInitiative} />,
-                  handler: openWarningModal,
-                },
-              ]}
-            />
-            <HasPermission.No>
-              <MoreActionsMenu
-                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                color={color}
-                id={id}
-                actions={[
-                  {
-                    label: <FormattedMessage {...messages.reportAsSpam} />,
-                    handler: openSpamModal,
-                  },
-                ]}
-              />
-            </HasPermission.No>
-          </HasPermission>
+          <MoreActionsMenu
+            labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+            color={color}
+            id={id}
+            ref={moreActionsButtonRef}
+            actions={[
+              {
+                label: <FormattedMessage {...messages.reportAsSpam} />,
+                handler: openSpamModal,
+              },
+              ...(!initiative.attributes.editing_locked && canEditInitiative
+                ? [
+                    {
+                      label: <FormattedMessage {...messages.editInitiative} />,
+                      handler: onEditInitiative,
+                    },
+                    {
+                      label: (
+                        <FormattedMessage {...messages.deleteInitiative} />
+                      ),
+                      handler: openWarningModal,
+                    },
+                  ]
+                : []),
+            ]}
+          />
         </MoreActionsMenuWrapper>
         <Modal
           opened={spamModalVisible}
           close={closeSpamModal}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
         >
           <SpamReportForm targetId={initiative.id} targetType="initiatives" />
         </Modal>
@@ -138,6 +128,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
         explanation={formatMessage(warningMessages.deleteInitiativeExplanation)}
         onClose={closeWarningModal}
         onConfirm={onDeleteInitiative}
+        returnFocusRef={moreActionsButtonRef}
       />
     </>
   );

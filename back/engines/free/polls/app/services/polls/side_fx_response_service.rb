@@ -12,7 +12,7 @@ module Polls
     private
 
     def create_followers(response, user)
-      project = response.participation_context.project
+      project = response.phase.project
       Follower.find_or_create_by(followable: project, user: user)
       return if !project.in_folder?
 

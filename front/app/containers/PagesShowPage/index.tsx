@@ -1,6 +1,12 @@
-import ContentContainer from 'components/ContentContainer';
+import {
+  media,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+
+import ContentContainer from 'components/ContentContainer';
 
 export const Container = styled.div`
   min-height: calc(
@@ -24,7 +30,7 @@ export const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-export const PageContent = styled.main`
+export const PageContent = styled.div`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;

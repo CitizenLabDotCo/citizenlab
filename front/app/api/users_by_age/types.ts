@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import usersByAgeKeys from './keys';
 
 export type UsersByAgeKeys = Keys<typeof usersByAgeKeys>;
@@ -11,7 +12,6 @@ export interface IUsersByAge {
       unknown_age_count: number;
       series: {
         user_counts: number[];
-        expected_user_counts: number[];
         reference_population: number[];
         bins: (number | null)[];
       };

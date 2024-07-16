@@ -4,33 +4,13 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Volunteering Causes' do
-  explanation 'Causes are tasks or events users can volunteer for, linked to a volunteering participation context'
+  explanation 'Causes are tasks or events users can volunteer for, linked to a volunteering phase'
 
   before do
     header 'Content-Type', 'application/json'
   end
 
-  get 'web_api/v1/projects/:participation_context_id/causes' do
-    with_options scope: :page do
-      parameter :number, 'Page number'
-      parameter :size, 'Number of causes per page'
-    end
-
-    before do
-      @project = create(:continuous_volunteering_project)
-      @causes = create_list(:cause, 3, participation_context: @project)
-      create(:cause)
-    end
-
-    let(:participation_context_id) { @project.id }
-    example_request 'List all causes in a volunteering project' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
-    end
-  end
-
-  get 'web_api/v1/phases/:participation_context_id/causes' do
+  get 'web_api/v1/phases/:phase_id/causes' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of causes per page'
@@ -38,11 +18,11 @@ resource 'Volunteering Causes' do
 
     before do
       @phase = create(:volunteering_phase)
-      @causes = create_list(:cause, 3, participation_context: @phase)
+      @causes = create_list(:cause, 3, phase: @phase)
       create(:cause)
     end
 
-    let(:participation_context_id) { @phase.id }
+    let(:phase_id) { @phase.id }
     example_request 'List all causes in a volunteering phase' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -71,8 +51,7 @@ resource 'Volunteering Causes' do
 
     post 'web_api/v1/causes' do
       with_options scope: :cause do
-        parameter :participation_context_id, 'The id of the phase/project the cause belongs to', required: true
-        parameter :participation_context_type, 'The type of the participation context (Project or Phase)', required: true
+        parameter :phase_id, 'The id of the phase the cause belongs to', required: true
         parameter :title_multiloc, 'The cause title, as a multiloc string', required: true
         parameter :description_multiloc, 'The cause description, as a multiloc string. Supports html.', required: false
         parameter :image, 'Base64 encoded image', required: false
@@ -82,8 +61,7 @@ resource 'Volunteering Causes' do
       let(:cause) { build(:cause) }
       let(:title_multiloc) { cause.title_multiloc }
       let(:description_multiloc) { { 'en' => '<b>This is a fine description</b>' } }
-      let(:participation_context_type) { cause.participation_context_type }
-      let(:participation_context_id) { cause.participation_context_id }
+      let(:phase_id) { cause.phase_id }
 
       example_request 'Create a cause' do
         expect(response_status).to eq 201
@@ -91,8 +69,8 @@ resource 'Volunteering Causes' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'project'
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :relationships, :phase, :data, :type)).to eq 'phase'
+        expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
       end
     end
 
@@ -134,8 +112,8 @@ resource 'Volunteering Causes' do
       end
 
       before do
-        @project = create(:continuous_volunteering_project)
-        @causes = create_list(:cause, 3, participation_context: @project)
+        @project = create(:single_phase_volunteering_project)
+        @causes = create_list(:cause, 3, phase: @project.phases.first)
       end
 
       let(:id) { @causes.last.id }

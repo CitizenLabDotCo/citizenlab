@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::VotingResultsMailer do
       {
         recipient: recipient,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           project_title_multiloc: project.title_multiloc,
           phase_title_multiloc: project.phases.first.title_multiloc
         }
@@ -48,7 +48,7 @@ RSpec.describe EmailCampaigns::VotingResultsMailer do
     end
 
     it "displays 'See results in the platform' button with correct link" do
-      project_url = Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
+      project_url = Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match project_url
       expect(mail.body.encoded).to match 'See results in the platform'
     end

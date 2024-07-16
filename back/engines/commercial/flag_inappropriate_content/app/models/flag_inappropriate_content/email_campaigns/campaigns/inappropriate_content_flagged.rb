@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -72,31 +74,38 @@ module FlagInappropriateContent
       end
 
       def generate_commands(recipient:, activity:, time: nil)
-        data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{activity.item.inappropriate_content_flag_id}", expires_in: 5.minutes) do
-          flag = activity.item.inappropriate_content_flag
+        notification = activity.item
+
+        data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{notification.inappropriate_content_flag_id}", expires_in: 5.minutes) do
+          flag = notification.inappropriate_content_flag
           flaggable = flag.flaggable
-          d = {
+
+          {
             flaggable_author: flaggable.author,
             flaggable: flaggable,
-            flaggable_type: flag.flaggable_type
+            flaggable_type: flag.flaggable_type,
+            flag_automatically_detected: flag.automatically_detected?
           }
-          d
         end
+
         payload = {
           flaggable_type: data[:flaggable_type],
+          flag_automatically_detected: data[:flag_automatically_detected],
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
-          flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
+          flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: Locale.new(recipient.locale))
         }
+
         case data[:flaggable_type]
         when Idea.name, Initiative.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         when Comment.name
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
+        else
+          raise "Unsupported flaggable type: #{data[:flaggable_type]}"
         end
-        [{
-          event_payload: payload
-        }]
+
+        [{ event_payload: payload }]
       end
     end
   end

@@ -1,35 +1,27 @@
-import React, { memo, useState } from 'react';
-import clHistory from 'utils/cl-router/history';
+import React, { memo, useState, useRef } from 'react';
 
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import WarningModal from 'components/WarningModal';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import warningMessages from 'components/WarningModal/messages';
-
-// services
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// styling
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
-
-// typings
 import { IIdeaData } from 'api/ideas/types';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import SpamReportForm from 'containers/SpamReport';
+
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import WarningModal from 'components/WarningModal';
+import warningMessages from 'components/WarningModal/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+
+import messages from '../messages';
 
 const Container = styled.div``;
 
@@ -53,11 +45,18 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const openWarningModal = () => setWarningModalOpen(true);
   const closeWarningModal = () => setWarningModalOpen(false);
 
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
     useDeleteIdea();
   const { data: phases } = usePhases(projectId);
+  const canEditIdea = usePermission({
+    item: idea,
+    action: 'edit',
+    context: idea,
+  });
 
   const openSpamModal = () => {
     setIsSpamModalVisible(true);
@@ -68,7 +67,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   const onEditIdea = () => {
-    clHistory.push(`/ideas/edit/${idea.id}`);
+    clHistory.push(`/ideas/edit/${idea.id}`, { scrollToTop: true });
   };
 
   if (!idea) return null;
@@ -84,7 +83,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   if (!isNilOrError(authUser) && !isNilOrError(project)) {
-    const processType = project.data.attributes.process_type;
     const currentPhase = getCurrentPhase(phases?.data);
     const isIdeationPhase =
       currentPhase?.attributes.participation_method === 'ideation';
@@ -94,9 +92,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
         label: <FormattedMessage {...messages.reportAsSpam} />,
         handler: openSpamModal,
       },
-      ...(processType === 'timeline' && !isIdeationPhase
-        ? []
-        : [
+      ...(isIdeationPhase && canEditIdea
+        ? [
             {
               label: <FormattedMessage {...messages.editPost} />,
               handler: onEditIdea,
@@ -105,39 +102,28 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
               label: <FormattedMessage {...messages.deletePost} />,
               handler: openWarningModal,
             },
-          ]),
+          ]
+        : []),
     ];
 
     return (
       <>
         <Container className={className}>
           <MoreActionsMenuWrapper>
-            <HasPermission item={idea} action="edit" context={idea}>
-              <MoreActionsMenu
-                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                showLabel={false}
-                id="e2e-idea-more-actions"
-                actions={actions}
-              />
-              <HasPermission.No>
-                <MoreActionsMenu
-                  id="e2e-idea-more-actions"
-                  actions={[
-                    {
-                      label: <FormattedMessage {...messages.reportAsSpam} />,
-                      handler: openSpamModal,
-                    },
-                  ]}
-                  labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                  showLabel={false}
-                />
-              </HasPermission.No>
-            </HasPermission>
+            <MoreActionsMenu
+              id="e2e-idea-more-actions"
+              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+              showLabel={false}
+              actions={actions}
+              ref={moreActionsButtonRef}
+            />
           </MoreActionsMenuWrapper>
           <Modal
             opened={isSpamModalVisible}
             close={closeSpamModal}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+            // Return focus to the More Actions button on close
+            returnFocusRef={moreActionsButtonRef}
           >
             <SpamReportForm targetId={idea.id} targetType="ideas" />
           </Modal>
@@ -149,6 +135,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           explanation={formatMessage(warningMessages.deleteInputExplanation)}
           onClose={closeWarningModal}
           onConfirm={onDeleteIdea}
+          returnFocusRef={moreActionsButtonRef}
         />
       </>
     );

@@ -1,28 +1,22 @@
 import React, { useEffect } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// styles
-import { colors } from 'utils/styleUtils';
-
-// craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-// intl
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
       ? `cursor: auto;
-padding: 4px;
-width: 100%;
-max-width: 1000px;
-background-color: #fff;
-min-height: 160px;`
+          padding: 4px;
+          width: 100%;
+          max-width: 1000px;
+          background-color: #fff;
+          min-height: 160px;`
       : `cursor:move;`}
 `;
 
@@ -122,7 +116,7 @@ const RenderNode = ({ render }) => {
           ? colors.divider
           : 'transparent'
       }
-      m="4px"
+      my="4px"
       isRoot={id === ROOT_NODE}
     >
       {nodeLabelIsVisible && (

@@ -2,6 +2,7 @@ fr-BE:
   email_campaigns:
     campaign_type_description:
       "manual": Messages officiels
+      "manual_project_participants": Messages officiels aux participants d'un projet
       "admin_rights_received": Droits d'administrateur reçus
       "comment_deleted_by_admin": Suppression de mon commentaire
       "comment_marked_as_spam": Commenter le rapport de spam
@@ -50,8 +51,10 @@ fr-BE:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "voting_basket_submitted": Confirmation de vote
+      "native_survey_not_submitted": Réponse à l'enquête non soumise
       "voting_basket_not_submitted": Votes non soumis
       "voting_last_chance": Dernière chance pour voter
+      "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
     general:
@@ -74,7 +77,7 @@ fr-BE:
       "link_terms_conditions": "Conditions Générales d'Utilisation"
       "link_unsubscribe": "Se désabonner"
       "powered_by": "Généré par"
-      "statement": "Cet e-mail vous a été envoyé par %{organizationName} via CitizenLab, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
+      "statement": "Cet e-mail vous a été envoyé par %{organizationName} via Go Vocal, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
       "unsubscribe_text": "vous désabonner"
     follow:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
@@ -504,6 +507,13 @@ fr-BE:
       event_description: 'Merci de votre participation. Vos votes ont bien été enregistrés. Vous pouvez consulter et gérer vos votes sur la plateforme %{organizationName}.'
       cta_see_votes_submitted: 'Voir les votes soumis'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Nous y sommes presque ! Soumettez vos réponses'
+      preheader: 'Vous n''avez pas terminé votre réponse à l''enquête sur la plateforme de participation de %{organizationName}'
+      title_native_survey_not_submitted: 'Vous y êtes presque ! Envoyez vos réponses'
+      body_native_survey_not_submitted: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Les soumissions seront clôturées le %{phaseEndDate}. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
+      body_native_survey_not_submitted_no_date: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
+      cta_complete_your_survey_response: 'Continuer l''enquête'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
       preheader: 'Vous n''avez pas soumis vos votes sur la plateforme de participation de %{organizationName}'
@@ -550,6 +560,7 @@ fr-BE:
         admins: 'Aux administrateurs'
         admins_and_managers: 'Aux administrateurs et aux gestionnaires'
         managers: 'Aux gestionnaires'
+        project_participants: 'Aux participants du projet'
         registered_users: 'Aux utilisateurs enregistrés'
       recipient_segment:
         admins: 'Administrateurs'
@@ -573,12 +584,13 @@ fr-BE:
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
         users_who_engaged_with_the_project: 'Les utilisateurs qui ont participé au projet'
-        users_who_follow_the_proposal: 'L''utilisateur qui suit la proposition'
-        users_who_follow_the_input: 'L''utilisateur qui suit la contribution'
+        users_who_follow_the_proposal: 'Les utilisateurs qui suivent la proposition'
+        users_who_follow_the_input: 'Les utilisateurs qui suivent la contribution'
         users_who_follow_the_project: 'Les utilisateurs qui suivent le projet'
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
         users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
+        user_with_unsubmitted_survey: 'Utilisateur qui a commencé mais n''a pas soumis sa réponse'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
@@ -591,6 +603,7 @@ fr-BE:
         proposals: 'Propositions'
         reactions: 'Réactions'
         voting: 'Vote'
+        surveys: 'Enquêtes'
       trigger:
         comment_is_deleted: 'Suppression d''un commentaire'
         comment_is_flagged_as_spam: 'Commentaire marqué comme spam'
@@ -639,3 +652,4 @@ fr-BE:
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
         registration_to_event: 'Inscription à un événement'
+        survey_1_day_after_draft_saved: '1 jour après la dernière sauvegarde du brouillon'

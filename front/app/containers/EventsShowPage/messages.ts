@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   eventFrom: {
-    id: 'app.containers.EventsShow.eventFrom',
-    defaultMessage: 'Event from "{eventTitle}"',
+    id: 'app.containers.EventsShow.eventFrom2',
+    defaultMessage: 'From "{projectTitle}"',
   },
   goToProject: {
     id: 'app.containers.EventsShow.goToProject',

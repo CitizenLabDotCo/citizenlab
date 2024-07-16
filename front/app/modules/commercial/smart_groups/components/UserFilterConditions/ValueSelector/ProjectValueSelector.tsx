@@ -1,10 +1,14 @@
 import React, { memo } from 'react';
-import { TRule } from '../rules';
-import { IOption } from 'typings';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+
 import { Select } from '@citizenlab/cl2-component-library';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { IOption } from 'typings';
+
 import useLocalize from 'hooks/useLocalize';
+
 import { isNilOrError } from 'utils/helperUtils';
+
+import { TRule } from '../rules';
 
 export interface Props {
   rule: TRule;

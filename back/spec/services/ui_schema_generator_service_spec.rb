@@ -103,8 +103,8 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'swaps data images' do
       allow_any_instance_of(TextImageService).to(
-        receive(:render_data_images)
-          .with(field1, :description_multiloc)
+        receive(:render_data_images_multiloc)
+          .with(field1.description_multiloc, field: :description_multiloc, imageable: field1)
           .and_return({ 'en' => 'Description with swapped images' })
       )
 
@@ -374,6 +374,22 @@ RSpec.describe UiSchemaGeneratorService do
           }
         })
       end
+
+      it 'returns the options in a random order for the given field' do
+        create(:custom_field_option, custom_field: field, key: 'option3', title_multiloc: { en: 'Option 3' })
+        create(:custom_field_option, custom_field: field, key: 'option4', title_multiloc: { en: 'Option 4' })
+        create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { en: 'Other' })
+        field.update!(random_option_ordering: true)
+
+        # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
+        attempts = []
+        10.times do
+          options = generator.visit_select(CustomField.find(field.id)).dig(:options, :enumNames)
+          expect(options.last).to eq 'Other'
+          attempts << options
+        end
+        expect(attempts.uniq.size).to be > 1
+      end
     end
   end
 
@@ -530,16 +546,21 @@ RSpec.describe UiSchemaGeneratorService do
   describe '#visit_point' do
     let(:field) do
       create(
-        :custom_field,
-        input_type: 'point',
+        :custom_field_point,
         key: field_key,
         title_multiloc: { 'en' => 'Point field title' },
         description_multiloc: { 'en' => 'Point field description' }
       )
     end
+    let!(:map_config) { create(:map_config, mappable: field) }
 
     it 'returns the schema for the given field' do
-      expect(generator.visit_point(field)).to be_nil
+      expect(generator.visit_point(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Point field title',
+        options: { input_type: field.input_type, description: 'Point field description', map_config_id: map_config.id }
+      })
     end
   end
 

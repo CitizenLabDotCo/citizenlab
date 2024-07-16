@@ -1,5 +1,6 @@
 import { UISchemaElement } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
 export type AjvErrorGetter = (

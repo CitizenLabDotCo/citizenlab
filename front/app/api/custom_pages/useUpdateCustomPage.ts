@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import navbarKeys from 'api/navbar/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import customPageKeys from './keys';
 import { ICustomPage, ICustomPageAttributes } from './types';
-import navbarKeys from 'api/navbar/keys';
 
 const updateCustomPage = ({
   id,

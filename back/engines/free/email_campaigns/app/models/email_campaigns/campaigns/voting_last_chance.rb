@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -70,7 +72,7 @@ module EmailCampaigns
       phase = activity.item.phase
       [{
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           phase_title_multiloc: phase.title_multiloc,
           project_title_multiloc: project.title_multiloc
         }

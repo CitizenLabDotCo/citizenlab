@@ -1,8 +1,10 @@
-import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
-import { Locale } from 'typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+import moment, { unitOfTime, Moment } from 'moment';
+import { SupportedLocale } from 'typings';
+
 import { IEventData } from 'api/events/types';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -32,35 +34,61 @@ type RelativeTimeFormatUnit =
 // this function returns a string representing "time since" the input date in the appropriate format.
 // Relative Time Format is used for internationalization.
 // Adapted from: Stas Parshin https://jsfiddle.net/tv9701uf
-export function timeAgo(dateInput: number, locale: Locale) {
+export function timeAgo(dateInput: number, locale: SupportedLocale) {
   const date = new Date(dateInput);
   const formatter = new Intl.RelativeTimeFormat(locale);
+
+  const getDaysInYear = (year: number) => {
+    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+      return 366; // Leap year
+    } else {
+      return 365; // Non-leap year
+    }
+  };
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
   const ranges = {
-    years: 3600 * 24 * 365,
-    months: 3600 * 24 * 30,
+    years: (year: number) => 3600 * 24 * getDaysInYear(year),
+    months: (year: number, month: number) =>
+      3600 * 24 * getDaysInMonth(year, month),
     weeks: 3600 * 24 * 7,
     days: 3600 * 24,
     hours: 3600,
     minutes: 60,
     seconds: 1,
   };
+
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
 
   for (const key in ranges) {
-    if (ranges[key] <= Math.abs(secondsElapsed)) {
-      const delta = secondsElapsed / ranges[key];
+    let value: number;
+
+    if (key === 'years') {
+      value = ranges['years'](date.getFullYear());
+    } else if (key === 'months') {
+      value = ranges['months'](date.getFullYear(), date.getMonth());
+    } else {
+      value = ranges[key];
+    }
+
+    if (value <= Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / value;
       return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
     }
   }
+
   return undefined;
 }
 
 // this function is exclusively used to compare phase start/ends,
 // which are created and stored with the YYYY-MM-DD format (no time of day)
 type SingleDate = string;
-type BeginAndEndDate = [string, string];
+type BeginAndEndDate = [string, string | null];
 export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
   const currentIsoDate = getIsoDateForToday();
+  const momentCurrentDate = moment(currentIsoDate, 'YYYY-MM-DD');
 
   // if input is a string representing one date
   if (isString(input)) {
@@ -68,7 +96,7 @@ export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
 
     if (isoDate === currentIsoDate) {
       return 'present';
-    } else if (moment(currentIsoDate, 'YYYY-MM-DD').isAfter(isoDate)) {
+    } else if (momentCurrentDate.isAfter(isoDate)) {
       return 'past';
     }
 
@@ -77,18 +105,18 @@ export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
 
   // if input is an array with start and end dates
   const startIsoDate = getIsoDateUtc(input[0]);
+
+  if (input[1] === null) {
+    const isPresent =
+      momentCurrentDate.isAfter(startIsoDate) ||
+      momentCurrentDate.isSame(startIsoDate);
+    return isPresent ? 'present' : 'future';
+  }
   const endIsoDate = getIsoDateUtc(input[1]);
 
-  if (
-    moment(currentIsoDate, 'YYYY-MM-DD').isBetween(
-      startIsoDate,
-      endIsoDate,
-      'days',
-      '[]'
-    )
-  ) {
+  if (momentCurrentDate.isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
     return 'present';
-  } else if (moment(currentIsoDate, 'YYYY-MM-DD').isAfter(endIsoDate)) {
+  } else if (momentCurrentDate.isAfter(endIsoDate)) {
     return 'past';
   }
 
@@ -107,6 +135,10 @@ export function getIsoDateUtc(date: string) {
   // by using moment.utc, we ignore timezone offsets which could cause bugs
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
+
+export const momentToIsoDate = (moment: Moment | null | undefined) => {
+  return moment?.format('yyyy-MM-DD');
+};
 
 export function getPeriodRemainingUntil(
   date: string,
@@ -162,7 +194,7 @@ export function toFullMonth(date: string, resolution: IResolution) {
 // Function used to determine whether a dot should be shown after the day in short date formats
 // as this is can't be determined for a 3-day month by the moment.js library.
 // Currently only used for German. Other locales can be added if needed.
-export function showDotAfterDay(locale: Locale) {
+export function showDotAfterDay(locale: SupportedLocale) {
   return locale === 'de-DE';
 }
 
@@ -182,4 +214,30 @@ export function getEventDateString(event: IEventData) {
       'LT'
     )} - ${endMoment.format('LT')}`;
   }
+}
+
+// Get a single date in local format - for example for voting phase end date
+export function getLocalisedDateString(dateString: string | null | undefined) {
+  return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
+}
+
+export function roundToNearestMultipleOfFive(date: Date): Date {
+  const minutes = date.getMinutes();
+  const roundedMinutes = Math.ceil(minutes / 5) * 5;
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    roundedMinutes
+  );
+}
+
+export function calculateRoundedEndDate(
+  startDate: Date,
+  durationInMinutes = 30
+): Date {
+  const endDate = new Date(startDate);
+  endDate.setMinutes(startDate.getMinutes() + durationInMinutes);
+  return endDate;
 }

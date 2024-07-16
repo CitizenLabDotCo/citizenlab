@@ -23,7 +23,7 @@ RSpec.describe EmailCampaigns::Campaigns::EventRegistrationConfirmation do
     before do
       allow(Frontend::UrlService).to receive(:new).and_return(frontend_service)
 
-      locale = recipient.locale
+      locale = Locale.new(recipient.locale)
       project = event.project
 
       allow(frontend_service).to receive(:model_to_url).with(event, locale: locale).and_return('event_url')

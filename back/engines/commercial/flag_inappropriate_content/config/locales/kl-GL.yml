@@ -10,6 +10,8 @@ kl:
       comment_author: '%{authorName} oqaaseqaateqarpoq:'
       idea_author: '%{authorName} ilanngussassamik nassiussineq:'
       initiative_author: '%{authorName} siunnersuut nassiunneqarsimasoq:'
-      this_post_was_flagged: >
-        <p> Una ilanngussaq naleqqutinngitsunik imaqarsinnaasutut pasitsaanneqarpoq. Matuminnga nalunaarfigivatsigit, nammineq najoqqutassiatit naapertorlugit misissorsinnaaniassagakku. </p> <p> Ilanngutassiaq naleqqutinngitsunik imaqanngippat nittartakkanni nalunaarut administratoritut iserfissami Suliaq aqqutigalugu peersinnaavat. </p>
+      automatically_flagged: >
+        Una ilanngussaq naleqqutinngitsunik imaqarsinnaasutut pasitsaanneqarpoq. Matuminnga nalunaarfigivatsigit, nammineq najoqqutassiatit naapertorlugit misissorsinnaaniassagakku.
+      how_to_review: >
+        Ilanngutassiaq naleqqutinngitsunik imaqanngippat nittartakkanni nalunaarut administratoritut iserfissami Suliaq aqqutigalugu peersinnaavat.
       cta_review_post: 'Ilanngussaq nalilersoruk'

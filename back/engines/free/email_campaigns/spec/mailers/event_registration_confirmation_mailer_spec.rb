@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
   describe 'campaign_mail' do
-    let_it_be(:event) { create(:event) }
+    let_it_be(:event) { create(:event, start_at: '2017-05-01 18:00', end_at: '2017-05-01 20:00') }
     let_it_be(:recipient) { create(:user, locale: 'en') }
 
     let(:event_attributes) { event.attributes }
@@ -40,17 +40,19 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
     end
 
     it 'has the correct ics attachment' do
-      expected_content = Events::IcsGenerator
-        .new.generate_ics(event, recipient.locale)
-        # Remove the UID line as a different one is generated when serializing the event.
-        .gsub(/^UID:.*$/, '')
+      freeze_time do
+        expected_content = Events::IcsGenerator
+          .new.generate_ics(event, recipient.locale)
+          # Remove the UID line as a different one is generated when serializing the event.
+          .gsub(/^UID:.*$/, '')
 
-      content = mail
-        .attachments['event.ics']
-        .body.raw_source
-        .gsub(/^UID:.*$/, '')
+        content = mail
+          .attachments['event.ics']
+          .body.raw_source
+          .gsub(/^UID:.*$/, '')
 
-      expect(content).to eq(expected_content)
+        expect(content).to eq(expected_content)
+      end
     end
 
     describe 'body' do
@@ -96,10 +98,11 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
         )
       end
 
-      it 'contains time details' do
+      it 'contains time details in the platform timezone' do
         # Check for presence of:
         # <div> Date </div>
         # <div style="font-weight: 400;"> 01 May 20:00 – 01 May 22:00 </div>
+        # Timezone of test platform is CEST = 2 hours ahead of UTC (the date specified in :event)
         label_div = page.find('div', exact_text: /\s*Date\s*/)
         expect(label_div).to have_css('+ div', text: '01 May 20:00 – 01 May 22:00')
       end

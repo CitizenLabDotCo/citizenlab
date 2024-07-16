@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { omit } from 'lodash-es';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import eventsKeys from './keys';
 import { IAddEventFileProperties, IEventFile } from './types';
 

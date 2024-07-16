@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -9,10 +8,11 @@ import {
   colors,
   Button,
 } from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {
@@ -22,6 +22,12 @@ interface Props {
   explanation?: React.ReactNode;
   onClose: () => void;
   onConfirm: () => void;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 }
 
 const WarningModal = ({
@@ -31,9 +37,15 @@ const WarningModal = ({
   explanation,
   onClose,
   onConfirm,
+  returnFocusRef,
 }: Props) => {
   return (
-    <Modal width="460px" opened={open} close={onClose}>
+    <Modal
+      width="460px"
+      opened={open}
+      close={onClose}
+      returnFocusRef={returnFocusRef}
+    >
       <Box
         display="flex"
         height="64px"
@@ -66,7 +78,7 @@ const WarningModal = ({
           justifyContent="space-between"
           gap="16px"
         >
-          <Button buttonStyle="secondary" onClick={onClose}>
+          <Button buttonStyle="secondary-outlined" onClick={onClose}>
             <FormattedMessage {...messages.cancel} />
           </Button>
           <Button onClick={onConfirm} processing={isLoading}>

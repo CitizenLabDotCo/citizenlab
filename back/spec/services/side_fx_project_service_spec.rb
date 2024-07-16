@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 describe SideFxProjectService do
-  let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { described_class.new(sfx_pc) }
+  include SideFxHelper
+
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
@@ -12,17 +13,18 @@ describe SideFxProjectService do
     it "logs a 'created' action when a project is created" do
       expect { service.after_create(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'created', user, project.created_at.to_i, project_id: project.id)
-    end
-
-    it 'calls after_create on SideFxParticipationContextService for a continuous project' do
-      continuous_project = create(:continuous_project)
-      expect(sfx_pc).to receive(:after_create).with(continuous_project, user)
-      service.after_create(continuous_project, user)
+        .with(
+          project,
+          'created',
+          user,
+          project.created_at.to_i,
+          project_id: project.id,
+          payload: { project: clean_time_attributes(project.attributes) }
+        )
     end
 
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.after_create(project, user)
     end
 
@@ -43,14 +45,8 @@ describe SideFxProjectService do
 
   describe 'before_update' do
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.before_update(project, user)
-    end
-
-    it 'calls before_update on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
-      service.before_update(continuous_project, user)
     end
   end
 
@@ -59,13 +55,26 @@ describe SideFxProjectService do
       project.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
+        .with(
+          project,
+          'changed',
+          user,
+          project.updated_at.to_i,
+          project_id: project.id,
+          payload: {
+            change: sanitize_change(project.saved_changes),
+            project: clean_time_attributes(project.attributes)
+          }
+        )
     end
 
     it "logs a 'published' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
+
+      project.save!
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
@@ -74,20 +83,13 @@ describe SideFxProjectService do
 
     it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
 
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
-    end
-  end
-
-  describe 'before_destroy' do
-    it 'calls before_destroy on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
-      service.before_destroy(continuous_project, user)
     end
   end
 
@@ -110,6 +112,32 @@ describe SideFxProjectService do
         anything
       )
       service.after_delete_inputs project, user
+    end
+  end
+
+  describe 'after_votes_by_user_xlsx' do
+    it 'logs "exported_votes_by_user" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_user',
+        user,
+        anything,
+        project_id: project.id
+      )
+      service.after_votes_by_user_xlsx project, user
+    end
+  end
+
+  describe 'after_votes_by_input_xlsx' do
+    it 'logs "exported_votes_by_input" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_input',
+        user,
+        anything,
+        project_id: project.id
+      )
+      service.after_votes_by_input_xlsx project, user
     end
   end
 end

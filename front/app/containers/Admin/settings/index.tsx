@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-// router
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { ITab } from 'typings';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
-import { InsertConfigurationOptions, ITab } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
-import Outlet from 'components/Outlet';
-import { colors } from 'utils/styleUtils';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import messages from './messages';
 
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
-  const [tabs, setTabs] = useState<ITab[]>([
+  const tabs: ITab[] = [
     {
       name: 'general',
       label: formatMessage(messages.tabSettings),
@@ -61,15 +56,14 @@ const SettingsPage = () => {
       label: formatMessage(messages.tabPolicies),
       url: '/admin/settings/policies',
     },
-  ]);
-
-  const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    setTabs(insertConfiguration(insertTabOptions)(tabs));
-  };
+  ];
 
   return (
     <>
-      <Outlet id="app.containers.Admin.settings.tabs" onData={handleData} />
+      <HelmetIntl
+        title={messages.helmetTitle}
+        description={messages.helmetDescription}
+      />
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
           <Tab
@@ -80,13 +74,12 @@ const SettingsPage = () => {
           />
         ))}
       </NavigationTabs>
-
       <TabsPageLayout>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        <Box id="e2e-settings-container" background={colors.white} p="40px">
+        <Box
+          id="e2e-settings-container"
+          background={colors.white}
+          p={`${defaultAdminCardPadding}px`}
+        >
           <RouterOutlet />
         </Box>
       </TabsPageLayout>

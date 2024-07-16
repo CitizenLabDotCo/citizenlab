@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import projectFolderImagesKeys from '../project_folder_images/keys';
 
 const deleteProjectFolderImage = ({

@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteNavbarItem from './useDeleteNavbarItem';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteNavbarItem from './useDeleteNavbarItem';
 const apiPath = '*nav_bar_items/:id';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.delete(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -32,8 +31,8 @@ describe('useDeleteNavbarItem', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.delete(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -25,20 +25,14 @@ resource 'User Custom Fields' do
     end
 
     example 'List all custom fields with the projects that they are used in' do
-      project = create(:continuous_project)
-      permission = create(:permission, permission_scope: project)
-      create(:permissions_custom_field, custom_field: @custom_fields[0], permission: permission)
-
       phase_project = create(:project_with_phases)
-      phase_permission = create(:permission, permission_scope: phase_project.phases[0])
+      phase_permission = create(:permission, permission_scope: phase_project.phases.first)
       create(:permissions_custom_field, custom_field: @custom_fields[0], permission: phase_permission)
 
       do_request
       assert_status 200
-      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq project.id
-      expect(json_response_body.dig(:included, 0, :id)).to eq project.id
-      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 1, :id)).to eq phase_project.id
-      expect(json_response_body.dig(:included, 1, :id)).to eq phase_project.id
+      expect(json_response_body.dig(:data, 0, :relationships, :projects, :data, 0, :id)).to eq phase_project.id
+      expect(json_response_body.dig(:included, 0, :id)).to eq phase_project.id
     end
 
     describe 'do filter on input types' do
@@ -265,21 +259,21 @@ resource 'User Custom Fields' do
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to match ordering
         expect(custom_field.reload.ordering).to eq 1
-        expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
-        expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
+        expect(CustomField.registration.order(:ordering)[1].id).to eq id
+        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
 
       example 'Fix the custom field order when ordering has gone wrong' do
         ActiveRecord::Base.connection.execute("UPDATE custom_fields SET ordering = 0 WHERE id != '#{custom_field.id}'")
         expect(custom_field.ordering).to eq 3
-        expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq [0, 0, 0, 3]
+        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq [0, 0, 0, 3]
         do_request
         expect(response_status).to eq 200
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to match ordering
         expect(custom_field.reload.ordering).to eq 1
-        expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
-        expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
+        expect(CustomField.registration.order(:ordering)[1].id).to eq id
+        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
     end
 

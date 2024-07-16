@@ -1,50 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
-import EventCard from 'components/EventCard';
-import Pagination from 'components/Pagination';
-import { Box, media } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from '../messages';
+import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-// hooks
-import useEvents from 'api/events/useEvents';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import moment from 'moment';
-
-// types
+import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
 
-// router
-import { useSearchParams } from 'react-router-dom';
+import EventCards from 'components/EventCards';
+import Pagination from 'components/Pagination';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-interface IStyledEventCard {
-  last: boolean;
-}
+import messages from '../messages';
 
-const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  flex: 0 0 32.3%;
-
-  ${media.tablet`
-  flex: 0 0 48.8%;
-`}
-
-  ${media.phone`
-  flex: 0 0 100%;
-`}
-`;
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+import TopBar from './TopBar';
 
 const StyledPagination = styled(Pagination)`
   justify-content: center;
@@ -86,7 +64,6 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
@@ -99,20 +76,22 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
   attendeeId,
   showDateFilter = true,
 }: Props) => {
   const [searchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { formatMessage } = useIntl();
 
   // Get any URL params
   const projectIdsParam = searchParams.get(
     eventsTime === 'past'
       ? 'past_events_project_ids'
       : 'ongoing_events_project_ids'
+  );
+  const pageNumberParam = searchParams.get(
+    eventsTime === 'past' ? 'past_page' : 'ongoing_page'
   );
   const dateParam =
     eventsTime === 'currentAndFuture' ? searchParams.get('time_period') : null;
@@ -122,14 +101,19 @@ const EventsViewer = ({
   const dateFilterFromUrl: dateFilterKey[] = dateParam
     ? JSON.parse(dateParam)
     : null;
+  const pageNumberFromUrl: number | null = pageNumberParam
+    ? JSON.parse(pageNumberParam)
+    : null;
 
   // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
-  const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
     dateFilterFromUrl || []
   );
+
+  const [currentPage, setCurrentPage] = useState(pageNumberFromUrl || 1);
 
   const ongoingDuringDates = getDatesFromKey(dateFilter);
 
@@ -144,6 +128,7 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    pageSize: 15,
     attendeeId,
     ongoing_during: ongoingDuringDates,
   });
@@ -168,9 +153,18 @@ const EventsViewer = ({
     }
   }, [eventsTime, projectIdList]);
 
+  // Update pageNumber URL param based on state, events time will not change after initial render
+  useEffect(() => {
+    const eventParam = eventsTime === 'past' ? 'past_page' : 'ongoing_page';
+    updateSearchParams({
+      [eventParam]: currentPage > 1 ? currentPage : null,
+    });
+  }, [eventsTime, currentPage]);
+
   // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {
-    const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
+    const hasDateFilter =
+      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
     if (eventsTime === 'currentAndFuture') {
       updateSearchParams({
         time_period: hasDateFilter ? dateFilter : null,
@@ -185,17 +179,8 @@ const EventsViewer = ({
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
-  const shouldHideSection =
-    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
-    (isLoading && hideSectionIfNoEvents) ||
-    (isNilOrError(events) && hideSectionIfNoEvents);
-
-  if (shouldHideSection) {
-    return null;
-  }
-
   return (
-    <Box className={className} id="project-events">
+    <Box className={className}>
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
@@ -208,17 +193,13 @@ const EventsViewer = ({
       {isLoading && <EventsSpinner />}
       {!isNilOrError(events) && (
         <>
-          <Box display="flex" flexWrap="wrap" gap="16px">
-            {events.data.length > 0 &&
-              events.data.map((event, i) => (
-                <StyledEventCard
-                  id={event.id}
-                  event={event}
-                  last={events.data.length - 1 === i}
-                  key={event.id}
-                />
-              ))}
-          </Box>
+          <EventCards events={events} />
+
+          <ScreenReaderOnly aria-live="assertive">
+            {formatMessage(messages.a11y_eventsHaveChanged1, {
+              numberOfEvents: events.data.length,
+            })}
+          </ScreenReaderOnly>
 
           {events.data.length === 0 && (
             <EventsMessage message={fallbackMessage} />

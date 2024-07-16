@@ -10,13 +10,16 @@ module Analysis
       'ar-MA' => 'ary_Arab', # Arabic (Morocco) is not present
       'ar-SA' => 'arb_Arab',
       'ca-ES' => 'cat_Latn',
+      'cy-GB' => 'cym_Latn',
       'da-DK' => 'dan_Latn',
       'de-DE' => 'deu_Latn',
       'el-GR' => 'ell_Grek',
       'en-CA' => nil,   # English is the default
       'en-GB' => nil,   # English is the default
+      'en-IE' => nil,   # English is the default
       'es-CL' => 'spa_Latn',   # Spanish (Chile) is not present
       'es-ES' => 'spa_Latn',
+      'fi-FI' => 'fin_Latn',
       'fr-BE' => 'fra_Latn',   # French (Belgium) is not present
       'fr-FR' => 'fra_Latn',
       'hr-HR' => 'hrv_Latn',

@@ -1,31 +1,27 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Icon, Box, Spinner, colors } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import styled from 'styled-components';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAuthUser from 'api/me/useAuthUser';
+
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-import FolderMoreActionsMenu from './FolderMoreActionsMenu';
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 
-// styles
-import styled from 'styled-components';
+import Error from 'components/UI/Error';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
-// services
+import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-import { IAdminPublicationData } from 'api/admin_publications/types';
+
+import FolderMoreActionsMenu from './FolderMoreActionsMenu';
+import messages from './messages';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -80,7 +76,12 @@ const ProjectFolderRow = memo<Props>(
 
     if (!isNilOrError(authUser)) {
       return (
-        <Box display="flex" flexDirection="column" flexGrow={1}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          flexGrow={1}
+          data-cy="e2e-project-folder-row"
+        >
           <Box
             display="flex"
             flexDirection="column"
@@ -90,32 +91,41 @@ const ProjectFolderRow = memo<Props>(
             <Box width="100%" display="flex" alignItems="center">
               <FolderRowContent
                 className="e2e-admin-adminPublications-list-item"
+                data-testid="folder-row"
                 hasProjects={hasProjects}
-                role="button"
+                as="button"
                 onClick={handleClick}
               >
-                <RowContentInner className="expand primary">
-                  {hasProjects && (
-                    <ArrowIcon
-                      expanded={hasProjects && isFolderOpen}
-                      name="chevron-right"
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="flex-start"
+                >
+                  <RowContentInner className="expand primary">
+                    {hasProjects && (
+                      <ArrowIcon
+                        expanded={hasProjects && isFolderOpen}
+                        name="chevron-right"
+                      />
+                    )}
+
+                    <FolderIcon name="folder-outline" />
+
+                    <RowTitle
+                      value={publication.attributes.publication_title_multiloc}
                     />
-                  )}
-                  <FolderIcon name="folder-outline" />
-                  <RowTitle
-                    value={publication.attributes.publication_title_multiloc}
-                  />
-                  {isBeingDeleted && (
-                    <Box>
-                      <Spinner size="20px" color={colors.grey400} />
-                    </Box>
-                  )}
+                    {isBeingDeleted && (
+                      <Box>
+                        <Spinner size="20px" color={colors.grey400} />
+                      </Box>
+                    )}
+                  </RowContentInner>
                   <PublicationStatusLabel
                     publicationStatus={
                       publication.attributes.publication_status
                     }
                   />
-                </RowContentInner>
+                </Box>
                 <RowButton
                   className={`e2e-admin-edit-project ${
                     publication.attributes.publication_title_multiloc[
@@ -123,12 +133,12 @@ const ProjectFolderRow = memo<Props>(
                     ] || ''
                   }`}
                   linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   icon="edit"
                   disabled={
                     isBeingDeleted ||
                     !userModeratesFolder(
-                      authUser.data,
+                      authUser,
                       publication.relationships.publication.data.id
                     )
                   }

@@ -1,42 +1,46 @@
-import React, { useState, lazy } from 'react';
+import React, { useState } from 'react';
 
-// hooks
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useProjectById from 'api/projects/useProjectById';
+
 import useLocale from 'hooks/useLocale';
 
-// components
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// utils
-import { ideationConfig } from '../utils';
-import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
-import { isNilOrError } from 'utils/helperUtils';
+import FormBuilder from 'components/FormBuilder/edit';
 
-const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
+import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
+import { ideationConfig } from '../utils';
 
 const IdeaFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
   });
+  const { data: project } = useProjectById(projectId);
+
   const locale = useLocale();
 
-  const goBackUrl = `/admin/projects/${projectId}/ideaform`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
-    if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
+    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
+
+  if (!project) return null;
 
   return (
     <>
@@ -47,6 +51,7 @@ const IdeaFormBuilder = () => {
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}
+        viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
       />
       <PDFExportModal
         open={exportModalOpen}

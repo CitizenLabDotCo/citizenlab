@@ -1,17 +1,13 @@
 import React, { FormEvent } from 'react';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 export const FooterNote = styled.p`
   color: ${({ theme }) => theme.colors.tenantText};

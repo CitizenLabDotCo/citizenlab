@@ -1,25 +1,21 @@
 import React from 'react';
+
+import { colors } from '@citizenlab/cl2-component-library';
 import { clone } from 'lodash-es';
+import { Controller, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import { TRule } from './rules';
 
-// components
-import Button from 'components/UI/Button';
-import Rule from './Rule';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
+import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import Rule from './Rule';
+import { TRule } from './rules';
 
 const Container = styled.div`
   width: 560px;

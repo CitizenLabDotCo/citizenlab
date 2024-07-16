@@ -1,5 +1,7 @@
 import { IRelationship } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import basketsKeys from './keys';
 
 export type BasketsKeys = Keys<typeof basketsKeys>;
@@ -12,7 +14,7 @@ export interface IBasketData {
     total_votes: number;
   };
   relationships: {
-    participation_context: {
+    phase: {
       data: IRelationship;
     };
     user: {

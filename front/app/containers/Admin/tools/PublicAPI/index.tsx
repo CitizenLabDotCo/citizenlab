@@ -1,16 +1,20 @@
 import React from 'react';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+
+import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import apiImage from './api.png';
 
 export const PublicAPI = () => {
   const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
-
-  if (!isPublicAPIEnabled) return null;
 
   return (
     <Box background={colors.white} display="flex" p="20px">
@@ -19,6 +23,7 @@ export const PublicAPI = () => {
         height="240px"
         src={apiImage}
         alt={formatMessage(messages.publicAPIImage)}
+        style={{ borderRadius: '3px' }}
       />
 
       <Box ml="32px" display="flex" flexDirection="column">
@@ -28,16 +33,26 @@ export const PublicAPI = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.publicAPIDescription)}
         </Text>
-        <Button
-          height="45px"
-          icon="arrow-right"
-          iconColor={colors.white}
-          iconPos="right"
-          width="fit-content"
-          linkTo="/admin/tools/public-api-tokens"
+        <Tooltip
+          content={<FormattedMessage {...messages.publicAPIDisabled} />}
+          disabled={isPublicAPIEnabled}
+          placement="top"
+          theme="dark"
         >
-          {formatMessage(messages.managePublicAPIKeys)}
-        </Button>
+          <Button
+            disabled={!isPublicAPIEnabled}
+            height="45px"
+            icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
+            iconColor={colors.white}
+            iconPos="right"
+            width="fit-content"
+            linkTo="/admin/tools/public-api-tokens"
+            textColor="white"
+            bgColor={colors.primary}
+          >
+            {formatMessage(messages.managePublicAPIKeys)}
+          </Button>
+        </Tooltip>
       </Box>
     </Box>
   );

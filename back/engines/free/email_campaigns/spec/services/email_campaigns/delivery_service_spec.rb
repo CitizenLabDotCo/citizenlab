@@ -47,8 +47,8 @@ describe EmailCampaigns::DeliveryService do
       end
     end
 
-    it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaign' do
-      (service.campaign_types - ['EmailCampaigns::Campaigns::Manual']).each do |campaign_type|
+    it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaigns' do
+      (service.campaign_types - service.manual_campaign_types).each do |campaign_type|
         expect { campaign_type.constantize.create! }.not_to raise_error
       end
     end

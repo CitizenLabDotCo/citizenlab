@@ -1,38 +1,32 @@
 import React, { memo, FormEvent, useState, useMemo } from 'react';
+
+import { Spinner, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// utils
-import { isNilOrError, byId } from 'utils/helperUtils';
+import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
+import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
+import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useTopics from 'api/topics/useTopics';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import Warning from 'components/UI/Warning';
+import { StyledLink } from 'components/admin/Section';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import Modal, {
   ModalContentContainer,
   Content,
   ButtonsWrapper,
 } from 'components/UI/Modal';
-import { StyledLink } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner, Box } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
 
-// hooks
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import useTopics from 'api/topics/useTopics';
-import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
+import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError, byId } from 'utils/helperUtils';
 
-// styles
-import { fontSizes } from 'utils/styleUtils';
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
-import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
+import messages from './messages';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -197,7 +191,7 @@ const SortableProjectTopicList = memo(
               </Content>
               <ButtonsWrapper>
                 <Button
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   onClick={closeSendConfirmationModal}
                 >
                   <FormattedMessage {...messages.cancel} />

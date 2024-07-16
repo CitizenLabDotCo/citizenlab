@@ -1,47 +1,61 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import smartGroupsConfiguration from './commercial/smart_groups';
-import granularPermissionsConfiguration from './commercial/granular_permissions';
-import ideaAssignmentConfiguration from './commercial/idea_assignment';
-import moderationConfiguration from './commercial/moderation';
+import adminProjectTemplatesConfiguration, {
+  projectTemplateRouteTypes,
+} from './commercial/admin_project_templates';
+import analyticsConfiguration, {
+  analyticsRouteTypes,
+} from './commercial/analytics';
+import bulkIdeaImportConfiguration, {
+  bulkIdeaImportRouteTypes,
+} from './commercial/bulk_idea_import';
+import customIdeaStatusesConfiguration, {
+  customIdeaStatusesRouteTypes,
+} from './commercial/custom_idea_statuses';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
-import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import machineTranslationsConfiguration from './commercial/machine_translations';
-import similarIdeaConfiguration from './commercial/similar_ideas';
-
-import customMapsConfiguration from './commercial/custom_maps';
-import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
-import intercomConfiguration from './commercial/intercom';
-import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
-import matomoConfiguration from './commercial/matomo';
-import posthogConfiguration from './commercial/posthog_integration';
-import projectDescriptionBuilderConfiguration from './commercial/project_description_builder';
-import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
-import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import impactTrackingConfiguration from './commercial/impact_tracking';
-
+import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import idAuth0Configuration from './commercial/id_auth0';
+import idBogusConfiguration from './commercial/id_bogus';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
-import idNemLogInConfiguration from './commercial/id_nemlog_in';
+import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import idCriiptoConfiguration from './commercial/id_criipto';
-import idBogusConfiguration from './commercial/id_bogus';
-import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
-import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
-
-import widgetsConfiguration from './commercial/widgets';
-import eventsWidgetConfiguration from './commercial/events_widget';
-
-import insightsConfiguration from './commercial/insights';
-import analyticsConfiguration from './commercial/analytics';
-import representativenessConfiguration from './commercial/representativeness';
-
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+import ideaAssignmentConfiguration from './commercial/idea_assignment';
+import impactTrackingConfiguration from './commercial/impact_tracking';
+import intercomConfiguration from './commercial/intercom';
+import machineTranslationsConfiguration from './commercial/machine_translations';
+import matomoConfiguration from './commercial/matomo';
+import moderationConfiguration, {
+  moderationRouteTypes,
+} from './commercial/moderation';
+import posthogConfiguration from './commercial/posthog_integration';
+import projectDescriptionBuilderConfiguration, {
+  descriptionBuilderRouteTypes,
+} from './commercial/project_description_builder';
+import representativenessConfiguration, {
+  representativenessRouteTypes,
+} from './commercial/representativeness';
+import satismeterConfiguration from './commercial/satismeter';
+import segmentConfiguration from './commercial/segment';
+import smartGroupsConfiguration from './commercial/smart_groups';
+import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
+
+export type moduleRouteTypes =
+  | projectTemplateRouteTypes
+  | analyticsRouteTypes
+  | bulkIdeaImportRouteTypes
+  | customIdeaStatusesRouteTypes
+  | moderationRouteTypes
+  | descriptionBuilderRouteTypes
+  | representativenessRouteTypes
+  | widgetsRouteTypes;
 
 export default loadModules([
   {
@@ -69,9 +83,6 @@ export default loadModules([
     configuration: segmentConfiguration,
   },
   {
-    configuration: granularPermissionsConfiguration,
-  },
-  {
     configuration: moderationConfiguration,
   },
   {
@@ -91,12 +102,6 @@ export default loadModules([
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-  },
-  {
-    configuration: similarIdeaConfiguration,
-  },
-  {
-    configuration: customMapsConfiguration,
   },
   {
     configuration: idAuth0Configuration,
@@ -136,12 +141,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: eventsWidgetConfiguration,
-  },
-  {
-    configuration: insightsConfiguration,
   },
   {
     configuration: analyticsConfiguration,

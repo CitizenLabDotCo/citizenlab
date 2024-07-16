@@ -7,8 +7,9 @@ module AdminApi
     def index
       @phases = @project
         .phases
+
       # This uses default model serialization
-      render json: @phases
+      render json: @phases, adapter: :attributes
     end
 
     private

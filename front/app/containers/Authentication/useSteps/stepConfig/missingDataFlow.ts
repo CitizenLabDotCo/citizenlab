@@ -1,29 +1,27 @@
-// api
+import getAuthUser from 'api/authentication/auth_user/getAuthUser';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
 
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+import { GetRequirements } from 'containers/Authentication/typings';
 
-// utils
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import { Step, BuiltInFieldsUpdate } from './typings';
 import {
   requiredCustomFields,
   requiredBuiltInFields,
   showOnboarding,
 } from './utils';
 
-// typings
-import { GetRequirements } from 'containers/Authentication/typings';
-import { Step, BuiltInFieldsUpdate } from './typings';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
-
 export const missingDataFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -89,6 +87,7 @@ export const missingDataFlow = (
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
         await updateUser({ userId, ...builtInFieldUpdate });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 
@@ -142,6 +141,7 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
         await updateUser({ userId, custom_field_values: formData });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 
@@ -173,6 +173,7 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, onboarding: OnboardingType) => {
         await updateUser({ userId, onboarding });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 

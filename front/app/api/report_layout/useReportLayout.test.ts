@@ -1,20 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useReportLayout from './useReportLayout';
-import { reportLayoutData } from './__mocks__/useReportLayout';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*reports/:id/layout';
+import endpoints, { reportLayout, apiPath } from './__mocks__/_mockServer';
+import useReportLayout from './useReportLayout';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportLayoutData }));
-  })
-);
+const server = setupServer(endpoints['GET reports/:id/layout']);
 
 describe('useReportLayout', () => {
   beforeAll(() => server.listen());
@@ -30,13 +23,13 @@ describe('useReportLayout', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(reportLayoutData);
+    expect(result.current.data?.data).toEqual(reportLayout.data);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import {
   Box,
   Text,
@@ -6,18 +7,22 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import { useParams } from 'react-router-dom';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import useKeyPress from 'hooks/useKeyPress';
+
+import { useIntl } from 'utils/cl-intl';
+
+import Demographics from '../Demographics';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useSelectedInputContext } from '../SelectedInputContext';
+
 import InputListItem from './InputListItem';
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import Demographics from '../Demographics';
-import styled from 'styled-components';
 
 const Item = styled.div<{ start: number }>`
   position: absolute;

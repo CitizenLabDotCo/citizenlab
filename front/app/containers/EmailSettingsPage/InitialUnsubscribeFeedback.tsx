@@ -1,17 +1,15 @@
 import React from 'react';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-// components
+import T from 'components/T';
 import { FormSection } from 'components/UI/FormComponents';
 
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Message = styled.div`
   color: ${colors.teal700};

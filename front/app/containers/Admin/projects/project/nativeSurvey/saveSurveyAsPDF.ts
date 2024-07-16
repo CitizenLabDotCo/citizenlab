@@ -1,14 +1,12 @@
-// utils
-import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
-import { reportError } from 'utils/loggingUtils';
+import { SupportedLocale } from 'typings';
 
-// typings
-import { Locale } from 'typings';
+import { reportError } from 'utils/loggingUtils';
+import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
   downloadPdfLink: string;
-  locale: Locale;
+  locale: SupportedLocale;
   personal_data: boolean;
   phase_id?: string;
 }

@@ -1,17 +1,21 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   scopeEndsWith,
   RankedTester,
   rankWith,
   ControlProps,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 
-import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
+import TopicsPicker from 'components/UI/TopicsPicker';
+
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
 
 const TopicsControl = ({
@@ -55,7 +59,12 @@ const TopicsControl = ({
         availableTopics={availableTopics}
         id={sanitizeForClassname(id)}
       />
-      <ErrorDisplay fieldPath={path} ajvErrors={errors} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        fieldPath={path}
+        ajvErrors={errors}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

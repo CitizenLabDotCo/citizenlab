@@ -57,6 +57,8 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   extend OrderAsSpecified
 
+  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
@@ -119,11 +121,10 @@ class Idea < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values],
+    against: %i[title_multiloc body_multiloc custom_field_values slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topics|
@@ -149,9 +150,23 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
+  scope :activity_after, lambda { |time_ago|
+    ideas = left_joins(:comments, :reactions)
+      .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+    where(id: ideas)
+  }
+
   scope :feedback_needed, lambda {
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+  }
+
+  scope :native_survey, -> { where.not creation_phase_id: nil }
+  scope :ideation, -> { where creation_phase_id: nil }
+
+  scope :draft_surveys, lambda {
+    where(publication_status: 'draft')
+      .where.not(creation_phase_id: nil)
   }
 
   def just_published?
@@ -168,22 +183,20 @@ class Idea < ApplicationRecord
   end
 
   def input_term
-    return project.input_term if project.continuous?
-
     return creation_phase.input_term if participation_method_on_creation.creation_phase?
 
-    participation_context = ParticipationContextService.new.get_participation_context(project)
-    return participation_context.input_term if participation_context&.can_contain_ideas?
+    current_phase = TimelineService.new.current_phase project
+    return current_phase.input_term if current_phase&.can_contain_ideas?
 
     case phases.size
     when 0
-      ParticipationContext::DEFAULT_INPUT_TERM
+      Phase::DEFAULT_INPUT_TERM
     when 1
       phases[0].input_term
     else
       now = Time.zone.now
       phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
-      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at <= now }
+      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at&.<= now }
       if first_past_phase_with_ideas
         first_past_phase_with_ideas.input_term
       else # now is before the first phase with ideas
@@ -193,14 +206,10 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for participation_context_on_creation
+    Factory.instance.participation_method_for creation_phase || project
   end
 
   private
-
-  def participation_context_on_creation
-    creation_phase || project
-  end
 
   def schema_for_validation
     fields = participation_method_on_creation.custom_form.custom_fields
@@ -210,12 +219,6 @@ class Idea < ApplicationRecord
 
   def validate_built_in_fields?
     !draft? && participation_method_on_creation.validate_built_in_fields?
-  end
-
-  def assign_slug
-    return if slug # Slugs never change.
-
-    participation_method_on_creation.assign_slug self
   end
 
   def assign_defaults
@@ -242,21 +245,12 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
     phases.select { |p| p.participation_method == 'voting' }.each do |phase|
       # NOTE: this does not get called when removing a phase - but phase counts are not actually used
-      Basket.update_counts(phase, 'Phase')
+      Basket.update_counts(phase)
     end
   end
 
   def validate_creation_phase
     return unless creation_phase
-
-    if project.continuous?
-      errors.add(
-        :creation_phase,
-        :not_in_timeline_project,
-        message: 'The creation phase cannot be set for inputs in a continuous project'
-      )
-      return
-    end
 
     if creation_phase.project_id != project_id
       errors.add(
@@ -279,7 +273,6 @@ end
 
 Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
-Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)

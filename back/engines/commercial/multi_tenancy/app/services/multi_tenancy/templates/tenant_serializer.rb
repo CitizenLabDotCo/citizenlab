@@ -29,7 +29,7 @@ module MultiTenancy
       private
 
       def serialize_models
-        email_campaigns = EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')
+        email_campaigns = EmailCampaigns::Campaign.manual
         groups = Group.where(membership_type: 'manual')
         ideas = Idea.published
         initiatives = Initiative.published
@@ -47,7 +47,8 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
-          HomePage => serialize_records(HomePage),
+          EventImage => serialize_records(EventImage),
+          Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),
@@ -63,6 +64,7 @@ module MultiTenancy
           ProjectImage => serialize_records(ProjectImage),
           ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
+          StaticPagesTopic => serialize_records(StaticPagesTopic),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           Topic => serialize_records(Topic),
@@ -75,10 +77,10 @@ module MultiTenancy
               custom_field: CustomField.where.not(code: 'domicile').or(CustomField.where(code: nil))
             )
           ),
+          CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
-          CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
           CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
 
           # Polls
@@ -101,6 +103,7 @@ module MultiTenancy
 
           # Initiatives
           Initiative => serialize_records(initiatives),
+          InitiativeStatusChange => serialize_records(InitiativeStatusChange.where(initiative: initiatives)),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
           CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
@@ -144,17 +147,10 @@ module MultiTenancy
       # @raise [TSort::Cyclic] if there is a circular dependency between the classes
       #   and the class cannot be sorted.
       def sort_by_references(models)
-        ref_dependencies_graph = extract_referential_dependencies(models)
+        graph = extract_dependencies_graph(models)
 
-        # User depends on CustomField because of the custom field values. We have to add
-        # this dependency manually because the custom field values are stored as JSON in
-        # the database, so serialized users don't hold references to CustomField.
-        if ref_dependencies_graph.key?(User) && ref_dependencies_graph.key?(CustomField)
-          ref_dependencies_graph[User] << CustomField
-        end
-
-        each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }
-        each_child = ->(n, &b) { ref_dependencies_graph.fetch(n).each(&b) }
+        each_node = ->(&process_node) { graph.each_key(&process_node) }
+        each_child = ->(node, &process_child) { graph.fetch(node).each(&process_child) }
 
         sorted_classes = TSort.tsort(each_node, each_child)
         models.slice(*sorted_classes)
@@ -170,14 +166,23 @@ module MultiTenancy
       #   }
       #
       # @return [Hash<Class, Array<Class>>]
-      def extract_referential_dependencies(models)
-        models.transform_values do |records|
+      def extract_dependencies_graph(models)
+        graph = models.transform_values do |records|
           records.flat_map do |_id, attributes|
             attributes.values.filter do |value|
               value.is_a?(Serializers::Core::Ref) && value.id
             end.map(&:klass)
           end.uniq
         end
+
+        # User depends on CustomField because of the custom field values. We have to add
+        # this dependency manually because the custom field values are stored as JSON in
+        # the database, so serialized users don't hold references to CustomField.
+        if graph.key?(User) && graph.key?(CustomField)
+          graph[User] << CustomField
+        end
+
+        graph
       end
 
       # Replace the Ref objects in the models hash with actual references to the
@@ -201,8 +206,9 @@ module MultiTenancy
 
         return {} if record_class.nil? && scope.size == 0 # rubocop:disable Style/ZeroLengthPredicate
 
+        Rails.logger.info "Serializing #{record_class.name}"
         serializer_class = MultiTenancy::Templates::Serializers.const_get(record_class.name)
-        serializer = serializer_class.new(@serialization_params)
+        serializer = serializer_class.new(**@serialization_params)
         scope.to_h { |record| [record.id, serializer.serialize(record)] }
       end
 
@@ -215,19 +221,8 @@ module MultiTenancy
       end
 
       def serialize_admin_publications(scope)
-        publications = serialize_records(scope)
-
-        # The parent publications must be listed before their children since the
-        # children publications reference their parent.
-        child_to_parent = publications.transform_values do |attributes|
-          Array.wrap(attributes[:parent_ref]&.id)
-        end
-
-        each_node = ->(&block) { child_to_parent.each_key(&block) }
-        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
-        ordered_ids = TSort.tsort(each_node, each_child)
-
-        publications.slice(*ordered_ids)
+        # This code will stop working when folders can contain folders
+        serialize_records(scope.order(parent_id: :desc, ordering: :asc))
       end
 
       def serialize_comments(*post_scopes)

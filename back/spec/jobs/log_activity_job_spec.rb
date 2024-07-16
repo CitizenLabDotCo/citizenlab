@@ -80,17 +80,23 @@ RSpec.describe LogActivityJob do
 
       it 'adds the project id to the options of the enqueued job' do
         expect(item).to receive(:project_id).and_call_original
-        expect { described_class.perform_later(item, 'created', nil) }
-          .to enqueue_job(described_class).with(item, 'created', nil, project_id: item.id)
+
+        user = :user_sentinel
+        expect { described_class.perform_later(item, 'created', user) }
+          .to enqueue_job(described_class)
+          .with(item, 'created', user, nil, { project_id: item.id })
       end
 
       context 'and the project_id is passed explicitly' do
         it 'leaves the options of the enqueued job unchanged' do
           expect(item).not_to receive(:project_id)
 
+          user = :user_sentinel
+          acted_at = :acted_at_sentinel
           options = { payload: 'payload', project_id: 'some-arbitrary-id' }
-          expect { described_class.perform_later(item, 'created', nil, options) }
-            .to enqueue_job(described_class).with(item, 'created', nil, options)
+
+          expect { described_class.perform_later(item, 'created', user, acted_at, options) }
+            .to enqueue_job(described_class).with(item, 'created', user, acted_at, options)
         end
       end
     end
@@ -110,21 +116,26 @@ RSpec.describe LogActivityJob do
       let(:item) { create(:project) }
 
       it 'adds the project id to the options' do
+        user = :user_sentinel
+
         expect(item).to receive(:project_id).and_call_original
         expect_any_instance_of(described_class)
           .to receive(:run)
-          .with(item, 'created', nil, project_id: item.id)
+          .with(item, 'created', user, nil, project_id: item.id)
 
-        described_class.perform_now(item, 'created', nil)
+        described_class.perform_now(item, 'created', user)
       end
 
       context 'and the project_id is passed explicitly' do
         it 'leaves the options unchanged' do
+          user = nil
+          acted_at = Time.zone.now
+
           expect_any_instance_of(described_class)
             .to receive(:run)
-            .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+            .with(item, 'created', user, acted_at, payload: 'payload', project_id: 'some-arbitrary-id')
 
-          described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+          described_class.perform_now(item, 'created', user, acted_at, payload: 'payload', project_id: 'some-arbitrary-id')
         end
       end
     end

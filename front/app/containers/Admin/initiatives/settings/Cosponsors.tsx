@@ -1,14 +1,17 @@
 import React from 'react';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box, Toggle, Text, Input } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 interface Props {
   requireCosponsors: boolean | undefined;

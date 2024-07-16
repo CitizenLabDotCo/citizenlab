@@ -1,63 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import {
+  Box,
+  Spinner,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { object, boolean, array, string, number } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
-// styles
-import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
-
-// components
-import { RightColumn } from 'containers/Admin';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
-import FormFields from 'components/FormBuilder/components/FormFields';
-import Error from 'components/UI/Error';
-import Feedback from 'components/HookForm/Feedback';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import validateElementTitle from 'utils/yup/validateElementTitle';
-import validateLogic from 'utils/yup/validateLogic';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import {
-  NestedGroupingStructure,
-  getReorderedFields,
-  DragAndDropResult,
-} from './utils';
-
-// hooks
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
-
-// intl
-import { WrappedComponentProps } from 'react-intl';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
-import HelmetIntl from 'components/HelmetIntl';
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
-const StyledRightColumn = styled(RightColumn)`
-  height: calc(100vh - ${stylingConsts.menuHeight}px);
-  z-index: 2;
-  margin: 0;
-  max-width: 100%;
-  align-items: center;
-  padding-bottom: 100px;
-  overflow-y: auto;
-`;
+import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
+import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
+import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
+import FormFields from 'components/FormBuilder/components/FormFields';
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+
+import messages from '../messages';
+import { FormBuilderConfig } from '../utils';
+
+import {
+  NestedGroupingStructure,
+  getReorderedFields,
+  DragAndDropResult,
+} from './utils';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -71,23 +62,35 @@ type FormEditProps = {
   phaseId?: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-} & WrappedComponentProps;
+  viewFormLink: RouteType;
+};
 
-export const FormEdit = ({
-  intl: { formatMessage },
+const FormEdit = ({
   defaultValues,
   phaseId,
   projectId,
   builderConfig,
   totalSubmissions,
+  viewFormLink,
 }: FormEditProps) => {
+  const { formatMessage } = useIntl();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
-    builderConfig;
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
+  const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
+    useState(true);
+  const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
+  const {
+    data: formCustomFields,
+    refetch,
+    isFetching,
+  } = useFormCustomFields({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
 
   const schema = object().shape({
     customFields: array().of(
@@ -98,7 +101,9 @@ export const FormEdit = ({
         description_multiloc: object(),
         input_type: string(),
         options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError)
+          formatMessage(messages.emptyOptionError),
+          formatMessage(messages.emptyTitleMessage),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
         minimum_label_multiloc: object(),
@@ -120,42 +125,45 @@ export const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
-    trigger,
+    formState: { errors, isDirty },
+    reset,
   } = methods;
 
-  const { fields, append, remove, move, replace } = useFieldArray({
+  const { append, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
+
+  // This tracks form update. We isolate it to avoid setting data on other changes
+  const [isUpdatingForm, setIsUpdatingForm] = useState(false);
+  // This tracks form submission and update status
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isUpdatingForm && !isFetching) {
+      reset({ customFields: formCustomFields });
+      setIsUpdatingForm(false);
+      setIsSubmitting(false);
+    }
+  }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
   const closeSettings = () => {
     setSelectedField(undefined);
   };
 
-  const handleDelete = (fieldIndex: number) => {
-    const field = fields[fieldIndex];
-
-    // When the first group is deleted, it's questions go to the next group
-    if (fieldIndex === 0 && field.input_type === groupingType) {
-      const nextGroupIndex = fields.findIndex(
-        (field, fieldIndex) =>
-          field.input_type === groupingType && fieldIndex !== 0
-      );
-      move(nextGroupIndex, 0);
-      remove(1);
-    } else {
-      remove(fieldIndex);
+  // Remove copy_from param on save to avoid overwriting a saved survey when reloading
+  const [searchParams, setSearchParams] = useSearchParams();
+  const resetCopyFrom = () => {
+    if (searchParams.has('copy_from')) {
+      searchParams.delete('copy_from');
+      setSearchParams(searchParams);
     }
-
-    closeSettings();
-    trigger();
   };
 
-  const onAddField = (field: IFlatCreateCustomField) => {
+  const onAddField = (field: IFlatCreateCustomField, index: number) => {
     const newField = {
       ...field,
-      index: !isNilOrError(fields) ? fields.length : 0,
+      index,
     };
 
     if (isNewCustomFieldObject(newField)) {
@@ -165,9 +173,12 @@ export const FormEdit = ({
   };
 
   const hasErrors = !!Object.keys(errors).length;
+  const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    setSuccessMessageIsVisible(false);
     try {
+      setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -182,9 +193,13 @@ export const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        ...(field.map_config_id && {
+          map_config_id: field.map_config_id,
+        }),
         description_multiloc: field.description_multiloc || {},
-        ...((field.input_type === 'multiselect' ||
-          field.input_type === 'select') && {
+        ...(['select', 'multiselect', 'multiselect_image'].includes(
+          field.input_type
+        ) && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
           maximum_select_count: field.select_count_enabled
@@ -194,29 +209,35 @@ export const FormEdit = ({
             ? field.minimum_select_count || '0'
             : null,
           select_count_enabled: field.select_count_enabled,
+          random_option_ordering: field.random_option_ordering,
         }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
           maximum_label_multiloc: field.maximum_label_multiloc || {},
-          maximum: field.maximum.toString(),
+          maximum: field.maximum?.toString() || '5',
         }),
       }));
-      await updateFormCustomFields({
-        projectId,
-        customFields: finalResponseArray,
-        phaseId: isFormPhaseSpecific ? phaseId : undefined,
-      });
+      await updateFormCustomFields(
+        {
+          projectId,
+          customFields: finalResponseArray,
+          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+        },
+        {
+          onSuccess: () => {
+            refetch().then(() => {
+              setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
+              resetCopyFrom();
+            });
+          },
+        }
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
+      setIsSubmitting(false);
     }
   };
-
-  // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    fields.filter((field) => field.input_type === groupingType).length > 1;
-  const isDeleteDisabled = !(
-    selectedField?.input_type !== groupingType || isGroupDeletable
-  );
 
   const reorderFields = (
     result: DragAndDropResult,
@@ -235,98 +256,149 @@ export const FormEdit = ({
     }
   };
 
-  if (!isNilOrError(builderConfig)) {
-    return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        bgColor={colors.background}
-        h="100vh"
-      >
-        <HelmetIntl title={messages.helmetTitle} />
-        <FocusOn>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onFormSubmit)}>
-              <FormBuilderTopBar
-                isSubmitting={isSubmitting}
-                builderConfig={builderConfig}
-              />
-              <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const showSuccessMessage =
+    successMessageIsVisible &&
+    !editedAndCorrect &&
+    Object.keys(errors).length === 0;
+
+  const handleAccessRightsClose = () => setAccessRightsMessageIsVisible(false);
+
+  const showWarnings = () => {
+    if (editedAndCorrect) {
+      return (
+        <Box mb="8px">
+          <Warning>{formatMessage(messages.unsavedChanges)}</Warning>
+        </Box>
+      );
+    } else if (showWarningNotice && builderConfig.getWarningNotice) {
+      return builderConfig.getWarningNotice();
+    } else if (
+      !hasErrors &&
+      !successMessageIsVisible &&
+      builderConfig.getAccessRightsNotice &&
+      accessRightsMessageIsVisible
+    ) {
+      return builderConfig.getAccessRightsNotice(
+        projectId,
+        phaseId,
+        handleAccessRightsClose
+      );
+    }
+    return null;
+  };
+
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      w="100%"
+      zIndex="10000"
+      position="fixed"
+      bgColor={colors.background}
+      h="100vh"
+    >
+      <HelmetIntl title={messages.helmetTitle} />
+      <FocusOn>
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onFormSubmit)}>
+            <FormBuilderTopBar
+              isSubmitting={isSubmitting}
+              builderConfig={builderConfig}
+              viewFormLink={viewFormLink}
+            />
+            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+              <Box width="210px">
                 <FormBuilderToolbox
                   onAddField={onAddField}
                   builderConfig={builderConfig}
                   move={move}
                 />
-                <StyledRightColumn>
-                  <Box width="1000px">
-                    {hasErrors && (
-                      <Box mb="16px">
-                        <Error
-                          marginTop="8px"
-                          marginBottom="8px"
-                          text={formatMessage(messages.errorMessage)}
-                          scrollIntoView={false}
-                        />
-                      </Box>
-                    )}
-                    <Feedback
-                      successMessage={formatMessage(formSavedSuccessMessage)}
-                    />
-                    {showWarningNotice &&
-                      builderConfig.getWarningNotice &&
-                      builderConfig.getWarningNotice()}
-                    <Box
-                      borderRadius="3px"
-                      boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                      bgColor="white"
-                      minHeight="300px"
-                    >
-                      <FormFields
-                        onEditField={setSelectedField}
-                        selectedFieldId={selectedField?.id}
-                        handleDragEnd={reorderFields}
-                        builderConfig={builderConfig}
+              </Box>
+              <Box
+                flex="1.8"
+                border="1px solid #ccc"
+                overflowY="auto"
+                zIndex="2"
+                margin="0px"
+                paddingBottom="100px"
+                height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                px="30px"
+              >
+                <Box mt="16px">
+                  {hasErrors && (
+                    <Box mb="16px">
+                      <Error
+                        marginTop="8px"
+                        marginBottom="8px"
+                        text={formatMessage(messages.errorMessage)}
+                        scrollIntoView={false}
                       />
                     </Box>
-                  </Box>
-                </StyledRightColumn>
-                {!isNilOrError(selectedField) && (
-                  <FormBuilderSettings
-                    key={selectedField.id}
-                    field={selectedField}
-                    onDelete={handleDelete}
-                    onClose={closeSettings}
-                    isDeleteDisabled={isDeleteDisabled}
-                    builderConfig={builderConfig}
+                  )}
+
+                  <Feedback
+                    successMessage={formatMessage(formSavedSuccessMessage)}
+                    onlyShowErrors
                   />
+                  {showSuccessMessage && (
+                    <SuccessFeedback
+                      successMessage={formatMessage(formSavedSuccessMessage)}
+                      closeSuccessMessage={closeSuccessMessage}
+                    />
+                  )}
+                  {showWarnings()}
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
+                    <FormFields
+                      onEditField={setSelectedField}
+                      selectedFieldId={selectedField?.id}
+                      handleDragEnd={reorderFields}
+                      builderConfig={builderConfig}
+                      closeSettings={closeSettings}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+              <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                {!isNilOrError(selectedField) && (
+                  <Box>
+                    <FormBuilderSettings
+                      key={selectedField.id}
+                      field={selectedField}
+                      closeSettings={closeSettings}
+                      builderConfig={builderConfig}
+                    />
+                  </Box>
                 )}
               </Box>
-            </form>
-          </FormProvider>
-        </FocusOn>
-      </Box>
-    );
-  }
-
-  return null;
+            </Box>
+          </form>
+        </FormProvider>
+      </FocusOn>
+    </Box>
+  );
 };
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
+  viewFormLink: RouteType;
 };
 
-const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
-  const intl = useIntl();
+const FormBuilderPage = ({
+  builderConfig,
+  viewFormLink,
+}: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
   };
   const { data: submissionCount } = useFormSubmissionCount({
-    projectId,
     phaseId,
   });
 
@@ -339,12 +411,12 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
   return modalPortalElement
     ? createPortal(
         <FormEdit
-          intl={intl}
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
           builderConfig={builderConfig}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
+          viewFormLink={viewFormLink}
         />,
         modalPortalElement
       )

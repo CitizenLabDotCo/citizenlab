@@ -18,13 +18,13 @@ describe Polls::SideFxResponseService do
 
     it 'creates a follower' do
       response = create(:poll_response)
-      folder = create(:project_folder, projects: [response.participation_context.project])
+      folder = create(:project_folder, projects: [response.phase.project])
 
       expect do
         service.after_create response.reload, user
       end.to change(Follower, :count).from(0).to(2)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly response.participation_context.project.id, folder.id
+      expect(user.follows.pluck(:followable_id)).to contain_exactly response.phase.project.id, folder.id
     end
   end
 end

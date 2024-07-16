@@ -1,49 +1,35 @@
-import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
 
-// components
-import CloseIconButton from 'components/UI/CloseIconButton';
-import { Icon, useWindowSize, Box } from '@citizenlab/cl2-component-library';
-
-// events
 import {
-  setLeafletMapHoveredMarker,
-  leafletMapHoveredMarker$,
-  setLeafletMapSelectedMarker,
-} from 'components/UI/LeafletMap/events';
-
-// router
-import clHistory from 'utils/cl-router/history';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// i18n
-import T from 'components/T';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import messages from './messages';
-
-// config
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-
-// styling
-import styled from 'styled-components';
-import {
+  Icon,
+  useWindowSize,
+  Box,
   defaultCardStyle,
   fontSizes,
   colors,
   viewportWidths,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
-// utils
-import { isCurrentPhase } from 'api/phases/utils';
-
-// typings
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import T from 'components/T';
+import CloseIconButton from 'components/UI/CloseIconButton';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   text-align: left;
@@ -93,11 +79,6 @@ const Title = styled.h3<{ height: string }>`
   word-break: break-word;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
@@ -112,18 +93,18 @@ const MoneybagIcon = styled(Icon)`
 const DislikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
+  transform: translate(0, 2px);
 `;
 
 const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-left: 2px;
+  transform: translate(0, 2px);
 `;
 
 const FooterValue = styled.div`
@@ -134,56 +115,41 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  ideaMarker: IIdeaMarkerData;
+  idea: IIdeaMarkerData;
+  onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;
   projectId: string;
   phaseId?: string;
+  hovered?: boolean;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, onClose, className, projectId, phaseId }) => {
+  ({ idea, onClose, className, projectId, phaseId, onSelectIdea, hovered }) => {
     const { data: appConfig } = useAppConfiguration();
     const { data: phase } = usePhase(phaseId || null);
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
-
-    const participationContext = phase?.data || project?.data;
-
-    const [hovered, setHovered] = useState(false);
+    const phaseData = phase?.data;
 
     const votingMethodConfig = getVotingMethodConfig(
-      participationContext?.attributes.voting_method
+      phaseData?.attributes.voting_method
     );
-    const isVotingContext = !!votingMethodConfig;
-    const isParticipatoryBudgetContext =
-      participationContext?.attributes.voting_method === 'budgeting';
-
-    useEffect(() => {
-      const subscriptions = [
-        leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-          if (!tablet) {
-            setHovered(hoverredIdeaId === ideaMarker.id);
-          }
-        }),
-      ];
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tablet]);
+    const isVotingPhase = !!votingMethodConfig;
+    const isParticipatoryBudgetPhase =
+      phaseData?.attributes.voting_method === 'budgeting';
 
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
-
-      updateSearchParams({ idea_map_id: ideaMarker.id });
+      updateSearchParams({ idea_map_id: idea.id });
 
       if (tablet) {
-        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
+        clHistory.push(`/ideas/${idea.attributes.slug}?go_back=true`, {
+          scrollToTop: true,
+        });
       } else {
-        setLeafletMapSelectedMarker(ideaMarker.id);
+        onSelectIdea(idea.id);
       }
     };
 
@@ -193,52 +159,41 @@ const IdeaMapCard = memo<Props>(
       }
     };
 
-    const handleOnMouseEnter = () => {
-      setLeafletMapHoveredMarker(ideaMarker.id);
-    };
-
-    const handleOnMouseLeave = () => {
-      setLeafletMapHoveredMarker(null);
-    };
-
     const handleCloseButtonClick = (event: React.MouseEvent) => {
       event.stopPropagation();
       onClose?.();
     };
 
-    if (!isNilOrError(appConfig) && !isNilOrError(ideaMarker) && project) {
+    if (!isNilOrError(appConfig) && !isNilOrError(idea) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
-      const ideaBudget = ideaMarker.attributes?.budget;
+      const ideaBudget = idea.attributes?.budget;
       const reactingActionDescriptor =
-        project.data.attributes.action_descriptor.reacting_idea;
+        project.data.attributes.action_descriptors.reacting_idea;
 
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
-            'disliking_disabled');
+            'reacting_dislike_disabled');
 
       const commentingEnabled =
-        project.data.attributes.action_descriptor.commenting_idea.enabled;
-
-      const projectHasComments = project.data.attributes.comments_count > 0;
-
-      const showCommentCount = commentingEnabled || projectHasComments;
-
+        project.data.attributes.action_descriptors.commenting_idea.enabled;
+      const ideaHasComments = idea.attributes.comments_count > 0;
+      const showCommentCount = commentingEnabled || ideaHasComments;
       const phaseButNotCurrentPhase =
-        participationContext?.type === 'phase' &&
-        !isCurrentPhase(participationContext);
+        phaseData &&
+        pastPresentOrFuture([
+          phaseData.attributes.start_at,
+          phaseData.attributes.end_at,
+        ]) !== 'present';
       const showVoteInput =
-        votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
+        votingMethodConfig && phase?.data && !phaseButNotCurrentPhase;
 
       return (
         <Container
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
           onClick={handleOnClick}
           onKeyPress={handleOnKeyPress}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-          role="button"
           tabIndex={0}
           id="e2e-idea-map-card"
         >
@@ -253,18 +208,18 @@ const IdeaMapCard = memo<Props>(
             />
           )}
           <Title height={showVoteInput ? '28px' : '44px'}>
-            <T value={ideaMarker.attributes.title_multiloc} />
+            <T value={idea.attributes.title_multiloc} />
           </Title>
-          {showVoteInput && (
+          {showVoteInput && phaseData && (
             <Box mb="20px">
               {votingMethodConfig.getIdeaCardVoteInput({
-                ideaId: ideaMarker.id,
-                participationContext,
+                ideaId: idea.id,
+                phase: phaseData,
               })}
             </Box>
           )}
-          <Footer>
-            {isParticipatoryBudgetContext &&
+          <Box display="flex" alignItems="center">
+            {isParticipatoryBudgetPhase &&
               tenantCurrency &&
               ideaBudget &&
               !showVoteInput && (
@@ -275,23 +230,39 @@ const IdeaMapCard = memo<Props>(
                   </FooterValue>
                 </FooterItem>
               )}
-            {!isParticipatoryBudgetContext &&
-              !isVotingContext &&
+            {!isParticipatoryBudgetPhase &&
+              !isVotingPhase &&
               reactingActionDescriptor.enabled && (
                 <>
                   <FooterItem>
                     <LikeIcon name="vote-up" />
-                    <FooterValue id="e2e-map-card-like-count">
-                      {ideaMarker.attributes.likes_count}
+                    {/* Hidden to use easier-to-understand text for screen readers */}
+                    <FooterValue id="e2e-map-card-like-count" aria-hidden>
+                      {idea.attributes.likes_count}
                     </FooterValue>
+                    <ScreenReaderOnly>
+                      <FormattedMessage
+                        {...messages.screenReaderLikesText}
+                        values={{ noOfLikes: idea.attributes.likes_count }}
+                      />
+                    </ScreenReaderOnly>
                   </FooterItem>
 
                   {showDislike && (
                     <FooterItem>
                       <DislikeIcon name="vote-down" />
-                      <FooterValue id="e2e-map-card-dislike-count">
-                        {ideaMarker.attributes.dislikes_count}
+                      {/* Hidden to use easier to understand text for screen readers */}
+                      <FooterValue id="e2e-map-card-dislike-count" aria-hidden>
+                        {idea.attributes.dislikes_count}
                       </FooterValue>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.screenReaderDislikesText}
+                          values={{
+                            noOfDislikes: idea.attributes.dislikes_count,
+                          }}
+                        />
+                      </ScreenReaderOnly>
                     </FooterItem>
                   )}
                 </>
@@ -299,12 +270,19 @@ const IdeaMapCard = memo<Props>(
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
-                <FooterValue>
-                  {ideaMarker.attributes.comments_count}
+                {/* Hidden to use easier to understand text for screen readers */}
+                <FooterValue aria-hidden>
+                  {idea.attributes.comments_count}
                 </FooterValue>
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...messages.screenReaderCommentsText}
+                    values={{ noOfComments: idea.attributes.comments_count }}
+                  />
+                </ScreenReaderOnly>
               </FooterItem>
             )}
-          </Footer>
+          </Box>
         </Container>
       );
     }

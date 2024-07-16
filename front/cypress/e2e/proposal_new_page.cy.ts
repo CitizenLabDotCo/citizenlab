@@ -94,6 +94,7 @@ describe('Initiative new page', () => {
 
     // save the form
     cy.get('#e2e-initiative-publish-button').click();
+    cy.get('#e2e-accept-disclaimer').click();
 
     // verify redirect to the newly created initiative page
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);

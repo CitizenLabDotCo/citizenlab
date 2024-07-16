@@ -1,26 +1,46 @@
 import React from 'react';
 
-// components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// craft
+import {
+  Box,
+  BoxProps,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
 
-// i18n
 import messages from './messages';
 
-const ThreeColumn = () => {
+export const ThreeColumnWrapper = ({
+  children,
+  ...rest
+}: {
+  children: React.ReactNode;
+} & BoxProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-
   return (
     <Box
-      id="e2e-three-column"
+      className="e2e-three-column"
       flexDirection={isSmallerThanTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"
       w="100%"
       gap="24px"
+      {...rest}
+    >
+      {children}
+    </Box>
+  );
+};
+
+const ThreeColumn = () => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
+  return (
+    <ThreeColumnWrapper
+      maxWidth="1200px"
+      margin="0 auto"
+      px={componentDefaultPadding}
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
@@ -31,15 +51,15 @@ const ThreeColumn = () => {
       <Box flex="1">
         <Element id="column3" is={Container} canvas />
       </Box>
-    </Box>
+    </ThreeColumnWrapper>
   );
 };
 
-const ThreeColumnSettings = () => {
+export const ThreeColumnSettings = () => {
   return <Box />;
 };
 
-ThreeColumn.craft = {
+export const threeColumnCraftConfig = {
   related: {
     settings: ThreeColumnSettings,
   },
@@ -48,5 +68,7 @@ ThreeColumn.craft = {
     hasChildren: true,
   },
 };
+
+ThreeColumn.craft = threeColumnCraftConfig;
 
 export default ThreeColumn;

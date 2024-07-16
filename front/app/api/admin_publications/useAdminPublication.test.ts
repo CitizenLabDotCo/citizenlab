@@ -1,20 +1,19 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAdminPublication from './useAdminPublication';
-import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
+import useAdminPublication from './useAdminPublication';
 
 const apiPath = '*admin_publications/:id';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: mockFolderChildAdminPublicationsList[0] })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: mockFolderChildAdminPublicationsList[0] },
+      { status: 200 }
     );
   })
 );
@@ -40,8 +39,8 @@ describe('useAdminPublication', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import navbarKeys from './keys';
+
 import customPagesKeys from 'api/custom_pages/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import navbarKeys from './keys';
 
 const deleteNavbarItem = (id: string) =>
   fetcher({

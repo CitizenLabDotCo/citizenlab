@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   IOption,
@@ -10,18 +8,17 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
+import { Controller, useFormContext } from 'react-hook-form';
 
-// intl
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// types
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
-// utils
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
+
+import messages from '../../messages';
 
 type RuleInputProps = {
   name: string;
@@ -61,7 +58,7 @@ export const PageRuleInput = ({
     const value = {
       next_page_id: page.value,
     };
-    setValue(name, value);
+    setValue(name, value, { shouldDirty: true });
     setIsRuleInvalid(!isPageRuleValid(fields, fieldId, page.value));
     trigger();
   };
@@ -69,7 +66,7 @@ export const PageRuleInput = ({
   const removeRule = () => {
     setSelectedPage(undefined);
     setShowRuleInput(false);
-    setValue(name, {});
+    setValue(name, {}, { shouldDirty: true });
     if (validationError) {
       trigger();
     }

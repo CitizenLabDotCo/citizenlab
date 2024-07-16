@@ -69,6 +69,14 @@ resource 'MachineTranslations' do
         expect(json_response.dig(:data, :attributes, :attribute_name)).to eq attribute_name
         expect(json_response.dig(:data, :relationships, :translatable, :data, :id)).to eq idea_id
       end
+
+      context 'when the machine_translations feature is disabled' do
+        before { SettingsService.new.deactivate_feature!('machine_translations') }
+
+        example_request '[error] Returns 401 unauthorized' do
+          expect(status).to eq 401
+        end
+      end
     end
   end
 

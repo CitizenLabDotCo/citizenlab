@@ -5,8 +5,8 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Authentication' do
   explanation <<~DESC.squish
-    To obtain your client_id and client_secret please visit 'Admin > Tools > Public API Access' within your Citizenlab platform.
-    If this feature is not enabled on your platform then please contact support@citizenlab.co. 
+    To obtain your client_id and client_secret please visit 'Admin > Tools > Public API Access' within your Go Vocal platform.
+    If this feature is not enabled on your platform then please contact support@govocal.com. 
     Authenticate with your client_id and client_secret to retrieve a JWT token. 
     You need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. 
     The JWT token expires after 24h, so make sure to re-authenticate.

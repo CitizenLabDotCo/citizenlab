@@ -1,9 +1,11 @@
-import { Layout, JsonSchema7 } from '@jsonforms/core';
+import { Layout, JsonSchema7, createAjv } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
+
+import { FormData } from 'components/Form/typings';
+
 import { isVisible } from './Components/Controls/visibilityUtils';
 import { PageCategorization, PageType } from './Components/Layouts/utils';
-import { FormData } from 'components/Form/typings';
 
 const iterateSchema = (
   uischema,
@@ -25,13 +27,31 @@ const iterateSchema = (
 export const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: Record<string, any>,
+  data: FormData,
   ajv: Ajv
 ) => {
   const dataWithoutHiddenElements = {};
   const visibleElements: string[] = [];
 
   iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
+    // If saving a draft response, we only want to validate the answers
+    // against pages up to and including the latest completed page.
+    if (
+      data?.latest_complete_page >= 0 &&
+      data?.publication_status === 'draft'
+    ) {
+      // Get the index of the current page we're iterating in the uiSchema.
+      const indexCurrentElement = uiSchema?.elements?.findIndex(
+        (page) => page?.options?.id === parentSchema?.options?.id
+      );
+
+      // If the index of the current page is greater than the latest completed page
+      // we don't want to include it in our validation check.
+      if (indexCurrentElement > data?.latest_complete_page) {
+        return;
+      }
+    }
+
     const key: string = element.scope.split('/').pop();
     const isPageVisible = isVisible(
       parentSchema,
@@ -40,13 +60,14 @@ export const getFormSchemaAndData = (
       ajv,
       uiSchema?.elements as PageType[]
     );
+
     const isElementVisible = isVisible(element, data, '', ajv);
     const showInData =
       parentSchema.type === 'Page'
         ? isPageVisible && isElementVisible
         : isElementVisible;
 
-    if (showInData) {
+    if (showInData && data) {
       dataWithoutHiddenElements[key] = data[key];
       visibleElements.push(key);
     }
@@ -77,7 +98,7 @@ export const isValidData = (
   uiSchema: Layout | PageCategorization,
   data: FormData,
   ajv: Ajv,
-  isSurvey: boolean
+  isSurvey = false
 ) => {
   if (!data) return false;
 
@@ -90,3 +111,22 @@ export const isValidData = (
 
   return ajv.validate(schemaToUse, isSurvey ? dataWithoutHiddenFields : data);
 };
+
+// The scope of the element that is used as the other field will have _other appended to it. The corresponding field key can also be found by using this function.
+export function getOtherControlKey(scope: string = ''): string | undefined {
+  const regex = /^#\/properties\/(\w+)_other$/;
+  const match = scope.match(regex);
+
+  if (match) {
+    return match[1];
+  }
+
+  return undefined;
+}
+
+export const customAjv = createAjv({
+  useDefaults: 'empty',
+  removeAdditional: true,
+});
+// The image key word is used for the image choice option
+customAjv.addKeyword('image');

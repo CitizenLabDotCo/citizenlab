@@ -1,24 +1,20 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+
 import Statistic from 'components/admin/Graphs/Statistic';
+import { IResolution } from 'components/admin/ResolutionControl';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-import { getTimePeriodTranslationByResolution } from '../_utils/resolution';
-
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
+import { getTimePeriodTranslationByResolution } from '../_utils/resolution';
+
+import messages from './messages';
 import { Stats } from './useVisitors/typings';
 
 interface Props {
   stats: Stats | NilOrError;
-  projectId: string | undefined;
   resolution: IResolution;
 }
 
@@ -30,7 +26,7 @@ const EMPTY_DATA: Stats = {
   pageViews: EMPTY_STAT,
 };
 
-const VisitorStats = ({ stats, projectId, resolution }: Props) => {
+const VisitorStats = ({ stats, resolution }: Props) => {
   const { formatMessage } = useIntl();
   const shownStats = isNilOrError(stats) ? EMPTY_DATA : stats;
 
@@ -55,11 +51,6 @@ const VisitorStats = ({ stats, projectId, resolution }: Props) => {
             value={shownStats.visitDuration.value}
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.visitDuration.lastPeriod}
-            tooltipContent={
-              projectId
-                ? formatMessage(messages.durationStatTooltipMessage)
-                : undefined
-            }
           />
         </Box>
       </Box>
@@ -77,11 +68,6 @@ const VisitorStats = ({ stats, projectId, resolution }: Props) => {
             value={shownStats.pageViews.value}
             bottomLabel={bottomLabel}
             bottomLabelValue={shownStats.pageViews.lastPeriod}
-            tooltipContent={
-              projectId
-                ? formatMessage(messages.pageViewsStatTooltipMessage)
-                : undefined
-            }
           />
         </Box>
       </Box>

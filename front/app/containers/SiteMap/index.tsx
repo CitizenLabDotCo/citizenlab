@@ -1,35 +1,27 @@
 import React, { KeyboardEvent, MouseEvent, RefObject, useRef } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useNavbarItems from 'api/navbar/useNavbarItems';
+import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
+import useAuthUser from 'api/me/useAuthUser';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
-// components
-import { Spinner } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import SiteMapMeta from './SiteMapMeta';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-
-// resources
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// services
-import { TCustomPageCode } from 'api/custom_pages/types';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjects from 'api/projects/useProjects';
-import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
 const Container = styled.div`
   min-height: calc(
@@ -51,23 +43,12 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-const PageContent = styled.main`
+const PageContent = styled.div`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
   padding-top: 60px;
   padding-bottom: 60px;
-`;
-
-const Loading = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -116,10 +97,6 @@ const NavItem = styled.button`
 
 const SiteMap = () => {
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
-  const projects = useProjects({
-    publicationStatuses: ['draft', 'published', 'archived'],
-  });
-  const loaded = projects !== undefined;
   const { data: navBarItems } = useNavbarItems();
   const localize = useLocalize();
   const { data: pages } = useCustomPages();
@@ -150,7 +127,7 @@ const SiteMap = () => {
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
-  if (!isNilOrError(pages)) {
+  if (pages) {
     const nonCustomStaticPages = pages.data.filter((page) => {
       const showPageConditions: Record<TCustomPageCode, boolean> = {
         proposals: proposalsEnabled,
@@ -169,43 +146,38 @@ const SiteMap = () => {
     });
 
     return (
-      <Container>
+      <>
         <SiteMapMeta />
-        {!loaded && (
-          <Loading>
-            <Spinner />
-          </Loading>
-        )}
-        {loaded && (
-          <PageContent>
-            <StyledContentContainer>
-              <QuillEditedContent>
-                <Title>
-                  <FormattedMessage {...messages.siteMapTitle} />
-                </Title>
+        <main>
+          <Container>
+            <PageContent>
+              <StyledContentContainer>
+                <QuillEditedContent>
+                  <Title>
+                    <FormattedMessage {...messages.siteMapTitle} />
+                  </Title>
 
-                <TOC>
-                  <Header>
-                    <FormattedMessage {...messages.pageContents} />
-                  </Header>
-                  <Ul>
-                    <li>
-                      <NavItem
-                        onMouseDown={removeFocusAfterMouseClick}
-                        onClick={scrollTo(homeSection)}
-                      >
-                        <FormattedMessage {...messages.homeSection} />
-                      </NavItem>
-                    </li>
-                    <li>
-                      <NavItem
-                        onMouseDown={removeFocusAfterMouseClick}
-                        onClick={scrollTo(userSpaceSection)}
-                      >
-                        <FormattedMessage {...messages.userSpaceSection} />
-                      </NavItem>
-                    </li>
-                    {!isNilOrError(projects) && (
+                  <TOC>
+                    <Header>
+                      <FormattedMessage {...messages.pageContents} />
+                    </Header>
+                    <Ul>
+                      <li>
+                        <NavItem
+                          onMouseDown={removeFocusAfterMouseClick}
+                          onClick={scrollTo(homeSection)}
+                        >
+                          <FormattedMessage {...messages.homeSection} />
+                        </NavItem>
+                      </li>
+                      <li>
+                        <NavItem
+                          onMouseDown={removeFocusAfterMouseClick}
+                          onClick={scrollTo(userSpaceSection)}
+                        >
+                          <FormattedMessage {...messages.userSpaceSection} />
+                        </NavItem>
+                      </li>
                       <li>
                         <NavItem
                           onMouseDown={removeFocusAfterMouseClick}
@@ -254,133 +226,139 @@ const SiteMap = () => {
                           </ProjectsSubsectionUl>
                         )}
                       </li>
-                    )}
-                    {proposalsEnabled && (
+                      {proposalsEnabled && (
+                        <li>
+                          <NavItem
+                            onMouseDown={removeFocusAfterMouseClick}
+                            onClick={scrollTo(initiativesSection)}
+                          >
+                            <FormattedMessage
+                              {...messages.initiativesSection}
+                            />
+                          </NavItem>
+                        </li>
+                      )}
                       <li>
                         <NavItem
                           onMouseDown={removeFocusAfterMouseClick}
-                          onClick={scrollTo(initiativesSection)}
+                          onClick={scrollTo(customPagesSection)}
                         >
-                          <FormattedMessage {...messages.initiativesSection} />
+                          <FormattedMessage {...messages.customPageSection} />
                         </NavItem>
                       </li>
-                    )}
-                    <li>
-                      <NavItem
-                        onMouseDown={removeFocusAfterMouseClick}
-                        onClick={scrollTo(customPagesSection)}
-                      >
-                        <FormattedMessage {...messages.customPageSection} />
-                      </NavItem>
-                    </li>
-                  </Ul>
-                </TOC>
+                    </Ul>
+                  </TOC>
 
-                <H2 ref={homeSection} tabIndex={-1}>
-                  <FormattedMessage {...messages.homeSection} />
-                </H2>
-                <ul>
-                  {/* Nav bar items that are not included in pages */}
-                  {!isNilOrError(navBarItems) &&
-                    navBarItems.data
-                      .filter(
-                        (navBarItem) =>
-                          navBarItem.relationships.static_page.data === null
-                      )
-                      .map((navBarItem) => (
-                        <li key={navBarItem.id}>
-                          <Link
-                            to={DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]}
-                          >
-                            {localize(navBarItem.attributes.title_multiloc)}
-                          </Link>
-                        </li>
-                      ))}
-                  {/* Non-custom static pages */}
-                  {nonCustomStaticPages.map((page) => {
-                    return (
-                      <li key={page.id}>
-                        <Link to={`/pages/${page.attributes.slug}`}>
-                          {localize(page.attributes.title_multiloc)}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <>
-                  {!isNilOrError(authUser) && (
-                    <>
-                      <H2 ref={userSpaceSection} tabIndex={-1}>
-                        <FormattedMessage {...messages.userSpaceSection} />
-                      </H2>
-                      <ul>
-                        <>
-                          <li>
+                  <H2 ref={homeSection} tabIndex={-1}>
+                    <FormattedMessage {...messages.homeSection} />
+                  </H2>
+                  <ul>
+                    {/* Nav bar items that are not included in pages */}
+                    {navBarItems &&
+                      navBarItems.data
+                        .filter(
+                          (navBarItem) =>
+                            navBarItem.relationships.static_page.data === null
+                        )
+                        .map((navBarItem) => (
+                          <li key={navBarItem.id}>
                             <Link
-                              to={`/profile/${authUser.data.attributes.slug}`}
+                              to={
+                                DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]
+                              }
                             >
-                              <FormattedMessage {...messages.profilePage} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/profile/edit">
-                              <FormattedMessage {...messages.profileSettings} />
-                            </Link>
-                          </li>
-                        </>
-                      </ul>
-                    </>
-                  )}
-                </>
-
-                <ProjectsAndFoldersSection
-                  projectsSectionRef={projectsSection}
-                />
-                <>
-                  {proposalsEnabled && (
-                    <>
-                      <H2 ref={initiativesSection} tabIndex={-1}>
-                        <FormattedMessage {...messages.initiativesSection} />
-                      </H2>
-                      <ul>
-                        <li>
-                          <Link to="/initiatives">
-                            <FormattedMessage {...messages.initiativesList} />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/pages/initiatives">
-                            <FormattedMessage {...messages.initiativesInfo} />
-                          </Link>
-                        </li>
-                      </ul>
-                    </>
-                  )}
-                </>
-                <>
-                  {customStaticPages.length > 0 && (
-                    <>
-                      <H2 ref={customPagesSection} tabIndex={-1}>
-                        <FormattedMessage {...messages.customPageSection} />
-                      </H2>
-                      <Ul>
-                        {/* Custom static pages */}
-                        {customStaticPages.map((item) => (
-                          <li key={item.id}>
-                            <Link to={`/pages/${item.attributes.slug}`}>
-                              {localize(item.attributes.title_multiloc)}
+                              {localize(navBarItem.attributes.title_multiloc)}
                             </Link>
                           </li>
                         ))}
-                      </Ul>
-                    </>
-                  )}
-                </>
-              </QuillEditedContent>
-            </StyledContentContainer>
-          </PageContent>
-        )}
-      </Container>
+                    {/* Non-custom static pages */}
+                    {nonCustomStaticPages.map((page) => {
+                      return (
+                        <li key={page.id}>
+                          <Link to={`/pages/${page.attributes.slug}`}>
+                            {localize(page.attributes.title_multiloc)}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <>
+                    {authUser && (
+                      <>
+                        <H2 ref={userSpaceSection} tabIndex={-1}>
+                          <FormattedMessage {...messages.userSpaceSection} />
+                        </H2>
+                        <ul>
+                          <>
+                            <li>
+                              <Link
+                                to={`/profile/${authUser.data.attributes.slug}`}
+                              >
+                                <FormattedMessage {...messages.profilePage} />
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/profile/edit">
+                                <FormattedMessage
+                                  {...messages.profileSettings}
+                                />
+                              </Link>
+                            </li>
+                          </>
+                        </ul>
+                      </>
+                    )}
+                  </>
+
+                  <ProjectsAndFoldersSection
+                    projectsSectionRef={projectsSection}
+                  />
+                  <>
+                    {proposalsEnabled && (
+                      <>
+                        <H2 ref={initiativesSection} tabIndex={-1}>
+                          <FormattedMessage {...messages.initiativesSection} />
+                        </H2>
+                        <ul>
+                          <li>
+                            <Link to="/initiatives">
+                              <FormattedMessage {...messages.initiativesList} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/pages/initiatives">
+                              <FormattedMessage {...messages.initiativesInfo} />
+                            </Link>
+                          </li>
+                        </ul>
+                      </>
+                    )}
+                  </>
+                  <>
+                    {customStaticPages.length > 0 && (
+                      <>
+                        <H2 ref={customPagesSection} tabIndex={-1}>
+                          <FormattedMessage {...messages.customPageSection} />
+                        </H2>
+                        <Ul>
+                          {/* Custom static pages */}
+                          {customStaticPages.map((item) => (
+                            <li key={item.id}>
+                              <Link to={`/pages/${item.attributes.slug}`}>
+                                {localize(item.attributes.title_multiloc)}
+                              </Link>
+                            </li>
+                          ))}
+                        </Ul>
+                      </>
+                    )}
+                  </>
+                </QuillEditedContent>
+              </StyledContentContainer>
+            </PageContent>
+          </Container>
+        </main>
+      </>
     );
   }
 

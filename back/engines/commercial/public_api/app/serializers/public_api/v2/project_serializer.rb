@@ -3,32 +3,18 @@
 class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :title,
-    :description_html, # 'description' in spec
+    :description_html,
     :description_preview,
-    :process_type,
-    :participation_method,
     :slug,
     :folder_id,
-    :href, # Not in spec
+    :href,
     :visible_to,
-    :images, # Not in spec
+    :images,
     :created_at,
     :updated_at,
     :ideas_count,
     :comments_count,
-    :baskets_count,
-    :votes_count,
-    :map_center_geojson, # Not in spec
-    :posting_enabled,
-    :commenting_enabled,
-    :reacting_enabled,
-    :reacting_like_method,
-    :reacting_like_limited_max,
-    :reacting_dislike_enabled,
-    :reacting_dislike_method,
-    :reacting_dislike_limited_max,
-    :voting_max_total,
-    :voting_min_total
+    :map_center_geojson
 
   attribute :publication_status do
     object.admin_publication.publication_status

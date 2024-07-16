@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import { fetchAuthenticationRequirements } from './getAuthenticationRequirements';
+import requirementsKeys from './keys';
 import {
   AuthenticationContext,
   AuthenticationRequirementsResponse,
   AuthenticationRequirementKeys,
 } from './types';
-import requirementsKeys from './keys';
 
 const useAuthenticationRequirements = (
   authenticationContext: AuthenticationContext

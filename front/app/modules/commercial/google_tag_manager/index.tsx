@@ -1,21 +1,22 @@
 import React from 'react';
+
+import { combineLatest } from 'rxjs';
+
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+
 import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
+
 import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+
+import messages from './messages';
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
-    google_tag_manager: 'google_tag_manager';
-  }
-
-  interface IConsentManagerFeatureMap {
     google_tag_manager: 'google_tag_manager';
   }
 }

@@ -1,12 +1,17 @@
 import React from 'react';
+
 import { Title } from '@citizenlab/cl2-component-library';
-import ListOfCosponsors from './ListOfCosponsors';
+
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import BorderContainer from '../BorderContainer';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import useAuthUser from 'api/me/useAuthUser';
+
+import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+
+import BorderContainer from '../BorderContainer';
+import messages from '../messages';
+
+import ListOfCosponsors from './ListOfCosponsors';
 
 interface Props {
   initiativeId: string;
@@ -23,8 +28,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
   const authUserId = authUser?.data.id;
   const authUserIsAuthor =
     typeof authUserId === 'string' ? authUserId === authorId : false;
-  const showPendingInvites =
-    authUserIsAuthor || (authUser && isAdmin({ data: authUser.data }));
+  const showPendingInvites = authUserIsAuthor || isAdmin(authUser);
 
   const show = () => {
     if (showPendingInvites) {

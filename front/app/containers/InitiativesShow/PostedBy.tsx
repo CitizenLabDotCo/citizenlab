@@ -1,18 +1,15 @@
 import React from 'react';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import UserName from 'components/UI/UserName';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
-
-// i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

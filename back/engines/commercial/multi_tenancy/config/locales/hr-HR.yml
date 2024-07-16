@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+hr:
+  phase_title_default:
+    ideation: Prikupiti unos
+    voting: Glasovanje
+    poll: Anketa
+    native_survey: Pregled
+    survey: Pregled
+    document_annotation: Povratne informacije o dokumentu
+    volunteering: Pronađite volontere
+    information: Informacija

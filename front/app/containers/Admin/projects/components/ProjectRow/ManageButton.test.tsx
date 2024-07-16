@@ -1,9 +1,13 @@
 import * as React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import ManageButton from './ManageButton';
 
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/locale');
+jest.mock('utils/localeStream');
+jest.mock('utils/replacePathnameLocale');
 const projectId = '1';
 
 describe('ManageButton', () => {

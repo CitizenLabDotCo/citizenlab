@@ -1,41 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// services
-import { coreSettings } from 'api/app_configuration/utils';
+import {
+  useBreakpoint,
+  media,
+  isRtl,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-// hooks
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useTopics from 'api/topics/useTopics';
 import useAreas from 'api/areas/useAreas';
+import useTopics from 'api/topics/useTopics';
+
 import useLocalize from 'hooks/useLocalize';
 
-// components
-import Tabs from './Tabs';
-import { ScreenReaderOnly } from 'utils/a11y';
-import SelectTopics from './SelectTopics';
-import SelectAreas from './SelectAreas';
 import SearchInput from 'components/UI/SearchInput';
 
-// styling
-import styled from 'styled-components';
-import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getShowFilters, getShowFiltersLabel } from './show';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-// typings
+import { isNilOrError } from 'utils/helperUtils';
 
 import { PublicationTab } from '../..';
-import { useSearchParams } from 'react-router-dom';
-import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+
+import messages from './messages';
+import SelectAreas from './SelectAreas';
+import SelectTopics from './SelectTopics';
+import { getShowFilters, getShowFiltersLabel } from './show';
+import Tabs from './Tabs';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -63,17 +59,12 @@ const Title = styled.h2<{ hasPublications: boolean }>`
 const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
   justify-content: ${({ showFilters }) =>
     showFilters ? 'space-between' : 'start'};
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-
-  ${media.phone`
-    flex-direction: row;
   `}
 `;
 
@@ -136,6 +127,7 @@ interface Props {
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
   onChangeSearch: (search: string | null) => void;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const Header = ({
@@ -152,8 +144,8 @@ const Header = ({
   onChangeAreas,
   onChangeTab,
   onChangeSearch,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+  currentlyWorkingOnText,
+}: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -166,6 +158,7 @@ const Header = ({
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     const focusSearch = searchParams.get('focusSearch');
@@ -185,11 +178,8 @@ const Header = ({
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const customCurrentlyWorkingOn = coreSettings(
-    appConfiguration.data
-  ).currently_working_on_text;
   const fallback = formatMessage(messages.currentlyWorkingOn);
-  const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
+  const currentlyWorkingOn = localize(currentlyWorkingOnText, {
     fallback,
   });
 
@@ -232,10 +222,10 @@ const Header = ({
           hasPublications={hasPublications}
           data-testid="currently-working-on-text"
         >
-          {currentlyWorkingOnText}
+          {currentlyWorkingOn}
         </Title>
       ) : (
-        <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
+        <ScreenReaderOnly>{currentlyWorkingOn}</ScreenReaderOnly>
       )}
 
       {showSearch && (
@@ -247,6 +237,15 @@ const Header = ({
       )}
 
       <Container showFilters={shouldShowAreaAndTagFilters}>
+        {showTabs && (
+          <Tabs
+            currentTab={currentTab}
+            statusCounts={statusCounts}
+            availableTabs={availableTabs}
+            onChangeTab={onChangeTab}
+          />
+        )}
+
         {shouldShowAreaAndTagFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
@@ -261,15 +260,6 @@ const Header = ({
               onChangeAreas={handleOnChangeAreas}
             />
           </DesktopFilters>
-        )}
-
-        {showTabs && (
-          <Tabs
-            currentTab={currentTab}
-            statusCounts={statusCounts}
-            availableTabs={availableTabs}
-            onChangeTab={onChangeTab}
-          />
         )}
       </Container>
 
@@ -289,4 +279,4 @@ const Header = ({
   );
 };
 
-export default injectIntl(Header);
+export default Header;

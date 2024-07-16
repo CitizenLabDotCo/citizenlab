@@ -1,25 +1,20 @@
 import React from 'react';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import { Section, SectionField } from 'components/admin/Section';
 import { Box, Button } from '@citizenlab/cl2-component-library';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-
-// typings
+import { useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
+import { object } from 'yup';
+
+import { Section, SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -28,13 +23,10 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & WrappedComponentProps;
+};
 
-const AreaForm = ({
-  intl: { formatMessage },
-  defaultValues,
-  onSubmit,
-}: Props) => {
+const AreaForm = ({ defaultValues, onSubmit }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
@@ -57,9 +49,12 @@ const AreaForm = ({
   };
 
   return (
-    <FormProvider {...methods}>
-      <Section data-testid="areaForm">
-        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+    <Section>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onFormSubmit)}
+          data-testid="areaForm"
+        >
           <SectionField>
             <Feedback />
             <InputMultilocWithLocaleSwitcher
@@ -78,9 +73,9 @@ const AreaForm = ({
             </Button>
           </Box>
         </form>
-      </Section>
-    </FormProvider>
+      </FormProvider>
+    </Section>
   );
 };
 
-export default injectIntl(AreaForm);
+export default AreaForm;

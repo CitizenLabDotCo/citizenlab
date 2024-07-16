@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import { AvatarBubbles } from './';
 
 jest.mock('api/avatars/useRandomAvatars');

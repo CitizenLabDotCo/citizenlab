@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Analysis::QAndAMethod do
   describe 'Bogus q_and_a' do
     it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+      analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
+      ))
 
       q_and_a_task = create(
         :q_and_a_task,
@@ -43,32 +43,28 @@ RSpec.describe Analysis::QAndAMethod do
   end
 
   describe 'OnePassLLM q_and_a' do
-    it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+    let(:analysis) do
+      create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
-
-      q_and_a_task = create(
-        :q_and_a_task,
-        analysis: analysis,
-        state: 'queued',
-        question: create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
-      )
-      question = q_and_a_task.question
-      inputs = with_options project: q_and_a_task.analysis.project do
+      ))
+    end
+    let(:question) { create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
+    let(:q_and_a_task) { create(:q_and_a_task, analysis: analysis, state: 'queued', question: question) }
+    let(:inputs) do
+      with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),
           create(:idea, comments_count: 5),
           create(:idea, comments_count: 10)
         ]
       end
+    end
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+    it 'works' do
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
-
       expect(plan).to have_attributes({
         q_and_a_method_class: Analysis::QAndAMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
@@ -76,14 +72,25 @@ RSpec.describe Analysis::QAndAMethod do
         include_id: true,
         shorten_labels: false
       })
-      plan.llm = mock_llm
 
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+      plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
         expect(prompt).to include('What is the most popular theme?')
         block.call 'Nothing'
         block.call ' else'
       end
+
+      mock_locale = instance_double(Locale)
+      expect(Locale)
+        .to receive(:monolingual)
+        .and_return(mock_locale)
+      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
+      expect_any_instance_of(Analysis::LLM::Prompt)
+        .to receive(:fetch)
+        .with('q_and_a', project_title: kind_of(String), question: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
+        .and_call_original
 
       expect { plan.q_and_a_method_class.new(question).execute(plan) }
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')

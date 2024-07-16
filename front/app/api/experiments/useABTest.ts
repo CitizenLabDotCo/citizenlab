@@ -1,6 +1,8 @@
 import { useMemo, useCallback } from 'react';
-import useAddExperiment from './useAddExperiment';
+
 import useAuthUser from 'api/me/useAuthUser';
+
+import useAddExperiment from './useAddExperiment';
 
 interface ABTestConfig<TreatmentOption extends string> {
   experiment: string;

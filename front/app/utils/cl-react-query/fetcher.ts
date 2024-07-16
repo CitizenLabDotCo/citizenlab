@@ -1,11 +1,13 @@
-import { API_PATH } from 'containers/App/constants';
-import { getJwt } from 'utils/auth/jwt';
-import { stringify } from 'qs';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isArray, isNil, omitBy } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { handleBlockedUserError } from 'utils/errorUtils';
+import { stringify } from 'qs';
 import { CLErrors } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { getJwt } from 'utils/auth/jwt';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import { handleBlockedUserError } from 'utils/errorUtils';
+import { reportError } from 'utils/loggingUtils';
 
 // FETCHER
 
@@ -134,6 +136,11 @@ async function fetcher({
       return null;
     }
 
+    if (response.status === 204) {
+      // No content
+      return null;
+    }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }
@@ -165,7 +172,7 @@ async function fetcher({
             }
           });
         }
-      } else if (action === 'post' || action === 'patch') {
+      } else if (action === 'get' || action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
             [
@@ -199,6 +206,9 @@ async function fetcher({
       }
     }
   }
+
+  if (!data) return null;
+
   const { included: _included, ...rest } = data;
   return rest as Omit<BaseResponseData, 'included'>;
 }

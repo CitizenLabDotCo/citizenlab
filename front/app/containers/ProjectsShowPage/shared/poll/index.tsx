@@ -1,33 +1,20 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { IParticipationContextType } from 'typings';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// resources
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
-
-// components
-import FormCompleted from './FormCompleted';
-import PollForm from './PollForm';
-
-// styling
 import styled from 'styled-components';
 
-// i18n
+import usePhase from 'api/phases/usePhase';
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
+import useProjectById from 'api/projects/useProjectById';
+
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
+
+import FormCompleted from './FormCompleted';
 import messages from './messages';
-import globalMessages from 'utils/messages';
-
-// events
-import { PollDisabledReason } from 'api/projects/types';
-
-// utils
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import PollForm from './PollForm';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -45,47 +32,30 @@ const Container = styled.div`
 //   projectId: string
 // };
 
-interface InputProps {
-  type: IParticipationContextType;
-  phaseId: string | null;
+interface Props {
+  phaseId: string;
   projectId: string;
 }
 
-interface DataProps {
-  pollQuestions: GetPollQuestionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const disabledMessages: { [key in PollDisabledReason] } = {
-  project_inactive: messages.pollDisabledProjectInactive,
-  not_active: undefined,
-  not_verified: undefined,
-  missing_data: undefined,
-  not_signed_in: undefined,
-  not_in_group: globalMessages.notInGroup,
-  not_poll: messages.pollDisabledNotActivePhase,
-  already_responded: messages.pollDisabledAlreadyResponded,
-  not_permitted: messages.pollDisabledNotPermitted,
-};
-
-export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
+const Poll = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const { data: pollQuestions } = usePollQuestions({
+    phaseId,
+  });
 
-  if (
-    isNilOrError(pollQuestions) ||
-    !project ||
-    !(type === 'phase' ? phase : true)
-  ) {
+  if (isNilOrError(pollQuestions) || !project || !phase) {
     return null;
   }
 
   const { enabled, disabled_reason } =
-    project.data.attributes.action_descriptor.taking_poll;
+    project.data.attributes.action_descriptors.taking_poll;
+
+  const disabledMessage =
+    getPermissionsDisabledMessage('taking_poll', disabled_reason) || null;
 
   const message = !enabled
-    ? disabledMessages[disabled_reason] ?? messages.pollDisabledNotPossible
+    ? disabledMessage ?? messages.pollDisabledNotPossible
     : null;
 
   const actionDisabledAndNotFixable =
@@ -99,10 +69,8 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
         <>
           <PollForm
             projectId={projectId}
+            questions={pollQuestions.data}
             phaseId={phaseId}
-            questions={pollQuestions}
-            id={type === 'project' ? projectId : phaseId}
-            type={type}
             disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}
@@ -113,21 +81,4 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  pollQuestions: ({ projectId, phaseId, type, render }) => (
-    <GetPollQuestions
-      participationContextId={
-        type === 'project' ? projectId : (phaseId as string)
-      }
-      participationContextType={type}
-    >
-      {render}
-    </GetPollQuestions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Poll {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Poll;

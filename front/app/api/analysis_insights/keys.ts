@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IInsightsParams } from './types';
 
 const baseKey = { type: 'insight' };

@@ -13,7 +13,7 @@ class SideFxUserService
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
     user.create_email_campaigns_unsubscription_token
-    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
+    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
   end
 
@@ -29,7 +29,7 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
-    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
+    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
   end
 
   def before_destroy(user, _current_user)
@@ -44,7 +44,8 @@ class SideFxUserService
   end
 
   def after_destroy(frozen_user, current_user)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
+    activity_user = current_user&.id == frozen_user&.id ? nil : current_user
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', activity_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
@@ -128,6 +129,11 @@ class SideFxUserService
   def create_followers(user)
     area = Area.where(id: user.domicile).first
     Follower.find_or_create_by(followable: area, user: user) if area
+  end
+
+  def should_send_confirmation_email?(user)
+    user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
+      (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 end
 

@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
-
+import { TextEncoder, TextDecoder } from 'util';
 import 'whatwg-fetch';
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 global.ResizeObserver = require('resize-observer-polyfill');
 
@@ -34,5 +36,7 @@ jest.mock('hooks/useLocale');
 jest.mock('hooks/useLocalize');
 jest.mock('utils/cl-intl');
 jest.mock('utils/locale');
+jest.mock('utils/localeStream');
 jest.mock('api/app_configuration/useAppConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+jest.mock('modules');
+jest.mock('js-confetti', () => jest.fn(() => ({ addConfetti: jest.fn() })));

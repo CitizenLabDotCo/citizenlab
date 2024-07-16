@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 
-// components
-import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
-
-// typings
-import { PieRow } from './useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { Pie } from 'components/admin/Graphs/PieChart/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
+
+import renderTooltip from './renderTooltip';
+import { PieRow } from './useVisitorReferrerTypes/typings';
 
 interface Props {
   pieData: PieRow[];
-  pieConfig?: Pie;
   innerRef?: React.RefObject<any>;
-  narrow?: boolean;
 }
 
-const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
+const Chart = ({ pieData, innerRef }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -48,11 +43,10 @@ const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
           return hoverIndex === rowIndex ? 1 : 0.3;
         },
       }}
-      pie={pieConfig}
       tooltip={renderTooltip()}
       legend={{
         items: legend,
-        marginLeft: narrow ? 10 : 50,
+        marginLeft: 50,
         maintainGraphSize: true,
         position: 'right-center',
       }}

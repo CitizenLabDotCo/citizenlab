@@ -22,7 +22,6 @@ describe('Event preview cards on timeline project', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
@@ -66,8 +65,8 @@ describe('Event preview cards on timeline project', () => {
       cy.get('#e2e-event-previews').should('exist');
 
       // No arrow buttons for lateral scrolling should exist
-      cy.get('#e2e-event-previews-scroll-right').should('not.visible');
-      cy.get('#e2e-event-previews-scroll-left').should('not.visible');
+      cy.get('.e2e-event-previews-scroll-right').should('not.visible');
+      cy.get('.e2e-event-previews-scroll-left').should('not.visible');
     });
   });
 
@@ -102,8 +101,8 @@ describe('Event preview cards on timeline project', () => {
           cy.visit(`/en/projects/${projectSlug}`);
           cy.acceptCookies();
           cy.get('#e2e-event-previews').should('exist');
-          cy.get('#e2e-event-previews-scroll-right').should('exist');
-          cy.get('#e2e-event-previews-scroll-left').should('exist');
+          cy.get('.e2e-event-previews-scroll-right').should('exist');
+          cy.get('.e2e-event-previews-scroll-left').should('exist');
         });
       });
     });

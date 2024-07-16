@@ -1,38 +1,37 @@
 import React, { memo } from 'react';
+
+import {
+  Tr,
+  Td,
+  Icon,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-
-// components
-import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
-import ModerationContentCell from './ModerationContentCell';
-import Checkbox from 'components/UI/Checkbox';
-import Outlet from 'components/Outlet';
-import Tippy from '@tippyjs/react';
-import Link from 'utils/cl-router/Link';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-// typings
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
 } from 'api/moderations/types';
 
-// hooks
-import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import Outlet from 'components/Outlet';
+import Checkbox from 'components/UI/Checkbox';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
+import ModerationContentCell from './ModerationContentCell';
+import tracks from './tracks';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
@@ -138,7 +137,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
-    const viewLink = getViewLink(moderatableType);
+    const viewLink: RouteType | null = getViewLink(moderatableType);
 
     const handleOnChecked = (_event: React.ChangeEvent) => {
       onSelect(moderation);
@@ -166,7 +165,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       win && win.focus();
     };
 
-    function getViewLink(moderatableType: TModeratableType) {
+    function getViewLink(moderatableType: TModeratableType): RouteType | null {
       if (moderatableType === 'Comment') {
         if (
           belongsToTypes.includes('initiative') &&
@@ -272,7 +271,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
         </Cell>
         {viewLink && (
           <Cell>
-            <Tippy
+            <Tooltip
               placement="bottom-end"
               content={
                 <FormattedMessage
@@ -298,7 +297,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
                   />
                 </GoToLink>
               </GoToLinkWrapper>
-            </Tippy>
+            </Tooltip>
           </Cell>
         )}
       </Container>

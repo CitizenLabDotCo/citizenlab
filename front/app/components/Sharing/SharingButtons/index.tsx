@@ -1,31 +1,27 @@
 import React from 'react';
 
-// components
 import {
   Box,
   BoxFlexProps,
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Facebook from '../buttons/Facebook';
-import Twitter from '../buttons/Twitter';
-import Messenger from '../buttons/Messenger';
-import WhatsApp from '../buttons/WhatsApp';
-import Email from '../buttons/Email';
-import CopyLink from '../buttons/CopyLink';
 
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
+import CopyLink from '../buttons/CopyLink';
+import Email from '../buttons/Email';
+import Facebook from '../buttons/Facebook';
+import Messenger from '../buttons/Messenger';
+import Twitter from '../buttons/Twitter';
+import WhatsApp from '../buttons/WhatsApp';
+import messages from '../messages';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
-  facebookMessage: string;
   whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
@@ -39,7 +35,6 @@ const SharingButtons = ({
   context,
   twitterMessage,
   whatsAppMessage,
-  facebookMessage,
   emailSubject,
   emailBody,
   id,
@@ -84,10 +79,7 @@ const SharingButtons = ({
         justifyContent={justifyContent}
       >
         <Box display="flex" gap="4px">
-          <Facebook
-            facebookMessage={facebookMessage}
-            url={getUrl('facebook')}
-          />
+          <Facebook url={getUrl('facebook')} />
           {isSmallerThanTablet && <Messenger url={getUrl('messenger')} />}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}

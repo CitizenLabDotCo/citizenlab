@@ -1,6 +1,5 @@
-import Collapse from 'components/UI/Collapse';
 import React from 'react';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import {
   Radio,
   IconTooltip,
@@ -10,24 +9,32 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import { SectionField } from 'components/admin/Section';
-import QuillEditor from 'components/UI/QuillEditor';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import messages from '../messages';
-import { isNilOrError } from 'utils/helperUtils';
-import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { appLocalePairs } from 'containers/App/constants';
-import useLocalize from 'hooks/useLocalize';
-import { IOption, Locale } from 'typings';
-import useProjects from 'api/projects/useProjects';
-import { IProjectData } from 'api/projects/types';
-import { TInviteTabName } from '.';
-import useGroups from 'api/groups/useGroups';
+import { IOption, SupportedLocale } from 'typings';
+
 import { IGroups } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import { IProjectData } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import { appLocalePairs } from 'containers/App/constants';
+
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import { SectionField } from 'components/admin/Section';
+import Collapse from 'components/UI/Collapse';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import QuillEditor from 'components/UI/QuillEditor';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import { TInviteTabName } from '.';
 
 const StyledWarning = styled(Warning)`
   margin-top: 5px;
@@ -45,8 +52,8 @@ interface Props {
   inviteesWillHaveModeratorRights: boolean;
   handleAdminRightsOnToggle: () => void;
   handleModeratorRightsOnToggle: () => void;
-  onLocaleOnChange: (selectedLocale: Locale) => void;
-  selectedLocale: Locale | null;
+  onLocaleOnChange: (selectedLocale: SupportedLocale) => void;
+  selectedLocale: SupportedLocale | null;
   handleSelectedProjectsOnChange: (selectedProjects: IOption[]) => void;
   handleSelectedGroupsOnChange: (selectedGroups: IOption[]) => void;
   handleInviteTextOnChange: (selectedInviteText: string) => void;
@@ -74,9 +81,6 @@ const InvitationOptions = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const { data: projects } = useProjects({
     publicationStatuses: ['draft', 'published', 'archived'],
   });
@@ -154,7 +158,7 @@ const InvitationOptions = ({
               onChange={handleAdminRightsOnToggle}
             />
           </Box>
-          {!hasSeatBasedBillingEnabled && inviteesWillHaveAdminRights && (
+          {inviteesWillHaveAdminRights && (
             <Box marginTop="20px">
               <SeatInfo seatType="admin" />
             </Box>
@@ -209,11 +213,9 @@ const InvitationOptions = ({
                   <FormattedMessage {...messages.required} />
                 </StyledWarning>
               )}
-              {!hasSeatBasedBillingEnabled && (
-                <Box marginTop="20px">
-                  <SeatInfo seatType="moderator" />
-                </Box>
-              )}
+              <Box marginTop="20px">
+                <SeatInfo seatType="moderator" />
+              </Box>
             </>
           )}
         </SectionField>

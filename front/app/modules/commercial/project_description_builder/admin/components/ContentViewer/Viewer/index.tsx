@@ -1,27 +1,25 @@
 import React from 'react';
 
-// hooks
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
-import useProjectFiles from 'api/project_files/useProjectFiles';
-
-// components
-import Editor from '../../Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import { Multiloc } from 'typings';
+
+import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
+
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FileAttachments from 'components/UI/FileAttachments';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
-// constants
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-
-// typings
-import { Multiloc } from 'typings';
+import Editor from '../../Editor';
 
 type PreviewProps = {
   projectId: string;
@@ -33,27 +31,21 @@ const handleLoadImages = () => {
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
-  const locale = useLocale();
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
-
+  const { data: project } = useProjectById(projectId);
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
     useProjectDescriptionBuilderLayout(projectId);
 
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&
-    !isNilOrError(locale) &&
+    project?.data.attributes.uses_content_builder &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
-    projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-      locale
-    ];
+    !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json);
 
-  const editorData =
-    !isNilOrError(projectDescriptionBuilderLayout) && !isNilOrError(locale)
-      ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-          locale
-        ]
-      : undefined;
+  const editorData = !isNilOrError(projectDescriptionBuilderLayout)
+    ? projectDescriptionBuilderLayout.data.attributes.craftjs_json
+    : undefined;
 
   return (
     <Box data-testid="projectDescriptionBuilderPreview">

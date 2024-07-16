@@ -1,19 +1,23 @@
 import React from 'react';
 
-// components
-import Button from 'components/UI/Button';
-import OfficialFeedbackPost from './OfficialFeedbackPost';
-
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import OfficialFeedbackPost from './OfficialFeedbackPost';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -149,7 +153,7 @@ const OfficialFeedbackFeed = ({
       <Container
         aria-live="polite"
         className={`${className} ${editingAllowed ? 'hasTopMargin' : ''}`}
-        data-testid="official-feedback-feed"
+        id="official-feedback-feed"
       >
         <FeedbackHeader>
           <FeedbackTitle>

@@ -24,12 +24,13 @@ module PublicApi
       render json: problem_details, status: :bad_request
     end
 
-    def list_items(base_query, serializer, root_key: nil)
+    def list_items(base_query, serializer, includes: [], root_key: nil)
       @items = base_query
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
       @items = common_date_filters @items
+      @items = @items.includes(includes) if includes.any?
 
       render json: @items,
         each_serializer: serializer,
@@ -53,7 +54,6 @@ module PublicApi
     end
 
     # TODO: Raise errors for incorrectly formatted parameters
-    # TODO: Check if these are added as OR or AND and document accordingly
     def common_date_filters(base_query)
       base_query = base_query.where(date_filter_where_clause('created_at', params[:created_at])) if params[:created_at]
       base_query = base_query.where(date_filter_where_clause('updated_at', params[:updated_at])) if params[:updated_at]

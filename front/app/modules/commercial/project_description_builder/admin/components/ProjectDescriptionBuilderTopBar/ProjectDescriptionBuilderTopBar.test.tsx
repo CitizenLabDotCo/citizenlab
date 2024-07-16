@@ -1,27 +1,28 @@
 import React from 'react';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import ProjectDescriptionBuilderTopBar from '.';
+
 import { Editor } from '@craftjs/core';
 import { IProjectDescriptionBuilderData } from 'modules/commercial/project_description_builder/api/types';
+
 import clHistory from 'utils/cl-router/history';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
+
+import ProjectDescriptionBuilderTopBar from '.';
 
 const mockEditorData: IProjectDescriptionBuilderData = {
   id: '2',
   type: 'content_builder_layout',
   attributes: {
-    craftjs_jsonmultiloc: {
-      en: {
-        nodeId: {
-          custom: {},
-          displayName: 'div',
-          hidden: false,
-          isCanvas: true,
-          linkedNodes: {},
-          nodes: [],
-          type: 'div',
-          props: {},
-          parent: 'ROOT',
-        },
+    craftjs_json: {
+      nodeId: {
+        custom: {},
+        displayName: 'div',
+        hidden: false,
+        isCanvas: true,
+        linkedNodes: {},
+        nodes: [],
+        type: 'div',
+        props: {},
+        parent: 'ROOT',
       },
     },
     code: 'project_description',
@@ -41,7 +42,7 @@ jest.mock(
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
 jest.mock(
   'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout',
-  () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
+  () => jest.fn(() => ({ mutate: mockAddProjectDescriptionBuilderLayout }))
 );
 
 let mockLocalesData = ['en'];
@@ -101,7 +102,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -115,7 +116,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -130,11 +131,10 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          draftEditorData={{ en: {} }}
         />
       </Editor>
     );
@@ -145,7 +145,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
 
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
       projectId: 'id',
-      craftjs_jsonmultiloc: { en: {} },
+      craftjs_json: {},
     });
   });
   it('enables and disables save in accordance with the error status', async () => {
@@ -153,7 +153,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={['en']}
+          hasError={true}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -165,12 +165,12 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       screen.getByTestId('contentBuilderTopBarSaveButton')
     ).getByRole('button');
 
-    expect(saveButton).toBeDisabled();
+    expect(saveButton).toHaveAttribute('aria-disabled', 'true');
     rerender(
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -178,7 +178,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       </Editor>
     );
 
-    expect(saveButton).not.toBeDisabled();
+    expect(saveButton).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   it('calls setPreviewEnabled correctly on toggle change when previewEnabled is false', async () => {
@@ -187,7 +187,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={setPreviewEnabled}
@@ -207,7 +207,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={true}
           setPreviewEnabled={setPreviewEnabled}
@@ -226,7 +226,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -242,7 +242,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -258,7 +258,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -272,22 +272,6 @@ describe('ProjectDescriptionBuilderTopBar', () => {
     });
   });
 
-  it('shows locale switcher error correctly', () => {
-    const onSelectLocale = jest.fn();
-    render(
-      <Editor>
-        <ProjectDescriptionBuilderTopBar
-          selectedLocale="en"
-          localesWithError={['en']}
-          onSelectLocale={onSelectLocale}
-          previewEnabled={false}
-          setPreviewEnabled={() => {}}
-        />
-      </Editor>
-    );
-    expect(screen.getByText('en').firstChild).toHaveClass('empty');
-  });
-
   it('sets Save button to pending state correctly', () => {
     const onSelectLocale = jest.fn();
     render(
@@ -295,7 +279,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         <ProjectDescriptionBuilderTopBar
           hasPendingState={true}
           selectedLocale="en"
-          localesWithError={['en']}
+          hasError={false}
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}

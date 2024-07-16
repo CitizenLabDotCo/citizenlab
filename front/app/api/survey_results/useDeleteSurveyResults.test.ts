@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteSurveyResults from './useDeleteSurveyResults';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*projects/:projectId/inputs';
+
+import useDeleteSurveyResults from './useDeleteSurveyResults';
+const apiPath = '*phases/:phaseId/inputs';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.delete(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -25,7 +24,7 @@ describe('useDeleteSurveyResults', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: 'projectId',
+        phaseId: 'phaseId',
       });
     });
 
@@ -34,8 +33,8 @@ describe('useDeleteSurveyResults', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.delete(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -45,7 +44,7 @@ describe('useDeleteSurveyResults', () => {
 
     act(() => {
       result.current.mutate({
-        projectId: 'projectId',
+        phaseId: 'phaseId',
       });
     });
 

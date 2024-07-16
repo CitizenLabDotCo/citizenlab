@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateAnalysisTag from './useUpdateAnalysisTag';
-import { tagsData } from './__mocks__/useAnalysisTags';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { tagsData } from './__mocks__/useAnalysisTags';
+import useUpdateAnalysisTag from './useUpdateAnalysisTag';
+
 const apiPath = '*analyses/:analysisId/tags/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: tagsData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: tagsData[0] }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useUpdateAnalysisTag', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

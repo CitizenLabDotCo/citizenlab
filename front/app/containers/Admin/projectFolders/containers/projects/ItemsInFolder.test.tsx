@@ -1,9 +1,12 @@
 import React from 'react';
-import ItemsInFolder, { Props } from './ItemsInFolder';
-import { render, screen } from 'utils/testUtils/rtl';
+
 import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
-import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
+import { render, screen } from 'utils/testUtils/rtl';
+
+import ItemsInFolder, { Props } from './ItemsInFolder';
 
 jest.mock('api/me/useAuthUser', () => () => ({
   data: { data: mockAuthUserData },
@@ -24,6 +27,20 @@ jest.mock('api/admin_publications/useAdminPublications', () => {
 const props: Props = {
   projectFolderId: 'projectFolderId',
 };
+
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
 
 describe('ItemsInFolder', () => {
   it('Changes the order of projects', () => {

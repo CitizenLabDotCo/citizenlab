@@ -8,7 +8,7 @@ describe ContentBuilder::LayoutImageService do
   describe 'swap_data_images' do
     it 'removes the src attribute from image elements' do
       layout_image = create(:layout_image)
-      input = {
+      craftjs_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -28,14 +28,16 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'imageUrl' => layout_image.image.url,
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'imageUrl' => layout_image.image.url,
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -81,13 +83,15 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -114,16 +118,16 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:layout, craftjs_jsonmultiloc: { 'nl-BE' => input })
-      output = service.swap_data_images imageable, :craftjs_jsonmultiloc
-      expect(output).to eq({ 'nl-BE' => expected_json })
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
+      output = service.swap_data_images imageable.craftjs_json
+      expect(output).to eq expected_json
     end
   end
 
   describe 'render_data_images' do
     it 'adds the src attribute to the image elements' do
       layout_image = create(:layout_image)
-      input = {
+      craftjs_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -138,20 +142,39 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
+          'nodes' => %w[XGtvXcaUr3 B8vvp7in1B nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
+          'custom' => {},
+          'parent' => 'ROOT',
+          'hidden' => false,
+          'nodes' => [],
+          'linkedNodes' => {}
+        },
+        'B8vvp7in1B' => {
+          'type' => {
+            'resolvedName' => 'HomepageBanner'
+          },
+          'isCanvas' => false,
+          'props' => {
+            'image' => {
+              'dataCode' => layout_image.code
+            }
+          },
+          'displayName' => 'HomepageBanner',
           'custom' => {},
           'parent' => 'ROOT',
           'hidden' => false,
@@ -190,21 +213,41 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
+          'nodes' => %w[XGtvXcaUr3 B8vvp7in1B nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code,
-            'imageUrl' => layout_image.image.url
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code,
+              'imageUrl' => layout_image.image.url
+            }
           },
           'displayName' => 'Image',
+          'custom' => {},
+          'parent' => 'ROOT',
+          'hidden' => false,
+          'nodes' => [],
+          'linkedNodes' => {}
+        },
+        'B8vvp7in1B' => {
+          'type' => {
+            'resolvedName' => 'HomepageBanner'
+          },
+          'isCanvas' => false,
+          'props' => {
+            'image' => {
+              'dataCode' => layout_image.code,
+              'imageUrl' => layout_image.image.url
+            }
+          },
+          'displayName' => 'HomepageBanner',
           'custom' => {},
           'parent' => 'ROOT',
           'hidden' => false,
@@ -229,9 +272,62 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:layout, craftjs_jsonmultiloc: { 'fr-BE' => input })
-      output = service.render_data_images imageable, :craftjs_jsonmultiloc
-      expect(output).to eq({ 'fr-BE' => expected_json })
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
+      output = service.render_data_images imageable.craftjs_json
+      expect(output).to eq expected_json
+    end
+
+    it 'can deal with craftjs_json in an unexpected format' do
+      craftjs_json = {
+        'ROOT' => {
+          'type' => 'div',
+          'isCanvas' => true,
+          'props' => {
+            'id' => 'e2e-content-builder-frame',
+            'style' => {
+              'padding' => '4px',
+              'minHeight' => '160px',
+              'backgroundColor' => '#fff'
+            }
+          },
+          'displayName' => 'div',
+          'custom' => {},
+          'hidden' => false,
+          'nodes' => %w[B8vvp7in1B XGtvXcaUr3],
+          'linkedNodes' => {}
+        },
+        'B8vvp7in1B' => {
+          'type' => {
+            'resolvedName' => 'HomepageBanner'
+          },
+          'isCanvas' => false,
+          'props' => {}, # Empty props
+          'displayName' => 'HomepageBanner',
+          'custom' => {},
+          'parent' => 'ROOT',
+          'hidden' => false,
+          'nodes' => [],
+          'linkedNodes' => {}
+        },
+        'XGtvXcaUr3' => {
+          'badtype' => 42, # Bad type format
+          'isCanvas' => false,
+          'props' => {
+            'text' => '<p>This is some text.</p>',
+            'id' => 'text'
+          },
+          'displayName' => 'Text',
+          'custom' => {},
+          'parent' => 'ROOT',
+          'hidden' => false,
+          'nodes' => [],
+          'linkedNodes' => {}
+        }
+      }
+
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
+      output = service.render_data_images imageable.craftjs_json
+      expect(output).to eq craftjs_json
     end
   end
 end

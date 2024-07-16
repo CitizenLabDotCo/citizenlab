@@ -1,22 +1,18 @@
 // flows
-import { lightFlow } from './lightFlow';
-import { missingDataFlow } from './missingDataFlow';
-import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
-import { signUpFlow } from './signUpFlow';
-import { claveUnicaFlow } from './claveUnicaFlow';
-
-// typings
 import {
   GetRequirements,
   UpdateState,
   AuthenticationData,
   SetError,
 } from '../../typings';
+
+import { emaillessSsoFlow } from './emaillessSsoFlow';
+import { lightFlow } from './lightFlow';
+import { missingDataFlow } from './missingDataFlow';
+import { sharedSteps } from './sharedSteps';
+import { signInFlow } from './signInFlow';
+import { signUpFlow } from './signUpFlow';
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -24,8 +20,7 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  anySSOEnabled: boolean
 ) => {
   return {
     ...lightFlow(
@@ -35,7 +30,7 @@ export const getStepConfig = (
       updateState
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep, updateUser),
+    ...missingDataFlow(getRequirements, setCurrentStep),
 
     ...sharedSteps(
       getAuthenticationData,
@@ -58,11 +53,10 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      anySSOEnabled,
-      updateUser
+      anySSOEnabled
     ),
 
-    ...claveUnicaFlow(getRequirements, setCurrentStep, updateUser),
+    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

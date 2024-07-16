@@ -10,13 +10,13 @@ class SideFxReactionService
       lock_initiative_editing_if_required(reaction)
     end
 
-    action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
+    action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
     create_followers reaction, current_user
   end
 
   def after_destroy(reaction, current_user)
-    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
+    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
   end
 
@@ -32,6 +32,12 @@ class SideFxReactionService
     reaction.reactable_type.underscore
   end
 
+  # We're always sending the encoded_frozen_resource for a reaction, even for
+  # after_create where we normally send the vanilla resource. The reason is that
+  # it's pretty common for likes/dislikes to be selected and them immediately
+  # removed, leading to a race condition where the background job didn't execute
+  # yet before deletion, and then errors because it can't load the reaction.
+  # Because of this, we're always sending the frozen resource.
   def log_activity_job(reaction, action, current_user)
     serialized_reaction = clean_time_attributes(reaction.attributes)
 
@@ -40,7 +46,8 @@ class SideFxReactionService
       action,
       current_user,
       Time.now.to_i,
-      payload: { reaction: serialized_reaction }
+      payload: { reaction: serialized_reaction },
+      project_id: reaction.project_id
     )
   end
 

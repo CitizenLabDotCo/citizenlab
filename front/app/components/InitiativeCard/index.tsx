@@ -1,26 +1,28 @@
 import React from 'react';
 
-// components
-import Card from 'components/UI/Card';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Author from 'components/Author';
-import ReactionIndicator from './ReactionIndicator';
-import FollowUnfollow from 'components/FollowUnfollow';
+import {
+  Box,
+  Icon,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
+import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUserById from 'api/users/useUserById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Author from 'components/Author';
+import FollowUnfollow from 'components/FollowUnfollow';
+import Card from 'components/UI/Card';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styles
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// hooks
-import useUserById from 'api/users/useUserById';
-import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
-import useLocalize from 'hooks/useLocalize';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
+import messages from './messages';
+import ReactionIndicator from './ReactionIndicator';
 
 const FooterInner = styled.div`
   width: 100%;
@@ -93,6 +95,7 @@ const InitiativeCard = ({
     <Card
       className={cardClassNames}
       to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
+      scrollToTop
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={
@@ -102,6 +105,7 @@ const InitiativeCard = ({
             createdAt={initiative.data.attributes.proposed_at}
             size={34}
             anonymous={initiative.data.attributes.anonymous}
+            showModeratorStyles={false}
           />
         </Box>
       }
@@ -136,6 +140,7 @@ const InitiativeCard = ({
                   initiative.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="input"
               />
             </Box>
           )}

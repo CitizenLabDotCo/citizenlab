@@ -1,24 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
 import {
   IconTooltip,
   Box,
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import ModeratorList from '../../components/ModeratorList';
-import UserSearch from '../../components/UserSearch';
+import styled from 'styled-components';
+
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import ModeratorList from '../../components/ModeratorList';
+import UserSearch from '../../components/UserSearch';
+
+import messages from './messages';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
@@ -36,9 +34,6 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
 
   return (
     <ModeratorSubSection>
@@ -81,11 +76,9 @@ const ProjectManagement = ({ projectId }: Props) => {
         }
       />
       <ModeratorList projectId={projectId} />
-      {!hasSeatBasedBillingEnabled && (
-        <Box width="516px">
-          <SeatInfo seatType="moderator" />
-        </Box>
-      )}
+      <Box width="516px">
+        <SeatInfo seatType="moderator" />
+      </Box>
     </ModeratorSubSection>
   );
 };

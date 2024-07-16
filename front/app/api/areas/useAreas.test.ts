@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAreas from './useAreas';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { areasData } from './__mocks__/useAreas';
 import { IAreasQueryParams } from './types';
+import useAreas from './useAreas';
 
 const apiPath = '*/:type/:id/areas';
 
@@ -17,8 +16,8 @@ const params: IAreasQueryParams = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: areasData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: areasData }, { status: 200 });
   })
 );
 
@@ -41,8 +40,8 @@ describe('useAreas', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

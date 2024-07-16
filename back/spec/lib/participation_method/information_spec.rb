@@ -3,31 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Information do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new phase }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project, participation_method: 'information') }
+  let(:phase) { create(:phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:phase) }
 
     it 'does not change the posting_method' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :posting_method)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :posting_method)
     end
 
     it 'does not change the ideas_order' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :ideas_order)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
     end
   end
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     it 'does not change the input' do
-      participation_method.assign_slug input
-      expect(input).not_to be_changed
+      expect(participation_method.generate_slug(input)).to be_nil
     end
   end
 
@@ -40,7 +39,7 @@ RSpec.describe ParticipationMethod::Information do
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq []
     end
   end
@@ -83,9 +82,9 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
+  describe '#update_if_published?' do
+    it 'returns true' do
+      expect(participation_method.update_if_published?).to be true
     end
   end
 
@@ -98,7 +97,7 @@ RSpec.describe ParticipationMethod::Information do
   describe '#custom_form' do
     let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
-    let(:context) { project.phases.last }
+    let(:phase) { project.phases.last }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
@@ -148,6 +147,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:additional_export_columns) { is_expected.to eq [] }
 end

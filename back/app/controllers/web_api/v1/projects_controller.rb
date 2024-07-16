@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    params['moderator'] = current_user if params[:filter_can_moderate]
-
     publications = policy_scope(AdminPublication)
-    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
@@ -18,17 +16,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
-    @projects = Project.where(id: publications.select(:publication_id))
-      .ordered
-      .includes(:project_images, :phases, :areas, admin_publication: [:children])
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
+    # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
+    # but it doesn't make any difference with `preload`. Still using it in case the query changes.
+    @projects = Project.where(id: publications.pluck(:publication_id)).ordered
     @projects = paginate @projects
-
-    user_baskets = current_user&.baskets
-      &.where(participation_context_type: 'Project')
-      &.group_by do |basket|
-        [basket.participation_context_id, basket.participation_context_type]
-      end
-    user_baskets ||= {}
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      :content_builder_layouts, # Defined in ContentBuilder engine
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
 
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
@@ -38,11 +38,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     user_followers ||= {}
 
     instance_options = {
-      user_baskets: user_baskets,
       user_followers: user_followers,
-      allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
-      visible_children_count_by_parent_id: {} # projects don't have children
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
+      visible_children_count_by_parent_id: {}, # projects don't have children
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
     }
 
     render json: linked_json(
@@ -57,7 +56,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase permissions]
+      include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
 
@@ -137,31 +136,39 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
-  def survey_results
-    results = SurveyResultsGeneratorService.new(@project).generate_results
-    render json: raw_json(results)
-  end
-
-  def submission_count
-    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: raw_json(count)
-  end
-
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
+      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
 
-  def delete_inputs
-    sidefx.before_delete_inputs @project, current_user
-    ActiveRecord::Base.transaction do
-      @project.ideas.each(&:destroy!)
+  def votes_by_user_xlsx
+    if @project.phases.where(participation_method: 'voting').present?
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxExport::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'votes_by_user.xlsx'
+      end
+
+      sidefx.after_votes_by_user_xlsx(@project, current_user)
+    else
+      raise 'Project has no voting phase.'
     end
-    sidefx.after_delete_inputs @project, current_user
-    head :ok
+  end
+
+  def votes_by_input_xlsx
+    if @project.phases.where(participation_method: 'voting').present?
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'votes_by_input.xlsx'
+      end
+
+      sidefx.after_votes_by_input_xlsx(@project, current_user)
+    else
+      raise 'Project has no voting phase.'
+    end
   end
 
   private
@@ -174,7 +181,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     ActiveRecord::Base.transaction do
       set_folder
       authorize @project
-      @project.save
+      saved = @project.save
+      check_publication_inconsistencies! if saved
+      saved
     end
   end
 
@@ -187,5 +196,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
+  end
+
+  def check_publication_inconsistencies!
+    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
+    if Project.all.any? { |project| !project.valid? }
+      raise 'Project change would lead to inconsistencies!'
+    end
   end
 end

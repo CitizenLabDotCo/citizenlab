@@ -1,38 +1,21 @@
-import { ILinks, Multiloc, IRelationship } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
+
+import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
+
 import {
-  PermissionsDisabledReason,
   ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
-import {
-  CommentingDisabledReason,
-  PublicationStatus as ProjectPublicationStatus,
-} from 'api/projects/types';
+  IdeaCommentingDisabledReason,
+  IdeaReactingDisabledReason,
+  IdeaVotingDisabledReason,
+  ReactingIdeaActionDescriptor,
+} from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-export type IdeaReactingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'reacting_disabled'
-  | 'disliking_disabled'
-  | 'reacting_like_limited_max_reached'
-  | 'reacting_dislike_limited_max_reached'
-  | 'idea_not_in_current_phase'
-  | PermissionsDisabledReason;
-
-export type IdeaCommentingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | CommentingDisabledReason;
-
-export type IdeaVotingDisabledReason =
-  | 'project_inactive'
-  | 'not_voting'
-  | 'idea_not_in_current_phase'
-  | PermissionsDisabledReason;
 
 export type Sort =
   | 'random'
@@ -59,27 +42,6 @@ export type Sort =
   | 'budget'
   | '-budget';
 
-export type SortAttribute =
-  | 'new'
-  | 'trending'
-  | 'popular'
-  | 'author_name'
-  | 'likes_count'
-  | 'dislikes_count'
-  | 'baskets_count'
-  | 'status'
-  | 'votes_count'
-  | 'comments_count'
-  | 'budget';
-
-type ReactingIdeaActionDescriptor =
-  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
-  | {
-      enabled: false;
-      disabled_reason: IdeaReactingDisabledReason;
-      cancelling_enabled: boolean;
-    };
-
 export interface IIdeaData {
   id: string;
   type: string;
@@ -94,8 +56,14 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    baskets_count?: number | null;
-    votes_count?: number | null;
+    /** Defined for all ideas regardless of participation method.
+     * For participation_method voting, this is used for all voting_methods,
+     * even single_voting.
+     */
+    baskets_count: number;
+    /** For voting_method budgeting we use the budget of the idea
+     * times the number of picks/baskets */
+    votes_count: number;
     location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
     budget: number | null;
@@ -103,7 +71,7 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
-    action_descriptor: {
+    action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
         down: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
@@ -168,8 +136,8 @@ export interface IIdeaAdd {
   // Required
   project_id: string;
   publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
   // Optional
+  title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
   idea_status_id?: string | null;
@@ -212,20 +180,30 @@ export interface IIdea {
 }
 
 export interface IQueryParameters {
-  sort: Sort;
+  sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
-  projects?: string[] | null;
-  phase?: string | null;
-  author?: string | null;
+  projects?: string[];
+  phase?: string;
+  author?: string;
   search?: string;
-  topics?: string[] | null;
-  idea_status?: string | null;
-  publication_status?: IdeaPublicationStatus | null;
-  project_publication_status?: ProjectPublicationStatus | null;
-  bounding_box?: number[] | null;
-  assignee?: string | null;
-  feedback_needed?: boolean | null;
-  filter_can_moderate?: boolean | null;
+  topics?: string[];
+  idea_status?: string;
+  publication_status?: IdeaPublicationStatus;
+  project_publication_status?: ProjectPublicationStatus;
+  bounding_box?: number[];
+  assignee?: string;
+  feedback_needed?: boolean;
+  filter_can_moderate?: boolean;
   basket_id?: string;
+}
+
+export interface IIdeaApprovals {
+  data: {
+    type: 'idea_approvals';
+    attributes: {
+      approved: number;
+      not_approved: number;
+    };
+  };
 }

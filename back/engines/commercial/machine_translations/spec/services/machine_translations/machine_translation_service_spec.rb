@@ -42,7 +42,7 @@ describe MachineTranslations::MachineTranslationService do
   private
 
   def stub_easy_translate!
-    EasyTranslate.stub(:translate) do |_, options|
+    allow(EasyTranslate).to receive(:translate) do |_, options|
       translation = {
         'en' => '<strong>Health & Wellness</strong>',
         'fr' => '<strong>Santé &amp; Bien-être</strong>',

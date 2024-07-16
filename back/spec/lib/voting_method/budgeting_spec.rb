@@ -3,33 +3,33 @@
 require 'rails_helper'
 
 RSpec.describe VotingMethod::Budgeting do
-  subject(:voting_method) { described_class.new project }
+  subject(:voting_method) { described_class.new phase }
 
-  let(:project) { build(:continuous_budgeting_project) }
+  let(:phase) { build(:budgeting_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:context) { build(:continuous_budgeting_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:budgeting_phase) }
 
     it 'changes voting_max_votes_per_idea to nil' do
-      project.voting_max_votes_per_idea = 3
-      voting_method.assign_defaults_for_participation_context
-      expect(project.voting_max_votes_per_idea).to be_nil
+      phase.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_phase
+      expect(phase.voting_max_votes_per_idea).to be_nil
     end
   end
 
-  describe '#validate_participation_context' do
+  describe '#validate_phase' do
     it 'sets no errors when voting_max_total and voting_min_total are present' do
-      project.voting_max_total = 10
-      project.voting_min_total = 0
-      voting_method.validate_participation_context
-      expect(project.errors.details).to be_blank
+      phase.voting_max_total = 10
+      phase.voting_min_total = 0
+      voting_method.validate_phase
+      expect(phase.errors.details).to be_blank
     end
 
     it 'sets errors when voting_max_total and voting_min_total are blank' do
-      project.voting_max_total = nil
-      project.voting_min_total = nil
-      voting_method.validate_participation_context
-      expect(project.errors.details).to eq(
+      phase.voting_max_total = nil
+      phase.voting_min_total = nil
+      voting_method.validate_phase
+      expect(phase.errors.details).to eq(
         voting_max_total: [error: :blank],
         voting_min_total: [error: :blank]
       )
@@ -60,15 +60,16 @@ RSpec.describe VotingMethod::Budgeting do
     end
 
     it 'returns true when the user is a moderator of the participation context' do
-      project.save!
-      expect(voting_method.budget_in_form?(create(:project_moderator, projects: [project]))).to be true
+      phase.save!
+      expect(voting_method.budget_in_form?(create(:project_moderator, projects: [phase.project]))).to be true
     end
   end
 
   describe '#assign_baskets_idea' do
     it 'overwrites the votes with the budget' do
-      idea = create(:idea, budget: 3, project: project)
-      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 10)
+      project = create(:single_phase_budgeting_project)
+      idea = create(:idea, budget: 3, project: project, phases: project.phases)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, phase: project.phases.first), idea: idea, votes: 10)
 
       voting_method.assign_baskets_idea(baskets_idea.reload)
       baskets_idea.save!

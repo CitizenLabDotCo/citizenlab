@@ -1,8 +1,6 @@
-// styles
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
-// components
 import T from 'components/T';
 
 export const RowContent = styled.div`

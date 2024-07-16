@@ -40,7 +40,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
-        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
         'topic_id' => topic_id,
         'comments' => count
       }
@@ -76,7 +76,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |project_id, count|
       {
-        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc, current_user&.locale),
         'project_id' => project_id,
         'comments' => count
       }

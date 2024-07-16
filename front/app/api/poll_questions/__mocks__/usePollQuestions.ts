@@ -11,8 +11,8 @@ export const pollQuestionsData: IPollQuestionData[] = [
       ordering: 0,
     },
     relationships: {
-      participation_context: {
-        data: { id: '540935af-fa3c-40de-a567-4a31c3c636d2', type: 'project' },
+      phase: {
+        data: { id: '540935af-fa3c-40de-a567-4a31c3c636d2' },
       },
       options: {
         data: [
@@ -33,8 +33,8 @@ export const pollQuestionsData: IPollQuestionData[] = [
       ordering: 1,
     },
     relationships: {
-      participation_context: {
-        data: { id: '540935af-fa3c-40de-a567-4a31c3c636d2', type: 'project' },
+      phase: {
+        data: { id: '540935af-fa3c-40de-a567-4a31c3c636d2' },
       },
       options: {
         data: [

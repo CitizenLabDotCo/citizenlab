@@ -1,24 +1,23 @@
 import React from 'react';
-import Link from 'utils/cl-router/Link';
 
-// styles
+import {
+  colors,
+  fontSizes,
+  Box,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-// hooks
+import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';
 
-// services
-import { IUserData } from 'api/users/types';
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import Link from 'utils/cl-router/Link';
 
-// components
-import Tippy from '@tippyjs/react';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import messages from './messages';
 
 const Name = styled.span<{
   color?: string;
@@ -78,7 +77,7 @@ interface Props extends StyleProps {
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
   anonymous?: boolean;
-  canModerate?: boolean;
+  showModeratorStyles?: boolean;
 }
 
 const UserName = ({
@@ -91,7 +90,7 @@ const UserName = ({
   underline,
   italic,
   color,
-  canModerate,
+  showModeratorStyles,
   anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -107,7 +106,7 @@ const UserName = ({
 
   if (anonymous) {
     return (
-      <Tippy
+      <Tooltip
         placement="top-start"
         maxWidth={'260px'}
         theme={'dark'}
@@ -126,7 +125,7 @@ const UserName = ({
         >
           {formatMessage(messages.anonymous)}
         </Name>
-      </Tippy>
+      </Tooltip>
     );
   }
 
@@ -153,18 +152,22 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const profileLink = `/profile/${user.data.attributes.slug}`;
+    const profileLink: RouteType = `/profile/${user.data.attributes.slug}`;
 
     const classNames = `
       ${className || ''}
-      ${canModerate ? 'canModerate' : ''}
+      ${showModeratorStyles ? 'canModerate' : ''}
       ${isLinkToProfile ? 'isLinkToProfile' : ''}
       e2e-username
     `;
 
     if (isLinkToProfile) {
       return (
-        <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
+        <Link
+          to={profileLink}
+          className={`e2e-author-link ${className || ''}`}
+          scrollToTop
+        >
           <Name {...sharedNameProps} className={classNames}>
             {name}
           </Name>

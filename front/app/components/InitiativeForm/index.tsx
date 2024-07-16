@@ -1,33 +1,47 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// typings
-import { Multiloc, UploadFile } from 'typings';
-
-// form
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import Feedback from 'components/HookForm/Feedback';
-import TopicsPicker from 'components/HookForm/TopicsPicker';
+import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
+import { Multiloc, UploadFile } from 'typings';
 import { object, array, mixed, string, boolean } from 'yup';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInitiativeFileData } from 'api/initiative_files/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import useTopics from 'api/topics/useTopics';
+
+import useLocale from 'hooks/useLocale';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
+
+import { SectionField } from 'components/admin/Section';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import LocationInput from 'components/HookForm/LocationInput';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import TopicsPicker from 'components/HookForm/TopicsPicker';
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+import Warning from 'components/UI/Warning';
 
-// intl
-import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import useLocale from 'hooks/useLocale';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
+import { reverseGeocode } from 'utils/locationTools';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-// Components
+import messages from './messages';
 import SubmitButtonBar from './SubmitButtonBar';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -35,25 +49,9 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
-import LocationInput from 'components/HookForm/LocationInput';
-import { Box } from '@citizenlab/cl2-component-library';
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
-import Warning from 'components/UI/Warning';
-
-// Hooks
-import useTopics from 'api/topics/useTopics';
-import { IInitiativeData } from 'api/initiatives/types';
-import { IInitiativeImageData } from 'api/initiative_images/types';
-import { IInitiativeFileData } from 'api/initiative_files/types';
-import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
-import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useSearchParams } from 'react-router-dom';
-import { reverseGeocode } from 'utils/locationTools';
-
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
     position: 'position';
@@ -91,6 +89,7 @@ const InitiativeForm = ({
   const locale = useLocale();
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
@@ -237,13 +236,34 @@ const InitiativeForm = ({
     }
   };
 
+  const handleDisclaimer = () => {
+    const disclamerNeeded =
+      methods.getValues('images')?.[0] ||
+      methods.getValues('header_bg')?.[0] ||
+      methods.getValues('local_initiative_files')?.length > 0 ||
+      Object.values(methods.getValues('body_multiloc')).some((value) =>
+        value.includes('<img')
+      );
+    if (disclamerNeeded) {
+      setIsDisclaimerOpened(true);
+    } else {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  };
+
+  const onAcceptDisclaimer = () => {
+    methods.handleSubmit(onFormSubmit)();
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   return (
     <>
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onFormSubmit)}
-          data-testid="initiativeForm"
-        >
+        <form data-testid="initiativeForm">
           <Box pb="92px">
             <Feedback />
             <FormSection>
@@ -266,7 +286,7 @@ const InitiativeForm = ({
                 <FormLabel
                   id="description-label-id"
                   htmlFor="body_multiloc"
-                  labelMessage={messages.descriptionLabel}
+                  labelValue={formatMessage(messages.descriptionLabel)}
                   subtextMessage={messages.descriptionLabelSubtext}
                 />
                 <QuillMultilocWithLocaleSwitcher
@@ -329,7 +349,15 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <SubmitButtonBar processing={methods.formState.isSubmitting} />
+          <SubmitButtonBar
+            processing={methods.formState.isSubmitting}
+            onClick={handleDisclaimer}
+          />
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={onAcceptDisclaimer}
+            onCancelDisclaimer={onCancelDisclaimer}
+          />
         </form>
       </FormProvider>
       <Suspense fallback={null}>

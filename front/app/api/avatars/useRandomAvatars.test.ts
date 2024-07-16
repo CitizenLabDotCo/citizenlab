@@ -1,20 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useRandomAvatars from './useRandomAvatars';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { avatarsData } from './__mocks__/useRandomAvatars';
 
-const apiPath = '*avatars';
+import endpoints, { avatarsPath, avatarsData } from './__mocks__/_mockServer';
+import useRandomAvatars from './useRandomAvatars';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: avatarsData }));
-  })
-);
+const server = setupServer(endpoints['GET /avatars']);
 
 describe('useRandomAvatars', () => {
   beforeAll(() => server.listen());
@@ -41,8 +34,8 @@ describe('useRandomAvatars', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(avatarsPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

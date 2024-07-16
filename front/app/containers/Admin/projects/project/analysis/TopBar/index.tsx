@@ -1,35 +1,41 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import {
   Box,
   stylingConsts,
   colors,
   Title,
-  Badge,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { get, set } from 'js-cookie';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
+
+import useAnalysis from 'api/analyses/useAnalysis';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
-import clHistory from 'utils/cl-router/history';
-import useProjectById from 'api/projects/useProjectById';
-import { useParams, useSearchParams } from 'react-router-dom';
-import useLocalize from 'hooks/useLocalize';
+import Modal from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';
 
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import useAnalysis from 'api/analyses/useAnalysis';
-import Tasks from '../Tasks';
-import LaunchModal from '../LaunchModal';
-import Modal from 'components/UI/Modal';
+import clHistory from 'utils/cl-router/history';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import ClickOutside from 'utils/containers/clickOutside';
+
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import ClickOutside from 'utils/containers/clickOutside';
-import styled from 'styled-components';
-import useAuthUser from 'api/me/useAuthUser';
-import { get, set } from 'js-cookie';
+import LaunchModal from '../LaunchModal';
+import Tasks from '../Tasks';
+
+import Filters from './Filters';
+import messages from './messages';
 
 const TruncatedTitle = styled(Title)`
   white-space: nowrap;
@@ -83,12 +89,10 @@ const TopBar = () => {
   const goBack = () => {
     if (analysis?.data.attributes.participation_method === 'native_survey') {
       clHistory.push(
-        `/admin/projects/${projectId}/native-survey/results${
-          phaseId ? `?phase_id=${phaseId}` : ''
-        }`
+        `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
       );
     } else {
-      clHistory.push(`/admin/projects/${projectId}/ideas`);
+      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/ideas`);
     }
   };
 
@@ -132,9 +136,6 @@ const TopBar = () => {
             <Text m="0px" color="textSecondary">
               {formatMessage(messages.AIAnalysis)}
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <TruncatedTitle variant="h4" m="0px">
@@ -142,14 +143,14 @@ const TopBar = () => {
           </TruncatedTitle>
         </Box>
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="filter"
           size="s"
           onClick={toggleFilters}
         >
           {formatMessage(messages.filters)}
         </Button>
-        <FilterItems filters={filters} isEditable />
+        <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}
@@ -164,7 +165,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticle)}
+          linkTo={formatMessage(messages.supportArticleLink) as RouteType}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}

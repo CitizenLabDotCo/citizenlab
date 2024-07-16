@@ -20,6 +20,12 @@ class SideFxCustomFieldOptionService
   end
 
   def after_destroy(frozen_custom_field_option, current_user)
+    custom_field = frozen_custom_field_option.custom_field
+    if custom_field&.resource_type == 'CustomForm' && custom_field&.input_type == 'select'
+      FormLogicService.new([frozen_custom_field_option.custom_field])
+        .remove_select_logic_option_from_custom_fields(frozen_custom_field_option)
+    end
+
     serialized_custom_field_option = clean_time_attributes(frozen_custom_field_option.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_custom_field_option),

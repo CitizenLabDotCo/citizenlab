@@ -42,19 +42,6 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.Password.rememberMeTooltip',
     defaultMessage: 'Do not select if using a public computer',
   },
-  emailOrPhone: {
-    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhone',
-    defaultMessage: 'Email or phone',
-  },
-  emailOrPhoneMissingError: {
-    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneMissingError',
-    defaultMessage: 'Provide an email address or phone number',
-  },
-  emailOrPhoneNumberError: {
-    id: 'app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneNumberError',
-    defaultMessage:
-      'Enter an email address or a phone number in the correct format',
-  },
   firstNamesLabel: {
     id: 'app.containers.SignUp.firstNamesLabel',
     defaultMessage: 'First names',

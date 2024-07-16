@@ -1,20 +1,14 @@
+import { renderHook } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, { apiPathById, project1 } from './__mocks__/_mockServer';
 import useProjectById from './useProjectById';
 
-import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { project1 } from './__mocks__/useProjects';
-
 const projectId = 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b';
-
-const apiPath = `*projects/${projectId}`;
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project1 }));
-  })
-);
+const server = setupServer(endpoints['GET projects/:id']);
 
 describe('useProjectById', () => {
   beforeAll(() => server.listen());
@@ -35,8 +29,8 @@ describe('useProjectById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathById, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

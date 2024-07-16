@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useEventFiles from './useEventFiles';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { eventFilesData } from './__mocks__/useEventFiles';
+import useEventFiles from './useEventFiles';
 
 const apiPath = '*/events/:eventId/files';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: eventFilesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: eventFilesData }, { status: 200 });
   })
 );
 
@@ -35,8 +34,8 @@ describe('useEventFiles', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

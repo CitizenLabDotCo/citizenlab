@@ -1,27 +1,13 @@
 import { parse } from 'qs';
 
-// api
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
-// cache
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// utils
-import {
-  requiredCustomFields,
-  requiredBuiltInFields,
-  askCustomFields,
-  showOnboarding,
-} from './utils';
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-// typings
+import tracks from '../../tracks';
 import {
   GetRequirements,
   SetError,
@@ -30,7 +16,14 @@ import {
   SignUpInError,
   VerificationError,
 } from '../../typings';
+
 import { Step } from './typings';
+import {
+  requiredCustomFields,
+  requiredBuiltInFields,
+  askCustomFields,
+  showOnboarding,
+} from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -69,9 +62,9 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterClaveUnicaEmail: boolean) => {
-        if (enterClaveUnicaEmail) {
-          setCurrentStep('clave-unica:email');
+      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
+        if (enterSsoNoEmailEmail) {
+          setCurrentStep('emailless-sso:email');
           return;
         }
 
@@ -111,6 +104,11 @@ export const sharedSteps = (
           if (showOnboarding(requirements.onboarding)) {
             setCurrentStep('missing-data:onboarding');
             return;
+          }
+
+          const { successAction } = getAuthenticationData();
+          if (successAction) {
+            triggerSuccessAction(successAction);
           }
         }
       },
@@ -191,8 +189,8 @@ export const sharedSteps = (
         setCurrentStep('verification-only');
       },
 
-      REOPEN_CLAVE_UNICA: () => {
-        setCurrentStep('clave-unica:email');
+      REOPEN_EMAILLESS_SSO: () => {
+        setCurrentStep('emailless-sso:email');
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
@@ -222,8 +220,8 @@ export const sharedSteps = (
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
-
         const { successAction } = getAuthenticationData();
+
         if (successAction) {
           triggerSuccessAction(successAction);
         }

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import Tippy from '@tippyjs/react';
 import {
   Box,
   Button,
-  Checkbox,
-  Label,
   Title,
   Text,
+  CheckboxWithLabel,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
-import messages from './messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type Props = {
   tagId: string | null;
@@ -119,7 +121,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
   if (!anchorElement) return null;
 
   return (
-    <Tippy
+    <Tooltip
       content={
         <Box p="16px" position="relative">
           <Box position="absolute" top="5px" right="5px">
@@ -129,15 +131,11 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
           {step === 'step2-manual' && <Step2Manual />}
           {step === 'step2-auto' && <Step2Auto />}
           <Box display="flex" justifyContent="flex-start" mt="24px">
-            <Label>
-              <Checkbox
-                checked={dontShowAgainCheckbox}
-                onChange={() =>
-                  setDontShowAgainCheckbox(!dontShowAgainCheckbox)
-                }
-              />
-              <FormattedMessage {...messages.dontShowAgain} />
-            </Label>
+            <CheckboxWithLabel
+              checked={dontShowAgainCheckbox}
+              onChange={() => setDontShowAgainCheckbox(!dontShowAgainCheckbox)}
+              label={<FormattedMessage {...messages.dontShowAgain} />}
+            />
           </Box>
         </Box>
       }
@@ -146,7 +144,9 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
       zIndex={1000000000000000}
       theme="light"
       visible={visible}
-      interactive
+      // Changing the acnhor element clashes with the tooltip accessibility features
+      // so for this particular case we are disabling the onHidden callback to solve it
+      onHidden={() => {}}
     />
   );
 };

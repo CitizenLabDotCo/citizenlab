@@ -1,28 +1,23 @@
 import React from 'react';
+
+import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import CityLogoSection from 'components/CityLogoSection';
+import ContentContainer from 'components/ContentContainer';
+import InitiativeButton from 'components/InitiativeButton';
+import InitiativeCards from 'components/InitiativeCards';
+import PageNotFound from 'components/PageNotFound';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
-import InitiativeCards from 'components/InitiativeCards';
-import ContentContainer from 'components/ContentContainer';
-import CityLogoSection from 'components/CityLogoSection';
-import InitiativeButton from 'components/InitiativeButton';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import InitiativesIndexMeta from './InitiativesIndexMeta';
 import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
-
-const Container = styled.main``;
 
 const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colors.tenantPrimary};
@@ -86,12 +81,12 @@ const InitiativeIndexPage = () => {
     return (
       <>
         <InitiativesIndexMeta />
-        <Container>
+        <main>
           <InitiativesHeader />
           <StyledContentContainer maxWidth="100%">
             <Padding />
             <InitiativeCards
-              invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+              invisibleTitleMessage={messages.invisibleTitleProposalsCards1}
             />
           </StyledContentContainer>
           {proposalSubmissionEnabled && (
@@ -107,7 +102,7 @@ const InitiativeIndexPage = () => {
             </FooterBanner>
           )}
           <CityLogoSection />
-        </Container>
+        </main>
       </>
     );
   }

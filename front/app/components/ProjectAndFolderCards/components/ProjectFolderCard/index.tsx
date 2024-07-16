@@ -1,48 +1,40 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import bowser from 'bowser';
-import { TLayout } from 'components/ProjectAndFolderCards';
 
-// router
-import Link from 'utils/cl-router/Link';
-
-// components
-import { Icon, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   media,
   colors,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
-} from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+  Icon,
+  useBreakpoint,
+  Box,
+} from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { RouteType } from 'routes';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
-
-// services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import AvatarBubbles from 'components/AvatarBubbles';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { TLayout } from 'components/ProjectAndFolderCards';
+import T from 'components/T';
+import Image from 'components/UI/Image';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -70,6 +62,8 @@ const Container = styled(Link)`
     min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 30px;
 
     ${media.phone`
       width: 100%;
@@ -78,6 +72,8 @@ const Container = styled(Link)`
 
   &.small {
     min-height: 540px;
+    padding-top: 18px;
+    padding-bottom: 25px;
 
     &.threecolumns {
       ${media.tablet`
@@ -95,19 +91,9 @@ const Container = styled(Link)`
     `}
   }
 
-  &.medium {
-    padding-top: 20px;
-    padding-bottom: 30px;
-  }
-
-  &.small {
-    padding-top: 18px;
-    padding-bottom: 25px;
-  }
-
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
-  }
+  `}
 
   ${media.phone`
     width: 100%;
@@ -306,38 +292,6 @@ const ContentFooter = styled.div`
   }
 `;
 
-const ProjectMetaItems = styled.div`
-  height: 100%;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 24px;
-
-  &.first {
-    margin-left: 0px;
-  }
-
-  ${media.phone`
-    margin-left: 20px;
-  `};
-`;
-
-const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 3px;
-`;
-
 const MapIcon = styled(Icon)`
   fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
@@ -363,14 +317,18 @@ const ProjectFolderCard = memo<Props>(
   ({ folderId, size, layout, className, showFollowButton }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
-    const { data: projectFolderImages } = useProjectFolderImages({
+
+    // We use this hook instead of useProjectFolderImages
+    // because that one doesn't work well with our caching system
+    const { data: projectFolderImage } = useProjectFolderImage({
       folderId,
+      imageId: projectFolder?.data.relationships.images.data?.[0]?.id,
     });
+
     const { data: publication } = useAdminPublication(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
     const theme = useTheme();
-    const { formatMessage } = useIntl();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
@@ -395,8 +353,6 @@ const ProjectFolderCard = memo<Props>(
     }
 
     // Footer
-    const commentsCount = projectFolder?.data.attributes.comments_count;
-    const ideasCount = projectFolder?.data.attributes.ideas_count;
     const avatarIds =
       projectFolder?.data.relationships.avatars &&
       projectFolder?.data.relationships.avatars.data
@@ -404,22 +360,19 @@ const ProjectFolderCard = memo<Props>(
             (avatar) => avatar.id
           )
         : [];
-
-    const showIdeasCount = ideasCount ? ideasCount > 0 : false;
-    const showCommentsCount = commentsCount ? commentsCount > 0 : false;
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
-    const showFooter = showAvatarBubbles || showIdeasCount || showCommentsCount;
+    const showFooter = showAvatarBubbles;
 
     // Images
-    const imageVersions = isNilOrError(projectFolderImages)
+    const imageVersions = !projectFolderImage
       ? null
-      : projectFolderImages.data[0]?.attributes.versions;
+      : projectFolderImage.data.attributes.versions;
 
     const imageUrl = imageVersions
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 
@@ -428,7 +381,7 @@ const ProjectFolderCard = memo<Props>(
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         )}
@@ -471,13 +424,14 @@ const ProjectFolderCard = memo<Props>(
 
     return (
       <Container
-        className={`${className} ${layout} ${size} ${
-          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-        } e2e-folder-card e2e-admin-publication-card`}
+        className={`${className} ${layout} ${size} e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
-        onClick={handleProjectCardOnClick(
-          publication.data.relationships.publication.data.id
-        )}
+        scrollToTop
+        onClick={() => {
+          handleProjectCardOnClick(
+            publication.data.relationships.publication.data.id
+          );
+        }}
       >
         {screenReaderContent}
         {size !== 'large' && contentHeader}
@@ -539,42 +493,6 @@ const ProjectFolderCard = memo<Props>(
                   />
                 )}
               </Box>
-
-              <Box h="100%" display="flex" alignItems="center">
-                <ProjectMetaItems>
-                  {showIdeasCount && ideasCount && (
-                    <MetaItem className="first">
-                      <Icon
-                        height="23px"
-                        width="23px"
-                        fill={theme.colors.tenantPrimary}
-                        ariaHidden
-                        name="idea"
-                      />
-                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(messages.xInputs, { ideasCount })}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
-
-                  {showCommentsCount && commentsCount && (
-                    <MetaItem>
-                      <Icon
-                        height="23px"
-                        width="23px"
-                        fill={theme.colors.tenantPrimary}
-                        ariaHidden
-                        name="comments"
-                      />
-                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(messages.xComments, { commentsCount })}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
-                </ProjectMetaItems>
-              </Box>
             </ContentFooter>
           </Box>
           {showFollowButton && (
@@ -587,6 +505,7 @@ const ProjectFolderCard = memo<Props>(
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="projectOrFolder"
               />
             </Box>
           )}

@@ -5,7 +5,9 @@ require 'yaml'
 namespace :sync_tenants do
   desc 'Aggressively overwrites all multiloc translations for which a corresponding instance could be found'
   task :overwrite_multilocs, [:hosts] => [:environment] do |_t, args|
-    template = YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
+    template_path = Rails.root.join('config/tenant_templates/base.yml')
+    template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
+
     Tenant.where(host: args[:hosts].split(';')).each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         template['models'].each do |model_name, fields|
@@ -35,7 +37,8 @@ namespace :sync_tenants do
     # Tenant host,         Content type,  ID,                                    Property,        Changed or customized?,  New value,             Old value
     # habay.citizenlab.co, CustomField,   066d1963-902d-431d-b937-f6d095fa34fb,  title_multiloc,  TRUE,                    {"fr-BE"=>"Localité"}, {"fr-BE"=>"Domicile"}
 
-    template = YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
+    template_path = Rails.root.join('config/tenant_templates/base.yml')
+    template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
     sheet ||= []
 
     Tenant.where(host: args[:hosts].split(';')).each do |tenant|
@@ -85,8 +88,9 @@ namespace :sync_tenants do
 
   desc 'Apply updates from file'
   task :apply_updates, [:sheet] => [:environment] do |_t, args|
-    template = YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
-    instructions = CSV.parse(open(args[:sheet]).read, { headers: true, col_sep: ',', converters: [] })
+    template_path = Rails.root.join('config/tenant_templates/base.yml')
+    template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
+    instructions = CSV.parse(open(args[:sheet]).read, headers: true, col_sep: ',', converters: [])
 
     Tenant.where(host: instructions.pluck('Tenant host').uniq).each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
@@ -144,10 +148,10 @@ def object_from_template(classname, attributes)
   when 'Project', 'Event'
     nil
   when 'CustomField'
-    CustomField.with_resource_type('User').where(code: attributes['code']).first
+    CustomField.registration.where(code: attributes['code']).first
   when 'CustomFieldOption'
     CustomFieldOption.where(key: attributes['key'],
-      custom_field: CustomField.with_resource_type('User').where(code: attributes['custom_field_ref']['code'])).first
+      custom_field: CustomField.registration.where(code: attributes['custom_field_ref']['code'])).first
   end
 end
 

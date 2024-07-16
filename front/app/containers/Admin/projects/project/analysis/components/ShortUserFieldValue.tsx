@@ -1,16 +1,20 @@
 import React from 'react';
 
-import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
+
 import { IUserCustomField } from 'api/user_custom_fields/types';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import T from 'components/T';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 type Props = {
   customField: IUserCustomField;
-  rawValue?: string | string[] | null[] | number;
+  rawValue?: string | string[] | null[] | number | boolean;
 };
 
 const SelectOptionText = ({
@@ -43,11 +47,7 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
     case 'multiline_text':
     case 'number':
     case 'checkbox':
-      if (
-        rawValue === null ||
-        typeof rawValue === undefined ||
-        rawValue === ''
-      ) {
+      if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>{formatMessage(messages.noAnswer)}</>;
       } else {
         return <>{rawValue}</>;

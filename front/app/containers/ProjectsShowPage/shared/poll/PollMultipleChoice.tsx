@@ -1,18 +1,23 @@
 import React from 'react';
-import { IPollQuestionData } from 'api/poll_questions/types';
+
 import styled from 'styled-components';
+
+import usePollOptions from 'api/poll_options/usePollOptions';
+import { IPollQuestionData } from 'api/poll_questions/types';
+
+import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 import {
   QuestionContainer,
   Question,
   QuestionNumber,
   QuestionText,
 } from './PollForm';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import usePollOptions from 'api/poll_options/usePollOptions';
 
 const StyledFieldSet = styled.fieldset`
   width: 100%;

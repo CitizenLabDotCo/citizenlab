@@ -1,27 +1,23 @@
 import React from 'react';
-import { get } from 'lodash-es';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
-import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
-import Error from 'components/UI/Error';
-
-// form
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// style
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import Error from 'components/UI/Error';
 import messages from 'components/UI/FileUploader/messages';
+import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
+import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export interface Props {
   name: string;
+  accept?: string;
 }
 
-const SingleFileUploader = ({ name }: Props) => {
+const SingleFileUploader = ({ name, accept }: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -50,6 +46,7 @@ const SingleFileUploader = ({ name }: Props) => {
                       setValue(name, file);
                       trigger(name);
                     }}
+                    accept={accept}
                   />
                 </Box>
               )}

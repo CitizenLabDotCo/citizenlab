@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
+
+import { Icon, Dropdown, colors } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-
-// components
-import Button from 'components/UI/Button';
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+
 import DateRangePicker from 'components/admin/DateRangePicker';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

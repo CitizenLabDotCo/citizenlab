@@ -43,6 +43,20 @@ RSpec.describe CustomFieldOption do
       cfo3 = create(:custom_field_option, key: nil, custom_field: cf)
       expect([cfo1, cfo2, cfo3].map(&:key).uniq).to match [cfo1, cfo2, cfo3].map(&:key)
     end
+
+    it 'generates a key based on the title_multiloc with an additional 3 character string when other is set to false' do
+      cf = create(:custom_field_select)
+      cfo = create(:custom_field_option, title_multiloc: { en: 'A field' }, key: nil, custom_field: cf, other: false)
+      key_root = 'a_field'
+      expect(cfo.key).to start_with key_root
+      expect(cfo.key.length).to eq key_root.length + 4
+    end
+
+    it 'generates a key of "other" when other is set to true' do
+      cf = create(:custom_field_select)
+      cfo = create(:custom_field_option, key: nil, custom_field: cf, other: true)
+      expect(cfo.key).to eq 'other'
+    end
   end
 
   describe 'saving a custom field option without title_multiloc' do

@@ -1,14 +1,17 @@
 import React from 'react';
-import DatePicker from 'react-datepicker';
-import moment, { Moment } from 'moment';
-import styled from 'styled-components';
+
 import {
   Box,
   Icon,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
+import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
+
 import useLocale from 'hooks/useLocale';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 const StylingWrapper = styled.div`
@@ -31,21 +34,25 @@ const StylingWrapper = styled.div`
       line-height: normal;
       font-weight: 400;
       background: transparent;
+      width: 100%;
     }
   }
 `;
 
+export type Dates = {
+  startDate: Moment | null;
+  endDate: Moment | null;
+};
+
 interface Props {
   startDate: Moment | null;
   endDate: Moment | null;
-  onDatesChange: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => void;
+  onDatesChange: ({ startDate, endDate }: Dates) => void;
   minDate?: Moment;
+  maxDate?: Moment;
+  startDatePlaceholderText?: string;
+  endDatePlaceholderText?: string;
+  excludeDates?: Moment[];
 }
 
 const DateRangePicker = ({
@@ -53,10 +60,15 @@ const DateRangePicker = ({
   endDate,
   onDatesChange,
   minDate,
+  maxDate,
+  startDatePlaceholderText,
+  endDatePlaceholderText,
+  excludeDates,
 }: Props) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
+  const localeUsed = locale === 'en' ? 'en-GB' : locale;
 
   const handleOnChangeStartDate = (newStartDate: Date | null) => {
     // with this check, we don't allow removing a date
@@ -92,6 +104,9 @@ const DateRangePicker = ({
   const convertedStartDate = startDate ? moment(startDate).toDate() : null;
   const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
+  const convertedMaxDate = maxDate ? moment(maxDate).toDate() : null;
+  const convertedExcludeDates =
+    excludeDates?.map((date) => moment(date).toDate()) || [];
 
   return (
     <StylingWrapper>
@@ -103,10 +118,13 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedMinDate}
-        locale={locale}
+        locale={localeUsed}
+        excludeDates={convertedExcludeDates}
+        placeholderText={startDatePlaceholderText}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
         popperClassName="e2e-start-date-popper"
+        autoComplete="off"
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
@@ -119,10 +137,14 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedStartDate}
-        locale={locale}
+        maxDate={convertedMaxDate}
+        excludeDates={convertedExcludeDates}
+        locale={localeUsed}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
+        placeholderText={endDatePlaceholderText}
         popperClassName="e2e-end-date-popper"
+        autoComplete="off"
       />
     </StylingWrapper>
   );

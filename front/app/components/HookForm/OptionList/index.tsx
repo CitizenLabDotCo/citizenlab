@@ -1,12 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { cloneDeep, get } from 'lodash-es';
 
-// react hook form
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
-// components
 import {
   Box,
   Label,
@@ -15,17 +8,20 @@ import {
   Icon,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
-import { List, SortableRow } from 'components/admin/ResourceList';
-import Error, { TFieldName } from 'components/UI/Error';
+import { cloneDeep, get } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
 
-// Typings
-import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 import { IOptionsType } from 'api/custom_fields/types';
 
-// utils
+import { List, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
+import { generateTempId } from 'components/FormBuilder/utils';
+import Error, { TFieldName } from 'components/UI/Error';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
 
 export type Option = {
   id?: string;
@@ -35,10 +31,10 @@ export type Option = {
 
 interface Props {
   name: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
   allowDeletingAllOptions?: boolean;
-  platformLocale: Locale;
+  platformLocale: SupportedLocale;
   fieldLabel: string | JSX.Element | null;
   addButtonLabel: string | JSX.Element | undefined;
 }
@@ -58,13 +54,13 @@ const OptionList = ({
     setValue,
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
 
   // Handles locale change
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
@@ -77,7 +73,7 @@ const OptionList = ({
     options: IOptionsType;
     index: number;
     name: string;
-    selectedLocale: Locale;
+    selectedLocale: SupportedLocale;
   };
 
   const handleOptionChange = ({
@@ -242,7 +238,7 @@ const OptionList = ({
                   <Button
                     icon="plus-circle"
                     type="button"
-                    buttonStyle="secondary"
+                    buttonStyle="secondary-outlined"
                     data-cy="e2e-add-answer"
                     onClick={() => handleAddOption(options, name)}
                     text={addButtonLabel}

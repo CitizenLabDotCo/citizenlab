@@ -111,7 +111,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @initiative.save save_options
+      if @initiative.save(**save_options)
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
@@ -145,7 +145,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     saved = nil
     ActiveRecord::Base.transaction do
-      saved = @initiative.save save_options
+      saved = @initiative.save(**save_options)
       if saved
         service.after_update(@initiative, current_user, cosponsor_ids)
       end
@@ -213,7 +213,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def serialization_options_for(initiatives)
-    default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
+    default_params = jsonapi_serializer_params
 
     if current_user
       reactions = current_user.reactions.where(

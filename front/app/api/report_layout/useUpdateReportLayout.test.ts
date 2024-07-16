@@ -1,17 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateReportLayout from './useUpdateReportLayout';
-import { reportLayoutData } from './__mocks__/useReportLayout';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*reports/:id';
+import { reportLayout, apiPathUpdate } from './__mocks__/_mockServer';
+import useUpdateReportLayout from './useUpdateReportLayout';
+
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportLayoutData }));
+  http.patch(apiPathUpdate, () => {
+    return HttpResponse.json(reportLayout, { status: 200 });
   })
 );
 
@@ -27,18 +25,18 @@ describe('useUpdateReportLayout', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        craftMultiloc: { en: {} },
+        craftjs_json: {},
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(reportLayoutData);
+    expect(result.current.data?.data).toEqual(reportLayout.data);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPathUpdate, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -48,7 +46,7 @@ describe('useUpdateReportLayout', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        craftMultiloc: { en: {} },
+        craftjs_json: {},
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

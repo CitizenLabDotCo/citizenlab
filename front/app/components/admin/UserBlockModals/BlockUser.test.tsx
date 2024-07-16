@@ -1,9 +1,22 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import BlockUserModal from './BlockUser';
+
 import { makeUser } from 'api/users/__mocks__/useUsers';
 import { IUser } from 'api/users/types';
 
+import { render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import BlockUserModal from './BlockUser';
+
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
 const user: IUser = makeUser();
 
 const mockMutate = jest.fn();

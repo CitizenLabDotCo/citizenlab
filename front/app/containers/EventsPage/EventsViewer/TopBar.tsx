@@ -1,18 +1,16 @@
 import React, { memo } from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import DateFilterDropdown from './DateFilterDropdown';
-
-// styling
 import styled, { useTheme } from 'styled-components';
 
-// types
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import DateFilterDropdown from './DateFilterDropdown';
+
 import { dateFilterKey } from '.';
 
 const ProjectFilterDropdownPositioner = styled.div`
@@ -41,34 +39,40 @@ const TopBar = memo<Props>(
   }) => {
     const { formatMessage } = useIntl();
     const theme = useTheme();
-    const isMobileOrSmaller = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
 
-    const mobileLeft = isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto';
+    const mobileLeft = isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto';
 
     return (
       <Box
-        display={isMobileOrSmaller ? 'block' : 'flex'}
+        display={isSmallerThanPhone ? 'block' : 'flex'}
         justifyContent="space-between"
         pb="14px"
         borderBottom="solid 1px #ccc"
         mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
+        <Title
+          color="tenantText"
+          m="0px"
+          my="auto"
+          as="h2"
+          variant={isSmallerThanPhone ? 'h3' : 'h2'}
+        >
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
           <Box
             display="flex"
             flexWrap="wrap"
-            flexDirection={isMobileOrSmaller ? 'row-reverse' : 'row'}
+            flexDirection={isSmallerThanPhone ? 'row-reverse' : 'row'}
             gap="8px"
             mt="8px"
             ml="auto"
           >
             {showDateFilter && (
               <Box
-                width={isMobileOrSmaller ? '100%' : 'auto'}
+                width={isSmallerThanPhone ? '100%' : 'auto'}
                 flexShrink={0}
                 style={{ textAlign: 'right' }}
               >
@@ -76,7 +80,7 @@ const TopBar = memo<Props>(
                   onChange={setDateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
-                  mobileLeft={isMobileOrSmaller ? '-70px' : mobileLeft}
+                  mobileLeft={isSmallerThanPhone ? '-70px' : mobileLeft}
                 />
               </Box>
             )}
@@ -88,7 +92,7 @@ const TopBar = memo<Props>(
                 filterSelectorStyle="button"
                 listTop="44px"
                 mobileLeft={
-                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                  isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto'
                 }
                 eventsTime={eventsTime}
               />

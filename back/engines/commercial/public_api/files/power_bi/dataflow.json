@@ -1,0 +1,867 @@
+{
+  "name": "CitizenLab Dataflow",
+  "description": "",
+  "version": "1.0",
+  "culture": "en-US",
+  "modifiedTime": "2023-10-08T12:40:46.2424186+00:00",
+  "ppdf:outputFileFormat": "Csv",
+  "pbi:mashup": {
+    "fastCombine": true,
+    "allowNativeQueries": false,
+    "queriesMetadata": {
+      "BaseUrl": {
+        "queryId": "dda00317-93f1-4609-a813-5b00c1b777c7",
+        "queryName": "BaseUrl",
+        "queryGroupId": "91526dcf-6b59-4550-b9ba-db3620faaa1d"
+      },
+      "Locale": {
+        "queryId": "45f8229f-cb70-44bf-bfe1-57379cf08b4e",
+        "queryName": "Locale",
+        "queryGroupId": "91526dcf-6b59-4550-b9ba-db3620faaa1d"
+      },
+      "ClientID": {
+        "queryId": "70544fe0-20a6-4317-9898-34fa54aca81f",
+        "queryName": "ClientID",
+        "queryGroupId": "91526dcf-6b59-4550-b9ba-db3620faaa1d"
+      },
+      "ClientSecret": {
+        "queryId": "cb2dad47-07f5-41fb-af39-e3b582ad1fac",
+        "queryName": "ClientSecret",
+        "queryGroupId": "91526dcf-6b59-4550-b9ba-db3620faaa1d"
+      },
+      "LimitPerPage": {
+        "queryId": "9e09172a-41e0-45dd-ba85-7d370e1e3807",
+        "queryName": "LimitPerPage",
+        "queryGroupId": "426310eb-10a6-4681-8102-66fe917e7bd6"
+      },
+      "comments": {
+        "queryId": "bf2e21c2-fad8-4a6e-8248-e87650ac3ed5",
+        "queryName": "comments",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "ideas": {
+        "queryId": "88352ea1-e974-4363-8901-a529e4425f23",
+        "queryName": "ideas",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "reactions": {
+        "queryId": "0773719a-a532-4630-b6de-e7a198511797",
+        "queryName": "reactions",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "projects": {
+        "queryId": "c350989c-6116-483e-be65-7c2395246369",
+        "queryName": "projects",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "phases": {
+        "queryId": "e3d47b8e-a419-4786-9f3f-b52ae1844908",
+        "queryName": "phases",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "project_folders": {
+        "queryId": "df369f72-969a-4499-96a9-043750fe002b",
+        "queryName": "project_folders",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "topics": {
+        "queryId": "48228086-1513-43a8-b0da-89e452d980cf",
+        "queryName": "topics",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "users": {
+        "queryId": "0fc40167-ee65-4d3d-a407-af677d791213",
+        "queryName": "users",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "initiatives": {
+        "queryId": "cb45be5e-60dc-42ad-81a8-2cc14c008d10",
+        "queryName": "initiatives",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "project_topics": {
+        "queryId": "3cfca4a3-5f0d-4540-8833-d0a7f8eadbd8",
+        "queryName": "project_topics",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "idea_topics": {
+        "queryId": "312b39ee-7716-4a57-8c37-df26aaa70c4f",
+        "queryName": "idea_topics",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "users_custom_fields": {
+        "queryId": "5825c3b9-c3ac-48b8-95ae-1a1e2090ee02",
+        "queryName": "users_custom_fields",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "ideas_custom_fields": {
+        "queryId": "5f5f2b1d-aff2-4358-87a4-f1a0e84a232f",
+        "queryName": "ideas_custom_fields",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "idea_phases": {
+        "queryId": "1ba6d127-940d-4c69-ac15-9ba86840a3cc",
+        "queryName": "idea_phases",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "baskets": {
+        "queryId": "e80ccff8-bb6b-4d3a-a32d-83975a91d726",
+        "queryName": "baskets",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "basket_ideas": {
+        "queryId": "13ce02a8-441f-471d-a8b2-ae418c0e00b5",
+        "queryName": "basket_ideas",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "email_campaigns": {
+        "queryId": "fd1ca732-f549-49b4-a34b-7e0652cb99ff",
+        "queryName": "email_campaigns",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "email_campaign_deliveries": {
+        "queryId": "a49823b7-f404-4abb-8037-e56a9f0843e0",
+        "queryName": "email_campaign_deliveries",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "events": {
+        "queryId": "e6b57446-44fd-4ae2-8b88-10ad35aa0401",
+        "queryName": "events",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "event_attendances": {
+        "queryId": "00a30f84-d0ae-40e8-acf9-384b897731f5",
+        "queryName": "event_attendances",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "volunteering_causes": {
+        "queryId": "e9ee7e22-451d-4983-9f1a-2914f98b1d00",
+        "queryName": "volunteering_causes",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "volunteering_volunteers": {
+        "queryId": "f5498cd5-c6f1-4d2c-93ea-0add1ccde2ea",
+        "queryName": "volunteering_volunteers",
+        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
+        "loadEnabled": true
+      },
+      "ApiAccessToken": {
+        "queryId": "49f414b3-3f08-404c-9a37-a01af1945689",
+        "queryName": "ApiAccessToken",
+        "queryGroupId": "5503512d-1506-4446-8b69-5e96e2452ed6"
+      },
+      "ApiGET": {
+        "queryId": "53a356d9-a785-462d-b87e-1ee257c6d32a",
+        "queryName": "ApiGET",
+        "queryGroupId": "5503512d-1506-4446-8b69-5e96e2452ed6"
+      },
+      "DelayFn": {
+        "queryId": "05552879-c69d-49bf-b1cd-e5cd72949dd2",
+        "queryName": "DelayFn",
+        "queryGroupId": "5503512d-1506-4446-8b69-5e96e2452ed6"
+      }
+    },
+    "document": "section Section1;\r\nshared BaseUrl = \"##BASE_URL##\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true];\r\nshared Locale = \"en\" meta [IsParameterQuery=true, List={\"en\",\"ar-MA\",\"ar-SA\",\"ca-ES\",\"da-DK\",\"de-DE\",\"el-GR\",\"en-CA\",\"en-GB\",\"es-CL\",\"es-ES\",\"fr-BE\",\"fr-FR\",\"hr-HR\",\"hu-HU\",\"it-IT\",\"kl-GL\",\"lb-LU\",\"lv-LV\",\"mi\",\"nb-NO\",\"nl-BE\",\"nl-NL\",\"pl-PL\",\"pt-BR\",\"ro-RO\",\"sr-Latn\",\"sr-SP\",\"sv-SE\",\"tr-TR\"}, DefaultValue=\"en\", Type=\"Text\", IsParameterQueryRequired=true];\r\nshared ClientID = \"##CLIENT_ID##\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true];\r\nshared ClientSecret = \"##CLIENT_SECRET##\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true];\r\nshared LimitPerPage = let\n    Source = \"100\"\nin\n    Source;\r\nshared comments = let\n    Source = ApiGET(\"comments\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"body\", \"author_id\", \"post_id\", \"parent_id\", \"created_at\", \"updated_at\", \"body_updated_at\", \"likes_count\", \"dislikes_count\", \"children_count\", \"publication_status\", \"post_type\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"id\", type text}, {\"body\", type text}, {\"author_id\", type text}, {\"post_id\", type text}, {\"parent_id\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"body_updated_at\", type datetime}, {\"likes_count\", Int64.Type}, {\"dislikes_count\", Int64.Type}, {\"children_count\", Int64.Type}, {\"publication_status\", type text}, {\"post_type\", type text}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}}),\n    #\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type1\",{{\"post_id\", \"idea_id\"}})\nin\n    #\"Renamed Columns\";\r\nshared ideas = let\r\n  Source = ApiGET(\"ideas\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"body\", \"author_id\", \"likes_count\", \"dislikes_count\", \"comments_count\", \"published_at\", \"publication_status\", \"project_id\", \"project_title\", \"created_at\", \"updated_at\", \"location_point\", \"location_description\", \"slug\", \"budget\", \"baskets_count\", \"official_feedbacks_count\", \"assignee_id\", \"assigned_at\", \"proposed_budget\", \"creation_phase_id\", \"images\", \"href\", \"status\", \"custom_field_values\", \"type\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"title\", type text}, {\"body\", type text}, {\"author_id\", type text}, {\"likes_count\", Int64.Type}, {\"dislikes_count\", Int64.Type}, {\"comments_count\", Int64.Type}, {\"published_at\", type datetime}, {\"publication_status\", type text}, {\"project_id\", type text}, {\"project_title\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"location_point\", type text}, {\"location_description\", type text}, {\"slug\", type text}, {\"budget\", Int64.Type}, {\"baskets_count\", Int64.Type}, {\"official_feedbacks_count\", Int64.Type}, {\"assignee_id\", type text}, {\"assigned_at\", type datetime}, {\"proposed_budget\", Int64.Type}, {\"creation_phase_id\", type any}, {\"images\", type any}, {\"href\", type text}, {\"status\", type text}, {\"custom_field_values\", type any}, {\"data_refreshed_at\", type datetime}, {\"type\", type text}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"votes_count\", type text}, {\"creation_phase_id\", type text}, {\"images\", type text}, {\"custom_field_values\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"votes_count\", null}, {\"creation_phase_id\", null}, {\"images\", null}, {\"custom_field_values\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared reactions = let\n    Source = ApiGET(\"reactions\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"mode\", \"user_id\", \"reactable_id\", \"created_at\", \"updated_at\", \"reactable_type\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"id\", type text}, {\"mode\", type text}, {\"user_id\", type text}, {\"reactable_id\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"reactable_type\", type text}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared projects = let\r\n  Source = ApiGET(\"projects\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"description_html\", \"description_preview\", \"slug\", \"folder_id\", \"href\", \"visible_to\", \"images\", \"created_at\", \"updated_at\", \"ideas_count\", \"comments_count\", \"map_center_geojson\", \"publication_status\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"title\", type text}, {\"description_html\", type text}, {\"description_preview\", type text}, {\"slug\", type text}, {\"folder_id\", type text}, {\"href\", type text}, {\"visible_to\", type text}, {\"images\", type any}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"ideas_count\", Int64.Type}, {\"comments_count\", Int64.Type}, {\"map_center_geojson\", type any}, {\"publication_status\", type text}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"images\", type text}, {\"baskets_count\", type text}, {\"votes_count\", type text}, {\"map_center_geojson\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"images\", null}, {\"baskets_count\", null}, {\"votes_count\", null}, {\"map_center_geojson\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared phases = let\r\n  Source = ApiGET(\"phases\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"description\", \"participation_method\", \"project_id\", \"project_title\", \"start_at\", \"end_at\", \"created_at\", \"updated_at\", \"ideas_count\", \"posting_enabled\", \"commenting_enabled\", \"reacting_enabled\", \"reacting_like_method\", \"reacting_like_limited_max\", \"reacting_dislike_enabled\", \"reacting_dislike_method\", \"reacting_dislike_limited_max\", \"voting_max_total\", \"voting_min_total\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"title\", type text}, {\"description\", type text}, {\"participation_method\", type text}, {\"project_id\", type text}, {\"project_title\", type text}, {\"start_at\", type date}, {\"end_at\", type date}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"ideas_count\", Int64.Type}, {\"posting_enabled\", type logical}, {\"commenting_enabled\", type logical}, {\"reacting_enabled\", type logical}, {\"reacting_like_method\", type text}, {\"reacting_like_limited_max\", Int64.Type}, {\"reacting_dislike_enabled\", type logical}, {\"reacting_dislike_method\", type text}, {\"reacting_dislike_limited_max\", Int64.Type}, {\"voting_max_total\", Int64.Type}, {\"voting_min_total\", Int64.Type}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type\", {{\"baskets_count\", type text}, {\"votes_count\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"baskets_count\", null}, {\"votes_count\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared project_folders = let\r\n  Source = ApiGET(\"project_folders\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"slug\", \"created_at\", \"updated_at\", \"publication_status\", \"title_multiloc\", \"title\", \"description_multiloc\", \"description\", \"description_preview_multiloc\", \"description_preview\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"slug\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"publication_status\", type text}, {\"title_multiloc\", type any}, {\"title\", type text}, {\"description_multiloc\", type any}, {\"description\", type text}, {\"description_preview_multiloc\", type any}, {\"description_preview\", type text}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"title_multiloc\", type text}, {\"description_multiloc\", type text}, {\"description_preview_multiloc\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"title_multiloc\", null}, {\"description_multiloc\", null}, {\"description_preview_multiloc\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared topics = let\n    Source = ApiGET(\"topics\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"description\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"id\", type text}, {\"title\", type text}, {\"description\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared users = let\r\n  Source = ApiGET(\"users\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"email\", \"slug\", \"roles\", \"created_at\", \"updated_at\", \"first_name\", \"last_name\", \"locale\", \"bio\", \"registration_completed_at\", \"verified\", \"email_confirmed_at\", \"email_confirmation_code_sent_at\", \"confirmation_required\", \"custom_field_values\", \"status\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"email\", type text}, {\"slug\", type text}, {\"roles\", type any}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"first_name\", type text}, {\"last_name\", type text}, {\"locale\", type text}, {\"bio\", type any}, {\"registration_completed_at\", type datetime}, {\"verified\", type logical}, {\"email_confirmed_at\", type datetime}, {\"email_confirmation_code_sent_at\", type datetime}, {\"confirmation_required\", type logical}, {\"custom_field_values\", type any}, {\"status\", type text}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"registration_completed_at\", \"registration_completed_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"registration_completed_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"roles\", type text}, {\"bio\", type text}, {\"custom_field_values\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"roles\", null}, {\"bio\", null}, {\"custom_field_values\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared initiatives = let\r\n  Source = ApiGET(\"initiatives\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"body\", \"author_id\", \"likes_count\", \"dislikes_count\", \"comments_count\", \"published_at\", \"publication_status\", \"created_at\", \"updated_at\", \"threshold_reached_at\", \"location_point\", \"location_description\", \"slug\", \"official_feedbacks_count\", \"assignee_id\", \"assigned_at\", \"href\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"title\", type text}, {\"body\", type text}, {\"author_id\", type text}, {\"likes_count\", Int64.Type}, {\"dislikes_count\", Int64.Type}, {\"comments_count\", Int64.Type}, {\"published_at\", type datetime}, {\"publication_status\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"location_point\", type text}, {\"location_description\", type text}, {\"slug\", type text}, {\"official_feedbacks_count\", Int64.Type}, {\"assignee_id\", type text}, {\"assigned_at\", type datetime}, {\"href\", type text}, {\"data_refreshed_at\", type datetime}, {\"threshold_reached_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"title_multiloc\", type text}, {\"body_multiloc\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"title_multiloc\", null}, {\"body_multiloc\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared project_topics = let\n    Source = ApiGET(\"project_topics\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"project_id\", \"topic_id\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"project_id\", type text}, {\"topic_id\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared idea_topics = let\r\n  Source = ApiGET(\"idea_topics\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"idea_id\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"idea_id\", type text}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type\", {{\"topic_id\", type text}, {\"data_refreshed_at\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"topic_id\", null}, {\"data_refreshed_at\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared users_custom_fields = let\r\n  Source = ApiGET(\"users\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"email\", \"slug\", \"roles\", \"created_at\", \"updated_at\", \"first_name\", \"last_name\", \"locale\", \"bio\", \"registration_completed_at\", \"verified\", \"email_confirmed_at\", \"email_confirmation_code_sent_at\", \"confirmation_required\", \"custom_field_values\", \"status\", \"data_refreshed_at\"}, {}),\r\n  SelectedColumns = Table.SelectColumns(ExpandColumn, {\"id\", \"custom_field_values\"}),\r\n  RemoveNullRecords = Table.SelectRows(SelectedColumns, each Record.FieldNames([custom_field_values]) <> {}),\r\n  AddFieldsColumn = Table.AddColumn(RemoveNullRecords, \"fields\", each Record.FieldNames([custom_field_values])),\r\n  FieldNames = Table.Distinct(Table.ExpandListColumn(AddFieldsColumn, \"fields\"), {\"fields\"})[fields],\r\n  ExpandedFields = Table.ExpandRecordColumn(RemoveNullRecords, \"custom_field_values\", FieldNames, FieldNames),\r\n  TransformColumns = Table.TransformColumnTypes(ExpandedFields, List.Transform(FieldNames, each {_, Text.Type})),\r\n  ReplaceErrors = Table.ReplaceErrorValues(TransformColumns, List.Transform(FieldNames, each {_, null})),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(ReplaceErrors, {{\"id\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"id\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared ideas_custom_fields = let\r\n  Source = ApiGET(\"ideas\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"title\", \"body\", \"author_id\", \"likes_count\", \"dislikes_count\", \"comments_count\", \"published_at\", \"publication_status\", \"project_id\", \"project_title\", \"created_at\", \"updated_at\", \"location_point\", \"location_description\", \"slug\", \"budget\", \"baskets_count\", \"official_feedbacks_count\", \"assignee_id\", \"assigned_at\", \"proposed_budget\", \"creation_phase_id\", \"images\", \"href\", \"status\", \"custom_field_values\", \"data_refreshed_at\"}, {}),\r\n  SelectedColumns = Table.SelectColumns(ExpandColumn, {\"id\", \"custom_field_values\"}),\r\n  RemoveNullRecords = Table.SelectRows(SelectedColumns, each Record.FieldNames([custom_field_values]) <> {}),\r\n  Fields = Table.AddColumn(RemoveNullRecords, \"fields\", each Record.FieldNames([custom_field_values])),\r\n  FieldNames = Table.Distinct(Table.ExpandListColumn(Fields, \"fields\"), {\"fields\"})[fields],\r\n  ExpandedFields = Table.ExpandRecordColumn(RemoveNullRecords, \"custom_field_values\", FieldNames, FieldNames),\r\n  TransformColumns = Table.TransformColumnTypes(ExpandedFields, List.Transform(FieldNames, each {_, Text.Type})),\r\n  ReplaceErrors = Table.ReplaceErrorValues(TransformColumns, List.Transform(FieldNames, each {_, null})),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(ReplaceErrors, {{\"id\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"id\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared idea_phases = let\n    Source = ApiGET(\"idea_phases\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"idea_id\", \"phase_id\", \"baskets_count\", \"votes_count\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"idea_id\", type text}, {\"phase_id\", type text}, {\"baskets_count\", Int64.Type}, {\"votes_count\", Int64.Type}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared baskets = let\n    Source = ApiGET(\"baskets\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"user_id\", \"project_id\", \"phase_id\", \"submitted_at\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"id\", type text}, {\"user_id\", type text}, {\"project_id\", type text}, {\"phase_id\", type text}, {\"submitted_at\", type datetime}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared basket_ideas = let\n    Source = ApiGET(\"basket_ideas\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"basket_id\", \"idea_id\", \"votes\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"basket_id\", type text}, {\"idea_id\", type text}, {\"votes\", Int64.Type}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared email_campaigns = let\r\n  Source = ApiGET(\"email_campaigns\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"sender\", \"reply_to\", \"subject\", \"body\", \"created_at\", \"updated_at\", \"deliveries_count\", \"subject_multiloc\", \"body_multiloc\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"sender\", type text}, {\"reply_to\", type text}, {\"subject\", type text}, {\"body\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"deliveries_count\", Int64.Type}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"subject_multiloc\", type text}, {\"body_multiloc\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"subject_multiloc\", null}, {\"body_multiloc\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared email_campaign_deliveries = let\n    Source = ApiGET(\"email_campaign_deliveries\"),\n    ExpandColumn = \n        try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"email_campaign_id\", \"user_id\", \"delivery_status\", \"sent_at\", \"created_at\", \"updated_at\", \"data_refreshed_at\"}, {}),\n    #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn,{{\"id\", type text}, {\"email_campaign_id\", type text}, {\"user_id\", type text}, {\"delivery_status\", type text}, {\"sent_at\", type datetime}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\n    #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\n    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\",{{\"created_at_date\", type date}})\nin\n    #\"Changed Type1\";\r\nshared events = let\r\n  Source = ApiGET(\"events\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"project_id\", \"title\", \"description\", \"location\", \"location_point\", \"attendees_count\", \"start_at\", \"end_at\", \"created_at\", \"updated_at\", \"title_multiloc\", \"description_multiloc\", \"location_multiloc\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"project_id\", type text}, {\"title\", type text}, {\"description\", type text}, {\"location\", type text}, {\"location_point\", type text}, {\"attendees_count\", Int64.Type}, {\"start_at\", type datetime}, {\"end_at\", type datetime}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"title_multiloc\", type text}, {\"description_multiloc\", type text}, {\"location_multiloc\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"title_multiloc\", null}, {\"description_multiloc\", null}, {\"location_multiloc\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared event_attendances = let\r\n  Source = ApiGET(\"event_attendances\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"event_id\", \"attendee_id\", \"created_at\", \"updated_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"event_id\", type text}, {\"attendee_id\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}})\r\nin\r\n  #\"Changed Type1\";\r\nshared volunteering_causes = let\r\n  Source = ApiGET(\"volunteering_causes\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\",\n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n            otherwise #table({\"id\", \"title\", \"description\", \"project_id\", \"phase_id\", \"volunteers_count\", \"created_at\", \"updated_at\", \"title_multiloc\", \"description_multiloc\", \"data_refreshed_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"title\", type text}, {\"description\", type text}, {\"project_id\", type text}, {\"phase_id\", type text}, {\"volunteers_count\", Int64.Type}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}}),\r\n  #\"Transform columns\" = Table.TransformColumnTypes(#\"Changed Type1\", {{\"title_multiloc\", type text}, {\"description_multiloc\", type text}}),\r\n  #\"Replace errors\" = Table.ReplaceErrorValues(#\"Transform columns\", {{\"title_multiloc\", null}, {\"description_multiloc\", null}})\r\nin\r\n  #\"Replace errors\";\r\nshared volunteering_volunteers = let\r\n  Source = ApiGET(\"volunteering_volunteers\"),\r\n  ExpandColumn = try Table.ExpandRecordColumn(\n            Table.ExpandListColumn(Source, \"Column1\"), \n            \"Column1\", \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0}), \n            Record.FieldNames(Table.ExpandListColumn(Source, \"Column1\")[Column1]{0})\n            )\n        otherwise #table({\"id\", \"volunteering_cause_id\", \"user_id\", \"created_at\", \"updated_at\"}, {}),\r\n  #\"Changed Type\" = Table.TransformColumnTypes(ExpandColumn, {{\"id\", type text}, {\"volunteering_cause_id\", type text}, {\"user_id\", type text}, {\"created_at\", type datetime}, {\"updated_at\", type datetime}, {\"data_refreshed_at\", type datetime}}),\r\n  #\"Duplicated Column\" = Table.DuplicateColumn(#\"Changed Type\", \"created_at\", \"created_at_date\"),\r\n  #\"Changed Type1\" = Table.TransformColumnTypes(#\"Duplicated Column\", {{\"created_at_date\", type date}})\r\nin\r\n  #\"Changed Type1\";\r\nshared ApiAccessToken = let\n    Source = () => let \n        AccessTokenCall  = Web.Contents(BaseUrl, \n            [\n                RelativePath= \"authenticate\", \n                Headers = [#\"Content-Type\"= \"application/json\", #\"Accept\"= \"application/json\"], \n                Content = Text.ToBinary(\"{\n                    \"\"auth\"\": {\n                        \"\"client_id\"\": \"\"\" & ClientID & \"\"\",\n                        \"\"client_secret\"\": \"\"\" & ClientSecret & \"\"\"\n                        }\n                    }\"\n                )\n            ]\n        )\n    in\n        AccessTokenCall\nin\n    Source;\r\nshared ApiGET = let\n  Source = (RelativeUrl as text) =>\n    let\n      // These variables configured based on the API structure. Query folding options used in functions might also change with API version\n      //Global Variables\n      BaseUrl = #\"BaseUrl\", \n      LimitPerPage = #\"LimitPerPage\",  // number of max items returned in one API call\n      Locale = #\"Locale\",  // number of max items returned in one API call\n      AccessTokenCall = ApiAccessToken(), \n      FirstCall = Web.Contents(\n        BaseUrl, \n        [\n          RelativePath = RelativeUrl & \"?locale=\" & Locale & \"&page_size=\" & LimitPerPage, \n          ManualStatusHandling = {200, 400, 401, 403, 404, 429, 500, 503}, \n          Headers = [\n            #\"Content-Type\" = \"application/json\", \n            Authorization   = \"Bearer \" & Json.Document(AccessTokenCall, 65001)[jwt]\n          ]\n        ]\n      ), \n      FirstCallMetaData = Value.Metadata(FirstCall), \n      PageCount = \n        if FirstCallMetaData[Response.Status] = 200 then\n          Json.Document(FirstCall)[#\"meta\"][#\"total_pages\"]\n        else\n          null,  // # Pages in total\n      GetData = (Page) =>\n        let\n          PageOffset = Number.ToText(Page), \n          NextCall = Web.Contents(\n            BaseUrl, \n            [\n              RelativePath = RelativeUrl\n                & \"?locale=\"\n                & Locale\n                & \"&page_size=\"\n                & LimitPerPage\n                & \"&page_number=\"\n                & PageOffset, \n              ManualStatusHandling = {200, 400, 401, 403, 404, 429, 500, 503}, \n              Headers = [\n                #\"Content-Type\" = \"application/json\", \n                Authorization   = \"Bearer \" & Json.Document(AccessTokenCall, 65001)[jwt]\n              ]\n            ]\n          ), \n          MetaData = Value.Metadata(NextCall), \n          Delay = DelayFn(0.1), \n          Response = \n            if MetaData[Response.Status] = 200 then // check the call status if ok\n              (\n                let\n                  Json = Json.Document(NextCall), \n                  Value = Table.AddColumn(\n                    Table.FromList(\n                      Record.ToTable(Json){0}[Value], \n                      Splitter.SplitByNothing(), \n                      null, \n                      null, \n                      ExtraValues.Error\n                    ), \n                    \"Data\", \n                    each Record.AddField([Column1], \"data_refreshed_at\", Delay)\n                  )[Data]\n                in\n                  Value\n              )\n            else\n              null\n        in\n          Response, \n      PageIndices = {1 .. PageCount}, \n      Pages = List.Transform(PageIndices, each GetData(_)), \n      ToTable = Table.FromList(Pages, Splitter.SplitByNothing(), null, null, ExtraValues.Error)\n    in \n      ToTable\nin\n  Source;\r\nshared DelayFn = let\n    Source = (secondsInput as number) => let\n        //Find current time\n        One = DateTime.LocalNow(),\n        //Define Wait function\n        Wait = (seconds as number, action as function) => \n                if (List.Count(\n                 List.Generate(\n                  () => DateTimeZone.LocalNow() + #duration(0,0,0,seconds), \n                  (x) => DateTimeZone.LocalNow() < x, \n                  (x) => x)\n                  ) = 0) \n                   then null else action(),\n        //Call Wait function to wait 5 seconds\n        //then return the current time again\n        Two = Wait(secondsInput,DateTime.LocalNow),\n        //Display start time, finish time, and duration\n        //Output = \"Start Time: \" & DateTime.ToText(One) & \n        //               \" Finish Time:\" & DateTime.ToText(Two) & \n        //               \" Difference: \" & Duration.ToText(Two-One)\n        Output = DateTime.ToText(Two)\n    in\n        Output\nin\n    Source;\r\n",
+    "connectionOverrides": [
+      {
+        "path": "https://demo.stg.govocal.com/api/v2",
+        "kind": "Web",
+        "provider": "CdsA",
+        "authenticationKind": null,
+        "environmentName": null,
+        "apiName": null,
+        "connectionName": "{\"kind\":\"Web\",\"path\":\"https://demo.stg.govocal.com/api/v2\"}",
+        "audience": null
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "name": "pbi:QueryGroups",
+      "value": "[{\"id\":\"91526dcf-6b59-4550-b9ba-db3620faaa1d\",\"name\":\"Client Parameters\",\"description\":\"\",\"parentId\":null,\"order\":1},{\"id\":\"426310eb-10a6-4681-8102-66fe917e7bd6\",\"name\":\"Auxiliary\",\"description\":\"\",\"parentId\":null,\"order\":1},{\"id\":\"ef306a21-8cca-4a9f-bad1-5b7964d57ac8\",\"name\":\"Full Range Data Tables\",\"description\":\"\",\"parentId\":null,\"order\":1},{\"id\":\"5503512d-1506-4446-8b69-5e96e2452ed6\",\"name\":\"Functions\",\"description\":\"\",\"parentId\":null,\"order\":1}]"
+    }
+  ],
+  "entities": [
+    {
+      "$type": "LocalEntity",
+      "name": "comments",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "comments.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "body", "dataType": "string" },
+        { "name": "author_id", "dataType": "string" },
+        { "name": "idea_id", "dataType": "string" },
+        { "name": "parent_id", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "body_updated_at", "dataType": "dateTime" },
+        { "name": "likes_count", "dataType": "int64" },
+        { "name": "dislikes_count", "dataType": "int64" },
+        { "name": "children_count", "dataType": "int64" },
+        { "name": "publication_status", "dataType": "string" },
+        { "name": "post_type", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:49.2485744+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/comments.csv?snapshot=2023-10-05T20%3A24%3A49.2261922Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "ideas",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "ideas.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "body", "dataType": "string" },
+        { "name": "author_id", "dataType": "string" },
+        { "name": "likes_count", "dataType": "int64" },
+        { "name": "dislikes_count", "dataType": "int64" },
+        { "name": "comments_count", "dataType": "int64" },
+        { "name": "published_at", "dataType": "dateTime" },
+        { "name": "publication_status", "dataType": "string" },
+        { "name": "project_id", "dataType": "string" },
+        { "name": "project_title", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "location_point", "dataType": "string" },
+        { "name": "location_description", "dataType": "string" },
+        { "name": "slug", "dataType": "string" },
+        { "name": "budget", "dataType": "int64" },
+        { "name": "baskets_count", "dataType": "int64" },
+        { "name": "votes_count", "dataType": "string" },
+        { "name": "official_feedbacks_count", "dataType": "int64" },
+        { "name": "assignee_id", "dataType": "string" },
+        { "name": "assigned_at", "dataType": "dateTime" },
+        { "name": "proposed_budget", "dataType": "int64" },
+        { "name": "creation_phase_id", "dataType": "string" },
+        { "name": "images", "dataType": "string" },
+        { "name": "href", "dataType": "string" },
+        { "name": "status", "dataType": "string" },
+        { "name": "custom_field_values", "dataType": "string" },
+        { "name": "type", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:44.3110324+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/ideas.csv?snapshot=2023-10-05T20%3A24%3A44.2650492Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "reactions",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "reactions.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "mode", "dataType": "string" },
+        { "name": "user_id", "dataType": "string" },
+        { "name": "reactable_id", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "reactable_type", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:53.0300498+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/reactions.csv?snapshot=2023-10-05T20%3A24%3A52.9940230Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "projects",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "projects.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description_html", "dataType": "string" },
+        { "name": "description_preview", "dataType": "string" },
+        { "name": "slug", "dataType": "string" },
+        { "name": "folder_id", "dataType": "string" },
+        { "name": "href", "dataType": "string" },
+        { "name": "visible_to", "dataType": "string" },
+        { "name": "images", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "ideas_count", "dataType": "int64" },
+        { "name": "comments_count", "dataType": "int64" },
+        { "name": "baskets_count", "dataType": "string" },
+        { "name": "votes_count", "dataType": "string" },
+        { "name": "map_center_geojson", "dataType": "string" },
+        { "name": "publication_status", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:50.4360392+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/projects.csv?snapshot=2023-10-05T20%3A24%3A50.4055135Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "phases",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "phases.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description", "dataType": "string" },
+        { "name": "participation_method", "dataType": "string" },
+        { "name": "project_id", "dataType": "string" },
+        { "name": "project_title", "dataType": "string" },
+        { "name": "start_at", "dataType": "date" },
+        { "name": "end_at", "dataType": "date" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "ideas_count", "dataType": "int64" },
+        { "name": "baskets_count", "dataType": "string" },
+        { "name": "votes_count", "dataType": "string" },
+        { "name": "posting_enabled", "dataType": "boolean" },
+        { "name": "commenting_enabled", "dataType": "boolean" },
+        { "name": "reacting_enabled", "dataType": "boolean" },
+        { "name": "reacting_like_method", "dataType": "string" },
+        { "name": "reacting_like_limited_max", "dataType": "int64" },
+        { "name": "reacting_dislike_enabled", "dataType": "boolean" },
+        { "name": "reacting_dislike_method", "dataType": "string" },
+        { "name": "reacting_dislike_limited_max", "dataType": "int64" },
+        { "name": "voting_max_total", "dataType": "int64" },
+        { "name": "voting_min_total", "dataType": "int64" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:48.764155+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/phases.csv?snapshot=2023-10-05T20%3A24%3A48.7424719Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "project_folders",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "project_folders.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "slug", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "publication_status", "dataType": "string" },
+        { "name": "title_multiloc", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description_multiloc", "dataType": "string" },
+        { "name": "description", "dataType": "string" },
+        { "name": "description_preview_multiloc", "dataType": "string" },
+        { "name": "description_preview", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.9985134+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/project_folders.csv?snapshot=2023-10-05T20%3A24%3A47.9689164Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "topics",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "topics.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.8579007+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/topics.csv?snapshot=2023-10-05T20%3A24%3A47.8279968Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "users",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "users.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "email", "dataType": "string" },
+        { "name": "slug", "dataType": "string" },
+        { "name": "roles", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "first_name", "dataType": "string" },
+        { "name": "last_name", "dataType": "string" },
+        { "name": "locale", "dataType": "string" },
+        { "name": "bio", "dataType": "string" },
+        { "name": "registration_completed_at", "dataType": "dateTime" },
+        { "name": "verified", "dataType": "boolean" },
+        { "name": "email_confirmed_at", "dataType": "dateTime" },
+        { "name": "email_confirmation_code_sent_at", "dataType": "dateTime" },
+        { "name": "confirmation_required", "dataType": "boolean" },
+        { "name": "custom_field_values", "dataType": "string" },
+        { "name": "status", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "registration_completed_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:57.6079881+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/users.csv?snapshot=2023-10-05T20%3A24%3A57.5793827Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "initiatives",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "initiatives.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "body", "dataType": "string" },
+        { "name": "author_id", "dataType": "string" },
+        { "name": "likes_count", "dataType": "int64" },
+        { "name": "dislikes_count", "dataType": "int64" },
+        { "name": "comments_count", "dataType": "int64" },
+        { "name": "published_at", "dataType": "dateTime" },
+        { "name": "publication_status", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "threshold_reached_at", "dataType": "dateTime" },
+        { "name": "location_point", "dataType": "string" },
+        { "name": "location_description", "dataType": "string" },
+        { "name": "slug", "dataType": "string" },
+        { "name": "official_feedbacks_count", "dataType": "int64" },
+        { "name": "assignee_id", "dataType": "string" },
+        { "name": "assigned_at", "dataType": "dateTime" },
+        { "name": "href", "dataType": "string" },
+        { "name": "title_multiloc", "dataType": "string" },
+        { "name": "body_multiloc", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:49.8891435+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/initiatives.csv?snapshot=2023-10-05T20%3A24%3A49.8698217Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "project_topics",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "project_topics.csv"
+      },
+      "attributes": [
+        { "name": "project_id", "dataType": "string" },
+        { "name": "topic_id", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.5141486+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/project_topics.csv?snapshot=2023-10-05T20%3A24%3A47.4742005Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "idea_topics",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "idea_topics.csv"
+      },
+      "attributes": [
+        { "name": "idea_id", "dataType": "string" },
+        { "name": "topic_id", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "string" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:42.2016952+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/idea_topics.csv?snapshot=2023-10-05T20%3A24%3A42.1782507Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "users_custom_fields",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "users_custom_fields.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "gender", "dataType": "string" },
+        { "name": "domicile", "dataType": "string" },
+        { "name": "birthyear", "dataType": "string" },
+        { "name": "geboorteplaats", "dataType": "string" },
+        { "name": "fjeriphjtr", "dataType": "string" },
+        { "name": "race", "dataType": "string" },
+        { "name": "education", "dataType": "string" },
+        { "name": "do_you_want_car_free_sundays", "dataType": "string" },
+        { "name": "leeftijd", "dataType": "string" },
+        {
+          "name": "i_agree_that_citizenlab_can_use_my_phone_number_to_send_text_messages",
+          "dataType": "string"
+        },
+        { "name": "supportersclub", "dataType": "string" },
+        { "name": "first_time_heard", "dataType": "string" }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "ideas_custom_fields",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "ideas_custom_fields.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "question", "dataType": "string" },
+        { "name": "single_choice", "dataType": "string" },
+        { "name": "your_question", "dataType": "string" },
+        { "name": "sdsafsd", "dataType": "string" },
+        { "name": "what_s_your_favorite_sport", "dataType": "string" }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "idea_phases",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "idea_phases.csv"
+      },
+      "attributes": [
+        { "name": "idea_id", "dataType": "string" },
+        { "name": "phase_id", "dataType": "string" },
+        { "name": "baskets_count", "dataType": "int64" },
+        { "name": "votes_count", "dataType": "int64" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:40.7016184+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/idea_phases.csv?snapshot=2023-10-05T20%3A24%3A40.6721169Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "baskets",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "baskets.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "user_id", "dataType": "string" },
+        { "name": "project_id", "dataType": "string" },
+        { "name": "phase_id", "dataType": "string" },
+        { "name": "submitted_at", "dataType": "dateTime" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.8891493+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/baskets.csv?snapshot=2023-10-05T20%3A24%3A47.8289964Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "basket_ideas",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "basket_ideas.csv"
+      },
+      "attributes": [
+        { "name": "basket_id", "dataType": "string" },
+        { "name": "idea_id", "dataType": "string" },
+        { "name": "votes", "dataType": "int64" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.732908+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/basket_ideas.csv?snapshot=2023-10-05T20%3A24%3A47.7040685Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "email_campaigns",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "email_campaigns.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "sender", "dataType": "string" },
+        { "name": "reply_to", "dataType": "string" },
+        { "name": "subject", "dataType": "string" },
+        { "name": "body", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "deliveries_count", "dataType": "int64" },
+        { "name": "subject_multiloc", "dataType": "string" },
+        { "name": "body_multiloc", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:40.8266317+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/email_campaigns.csv?snapshot=2023-10-05T20%3A24%3A40.8060406Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "email_campaign_deliveries",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "email_campaign_deliveries.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "email_campaign_id", "dataType": "string" },
+        { "name": "user_id", "dataType": "string" },
+        { "name": "delivery_status", "dataType": "string" },
+        { "name": "sent_at", "dataType": "dateTime" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:26:11.1735995+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/email_campaign_deliveries.csv?snapshot=2023-10-05T20%3A26%3A11.1470278Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "events",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "events.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "project_id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description", "dataType": "string" },
+        { "name": "location", "dataType": "string" },
+        { "name": "location_point", "dataType": "string" },
+        { "name": "attendees_count", "dataType": "int64" },
+        { "name": "start_at", "dataType": "dateTime" },
+        { "name": "end_at", "dataType": "dateTime" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "title_multiloc", "dataType": "string" },
+        { "name": "description_multiloc", "dataType": "string" },
+        { "name": "location_multiloc", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.45165+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/events.csv?snapshot=2023-10-05T20%3A24%3A47.4292274Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "event_attendances",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "event_attendances.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "event_id", "dataType": "string" },
+        { "name": "attendee_id", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:47.2485208+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/event_attendances.csv?snapshot=2023-10-05T20%3A24%3A47.2183488Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "volunteering_causes",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "volunteering_causes.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "title", "dataType": "string" },
+        { "name": "description", "dataType": "string" },
+        { "name": "project_id", "dataType": "string" },
+        { "name": "phase_id", "dataType": "string" },
+        { "name": "volunteers_count", "dataType": "int64" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "title_multiloc", "dataType": "string" },
+        { "name": "description_multiloc", "dataType": "string" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:40.7484923+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/volunteering_causes.csv?snapshot=2023-10-05T20%3A24%3A40.6971028Z"
+        }
+      ]
+    },
+    {
+      "$type": "LocalEntity",
+      "name": "volunteering_volunteers",
+      "description": "",
+      "pbi:refreshPolicy": {
+        "$type": "FullRefreshPolicy",
+        "location": "volunteering_volunteers.csv"
+      },
+      "attributes": [
+        { "name": "id", "dataType": "string" },
+        { "name": "volunteering_cause_id", "dataType": "string" },
+        { "name": "user_id", "dataType": "string" },
+        { "name": "created_at", "dataType": "dateTime" },
+        { "name": "updated_at", "dataType": "dateTime" },
+        { "name": "data_refreshed_at", "dataType": "dateTime" },
+        { "name": "created_at_date", "dataType": "date" }
+      ],
+      "partitions": [
+        {
+          "name": "FullRefreshPolicyPartition",
+          "refreshTime": "2023-10-05T20:24:41.2484804+00:00",
+          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/volunteering_volunteers.csv?snapshot=2023-10-05T20%3A24%3A41.2078087Z"
+        }
+      ]
+    }
+  ]
+}

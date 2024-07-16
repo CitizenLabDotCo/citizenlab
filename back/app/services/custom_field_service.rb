@@ -75,7 +75,9 @@ class CustomFieldService
     end
   end
 
-  def generate_key(_record, title)
+  def generate_key(title, other)
+    return 'other' if other == true
+
     keyify(title)
   end
 
@@ -88,15 +90,15 @@ class CustomFieldService
     str.dup.concat('_', [*('a'..'z'), *('0'..'9')].sample(3).join)
   end
 
-  def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values.each_key do |key|
-      value = custom_field_values[key]
-      is_boolean = !!value == value
-      next if is_boolean || value.present?
-
-      custom_field_values.delete key
+  # Removes all blank values from the values hash in place, except for `false` values,
+  # and returns self.
+  # @example
+  #  compact_custom_field_values!({a: 1, b: '', c: false, d: nil})
+  #  # => {a: 1, c: false}
+  def compact_custom_field_values!(cf_values)
+    cf_values.keep_if do |_key, value|
+      value.present? || value == false
     end
-    custom_field_values
   end
 
   # @param [Hash<String, _>] custom_field_values
@@ -217,7 +219,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.options.order(:ordering)
+      options = field.ordered_options
+
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -241,7 +244,8 @@ class CustomFieldService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.ordered_options
+
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -345,8 +349,10 @@ class CustomFieldService
     end
   end
 
-  def point_to_json_schema_field(_field, _locale)
+  def point_to_json_schema_field(field, locale)
     {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
       type: 'string'
     }
   end

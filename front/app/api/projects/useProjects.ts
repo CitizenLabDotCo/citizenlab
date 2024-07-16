@@ -1,25 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { Props, QueryParameters, IProjects, ProjectsKeys } from './types';
+
 import projectsKeys from './keys';
+import { Props, QueryParameters, IProjects, ProjectsKeys } from './types';
 
 const fetchProjects = (queryParams: QueryParameters) =>
   fetcher<IProjects>({
-    path: `/projects`,
+    path: '/projects',
     action: 'get',
     queryParams,
   });
 
-const useProjects = ({
-  pageNumber,
-  pageSize,
-  sort,
-  areas,
-  publicationStatuses,
-  canModerate,
-  projectIds,
-}: Props) => {
+const useProjects = (
+  {
+    pageNumber,
+    pageSize,
+    sort,
+    areas,
+    publicationStatuses,
+    canModerate,
+    projectIds,
+  }: Props,
+  { enabled = true }: { enabled?: boolean } = { enabled: true }
+) => {
   const queryParameters: QueryParameters = {
     'page[number]': pageNumber ?? 1,
     'page[size]': pageSize ?? 250,
@@ -33,6 +38,7 @@ const useProjects = ({
   return useQuery<IProjects, CLErrors, IProjects, ProjectsKeys>({
     queryKey: projectsKeys.list(queryParameters),
     queryFn: () => fetchProjects(queryParameters),
+    enabled,
   });
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -9,76 +8,64 @@ import {
   colors,
   useBreakpoint,
   defaultStyles,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
-import ConfettiSvg from './ConfettiSvg';
-import Warning from 'components/UI/Warning';
-
-// api
-import { VotingMethod } from 'utils/participationContexts';
 import { useTheme } from 'styled-components';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IPhaseData, VotingMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
-// utils
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
-// styling
-import { fontSizes } from 'utils/styleUtils';
-
-// intl
-import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
+
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
+
+import ConfettiSvg from './ConfettiSvg';
+import messages from './messages';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
-  phase?: IPhaseData;
+  phase: IPhaseData;
   project: IProjectData;
 };
 
 const unsubmitBasket = async (
   basketId: string,
-  updateBasket: ReturnType<typeof useUpdateBasket>['mutate'],
-  participation_context_type: 'Phase' | 'Project'
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
 ) => {
   updateBasket({
     id: basketId,
     submitted: false,
-    participation_context_type,
   });
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
 
-  // style
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  // intl
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  // participation context
+  // phase
   const config = getVotingMethodConfig(votingMethod);
-  const phaseHasEnded = phase?.attributes
-    ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
+  const phaseHasEnded = phase.attributes.end_at
+    ? pastPresentOrFuture(phase.attributes.end_at) === 'past'
     : false;
-  const phaseHasNotStartedYet = phase?.attributes
-    ? pastPresentOrFuture(phase?.attributes.start_at) === 'future'
-    : false;
+  const phaseHasNotStartedYet =
+    pastPresentOrFuture(phase.attributes.start_at) === 'future';
 
   // basket
-  const { data: basket } = useBasket(
-    phase
-      ? phase?.relationships?.user_basket?.data?.id
-      : project.relationships?.user_basket?.data?.id
-  );
+  const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
@@ -87,7 +74,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
   const basketCount =
-    phase?.attributes.baskets_count || project?.attributes.baskets_count;
+    phase.attributes.baskets_count || project.attributes.baskets_count;
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
@@ -98,10 +85,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <Title variant="h2" style={{ fontWeight: 600 }}>
+      <ProjectPageSectionTitle>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
-      </Title>
+      </ProjectPageSectionTitle>
       <Box
         mb="16px"
         p="20px"
@@ -129,16 +116,14 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 formatMessage,
               })}
           </Box>
-          {phase && showDate && (
+          {showDate && phase.attributes.end_at && (
             <Text>
-              {config?.getSubmissionTerm &&
-                formatMessage(config.getSubmissionTerm('plural'))}{' '}
               {formatMessage(messages.submittedUntil)}{' '}
-              <b>{toFullMonth(phase.attributes.end_at, 'day')}</b>.
+              <b>{getLocalisedDateString(phase.attributes.end_at)}</b>.
             </Text>
           )}
         </>
-        {!isNilOrError(basketCount) && basketCount > 0 && (
+        {basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {basketCount}
@@ -154,7 +139,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               bgColor="white"
               bgHoverColor="white"
               borderColor={colors.grey400}
@@ -162,11 +147,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               mt="16px"
               id="e2e-modify-votes"
               onClick={() => {
-                unsubmitBasket(
-                  basket?.data.id,
-                  updateBasket,
-                  phase ? 'Phase' : 'Project'
-                );
+                unsubmitBasket(basket.data.id, updateBasket);
               }}
             >
               {config &&

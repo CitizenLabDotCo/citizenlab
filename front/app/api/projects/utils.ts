@@ -1,9 +1,7 @@
+import { RouteType } from 'routes';
+
 import { IProjectData } from './types';
 
-export function getProjectUrl(project: IProjectData) {
+export function getProjectUrl(project: IProjectData): RouteType {
   return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectInputTerm(project: IProjectData) {
-  return project.attributes.input_term;
 }

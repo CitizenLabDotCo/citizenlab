@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
+
+import { media, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div<{ flatTopBorder: boolean }>`
   background: #fff;
-  border: 1px solid ${(props) => props.theme.colors.divider};
+  border: ${stylingConsts.border};
   box-sizing: border-box;
   padding: 4rem 4rem;
   margin-bottom: 0px;

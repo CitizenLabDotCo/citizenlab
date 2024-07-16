@@ -1,5 +1,7 @@
 import { SerializedNode } from '@craftjs/core';
+
 import eventEmitter from 'utils/eventEmitter';
+
 import { IMAGE_LOADED_EVENT } from '../constants';
 
 export const getImagesToBeLoaded = (

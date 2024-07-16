@@ -1,20 +1,16 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaImage from './useIdeaImage';
-import { ideaImagesData } from './__mocks__/ideaImages';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*ideas/:ideaId/images/:imageId';
+import endpoints, {
+  apiPathImage,
+  ideaImagesData,
+} from './__mocks__/_mockServer';
+import useIdeaImage from './useIdeaImage';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaImagesData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET ideas/:ideaId/images/:imageId']);
 
 describe('useIdeaImage', () => {
   beforeAll(() => server.listen());
@@ -38,8 +34,8 @@ describe('useIdeaImage', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathImage, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

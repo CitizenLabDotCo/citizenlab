@@ -1,7 +1,12 @@
-import { Label, Image } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import {
+  Label,
+  Image,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+
+import Button from 'components/UI/Button';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;

@@ -3,10 +3,9 @@ import { randomString } from '../../../support/commands';
 describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects/');
-    cy.get('.e2e-create-project-expand-collapse-button').click();
-    cy.wait(1000);
-    cy.get('.e2e-create-project-tabs .last').click();
+    cy.visit('/admin/projects/all');
+    cy.acceptCookies();
+    cy.get('[data-cy="e2e-new-project-button"]').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
   });
@@ -34,7 +33,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
-        cy.visit('/admin/projects/');
+        cy.visit('/admin/projects/all');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -69,7 +68,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
-        cy.visit('/admin/projects/');
+        cy.visit('/admin/projects/all');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -104,7 +103,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
-        cy.visit('/admin/projects/');
+        cy.visit('/admin/projects/all');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
@@ -134,7 +133,7 @@ describe('Admin: add project', () => {
         cy.wait(2000);
 
         // Project should appear on top of the projects list
-        cy.visit('/admin/projects/');
+        cy.visit('/admin/projects/all');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()

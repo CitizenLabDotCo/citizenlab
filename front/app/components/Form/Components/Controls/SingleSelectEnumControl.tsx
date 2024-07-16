@@ -1,17 +1,22 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isEnumControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
+
 import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledSelect = styled(Select)`
@@ -47,10 +52,7 @@ const SingleSelectEnumControl = ({
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
-          value={{
-            value: data,
-            label: 'any',
-          }} /* sad workaround waiting for PR in component library */
+          value={data}
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
@@ -59,12 +61,17 @@ const SingleSelectEnumControl = ({
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty={!required}
+          canBeEmpty // see Select component for more info
           disabled={uischema?.options?.readonly}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

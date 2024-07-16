@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   defaultCardHoverStyle,
@@ -8,22 +7,16 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
-
-// api
-import useLocalize from 'hooks/useLocalize';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import moment from 'moment';
+import styled, { useTheme } from 'styled-components';
 
-// utils
-import clHistory from 'utils/cl-router/history';
-
-// typing
 import { IEventData } from 'api/events/types';
 
-const EventCard = styled(Box)`
+import useLocalize from 'hooks/useLocalize';
+
+import DayAndMonth from 'components/EventCards/DateBlocks/DayAndMonth';
+
+const Container = styled(Box)`
   ${defaultCardStyle};
   flex-shrink: 0;
 
@@ -64,14 +57,13 @@ type EventPreviewCardProps = {
 };
 
 const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
-  const isMobile = useBreakpoint('phone');
-  const isTablet = useBreakpoint('tablet');
-
   const localize = useLocalize();
+  const isMobile = useBreakpoint('phone');
+
   const theme = useTheme();
 
   return (
-    <EventCard
+    <Container
       display="flex"
       flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       borderLeft={
@@ -80,14 +72,8 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       borderRight={
         theme.isRtl ? `4px solid ${theme.colors.tenantPrimary}` : undefined
       }
-      w={isTablet ? (isMobile ? '100%' : '300px') : '340px'}
-      role="button"
       h="58px"
-      onClick={() => {
-        clHistory.push(`/events/${event.id}`);
-      }}
       py="4px"
-      flexShrink={0}
     >
       <Box display="flex" flexDirection="column" alignItems="stretch">
         <EventDate mr={theme.isRtl ? '8px' : '0px'}>
@@ -108,7 +94,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       >
         {localize(event.attributes.title_multiloc)}
       </StyledEventTitle>
-    </EventCard>
+    </Container>
   );
 };
 

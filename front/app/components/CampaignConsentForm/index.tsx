@@ -1,64 +1,56 @@
 import React, { useState, useEffect } from 'react';
 
-// components
 import {
   Accordion,
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import Feedback from './feedback';
-import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
-
-// hooks
+import {
+  ICampaignConsentData,
+  IConsentChanges,
+} from 'api/campaign_consents/types';
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
-// typings
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import Feedback from './feedback';
+import messages from './messages';
 import {
   CampaignConsent,
   CampaignConsentChild,
   GroupedCampaignConsent,
 } from './typings';
-import {
-  ICampaignConsentData,
-  IConsentChanges,
-} from 'api/campaign_consents/types';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-
-// routing
-import { useSearchParams } from 'react-router-dom';
-import { internalCommentNotificationTypes } from 'api/campaigns/types';
+import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
 type Props = {
   trackEventName?: string;
   runOnSave?: () => void;
+  unsubscriptionToken?: string | null;
 };
+
 const CampaignConsentForm = ({
   trackEventName = 'Default email notification settings changed',
   runOnSave,
+  unsubscriptionToken,
 }: Props) => {
   const localize = useLocalize();
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
   const { formatMessage } = useIntl();
-  const [searchParams, _] = useSearchParams();
-  const unsubscriptionToken = searchParams.get('unsubscription_token');
 
   const { data: originalCampaignConsents } = useCampaignConsents({
     unsubscriptionToken,
@@ -139,7 +131,7 @@ const CampaignConsentForm = ({
     });
   };
 
-  const onFormSubmit = async () => {
+  const onFormSubmit = () => {
     const consentChanges = originalCampaignConsents.data
       .filter(
         (consent: ICampaignConsentData): boolean =>
@@ -153,7 +145,6 @@ const CampaignConsentForm = ({
         })
       );
 
-    // analytics
     trackEventByName(trackEventName, {
       extra: {
         consentChanges: Object.fromEntries(
@@ -167,7 +158,7 @@ const CampaignConsentForm = ({
 
     setShowFeedback(false);
     setLoading(true);
-    await updateCampaignConsents(
+    updateCampaignConsents(
       { consentChanges },
       {
         onSuccess: () => {
@@ -226,7 +217,7 @@ const CampaignConsentForm = ({
                     consented,
                     campaign_type_description,
                   }: CampaignConsentChild) => (
-                    <Checkbox
+                    <CheckboxWithLabel
                       key={id}
                       size="20px"
                       mb="12px"

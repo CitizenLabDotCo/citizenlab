@@ -1,55 +1,48 @@
 import React from 'react';
 
-// form
-import Feedback from 'components/HookForm/Feedback';
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { array, object, string } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import { slugRegEx } from 'utils/textUtils';
-
-// components
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import Button from 'components/UI/Button';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import SlugInput from 'components/HookForm/SlugInput';
-import Tabs from 'components/HookForm/Tabs';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
-import Select from 'components/HookForm/Select';
 import {
   Box,
   IconTooltip,
   Label,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { array, object, string } from 'yup';
 
-// hooks
-import useTopics from 'api/topics/useTopics';
-import useAreas from 'api/areas/useAreas';
-import useLocalize from 'hooks/useLocalize';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
+import { IAreaData } from 'api/areas/types';
+import useAreas from 'api/areas/useAreas';
+import { ProjectsFilterTypes } from 'api/custom_pages/types';
+import { ITopicData } from 'api/topics/types';
+import useTopics from 'api/topics/useTopics';
 
-// utils
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Select from 'components/HookForm/Select';
+import SlugInput from 'components/HookForm/SlugInput';
+import Tabs from 'components/HookForm/Tabs';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { slugRegEx } from 'utils/textUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
-// intl
 import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// types
-import { Multiloc } from 'typings';
-import { ITopicData } from 'api/topics/types';
-import { IAreaData } from 'api/areas/types';
-import { ProjectsFilterTypes } from 'api/custom_pages/types';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// styles
-import styled from 'styled-components';
 
 const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
   &:hover {
@@ -264,7 +257,7 @@ const CustomPageSettingsForm = ({
                 display="inline-flex"
                 disabled={showPlanUpgradeTease}
               >
-                <Tippy
+                <Tooltip
                   maxWidth="250px"
                   placement="right-end"
                   content={formatMessage(messages.contactGovSuccessToAccess)}
@@ -318,7 +311,7 @@ const CustomPageSettingsForm = ({
                       )}
                     </Box>
                   </div>
-                </Tippy>
+                </Tooltip>
               </LinkedProjectContainer>
             )}
           </SectionField>

@@ -1,8 +1,11 @@
 import React from 'react';
-import { ITopicData } from 'api/topics/types';
-import T from 'components/T';
-import { Menu } from 'semantic-ui-react';
+
 import { useDrop } from 'react-dnd';
+import { Menu } from 'semantic-ui-react';
+
+import { ITopicData } from 'api/topics/types';
+
+import T from 'components/T';
 
 interface Props {
   topic: ITopicData;

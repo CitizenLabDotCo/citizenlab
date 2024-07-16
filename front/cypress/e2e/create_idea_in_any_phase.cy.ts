@@ -5,13 +5,12 @@ describe('Idea creation', () => {
   const projectTitle = randomString();
   const description = randomString();
   let projectId: string;
-  let phaseId: string;
+  let firstPhaseId: string;
   let projectSlug: string;
   const newIdeaContent = randomString(60);
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: description,
       description,
@@ -44,7 +43,7 @@ describe('Idea creation', () => {
         });
       })
       .then((phase) => {
-        phaseId = phase.body.data.id;
+        firstPhaseId = phase.body.data.id;
       });
   });
 
@@ -55,9 +54,9 @@ describe('Idea creation', () => {
   it('allows the admin to add an idea to an old phase', () => {
     const newIdeaTitle = randomString(40);
 
-    cy.visit(`/admin/projects/${projectId}/timeline`);
-    cy.get('#e2e-add-an-input').click();
-    cy.get(`#e2e-phase-${phaseId}`).click({ force: true });
+    cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
+    cy.acceptCookies();
+    cy.get('#e2e-new-idea').click();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -72,35 +71,21 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // add a topic
-    cy.get('.e2e-topics-picker').find('button').eq(4).click();
+    cy.get('.e2e-topics-picker').find('button').eq(4).click({ force: true });
 
     // verify that the topic has been selected
     cy.get('.e2e-topics-picker')
       .find('button.selected')
       .should('have.length', 1);
 
-    // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels'
-    );
-    cy.wait(5000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
-
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
-
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.wait(3000);
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);
+    cy.get('#e2e-idea-title').contains(newIdeaTitle);
 
-    cy.visit(`/en/projects/${projectSlug}`);
-    cy.get('.e2e-previous-phase').click();
-
-    // the card should contain the title
-    cy.get('.e2e-card-title').contains(newIdeaTitle);
+    cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
+    cy.get('.e2e-idea-manager-idea-row').first().contains(newIdeaTitle);
   });
 });

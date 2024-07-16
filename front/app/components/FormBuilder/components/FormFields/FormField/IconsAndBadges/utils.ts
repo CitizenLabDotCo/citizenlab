@@ -1,5 +1,7 @@
 import { IconNames } from '@citizenlab/cl2-component-library';
+
 import { ICustomFieldInputType } from 'api/custom_fields/types';
+
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
 const getBuiltinFieldIcon = (key: string): IconNames => {
@@ -33,6 +35,8 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-long-answer-2';
     case 'multiselect':
       return 'survey-multiple-choice-2';
+    case 'multiselect_image':
+      return 'image';
     case 'select':
       return 'survey-single-choice';
     case 'number':

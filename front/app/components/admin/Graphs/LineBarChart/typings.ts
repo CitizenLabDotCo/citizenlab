@@ -1,11 +1,11 @@
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import {
   BaseProps,
   AxisProps,
   KeyOfType,
   // BaseLabels,
 } from '../typings';
-
-import { IResolution } from 'components/admin/ResolutionControl';
 
 // PROPS
 export interface Props<Row> extends BaseProps<Row, Payload> {

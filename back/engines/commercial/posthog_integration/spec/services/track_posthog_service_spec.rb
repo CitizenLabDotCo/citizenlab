@@ -29,20 +29,20 @@ describe PosthogIntegration::TrackPosthogService do
       service.identify_user(super_admin)
     end
 
-    it 'passes the right arguments to indetify' do
+    it 'passes the right arguments to identify' do
       admin = create(:admin)
 
-      expect(posthog).to receive(:identify).with(
+      expect(posthog).to receive(:identify).with({
         distinct_id: admin.id,
-        properties: hash_including({
+        properties: hash_including(
           email: admin.email,
           name: admin.full_name,
           first_name: admin.first_name,
           last_name: admin.last_name,
           locale: 'en',
           highest_role: 'admin'
-        })
-      )
+        )
+      })
 
       service.identify_user(admin)
     end

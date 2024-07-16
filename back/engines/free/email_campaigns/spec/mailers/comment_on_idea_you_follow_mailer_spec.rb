@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
   describe 'CommentOnIdeaYouFollow' do
-    let(:recipient) { create(:user, locale: 'en') }
-    let(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
-    let(:idea) { create(:idea) }
-    let(:initiator) { create(:user, first_name: 'Marion') }
-    let(:comment) { create(:comment, post: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
-    let(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, post: idea, comment: comment) }
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
+    let_it_be(:idea) { create(:idea) }
+    let_it_be(:initiator) { create(:user, first_name: 'Marion') }
+    let_it_be(:comment) { create(:comment, post: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
+    let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, post: idea, comment: comment) }
+    let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:comment_on_idea_you_follow_campaign).generate_commands(
         activity: activity,
@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

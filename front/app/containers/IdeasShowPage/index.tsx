@@ -1,29 +1,34 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
-// components
-import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  Spinner,
+  stylingConsts,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-// hooks
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProjectById from 'api/projects/useProjectById';
-
-// style
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+
+import DesktopTopBar from './DesktopTopBar';
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -42,10 +47,9 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
+  ${({ theme }) => media.tablet`
+    margin-top: ${theme.menuHeight}px;
+    min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
@@ -65,10 +69,7 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  if (!project) return null;
 
   if (status === 'loading') {
     return (
@@ -86,28 +87,54 @@ const IdeasShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (idea) {
-    return (
-      <VotingContext projectId={project?.data.id}>
-        <Box background={colors.white}>
-          {isSmallerThanTablet && (
+  const phase = getCurrentPhase(phases?.data);
+  const isIdeaInCurrentPhase =
+    idea.data.relationships.phases.data.filter(
+      (iteratedPhase) => iteratedPhase.id === phase?.id
+    ).length > 0;
+  const showCTABar =
+    isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
+  const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
+
+  return (
+    <>
+      <IdeaMeta ideaId={idea.data.id} />
+      <VotingContext projectId={project.data.id}>
+        <Box
+          background={colors.white}
+          pt={
+            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
+          }
+        >
+          {isSmallerThanTablet ? (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
               ideaId={idea.data.id}
-              participationContext={participationContext}
+              phase={phase}
             />
+          ) : (
+            <DesktopTopBar project={project.data} />
           )}
-          <StyledIdeasShow
-            ideaId={idea.data.id}
-            projectId={idea.data.relationships.project.data.id}
-            compact={isSmallerThanTablet}
-          />
+          <main id="e2e-idea-show">
+            <StyledIdeasShow
+              ideaId={idea.data.id}
+              projectId={idea.data.relationships.project.data.id}
+              compact={isSmallerThanTablet}
+            />
+          </main>
         </Box>
+        {showCTABar && (
+          <Box
+            position="fixed"
+            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+            width="100vw"
+          >
+            <ProjectCTABar projectId={project.data.id} />
+          </Box>
+        )}
       </VotingContext>
-    );
-  }
-
-  return null;
+    </>
+  );
 };
 
 export default IdeasShowPage;

@@ -22,11 +22,6 @@ RSpec.describe Initiative do
       initiative = create(:initiative, author: u)
       expect(initiative.author_name).to eq u.full_name
     end
-
-    it 'should generate a slug on creation' do
-      idea = create(:initiative, slug: nil)
-      expect(idea.slug).to be_present
-    end
   end
 
   context 'published at' do
@@ -81,15 +76,12 @@ RSpec.describe Initiative do
     end
   end
 
-  describe 'slug' do
-    it 'is set properly upon publication' do
-      i1 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
-      i1.update!(title_multiloc: { 'en' => 'My stupendous idea' }, publication_status: 'published')
-      expect(i1.slug).to be_present
-
-      i2 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
-      i2.update!(title_multiloc: { 'en' => 'My sublime idea' }, publication_status: 'published')
-      expect(i1.slug).to be_present
+  describe 'generate_slug' do
+    it 'generates a slug upon publication' do
+      initiative = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
+      initiative.author.update!(locale: 'en')
+      initiative.update!(title_multiloc: { 'fr-BE' => 'Ma superbe idée', 'en' => 'My stupendous idea' }, publication_status: 'published')
+      expect(initiative.slug).to eq 'my-stupendous-idea'
     end
   end
 
@@ -310,6 +302,54 @@ RSpec.describe Initiative do
       saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
       expect(saved).to be false
       expect(initiative.reload.cosponsors).to be_present
+    end
+  end
+
+  describe 'activity after' do
+    let_it_be(:initiative) { create(:initiative) }
+    let_it_be(:proposed) { create(:initiative_status_proposed) }
+    let_it_be(:threshold_reached) { create(:initiative_status_threshold_reached) }
+
+    let(:recent_initiatives) { described_class.activity_after(7.days.ago) }
+
+    it 'returns initiatives that have been proposed since after time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed,
+        created_at: 1.day.ago
+      )
+      expect(recent_initiatives).to include(initiative)
+    end
+
+    it 'returns initiatives that where the threshold has been reached after the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: threshold_reached,
+        created_at: 1.day.ago
+      )
+      expect(recent_initiatives).to include(initiative)
+    end
+
+    it 'does not return initiatives that have been proposed before the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed,
+        created_at: 8.days.ago
+      )
+      expect(recent_initiatives).not_to include(initiative)
+    end
+
+    it 'does not return initiatives that where the threshold has been reached before the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: threshold_reached,
+        created_at: 8.days.ago
+      )
+      expect(recent_initiatives).not_to include(initiative)
     end
   end
 end

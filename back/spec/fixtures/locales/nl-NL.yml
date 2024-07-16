@@ -1,4 +1,6 @@
 nl:
+  locales:
+    fr-FR: Frans
   symbols:
     outside: ergens anders
   nav_bar_items:
@@ -59,6 +61,41 @@ nl:
           title: Wat is je probleem?
         option:
           title: Wat is je optie?
+  xlsx_export:
+    anonymous: 'Anoniem'
+    column_headers:
+      assignee_fullname: 'Cessionaris'
+      assignee_email: 'E-mail van de cessionaris'
+      attachments: 'Bijlagen'
+      author_email: 'E-mail van auteur'
+      author_fullname: 'Auteur naam'
+      author_id: 'Auteur-ID'
+      budget: 'Budget'
+      comments_count: 'Opmerkingen'
+      cost: 'Kosten'
+      created_at: 'Ingediend op'
+      description: 'Beschrijving'
+      dislikes_count: 'Dislikes'
+      email: 'E-mail'
+      first_name: 'Voornamen'
+      image_url: 'Afbeelding URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Achternaam'
+      latitude: 'Breedtegraad'
+      likes_count: 'Likes'
+      location: 'Location'
+      longitude: 'Lengtegraad' 
+      participants: 'Deelnemers'
+      picks: 'Selecties'
+      project: 'Project'
+      published_at: 'Gepubliceerd op'
+      registration_completed_at: 'Registratie voltooid om'
+      status: 'Toestand'
+      submitted_at: 'Ingediend op'
+      tags: 'Labels'
+      title: 'Titel'
+      votes_count: 'Stemmen'
   voting_method:
     default_voting_term_singular: stem
     default_voting_term_plural: stemmen

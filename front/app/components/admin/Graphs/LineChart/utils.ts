@@ -1,5 +1,6 @@
-import { Mapping, Lines, LineConfig } from './typings';
 import { colors } from '../styling';
+
+import { Mapping, Lines, LineConfig } from './typings';
 
 const DEFAULT_STROKE = colors.categorical01;
 const DEFAULT_STROKE_WIDTH = 2;

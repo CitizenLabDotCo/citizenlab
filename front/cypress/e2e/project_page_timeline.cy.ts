@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomString, apiRemoveProject } from '../support/commands';
+import { randomString } from '../support/commands';
 
 describe('Existing Timeline project', () => {
   before(() => {
@@ -70,7 +70,6 @@ describe('New timeline project', () => {
   before(() => {
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -168,8 +167,13 @@ describe('New timeline project', () => {
   });
 
   it('shows the previous phase', () => {
-    cy.get('.e2e-previous-phase').click();
-    cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
+    cy.intercept(`**/phases/**`).as('phaseRequests');
+    cy.get('.e2e-previous-phase').should('exist');
+    cy.get('.e2e-previous-phase').click({ force: true });
+    cy.wait('@phaseRequests');
+    cy.get('.e2e-previous-phase')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'true');
 
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
@@ -182,11 +186,16 @@ describe('New timeline project', () => {
   });
 
   it('shows the next phase', () => {
+    cy.intercept(`**/phases/**`).as('phaseRequests');
     // go to the next (and last) phase
-    cy.get('.e2e-next-phase').click();
+    cy.get('.e2e-next-phase').should('exist');
+    cy.get('.e2e-next-phase').click({ force: true });
+    cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
     // and this is our last phase
-    cy.get('.e2e-next-phase').should('have.attr', 'disabled');
+    cy.get('.e2e-next-phase')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'true');
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')
@@ -202,6 +211,8 @@ describe('New timeline project', () => {
   });
 
   it('correctly handles phaseNumber URL parameter', () => {
+    cy.intercept(`**/phases/**`).as('phaseRequests');
+
     const pathWithLocale = `/en/projects/${projectSlug}`;
 
     cy.location('pathname').should('eq', pathWithLocale);
@@ -213,6 +224,7 @@ describe('New timeline project', () => {
 
     // go to next (current) phase
     cy.get('.e2e-next-phase').click();
+    cy.wait('@phaseRequests');
 
     cy.location('pathname').should('eq', pathWithLocale);
 
@@ -220,6 +232,7 @@ describe('New timeline project', () => {
 
     // go to next (last) phase
     cy.get('.e2e-next-phase').click();
+    cy.wait('@phaseRequests');
 
     cy.location('pathname').should('eq', `${pathWithLocale}/3`);
 
@@ -227,6 +240,6 @@ describe('New timeline project', () => {
   });
 
   after(() => {
-    apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectId);
   });
 });

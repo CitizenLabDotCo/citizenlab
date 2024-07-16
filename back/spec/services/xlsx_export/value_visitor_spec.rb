@@ -336,6 +336,64 @@ describe XlsxExport::ValueVisitor do
       end
     end
 
+    describe '#visit_multiselect_image' do
+      let(:input_type) { 'multiselect_image' }
+      let!(:field_option1) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          image: create(:custom_field_option_image),
+          key: 'cat',
+          title_multiloc: { 'en' => 'Cat' }
+        )
+      end
+      let!(:field_option2) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          image: create(:custom_field_option_image),
+          key: 'dog',
+          title_multiloc: { 'en' => 'Dog' }
+        )
+      end
+      let(:option_index) do
+        {
+          field_option1.key => field_option1,
+          field_option2.key => field_option2
+        }
+      end
+
+      context 'when there are no options selected' do
+        let(:value) { [] }
+
+        it 'returns the empty string' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq ''
+          end
+        end
+      end
+
+      context 'when there is one option selected' do
+        let(:value) { ['dog'] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq 'Dog'
+          end
+        end
+      end
+
+      context 'when there are multiple options selected' do
+        let(:value) { %w[cat dog] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq 'Cat, Dog'
+          end
+        end
+      end
+    end
+
     describe '#visit_checkbox' do
       let(:input_type) { 'checkbox' }
       let(:value) { true }
@@ -415,10 +473,28 @@ describe XlsxExport::ValueVisitor do
 
     describe '#visit_point' do
       let(:input_type) { 'point' }
-      let(:value) { true }
+      let(:point_value) do
+        {
+          'type' => 'Point',
+          'coordinates' => [11.11, 22.22]
+        }
+      end
+      let(:model) { create(:idea, custom_field_values: { 'title_of_question_j97' => point_value }) }
 
-      it 'returns the empty string, because the field is not supported yet' do
-        expect(visitor.visit_point(field)).to eq ''
+      context "when field key includes '_longitude'" do
+        let(:field_key) { 'title_of_question_j97_longitude' }
+
+        it 'returns the longitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '11.11'
+        end
+      end
+
+      context "when field key includes '_latitude'" do
+        let(:field_key) { 'title_of_question_j97_latitude' }
+
+        it 'returns the latitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '22.22'
+        end
       end
     end
 
@@ -455,16 +531,14 @@ describe XlsxExport::ValueVisitor do
 
       context 'when there is a value' do
         let(:model) { create(:native_survey_response) }
-        let!(:file1) { create(:idea_file, name: 'File1.pdf', idea: model) }
-        let!(:file2) { create(:idea_file, name: 'File2.pdf', idea: model) }
-        let(:value) { file1.id }
+        let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         before do
-          model.update!(custom_field_values: { field_key => value })
+          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
         end
 
         it 'returns the value for the report' do
-          expect(visitor.visit_file_upload(field)).to eq file1.file.url
+          expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
     end

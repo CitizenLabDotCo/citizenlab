@@ -1,26 +1,25 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
 
-// resources
-
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
 
-// i18n
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { getFullName, stripHtml } from 'utils/textUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useUserById from 'api/users/useUserById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
+
+import messages from './messages';
 
 interface Props {
   ideaId: string;
@@ -28,6 +27,7 @@ interface Props {
 
 const IdeaMeta = ({ ideaId }: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
@@ -44,7 +44,9 @@ const IdeaMeta = ({ ideaId }: Props) => {
     const { title_multiloc, body_multiloc } = idea.data.attributes;
     const appConfigurationLocales =
       appConfiguration.data.attributes.settings.core.locales;
-    const localizedTitle = localize(title_multiloc, { maxChar: 50 });
+    const localizedTitle = formatMessage(messages.metaTitle, {
+      inputTitle: localize(title_multiloc, { maxChar: 50 }),
+    });
     const ideaDescription = stripHtml(localize(body_multiloc), 250);
 
     const ideaImage =

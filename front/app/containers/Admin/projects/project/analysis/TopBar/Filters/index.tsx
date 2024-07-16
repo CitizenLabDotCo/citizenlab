@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   colors,
@@ -6,14 +7,20 @@ import {
   Text,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useAnalysis from 'api/analyses/useAnalysis';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
+import AuthorFilters from './AuthorFilters';
+import EmptyCustomFieldsFilter from './EmptyCustomFieldsFilter';
 import EngagementFilter from './EngagementFilter';
 import TimeFilter from './TimeFilter';
-import AuthorFilters from './AuthorFilters';
-import { useParams } from 'react-router-dom';
-import useAnalysis from 'api/analyses/useAnalysis';
-import CloseIconButton from 'components/UI/CloseIconButton';
 
 interface FilterProps {
   onClose: () => void;
@@ -51,37 +58,48 @@ const Filters = ({ onClose }: FilterProps) => {
           </Text>
           <TimeFilter />
         </Box>
-        {analysis?.data.attributes.participation_method === 'ideation' && (
-          <Box w="33%">
-            <Text color="primary" fontWeight="bold">
-              {formatMessage(messages.engagement)}
-            </Text>
-            <EngagementFilter
-              id="votes"
-              label={formatMessage(messages.numberOfVotes)}
-              searchParams={{
-                from: 'votes_from',
-                to: 'votes_to',
-              }}
-            />
-            <EngagementFilter
-              id="comments"
-              label={formatMessage(messages.numberOfComments)}
-              searchParams={{
-                from: 'comments_from',
-                to: 'comments_to',
-              }}
-            />
-            <EngagementFilter
-              id="reactions"
-              label={formatMessage(messages.numberOfReactions)}
-              searchParams={{
-                from: 'reactions_from',
-                to: 'reactions_to',
-              }}
-            />
-          </Box>
-        )}
+        <Box w="33%">
+          {analysis?.data.attributes.participation_method ===
+            'native_survey' && (
+            <>
+              <Text color="primary" fontWeight="bold" mb="44px">
+                {formatMessage(messages.emptyCustomFields)}
+              </Text>
+              <EmptyCustomFieldsFilter />
+            </>
+          )}
+          {analysis?.data.attributes.participation_method === 'ideation' && (
+            <>
+              <Text color="primary" fontWeight="bold">
+                {formatMessage(messages.engagement)}
+              </Text>
+              <EngagementFilter
+                id="votes"
+                label={formatMessage(messages.numberOfVotes)}
+                searchParams={{
+                  from: 'votes_from',
+                  to: 'votes_to',
+                }}
+              />
+              <EngagementFilter
+                id="comments"
+                label={formatMessage(messages.numberOfComments)}
+                searchParams={{
+                  from: 'comments_from',
+                  to: 'comments_to',
+                }}
+              />
+              <EngagementFilter
+                id="reactions"
+                label={formatMessage(messages.numberOfReactions)}
+                searchParams={{
+                  from: 'reactions_from',
+                  to: 'reactions_to',
+                }}
+              />
+            </>
+          )}
+        </Box>
       </Box>
     </Box>
   );

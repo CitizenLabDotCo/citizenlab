@@ -11,10 +11,10 @@ resource 'Analytics - ProjectStatus' do
 
   post 'web_api/v1/analytics' do
     before_all do
-      create(:continuous_project, admin_publication_attributes: { publication_status: 'draft' }) # continuous draft
-      create(:continuous_project, admin_publication_attributes: { publication_status: 'published' }) # continuous published
-      create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' }) # continuous archived
-      create(:phase, start_at: '2022-01-01', end_at: '2022-01-31') # timeline published + finished
+      create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) # open ended but archived
+      create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'draft' }, phase_attrs: { start_at: '2022-01-01', end_at: '2022-01-31' }) # ended but draft
+      create(:single_phase_ideation_project) # published but open ended date
+      create(:phase, start_at: '2022-01-01', end_at: '2022-01-31') # phase published + finished
     end
 
     example 'gets counts by project status' do

@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import rScoreKeys from './keys';
 
 export type RScoreKeys = Keys<typeof rScoreKeys>;

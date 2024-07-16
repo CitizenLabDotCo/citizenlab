@@ -1,14 +1,13 @@
 import React from 'react';
 
-import Error, { TFieldName } from 'components/UI/Error';
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-// components
+import Error, { TFieldName } from 'components/UI/Error';
 import QuillEditorComponent, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
-import { get } from 'lodash-es';
 
 type Props = {
   name: string;

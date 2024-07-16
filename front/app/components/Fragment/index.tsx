@@ -1,18 +1,14 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
-import qs from 'qs';
 
-// styling
+import qs from 'qs';
 import styled from 'styled-components';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledIframe = styled.iframe`
   border: 0;
@@ -21,8 +17,8 @@ const StyledIframe = styled.iframe`
 `;
 
 interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  fragmentsFeatureFlag: GetFeatureFlagChildProps;
+  tenant: IAppConfiguration | undefined;
+  fragmentsFeatureFlag: boolean;
 }
 
 interface InputProps {
@@ -57,26 +53,25 @@ class Fragment extends PureComponent<Props, State> {
     const { tenant, queryParameters } = this.props;
     if (!isNilOrError(tenant)) {
       const params = qs.stringify(queryParameters, { addQueryPrefix: true });
-      return `/fragments/${tenant.id}/${this.props.name}.html${params}`;
+      return `/fragments/${tenant.data.id}/${this.props.name}.html${params}`;
     } else {
       return '';
     }
   };
 
-  fragmentActive = (): boolean => {
+  fragmentActive = () => {
     const { tenant, fragmentsFeatureFlag } = this.props;
     if (
       isNilOrError(tenant) ||
       !fragmentsFeatureFlag ||
-      !tenant.attributes.settings.fragments
+      !tenant.data.attributes.settings.fragments
     ) {
       return false;
     }
-    {
-      return tenant.attributes.settings.fragments.enabled_fragments.includes(
-        this.props.name
-      );
-    }
+
+    return tenant.data.attributes.settings.fragments.enabled_fragments.includes(
+      this.props.name
+    );
   };
 
   setIframeRef = (ref) => {
@@ -113,13 +108,15 @@ class Fragment extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  fragmentsFeatureFlag: <GetFeatureFlag name="fragments" />,
-});
+export default (inputProps: InputProps) => {
+  const { data: tenant } = useAppConfiguration();
+  const fragmentsFeatureFlag = useFeatureFlag({ name: 'fragments' });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Fragment {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return (
+    <Fragment
+      {...inputProps}
+      tenant={tenant}
+      fragmentsFeatureFlag={fragmentsFeatureFlag}
+    />
+  );
+};

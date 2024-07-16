@@ -31,7 +31,7 @@ RSpec.describe ReportBuilder::SideFxReportService do
 
   describe 'before_update' do
     before do
-      report.layout.craftjs_jsonmultiloc = { 'kl-GL': { ROOT: {} } }
+      report.layout.craftjs_json = { ROOT: {} }
     end
 
     include_examples('runs_layout_side_effects', :before_update)
@@ -39,7 +39,7 @@ RSpec.describe ReportBuilder::SideFxReportService do
 
   describe 'after_update' do
     before do
-      report.layout.update!(craftjs_jsonmultiloc: { 'kl-GL': { ROOT: {} } })
+      report.layout.update!(craftjs_json: { ROOT: {} })
     end
 
     include_examples('runs_layout_side_effects', :after_update)

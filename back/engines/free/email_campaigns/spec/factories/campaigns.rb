@@ -16,6 +16,10 @@ FactoryBot.define do
         'en' => 'Time to check it all out!'
       }
     end
+
+    factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
+      association :project, factory: :project_with_active_ideation_phase
+    end
   end
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
@@ -207,6 +211,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :native_survey_not_submitted_campaign, class: EmailCampaigns::Campaigns::NativeSurveyNotSubmitted do
+    enabled { true }
+  end
+
   factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
     enabled { true }
   end
@@ -220,6 +228,10 @@ FactoryBot.define do
   end
 
   factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
+  end
+
+  factory :voting_results_campaign, class: EmailCampaigns::Campaigns::VotingResults do
     enabled { true }
   end
 end

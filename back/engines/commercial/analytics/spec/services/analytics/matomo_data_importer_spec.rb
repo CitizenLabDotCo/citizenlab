@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 
 RSpec.describe Analytics::MatomoDataImporter do
   self.file_fixture_path = Analytics::Engine.root.join('spec', 'fixtures', 'files')
@@ -40,13 +39,13 @@ RSpec.describe Analytics::MatomoDataImporter do
           .exactly(max_nb_batches).times
           .and_call_original
 
-        expect { importer.import(site_id, start_time.to_i, options) }
+        expect { importer.import(site_id, start_time.to_i, **options) }
           .to change(Analytics::FactVisit, :count).by(batch_size * max_nb_batches)
       end
 
       it 'updates the list of referrers' do
         expect(ErrorReporter).to receive(:report_msg)
-        expect { importer.import(site_id, start_time.to_i, options) }
+        expect { importer.import(site_id, start_time.to_i, **options) }
           .to change(Analytics::DimensionReferrerType, :count).by(2)
       end
     end
@@ -57,7 +56,7 @@ RSpec.describe Analytics::MatomoDataImporter do
           .exactly(max_nb_batches).times
           .and_call_original
 
-        expect { importer.import(site_id, start_time.to_i, options) }
+        expect { importer.import(site_id, start_time.to_i, **options) }
           .to change(Analytics::FactVisit, :count).by(batch_size * max_nb_batches)
           .and change(Analytics::DimensionDate, :count).by(1)
       end

@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCause from './useCause';
-import { causesData } from './__mocks__/useCauses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { causesData } from './__mocks__/useCauses';
+import useCause from './useCause';
 
 const apiPath = '*causes/:id';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: causesData[0] }, { status: 200 });
   })
 );
 
@@ -35,8 +34,8 @@ describe('useCause', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

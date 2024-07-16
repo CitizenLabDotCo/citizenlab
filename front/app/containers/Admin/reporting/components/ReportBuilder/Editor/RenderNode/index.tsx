@@ -1,30 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  WIDGET_TITLES,
+  hasNoPointerEvents,
+  hasChildren,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-// styles
-import { colors } from 'utils/styleUtils';
-
-// craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-// intl
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+import { FormattedMessage } from 'utils/cl-intl';
+
+const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
+  ${({ isRoot }) =>
     isRoot
-      ? `cursor: auto;
-padding-top: 4px;
-padding-bottom: 4px;
-width: 100%;
-max-width: 1000px;
-background-color: #fff;
-min-height: 160px;`
-      : `cursor:move;`}
+      ? `
+        cursor: auto;
+        width: 100%;
+        max-width: 1000px;
+        background-color: #fff;
+        min-height: 160px;
+        box-sizing: content-box;
+      `
+      : 'cursor: move;'}
+
+  ${({ outlineColor }) =>
+    outlineColor
+      ? `
+      outline: 1px solid ${outlineColor};
+    `
+      : 'outline: none;'}
+
+  margin-bottom: 3px;
 `;
 
 const CONTAINER = 'Container';
@@ -33,46 +43,59 @@ const RenderNode = ({ render }) => {
   const {
     id,
     name,
-    isHover,
     hasError,
     title,
     noPointerEvents,
     connectors: { connect, drag },
-  } = useNode((node) => ({
-    props: node.data.props,
-    isHover: node.events.hovered,
-    name: node.data.name,
-    hasError: node.data.props.hasError,
-    title: node.data.custom?.title as MessageDescriptor | undefined,
-    noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
-  }));
+  } = useNode((node) => {
+    // This can sometimes be undefined, even though
+    // craftjs says it can't
+    if (!node) return {};
+    if (!node.data) return {};
+    if (!node.events) return {};
+
+    const name = node.data.name;
+
+    return {
+      props: node.data.props,
+      name,
+      hasError: node.data.props?.hasError,
+      title: WIDGET_TITLES[name],
+      noPointerEvents: hasNoPointerEvents(name),
+    };
+  });
+
+  const [isHover, setIsHover] = useState(false);
 
   const {
     isActive,
-    isDeletable,
     parentId,
+    isDeletable,
     actions: { selectNode },
     query: { node },
   } = useEditor((_, query) => {
     return {
-      isActive: id && query.getEvent('selected').contains(id),
-      parentId: id && query.node(id).ancestors()[0],
-      isDeletable: id && query.node(id).isDeletable(),
+      isActive: id ? query.getEvent('selected').contains(id) : undefined,
+      parentId: id ? query.node(id).ancestors()[0] : undefined,
+      isDeletable: id ? query.node(id).isDeletable() : undefined,
     };
   });
 
-  const parentNode = parentId && node(parentId).get();
-  const isChildOfComplexComponent =
-    parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
+  const parentNode = parentId ? node(parentId).get() : undefined;
+  const parentName = parentNode?.data?.name;
+  const isChildOfComplexComponent = parentName
+    ? hasChildren(parentName)
+    : false;
 
   // Handle multi-column hover state
   useEffect(() => {
+    if (!parentId) return;
     const parentNodeElement = document.getElementById(parentId);
 
     if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.primary} `
+        `outline: 1px solid ${colors.primary} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -104,8 +127,11 @@ const RenderNode = ({ render }) => {
     isActive && isSelectable && id !== ROOT_NODE && isDeletable && !isContainer;
 
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
+
   const solidBorderIsVisible =
-    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
+    isSelectable &&
+    (nodeLabelIsVisible || nodeIsHovered || hasError) &&
+    !invisible;
 
   return (
     <StyledBox
@@ -113,21 +139,24 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
-      borderWidth={invisible ? '0px' : '1px'}
-      borderColor={
+      outlineColor={
         hasError
           ? colors.red600
           : solidBorderIsVisible
           ? colors.primary
-          : isSelectable
-          ? colors.divider
           : 'transparent'
       }
-      my={invisible ? undefined : '4px'}
       isRoot={id === ROOT_NODE}
+      onMouseOver={(e) => {
+        e.stopPropagation();
+        setIsHover(true);
+      }}
+      onMouseOut={(e) => {
+        e.stopPropagation();
+        setIsHover(false);
+      }}
     >
       {nodeLabelIsVisible && (
         <Box

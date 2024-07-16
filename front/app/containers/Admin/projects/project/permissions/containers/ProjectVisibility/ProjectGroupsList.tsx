@@ -1,34 +1,26 @@
-// Libraries
 import React, { useState } from 'react';
+
 import { find } from 'lodash-es';
+import styled from 'styled-components';
+import { IOption } from 'typings';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
-import messages from './messages';
+import { IGroups, IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import { IProjectGroupData } from 'api/project_groups/types';
+import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
+import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
+import useProjectGroups from 'api/project_groups/useProjectGroups';
 
-// Components
+import useLocalize from 'hooks/useLocalize';
+
+import { List, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import GroupAvatar from './GroupAvatar';
-import { List, Row } from 'components/admin/ResourceList';
-
-// Style
-import styled from 'styled-components';
-
-// Typings
-import { IOption, Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// Api
-import useProjectGroups from 'api/project_groups/useProjectGroups';
-import useGroups from 'api/groups/useGroups';
-import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
-import { IProjectGroupData } from 'api/project_groups/types';
-import { IGroups, IGroupData } from 'api/groups/types';
-import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -65,14 +57,11 @@ interface Props {
 }
 
 const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+  const localize = useLocalize();
   const { mutateAsync: addProjectGroup } = useAddProjectGroup();
   const { mutate: deleteProjectGroup } = useDeleteProjectGroup({ projectId });
   const { formatMessage } = useIntl();
-  const locale = useLocale();
-  const currentTenantLocales = useAppConfigurationLocales();
-
   const { data: groupsProjects } = useProjectGroups({ projectId });
-
   const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
   const { data: groups } = useGroups({});
 
@@ -87,11 +76,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
       return {
         group_id: group.id,
         group_project_id: groupProject.id,
-        title: getLocalized(
-          group.attributes.title_multiloc,
-          locale,
-          currentTenantLocales
-        ),
+        title: localize(group.attributes.title_multiloc),
         membership_count: group.attributes.memberships_count,
       };
     });
@@ -120,9 +105,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
 
   const getOptions = (
     groups: IGroups | null,
-    groupsProjects: IProjectGroupData[],
-    locale: Locale,
-    currentTenantLocales: Locale[]
+    groupsProjects: IProjectGroupData[]
   ) => {
     if (groupsProjects && groups) {
       return groups.data
@@ -134,31 +117,18 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
         })
         .map((group) => ({
           value: group.id,
-          label: getLocalized(
-            group.attributes.title_multiloc,
-            locale,
-            currentTenantLocales
-          ),
+          label: localize(group.attributes.title_multiloc),
         }));
     }
 
     return null;
   };
 
-  if (
-    isNilOrError(groupsProjects) ||
-    isNilOrError(locale) ||
-    isNilOrError(currentTenantLocales)
-  ) {
+  if (!groupsProjects) {
     return null;
   }
 
-  const groupsOptions = getOptions(
-    groups || null,
-    groupsProjects.data,
-    locale,
-    currentTenantLocales
-  );
+  const groupsOptions = getOptions(groups || null, groupsProjects.data);
 
   const createDeleteGroupHandler = (groupProjectId: string) => {
     const deletionMessage = formatMessage(messages.groupDeletionConfirmation);
@@ -187,7 +157,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
 
       <AddGroupButton
         text={formatMessage(messages.add)}
-        buttonStyle="cl-blue"
+        buttonStyle="admin-dark"
         icon="plus-circle"
         onClick={handleOnAddGroupClick}
         disabled={!selectedGroups || selectedGroups.length === 0}

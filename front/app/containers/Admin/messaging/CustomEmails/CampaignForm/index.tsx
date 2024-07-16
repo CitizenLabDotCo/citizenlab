@@ -1,42 +1,42 @@
 import * as React from 'react';
-import { Multiloc } from 'typings';
-import styled from 'styled-components';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
+import {
+  IconTooltip,
+  Box,
+  Button,
+  fontSizes,
+  Label,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 import { string, object, array } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import Feedback from 'components/HookForm/Feedback';
-import Select from 'components/HookForm/Select';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 
-// resources
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../../messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -70,19 +70,21 @@ type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
-} & WrappedComponentProps;
+  campaignContextId?: string;
+};
 
 const CampaignForm = ({
   onSubmit,
   defaultValues,
-  intl: { formatMessage },
   isLoading,
+  campaignContextId,
 }: CampaignFormProps) => {
-  const { data: user } = useAuthUser();
+  const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
   const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
+  const { data: project } = useProjectById(campaignContextId);
   const localize = useLocalize();
-
   const schema = object({
     sender: string()
       .oneOf(['author', 'organization'])
@@ -105,7 +107,7 @@ const CampaignForm = ({
     resolver: yupResolver(schema),
   });
 
-  if (isNilOrError(user) || isNilOrError(appConfig)) {
+  if (!authUser || !appConfig) {
     return null;
   }
 
@@ -121,27 +123,22 @@ const CampaignForm = ({
     return [
       {
         value: 'author',
-        label: !isNilOrError(user) ? getFullName(user.data) : '',
+        label: getFullName(authUser.data),
       },
       {
         value: 'organization',
-        label: !isNilOrError(appConfig)
-          ? localize(appConfig.data.attributes.settings.core.organization_name)
-          : '',
+        label: localize(
+          appConfig.data.attributes.settings.core.organization_name
+        ),
       },
     ];
   };
 
   const groupsOptions = (groups: IGroupData[]) => {
-    const groupList =
-      !isNilOrError(groups) && !isNilOrError(groups)
-        ? groups.map((group) => ({
-            label: localize(group.attributes.title_multiloc),
-            value: group.id,
-          }))
-        : [];
-
-    return groupList;
+    return groups.map((group) => ({
+      label: localize(group.attributes.title_multiloc),
+      value: group.id,
+    }));
   };
 
   return (
@@ -171,21 +168,39 @@ const CampaignForm = ({
             />
           </StyledSectionField>
 
-          <StyledSectionField>
-            <MultipleSelect
-              name="group_ids"
-              placeholder={<FormattedMessage {...messages.allUsers} />}
-              options={groupsOptions(groups?.data || [])}
-              label={
-                <>
-                  <FormattedMessage {...messages.fieldTo} />
-                  <IconTooltip
-                    content={<FormattedMessage {...messages.fieldToTooltip} />}
-                  />
-                </>
-              }
-            />
-          </StyledSectionField>
+          {campaignContextId && project && (
+            <>
+              <Label>
+                <FormattedMessage {...messages.fieldTo} />
+              </Label>
+              <Text fontSize="l">
+                <FormattedMessage {...messages.allParticipantsInProject} />{' '}
+                <Link to={`/admin/projects/${project.data.id}`} target="_blank">
+                  {localize(project?.data.attributes.title_multiloc)}
+                </Link>
+              </Text>
+            </>
+          )}
+
+          {!campaignContextId && (
+            <StyledSectionField>
+              <MultipleSelect
+                name="group_ids"
+                placeholder={<FormattedMessage {...messages.allUsers} />}
+                options={groupsOptions(groups?.data || [])}
+                label={
+                  <>
+                    <FormattedMessage {...messages.fieldTo} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.fieldToTooltip} />
+                      }
+                    />
+                  </>
+                }
+              />
+            </StyledSectionField>
+          )}
 
           <StyledSectionField>
             <Input
@@ -218,7 +233,10 @@ const CampaignForm = ({
             <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldBody)}
-              labelTooltipText={formatMessage(messages.nameVariablesInfo)}
+              labelTooltipText={formatMessage(messages.nameVariablesInfo, {
+                firstName: '{{first_name}}',
+                lastName: '{{last_name}}',
+              })}
               noVideos
               noAlign
             />
@@ -238,4 +256,4 @@ const CampaignForm = ({
   );
 };
 
-export default injectIntl(CampaignForm);
+export default CampaignForm;

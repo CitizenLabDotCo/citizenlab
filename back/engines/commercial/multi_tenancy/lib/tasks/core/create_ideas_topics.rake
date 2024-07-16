@@ -4,7 +4,7 @@
 namespace :demos do
   desc 'Create Ideas Topics.'
   task :create_ideas_topics, %i[url host locale] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     locale = args[:locale]
     count = 0
     t_count = 0

@@ -1,5 +1,7 @@
-import { Keys } from 'utils/cl-react-query/types';
 import { ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
 import followUnfollowKeys from './keys';
 
 export type FollowUnfollowKeys = Keys<typeof followUnfollowKeys>;

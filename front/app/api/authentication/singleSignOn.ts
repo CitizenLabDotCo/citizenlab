@@ -1,19 +1,23 @@
+import { omitBy, isNil } from 'lodash-es';
+import { stringify } from 'qs';
+import { RouteType } from 'routes';
+
 import { AUTH_PATH } from 'containers/App/constants';
+import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
 import {
   AuthenticationData,
   SignUpInError,
 } from 'containers/Authentication/typings';
-import { stringify } from 'qs';
-import { omitBy, isNil } from 'lodash-es';
-import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
+  azureactivedirectory_b2c: 'azureactivedirectory_b2c';
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
+  criipto: 'criipto';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
@@ -22,12 +26,15 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 export interface SSOParams {
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';
-  sso_pathname: string;
+  sso_pathname: RouteType;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
   sso_verification_type?: string;
   error_code?: SignUpInError;
+  // TODO: Refactoring + better integration of verification into new
+  // registration flow when there is BE support
+  verification_success?: string;
 }
 
 const setHrefVienna = () => {
@@ -39,6 +46,13 @@ export const handleOnSSOClick = (
   metaData: AuthenticationData,
   verification: boolean
 ) => {
+  if (metaData?.successAction) {
+    localStorage.setItem(
+      'auth_success_action',
+      JSON.stringify(metaData.successAction)
+    );
+  }
+
   provider === 'id_vienna_saml'
     ? setHrefVienna()
     : setHref(provider, metaData, verification);
@@ -51,8 +65,7 @@ function setHref(
 ) {
   const { context, flow } = authenticationData;
 
-  const pathname = window.location.pathname;
-
+  const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: flow,

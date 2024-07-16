@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaJsonFormSchema from './useIdeaJsonFormSchema';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useIdeaJsonFormSchema from './useIdeaJsonFormSchema';
 
 const projectPath = '*projects/:projectId/custom_fields/json_forms_schema';
 const phasePath = '*phases/:phaseId/custom_fields/json_forms_schema';
@@ -106,8 +106,8 @@ describe('useIdeaJsonFormSchema', () => {
 
   it('returns data correctly with projectId', async () => {
     server.use(
-      rest.get(projectPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: schemaData }));
+      http.get(projectPath, () => {
+        return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
     const { result, waitFor } = renderHook(
@@ -127,8 +127,8 @@ describe('useIdeaJsonFormSchema', () => {
 
   it('returns data correctly with phaseId', async () => {
     server.use(
-      rest.get(phasePath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: schemaData }));
+      http.get(phasePath, () => {
+        return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
     const { result, waitFor } = renderHook(
@@ -148,8 +148,8 @@ describe('useIdeaJsonFormSchema', () => {
 
   it('returns data correctly with inputId', async () => {
     server.use(
-      rest.get(inputPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: schemaData }));
+      http.get(inputPath, () => {
+        return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
     const { result, waitFor } = renderHook(
@@ -169,8 +169,8 @@ describe('useIdeaJsonFormSchema', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(projectPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(projectPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

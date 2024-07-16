@@ -9,12 +9,6 @@ Rails.application.routes.draw do
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
 
-  # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
-  # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
-  # Already tried +Rails.applications.routes.prepend+. That does not work:
-  # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       concern :reactable do
@@ -27,7 +21,6 @@ Rails.application.routes.draw do
         resources :followers, only: [:create]
       end
       concern :post do
-        resources :activities, only: [:index]
         resources :comments, shallow: true,
           concerns: %i[reactable spam_reportable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
@@ -44,10 +37,22 @@ Rails.application.routes.draw do
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
+      concern :permissionable do
+        # We named the param :permission_action, bc :action is already taken (controller action).
+        resources :permissions, param: :permission_action do
+          get 'requirements', on: :member
+          get 'schema', on: :member
+          resources :permissions_custom_fields, shallow: true
+        end
+      end
+
+      concerns :permissionable # for the global permission scope (with parent_param = nil)
+
+      resources :activities, only: [:index]
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
+        concerns: %i[reactable spam_reportable post followable permissionable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -57,6 +62,7 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
+        get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
       end
 
       resources :initiatives,
@@ -74,6 +80,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
         patch :accept_cosponsorship_invite, on: :member
       end
+
+      resources :background_jobs, only: %i[index]
 
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
@@ -121,8 +129,6 @@ Rails.application.routes.draw do
       end
 
       resources :areas do
-        patch 'reorder', on: :member
-
         resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 
@@ -149,10 +155,11 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
+        get :attendees_xlsx, on: :member, action: 'attendees_xlsx'
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
-      resources :phases, only: %i[show edit update destroy] do
+      resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
@@ -163,7 +170,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects, concerns: [:followable], defaults: { followable: 'Project' } do
+      resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -179,10 +186,9 @@ Rails.application.routes.draw do
 
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get 'survey_results', on: :member
-        get 'submission_count', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
-        delete 'inputs', on: :member, action: 'delete_inputs'
+        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
+        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -226,54 +232,44 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resource :home_page, only: %i[show update]
+      resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
       resources :experiments, only: %i[index create]
 
-      resources :handwritten_ideas, only: %i[create]
-
       scope 'stats' do
-        route_params = { controller: 'stats_users' }
-        get 'users_count', **route_params
+        with_options controller: 'stats_users' do
+          get 'users_count'
+        end
 
-        get 'users_by_time', **route_params
-        get 'users_by_time_cumulative', **route_params
-        get 'active_users_by_time', **route_params
-        get 'active_users_by_time_cumulative', **route_params
+        with_options controller: 'stats_ideas' do
+          get 'ideas_count'
 
-        get 'users_by_time_as_xlsx', **route_params
-        get 'users_by_time_cumulative_as_xlsx', **route_params
-        get 'active_users_by_time_as_xlsx', **route_params
+          get 'ideas_by_topic'
+          get 'ideas_by_project'
 
-        route_params = { controller: 'stats_ideas' }
-        get 'ideas_count', **route_params
+          get 'ideas_by_topic_as_xlsx'
+          get 'ideas_by_project_as_xlsx'
+        end
 
-        get 'ideas_by_topic', **route_params
-        get 'ideas_by_project', **route_params
-        get 'ideas_by_status', **route_params
-        get 'ideas_by_status_as_xlsx', **route_params
+        get 'initiatives_count', controller: 'stats_initiatives'
 
-        get 'ideas_by_topic_as_xlsx', **route_params
-        get 'ideas_by_project_as_xlsx', **route_params
+        with_options controller: 'stats_comments' do
+          get 'comments_count'
+          get 'comments_by_topic'
+          get 'comments_by_project'
 
-        route_params = { controller: 'stats_initiatives' }
-        get 'initiatives_count', **route_params
+          get 'comments_by_topic_as_xlsx'
+          get 'comments_by_project_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_comments' }
-        get 'comments_count', **route_params
-        get 'comments_by_topic', **route_params
-        get 'comments_by_project', **route_params
+        with_options controller: 'stats_reactions' do
+          get 'reactions_count'
+          get 'reactions_by_topic'
+          get 'reactions_by_project'
 
-        get 'comments_by_topic_as_xlsx', **route_params
-        get 'comments_by_project_as_xlsx', **route_params
-
-        route_params = { controller: 'stats_reactions' }
-        get 'reactions_count', **route_params
-        get 'reactions_by_topic', **route_params
-        get 'reactions_by_project', **route_params
-
-        get 'reactions_by_topic_as_xlsx', **route_params
-        get 'reactions_by_project_as_xlsx', **route_params
+          get 'reactions_by_topic_as_xlsx'
+          get 'reactions_by_project_as_xlsx'
+        end
       end
 
       scope 'mentions', controller: 'mentions' do

@@ -1,14 +1,24 @@
 import React from 'react';
+
+import {
+  media,
+  colors,
+  fontSizes,
+  Icon,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import { NavItem } from './navItems';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
-import CountBadge from 'components/UI/CountBadge';
-import HasPermission from 'components/HasPermission';
+
 import useFeatureFlags from 'hooks/useFeatureFlags';
+
+import CountBadge from 'components/UI/CountBadge';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { usePermission } from 'utils/permissions';
+
+import messages from './messages';
+import { NavItem } from './navItems';
 
 const Text = styled.div`
   flex: 1;
@@ -76,31 +86,38 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
-  return useFeatureFlags({
+  const featuresEnabled = useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
-  }) ? (
-    <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
-      <MenuItemLink
-        to={navItem.link}
-        className={`intercom-admin-menu-item-${navItem.name}`}
+  });
+
+  const hasPermission = usePermission({
+    action: 'access',
+    item: { type: 'route', path: navItem.link },
+  });
+
+  if (!featuresEnabled || !hasPermission) return null;
+
+  return (
+    <MenuItemLink
+      to={navItem.link}
+      className={`intercom-admin-menu-item-${navItem.name}`}
+    >
+      <Box
+        display="flex"
+        flex="0 0 auto"
+        alignItems="center"
+        justifyContent="center"
+        className={navItem.iconName}
       >
-        <Box
-          display="flex"
-          flex="0 0 auto"
-          alignItems="center"
-          justifyContent="center"
-          className={navItem.iconName}
-        >
-          <Icon name={navItem.iconName} />
-        </Box>
-        <Text>
-          <FormattedMessage {...messages[navItem.message]} />
-          {!!navItem.count && <CountBadge count={navItem.count} />}
-        </Text>
-      </MenuItemLink>
-    </HasPermission>
-  ) : null;
+        <Icon name={navItem.iconName} />
+      </Box>
+      <Text>
+        <FormattedMessage {...messages[navItem.message]} />
+        {!!navItem.count && <CountBadge count={navItem.count} />}
+      </Text>
+    </MenuItemLink>
+  );
 };
 
 export default MenuItem;

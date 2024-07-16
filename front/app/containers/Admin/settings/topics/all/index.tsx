@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 
-// hooks
+import useDeleteTopic from 'api/topics/useDeleteTopic';
 import useTopics from 'api/topics/useTopics';
 
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,
   SectionDescription,
@@ -15,18 +11,19 @@ import {
   StyledLink,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from './TopicTermConfig';
-import TopicsList from './TopicsList';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
   Content,
 } from 'components/UI/Modal';
 
-// utils
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useDeleteTopic from 'api/topics/useDeleteTopic';
+
+import messages from '../messages';
+
+import TopicsList from './TopicsList';
+import TopicTermConfig from './TopicTermConfig';
 
 const AllTopics = () => {
   const { data: topics } = useTopics({ includeStaticPages: true });
@@ -83,7 +80,7 @@ const AllTopics = () => {
 
       <ButtonWrapper>
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/topics/new"
           id="e2e-add-custom-topic-button"
@@ -105,7 +102,7 @@ const AllTopics = () => {
           </Content>
           <ButtonsWrapper>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={closeSendConfirmationModal}
             >
               <FormattedMessage {...messages.cancel} />

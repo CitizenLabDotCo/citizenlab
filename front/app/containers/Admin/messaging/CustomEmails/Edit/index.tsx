@@ -1,39 +1,36 @@
 import * as React from 'react';
-import { ICampaignData } from 'api/campaigns/types';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useCampaign from 'api/campaigns/useCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
 import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import GetCampaign from 'resources/GetCampaign';
-import { isNilOrError } from 'utils/helperUtils';
-import { Box } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
-interface Props {
-  campaign: ICampaignData;
-}
+const Edit = () => {
+  const { campaignId } = useParams() as {
+    campaignId: string;
+  };
+  const { data: campaign } = useCampaign(campaignId);
+  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-const Edit = ({ campaign }: Props) => {
-  const { mutate: updateCampaign, isLoading } = useUpdateCampaign();
+  if (!campaign) {
+    return null;
+  }
   const handleSubmit = async (values: FormValues) => {
-    updateCampaign(
-      { id: campaign.id, campaign: values },
-      {
-        onSuccess: () => {
-          clHistory.push(`/admin/messaging/emails/custom/${campaign.id}`);
-        },
-      }
-    );
+    await updateCampaign({ id: campaign.data.id, campaign: values });
+    clHistory.push(`/admin/messaging/emails/custom/${campaign.data.id}`);
   };
 
   const goBack = () => {
-    const { id } = campaign;
-    clHistory.push(`/admin/messaging/emails/custom/${id}`);
+    clHistory.push(`/admin/messaging/emails/custom/${campaign.data.id}`);
   };
 
   return (
@@ -45,22 +42,17 @@ const Edit = ({ campaign }: Props) => {
       <CampaignForm
         isLoading={isLoading}
         onSubmit={handleSubmit}
+        campaignContextId={campaign.data.attributes.context_id}
         defaultValues={{
-          sender: campaign.attributes.sender,
-          reply_to: campaign.attributes.reply_to,
-          subject_multiloc: campaign.attributes.subject_multiloc,
-          body_multiloc: campaign.attributes.body_multiloc,
-          group_ids: campaign.relationships.groups.data.map((d) => d.id),
+          sender: campaign.data.attributes.sender,
+          reply_to: campaign.data.attributes.reply_to,
+          subject_multiloc: campaign.data.attributes.subject_multiloc,
+          body_multiloc: campaign.data.attributes.body_multiloc,
+          group_ids: campaign.data.relationships.groups.data.map((d) => d.id),
         }}
       />
     </Box>
   );
 };
 
-export default withRouter((withRouterProps: WithRouterProps) => (
-  <GetCampaign id={withRouterProps.params.campaignId}>
-    {(campaign) =>
-      isNilOrError(campaign) ? null : <Edit campaign={campaign} />
-    }
-  </GetCampaign>
-));
+export default Edit;

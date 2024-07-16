@@ -1,34 +1,32 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { Locale, Multiloc } from 'typings';
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
+import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
 
-// components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// styles
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
-import { getLocalized } from 'utils/i18n';
 
-// resources
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
-import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
+import messages from './messages';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 const Container = styled.div`
   display: flex;
@@ -159,12 +157,11 @@ const OfficialFeedbackPost = ({
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
+  const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
     useDeleteIdeaOfficialFeedback();
   const { mutate: deleteOfficialFeedbackFromInitiative } =
     useDeleteInitiativeOfficialFeedback();
-  const tenantLocales = useAppConfigurationLocales();
   const [showEditForm, setShowEditForm] = useState(false);
 
   const openEditForm = () => {
@@ -200,12 +197,8 @@ const OfficialFeedbackPost = ({
     },
   ];
 
-  const getPostBodyText = (
-    postBodyMultiloc: Multiloc,
-    locale: Locale,
-    tenantLocales: Locale[]
-  ) => {
-    const postBodyText = getLocalized(postBodyMultiloc, locale, tenantLocales);
+  const getPostBodyText = (postBodyMultiloc: Multiloc) => {
+    const postBodyText = localize(postBodyMultiloc);
     const processedPostBodyText = postBodyText.replace(
       /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
       '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
@@ -229,80 +222,74 @@ const OfficialFeedbackPost = ({
     );
   }
 
-  if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
-    const formattedPostedOnDate = (
-      <FormattedDate
-        value={created_at}
-        year="numeric"
-        month="long"
-        day="numeric"
-      />
-    );
+  const formattedPostedOnDate = (
+    <FormattedDate
+      value={created_at}
+      year="numeric"
+      month="long"
+      day="numeric"
+    />
+  );
 
-    const formattedUpdatedAtDate = (
-      <FormattedDate
-        value={updated_at}
-        year="numeric"
-        month="long"
-        day="numeric"
-      />
-    );
+  const formattedUpdatedAtDate = (
+    <FormattedDate
+      value={updated_at}
+      year="numeric"
+      month="long"
+      day="numeric"
+    />
+  );
 
-    return (
-      <PostContainer
-        key={officialFeedbackPost.id}
-        className={`e2e-official-feedback-post ${className || ''}`}
-      >
-        {editingAllowed && (
-          <StyledMoreActionsMenu
-            actions={getActions(officialFeedbackPost.id)}
+  return (
+    <PostContainer
+      key={officialFeedbackPost.id}
+      className={`e2e-official-feedback-post ${className || ''}`}
+    >
+      {editingAllowed && (
+        <StyledMoreActionsMenu actions={getActions(officialFeedbackPost.id)} />
+      )}
+
+      <ScreenReaderOnly aria-live="polite">
+        {a11y_pronounceLatestOfficialFeedbackPost &&
+          getPostBodyText(body_multiloc)}
+      </ScreenReaderOnly>
+
+      <QuillEditedContent fontWeight={400}>
+        <Body className="e2e-official-feedback-post-body">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: getPostBodyText(body_multiloc),
+            }}
           />
-        )}
+        </Body>
+        <Footer>
+          <Author className="e2e-official-feedback-post-author">
+            <T value={author_multiloc} />
+          </Author>
 
-        <ScreenReaderOnly aria-live="polite">
-          {a11y_pronounceLatestOfficialFeedbackPost &&
-            getPostBodyText(body_multiloc, locale, tenantLocales)}
-        </ScreenReaderOnly>
-
-        <QuillEditedContent fontWeight={400}>
-          <Body className="e2e-official-feedback-post-body">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: getPostBodyText(body_multiloc, locale, tenantLocales),
-              }}
-            />
-          </Body>
-          <Footer>
-            <Author className="e2e-official-feedback-post-author">
-              <T value={author_multiloc} />
-            </Author>
-
-            <DatesPostedEdited>
-              <DatePosted>
-                <FormattedMessage
-                  {...messages.postedOn}
-                  values={{ date: formattedPostedOnDate }}
-                />
-              </DatePosted>
-              {updated_at && updated_at !== created_at && (
-                <>
-                  <DatesSpacer>-</DatesSpacer>
-                  <DateEdited>
-                    <FormattedMessage
-                      {...messages.lastEdition}
-                      values={{ date: formattedUpdatedAtDate }}
-                    />
-                  </DateEdited>
-                </>
-              )}
-            </DatesPostedEdited>
-          </Footer>
-        </QuillEditedContent>
-      </PostContainer>
-    );
-  }
-
-  return null;
+          <DatesPostedEdited>
+            <DatePosted>
+              <FormattedMessage
+                {...messages.postedOn}
+                values={{ date: formattedPostedOnDate }}
+              />
+            </DatePosted>
+            {updated_at && updated_at !== created_at && (
+              <>
+                <DatesSpacer>-</DatesSpacer>
+                <DateEdited>
+                  <FormattedMessage
+                    {...messages.lastEdition}
+                    values={{ date: formattedUpdatedAtDate }}
+                  />
+                </DateEdited>
+              </>
+            )}
+          </DatesPostedEdited>
+        </Footer>
+      </QuillEditedContent>
+    </PostContainer>
+  );
 };
 
 export default OfficialFeedbackPost;

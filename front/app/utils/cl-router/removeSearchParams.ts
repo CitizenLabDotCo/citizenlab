@@ -1,4 +1,5 @@
 import { stringify } from 'qs';
+
 import clHistory from 'utils/cl-router/history';
 
 export const removeSearchParams = (paramsToBeDeleted: string[]) => {

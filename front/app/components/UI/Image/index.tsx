@@ -1,9 +1,14 @@
-// Libraries
 import React, { PureComponent } from 'react';
 
-// Stylings
+import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
+
+const Fallback = styled.div<{ src: string | undefined }>`
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
+`;
 
 const ImageElement = styled.img<{
   cover: boolean;
@@ -80,7 +85,7 @@ export default class Image extends PureComponent<Props, State> {
     const { isLazy } = this.props;
     const { loaded } = this.state;
 
-    return (
+    let image = (
       <ImageElement
         src={src}
         alt={alt}
@@ -96,5 +101,11 @@ export default class Image extends PureComponent<Props, State> {
         loading={isLazy ? 'lazy' : 'eager'}
       />
     );
+
+    if (cover) {
+      image = <Fallback src={src} className={className} />;
+    }
+
+    return image;
   }
 }

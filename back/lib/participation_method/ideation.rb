@@ -2,16 +2,13 @@
 
 module ParticipationMethod
   class Ideation < Base
-    def assign_defaults_for_participation_context
-      participation_context.ideas_order ||= 'trending'
+    def assign_defaults_for_phase
+      phase.ideas_order ||= 'trending'
     end
 
-    # This method is invoked after creation of the input,
-    # so store the new slug.
-    def assign_slug(input)
-      title = MultilocService.new.t input.title_multiloc, input.author&.locale
-      new_slug = SlugService.new.generate_slug input, title
-      input.update_column :slug, new_slug
+    def generate_slug(input)
+      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
+      SlugService.new.generate_slug input, title
     end
 
     def assign_defaults(input)
@@ -251,6 +248,10 @@ module ParticipationMethod
       ]
     end
 
+    def allowed_extra_field_input_types
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
+    end
+
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       {
@@ -269,19 +270,14 @@ module ParticipationMethod
       'section'
     end
 
-    def auto_create_default_form?
-      false
-    end
-
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.create(participation_context: participation_context)
+      form = CustomForm.create(participation_context: phase.project)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
-
-      participation_context.reload
 
       form
     end
@@ -293,13 +289,11 @@ module ParticipationMethod
     def author_in_form?(user)
       AppConfiguration.instance.feature_activated?('idea_author_change') \
       && !!user \
-      && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+      && UserRoleService.new.can_moderate_project?(phase.project, user)
     end
 
     def budget_in_form?(user)
-      return false if participation_context.project.continuous?
-
-      participation_context.project.phases.any? do |phase|
+      phase.project.phases.any? do |phase|
         phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
       end
     end

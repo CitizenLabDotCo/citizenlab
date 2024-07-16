@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
 import NormalGroupForm from './NormalGroupForm';
 
 const titleEN = 'en title';

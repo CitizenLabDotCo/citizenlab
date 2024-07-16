@@ -1,36 +1,48 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
-describe('New continuous project with native survey', () => {
+describe('New project with native survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const eventTitle = randomString();
   let projectId: string;
   let projectSlug: string;
+  const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      cy.apiCreateEvent({
-        projectId,
-        title: eventTitle,
-        location: 'Event location',
-        includeLocation: true,
-        description: 'Event description',
-        startDate: moment().subtract(1, 'day').toDate(),
-        endDate: moment().add(1, 'day').toDate(),
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then(() => {
+        cy.apiCreateEvent({
+          projectId,
+          title: eventTitle,
+          location: 'Event location',
+          includeLocation: true,
+          description: 'Event description',
+          startDate: moment().subtract(1, 'day').toDate(),
+          endDate: moment().add(1, 'day').toDate(),
+        });
       });
-    });
   });
 
   beforeEach(() => {
@@ -58,7 +70,7 @@ describe('New continuous project with native survey', () => {
   });
 });
 
-describe('Timeline project with native survey phase', () => {
+describe('Project with native survey phase but not active', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -68,56 +80,6 @@ describe('Timeline project with native survey phase', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      return cy.apiCreatePhase({
-        projectId,
-        title: phaseTitle,
-        startAt: '2018-03-01',
-        endAt: '5025-01-01',
-        participationMethod: 'native_survey',
-        canComment: true,
-        canPost: true,
-        canReact: true,
-        description: 'description',
-      });
-    });
-  });
-
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}`);
-    cy.wait(1000);
-  });
-
-  it('shows the survey buttons', () => {
-    cy.contains('Take the survey').should('exist');
-    cy.contains('1 survey').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectId);
-  });
-});
-
-describe('Timeline project with native survey phase but not active', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
-  const phaseTitle = randomString();
-  let projectId: string;
-  let projectSlug: string;
-
-  before(() => {
-    cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -132,47 +94,13 @@ describe('Timeline project with native survey phase but not active', () => {
         startAt: '2018-03-01',
         endAt: '2019-01-01',
         participationMethod: 'native_survey',
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
         canComment: true,
         canPost: true,
         canReact: true,
         description: 'description',
       });
-    });
-  });
-
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}`);
-  });
-
-  it('does not show the survey buttons', () => {
-    cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectId);
-  });
-});
-
-describe('Archived continuous project with survey', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
-
-  before(() => {
-    cy.apiCreateProject({
-      type: 'continuous',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'archived',
-      participationMethod: 'native_survey',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
     });
   });
 
@@ -200,15 +128,24 @@ describe('Modal shown after survey submission', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'archived',
-      participationMethod: 'native_survey',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'phaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'native_survey',
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
+        canPost: true,
+        canComment: true,
+        canReact: true,
+      });
     });
   });
 
@@ -245,15 +182,24 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
           publicationStatus: 'published',
-          participationMethod: 'native_survey',
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
+          return cy.apiCreatePhase({
+            projectId,
+            title: 'phaseTitle1',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'native_survey',
+            nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+            nativeSurveyTitleMultiloc: { en: 'Survey' },
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
         });
       });
   });
@@ -269,7 +215,8 @@ describe('Native survey CTA bar', () => {
     cy.acceptCookies();
     cy.setAdminLoginCookie();
 
-    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+    cy.get('#e2e-granular-permissions-phase-accordion').click();
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').should('exist');
       cy.get('#e2e-permission-registered-users').click();
@@ -280,10 +227,11 @@ describe('Native survey CTA bar', () => {
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-cta-button')
+    cy.acceptCookies();
+    cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').find('button').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response

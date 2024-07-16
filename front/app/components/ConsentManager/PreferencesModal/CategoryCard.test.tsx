@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+
 import { IDestination, registerDestination } from '../destinations';
 
 // component to test

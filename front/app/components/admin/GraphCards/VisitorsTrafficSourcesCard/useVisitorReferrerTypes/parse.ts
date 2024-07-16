@@ -1,15 +1,14 @@
-// styling
+import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
+
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// utils
 import { roundPercentages } from 'utils/math';
 
-// typings
-import { Response, PieRow } from './typings';
 import { Translations } from './translations';
+import { PieRow } from './typings';
 
 export const parsePieData = (
-  data: Response['data']['attributes'],
+  data: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;

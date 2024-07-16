@@ -1,6 +1,8 @@
+import { RouteType } from 'routes';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import { THomepageBannerLayout } from 'api/home_page/types';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import customPagesKeys from './keys';
 
 export type CustomPagesKeys = Keys<typeof customPagesKeys>;
@@ -55,13 +57,13 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
-  banner_layout: THomepageBannerLayout;
+  banner_layout: TCustomPageBannerLayout;
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
   banner_cta_button_multiloc: Multiloc;
   // check if this can be null
   banner_cta_button_type: 'customized_button' | 'no_button';
-  banner_cta_button_url: string | null;
+  banner_cta_button_url: RouteType | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
   bottom_info_section_multiloc?: Multiloc;

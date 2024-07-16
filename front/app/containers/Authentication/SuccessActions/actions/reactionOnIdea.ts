@@ -1,8 +1,9 @@
-import { IUserData } from 'api/users/types';
 import { addIdeaReaction } from 'api/idea_reactions/useAddIdeaReaction';
 import { deleteIdeaReaction } from 'api/idea_reactions/useDeleteIdeaReaction';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
+import { IUserData } from 'api/users/types';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export interface ReactionOnIdeaParams {
   ideaId: string;

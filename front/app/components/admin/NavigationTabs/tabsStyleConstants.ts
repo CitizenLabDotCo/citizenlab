@@ -1,4 +1,4 @@
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 export const tabLineHeight = fontSizes.base * 1.5;
 export const tabPadding = fontSizes.base;

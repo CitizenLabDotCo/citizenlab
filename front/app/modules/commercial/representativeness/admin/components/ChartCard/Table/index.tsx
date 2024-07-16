@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 
-// components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Table from './Table';
-import Button from 'components/UI/Button';
-import TableModal from './TableModal';
-
-// styling
-import { fontSizes } from 'utils/styleUtils';
-
-// i18n
-import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { Box, Icon, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-// typings
+import Button from 'components/UI/Button';
+
+import { injectIntl } from 'utils/cl-intl';
+
 import { RepresentativenessData } from '../../../hooks/parseReferenceData';
 import { Props as FieldInfoProps } from '../FieldInfo';
+import messages from '../messages';
+
+import Table from './Table';
+import TableModal from './TableModal';
 
 interface Props extends FieldInfoProps {
   title: string;
@@ -54,7 +50,7 @@ const TableWrapper = ({
 
       {showModalButton && (
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           width="160px"
           ml="40px"
           mt="36px"

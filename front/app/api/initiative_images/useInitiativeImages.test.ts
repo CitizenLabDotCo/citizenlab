@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeImages from './useInitiativeImages';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { initiativeImagesData } from './__mocks__/initiativeImages';
+
+import { initiativeImagesData } from './__mocks__/_mockServer';
+import useInitiativeImages from './useInitiativeImages';
 
 const apiPath = '*initiatives/:initiativeId/images';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativeImagesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: initiativeImagesData }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useInitiativeImages', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

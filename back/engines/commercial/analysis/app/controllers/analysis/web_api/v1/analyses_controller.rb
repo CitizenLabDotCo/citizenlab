@@ -10,7 +10,7 @@ module Analysis
           authorize ::Analysis::Analysis
           @analyses = policy_scope(::Analysis::Analysis).order(created_at: :asc)
           @analyses = paginate(@analyses)
-          @analyses = @analyses.includes(:custom_fields)
+          @analyses = @analyses.includes(:main_custom_field, :additional_custom_fields)
 
           if params[:project_id]
             @analyses = @analyses.where(project_id: params[:project_id])
@@ -22,7 +22,7 @@ module Analysis
             @analyses,
             WebApi::V1::AnalysisSerializer,
             params: jsonapi_serializer_params,
-            include: [:custom_fields]
+            include: serializer_includes
           )
         end
 
@@ -30,23 +30,38 @@ module Analysis
           render json: WebApi::V1::AnalysisSerializer.new(
             @analysis,
             params: jsonapi_serializer_params,
-            include: [:custom_fields]
+            include: serializer_includes
           ).serializable_hash
         end
 
         def create
-          @analysis = ::Analysis::Analysis.new(analysis_params)
+          @analysis = ::Analysis::Analysis.new(analysis_params_for_create)
           authorize @analysis
 
-          @analysis.custom_field_ids = detect_custom_fields unless analysis_params[:custom_field_ids]
-
+          side_fx_service.before_create(@analysis, current_user)
           if @analysis.save
             side_fx_service.after_create(@analysis, current_user)
             render json: WebApi::V1::AnalysisSerializer.new(
               @analysis,
               params: jsonapi_serializer_params,
-              include: [:custom_fields]
+              include: serializer_includes
             ).serializable_hash, status: :created
+          else
+            render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
+          end
+        end
+
+        def update
+          @analysis.assign_attributes analysis_params_for_update
+          authorize @analysis
+
+          if @analysis.save
+            side_fx_service.after_update(@analysis, current_user)
+            render json: WebApi::V1::AnalysisSerializer.new(
+              @analysis,
+              params: jsonapi_serializer_params,
+              include: serializer_includes
+            ).serializable_hash, status: :ok
           else
             render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
           end
@@ -68,22 +83,20 @@ module Analysis
           authorize @analysis
         end
 
-        def analysis_params
-          params.require(:analysis).permit(:project_id, :phase_id, custom_field_ids: [])
+        def analysis_params_for_create
+          params.require(:analysis).permit(:project_id, :phase_id, :show_insights, :main_custom_field_id, additional_custom_field_ids: [])
+        end
+
+        def analysis_params_for_update
+          params.require(:analysis).permit(:show_insights, additional_custom_field_ids: [])
         end
 
         def side_fx_service
           @side_fx_service ||= SideFxAnalysisService.new
         end
 
-        def detect_custom_fields
-          container = @analysis.phase || @analysis.project
-          participation_method = Factory.instance.participation_method_for(container)
-          custom_form = container.custom_form || participation_method.create_default_form!
-
-          custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
-          # custom fields can be an array or a scope
-          custom_fields.filter(&:support_free_text_value?).map(&:id)
+        def serializer_includes
+          %i[main_custom_field additional_custom_fields all_custom_fields]
         end
       end
     end

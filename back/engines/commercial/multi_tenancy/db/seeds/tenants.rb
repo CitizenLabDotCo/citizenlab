@@ -31,13 +31,14 @@ module MultiTenancy
               maximum_admins_number: 2,
               maximum_moderators_number: 2,
               additional_admins_number: 1,
-              additional_moderators_number: 1
+              additional_moderators_number: 1,
+              population: 27_500,
+              google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
               allowed: true,
               enabled: true,
               enable_signup: true,
-              phone: false,
               minimum_length: 8
             },
             facebook_login: {
@@ -59,6 +60,20 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure Active Directory'
+            },
+            azure_ad_b2c_login: {
+              allowed: true,
+              enabled: true,
+              tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
+              tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
+              policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
+              client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
+              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+              login_mechanism_name: 'Azure AD B2C'
+            },
+            criipto_login: {
+              allowed: true,
+              enabled: true
             },
             franceconnect_login: {
               allowed: true,
@@ -88,10 +103,6 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
-            private_projects: {
-              enabled: true,
-              allowed: true
-            },
             maps: {
               enabled: true,
               allowed: true,
@@ -103,6 +114,10 @@ module MultiTenancy
               zoom_level: 12,
               osm_relation_id: 2_404_021
             },
+            esri_integration: {
+              enabled: true,
+              allowed: true
+            },
             custom_maps: {
               enabled: true,
               allowed: true
@@ -110,10 +125,6 @@ module MultiTenancy
             custom_accessibility_statement_link: {
               enabled: false,
               allowed: false
-            },
-            project_reports: {
-              enabled: true,
-              allowed: true
             },
             blocking_profanity: {
               enabled: true,
@@ -123,19 +134,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            permission_option_email_confirmation: {
-              enabled: true,
-              allowed: true
-            },
             permissions_custom_fields: {
               enabled: true,
               allowed: true
             },
             anonymous_participation: {
-              enabled: true,
-              allowed: true
-            },
-            representativeness: {
               enabled: true,
               allowed: true
             },
@@ -155,31 +158,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_custom_copy: {
-              enabled: true,
-              allowed: true
-            },
             widgets: {
-              enabled: true,
-              allowed: true
-            },
-            admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
-            ideaflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            initiativeflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            manual_emailing: {
-              enabled: true,
-              allowed: true
-            },
-            automated_emailing_control: {
               enabled: true,
               allowed: true
             },
@@ -188,14 +167,6 @@ module MultiTenancy
               allowed: true
             },
             machine_translations: {
-              enabled: true,
-              allowed: true
-            },
-            similar_ideas: {
-              enabled: false,
-              allowed: true
-            },
-            geographic_dashboard: {
               enabled: true,
               allowed: true
             },
@@ -312,14 +283,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            insights_manual_flow: {
-              enabled: true,
-              allowed: true
-            },
-            insights_nlp_flow: {
-              enabled: true,
-              allowed: true
-            },
             verification: {
               enabled: true,
               allowed: true,
@@ -369,12 +332,16 @@ module MultiTenancy
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
                   private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
+                },
+                {
+                  name: 'criipto',
+                  domain: 'cl-test.criipto.id',
+                  client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
+                  identity_source: 'DK MitID',
+                  method_name_multiloc: { en: 'MitID (Criipto)' }
                 }
               ]
-            },
-            volunteering: {
-              enabled: true,
-              allowed: true
             },
             project_folders: {
               enabled: true,
@@ -385,40 +352,22 @@ module MultiTenancy
               allowed: true
             },
             flag_inappropriate_content: {
-              enabled: true,
-              allowed: true
-            },
-            project_management: {
-              enabled: true,
-              allowed: true
-            },
-            project_visibility: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             disable_disliking: {
               enabled: true,
               allowed: true
             },
-            texting: {
-              enabled: true,
-              allowed: true,
-              from_number: '+12345678912',
-              monthly_sms_segments_limit: 100_000
-            },
-            native_surveys: {
-              enabled: true,
-              allowed: true
-            },
-            analytics: {
-              enabled: true,
-              allowed: true
-            },
-            visitors_dashboard: {
+            input_form_mapping_question: {
               enabled: true,
               allowed: true
             },
             report_builder: {
+              enabled: true,
+              allowed: true
+            },
+            report_data_grouping: {
               enabled: true,
               allowed: true
             },
@@ -427,13 +376,17 @@ module MultiTenancy
               allowed: true
             },
             posthog_integration: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             user_blocking: {
               enabled: true,
               allowed: true,
               duration: 90
+            },
+            user_avatars: {
+              enabled: true,
+              allowed: true
             },
             internal_commenting: {
               enabled: true,
@@ -443,16 +396,56 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            seat_based_billing: {
+            public_api_tokens: {
               enabled: true,
               allowed: true
             },
-            public_api_tokens: {
+            power_bi: {
+              enabled: true,
+              allowed: true
+            },
+            input_importer: {
               enabled: true,
               allowed: true
             },
             import_printed_forms: {
               enabled: true,
+              allowed: true
+            },
+            user_session_recording: {
+              enabled: true,
+              allowed: true
+            },
+            analysis: {
+              enabled: true,
+              allowed: true
+            },
+            large_summaries: {
+              enabled: true,
+              allowed: true
+            },
+            ask_a_question: {
+              enabled: true,
+              allowed: true
+            },
+            advanced_autotagging: {
+              enabled: true,
+              allowed: true
+            },
+            multi_language_platform: {
+              enabled: true,
+              allowed: true
+            },
+            customisable_homepage_banner: {
+              enabled: true,
+              allowed: true
+            },
+            management_feed: {
+              enabled: true,
+              allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
               allowed: true
             }
           })

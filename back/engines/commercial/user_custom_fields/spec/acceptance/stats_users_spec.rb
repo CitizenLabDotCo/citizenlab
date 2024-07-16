@@ -37,10 +37,9 @@ end
 resource 'Stats - Users' do
   header 'Content-Type', 'application/json'
 
-  let_it_be(:timezone) { AppConfiguration.instance.settings('core', 'timezone') }
-  let_it_be(:now) { Time.now.in_time_zone(timezone) }
-  let_it_be(:start_at) { (now - 1.year).in_time_zone(timezone).beginning_of_year }
-  let_it_be(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
+  let_it_be(:now) { AppConfiguration.timezone.now }
+  let_it_be(:start_at) { (now - 1.year).beginning_of_year }
+  let_it_be(:end_at) { (now - 1.year).end_of_year }
 
   before_all do
     Tenant.current.update!(created_at: now - 2.years)
@@ -64,225 +63,6 @@ resource 'Stats - Users' do
 
   def xlsx_worksheet_to_array(worksheet)
     worksheet.map { |row| row.cells.map(&:value) }
-  end
-
-  describe 'by_gender endpoints' do
-    get 'web_api/v1/stats/users_by_gender' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      before do # rubocop:disable RSpec/ScatteredSetup
-        travel_to start_at + 16.days do
-          group_members = %w[female female unspecified].map { |gender| create(:user, gender: gender) }
-          @group = create_group(group_members)
-          _non_member = create(:user)
-        end
-      end
-
-      let(:group) { @group.id }
-
-      context "when 'gender' custom field has no reference distribution" do
-        example_request 'Users by gender' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to include(
-            series: {
-              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
-              expected_users: nil,
-              reference_population: nil
-            }
-          )
-        end
-      end
-
-      context "when 'gender' custom field has a reference distribution" do
-        let!(:ref_distribution) do
-          create(:categorical_distribution, custom_field: CustomField.find_by(key: 'gender'))
-        end
-
-        example_request 'Users by gender with expected user counts' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to include(
-            series: {
-              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
-              expected_users: {
-                male: kind_of(Numeric),
-                female: kind_of(Numeric),
-                unspecified: kind_of(Numeric)
-              },
-              reference_population: ref_distribution.distribution_by_option_key.symbolize_keys
-            }
-          )
-        end
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_gender_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      before do # rubocop:disable RSpec/ScatteredSetup
-        travel_to start_at + 16.days do
-          group_members = %w[female female male unspecified].map { |gender| create(:user, gender: gender) }
-          @group = create_group(group_members)
-          _non_member = create(:user)
-        end
-      end
-
-      let(:group) { @group.id }
-
-      include_examples('xlsx export', 'gender') do
-        let(:expected_worksheet_name) { 'users_by_gender' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option option_id users],
-            ['youth council', 'male', 1],
-            ['youth council', 'female', 2],
-            ['youth council', 'unspecified', 1],
-            ['_blank', '_blank', 0]
-          ]
-        end
-      end
-    end
-  end
-
-  describe 'by_birthyear endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-
-      travel_to start_at + 18.days do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:published_activity, item: @idea1, user: @idea1.author)
-      end
-    end
-
-    shared_examples 'ignore reference distribution' do
-      example 'is not affected by the presence of a reference distribution', document: false, skip: 'flaky with users_by_birthyear_as_xlsx' do
-        do_request
-        response_without_reference = response_body
-
-        create(:binned_distribution)
-        do_request
-        response_with_reference = response_body
-
-        expect(response_status).to eq 200
-        expect(response_without_reference).to eq response_with_reference
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      describe 'filtered by group' do
-        let(:group) { @group.id }
-
-        example_request 'Users by birthyear' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to match({
-            series: {
-              users: { '1980': 2, '1976': 1, _blank: 0 },
-              expected_users: nil,
-              reference_population: nil
-            }
-          })
-        end
-      end
-
-      describe 'filtered by project' do
-        let(:project) { @project.id }
-
-        example_request 'Users by birthyear filtered by project' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)[:series][:users].values.sum).to eq 1
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      let(:group) { @group.id }
-
-      include_examples('xlsx export', 'birthyear') do
-        let(:expected_worksheet_name) { 'users_by_birthyear' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option users],
-            [1976, 1],
-            [1980, 2],
-            ['_blank', 0]
-          ]
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-  end
-
-  describe 'by_domicile endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        @area1, @area2, @area3 = create_list(:area, 3)
-        group_members = [@area1, @area1, @area2, nil].map { |area| create(:user, domicile: area&.id) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-    end
-
-    let(:group) { @group.id }
-
-    get 'web_api/v1/stats/users_by_domicile' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      example_request 'Users by domicile' do
-        expect(response_status).to eq 200
-        expect(json_response_body.dig(:data, :attributes)).to match({
-          areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
-          series: {
-            users: {
-              @area1.id => 2,
-              @area2.id => 1,
-              @area3.id => 0,
-              outside: 0,
-              _blank: 1
-            }
-          }
-        }.deep_symbolize_keys)
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_domicile_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      include_examples('xlsx export', 'domicile') do
-        let(:expected_worksheet_name) { 'users_by_area' }
-        let(:expected_worksheet_values) do
-          [
-            %w[area area_id users],
-            ['Westside', Area.ids[0], 2],
-            ['Westside', Area.ids[1], 1],
-            ['Westside', Area.ids[2], 0],
-            ['unknown', '_blank', 1]
-          ]
-        end
-      end
-    end
   end
 
   describe 'by_custom_field endpoints' do
@@ -338,7 +118,6 @@ resource 'Stats - Users' do
                   @option3.key => 0,
                   _blank: 1
                 },
-                expected_users: nil,
                 reference_population: nil
               }
             }.deep_symbolize_keys)
@@ -348,11 +127,14 @@ resource 'Stats - Users' do
         context 'when the custom field has a reference distribution' do
           before { create(:categorical_distribution, custom_field: @custom_field) }
 
-          example_request 'Users by custom field (select) including expected nb of users' do
+          example_request 'Users by custom field (select) including reference population' do
             expect(response_status).to eq 200
-            expect(json_response_body.dig(:data, :attributes)).to include(series: hash_including(
-              expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
-            ))
+            reference_population = json_response_body.dig(:data, :attributes, :series, :reference_population)
+            expect(reference_population).to match({
+              @option1.key => 450,
+              @option2.key => 550,
+              @option3.key => 450
+            }.deep_symbolize_keys)
           end
         end
       end
@@ -396,7 +178,6 @@ resource 'Stats - Users' do
                 @option3.key => 0,
                 _blank: 1
               },
-              expected_users: nil,
               reference_population: nil
             }
           }.deep_symbolize_keys)
@@ -436,7 +217,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 1
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -456,9 +236,11 @@ resource 'Stats - Users' do
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          comment = create(:comment)
-          create(:activity, item: comment, action: 'created', user: user)
+          idea = create(:idea, author: nil)
+          create(:comment, post: idea, author: user)
         end
+
+        Analytics::PopulateDimensionsService.populate_types
       end
 
       describe 'with filter by participation' do
@@ -476,7 +258,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 0
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -497,7 +278,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 0
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -566,11 +346,11 @@ resource 'Stats - Users' do
             let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
-                %w[option option_id users expected_users reference_population],
-                ['youth council', @option1.key, 1, 0.8, 80],
-                ['youth council', @option2.key, 1, '', ''],
-                ['youth council', @option3.key, 0, 0.2, 20],
-                ['_blank', '_blank', 1, '', '']
+                %w[option option_id users reference_population],
+                ['youth council', @option1.key, 1, 80],
+                ['youth council', @option2.key, 1, ''],
+                ['youth council', @option3.key, 0, 20],
+                ['_blank', '_blank', 1, '']
               ]
             end
           end
@@ -688,7 +468,6 @@ resource 'Stats - Users' do
             unknown_age_count: 1,
             series: {
               user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-              expected_user_counts: nil,
               reference_population: nil,
               bins: UserCustomFields::AgeCounter::DEFAULT_BINS
             }
@@ -714,7 +493,6 @@ resource 'Stats - Users' do
             unknown_age_count: 1,
             series: {
               user_counts: [2, 4, 1, 0],
-              expected_user_counts: ref_distribution.expected_counts(7),
               reference_population: ref_distribution.counts,
               bins: ref_distribution.bin_boundaries
             }
@@ -763,12 +541,12 @@ resource 'Stats - Users' do
           let(:expected_worksheet_name) { 'users_by_age' }
           let(:expected_worksheet_values) do
             [
-              %w[age user_count expected_user_count total_population],
-              ['0-24', 2, 1.3, 190],
-              ['25-49', 4, 2.0, 279],
-              ['50-74', 1, 2.2, 308],
-              ['75+', 0, 1.5, 213],
-              ['unknown', 1, '', '']
+              %w[age user_count total_population],
+              ['0-24', 2, 190],
+              ['25-49', 4, 279],
+              ['50-74', 1, 308],
+              ['75+', 0, 213],
+              ['unknown', 1, '']
             ]
           end
         end

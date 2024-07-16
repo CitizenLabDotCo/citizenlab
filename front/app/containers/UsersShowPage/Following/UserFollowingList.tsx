@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   Text,
@@ -6,16 +7,20 @@ import {
   useBreakpoint,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import useFollowers from 'api/follow_unfollow/useFollowers';
-import IdeaCard from 'components/IdeaCard';
-import { FollowableObject } from 'api/follow_unfollow/types';
-import InitiativeCard from 'components/InitiativeCard';
-import ProjectCard from 'components/ProjectCard';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import Button from 'components/UI/Button';
 import { useTheme } from 'styled-components';
+
+import { FollowableObject } from 'api/follow_unfollow/types';
+import useFollowers from 'api/follow_unfollow/useFollowers';
+
+import IdeaCard from 'components/IdeaCard';
+import InitiativeCard from 'components/InitiativeCard';
+import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
+import ProjectCard from 'components/ProjectCard';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   value: FollowableObject;
@@ -41,7 +46,7 @@ const UserFollowingList = ({ value }: Props) => {
     <Box display="flex" w="100%" flexDirection="column">
       {isLoading && <Spinner />}
       {!isLoading && flatFollowers.length === 0 ? (
-        <Box background={colors.white} p="36px">
+        <Box background={colors.white} p="36px" aria-live="polite">
           <Text variant="bodyL">
             <FormattedMessage {...messages.emptyInfoText} />
           </Text>
@@ -113,7 +118,7 @@ const UserFollowingList = ({ value }: Props) => {
       {hasNextPage && (
         <Button
           onClick={() => fetchNextPage()}
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           text={<FormattedMessage {...messages.loadMore} />}
           processing={isFetchingNextPage}
           icon="refresh"

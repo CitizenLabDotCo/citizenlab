@@ -16,33 +16,17 @@ export default defineMessages({
     defaultMessage:
       'Send out manual emails to certain citizen group and active automated campaigns',
   },
-  campaignDeletionConfirmation: {
-    id: 'app.containers.Admin.emails.campaignDeletionConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
   addCampaignButton: {
-    id: 'app.containers.Admin.emails.addCampaignButton',
-    defaultMessage: 'Create campaign',
-  },
-  addTextButton: {
-    id: 'app.containers.Admin.emails.addTextButton',
-    defaultMessage: 'Create a new SMS',
+    id: 'app.containers.Admin.emails.addCampaign',
+    defaultMessage: 'Create email',
   },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
-  statsButton: {
-    id: 'app.containers.Admin.emails.statsButton',
-    defaultMessage: 'Statistics',
-  },
   editButtonLabel: {
     id: 'app.containers.Admin.emails.editButtonLabel',
     defaultMessage: 'Edit',
-  },
-  manageButtonLabel: {
-    id: 'app.containers.Admin.emails.manageButtonLabel',
-    defaultMessage: 'Manage & Edit & Preview & Delete',
   },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
@@ -152,39 +136,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.previewTitle',
     defaultMessage: 'Preview',
   },
-  recipientsTitle: {
-    id: 'app.containers.Admin.emails.recipientsTitle',
-    defaultMessage: 'Recipients',
-  },
-  deliveryStatus_sent: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_sent',
-    defaultMessage: 'Sent',
-  },
-  deliveryStatus_failed: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_failed',
-    defaultMessage: 'Failed',
-  },
-  deliveryStatus_accepted: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_accepted',
-    defaultMessage: 'Accepted',
-  },
-  deliveryStatus_delivered: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_delivered',
-    defaultMessage: 'Delivered',
-  },
-  deliveryStatus_opened: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_opened',
-    defaultMessage: 'Opened',
-  },
-  deliveryStatus_clicked: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_clicked',
-    defaultMessage: 'Clicked',
-  },
-  deliveryStatus_clickedTooltip: {
-    id: 'app.containers.Admin.Campaigns.deliveryStatus_clickedTooltip',
-    defaultMessage:
-      'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
-  },
   customEmails: {
     id: 'app.containers.Admin.Campaigns.customEmails',
     defaultMessage: 'Custom emails',
@@ -196,10 +147,6 @@ export default defineMessages({
   tabAutomatedEmails: {
     id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
     defaultMessage: 'Automated emails',
-  },
-  tabTexting: {
-    id: 'app.containers.Admin.Campaigns.tabTexting1',
-    defaultMessage: 'Texting',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
@@ -214,38 +161,14 @@ export default defineMessages({
     defaultMessage:
       "We're sorry, but it seems like you don't have access to the emails section",
   },
-  deleteCampaignButton: {
-    id: 'app.containers.Admin.emails.deleteCampaignButton',
-    defaultMessage: 'Delete Campaign',
-  },
   noCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noCampaignsHeader',
-    defaultMessage: 'No custom email campaigns yet',
-  },
-  noTextingCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
-    defaultMessage: 'No SMS has been drafted or sent yet',
-  },
-  message: {
-    id: 'app.containers.Admin.emails.message',
-    defaultMessage: 'Message',
-  },
-  dateSent: {
-    id: 'app.containers.Admin.emails.dateSent',
-    defaultMessage: 'Date sent',
-  },
-  recipients: {
-    id: 'app.containers.Admin.emails.recipients',
-    defaultMessage: 'Recipients',
-  },
-  status: {
-    id: 'app.containers.Admin.emails.status',
-    defaultMessage: 'Status',
+    id: 'app.containers.Admin.emails.emptyCampaignsHeader',
+    defaultMessage: 'Send your first email',
   },
   noCampaignsDescription: {
-    id: 'app.containers.Admin.emails.noCampaignsDescription',
+    id: 'app.containers.Admin.emails.emptyCampaignsDescription',
     defaultMessage:
-      'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
+      'Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.',
   },
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo1',
@@ -316,9 +239,9 @@ export default defineMessages({
     defaultMessage: 'To:',
   },
   nameVariablesInfo: {
-    id: 'app.containers.Admin.emails.nameVariablesInfo',
+    id: 'app.containers.Admin.emails.nameVariablesInfo2',
     defaultMessage:
-      'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."',
+      'You can speak directly to citizens using the variables {firstName} {lastName}. E.g. "Dear {firstName} {lastName}, ..."',
   },
   changeRecipientsButton: {
     id: 'app.containers.Admin.emails.changeRecipientsButton',
@@ -339,5 +262,9 @@ export default defineMessages({
   senderRecipients: {
     id: 'app.containers.Admin.emails.senderRecipients',
     defaultMessage: 'Sender and recipients',
+  },
+  allParticipantsInProject: {
+    id: 'app.containers.Admin.emails.allParticipantsInProject',
+    defaultMessage: 'All participants in project',
   },
 });

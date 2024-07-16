@@ -1,21 +1,20 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import { Spinner, Text } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
+import {
+  Spinner,
+  Text,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// hooks
+import { TVerificationMethod } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
-// style
-import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-
-// typings
-import { TVerificationMethod } from 'api/verification_methods/types';
 import Outlet from 'components/Outlet';
+import Centerer from 'components/UI/Centerer';
 
 const Container = styled.div`
   display: flex;
@@ -59,35 +58,31 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
     );
   }
 
-  if (!isNilOrError(verificationMethods)) {
-    return (
-      <Container id="e2e-verification-wizard-method-selection-step">
-        {/*
+  return (
+    <Container id="e2e-verification-wizard-method-selection-step">
+      {/*
           Custom message for Copenhagen.
         To be replaced by sturdier solution if more similar requests are made.
 
         Ticket: CL-4042
         */}
-        {isCopenhagenPlatform && (
-          <Text mb="40px">
-            For at stemme på københavnerforslag, skal du være MitID-verificeret
-            borger i Københavns Kommune og fyldt 15 år. Hvis du vil stille et
-            københavnerforslag, skal du være MitID-verificeret borger i Danmark
-            og fyldt 15 år.
-          </Text>
-        )}
-        <ButtonsContainer>
-          <Outlet
-            id="app.components.VerificationModal.buttons"
-            onClick={handleOnMethodSelected}
-            verificationMethods={verificationMethods.data}
-          />
-        </ButtonsContainer>
-      </Container>
-    );
-  }
-
-  return null;
+      {isCopenhagenPlatform && (
+        <Text mb="40px">
+          For at stemme på københavnerforslag, skal du være MitID-verificeret
+          borger i Københavns Kommune og fyldt 15 år. Hvis du vil stille et
+          københavnerforslag, skal du være MitID-verificeret borger i Danmark og
+          fyldt 15 år.
+        </Text>
+      )}
+      <ButtonsContainer>
+        <Outlet
+          id="app.components.VerificationModal.buttons"
+          onClick={handleOnMethodSelected}
+          verificationMethods={verificationMethods.data}
+        />
+      </ButtonsContainer>
+    </Container>
+  );
 });
 
 export default VerificationMethods;

@@ -1,13 +1,15 @@
 import React, { memo } from 'react';
+
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 import styled from 'styled-components';
+
+import { MembershipType } from 'api/groups/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-import { MembershipType } from 'api/groups/types';
 
 const NoUsersPage = styled.div`
   display: flex;

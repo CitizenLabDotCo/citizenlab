@@ -27,16 +27,14 @@ describe 'SideFxAppConfigurationService' do
       config.update!(settings: settings)
 
       expect { service.after_update(config, current_user) }
-        .to  enqueue_job(LogActivityJob).with(config, 'changed', current_user, config.updated_at.to_i)
-        .and enqueue_job(LogActivityJob).with(tenant, 'changed', current_user, config.updated_at.to_i)
+        .to  enqueue_job(LogActivityJob).with(config, 'changed', current_user, config.updated_at.to_i, {})
+        .and enqueue_job(LogActivityJob).with(tenant, 'changed', current_user, config.updated_at.to_i, {})
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the lifecycle has changed" do
-      settings = config.settings
-      old_lifecycle_stage = settings.dig('core', 'lifecycle_stage')
-      settings['core']['lifecycle_stage'] = 'churned'
-
-      config.update!(settings: settings)
+      old_lifecycle_stage = config.settings.dig('core', 'lifecycle_stage')
+      config.settings['core']['lifecycle_stage'] = 'churned'
+      config.save!
 
       options = { payload: { changes: [old_lifecycle_stage, 'churned'] } }
       updated_at = config.updated_at.to_i

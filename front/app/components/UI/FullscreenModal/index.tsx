@@ -1,25 +1,23 @@
 import React, { PureComponent } from 'react';
+
+import { Box, media } from '@citizenlab/cl2-component-library';
+import { isFunction, compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { isFunction, compact } from 'lodash-es';
+import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import useLocale from 'hooks/useLocale';
+
+import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { FocusOn } from 'react-focus-on';
+import { isNilOrError } from 'utils/helperUtils';
 
 // resource
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-// tracking
-import { trackPage } from 'utils/analytics';
-
-// styling
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -55,7 +53,7 @@ const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
   }
 
   ${(props) => media.tablet`
-    height: calc(${props.windowHeight}px - ${props.theme.mobileMenuHeight}px);
+    height: 100vh;
     top: 0;
     bottom: ${props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
@@ -98,11 +96,9 @@ interface InputProps {
   zIndex?: number;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
+interface Props extends InputProps {
+  locale: SupportedLocale;
 }
-
-interface Props extends InputProps, DataProps {}
 
 interface State {
   windowHeight: number;
@@ -280,14 +276,8 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps>({
-  locale: <GetLocale />,
-});
+export default (inputProps: InputProps) => {
+  const locale = useLocale();
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <FullscreenModal {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  return <FullscreenModal {...inputProps} locale={locale} />;
+};

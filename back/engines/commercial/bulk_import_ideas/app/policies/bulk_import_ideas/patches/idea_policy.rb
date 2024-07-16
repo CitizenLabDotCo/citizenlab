@@ -9,6 +9,10 @@ module BulkImportIdeas
 
         super
       end
+
+      def show_idea_import?
+        UserRoleService.new.can_moderate_project?(record.project, user)
+      end
     end
   end
 end

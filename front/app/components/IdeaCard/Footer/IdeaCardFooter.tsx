@@ -1,22 +1,13 @@
 import React from 'react';
 
-// components
-import CommentCount from './CommentCount';
+import { Box } from '@citizenlab/cl2-component-library';
 
-// types
 import { IIdeaData } from 'api/ideas/types';
 
-// styles
-import ReadMoreButton from './ReadMoreButton';
-import styled from 'styled-components';
+import clHistory from 'utils/cl-router/history';
 
-const Footer = styled.footer`
-  display: flex;
-  justify-content: space-between;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 16px;
-`;
+import CommentCount from './CommentCount';
+import ReadMoreButton from './ReadMoreButton';
 
 interface Props {
   idea: IIdeaData;
@@ -25,12 +16,18 @@ interface Props {
 
 const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
   return (
-    <Footer>
-      <ReadMoreButton slug={idea.attributes.slug} />
+    <Box as="footer" w="100%" display="flex" mt="16px" justifyContent="center">
+      <ReadMoreButton
+        onClick={() => {
+          clHistory.push(`/ideas/${idea?.attributes.slug}?go_back=true`, {
+            scrollToTop: true,
+          });
+        }}
+      />
       {showCommentCount && (
         <CommentCount commentCount={idea.attributes.comments_count} />
       )}
-    </Footer>
+    </Box>
   );
 };
 export default IdeaCardFooter;

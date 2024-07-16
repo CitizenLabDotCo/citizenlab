@@ -1,11 +1,15 @@
 import React from 'react';
-import { colors } from 'utils/styleUtils';
-import { StyledStatusLabel } from '.';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+
+import { colors } from '@citizenlab/cl2-component-library';
+
 import useProjectGroups from 'api/project_groups/useProjectGroups';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
+import messages from '../messages';
+
+import { StyledStatusLabel } from '.';
 
 interface Props {
   projectId: string;
@@ -42,7 +46,10 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
 
   if (userCanModerateProject) {
     return (
-      <Link to={`${adminProjectsProjectPath(projectId)}/permissions`}>
+      <Link
+        data-cy="e2e-groups-permissions-tag"
+        to={`/admin/projects/${projectId}/settings/access-rights`}
+      >
         <StatusLabel groupCount={groupCount} />
       </Link>
     );

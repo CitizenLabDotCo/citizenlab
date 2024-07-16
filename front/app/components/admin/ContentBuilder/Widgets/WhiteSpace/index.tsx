@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Radio,
@@ -8,16 +7,15 @@ import {
   Toggle,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Divider from 'components/admin/Divider';
-
-// craft
 import { useNode } from '@craftjs/core';
 
-// intl
+import Divider from 'components/admin/Divider';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
-interface Props {
+export interface Props {
   size?: 'small' | 'medium' | 'large';
   withDivider?: boolean;
 }
@@ -38,7 +36,7 @@ const WhiteSpace = ({ size, withDivider }: Props) => {
     }
   };
   return (
-    <Box id="e2e-white-space" w="100%" paddingY={calculatePaddingY()}>
+    <Box className="e2e-white-space" w="100%" paddingY={calculatePaddingY()}>
       {withDivider && <Divider m="0" />}
     </Box>
   );

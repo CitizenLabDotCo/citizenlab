@@ -2,6 +2,7 @@ lb:
   email_campaigns:
     campaign_type_description:
       "manual": Offiziell Noriichten
+      "manual_project_participants": Offiziell Messagen un de Projet Participanten
       "admin_rights_received": Administratorrechter kritt
       "comment_deleted_by_admin": Mäi Kommentar läschen
       "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
@@ -50,8 +51,10 @@ lb:
       "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
       "user_digest": Wéchentlech Iwwersiicht
       "voting_basket_submitted": Bestätegung vum Vote
+      "native_survey_not_submitted": Ëmfro net presentéiert
       "voting_basket_not_submitted": Stëmmen net agereecht
       "voting_last_chance": Déi lescht Chance fir ze wielen
+      "voting_phase_started": Nei Projetsphase mat Ofstëmmung
       "voting_results": Wahlresultater
       "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
     general:
@@ -74,7 +77,7 @@ lb:
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
-      "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
+      "statement": "Dës E-Mail gouf Iech vu Go Vocal am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
       "unsubscribe_text": "ofmellen"
     follow:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
@@ -504,6 +507,13 @@ lb:
       event_description: 'Merci fir d''Matmaachen. Är Stëmmen goufen opgeholl. Besicht d''Plattform vun %{organizationName} fir Är Stëmmen ze gesinn an ze managen.'
       cta_see_votes_submitted: 'Gesinn Stëmmen presentéiert'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Bal do! Gitt Är Äntwerten of'
+      preheader: 'Dir hutt Är Ëmfro-Äntwert net op der Participatiounsplattform vun %{organizationName}ofgeschloss'
+      title_native_survey_not_submitted: 'Bal do! Gitt Är Äntwerten of'
+      body_native_survey_not_submitted: 'Dir hutt ugefaang Är Äntwerten op %{phaseTitle} ze deelen awer hutt se net ofginn. Soumissioune ginn op %{phaseEndDate}zou. Klickt op de Knäppchen hei ënnen fir weiderzemaachen wou Dir opgehalen hutt.'
+      body_native_survey_not_submitted_no_date: 'Dir hutt ugefaang Är Äntwerten op %{phaseTitle} ze deelen awer hutt se net ofginn. Klickt op de Knäppchen hei ënnen fir weiderzemaachen wou Dir opgehalen hutt.'
+      cta_complete_your_survey_response: 'Fuert Är Ëmfro Äntwert op'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Dir hutt Är Stëmmen net ofginn'
       preheader: 'Dir hutt Är Stëmmen net op der Participatiounsplattform vun %{organizationName}ofginn'
@@ -550,6 +560,7 @@ lb:
         admins: 'An den Admins'
         admins_and_managers: 'Fir Administrateuren & Manager'
         managers: 'Zu Manager'
+        project_participants: 'Zu Projet Participanten'
         registered_users: 'Fir registréiert Benotzer'
       recipient_segment:
         admins: 'Administrateuren'
@@ -579,6 +590,7 @@ lb:
         user_who_voted: 'Benotzer deen gestëmmt huet'
         user_with_unsubmitted_votes: 'Benotzer déi hir Stëmmen net ofginn huet'
         users_who_engaged_but_not_voted: 'Benotzer déi mam Projet engagéiert hunn awer net gestëmmt hunn'
+        user_with_unsubmitted_survey: 'Benotzer deen ugefaang huet awer net hir Ëmfro ofginn huet'
       content_type:
         comments: 'Kommentaren'
         content_moderation: 'Inhalt Moderatioun'
@@ -591,6 +603,7 @@ lb:
         proposals: 'Propositioune'
         reactions: 'Reaktiounen'
         voting: 'Ofstëmmung'
+        surveys: 'Ëmfroen'
       trigger:
         comment_is_deleted: 'Commentaire geläscht'
         comment_is_flagged_as_spam: 'Kommentar gëtt als Spam markéiert'
@@ -639,3 +652,4 @@ lb:
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'
         registration_to_event: 'Aschreiwung op en Event'
+        survey_1_day_after_draft_saved: '1 Dag nodeems de Benotzer fir d''lescht d''Ëmfro am Entworf gespäichert huet'

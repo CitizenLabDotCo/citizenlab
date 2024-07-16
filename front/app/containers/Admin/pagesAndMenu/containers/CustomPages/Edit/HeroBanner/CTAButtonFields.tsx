@@ -1,11 +1,16 @@
+import React from 'react';
+
+import { WrappedComponentProps } from 'react-intl';
+
+import { TCustomPageCTAType } from 'api/custom_pages/types';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CTARadioButtons, {
   Props as CTARadioButtonProps,
 } from 'components/LandingPages/admin/CTARadioButtons';
-import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { TCustomPageCTAType } from 'api/custom_pages/types';
+
 import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const CTA_TYPES: TCustomPageCTAType[] = ['no_button', 'customized_button'];

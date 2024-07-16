@@ -15,7 +15,7 @@ describe 'rake email_campaigns' do
     it 'enqueues a TriggerOnScheduleJob for every tenant' do
       t = Time.zone.now
       travel_to(t) do
-        create(:tenant)
+        create(:test_tenant, host: 'test.govocal.com')
 
         expect { task.execute }
           .to have_enqueued_job(EmailCampaigns::TriggerOnScheduleJob)
@@ -29,9 +29,11 @@ describe 'rake email_campaigns' do
     let(:task_name) { 'email_campaigns:assure_campaign_records' }
 
     it 'creates the missing campaign records' do
+      delivery_service = EmailCampaigns::DeliveryService.new
+
       expect { task.execute }
         .to change(EmailCampaigns::Campaign, :count)
-        .by(EmailCampaigns::DeliveryService.new.campaign_types.size - 1)
+        .by(delivery_service.campaign_types.size - delivery_service.manual_campaign_types.size)
     end
   end
 end

@@ -1,25 +1,26 @@
 import React, { memo, useCallback, useState } from 'react';
 
-// components
-import Consent from './Consent';
-
-// styling
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// typings
-import { SignUpInFlow } from 'containers/Authentication/typings';
-import { AuthProvider } from '.';
-import { fontSizes } from 'utils/styleUtils';
-// move to core
-import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 import {
   TVerificationMethod,
   TVerificationMethodName,
 } from 'api/verification_methods/types';
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+
+import { SignUpInFlow } from 'containers/Authentication/typings';
+
+// move to core
+import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import Consent from './Consent';
+import messages from './messages';
+
+import { AuthProvider } from '.';
 
 const Container = styled.div`
   display: flex;

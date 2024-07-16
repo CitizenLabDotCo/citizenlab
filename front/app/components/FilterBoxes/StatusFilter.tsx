@@ -1,27 +1,29 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
+
+import {
+  fontSizes,
+  colors,
+  defaultCardStyle,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
+
+import T from 'components/T';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// components
-import T from 'components/T';
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { darken } from 'polished';
 import { Header, Title } from './styles';
-
-// typings
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 const Container = styled.div`
   width: 100%;

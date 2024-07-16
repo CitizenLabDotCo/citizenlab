@@ -1,10 +1,12 @@
 import { Point } from 'geojson';
+
+import { IIdeaFiles } from 'api/idea_files/types';
+import { IIdeaImages } from 'api/idea_images/types';
+import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
+import { IIdea } from 'api/ideas/types';
+
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
-import { IIdea } from 'api/ideas/types';
-import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
-import { IIdeaImages } from 'api/idea_images/types';
-import { IIdeaFiles } from 'api/idea_files/types';
 
 export const getLocationGeojson = async (
   initialFormData: { [k: string]: any } | null,

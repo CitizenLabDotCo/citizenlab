@@ -3,42 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::NativeSurvey do
-  subject(:participation_method) { described_class.new context }
+  subject(:participation_method) { described_class.new phase }
 
-  let(:context) { create(:continuous_native_survey_project) }
+  let(:phase) { create(:native_survey_phase) }
 
-  describe '#assign_slug' do
-    let(:input) { create(:input, slug: nil) }
+  describe '#generate_slug' do
+    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
 
     before { create(:idea_status_proposed) }
 
-    describe '#assign_defaults_for_participation_context' do
-      let(:context) { build(:continuous_native_survey_project) }
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
 
-      it 'sets the limits posting to max one' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.posting_method).to eq 'limited'
-        expect(context.posting_limited_max).to eq 1
-      end
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
+    end
+  end
 
-      it 'does not change the ideas_order' do
-        expect do
-          participation_method.assign_defaults_for_participation_context
-        end.not_to change(context, :ideas_order)
-      end
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:native_survey_phase) }
+
+    it 'sets the limits posting to max one' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.posting_method).to eq 'limited'
+      expect(phase.posting_limited_max).to eq 1
     end
 
-    it 'sets and persists the id as the slug of the input' do
-      input.update_column :slug, nil
-      participation_method.assign_slug(input)
-      input.reload
-      expect(input.slug).to eq input.id
+    it 'does not change the ideas_order' do
+      expect do
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
     end
   end
 
   describe '#create_default_form!' do
     it 'persists a default form with a page for the participation context' do
-      expect(context.custom_form).to be_nil
+      expect(phase.custom_form).to be_nil
 
       participation_method.create_default_form!
       # create_default_form! does not reload associations for form/fields/options,
@@ -47,15 +48,15 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       # Not doing this makes this test flaky, as create_default_form! creates fields
       # and CustomField uses acts_as_list for ordering fields. The ordering is ok
       # in the database, but not necessarily in memory.
-      participation_context_in_db = Project.find(context.id)
+      phase_in_db = Phase.find(phase.id)
 
-      expect(participation_context_in_db.custom_form.custom_fields.size).to eq 2
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 2
 
-      question_page = participation_context_in_db.custom_form.custom_fields[0]
+      question_page = phase_in_db.custom_form.custom_fields[0]
       expect(question_page.title_multiloc).to eq({})
       expect(question_page.description_multiloc).to eq({})
 
-      field = participation_context_in_db.custom_form.custom_fields[1]
+      field = phase_in_db.custom_form.custom_fields[1]
       expect(field.title_multiloc).to match({
         'en' => 'Default question',
         'fr-FR' => 'Question par défaut',
@@ -82,7 +83,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq []
     end
   end
@@ -139,35 +140,27 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns true' do
-      expect(participation_method.never_update?).to be true
+  describe '#update_if_published?' do
+    it 'returns false' do
+      expect(participation_method.update_if_published?).to be false
     end
   end
 
   describe '#creation_phase?' do
-    context 'for a timeline project' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:context) { project.phases.first }
+    let(:project) { create(:project_with_active_native_survey_phase) }
+    let(:phase) { project.phases.first }
 
-      it 'returns true' do
-        expect(participation_method.creation_phase?).to be true
-      end
-    end
-
-    context 'for a continuous project' do
-      it 'returns false' do
-        expect(participation_method.creation_phase?).to be false
-      end
+    it 'returns true' do
+      expect(participation_method.creation_phase?).to be true
     end
   end
 
   describe '#custom_form' do
-    let(:project_form) { create(:custom_form, participation_context: context.project) }
-    let(:participation_context) { create(:native_survey_phase) }
+    let(:project_form) { create(:custom_form, participation_context: phase.project) }
+    let(:phase) { create(:native_survey_phase) }
 
     it 'returns the custom form of the phase' do
-      expect(participation_method.custom_form.participation_context_id).to eq context.id
+      expect(participation_method.custom_form.participation_context_id).to eq phase.id
     end
   end
 
@@ -181,11 +174,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     context 'when there are responses' do
       before do
         IdeaStatus.create_defaults
-        create(:idea, project: context)
+        create(:idea, project: phase.project, creation_phase: phase)
       end
 
       it 'returns true' do
-        context.reload
+        phase.reload
         expect(participation_method.edit_custom_form_allowed?).to be true
       end
     end
@@ -228,6 +221,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:additional_export_columns) { is_expected.to eq [] }
 end

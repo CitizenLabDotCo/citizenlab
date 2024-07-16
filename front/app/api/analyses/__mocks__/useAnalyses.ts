@@ -8,6 +8,7 @@ export const analysesData: IAnalysisData[] = [
       created_at: '2021-06-01T08:00:00.000Z',
       updated_at: '2021-06-01T08:00:00.000Z',
       participation_method: 'native_survey',
+      show_insights: true,
     },
     relationships: {
       project: {
@@ -16,7 +17,15 @@ export const analysesData: IAnalysisData[] = [
           type: 'project',
         },
       },
-      custom_fields: {
+      all_custom_fields: {
+        data: [
+          {
+            id: '1',
+            type: 'custom_field',
+          },
+        ],
+      },
+      additional_custom_fields: {
         data: [
           {
             id: '1',

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { ProjectPermissionsProps } from './useProjectPermissions';
 
 const baseKey = { type: 'permission', variant: 'project' };

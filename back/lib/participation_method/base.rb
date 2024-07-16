@@ -2,26 +2,21 @@
 
 module ParticipationMethod
   class Base
-    def initialize(participation_context)
-      @participation_context = participation_context
+    def initialize(phase)
+      @phase = phase
     end
 
-    def assign_defaults_for_participation_context
+    def assign_defaults_for_phase
       # Default is to do nothing.
     end
 
-    def assign_slug(input)
+    def generate_slug(input)
       # Input is not created in this participation method,
-      # so the default is to do nothing.
+      # so the default is to return nothing.
     end
 
     def assign_defaults(input)
       # Default is to do nothing.
-    end
-
-    # On creation of the participation context, should the form be created automatically?
-    def auto_create_default_form?
-      true
     end
 
     def create_default_form!
@@ -29,6 +24,10 @@ module ParticipationMethod
     end
 
     def default_fields(_custom_form)
+      []
+    end
+
+    def allowed_extra_field_input_types
       []
     end
 
@@ -66,8 +65,8 @@ module ParticipationMethod
       false
     end
 
-    def never_update?
-      false
+    def update_if_published?
+      true
     end
 
     def creation_phase?
@@ -75,7 +74,7 @@ module ParticipationMethod
     end
 
     def custom_form
-      participation_context.project.custom_form || CustomForm.new(participation_context: participation_context.project)
+      phase.project.custom_form || CustomForm.new(participation_context: phase.project)
     end
 
     def edit_custom_form_allowed?
@@ -130,6 +129,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_permitted_by_everyone?
+      false
+    end
+
     def include_data_in_email?
       true
     end
@@ -149,6 +152,6 @@ module ParticipationMethod
 
     private
 
-    attr_reader :participation_context
+    attr_reader :phase
   end
 end

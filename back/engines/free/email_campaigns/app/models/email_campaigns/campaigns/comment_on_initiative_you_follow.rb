@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -74,7 +76,7 @@ module EmailCampaigns
           initiating_user_last_name: name_service.last_name!(notification.initiating_user),
           comment_author_name: name_service.display_name!(notification.comment.author),
           comment_body_multiloc: notification.comment.body_multiloc,
-          comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: recipient.locale),
+          comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: Locale.new(recipient.locale)),
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
           post_author_name: name_service.display_name!(notification.post.author),

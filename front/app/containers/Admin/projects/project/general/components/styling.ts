@@ -1,13 +1,10 @@
-// components
+import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { SectionField } from 'components/admin/Section';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FileUploader from 'components/UI/FileUploader';
-import { SectionField } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 // other
 export const TIMEOUT = 350;
@@ -18,16 +15,6 @@ export const StyledForm = styled.form`
 
 export const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
   width: 497px;
-`;
-
-export const ProjectType = styled.div`
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 400;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
 `;
 
 export const StyledSectionField = styled(SectionField)`
@@ -94,8 +81,4 @@ export const StyledFileUploader = styled(FileUploader)`
 
 export const StyledMultipleSelect = styled(MultipleSelect)`
   width: 500px;
-`;
-
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 15px;
 `;

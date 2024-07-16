@@ -14,22 +14,25 @@ module OmniauthMethods
       {}
     end
 
-    # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
-    def updateable_user_attrs
-      []
+    def profile_to_uid(auth)
+      auth['uid']
     end
 
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      true
+    def filter_auth_to_persist(auth)
+      auth
+    end
+
+    # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
+    def updateable_user_attrs
+      result = []
+      # If password_login is disabled, users cannot update their emails on UI,
+      # but we still want to keep their emails up to date.
+      result << :email if !AppConfiguration.instance.feature_activated?('password_login')
+      result
     end
 
     def can_merge?(_user, _user_attrs, _sso_verification_param_value)
       true
-    end
-
-    def redirect_callback_to_get_cookies(_controller)
-      false
     end
 
     # It never runs if #can_merge? always returns true.
@@ -48,6 +51,10 @@ module OmniauthMethods
 
     def verification_prioritized?
       raise NotImplementedError
+    end
+
+    def email_confirmed?(_auth)
+      true
     end
   end
 end

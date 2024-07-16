@@ -1,5 +1,5 @@
+import { fontSizes, media } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
 
 export type TAlign = 'center' | 'left';
 export const getAlignItems = (align: TAlign) => {
@@ -65,7 +65,7 @@ export const HeaderSubtitle = styled.h2<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
-  displayHeaderAvatars: boolean;
+  displayHeaderAvatars?: boolean;
 }>`
   width: 100%;
   color: ${({ hasHeader, fontColors, theme }) =>

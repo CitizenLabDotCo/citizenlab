@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 const rateInsight = ({

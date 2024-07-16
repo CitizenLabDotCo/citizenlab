@@ -46,10 +46,10 @@
             <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.likes_count %></span>
           </td>
           <td style="width: 70px;">
-            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.votes_this_week %></span>
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.reactions_this_week %></span>
           </td>
           <td style="width: 70px;">
-            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.votes_needed %></span>
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.reactions_needed %></span>
           </td>
           <td style="width: 70px;">
             <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= (Time.zone.today - initiatives.expires_at.to_date).to_i %></span>

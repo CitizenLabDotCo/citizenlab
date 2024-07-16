@@ -1,4 +1,5 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useCallback, useState, KeyboardEvent } from 'react';
+
 import {
   Box,
   colors,
@@ -12,15 +13,20 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useCallback, useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
+import { getOtherControlKey } from 'components/Form/utils';
 import { FormLabel } from 'components/UI/FormComponents';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-import { isString } from 'utils/helperUtils';
-import VerificationIcon from '../VerificationIcon';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isString } from 'utils/helperUtils';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
 import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 export const InputControl = ({
   data,
@@ -42,7 +48,7 @@ export const InputControl = ({
       const stringValue = value === '' ? undefined : value;
       handleChange(
         path,
-        schema.type === 'number' && value ? parseInt(value, 10) : stringValue
+        schema.type === 'number' && value ? parseFloat(value) : stringValue
       );
     },
     [schema.type, handleChange, path]
@@ -68,17 +74,28 @@ export const InputControl = ({
     return null;
   }
 
+  const isOtherField = !!getOtherControlKey(uischema.scope);
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    // We want to prevent the form from being closed when pressing enter
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
-      <Box>
-        <FormLabel
-          htmlFor={sanitizeForClassname(id)}
-          labelValue={<FieldLabel />}
-          optional={!required}
-          subtextValue={getSubtextElement(uischema.options?.description)}
-          subtextSupportsHtml
-        />
-      </Box>
+      {!isOtherField && (
+        <Box>
+          <FormLabel
+            htmlFor={sanitizeForClassname(id)}
+            labelValue={<FieldLabel />}
+            optional={!required}
+            subtextValue={getSubtextElement(uischema.options?.description)}
+            subtextSupportsHtml
+          />
+        </Box>
+      )}
       {answerNotPublic && (
         <Text mb="8px" mt="0px" fontSize="s">
           <FormattedMessage {...messages.notPublic} />
@@ -100,10 +117,17 @@ export const InputControl = ({
             setDidBlur(true);
           }}
           disabled={uischema?.options?.readonly}
+          placeholder={isOtherField ? label : undefined}
+          onKeyDown={handleKeyDown}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

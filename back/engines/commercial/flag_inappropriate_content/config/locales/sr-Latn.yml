@@ -10,6 +10,8 @@ sr-Latn:
       comment_author: '%{authorName} je komentarisao/la:'
       idea_author: '%{authorName} je objavio/la novi unos:'
       initiative_author: '%{authorName} je objavio/la novi predlog:'
-      this_post_was_flagged: >
-        <p> Ovaj post je automatski otkriven kao potencijalno neprimeren sadržaj. Šaljemo vam ovo obaveštenje kako biste mogli da ga pregledate i reagujete u skladu sa svojim smernicama za moderaciju. </p> <p> Ako post ne sadrži neprikladan sadržaj, možete ukloniti upozorenje putem svoje platforme na kartici Aktivnosti koja se nalazi u administratorskom panelu. </p>
+      automatically_flagged: >
+        This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.
+      how_to_review: >
+        If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.
       cta_review_post: 'Pregledajte objavu'

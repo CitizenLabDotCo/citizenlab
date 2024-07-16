@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Toggle as ToggleComponent } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
-import { get } from 'lodash-es';
+
+import Error, { TFieldName } from 'components/UI/Error';
 
 export interface ToggleProps {
   name: string;
@@ -44,7 +46,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
               {...rest}
               checked={value}
               onChange={() => {
-                setValue(name, !currentValue);
+                setValue(name, !currentValue, { shouldDirty: true });
               }}
             />
           );

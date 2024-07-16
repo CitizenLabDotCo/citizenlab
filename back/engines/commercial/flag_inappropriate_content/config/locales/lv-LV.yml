@@ -10,6 +10,8 @@ lv:
       comment_author: '%{authorName} komentēja:'
       idea_author: '%{authorName} iesniedza ziņu:'
       initiative_author: '%{authorName} iesniedza priekšlikumu:'
-      this_post_was_flagged: >
-        <p>Šī ziņa automātiski tika noteikta kā tāda, kas, iespējams, satur nepiemērotu saturu. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.</p><p>Ja ziņa nesatur nepiemērotu saturu, jūs varat atcelt brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Aktivitātes.</p>
+      automatically_flagged: >
+        Šī ziņa tika automātiski konstatēta kā iespējami neatbilstoša satura ziņa. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.
+      how_to_review: >
+        Ja ieraksts nesatur nepiemērotu saturu, varat dzēst brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Darbība.
       cta_review_post: 'Pārskatīt ziņu'

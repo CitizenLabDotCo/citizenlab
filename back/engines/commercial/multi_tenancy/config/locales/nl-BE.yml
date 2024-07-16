@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+nl-BE:
+  phase_title_default:
+    ideation: Input en/of feedback verzamelen
+    voting: Stemming
+    poll: Peiling
+    native_survey: Vragenlijst
+    survey: Vragenlijst
+    document_annotation: Feedback op een document
+    volunteering: Deelnemers zoeken
+    information: Informatie

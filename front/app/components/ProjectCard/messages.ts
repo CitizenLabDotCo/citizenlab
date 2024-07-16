@@ -52,6 +52,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.allocateYourBudget',
     defaultMessage: 'Allocate your budget',
   },
+  vote: {
+    id: 'app.components.ProjectCard.vote',
+    defaultMessage: 'Vote',
+  },
   learnMore: {
     id: 'app.components.ProjectCard.learnMore',
     defaultMessage: 'Learn more',

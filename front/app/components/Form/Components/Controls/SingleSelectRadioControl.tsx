@@ -1,27 +1,26 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isOneOfControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-
-// components
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import VerificationIcon from '../VerificationIcon';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions, getSubtextElement } from './controlUtils';
-
-// style
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getOptions, getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   cursor: pointer;
@@ -90,7 +89,12 @@ const SingleSelectRadioControl = ({
         ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

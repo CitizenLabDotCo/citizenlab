@@ -33,7 +33,6 @@ POSTHOG_CLIENT = PostHog::Client.new({
 # Our own client for all the other PostHog API calls.
 POSTHOG_CUSTOM_CLIENT = PosthogIntegration::PostHog::Client.new(
   base_uri: config['POSTHOG_HOST'],
-  api_key: config['POSTHOG_API_KEY']
-).tap do |client|
-  client.default_project_id = config['POSTHOG_PROJECT_ID']
-end
+  api_key: config['POSTHOG_API_KEY'],
+  project_id: config['POSTHOG_PROJECT_ID']
+)

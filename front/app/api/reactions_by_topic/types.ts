@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import reactionsByTopicKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import reactionsByTopicKeys from './keys';
 
 export type ReactionsByTopicKeys = Keys<typeof reactionsByTopicKeys>;
 

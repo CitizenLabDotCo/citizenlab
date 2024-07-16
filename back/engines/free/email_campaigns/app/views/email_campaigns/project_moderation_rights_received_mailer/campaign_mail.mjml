@@ -24,7 +24,7 @@
 <mj-section padding="0 0 80px">
   <mj-column>
     <mj-button
-      href="<%= url_service.admin_project_ideas_url(event.project_id) %>"
+      href="<%= url_service.admin_project_url(event.project_id) %>"
       border-radius="5px"
       background-color="#044D6C"
       color="#fff"

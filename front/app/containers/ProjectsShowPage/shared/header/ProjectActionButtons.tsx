@@ -1,41 +1,30 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-// services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-import { getInputTerm } from 'utils/participationContexts';
-
-// components
-import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
-import { scrollToElement } from 'utils/scroll';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-
-// style
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-// router
-import { useLocation } from 'react-router-dom';
+import useEvents from 'api/events/useEvents';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import messages from 'containers/ProjectsShowPage/messages';
+
+import IdeaButton from 'components/IdeaButton';
+import Button from 'components/UI/Button';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { scrollToElement } from 'utils/scroll';
 
 const Container = styled.div``;
 
@@ -51,6 +40,7 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
   const { data: events } = useEvents({
@@ -72,7 +62,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || !currentPhase) {
     return null;
   }
 
@@ -87,9 +77,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     scrollTo(scrollParams)();
   };
 
+  const { disabled_reason } =
+    project.data.attributes.action_descriptors.taking_survey;
+
   const handleTakeSurveyClick = () => {
     const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptor.taking_survey;
+      project.data.attributes.action_descriptors.taking_survey;
 
     if (enabled) {
       scrollToElementWithId('project-survey');
@@ -111,8 +104,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'taking_survey',
         },
         successAction,
@@ -122,7 +115,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const handleReviewDocumentClick = () => {
     const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptor.annotating_document;
+      project.data.attributes.action_descriptors.annotating_document;
 
     if (enabled) {
       scrollToElementWithId('document-annotation');
@@ -144,8 +137,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'annotating_document',
         },
         successAction,
@@ -153,16 +146,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, publication_status } = project.data.attributes;
+  const { publication_status } = project.data.attributes;
 
-  const isProjectArchived = publication_status === 'archived';
-  const isProcessTypeContinuous = process_type === 'continuous';
-  const participationMethod = isProcessTypeContinuous
-    ? project.data.attributes.participation_method
-    : currentPhase?.attributes.participation_method;
-  const ideas_count = isProcessTypeContinuous
-    ? project.data.attributes.ideas_count
-    : currentPhase?.attributes.ideas_count;
+  const participationMethod = currentPhase?.attributes.participation_method;
+  const ideas_count = currentPhase?.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
@@ -170,64 +157,40 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         currentPhase.attributes.end_at,
       ]) === 'past'
     : false;
-  const inputTerm = getInputTerm(process_type, project.data, phases?.data);
-  const isParticipationMethodNativeSurvey =
-    participationMethod === 'native_survey';
-  const isParticipationMethodIdeation = participationMethod === 'ideation';
-  const isParticipationMethodDocumentAnnotation =
-    participationMethod === 'document_annotation';
+  const inputTerm = getInputTerm(phases?.data);
 
+  // Show button conditions
+  const generalShowCTAButtonCondition =
+    !isSmallerThanTablet && publication_status !== 'archived';
   const showSeeIdeasButton =
-    isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
-
+    participationMethod === 'ideation' &&
+    isNumber(ideas_count) &&
+    ideas_count > 0;
   const showPostIdeaButton =
-    !isProjectArchived && isParticipationMethodIdeation;
-
+    generalShowCTAButtonCondition && participationMethod === 'ideation';
   const showTakeNativeSurveyButton =
-    !isProjectArchived && isParticipationMethodNativeSurvey;
-
+    generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
-    !isProjectArchived &&
+    !disabled_reason &&
+    !generalShowCTAButtonCondition &&
     participationMethod === 'survey' &&
     !hasCurrentPhaseEnded;
-
   const showTakePollButton =
-    // TODO: hide if project is archived?
-    participationMethod === 'poll' && !hasCurrentPhaseEnded;
-  const isPhaseIdeation =
-    currentPhase?.attributes.participation_method === 'ideation';
-
-  const isPhaseNativeSurvey =
-    currentPhase?.attributes.participation_method === 'native_survey';
-
-  const showDocumentAnnotationCTAButton =
-    !isProjectArchived &&
-    isParticipationMethodDocumentAnnotation &&
+    generalShowCTAButtonCondition &&
+    participationMethod === 'poll' &&
     !hasCurrentPhaseEnded;
-
+  const showDocumentAnnotationCTAButton =
+    generalShowCTAButtonCondition &&
+    participationMethod === 'document_annotation' &&
+    !hasCurrentPhaseEnded;
   const showEventsCTAButton = !!events?.data?.length;
 
   return (
     <Container className={className || ''}>
-      {showEventsCTAButton &&
-        !showSeeIdeasButton && ( // Only show events button when there is no other secondary CTA present
-          <Button
-            id="e2e-project-see-events-button"
-            buttonStyle="secondary"
-            onClick={() => {
-              scrollToElement({ id: 'project-events' });
-            }}
-            fontWeight="500"
-            mb="8px"
-          >
-            <FormattedMessage {...messages.seeUpcomingEvents} />
-          </Button>
-        )}
-
-      {showSeeIdeasButton && (
+      {showSeeIdeasButton ? (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={() => {
             scrollToElementWithId('project-ideas');
           }}
@@ -244,12 +207,23 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             })}
           />
         </SeeIdeasButton>
-      )}
+      ) : showEventsCTAButton ? (
+        <Button
+          id="e2e-project-see-events-button"
+          buttonStyle="secondary-outlined"
+          onClick={() => {
+            scrollToElement({ id: 'e2e-events-section-project-page' });
+          }}
+          fontWeight="500"
+          mb="8px"
+        >
+          <FormattedMessage {...messages.seeUpcomingEvents} />
+        </Button>
+      ) : null}
       {showPostIdeaButton && !hasCurrentPhaseEnded && (
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
-          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}
           participationMethod="ideation"
@@ -260,7 +234,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
           projectId={project.data.id}
-          participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           fontWeight="500"
           phase={currentPhase}
           participationMethod="native_survey"

@@ -2,6 +2,7 @@ en-GB:
   email_campaigns:
     campaign_type_description:
       "manual": Official messages
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -50,8 +51,10 @@ en-GB:
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "voting_basket_submitted": Confirmation of voting
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Votes not submitted
       "voting_last_chance": Last chance to vote
+      "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
@@ -74,7 +77,7 @@ en-GB:
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
       "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     follow:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
@@ -504,6 +507,13 @@ en-GB:
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
       cta_see_votes_submitted: 'See votes submitted'
       cta_message: 'Click the button below to participate'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
@@ -550,6 +560,7 @@ en-GB:
         admins: 'To admins'
         admins_and_managers: 'To admins & managers'
         managers: 'To managers'
+        project_participants: 'To project participants'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'
@@ -573,12 +584,13 @@ en-GB:
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
-        users_who_follow_the_proposal: 'User who follow the proposal'
-        users_who_follow_the_input: 'User who follow the input'
+        users_who_follow_the_proposal: 'Users who follow the proposal'
+        users_who_follow_the_input: 'Users who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
         user_who_voted: 'User who voted'
         user_with_unsubmitted_votes: 'User who has not submitted their votes'
         users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -591,6 +603,7 @@ en-GB:
         proposals: 'Proposals'
         reactions: 'Reactions'
         voting: 'Voting'
+        surveys: 'Surveys'
       trigger:
         comment_is_deleted: 'Comment is deleted'
         comment_is_flagged_as_spam: 'Comment is flagged as spam'
@@ -639,3 +652,4 @@ en-GB:
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
         registration_to_event: 'Registration to an event'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'

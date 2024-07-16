@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import ideasByTopicKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideasByTopicKeys from './keys';
 
 export type IdeasByTopicKeys = Keys<typeof ideasByTopicKeys>;
 

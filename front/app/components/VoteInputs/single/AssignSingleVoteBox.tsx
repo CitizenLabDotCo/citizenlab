@@ -1,42 +1,36 @@
 import React, { memo } from 'react';
 
-// api
-import useIdeaById from 'api/ideas/useIdeaById';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
 
-// styles
-import { colors } from 'utils/styleUtils';
-
-// components
-import WhiteBox from '../_shared/WhiteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import { Box } from '@citizenlab/cl2-component-library';
 
-// intl
-import messages from '../_shared/messages';
-import ownMessages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// typings
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
+import messages from '../_shared/messages';
+import WhiteBox from '../_shared/WhiteBox';
+
+import ownMessages from './messages';
 
 interface Props {
   ideaId: string;
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
-const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
+const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
   const { numberOfVotesCast } = useVoting();
 
   const { data: basket } = useBasket(
-    participationContext.relationships?.user_basket?.data?.id
+    phase.relationships?.user_basket?.data?.id
   );
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const { voting_max_total } = participationContext.attributes;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
+  const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor) return null;
 
@@ -49,7 +43,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
     <WhiteBox>
       <AssignSingleVoteButton
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         buttonStyle="primary"
       />
       {voting_max_total && (

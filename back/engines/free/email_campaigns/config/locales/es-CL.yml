@@ -2,6 +2,7 @@ es-CL:
   email_campaigns:
     campaign_type_description:
       "manual": Mensajes oficiales
+      "manual_project_participants": Mensajes oficiales a los participantes en el proyecto
       "admin_rights_received": Derechos de administrador recibidos
       "comment_deleted_by_admin": Eliminación de mi comentario
       "comment_marked_as_spam": Informar de comentarios de spam
@@ -50,8 +51,10 @@ es-CL:
       "assignee_digest": Resumen semanal de ideas asignadas
       "user_digest": Resumen semanal
       "voting_basket_submitted": Confirmación de voto
+      "native_survey_not_submitted": Encuesta no presentada
       "voting_basket_not_submitted": Votos no presentados
       "voting_last_chance": Última oportunidad para votar
+      "voting_phase_started": Nueva fase del proyecto con votación
       "voting_results": Resultados de la votación
       "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
     general:
@@ -74,7 +77,7 @@ es-CL:
       "link_terms_conditions": "Términos & Condiciones"
       "link_unsubscribe": "Cancelar la suscripción"
       "powered_by": "Impulsado por"
-      "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
+      "statement": "Este email le fue enviado por Go Vocal en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
     follow:
       "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirla aquí.</a>"
@@ -504,6 +507,13 @@ es-CL:
       event_description: 'Gracias por participar. Tus votos han quedado registrados. Visita la plataforma de %{organizationName} para ver y gestionar tus votos.'
       cta_see_votes_submitted: 'Ver los votos presentados'
       cta_message: 'Haz clic en el botón de abajo para participar'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: ¡Ya casi está! Envía tus respuestas'
+      preheader: 'No completaste tu respuesta a la encuesta en la plataforma de participación de %{organizationName}'
+      title_native_survey_not_submitted: '¡Ya casi está! Envía tus respuestas'
+      body_native_survey_not_submitted: 'Empezaste a compartir tus respuestas en %{phaseTitle} pero no las enviaste. Los envíos se cerrarán en %{phaseEndDate}. Haz clic en el botón de abajo para continuar donde lo dejaste.'
+      body_native_survey_not_submitted_no_date: 'Empezaste a compartir tus respuestas en %{phaseTitle} pero no las enviaste. Haz clic en el botón de abajo para continuar donde lo dejaste.'
+      cta_complete_your_survey_response: 'Reanuda tu respuesta a la encuesta'
     voting_basket_not_submitted:
       subject: '%{organizationName}No has enviado tus votos'
       preheader: 'No enviaste tus votos en la plataforma de participación de %{organizationName}'
@@ -550,6 +560,7 @@ es-CL:
         admins: 'A los administradores'
         admins_and_managers: 'A los administradores y gestores'
         managers: 'A los gestores'
+        project_participants: 'A los participantes en el proyecto'
         registered_users: 'A los usuarios registrados'
       recipient_segment:
         admins: 'Administradores'
@@ -579,6 +590,7 @@ es-CL:
         user_who_voted: 'Usuario que ha votado'
         user_with_unsubmitted_votes: 'Usuario que no ha enviado sus votos'
         users_who_engaged_but_not_voted: 'Usuarios que participaron en el proyecto pero no han votado'
+        user_with_unsubmitted_survey: 'Usuario que ha iniciado su encuesta pero no la ha enviado'
       content_type:
         comments: 'Comentarios'
         content_moderation: 'Moderación de contenidos'
@@ -591,6 +603,7 @@ es-CL:
         proposals: 'Propuestas'
         reactions: 'Reacciones'
         voting: 'Votación'
+        surveys: 'Encuestas'
       trigger:
         comment_is_deleted: 'Se borra el comentario'
         comment_is_flagged_as_spam: 'Comentario marcado como spam'
@@ -639,3 +652,4 @@ es-CL:
         7_days_after_invite_is_sent: '7 días después del envío de la invitación'
         7_days_before_the_project_changes_phase: '7 días antes de que el proyecto cambie de fase'
         registration_to_event: 'Inscripción a un acto'
+        survey_1_day_after_draft_saved: '1 día después de la última vez que el usuario guardó la encuesta en borrador'

@@ -1,9 +1,8 @@
-// i18n
-import messages from './messages';
+import { FormatMessage } from 'typings';
+
 import cardMessages from '../messages';
 
-// typings
-import { FormatMessage } from 'typings';
+import messages from './messages';
 
 export interface Translations {
   newVisitors: string;

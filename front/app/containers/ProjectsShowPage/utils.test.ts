@@ -1,18 +1,13 @@
 import { isReady } from './utils';
 
-const continuousProject: any = { attributes: { process_type: 'continuous' } };
-const timelineProject: any = { attributes: { process_type: 'timeline' } };
+const project: any = { attributes: { slug: 'test' } };
 
 describe('isReady', () => {
-  it('returns true if continuous project', () => {
-    expect(isReady(continuousProject, null)).toBe(true);
-  });
-
   it('returns false if timeline project and no phases', () => {
-    expect(isReady(timelineProject, null)).toBe(false);
+    expect(isReady(project, null)).toBe(false);
   });
 
   it('returns true if timeline project and phases', () => {
-    expect(isReady(timelineProject, { data: [] })).toBe(true);
+    expect(isReady(project, { data: [] })).toBe(true);
   });
 });

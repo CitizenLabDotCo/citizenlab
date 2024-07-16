@@ -1,32 +1,25 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+
 import { parse } from 'qs';
-
-// api
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
-import requirementsKeys from 'api/authentication/authentication_requirements/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
-// hooks
-import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
-import { getStepConfig } from './stepConfig';
-import clHistory from 'utils/cl-router/history';
+import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
-// events
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
+import { isNil, isNilOrError } from 'utils/helperUtils';
+
 import {
   triggerAuthenticationFlow$,
   triggerVerificationOnly$,
 } from '../events';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// typings
-import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import {
   ErrorCode,
   State,
@@ -34,9 +27,9 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import { SSOParams } from 'api/authentication/singleSignOn';
-import useUpdateUser from 'api/users/useUpdateUser';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import useAnySSOEnabled from '../useAnySSOEnabled';
+
+import { getStepConfig } from './stepConfig';
 
 let initialized = false;
 
@@ -44,7 +37,6 @@ export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
-  const { mutate: updateUser } = useUpdateUser();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -119,8 +111,7 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled,
-      updateUser
+      anySSOEnabled
     );
   }, [
     getAuthenticationData,
@@ -129,7 +120,6 @@ export default function useSteps() {
     setError,
     updateState,
     anySSOEnabled,
-    updateUser,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
@@ -255,7 +245,10 @@ export default function useSteps() {
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
-    if (urlSearchParams.sso_response === 'true') {
+    if (
+      urlSearchParams.sso_response === 'true' ||
+      urlSearchParams.verification_success === 'true'
+    ) {
       const {
         sso_flow,
         sso_pathname,
@@ -263,15 +256,32 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
+        verification_success,
       } = urlSearchParams as SSOParams;
 
+      // Check if there is a success action in local storage (from SSO or verification)
+      const actionFromLocalStorage = localStorage.getItem(
+        'auth_success_action'
+      );
+      localStorage.removeItem('auth_success_action');
+
+      // Check if there is a context in local storage (from verification)
+      const contextFromLocalStorage = localStorage.getItem('auth_context');
+      localStorage.removeItem('auth_context');
+
+      const context = contextFromLocalStorage
+        ? JSON.parse(contextFromLocalStorage)
+        : {
+            type: sso_verification_type,
+            action: sso_verification_action,
+            id: sso_verification_id,
+          };
+
       authenticationDataRef.current = {
-        flow: sso_flow,
-        context: {
-          type: sso_verification_type,
-          action: sso_verification_action,
-          id: sso_verification_id,
-        } as AuthenticationContext,
+        flow: sso_flow || 'signin',
+        successAction:
+          actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
+        context: context as AuthenticationContext,
       };
 
       if (pathname.endsWith('authentication-error')) {
@@ -284,24 +294,24 @@ export default function useSteps() {
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
-      } else {
+      } else if (!verification_success) {
         // Remove all parameters from URL as they've already been captured
         window.history.replaceState(null, '', '/');
       }
 
-      const enterClaveUnicaEmail =
+      const enterEmaillessSsoEmail =
         !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterEmaillessSsoEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
 
-  // always show ClaveUnica modal to user
+  // always show EmaillessSso modal to user
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;
     if (isNil(authUser.data.attributes.email)) {
-      transition(currentStep, 'REOPEN_CLAVE_UNICA')();
+      transition(currentStep, 'REOPEN_EMAILLESS_SSO')();
     }
   }, [authUser, currentStep, transition]);
 

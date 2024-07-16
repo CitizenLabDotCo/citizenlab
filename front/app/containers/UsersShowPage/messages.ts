@@ -34,17 +34,17 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.followingWithCount',
     defaultMessage: 'Following ({followingCount})',
   },
-  ideas: {
-    id: 'app.containers.UsersShowPage.ideas',
-    defaultMessage: 'Ideas',
+  inputs: {
+    id: 'app.containers.UsersShowPage.inputs',
+    defaultMessage: 'Inputs',
   },
   projects: {
     id: 'app.containers.UsersShowPage.projects',
     defaultMessage: 'Projects',
   },
-  initiatives: {
-    id: 'app.containers.UsersShowPage.initiatives',
-    defaultMessage: 'Initiatives',
+  proposals: {
+    id: 'app.containers.UsersShowPage.proposals',
+    defaultMessage: 'Proposals',
   },
   topics: {
     id: 'app.containers.UsersShowPage.topics',
@@ -95,15 +95,6 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  user404NotFound: {
-    id: 'app.containers.UsersShowPage.user404NotFound',
-    defaultMessage:
-      "We couldn't find this user's profile. If it was here before, it may have been deleted.",
-  },
-  goBackToPreviousPage: {
-    id: 'app.containers.UsersShowPage.goBackToPreviousPage',
-    defaultMessage: 'Go back to the previous page',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -116,9 +107,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.memberSince',
     defaultMessage: 'Member since {date}',
   },
-  metaTitle: {
-    id: 'app.containers.UsersShowPage.metaTitle',
-    defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
+  metaTitle1: {
+    id: 'app.containers.UsersShowPage.metaTitle1',
+    defaultMessage: 'Profile page of {firstName} {lastName} | {orgName}',
   },
   userShowPageMetaDescription: {
     id: 'app.containers.UsersShowPage.userShowPageMetaDescription',

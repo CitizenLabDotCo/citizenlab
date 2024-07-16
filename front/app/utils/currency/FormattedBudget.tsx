@@ -1,12 +1,14 @@
 import React from 'react';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { Icon } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps, FormattedNumber } from 'react-intl';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`

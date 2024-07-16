@@ -1,28 +1,23 @@
 import React, { useRef, useState } from 'react';
 
-// hooks
-import useVisitorReferrerTypes from './useVisitorReferrerTypes';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+
 import GraphCard from 'components/admin/GraphCard';
-import EmptyPieChart from '../EmptyPieChart';
-import Chart from './Chart';
-import Table from './Table';
-import TableModal from './TableModal';
-import ReferrerListLink from './RefferListLink';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
-// utils
-import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
+import EmptyPieChart from '../EmptyPieChart';
 import { ProjectId, Dates } from '../typings';
-import { View } from 'components/admin/GraphCard/ViewToggle';
+
+import Chart from './Chart';
+import getXlsxData from './getXlsxData';
+import messages from './messages';
+import ReferrerListLink from './RefferListLink';
+import Table from './Table';
+import TableModal from './TableModal';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 type Props = ProjectId & Dates;
 

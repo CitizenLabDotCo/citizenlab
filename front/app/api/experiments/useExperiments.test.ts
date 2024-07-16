@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useExperiments from './useExperiments';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { experimentsData } from './__mocks__/useExperiments';
+import useExperiments from './useExperiments';
 
 const apiPath = '*/experiments';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: experimentsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: experimentsData }, { status: 200 });
   })
 );
 

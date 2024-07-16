@@ -1,15 +1,13 @@
 import React from 'react';
 
-// components
+import { fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import UserName from 'components/UI/UserName';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

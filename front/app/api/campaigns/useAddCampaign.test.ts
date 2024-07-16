@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddCampaign from './useAddCampaign';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { campaignsData } from './__mocks__/useCampaigns';
+import useAddCampaign from './useAddCampaign';
 
 const apiPath = '*campaigns';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignsData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: campaignsData[0] }, { status: 200 });
   })
 );
 
@@ -44,8 +43,8 @@ describe('useAddCampaign', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

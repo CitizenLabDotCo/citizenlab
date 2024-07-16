@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -8,32 +7,28 @@ import {
   colors,
   Text,
 } from '@citizenlab/cl2-component-library';
-import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
-import Modal from 'components/UI/Modal';
-import { EventModalConfetti } from './EventModalConfetti';
-import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
+import { useTheme } from 'styled-components';
 
-// types
-import { IEventData } from 'api/events/types';
-
-// api
-import useAuthUser from 'api/me/useAuthUser';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
+import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
+import useAuthUser from 'api/me/useAuthUser';
 
-// intl
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
-// style
-import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 
-// utils
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
+import Modal from 'components/UI/Modal';
+
+import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
+
+import { EventModalConfetti } from './EventModalConfetti';
+import messages from './messages';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -131,7 +126,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           handleClick();
         }}
         processing={isLoading}
-        id="e2e-event-attendance-button"
+        className="e2e-event-attendance-button"
       >
         {getButtonText()}
       </Button>

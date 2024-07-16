@@ -77,6 +77,12 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "population": {
+            "title": "Population",
+            "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
           "weglot_api_key": {
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
@@ -113,6 +119,11 @@
             "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "google_search_console_meta_attribute": {
+            "title": "Google Search Console Meta Attribute",
+            "description": "Set this token to verify the ownership of the platform in Google Search Console. The value you should set is the content of the \"content\"= HTML tag attribute in meta tag Google provides.",
+            "type": ["string", "null"]
+          },
           "custom_onboarding_message": {
             "title": "Header Banner Call-to-Action Text",
             "description": "Optional Call-to-Action text for signed in users, shown on a banner on the top of the homepage. Accompanied by a Call-to-Action (CTA) button. If this field is left blank, 'Header banner non-call to action' text is shown in the banner.",
@@ -127,15 +138,10 @@
           },
           "custom_onboarding_link": {
             "title": "Header Banner CTA Link",
-            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.citizenlab.co/initiatives should be inputted here as /initiatives).",
+            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.govocal.com/initiatives should be inputted here as /initiatives).",
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
-          },
-          "currently_working_on_text": {
-            "title": "Project Overview Header Title",
-            "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
-            "$ref": "#/definitions/multiloc_string"
           },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
@@ -237,6 +243,18 @@
         }
       },
 
+      "user_avatars": {
+        "type": "object",
+        "title": "User avatars",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -297,37 +315,13 @@
         }
       },
 
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility",
-        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone", "enable_signup"],
+        "required-settings": ["minimum_length", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -344,21 +338,6 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
-          },
-          "phone": {
-            "title": "Phone",
-            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
-            "type": "boolean",
-            "default": false
-          },
-          "phone_email_pattern": {
-            "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
-            "type": "string",
-            "format": "email",
-            "default": "phone+__PHONE__@test.com",
-            "pattern": "^.*__PHONE__.*@.*$",
-            "private": true
           }
         }
       },
@@ -407,20 +386,66 @@
 
       "azure_ad_login": {
         "type": "object",
-        "title": "Azure Login",
-        "description":  "Allow users to register and sign in with Azure Active Directory.",
+        "title": "Azure AD Login",
+        "description":  "Allow users to register and sign in with Entra ID (fka Azure Active Directory).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "tenant": {
-            "title": "Tenant",
+            "title": "Directory (tenant) ID",
             "type": "string",
             "private": true
           },
           "client_id": {
-            "title": "Client ID",
+            "title": "Application (client) ID",
+            "description": "Sometimes also called 'application_id'",
+            "type": "string",
+            "private": true
+          },
+          "logo_url": {
+            "title": "Logo",
+            "type": "string",
+            "pattern": "^https:\/\/.+",
+            "description": "The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height."
+          },
+          "login_mechanism_name": {
+            "title": "Login Mechanism Name",
+            "type": "string",
+            "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          }
+        }
+      },
+
+      "azure_ad_b2c_login": {
+        "type": "object",
+        "title": "Azure AD B2C Login",
+        "description":  "Allow users to register and sign in with Azure AD B2C.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "tenant_name": {
+            "title": "Directory (tenant) Name",
+            "description": "The name of the Azure AD B2C tenant. The first part of the domain name. E.g. in citizenlabdevdemo.onmicrosoft.com, it's citizenlabdevdemo",
+            "type": "string",
+            "private": true
+          },
+          "tenant_id": {
+            "title": "Directory (tenant) ID",
+            "type": "string",
+            "private": true
+          },
+          "policy_name": {
+            "title": "Policy (User Flow, User Journey) Name",
+            "description": "The name of the policy (user flow, user journey) in the Azure AD B2C tenant. This is the policy that is used for sign-in and sign-up. tenant_name, tenant_id, and policy_name are used together to form such configuration URL https://{tenant_name}.b2clogin.com/tfp/{tenant_id}/{policy_name}/v2.0/.well-known/openid-configuration that returns JSON configuration.",
+            "type": "string",
+            "private": true
+          },
+          "client_id": {
+            "title": "Application (client) ID",
             "description": "Sometimes also called 'application_id'",
             "type": "string",
             "private": true
@@ -463,8 +488,8 @@
 
       "maps": {
         "type": "object",
-        "title": "CustomMaps",
-        "description":  "Enable maps for all projects.",
+        "title": "Maps Default Settings",
+        "description":  "Default settings for maps. Note that 'allowed' and 'enabled' settings are redundant and toggling them will not have any effect.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -475,7 +500,7 @@
             "description": "The OSM or basemap.at compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
+            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=R0U21P01bsRLx7I7ZRqp')%>"
           },
           "map_center": {
             "title": "Map Center",
@@ -505,6 +530,23 @@
             "type": "integer",
             "title": "OSM Relation ID",
             "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
+          }
+        }
+      },
+
+      "esri_integration": {
+        "type": "object",
+        "title": "Esri Integration",
+        "description":  "Esri integration for maps. Enables the use of Esri layers and Esri web maps with our maps. An add-on that can be purchased, and is not restricted to specific pricing plan(s).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "api_key": {
+            "title": "API Key",
+            "description": "Add customer’s Esri API key to allow importing map layers from their ArcGIS Online in the map tabs in projects. This setting is also available to admins in the Tools: Esri Maps item.",
+            "type": "string"
           }
         }
       },
@@ -847,18 +889,6 @@
         }
       },
 
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "workshops": {
         "title": "Workshops",
         "type": "object",
@@ -871,18 +901,6 @@
         }
       },
 
-      "project_reports": {
-        "type": "object",
-        "title": "Project Reports",
-        "description": "Browse and download the results of a project.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "blocking_profanity": {
         "type": "object",
         "title": "Block Profanity",
@@ -892,42 +910,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "clustering": {
-        "type": "object",
-        "title": "Clustering",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "similar_ideas": {
-        "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "admin_project_templates": {
-        "type": "object",
-        "title": "Project Templates",
-        "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -950,18 +932,6 @@
         }
       },
 
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Downvoting Toggle",
-        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_disliking": {
         "type": "object",
         "title": "Disliking Toggle",
@@ -974,22 +944,10 @@
         }
       },
 
-      "ideaflow_social_sharing": {
+      "granular_permissions": {
         "type": "object",
-        "title": "Share Ideas on Social Media",
-        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
+        "title": "Granular Permissions",
+        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1002,30 +960,6 @@
         "type": "object",
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "manual_emailing": {
-        "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1096,18 +1030,6 @@
         }
       },
 
-      "idea_custom_copy": {
-        "type": "object",
-        "title": "Idea Custom Copy",
-        "description": "Allows the changing of the word `idea` as the default term of input.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "idea_author_change": {
         "type": "object",
         "title": "Idea Author Change",
@@ -1117,18 +1039,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "private_projects": {
-        "type": "object",
-        "title": "Private projects",
-        "description":  "Make projects visible to certain groups only (Access Rights tab in the Admin panel).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1166,46 +1076,10 @@
         }
       },
 
-      "representativeness": {
+      "input_form_mapping_question": {
         "type": "object",
-        "title": "Representativeness",
-        "description": "Enables the representativeness dashboard.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "native_surveys": {
-        "type": "object",
-        "title": "Allow in-platform surveys",
-        "description":  "",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "seat_based_billing": {
-        "type": "object",
-        "title": "Seat based billing",
-        "description":  "Enables seat-based billing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "visitors_dashboard": {
-        "type": "object",
-        "title": "Visitors dashboard",
-        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
+        "title": "Mapping question used in in-platform surveys",
+        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1235,18 +1109,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "permission_option_email_confirmation": {
-        "type": "object",
-        "title": "Registration via email confirmation",
-        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1286,10 +1148,130 @@
         }
       },
 
+      "power_bi": {
+        "type": "object",
+        "title": "Power BI",
+        "description": "Allows downloading of pre-configured templates for PowerBI.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "user_session_recording": {
+        "type": "object",
+        "title": "User session recording",
+        "description": "Enables the recording of a small fraction of user sessions for analysis and product research purposes. Requires active consent from the customer.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "analysis": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "large_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation (large summaries)",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "ask_a_question": {
+        "type": "object",
+        "title": "AI-powered questions and answers feature for surveys and ideation",
+        "description": "Enables the use of AI-powered questions and answers feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "advanced_autotagging": {
+        "type": "object",
+        "title": "AI-powered advanced autotagging for surveys and ideation",
+        "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "multi_language_platform": {
+        "type": "object",
+        "title": "Multi-language platform",
+        "description": "Enables the ability to add multiple languages on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customisable_homepage_banner": {
+        "type": "object",
+        "title": "Customisable homepage banner",
+        "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "management_feed": {
+        "type": "object",
+        "title": "Management Feed",
+        "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1320,8 +1302,11 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
-
-    "permission_option_email_confirmation": ["user_confirmation"]
+    "power_bi": ["public_api_tokens"],
+    "large_summaries": ["analysis"],
+    "ask_a_question": ["analysis"],
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {

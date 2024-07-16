@@ -18,10 +18,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.logIn',
     defaultMessage: 'Log in',
   },
-  signUp: {
-    id: 'app.containers.app.navbar.signUp',
-    defaultMessage: 'Sign up',
-  },
   allProjects: {
     id: 'app.containers.app.navbar.allProjects',
     defaultMessage: 'All projects',
@@ -29,5 +25,17 @@ export default defineMessages({
   ariaLabel: {
     id: 'app.containers.app.navbar.ariaLabel',
     defaultMessage: 'Primary',
+  },
+  closeMobileNavMenu: {
+    id: 'app.containers.app.navbar.closeMobileNavMenu',
+    defaultMessage: 'Close mobile navigation menu',
+  },
+  fullMobileNavigation: {
+    id: 'app.containers.app.navbar.fullMobileNavigation',
+    defaultMessage: 'Full mobile',
+  },
+  showFullMenu: {
+    id: 'app.containers.app.navbar.showFullMenu',
+    defaultMessage: 'Show full menu',
   },
 });

@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -45,10 +47,14 @@ module EmailCampaigns
     N_TOP_IDEAS = 12
 
     def self.default_schedule
-      config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
+      start_time = AppConfiguration.timezone.local(2019)
 
-      IceCube::Schedule.new(config_timezone.local(2019)) do |schedule|
-        every_monday_at10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
+      IceCube::Schedule.new(start_time) do |schedule|
+        every_monday_at10_am = IceCube::Rule
+          .weekly(1)
+          .day(:monday)
+          .hour_of_day(10)
+
         schedule.add_recurrence_rule(every_monday_at10_am)
       end
     end
@@ -241,7 +247,7 @@ module EmailCampaigns
         title_multiloc: phase.title_multiloc,
         participation_method: phase.participation_method,
         start_at: phase.start_at.iso8601,
-        end_at: phase.end_at.iso8601
+        end_at: phase.end_at&.iso8601
       }
     end
 

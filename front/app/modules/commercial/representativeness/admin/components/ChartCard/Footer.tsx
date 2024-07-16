@@ -1,21 +1,16 @@
 import React from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 import Legend from 'components/admin/Graphs/Legend';
 import Warning from 'components/UI/Warning';
-import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
+import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 import messages from './messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { View } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props extends FieldInfoProps {
   hideTicks: boolean;
@@ -60,10 +55,12 @@ const Footer = ({
       />
 
       {!hideLegend && (
-        <Legend
-          labels={legendLabels}
-          colors={[colors.primary, colors.teal300]}
-        />
+        <Box my="16px">
+          <Legend
+            labels={legendLabels}
+            colors={[colors.primary, colors.teal300]}
+          />
+        </Box>
       )}
     </Box>
 

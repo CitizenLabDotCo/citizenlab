@@ -10,6 +10,8 @@ fr:
       comment_author: '%{authorName} a commenté :'
       idea_author: '%{authorName} a publié une contribution :'
       initiative_author: '%{authorName} a publié une proposition :'
-      this_post_was_flagged: >
-        <p>Cette publication pourrait contenir un contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération. </p><p> Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.</p>
+      automatically_flagged: >
+        Cette publication a été automatiquement détectée comme pouvant contenir du contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération.
+      how_to_review: >
+        Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.
       cta_review_post: 'Vérifier la publication'

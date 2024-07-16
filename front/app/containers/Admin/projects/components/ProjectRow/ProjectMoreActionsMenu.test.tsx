@@ -1,9 +1,13 @@
 import React from 'react';
-import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
-import { IUserData } from 'api/users/types';
+
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
+import { IUserData } from 'api/users/types';
+
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
+import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 
 const defaultProps: Props = {
   projectId: 'projectId',
@@ -50,11 +54,11 @@ const copyApiPath = '*projects/:projectId/copy';
 const deleteApiPath = '*projects/:id';
 
 const server = setupServer(
-  rest.post(copyApiPath, (_req, res, ctx) => {
-    return res(ctx.status(500));
+  http.post(copyApiPath, () => {
+    return HttpResponse.json(null, { status: 500 });
   }),
-  rest.delete(deleteApiPath, (_req, res, ctx) => {
-    return res(ctx.status(500));
+  http.delete(deleteApiPath, () => {
+    return HttpResponse.json(null, { status: 500 });
   })
 );
 
@@ -140,7 +144,12 @@ describe('ProjectMoreActionsMenu', () => {
             project_folder_id: mockProject.attributes.folder_id,
           },
         ];
-        render(<ProjectMoreActionsMenu {...defaultProps} />);
+        render(
+          <ProjectMoreActionsMenu
+            {...defaultProps}
+            folderId={mockProject.attributes.folder_id}
+          />
+        );
         const user = userEvent.setup();
 
         const threeDotsButton = screen.getByTestId('moreOptionsButton');

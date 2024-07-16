@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import projectsKeys from './keys';
+
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import projectsKeys from './keys';
 
 const deleteProject = (id: string) =>
   fetcher({

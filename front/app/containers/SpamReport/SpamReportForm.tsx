@@ -1,30 +1,22 @@
-// libraries
 import React, { FormEvent } from 'react';
 
-// Services
-import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
-
-// Utils
-import getSubmitState from 'utils/getSubmitState';
-
-// Components
-import { SectionField } from 'components/admin/Section';
-import { Label, Radio } from '@citizenlab/cl2-component-library';
-import TextArea from 'components/UI/TextArea';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
+import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-
-// Style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { CRUDParams } from 'typings';
+
+import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
+
+import { SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import TextArea from 'components/UI/TextArea';
+
+import { injectIntl } from 'utils/cl-intl';
+import getSubmitState from 'utils/getSubmitState';
+
+import messages from './messages';
 
 const timeout = 300;
 
@@ -64,9 +56,6 @@ const ReportReason = styled.div`
     }
   }
 `;
-
-// Typings
-import { CRUDParams } from 'typings';
 
 interface Props extends CRUDParams {
   reasonCodes: ReasonCode[];

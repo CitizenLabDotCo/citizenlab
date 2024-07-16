@@ -1,28 +1,29 @@
 import React, { lazy, Suspense } from 'react';
+
+import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
+import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import Avatar from 'components/Avatar';
+
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
+import tracks from '../tracks';
+
+import HeaderImage from './HeaderImage';
+
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
 const VerificationOnboardingStep = lazy(
   () => import('./VerificationOnboardingStep')
 );
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
-import HeaderImage from './HeaderImage';
-import Avatar from 'components/Avatar';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// style
-import styled from 'styled-components';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
-
-// hooks
-import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
-import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 const Header = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ export const HeaderContent = styled.div`
     align-items: stretch;
     justify-content: center;
     padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 
@@ -141,7 +143,13 @@ export const Icons = styled.div`
   `}
 `;
 
-const SignedInHeader = () => {
+const SignedInHeader = ({
+  homepageSettings,
+  isContentBuilderDisplay,
+}: {
+  homepageSettings: Partial<IHomepageBannerSettings>;
+  isContentBuilderDisplay?: boolean;
+}) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
@@ -153,12 +161,13 @@ const SignedInHeader = () => {
   };
 
   if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName =
-      currentOnboardingCampaign.data.attributes.name;
+    const onboardingCampaignName = isContentBuilderDisplay
+      ? 'default'
+      : currentOnboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header`} id="hook-header">
-        <HeaderImage />
+        <HeaderImage homepageSettings={homepageSettings} />
         <Suspense fallback={null}>
           <VerificationOnboardingStep
             currentOnboardingCampaignName={onboardingCampaignName}
@@ -178,6 +187,7 @@ const SignedInHeader = () => {
           />
           <FallbackStep
             currentOnboardingCampaignName={onboardingCampaignName}
+            homepageSettings={homepageSettings}
           />
         </Suspense>
       </Header>

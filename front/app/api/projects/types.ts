@@ -1,22 +1,27 @@
-import projectsKeys from './keys';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 
-// typings
 import {
-  PermissionsDisabledReason,
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
-import { ILinks, IRelationship, Multiloc } from 'typings';
-import {
-  TSurveyService,
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-  InputTerm,
-  ParticipationContext,
-} from 'utils/participationContexts';
+  ProjectCommentingDisabledReason,
+  ProjectDocumentAnnotationDisabledReason,
+  ProjectPollDisabledReason,
+  ProjectPostingDisabledReason,
+  ProjectReactingDisabledReason,
+  ProjectSurveyDisabledReason,
+  ProjectVotingDisabledReason,
+} from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
-// Keys
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+  ParticipationMethod,
+  TSurveyService,
+} from '../phases/types';
+
+import projectsKeys from './keys';
+
 export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc
@@ -58,31 +63,40 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjectAttributes extends ParticipationContext {
+export interface IProjectAttributes {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  created_at: string;
+  updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
   comments_count: number;
   avatars_count: number;
   followers_count: number;
+  ideas_count: number;
+  baskets_count: number;
+  votes_count: number;
   visible_to: Visibility;
-  process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptor: {
-    posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
-    commenting_idea: ActionDescriptor<CommentingDisabledReason>;
+  action_descriptors: {
+    posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
+    commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+    // Same disabled reasons as commenting_idea at time of writing
+    comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
     reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
       up: ActionDescriptor<ProjectReactingDisabledReason>;
       down: ActionDescriptor<ProjectReactingDisabledReason>;
     };
-    taking_survey: ActionDescriptor<SurveyDisabledReason>;
-    taking_poll: ActionDescriptor<PollDisabledReason>;
-    annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
+    taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
+    taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
+    annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
+    voting: ActionDescriptor<ProjectVotingDisabledReason>;
   };
   uses_content_builder: boolean;
 }
@@ -92,7 +106,7 @@ export interface IProjectData {
   type: 'project';
   attributes: IProjectAttributes;
   relationships: {
-    project_images: {
+    project_images?: {
       data: IRelationship[];
     };
     areas: {
@@ -119,50 +133,14 @@ export interface IProjectData {
     user_follower: {
       data: IRelationship | null;
     };
+    permissions?: {
+      data: IRelationship[];
+    };
   };
 }
 
 type Visibility = 'public' | 'groups' | 'admins';
-export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
-
-export type CommentingDisabledReason =
-  | 'project_inactive'
-  | 'not_supported'
-  | 'commenting_disabled'
-  | PermissionsDisabledReason;
-
-type ProjectReactingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'reacting_disabled'
-  | 'disliking_disabled'
-  | 'reacting_like_limited_max_reached'
-  | 'reacting_dislike_limited_max_reached'
-  | PermissionsDisabledReason;
-
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  | 'posting_limited_max_reached'
-  | PermissionsDisabledReason;
-
-export type SurveyDisabledReason =
-  | 'project_inactive'
-  | 'not_survey'
-  | PermissionsDisabledReason;
-
-export type PollDisabledReason =
-  | 'project_inactive'
-  | 'not_poll'
-  | 'already_responded'
-  | PermissionsDisabledReason;
-
-export type DocumentAnnotationDisabledReason =
-  | 'project_inactive'
-  | 'not_document_annotation'
-  | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -185,7 +163,6 @@ export interface IUpdatedProjectProperties {
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
-  process_type?: ProcessType;
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;

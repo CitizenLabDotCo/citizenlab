@@ -1,44 +1,35 @@
 import React from 'react';
-import EventCard from 'components/EventCard';
+
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+  Box,
+} from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
-import VerticalCenterer from 'components/VerticalCenterer';
-import Link from 'utils/cl-router/Link';
-import useEvents from 'api/events/useEvents';
-import { useIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
-import { Box } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
+
+import EventCards from 'components/EventCards';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const NoEventsText = styled.div`
   margin: auto 0px;
   text-align: center;
   color: ${colors.textSecondary};
   font-size: ${fontSizes.xl}px;
-`;
-
-const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-
-  flex-wrap: wrap;
-`;
-
-const StyledEventCard = styled(EventCard)`
-  flex: 0 0 32.3%;
-
-  ${media.tablet`
-    flex: 0 0 48.8%;
-  `}
-
-  ${media.phone`
-    flex: 0 0 100%;
-  `}
 `;
 
 const Header = styled.div`
@@ -124,17 +115,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
               </VerticalCenterer>
             )}
 
-            {!isNilOrError(events) && events.data.length > 0 && (
-              <CardsContainer>
-                {events.data.map((event) => (
-                  <StyledEventCard
-                    event={event}
-                    key={event.id}
-                    titleFontSize={18}
-                  />
-                ))}
-              </CardsContainer>
-            )}
+            <EventCards events={events} />
           </Box>
 
           <Box alignSelf="center">

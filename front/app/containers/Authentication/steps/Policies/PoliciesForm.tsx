@@ -1,20 +1,20 @@
 import React from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
-import PoliciesMarkup from './PoliciesMarkup';
-import Button from 'components/UI/Button';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { object, boolean } from 'yup';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean } from 'yup';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import sharedMessages from '../messages';
+
+import messages from './messages';
+import PoliciesMarkup from './PoliciesMarkup';
 
 const DEFAULT_VALUES = {
   termsAndConditionsAccepted: false,

@@ -38,6 +38,16 @@ class FormLogicService
     end
   end
 
+  def remove_select_logic_option_from_custom_fields(frozen_custom_field_option)
+    custom_field = frozen_custom_field_option.custom_field
+
+    return unless custom_field&.logic.present? &&
+                  custom_field.logic['rules'].pluck('if').include?(frozen_custom_field_option.id)
+
+    custom_field.logic['rules'].reject! { |rule| rule['if'] == frozen_custom_field_option.id }
+    custom_field.save!
+  end
+
   private
 
   attr_reader :fields, :field_index, :option_index
@@ -310,6 +320,11 @@ class FormLogicService
       target_id = rule['goto_page_id']
       if page_temp_ids_to_ids_mapping.include?(target_id)
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
+      end
+
+      # Remove any select options that do not exist
+      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if'])
+        rules.delete(rule)
       end
     end
     field.update! logic: logic

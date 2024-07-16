@@ -45,14 +45,13 @@ module MultiTenancy
           end
 
           def attributes(*attributes_list, &block)
+            self.value_attributes ||= []
+
             attributes_list = attributes_list.first if attributes_list.first.is_a?(Array)
             options = attributes_list.last.is_a?(Hash) ? attributes_list.pop : {}
-            self.value_attributes = [] if value_attributes.nil?
 
             attributes_list.each do |attr_name|
-              value_attributes << Attribute.new(
-                attr_name.to_sym, block || attr_name, options
-              )
+              value_attributes << Attribute.new(attr_name.to_sym, block || attr_name, options)
             end
           end
 

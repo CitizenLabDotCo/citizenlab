@@ -9,7 +9,7 @@ describe XlsxService do
   describe 'generate_ideas_xlsx' do
     let(:cause) { create(:cause) }
     let!(:volunteers) { create_list(:volunteer, 5, cause: cause) }
-    let(:xlsx) { service.generate_xlsx(cause.participation_context, Volunteering::Volunteer.all) }
+    let(:xlsx) { service.generate_xlsx(cause.phase, Volunteering::Volunteer.all) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -24,7 +24,7 @@ describe XlsxService do
     describe 'with private attributes' do
       let(:xlsx) do
         service.generate_xlsx(
-          cause.participation_context,
+          cause.phase,
           Volunteering::Volunteer.all,
           view_private_attributes: false
         )
@@ -39,7 +39,7 @@ describe XlsxService do
       let(:cause) { create(:cause, title_multiloc: { 'en' => 'With illegal characters \/*?:[]' }) }
       let(:xlsx) do
         service.generate_xlsx(
-          cause.participation_context,
+          cause.phase,
           Volunteering::Volunteer.all,
           view_private_attributes: false
         )
@@ -51,7 +51,7 @@ describe XlsxService do
     end
 
     describe 'when there are multiple causes with the same title' do
-      let!(:duplicate_cause) { create(:cause, title_multiloc: cause.title_multiloc, participation_context: cause.participation_context) }
+      let!(:duplicate_cause) { create(:cause, title_multiloc: cause.title_multiloc, phase: cause.phase) }
 
       it 'exports a valid excel file' do
         expect { workbook }.not_to raise_error
@@ -59,8 +59,8 @@ describe XlsxService do
     end
 
     describe 'when there are multiple causes with different titles over 30 chars that start with same 30 chars' do
-      let!(:cause1) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - version 1' }, participation_context: cause.participation_context) }
-      let!(:cause2) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - number 2' }, participation_context: cause.participation_context) }
+      let!(:cause1) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - version 1' }, phase: cause.phase) }
+      let!(:cause2) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - number 2' }, phase: cause.phase) }
 
       it 'exports a valid excel file' do
         expect { workbook }.not_to raise_error

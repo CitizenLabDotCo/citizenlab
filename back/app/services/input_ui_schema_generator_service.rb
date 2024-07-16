@@ -3,7 +3,7 @@
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def initialize(input_term, supports_answer_visible_to)
     super()
-    @input_term = input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    @input_term = input_term || Phase::DEFAULT_INPUT_TERM
     @supports_answer_visible_to = supports_answer_visible_to
   end
 
@@ -53,6 +53,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     if @supports_answer_visible_to
       defaults[:answer_visible_to] = field.answer_visible_to
     end
+    defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
@@ -92,8 +93,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       type: 'Page',
       options: {
         id: 'survey_end',
-        title: I18n.t('form_builder.survey_end_page.title'),
-        description: I18n.t('form_builder.survey_end_page.description')
+        title: I18n.t('form_builder.form_end_page.title'),
+        description: I18n.t('form_builder.form_end_page.description')
       },
       elements: []
     }
@@ -112,7 +113,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def generate_pages_for_current_locale(fields)
     participation_context = fields.first.resource.participation_context
-    input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    phase = participation_context.instance_of?(Project) ? TimelineService.new.current_or_last_can_contain_ideas_phase(participation_context) : participation_context
+    input_term = phase.input_term || Phase::DEFAULT_INPUT_TERM
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 

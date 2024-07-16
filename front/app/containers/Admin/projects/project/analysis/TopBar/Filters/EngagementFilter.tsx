@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { Box, Select, Input, Label } from '@citizenlab/cl2-component-library';
-
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import tracks from '../../tracks';
+import messages from '../messages';
 
 type EngagementFilterProps = {
   label: string;

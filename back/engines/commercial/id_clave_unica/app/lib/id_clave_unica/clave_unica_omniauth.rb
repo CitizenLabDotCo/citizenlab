@@ -60,7 +60,7 @@ module IdClaveUnica
     end
 
     def updateable_user_attrs
-      %i[first_name last_name custom_field_values]
+      super + %i[first_name last_name custom_field_values]
     end
 
     def locked_custom_fields
@@ -81,6 +81,10 @@ module IdClaveUnica
 
     def verification_prioritized?
       true
+    end
+
+    def email_confirmed?(_auth)
+      false
     end
 
     private

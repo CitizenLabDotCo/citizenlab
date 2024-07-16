@@ -28,6 +28,7 @@ module ProjectFolders
       return false if record.admin_publication.publication_status == 'draft'
       return true if record.projects.empty?
 
+      # We check if the user has access to at least one of the projects in the folder
       ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
     end
 

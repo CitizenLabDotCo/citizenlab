@@ -154,9 +154,7 @@ describe('Idea new page for continuous project', () => {
       .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-map-popup')
-      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show')
       .find('.e2e-author-link .e2e-username')
       .contains(`${firstName} ${lastName}`);
@@ -186,7 +184,6 @@ describe('Idea new page for timeline project', () => {
 
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -264,9 +261,7 @@ describe('Idea new page for timeline project', () => {
       .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-map-popup')
-      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show')
       .find('.e2e-author-link .e2e-username')
       .contains(`${firstName} ${lastName}`);

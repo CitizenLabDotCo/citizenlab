@@ -12,7 +12,7 @@ module EmailCampaigns
     def campaign_mail
       attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
         Event.find(event.event_attributes.id),
-        locale
+        locale.locale_sym
       )
 
       super
@@ -32,8 +32,17 @@ module EmailCampaigns
     end
 
     def event_time
-      start_at = I18n.l(event.event_attributes.start_at, format: :short, locale: locale)
-      end_at = I18n.l(event.event_attributes.end_at, format: :short, locale: locale)
+      timezone = AppConfiguration.timezone
+
+      start_at = I18n.l(
+        timezone.at(event.event_attributes.start_at),
+        format: :short, locale: locale.locale_sym
+      )
+
+      end_at = I18n.l(
+        timezone.at(event.event_attributes.end_at),
+        format: :short, locale: locale.locale_sym
+      )
 
       "#{start_at} – #{end_at}"
     end

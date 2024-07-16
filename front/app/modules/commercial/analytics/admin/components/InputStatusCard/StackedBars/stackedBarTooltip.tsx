@@ -1,24 +1,18 @@
 import React from 'react';
 
-// components
-import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
-import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
+import { Tooltip } from 'recharts';
 
-// styling
-// import { colors } from 'utils/styleUtils';
+import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
-import { StackedBarsRow } from '../usePostsFeedback/typings';
+import messages from '../messages';
 
 export const stackedBarTooltip =
   (
     stackIndex: number | undefined,
-    [statusRow]: [StackedBarsRow],
+    [statusRow]: [Record<string, number>],
     stackedBarColumns: string[],
     percentages: number[],
     labels: string[]

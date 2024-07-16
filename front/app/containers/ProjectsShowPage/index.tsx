@@ -1,61 +1,59 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-// components
-import ProjectHelmet from './shared/header/ProjectHelmet';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import ProjectHeader from './shared/header/ProjectHeader';
-import ContinuousIdeas from './continuous/Ideas';
-import ContinuousSurvey from './continuous/Survey';
-import ContinuousDocumentAnnotation from './continuous/DocumentAnnotation';
-import ContinuousPoll from './continuous/Poll';
-import ContinuousVolunteering from './continuous/Volunteering';
-import TimelineContainer from './timeline';
-import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Navigate from 'utils/cl-router/Navigate';
-import SuccessModal from './SucessModal';
-import { ProjectCTABar } from './ProjectCTABar';
-import EventsViewer from 'containers/EventsPage/EventsViewer';
-import Centerer from 'components/UI/Centerer';
-import ErrorBoundary from 'components/ErrorBoundary';
-
-// hooks
+import {
+  Box,
+  Spinner,
+  useBreakpoint,
+  media,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+import JSConfetti from 'js-confetti';
+import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import useLocale from 'hooks/useLocale';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
-import { useIntl } from 'utils/cl-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-// i18n
-import messages from 'utils/messages';
-
-// style
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-
-// typings
+import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-// utils
-import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { scrollToElement } from 'utils/scroll';
-import { isError } from 'lodash-es';
+import useLocale from 'hooks/useLocale';
+
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+
+import ErrorBoundary from 'components/ErrorBoundary';
+import PageNotFound from 'components/PageNotFound';
+import Centerer from 'components/UI/Centerer';
+import Unauthorized from 'components/Unauthorized';
+
+import { useIntl } from 'utils/cl-intl';
+import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { anyIsUndefined } from 'utils/helperUtils';
+import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
 
-const Container = styled.main<{ background: string }>`
+import { isValidPhase } from './phaseParam';
+import ProjectCTABar from './ProjectCTABar';
+import ProjectHeader from './shared/header/ProjectHeader';
+import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
+import { maxPageWidth } from './styles';
+import SuccessModal from './SucessModal';
+import TimelineContainer from './timeline';
+
+const confetti = new JSConfetti();
+
+const Container = styled.div<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+    100vh - ${stylingConsts.menuHeight + stylingConsts.footerHeight}px
   );
   display: flex;
   flex-direction: column;
@@ -63,16 +61,7 @@ const Container = styled.main<{ background: string }>`
   background: ${(props) => props.background};
 
   ${media.tablet`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
-
-  ${media.phone`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
+    min-height: calc(100vh - ${stylingConsts.mobileMenuHeight}px - ${stylingConsts.mobileTopBarHeight}px);`}
 `;
 
 const ContentWrapper = styled.div`
@@ -85,7 +74,6 @@ interface Props {
 
 const ProjectsShowPage = ({ project }: Props) => {
   const projectId = project.id;
-  const processType = project.attributes.process_type;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
@@ -95,7 +83,8 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: phases } = usePhases(projectId);
 
   const [search] = useSearchParams();
-  const scrollToEventId = search.get('scrollToEventId');
+  const scrollToStatusModule = search.get('scrollToStatusModule');
+  const scrollToIdeas = search.get('scrollToIdeas');
 
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -113,13 +102,21 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   // UseEffect to scroll to event when provided
   useEffect(() => {
-    if (scrollToEventId && mounted && !loading) {
+    if (scrollToStatusModule && mounted && !loading) {
       setTimeout(() => {
-        scrollToElement({ id: scrollToEventId });
-        removeSearchParams(['scrollToEventId']);
-      }, 2000);
+        scrollToElement({ id: 'voting-status-module' });
+        confetti.addConfetti();
+        removeSearchParams(['scrollToStatusModule']);
+      }, 500);
     }
-  }, [mounted, loading, scrollToEventId]);
+
+    if (scrollToIdeas && mounted && !loading) {
+      setTimeout(() => {
+        scrollToElement({ id: 'e2e-ideas-container' });
+        removeSearchParams(['scrollToIdeas']);
+      }, 1000);
+    }
+  }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
   let content: JSX.Element | null = null;
 
@@ -135,70 +132,52 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
 
-        <div id="participation-detail">
-          {processType === 'continuous' ? (
-            <>
-              <ContinuousIdeas projectId={projectId} />
-              {project.attributes.participation_method === 'survey' && (
-                <ContinuousSurvey project={project} />
-              )}
-              {project.attributes.participation_method ===
-                'document_annotation' && (
-                <ContinuousDocumentAnnotation project={project} />
-              )}
-              <ContinuousPoll projectId={projectId} />
-              <ContinuousVolunteering projectId={projectId} />
-            </>
-          ) : (
+        <main>
+          <div id="participation-detail">
             <TimelineContainer projectId={projectId} />
+          </div>
+          {!!events?.data.length && (
+            <Box
+              id="e2e-events-section-project-page"
+              display="flex"
+              flexDirection="column"
+              gap="48px"
+              mx="auto"
+              my="48px"
+              maxWidth={`${maxPageWidth}px`}
+              padding={isSmallerThanTablet ? '20px' : '0px'}
+            >
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="currentAndFuture"
+                title={formatMessage(messages.upcomingAndOngoingEvents)}
+                fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+              />
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="past"
+                title={formatMessage(messages.pastEvents)}
+                fallbackMessage={messages.noPastEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+                showDateFilter={false}
+              />
+            </Box>
           )}
-        </div>
-        {!!events?.data.length && (
-          <Box
-            id="e2e-events-section-project-page"
-            display="flex"
-            flexDirection="column"
-            gap="48px"
-            mx="auto"
-            my="48px"
-            maxWidth="1166px"
-            padding={isSmallerThanTablet ? '20px' : '0px'}
-          >
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="currentAndFuture"
-              title={formatMessage(messages.upcomingAndOngoingEvents)}
-              fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              hideSectionIfNoEvents={true}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-            />
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="past"
-              title={formatMessage(messages.pastEvents)}
-              fallbackMessage={messages.noPastEvents}
-              hideSectionIfNoEvents={true}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-              showDateFilter={false}
-            />
-          </Box>
-        )}
-
+        </main>
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
 
-  const bgColor =
-    !isNilOrError(events) && events.data.length > 0
-      ? '#fff'
-      : colors.background;
-
   return (
-    <Container background={bgColor}>
-      <ProjectHelmet project={project} />
+    <Container
+      background={
+        events && events?.data.length > 0 ? colors.white : colors.background
+      }
+    >
       {content}
     </Container>
   );
@@ -217,27 +196,20 @@ const ProjectsShowPageWrapper = () => {
     project?.data.id
   );
   const { data: user, isLoading: isUserLoading } = useAuthUser();
-  const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
   const pending =
     isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
-  const [search] = useSearchParams();
-  const hasAccess = search.get('hasAccess');
+
+  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user) {
-      /* Using the search params to pass the hasAccess flag here. Something is not very clear
-       * with how the component tree is being rendered on login/logout. This is a temporary
-       * solution until we can find a better way to track the previous value of the user.
-       */
-      updateSearchParams({ hasAccess: true });
-    }
+    if (user) setUserWasLoggedIn(true);
   }, [pending, user]);
 
   if (pending) {
@@ -248,7 +220,7 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
-  const userJustLoggedOut = hasAccess === 'true' && user === null;
+  const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
@@ -264,7 +236,6 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const isTimelineProjectAndHasValidPhaseParam =
-    processType === 'timeline' &&
     phases &&
     urlSegments.length === 4 &&
     isValidPhase(phaseNumber, phases.data);
@@ -275,16 +246,19 @@ const ProjectsShowPageWrapper = () => {
     !isTimelineProjectAndHasValidPhaseParam
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
+    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}` as RouteType;
     return <Navigate to={projectRoot} replace />;
   }
 
   if (!project) return null;
 
   return (
-    <VotingContext projectId={project.data.id}>
-      <ProjectsShowPage project={project.data} />
-    </VotingContext>
+    <>
+      <ProjectShowPageMeta project={project.data} />
+      <VotingContext projectId={project.data.id}>
+        <ProjectsShowPage project={project.data} />
+      </VotingContext>
+    </>
   );
 };
 

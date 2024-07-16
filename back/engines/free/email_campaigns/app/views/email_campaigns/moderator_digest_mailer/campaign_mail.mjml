@@ -21,7 +21,11 @@
   >
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= event.statistics.new_participants_increase %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/moderator_digest_mailer_spec.rb#L20) an outdated `activities` %>
+        <%# field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::ModeratorDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= event.statistics['new_participants_increase'] %>
         <img
           alt="User icon"
           width="29px"
@@ -35,7 +39,11 @@
 
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= event.statistics.new_ideas_increase %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/moderator_digest_mailer_spec.rb#L20) an outdated `activities` %>
+        <%# field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::ModeratorDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= event.statistics['new_ideas_increase'] %>
         <img
           alt="Idea icon"
           width="24px"
@@ -49,7 +57,11 @@
 
     <mj-column>
       <mj-text font-size="28px" align="center" font-weight="700">
-        <%= event.statistics.new_comments_increase %>
+        <%# TODO: replace [''] with method call. Currently, the tests fail (if WhinyOpenStruct is initialized with `raise_exception: true``)
+        because they use (https://github.com/CitizenLabDotCo/citizenlab/blob/5370e4e8eea41c7b577247e1e8a020bed0b7a908/back/engines/free/email_campaigns/spec/mailers/moderator_digest_mailer_spec.rb#L20) an outdated `activities` %>
+        <%# field that was removed in this PR https://github.com/CitizenLabDotCo/citizenlab/pull/5808/files %>
+        <%# TODO: fix tests by using `Campaigns::ModeratorDigest#generate_commands` in tests instead of building the command hash. %>
+        <%= event.statistics['new_comments_increase'] %>
         <img
           alt="Comment icon"
           width="26px"
@@ -85,9 +97,9 @@
   </mj-column>
 </mj-section>
 
-<%= 
-  render partial: 'application/cta_button', 
-  locals: { 
-  href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects/#{event.project_id}", 
-  message: format_message('cta_manage') } 
+<%=
+  render partial: 'application/cta_button',
+  locals: {
+  href:  "#{url_service.admin_project_url(event.project_id)}",
+  message: format_message('cta_manage') }
 %>

@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 
-// Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import SeatSetSuccess from '../SeatSetSuccess';
-
-// Translation
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import messages from './messages';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-
-// Utils
-import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 
 import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+
+import { ChangingRoleTypes } from 'containers/Admin/users/UserTableRow';
+
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
+import Modal from 'components/UI/Modal';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
+
+import SeatSetSuccess from '../SeatSetSuccess';
+
+import messages from './messages';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -40,12 +39,11 @@ const getInfoText = (
 const getButtonText = (
   isUserAdmin: boolean,
   isUserToChangeModerator: boolean,
-  hasExceededPlanSeatLimit: boolean,
-  hasSeatBasedBillingEnabled: boolean
+  hasExceededPlanSeatLimit: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin || isUserToChangeModerator || !hasSeatBasedBillingEnabled) {
+  if (isUserAdmin || isUserToChangeModerator) {
     return buttonText;
   }
 
@@ -55,9 +53,15 @@ const getButtonText = (
 interface Props {
   userToChangeSeat: IUserData;
   showModal: boolean;
-  isChangingToNormalUser: boolean;
+  changingToRoleType: ChangingRoleTypes;
   closeModal: () => void;
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 }
 
 const ChangeSeatModal = ({
@@ -65,34 +69,33 @@ const ChangeSeatModal = ({
   closeModal,
   userToChangeSeat,
   changeRoles,
-  isChangingToNormalUser,
+  returnFocusRef,
+  changingToRoleType,
 }: Props) => {
+  const isChangingToNormalUser = changingToRoleType === 'user';
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
   const isUserToChangeModerator = !isRegularUser({
     data: userToChangeSeat,
   });
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const isChangingModeratorToNormalUser =
     isChangingToNormalUser && isUserToChangeModerator;
 
   const exceedsSeats = useExceedsSeats()({
-    newlyAddedAdminsNumber: 1,
+    newlyAddedAdminsNumber: changingToRoleType === 'admin' ? 1 : 0,
+    newlyAddedModeratorsNumber: changingToRoleType === 'moderator' ? 1 : 0,
   });
 
   const confirmChangeQuestion = getInfoText(
     isUserToChangeSeatAdmin,
     isChangingModeratorToNormalUser,
-    exceedsSeats.admin
+    exceedsSeats.any
   );
   const buttonText = getButtonText(
     isUserToChangeSeatAdmin,
     isUserToChangeModerator,
-    exceedsSeats.admin,
-    hasSeatBasedBillingEnabled
+    exceedsSeats.any
   );
 
   const header = !showSuccess ? (
@@ -108,13 +111,19 @@ const ChangeSeatModal = ({
     setShowSuccess(false);
   };
 
+  const seatType = changingToRoleType === 'admin' ? 'admin' : 'moderator';
   return (
-    <Modal opened={showModal} close={resetModal} header={header}>
+    <Modal
+      opened={showModal}
+      close={resetModal}
+      header={header}
+      returnFocusRef={returnFocusRef}
+    >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}
-          hasExceededPlanSeatLimit={exceedsSeats.admin}
-          seatType="admin"
+          hasExceededPlanSeatLimit={exceedsSeats[seatType]}
+          seatType={seatType}
         />
       ) : (
         <Box
@@ -138,7 +147,7 @@ const ChangeSeatModal = ({
 
           {!isChangingToNormalUser && (
             <Box mb="24px">
-              <SeatInfo seatType="admin" />
+              <SeatInfo seatType={seatType} />
             </Box>
           )}
 

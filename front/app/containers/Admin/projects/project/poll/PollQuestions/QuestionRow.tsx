@@ -1,27 +1,24 @@
-// Libraries
 import React from 'react';
 
-// Services & Resources
+import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-// Components
-import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
-
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
-import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import WrongOptionsIndicator from './WrongOptionsIndicator';
 
 // Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
 const EditTitleButton = styled(Button)`
   display: inline-block;
 `;
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import WrongOptionsIndicator from './WrongOptionsIndicator';
-import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   question: IPollQuestionData;
@@ -82,7 +79,7 @@ const QuestionRow = ({
     <Button
       className="e2e-edit-options"
       onClick={onEdit}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       icon="edit"
     >
       <FormattedMessage {...messages.editPollQuestion} />

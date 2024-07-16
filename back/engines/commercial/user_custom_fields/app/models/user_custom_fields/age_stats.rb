@@ -27,15 +27,5 @@ module UserCustomFields
     def population_counts
       reference_distribution&.counts
     end
-
-    # The expected counts for each bin if the set of users was perfectly representative
-    # according to the reference distribution.
-    # @return [Array<Integer>, nil]
-    def expected_binned_counts
-      @expected_binned_counts ||= begin
-        nb_users_with_age = counter_result.binned_counts.sum
-        reference_distribution&.expected_counts(nb_users_with_age)
-      end
-    end
   end
 end

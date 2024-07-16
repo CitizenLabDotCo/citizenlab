@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, get, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
+import Error, { TFieldName } from 'components/UI/Error';
 import TabsComponent, { Props as TabsComponentProps } from 'components/UI/Tabs';
 
 interface Props

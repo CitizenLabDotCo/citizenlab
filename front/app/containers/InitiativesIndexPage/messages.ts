@@ -1,21 +1,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesIndexPage.metaTitle',
-    defaultMessage: 'All Initiatives • {orgName}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesIndexPage.metaTitle1',
+    defaultMessage: 'All proposals | {orgName}',
   },
-  invisibleTitleInitiativeCards: {
-    id: 'app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards',
-    defaultMessage: 'All the initiatives taking place in {orgName}',
+  invisibleTitleProposalsCards1: {
+    id: 'app.containers.InitiativesIndexPage.invisibleTitleProposalsCards1',
+    defaultMessage: 'All proposals',
   },
   invisibleInitiativesPageTitle: {
     id: 'app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle',
     defaultMessage: 'Discover Initiatives',
   },
-  metaDescription: {
-    id: 'app.containers.InitiativesIndexPage.metaDescription',
-    defaultMessage: 'Explore and support initiatives conducted in {orgName}',
+  metaDescription2: {
+    id: 'app.containers.InitiativesIndexPage.metaDescription2',
+    defaultMessage: 'Explore and support proposals conducted',
   },
   header: {
     id: 'app.containers.InitiativesIndexPage.header',
@@ -52,7 +52,12 @@ export default defineMessages({
     defaultMessage: 'Start your own initiative and make your voice heard',
   },
   newProposalsNotPermitted: {
-    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted',
-    defaultMessage: 'New proposals are not currently being accepted.',
+    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted1',
+    defaultMessage:
+      'Unfortunately, you cannot submit a proposal. Read why in {link}.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.InitiativesIndexPage.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });

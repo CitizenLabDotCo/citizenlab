@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 type Props = {

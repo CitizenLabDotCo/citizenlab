@@ -1,32 +1,28 @@
 import React, { useState } from 'react';
 
-// types
-import { IParticipationContextType } from 'typings';
-import { IPollQuestionData } from 'api/poll_questions/types';
-
-// components
-import Button from 'components/UI/Button';
-import PollSingleChoice from './PollSingleChoice';
-import PollMultipleChoice from './PollMultipleChoice';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import Tippy from '@tippyjs/react';
-import Warning from 'components/UI/Warning';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// style
+import {
+  Box,
+  fontSizes,
+  defaultCardStyle,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
-// hooks
-import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 import useAuthUser from 'api/me/useAuthUser';
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
-// i18n
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
+
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
+
+import messages from './messages';
+import PollMultipleChoice from './PollMultipleChoice';
+import PollSingleChoice from './PollSingleChoice';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -70,9 +66,7 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestionData[];
   projectId: string;
-  phaseId?: string | null;
-  id: string | null;
-  type: IParticipationContextType;
+  phaseId: string;
   disabled: boolean;
   disabledMessage?: MessageDescriptor | null;
   actionDisabledAndNotFixable: boolean;
@@ -84,11 +78,9 @@ interface Answers {
 
 const PollForm = ({
   questions,
-  id,
-  type,
+  phaseId,
   disabled,
   projectId,
-  phaseId,
   disabledMessage,
   actionDisabledAndNotFixable,
 }: Props) => {
@@ -110,38 +102,32 @@ const PollForm = ({
   };
 
   const sendAnswer = () => {
-    if (id) {
-      if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
-        const pcType = phaseId ? 'phase' : 'project';
-        const pcId = phaseId ? phaseId : projectId;
-        if (!pcId || !pcType) return;
+    if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
+      if (!phaseId) return;
 
-        triggerAuthenticationFlow({
-          flow: 'signup',
-          context: {
-            action: 'taking_poll',
-            id: pcId,
-            type: pcType,
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          action: 'taking_poll',
+          id: phaseId,
+          type: 'phase',
+        },
+        successAction: {
+          name: 'submit_poll',
+          params: {
+            phaseId,
+            answers: Object.values(answers).flat(),
+            projectId,
+            setIsSubmitting,
           },
-          successAction: {
-            name: 'submit_poll',
-            params: {
-              id,
-              type,
-              answers: Object.values(answers).flat(),
-              projectId,
-              setIsSubmitting,
-            },
-          },
-        });
-      } else {
-        addPollResponse({
-          participationContextId: id,
-          participationContextType: type,
-          optionIds: Object.values(answers).flat(),
-          projectId,
-        });
-      }
+        },
+      });
+    } else {
+      addPollResponse({
+        phaseId,
+        optionIds: Object.values(answers).flat(),
+        projectId,
+      });
     }
   };
 
@@ -201,9 +187,8 @@ const PollForm = ({
             )
           )}
         </PollContainer>
-        <Tippy
+        <Tooltip
           disabled={!actionDisabledAndNotFixable}
-          interactive={true}
           placement="bottom"
           content={disabledMessage && formatMessage(disabledMessage)}
         >
@@ -219,7 +204,7 @@ const PollForm = ({
               <FormattedMessage {...messages.sendAnswer} />
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </>
     );
   }

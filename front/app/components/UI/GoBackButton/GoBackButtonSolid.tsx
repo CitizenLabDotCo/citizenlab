@@ -1,24 +1,25 @@
 import React, { useCallback } from 'react';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { RouteType } from 'routes';
 
-// intl
+import Button from 'components/UI/Button';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {
-  text: string;
+  text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
-  linkTo?: string;
+  linkTo?: RouteType;
 }
 
 const GoBackButtonSolid = ({
   text,
-  iconSize = '26px',
+  iconSize = '28px',
   onClick,
   linkTo,
 }: Props) => {

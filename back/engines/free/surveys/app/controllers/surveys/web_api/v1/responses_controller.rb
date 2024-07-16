@@ -5,22 +5,22 @@ module Surveys
     module V1
       class ResponsesController < SurveysController
         skip_after_action :verify_authorized, only: [:index_xlsx]
-        before_action :set_participation_context
+        before_action :set_phase
         rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 
         def index_xlsx
-          if @participation_context
-            authorize Project.find(@participation_context.project.id), :index_xlsx?
+          if @phase
+            authorize @phase.project, :index_xlsx?
           else
             authorize %i[surveys response], :index_xlsx?
           end
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead
           # @responses = policy_scope(Response)
-          #   .where(participation_context: @participation_context)
+          #   .where(phase: @phase)
           #   .order(:created_at)
 
-          @responses = TypeformApiParser.new.get_responses(@participation_context.typeform_form_id)
+          @responses = TypeformApiParser.new.get_responses(@phase.typeform_form_id)
 
           I18n.with_locale(current_user&.locale) do
             xlsx = XlsxService.new.generate_survey_results_xlsx @responses
@@ -28,8 +28,8 @@ module Surveys
           end
         end
 
-        def set_participation_context
-          @participation_context = params[:pc_class].find(params[:participation_context_id])
+        def set_phase
+          @phase = Phase.find(params[:phase_id])
         end
 
         def typeform_authorization_error(exception)

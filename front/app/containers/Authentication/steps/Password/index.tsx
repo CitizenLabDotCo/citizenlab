@@ -1,38 +1,29 @@
 import React, { useMemo } from 'react';
 
-// hooks
+import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object, boolean } from 'yup';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextLink from '../_components/TextLink';
-
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
-import containerMessages from '../../messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, boolean } from 'yup';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Checkbox from 'components/HookForm/Checkbox';
+import Button from 'components/UI/Button';
 
-// errors
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-
-// typings
-import { SetError, State } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
+
+import containerMessages from '../../messages';
+import { SetError, State } from '../../typings';
+import TextLink from '../_components/TextLink';
+import sharedMessages from '../messages';
+
+import messages from './messages';
 
 interface Props {
   state: State;
@@ -126,7 +117,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
           />
         </Box>
         <Box mt="28px">
-          <Checkbox
+          <CheckboxWithLabel
             name="rememberMe"
             label={
               <Text mt="0" mb="0" mr="4px" color="tenantText">

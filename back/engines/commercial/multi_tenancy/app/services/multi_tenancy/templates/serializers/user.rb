@@ -10,7 +10,6 @@ module MultiTenancy
         attributes %i[
           bio_multiloc
           block_reason
-          cl1_migrated
           email
           first_name
           last_name

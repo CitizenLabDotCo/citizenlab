@@ -1,37 +1,27 @@
 import React, { useState } from 'react';
 
-// router
-import { useParams } from 'react-router-dom';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectById from 'api/projects/useProjectById';
-
-// components
-import Modal from 'components/UI/Modal';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
-import PhaseSelector from '../PhaseSelector';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// form
-import Feedback from 'components/HookForm/Feedback';
-import Checkbox from 'components/HookForm/Checkbox';
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean, string } from 'yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { object, boolean } from 'yup';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import Feedback from 'components/HookForm/Feedback';
+import Modal from 'components/UI/Modal';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import messages from './messages';
 
 export interface FormValues {
   personal_data: boolean;
-  phase_id?: string;
 }
 
 const DEFAULT_VALUES = {
   personal_data: false,
-  phase_id: undefined,
 } satisfies FormValues;
 
 interface Props {
@@ -52,24 +42,13 @@ const IT_IS_POSSIBLE_MESSAGES = {
 };
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
-  const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
-  const { data: project } = useProjectById(projectId);
-
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
   const [loading, setLoading] = useState(false);
 
-  const isTimelineProject =
-    project?.data.attributes.process_type === 'timeline';
-
   const schema = object({
     personal_data: boolean(),
-    phase_id:
-      isTimelineProject && formType === 'idea_form'
-        ? string().required(formatMessage(messages.selectIdeationPhase))
-        : string(),
   });
 
   const methods = useForm({
@@ -110,20 +89,34 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         <form onSubmit={methods.handleSubmit(handleExport)}>
           <Feedback onlyShowErrors />
           <Box p="24px" w="100%">
-            <Text mb="20px" mt="0px" w="500px">
-              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-            </Text>
-            {importPrintedFormsEnabled && (
-              <>
-                <Text mb="24px">
-                  <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+            <Title variant="h3" m="0" mb="24px">
+              <FormattedMessage {...messages.notes} />
+            </Title>
+            <Box as="ul" pl="28px">
+              <Text as="li" mb="4px" mt="0px" w="500px">
+                <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+              </Text>
+              {formType === 'survey' && (
+                <Text as="li" mb="4px" mt="0px" w="500px">
+                  <FormattedMessage {...messages.logicNotInPDF} />
                 </Text>
+              )}
+              <Text as="li" mb="4px">
+                <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+                {importPrintedFormsEnabled || (
+                  <>
+                    {' '}
+                    <FormattedMessage {...messages.notIncludedInYourPlan} />
+                  </>
+                )}
+              </Text>
+              {importPrintedFormsEnabled ? (
                 <>
-                  <Text mb="24px">
+                  <Text as="li" mb="24px">
                     <FormattedMessage {...messages.personalDataExplanation} />
                   </Text>
-                  <Box mb="24px">
-                    <Checkbox
+                  <Box mb="24px" ml="-20px">
+                    <CheckboxWithLabel
                       name="personal_data"
                       label={
                         <Text m="0">
@@ -133,15 +126,10 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                     />
                   </Box>
                 </>
-              </>
-            )}
-            {isTimelineProject && formType === 'idea_form' && (
-              <Box mb="24px">
-                <PhaseSelector
-                  label={<FormattedMessage {...messages.phase} />}
-                />
-              </Box>
-            )}
+              ) : (
+                <Box mb="24px" />
+              )}
+            </Box>
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />

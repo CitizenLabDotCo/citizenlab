@@ -1,7 +1,9 @@
-import fetcher from 'utils/cl-react-query/fetcher';
-import { ResendEmailCodeProperties } from './types';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import meKeys from 'api/me/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import { ResendEmailCodeProperties } from './types';
 
 const resendEmailCode = (requestBody: ResendEmailCodeProperties) => {
   return fetcher({

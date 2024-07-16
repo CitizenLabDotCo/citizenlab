@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+ar-MA:
+  phase_title_default:
+    ideation: جمع المدخلات
+    voting: التصويت
+    poll: تصويت
+    native_survey: استطلاع
+    survey: استطلاع
+    document_annotation: ردود الفعل الوثيقة
+    volunteering: البحث عن المتطوعين
+    information: معلومة

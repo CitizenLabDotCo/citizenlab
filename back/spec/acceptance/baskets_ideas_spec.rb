@@ -9,8 +9,8 @@ resource BasketsIdea do
   before { header 'Content-Type', 'application/json' }
 
   let(:user) { create(:user) }
-  let(:project) { create(:continuous_multiple_voting_project) }
-  let(:basket) { create(:basket, participation_context: project, user: user) }
+  let(:project) { create(:single_phase_multiple_voting_project) }
+  let(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
   context 'when resident' do
     before { header_token_for user }
@@ -66,8 +66,8 @@ resource BasketsIdea do
       end
 
       context 'when budgeting' do
-        let(:project) { create(:continuous_budgeting_project) }
-        let(:idea_id) { create(:idea, project: project, budget: 10).id }
+        let(:project) { create(:single_phase_budgeting_project) }
+        let(:idea_id) { create(:idea, project: project, budget: 10, phases: project.phases).id }
 
         example 'Add an idea to a basket', document: false do
           do_request
@@ -76,6 +76,14 @@ resource BasketsIdea do
 
           expect(json_response.dig(:data, :attributes, :votes)).to eq 10
           expect(json_response[:included].pluck(:id)).to include idea_id
+        end
+      end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Add an idea to a submitted basket' do
+          assert_status 401
         end
       end
     end
@@ -96,7 +104,7 @@ resource BasketsIdea do
       end
 
       context 'when budgeting' do
-        let(:project) { create(:continuous_budgeting_project) }
+        let(:project) { create(:single_phase_budgeting_project) }
 
         let(:ideas) do
           [3, 2].map do |budget|
@@ -114,6 +122,14 @@ resource BasketsIdea do
           expect(json_response.dig(:data, :attributes, :votes)).to eq 3
         end
       end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Update an idea in a submitted basket' do
+          assert_status 401
+        end
+      end
     end
 
     delete 'web_api/v1/baskets_ideas/:id' do
@@ -123,6 +139,14 @@ resource BasketsIdea do
       example_request 'Delete a baskets_idea' do
         assert_status 200
         expect { BasketsIdea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Remove an idea from a submitted basket' do
+          assert_status 401
+        end
       end
     end
 
@@ -139,16 +163,47 @@ resource BasketsIdea do
       context 'basket and basket_idea do not exist' do
         let(:votes) { 1 }
 
-        example_request 'Add an idea to a basket & create the basket' do
-          assert_status 200
+        context 'voting is allowed' do
+          example_request 'Add an idea to a basket & create the basket' do
+            assert_status 200
 
-          expect(response_data.dig(:attributes, :votes)).to eq 1
-          expect(json_response_body[:included].pluck(:id)).to include idea_id
+            expect(response_data.dig(:attributes, :votes)).to eq 1
+            expect(json_response_body[:included].pluck(:id)).to include idea_id
+          end
+        end
+
+        context 'permission custom fields are required for voting' do
+          let(:user) { create(:user) }
+          let(:project) { create(:project) }
+          let(:votes) { 1 }
+          let(:idea) { create(:idea, project: project) }
+
+          before do
+            current_phase = create(:active_phase, project: project, participation_method: 'voting', voting_method: 'single_voting', with_permissions: true)
+            project.phases << current_phase
+            idea.phases << current_phase
+            postcode_field = create(:custom_field, resource_type: 'User', key: 'postcode_xyz', title_multiloc: { 'en' => 'Postcode' }, required: false)
+            permission = project.phases.first.permissions.find_by(action: 'voting')
+            permission.update!(global_custom_fields: false)
+            create(:permissions_custom_field, permission: permission, custom_field: postcode_field, required: true)
+          end
+
+          example_request '[error] Not authorized to add an idea to a basket & create the basket' do
+            assert_status 401
+          end
+        end
+
+        context 'voting phase is over' do
+          let(:project) { create(:single_voting_phase, start_at: (Time.zone.today - 5.days), end_at: (Time.zone.today - 3.days)).project }
+
+          example_request '[error] Add an idea to a new basket' do
+            assert_status 401
+          end
         end
       end
 
       context 'basket already exists' do
-        let!(:basket) { create(:basket, participation_context: project, user: user) }
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
         context 'basket_idea does not exist' do
           let(:votes) { 2 }
@@ -211,6 +266,14 @@ resource BasketsIdea do
             expect(BasketsIdea.find_by(idea: idea)).to be_nil
           end
         end
+
+        context 'basket is submitted' do
+          let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+          example_request '[error] Add an idea to a submitted basket' do
+            assert_status 401
+          end
+        end
       end
 
       context 'idea does not exist' do
@@ -225,8 +288,9 @@ resource BasketsIdea do
   end
 
   def create_baskets_ideas(basket, votes: [3, 2, 1])
+    phase = basket.phase
     votes.map do |v|
-      create(:baskets_idea, basket: basket, idea: create(:idea, project: basket.participation_context.project), votes: v).idea
+      create(:baskets_idea, basket: basket, idea: create(:idea, project: phase.project, phases: [phase]), votes: v).idea
     end
   end
 end

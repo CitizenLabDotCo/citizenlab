@@ -1,16 +1,13 @@
-// Libraries
 import React, { memo } from 'react';
 
-// Components
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// Styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import messages from './messages';
 
 const TitleWrapper = styled.div`
   min-height: 105px;
@@ -49,7 +46,7 @@ export const TextAndButtons = styled.div`
 
 interface Props {
   title: Record<string, string>;
-  subtitle: Record<string, string>;
+  subtitle?: Record<string, string>;
 }
 
 const UsersHeader = memo(({ title, subtitle }: Props) => {
@@ -64,10 +61,10 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
           linkTo="/admin/dashboard/users"
           text={<FormattedMessage {...messages.userInsights} />}
           icon="chart-bar"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
         />
       </FirstRow>
-      <FormattedMessage tagName="h2" {...subtitle} />
+      {subtitle && <FormattedMessage tagName="h2" {...subtitle} />}
     </TitleWrapper>
   );
 });

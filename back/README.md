@@ -134,7 +134,7 @@ Set `USE_AWS_S3_IN_DEV=true` in `env_files/back-safe.env`.
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Go Vocal employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 

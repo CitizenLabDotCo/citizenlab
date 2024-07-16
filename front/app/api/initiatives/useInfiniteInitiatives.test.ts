@@ -1,16 +1,16 @@
 import { renderHook } from '@testing-library/react-hooks';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { initiativesData, links } from './__mocks__/_mockServer';
 import useInfiniteInitiatives from './useInfiniteInitiatives';
-import { initiativesData, links } from './__mocks__/useInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativesData, links }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: initiativesData, links }, { status: 200 });
   })
 );
 
@@ -42,10 +42,10 @@ describe('useInfiniteInitiatives', () => {
   it('returns data correctly with no next page', async () => {
     const newLinks = { ...links, next: null };
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({ data: initiativesData, links: newLinks })
+      http.get(apiPath, () => {
+        return HttpResponse.json(
+          { data: initiativesData, links: newLinks },
+          { status: 200 }
         );
       })
     );
@@ -71,8 +71,8 @@ describe('useInfiniteInitiatives', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

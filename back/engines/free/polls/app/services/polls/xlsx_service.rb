@@ -2,11 +2,11 @@
 
 module Polls
   class XlsxService
-    def generate_poll_results_xlsx(participation_context, responses, current_user)
+    def generate_poll_results_xlsx(phase, responses, current_user)
       multiloc_service = MultilocService.new
-      is_anonymous = participation_context.poll_anonymous?
+      is_anonymous = phase.poll_anonymous?
       questions = Polls::Question
-        .where(participation_context: participation_context)
+        .where(phase: phase)
         .order(:ordering)
 
       columns = questions.map do |q|

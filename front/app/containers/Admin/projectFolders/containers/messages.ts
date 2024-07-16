@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.multilocError',
     defaultMessage: 'All text fields must be fully filled in.',
   },
+  textFieldsError: {
+    id: 'app.containers.AdminPage.FoldersEdit.textFieldsError',
+    defaultMessage: 'All text fields must be filled in.',
+  },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',

@@ -14,21 +14,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
     defaultMessage: 'Input manager',
   },
+  setup: {
+    id: 'app.containers.AdminPage.ProjectEdit.setup',
+    defaultMessage: 'Setup',
+  },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
+  },
+  mapTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapTab',
+    defaultMessage: 'Map',
   },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
     defaultMessage: 'Volunteering',
   },
+  phaseAccessRights: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
+    defaultMessage: 'Access rights',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
-  },
-  phasesTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
-    defaultMessage: 'Timeline',
   },
   allowedInputTopicsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
@@ -46,32 +54,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
   },
-  addNewIdea: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
-    defaultMessage: 'Add an idea',
+  newIdea: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIdea',
+    defaultMessage: 'New idea',
   },
   addNewInput: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
     defaultMessage: 'Add an input',
   },
-  addNewProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
-    defaultMessage: 'Add a project',
-  },
-  addNewIssue: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+  newIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIssue',
     defaultMessage: 'Add an issue',
   },
-  addNewQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+  newQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.newQuestion',
     defaultMessage: 'Add a question',
   },
-  addNewOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+  newOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.newOption',
     defaultMessage: 'Add an option',
   },
-  addNewContribution: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+  newContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.newContribution',
     defaultMessage: 'Add a contribution',
   },
   viewPublicProject: {
@@ -121,16 +125,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
     defaultMessage: 'What do you want to do?',
   },
-  phaseMethodChangeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning',
-    defaultMessage:
-      "Some participation methods aren't available for existing phases. A new phase will have to be created in these cases.",
-  },
-  projectMethodChangeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning',
-    defaultMessage:
-      "Some participation methods aren't available for existing projects. A new project will have to be created in these cases.",
-  },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
@@ -138,10 +132,6 @@ export default defineMessages({
   shareInformation: {
     id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
-  },
-  shareInformationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
-    defaultMessage: 'Provide information to participants.',
   },
   inputAndFeedback: {
     id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
@@ -366,9 +356,9 @@ export default defineMessages({
     defaultMessage: 'Survey Service',
   },
   surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
@@ -574,5 +564,30 @@ export default defineMessages({
   optionsPageText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
+  },
+  reportTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
+    defaultMessage: 'Report',
+  },
+  lockedTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
+    defaultMessage:
+      'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
+  },
+  trafficTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.trafficTab',
+    defaultMessage: 'Traffic',
+  },
+  timelineTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
+    defaultMessage: 'Timeline',
+  },
+  participationTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
+    defaultMessage: 'Participants',
+  },
+  messagingTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
+    defaultMessage: 'Messaging',
   },
 });

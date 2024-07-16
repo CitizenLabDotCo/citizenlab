@@ -12,7 +12,7 @@ resource 'Phases' do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
     @project = create(:project)
-    @phases = create_list(:phase_sequence, 2, project: @project)
+    @project.phases = create_list(:phase_sequence, 2, project: @project)
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -23,7 +23,7 @@ resource 'Phases' do
     let(:project_id) { @project.id }
 
     example 'List all phases of a project' do
-      PermissionsService.new.update_all_permissions
+      Permissions::PermissionsUpdateService.new.update_all_permissions
       do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
@@ -32,15 +32,18 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id' do
-    let(:id) { @phases.first.id }
+    before { @phase = @project.phases.first }
+
+    let(:id) { @phase.id }
 
     example 'Get one phase by id' do
-      create_list(:idea, 2, project: @project, phases: @phases)
-      PermissionsService.new.update_all_permissions
+      create_list(:idea, 2, project: @project, phases: @project.phases)
+      Permissions::PermissionsUpdateService.new.update_all_permissions
+      @phase.update!(report: build(:report))
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @phases.first.id
+      expect(json_response.dig(:data, :id)).to eq @phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
         reacting_like_method: 'unlimited',
@@ -48,13 +51,44 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @phases.first.project_id, type: 'project' }
+        data: { id: @phase.project_id, type: 'project' }
+      })
+
+      expect(json_response.dig(:data, :relationships, :report)).to match({
+        data: { id: @phase.report.id, type: 'report' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(Permission.available_actions(@phases.first).length)
+        .to eq(Permission.available_actions(@phase).length)
 
       expect(json_response[:included].pluck(:type)).to include 'permission'
+    end
+  end
+
+  get 'web_api/v1/phases/:id/submission_count' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
+      create_list(:idea, 3, project: phase.project, phases: [phase])
+    end
+
+    context 'native survey' do
+      example 'Get count when native survey phase (ignores ideas)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
+      end
+    end
+
+    context 'ideation' do
+      example 'Get count for ideation phase (ignores native survey responses)' do
+        phase.update!(participation_method: 'ideation')
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
+      end
     end
   end
 
@@ -89,22 +123,22 @@ resource 'Phases' do
       with_options scope: :phase do
         parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
-        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
-        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
-        parameter :reacting_like_method, "How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_method, "How does reacting work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
         parameter :reacting_dislike_enabled, 'Can citizens dislikes in this phase? Defaults to true', required: false
-        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
+        parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
@@ -116,6 +150,8 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :native_survey_title_multiloc, 'A title for the native survey.'
+        parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -150,7 +186,36 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      context 'Blank phase end dates' do
+        let(:start_at) { @project.phases.last.end_at + 5.days }
+        let(:end_at) { nil }
+
+        example_request 'Create a phase for a project with an open end date' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :end_at)).to be_nil
+        end
+      end
+
+      context 'Creating a new phase when a previous phase exists with no end date' do
+        let(:start_at) { @new_phase_start }
+        let(:end_at) { @new_phase_start + 5.days }
+
+        before do
+          @new_phase_start = @project.phases.last.end_at + 1.day
+          @project.phases.last.update!(end_at: nil)
+        end
+
+        example 'Create a phase on a project with an open ended last phase' do
+          do_request
+
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be true
+          expect(@project.phases.last.reload.end_at).not_to be_nil
+        end
       end
 
       describe 'voting phases' do
@@ -208,6 +273,8 @@ resource 'Phases' do
 
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
+        let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -215,39 +282,18 @@ resource 'Phases' do
           phase_id = json_response.dig(:data, :id)
           phase_in_db = Phase.find(phase_id)
 
-          # A new native survey phase has a default form.
-          fields = phase_in_db.custom_form.custom_fields
-          expect(fields.size).to eq 2
-          expect(fields.map(&:ordering)).to eq([0, 1])
-          field1 = fields[0]
-          expect(field1.input_type).to eq 'page'
-          field2 = fields[1]
-          expect(field2.input_type).to eq 'select'
-          expect(field2.title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          options = field2.options
-          expect(options.size).to eq 2
-          expect(options[0].key).to eq 'option1'
-          expect(options[1].key).to eq 'option2'
-          expect(options[0].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          expect(options[1].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
+          # A new native survey phase does not have a default form.
+          expect(phase_in_db.custom_form).to be_nil
 
           expect(phase_in_db.participation_method).to eq 'native_survey'
           expect(phase_in_db.title_multiloc).to match title_multiloc
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
+          expect(phase_in_db.native_survey_title_multiloc['en']).to eq 'Planning survey'
+          expect(phase_in_db.native_survey_button_multiloc['en']).to eq 'Fill in the form'
+          expect(json_response.dig(:data, :attributes, :native_survey_title_multiloc, :en)).to eq 'Planning survey'
+          expect(json_response.dig(:data, :attributes, :native_survey_button_multiloc, :en)).to eq 'Fill in the form'
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
@@ -274,7 +320,7 @@ resource 'Phases' do
       describe do
         before do
           @project.phases.each(&:destroy!)
-          create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
+          @project.phases << create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
         end
 
         let(:start_at) { Time.now }
@@ -344,22 +390,22 @@ resource 'Phases' do
         parameter :project_id, 'The id of the project this phase belongs to'
         parameter :title_multiloc, 'The title of the phase in nultiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
-        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
-        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
-        parameter :reacting_like_method, "How does liking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
+        parameter :reacting_like_method, "How does liking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
         parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
         parameter :reacting_dislike_enabled, 'Can citizens react in this phase?', required: false
-        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
+        parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
@@ -437,7 +483,8 @@ resource 'Phases' do
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Make a phase with ideas an information phase' do
+        example 'Change a phase with ideas into an information phase' do
+          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
           do_request
           assert_status 200
         end
@@ -474,7 +521,7 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create(:phase, participation_method: 'native_survey', project: @project) }
+        let(:phase) { create(:native_survey_phase, project: @project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
           ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
@@ -546,25 +593,28 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq(
+        expect(response_data[:type]).to eq 'survey_results'
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 2
+        expect(response_data.dig(:attributes, :results).count).to eq 1
+        expect(response_data.dig(:attributes, :results, 0)).to match(
           {
-            data: {
-              type: 'survey_results',
-              attributes: {
-                results: [
-                  {
-                    inputType: 'multiselect',
-                    question: { en: 'What are your favourite pets?' },
-                    required: true,
-                    totalResponses: 3,
-                    answers: [
-                      { answer: { en: 'Cat' }, responses: 2 },
-                      { answer: { en: 'Dog' }, responses: 1 }
-                    ],
-                    customFieldId: multiselect_field.id
-                  }
-                ],
-                totalSubmissions: 2
+            customFieldId: multiselect_field.id,
+            inputType: 'multiselect',
+            question: { en: 'What are your favourite pets?' },
+            required: true,
+            grouped: false,
+            totalResponseCount: 2,
+            questionResponseCount: 2,
+            totalPickCount: 3,
+            answers: [
+              { answer: 'cat', count: 2 },
+              { answer: 'dog', count: 1 },
+              { answer: nil, count: 0 }
+            ],
+            multilocs: {
+              answer: {
+                cat: { title_multiloc: { en: 'Cat' } },
+                dog: { title_multiloc: { en: 'Dog' } }
               }
             }
           }
@@ -672,7 +722,7 @@ resource 'Phases' do
           end
 
           example 'Download native survey phase inputs in one sheet' do
-            expected_params = [[survey_response1, survey_response2], active_phase, true]
+            expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
             allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
             do_request
             expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -712,6 +762,21 @@ resource 'Phases' do
                 ]
               }
             ])
+          end
+
+          example 'Draft responses are not included' do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              publication_status: 'draft'
+            )
+            do_request
+
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            expect(xlsx.first[:rows].size).to eq 2
           end
         end
       end
@@ -777,8 +842,8 @@ resource 'Phases' do
         )
       end
 
-      example 'Download phase inputs without private user data', document: false do
-        expected_params = [[survey_response], active_phase, false]
+      example 'Download phase inputs WITH private user data', document: false do
+        expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
         allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
         do_request
         expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -789,6 +854,9 @@ resource 'Phases' do
             column_headers: [
               'ID',
               multiselect_field.title_multiloc['en'],
+              'Author name',
+              'Author email',
+              'Author ID',
               'Submitted at',
               'Project'
             ],
@@ -796,6 +864,9 @@ resource 'Phases' do
               [
                 survey_response.id,
                 'Cat, Dog',
+                survey_response.author_name,
+                survey_response.author.email,
+                survey_response.author_id,
                 an_instance_of(DateTime), # created_at
                 project.title_multiloc['en']
               ]

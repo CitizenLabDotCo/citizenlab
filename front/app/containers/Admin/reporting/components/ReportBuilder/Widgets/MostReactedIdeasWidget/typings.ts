@@ -1,5 +1,7 @@
+import { Multiloc } from 'typings';
+
 export interface Props {
-  title?: string;
+  title?: Multiloc;
   projectId?: string;
   phaseId?: string;
   numberOfIdeas: number;

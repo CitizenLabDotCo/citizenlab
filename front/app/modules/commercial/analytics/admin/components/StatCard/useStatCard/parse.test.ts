@@ -1,5 +1,6 @@
-import { parseExcelData } from './parse';
 import { XlsxData } from 'components/admin/ReportExportMenu';
+
+import { parseExcelData } from './parse';
 import { StatCardData } from './typings';
 
 describe('Stat card Excel parsing', () => {

@@ -1,22 +1,19 @@
 import React, { lazy, Suspense, MouseEvent } from 'react';
-import { ManagerType, TFilterMenu } from '../../..';
 
-// services
-import { IIdeaData } from 'api/ideas/types';
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-// style
+import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import { IPhaseData } from 'api/phases/types';
+
 import useLocale from 'hooks/useLocale';
 
-// Types
-import { IInitiativeData } from 'api/initiatives/types';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { ManagerType, TFilterMenu } from '../../..';
 
 // lazy-loaded components
 const IdeaRow = lazy(() => import('./IdeaRow'));

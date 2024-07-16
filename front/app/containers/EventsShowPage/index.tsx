@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Spinner,
@@ -8,36 +7,37 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Container from './components/Container';
-import InformationColumnDesktop from './components/InformationColumnDesktop';
-import DesktopTopBar from './components/DesktopTopBar';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
-import MobileTopBar from './components/MobileTopBar';
-import EventDescription from './components/EventDescription';
-import InformationSectionMobile from './components/InformationSectionMobile';
-import Image from 'components/UI/Image';
-import ProjectLink from './components/ProjectLink';
-
-// styling
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// router
-import { useParams } from 'react-router-dom';
-
-// hooks
-import useEvent from 'api/events/useEvent';
-import useLocale from 'hooks/useLocale';
-import useProjectById from 'api/projects/useProjectById';
 import useEventImage from 'api/event_images/useEventImage';
+import useEvent from 'api/events/useEvent';
+import useProjectById from 'api/projects/useProjectById';
+
 import useLocalize from 'hooks/useLocalize';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import PageNotFound from 'components/PageNotFound';
+import Image from 'components/UI/Image';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import DesktopTopBar from './components/DesktopTopBar';
+import EventDescription from './components/EventDescription';
+import InformationColumnDesktop from './components/InformationColumnDesktop';
+import InformationSectionMobile from './components/InformationSectionMobile';
+import MobileTopBar from './components/MobileTopBar';
+import ProjectLink from './components/ProjectLink';
+import { pageContentMaxWidth } from './styleConstants';
+
 const InnerContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: ${pageContentMaxWidth}px;
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -68,7 +68,6 @@ const EventImage = styled(Image)`
 
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const locale = useLocale();
   const localize = useLocalize();
   const { eventId } = useParams() as {
     eventId: string;
@@ -79,11 +78,6 @@ const EventsShowPage = () => {
   );
   const { data: eventImage } = useEventImage(event?.data);
   const largeImage = eventImage?.data.attributes?.versions?.large;
-
-  const projectTitleLocalized = localize(
-    project?.data.attributes.title_multiloc
-  );
-  const projectSlug = project?.data.attributes.slug;
 
   if (status === 'loading') {
     return (
@@ -100,50 +94,45 @@ const EventsShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (isNilOrError(locale) || !project) {
+  if (!project) {
     return null;
   }
 
   return (
     <>
-      {isSmallerThanTablet && (
-        <MobileTopBar projectId={event?.data.relationships.project.data.id} />
+      {isSmallerThanTablet ? (
+        <MobileTopBar projectId={event.data.relationships.project.data.id} />
+      ) : (
+        <Box p="32px" pb="0">
+          <DesktopTopBar event={event.data} project={project.data} />
+        </Box>
       )}
-      <Container>
+      <main>
         <InnerContainer>
-          {!isSmallerThanTablet && (
-            <DesktopTopBar event={event.data} project={project.data} />
-          )}
-
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {localize(event?.data.attributes.title_multiloc)}
+                {localize(event.data.attributes.title_multiloc)}
               </Title>
-              {projectTitleLocalized && projectSlug && (
-                <ProjectLink
-                  projectTitleLocalized={projectTitleLocalized}
-                  projectSlug={projectSlug}
-                />
-              )}
+              <ProjectLink project={project.data} />
               {largeImage && (
                 <Box aria-hidden="true">
                   <EventImage src={largeImage} alt="" />
                 </Box>
               )}
               <Box mb="40px">
-                {event && <EventDescription event={event?.data} />}
-                {isSmallerThanTablet && event && (
+                <EventDescription event={event.data} />
+                {isSmallerThanTablet && (
                   <InformationSectionMobile event={event.data} />
                 )}
               </Box>
             </Box>
-            {!isSmallerThanTablet && event && (
+            {!isSmallerThanTablet && (
               <InformationColumnDesktop event={event.data} />
             )}
           </Box>
         </InnerContainer>
-      </Container>
+      </main>
     </>
   );
 };

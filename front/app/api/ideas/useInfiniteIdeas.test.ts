@@ -1,16 +1,16 @@
 import { renderHook } from '@testing-library/react-hooks';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideaData, links } from './__mocks__/_mockServer';
 import useInfiniteIdeas from './useInfiniteIdeas';
-import { data, links } from './useIdeas.test';
 
 const apiPath = '*ideas';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data, links }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: ideaData, links }, { status: 200 });
   })
 );
 
@@ -35,15 +35,18 @@ describe('useInfiniteIdeas', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(ideaData);
     expect(result.current.hasNextPage).toBe(true);
   });
 
   it('returns data correctly with no next page', async () => {
     const newLinks = { ...links, next: null };
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data, links: newLinks }));
+      http.get(apiPath, () => {
+        return HttpResponse.json(
+          { data: ideaData, links: newLinks },
+          { status: 200 }
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -62,14 +65,14 @@ describe('useInfiniteIdeas', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(ideaData);
     expect(result.current.hasNextPage).toBe(false);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

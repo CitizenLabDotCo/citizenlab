@@ -2,6 +2,7 @@ ca:
   email_campaigns:
     campaign_type_description:
       "manual": Missatges oficials
+      "manual_project_participants": Missatges oficials als participants del projecte
       "admin_rights_received": S'han rebut els drets d'administrador
       "comment_deleted_by_admin": Eliminació del meu comentari
       "comment_marked_as_spam": Comenteu l'informe de correu brossa
@@ -50,8 +51,10 @@ ca:
       "assignee_digest": Visió general setmanal de les idees assignades
       "user_digest": Resum setmanal
       "voting_basket_submitted": Confirmació de la votació
+      "native_survey_not_submitted": Enquesta no enviada
       "voting_basket_not_submitted": Vots no enviats
       "voting_last_chance": Última oportunitat per votar
+      "voting_phase_started": Nova fase del projecte amb votació
       "voting_results": Resultats de les votacions
       "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     general:
@@ -74,7 +77,7 @@ ca:
       "link_terms_conditions": "Termes i Condicions"
       "link_unsubscribe": "Cancel·la la subscripció"
       "powered_by": "Impulsat per"
-      "statement": "CitizenLab us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
+      "statement": "Go Vocal us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
       "unsubscribe_text": "donar-se de baixa"
     follow:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"
@@ -504,6 +507,13 @@ ca:
       event_description: 'Gràcies per participar. Els vostres vots s''han registrat. Visiteu la plataforma de %{organizationName} per veure i gestionar els vostres vots.'
       cta_see_votes_submitted: 'Veure vots enviats'
       cta_message: 'Feu clic al botó següent per participar'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Gairebé allà! Envieu les vostres respostes'
+      preheader: 'No heu completat la resposta de l''enquesta a la plataforma de participació de %{organizationName}'
+      title_native_survey_not_submitted: 'Casi allà! Envieu les vostres respostes'
+      body_native_survey_not_submitted: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Els enviaments es tancaran el %{phaseEndDate}. Feu clic al botó de sota per continuar on ho vau deixar.'
+      body_native_survey_not_submitted_no_date: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Feu clic al botó de sota per continuar on ho vau deixar.'
+      cta_complete_your_survey_response: 'Reprèn la resposta de l''enquesta'
     voting_basket_not_submitted:
       subject: '%{organizationName}: no heu enviat els vostres vots'
       preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
@@ -550,6 +560,7 @@ ca:
         admins: 'Als administradors'
         admins_and_managers: 'A administradors i gestors'
         managers: 'Als directius'
+        project_participants: 'Als participants del projecte'
         registered_users: 'A usuaris registrats'
       recipient_segment:
         admins: 'Administradors'
@@ -573,12 +584,13 @@ ca:
         user_who_registers: 'Usuari que es registra'
         user_who_was_invited: 'Usuari que va ser convidat'
         users_who_engaged_with_the_project: 'Usuaris que han participat amb el projecte'
-        users_who_follow_the_proposal: 'Usuari que segueix la proposta'
-        users_who_follow_the_input: 'Usuari que segueix l''entrada'
+        users_who_follow_the_proposal: 'Usuaris que segueixen la proposta'
+        users_who_follow_the_input: 'Usuaris que segueixen l''entrada'
         users_who_follow_the_project: 'Usuaris que segueixen el projecte'
         user_who_voted: 'Usuari que ha votat'
         user_with_unsubmitted_votes: 'Usuari que no ha enviat els seus vots'
         users_who_engaged_but_not_voted: 'Usuaris que s''han implicat amb el projecte però no han votat'
+        user_with_unsubmitted_survey: 'Usuari que ha començat però no ha enviat la seva enquesta'
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
@@ -591,6 +603,7 @@ ca:
         proposals: 'Propostes'
         reactions: 'Reaccions'
         voting: 'Votació'
+        surveys: 'Enquestes'
       trigger:
         comment_is_deleted: 'S''ha suprimit el comentari'
         comment_is_flagged_as_spam: 'El comentari està marcat com a correu brossa'
@@ -639,3 +652,4 @@ ca:
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
         registration_to_event: 'Inscripció a un esdeveniment'
+        survey_1_day_after_draft_saved: '1 dia després que l''usuari hagi desat l''enquesta per darrera vegada com a esborrany'

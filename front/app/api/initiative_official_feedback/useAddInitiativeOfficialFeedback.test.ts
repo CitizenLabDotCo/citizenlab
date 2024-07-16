@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddInitiativeOfficialFeedback from './useAddInitiativeOfficialFeedback';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useAddInitiativeOfficialFeedback from './useAddInitiativeOfficialFeedback';
 import { data } from './useInitiativeOfficialFeedback.test';
 
 const apiPath = '*/initiatives/:initiativeId/official_feedback';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: data[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: data[0] }, { status: 200 });
   })
 );
 
@@ -46,8 +45,8 @@ describe('useAddInitiativeOfficialFeedback', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

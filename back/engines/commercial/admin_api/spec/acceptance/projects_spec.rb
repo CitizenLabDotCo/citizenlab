@@ -9,6 +9,27 @@ resource 'Project', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
+  get 'admin_api/projects' do
+    let(:tenant_id) { Tenant.current.id }
+    let!(:project) { create(:project) }
+    example_request 'List all projects' do
+      expect(status).to eq 200
+      expect(json_response_body.size).to eq 1
+      expect(json_response_body.first).to include(
+        id: project.id,
+        title_multiloc: kind_of(Hash),
+        description_multiloc: kind_of(Hash),
+        slug: project.slug,
+        map_config_id: nil,
+        visible_to: 'public'
+      )
+      expect(json_response_body.first[:admin_publication]).to include(
+        publication_status: 'published'
+      )
+      expect(json_response_body.first[:folder]).to be_nil
+    end
+  end
+
   get 'admin_api/projects/:id/template_export' do
     parameter :tenant_id, 'The tenant id from which to export the project', required: true
     with_options scope: :project do
@@ -31,7 +52,7 @@ resource 'Project', admin_api: true do
       example_request 'it exports a project' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        template = YAML.load(json_response[:template_yaml])
+        template = YAML.load(json_response[:template_yaml], aliases: true)
 
         expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project.phases.count
@@ -60,27 +81,14 @@ resource 'Project', admin_api: true do
     end
 
     describe 'Import a project template' do
-      example 'it imports a project' do
-        do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
-        expect(status).to eq(200)
+      example 'enqueues an AdminApi::CopyProjectJob' do
+        template_yaml = template.to_yaml
 
-        tenant.switch do
-          project = Project.first
+        expect do
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
+        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id)
 
-          expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
-          expect(template['models']['phase'].size).to eq project.phases.count
-          expect(template['models']['phase'].pluck('start_at')).to match_array project.phases.map(&:start_at).map(&:iso8601)
-          expect(project.folder_id).to eq folder.id
-        end
-      end
-
-      if defined?(NLP)
-        example 'it enqueues DumpTenantJob once if NLP defined' do
-          expect do
-            do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
-          end
-            .to have_enqueued_job(DumpTenantJob)
-        end
+        expect(status).to eq(202)
       end
     end
   end

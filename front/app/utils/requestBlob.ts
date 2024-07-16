@@ -1,4 +1,5 @@
 import { stringify } from 'qs';
+
 import { getJwt } from 'utils/auth/jwt';
 
 // we use xhr rather than fetch API, to enforce response type

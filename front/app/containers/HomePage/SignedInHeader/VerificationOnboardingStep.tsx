@@ -1,17 +1,23 @@
 import React from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import messages from '../messages';
-import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import useAuthUser from 'api/me/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
 import { triggerVerificationOnly } from 'containers/Authentication/events';
-import { colors } from 'utils/styleUtils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
-import AcceptButton from './AcceptButton';
+
+import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};

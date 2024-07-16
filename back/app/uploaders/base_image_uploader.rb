@@ -17,7 +17,7 @@ class BaseImageUploader < BaseUploader
   end
 
   def content_type_allowlist
-    ALLOWED_TYPES
+    ALLOWED_TYPES.map { "image/#{_1}" }
   end
 
   def extension_allowlist

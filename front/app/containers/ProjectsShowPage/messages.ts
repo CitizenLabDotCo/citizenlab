@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitlePoll',
     defaultMessage: 'Take the poll',
   },
+  createANewPhase: {
+    id: 'app.containers.Projects.createANewPhase',
+    defaultMessage: 'Create a new phase',
+  },
   invisibleTitlePhaseAbout: {
     id: 'app.containers.Projects.invisibleTitlePhaseAbout',
     defaultMessage: 'About this phase',
@@ -45,9 +49,9 @@ export default defineMessages({
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
   },
-  metaTitle: {
-    id: 'app.containers.Projects.metaTitle',
-    defaultMessage: 'Project: {projectTitle}',
+  metaTitle1: {
+    id: 'app.containers.Projects.metaTitle1',
+    defaultMessage: 'Project: {projectTitle} | {orgName}',
   },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',
@@ -152,11 +156,6 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
-    defaultMessage:
-      '{projectName} | from the participation platform of {orgName}',
-  },
-  facebookMessage: {
-    id: 'app.containers.Projects.facebookMessage',
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
@@ -423,8 +422,13 @@ export default defineMessages({
     defaultMessage: 'Document',
   },
   participantsTooltip: {
-    id: 'app.containers.Projects.participantsTooltip2',
-    defaultMessage: 'This number also reflects anonymous survey submissions.',
+    id: 'app.containers.Projects.participantsTooltip4',
+    defaultMessage:
+      'This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).',
+  },
+  accessRights: {
+    id: 'app.containers.Projects.accessRights',
+    defaultMessage: 'Access rights',
   },
   surveySubmissionsTooltip: {
     id: 'app.containers.Projects.surveySubmissionsTooltip3',
@@ -433,5 +437,13 @@ export default defineMessages({
   surveySubmissions: {
     id: 'app.containers.Projects.surveySubmissions',
     defaultMessage: 'survey submissions',
+  },
+  noEndDate: {
+    id: 'app.containers.Projects.noEndDate',
+    defaultMessage: 'No end date',
+  },
+  newPhase: {
+    id: 'app.containers.Projects.newPhase',
+    defaultMessage: 'New phase',
   },
 });

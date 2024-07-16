@@ -212,7 +212,8 @@ resource 'Comments' do
         parameter :anonymous, 'Post this comment anonymously - true/false', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
-      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      # TODO: JS Used to include COMMENTING_DENIED_REASONS.values - is there some code missing?
+      response_field :base, "Array containing objects with signature { error: #{Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:initiative_id) { @initiative.id }
       let(:comment) { build(:comment) }
@@ -243,6 +244,10 @@ resource 'Comments' do
           expect(response_data.dig(:relationships, :author, :data, :id)).to be_nil
           expect(response_data.dig(:attributes, :anonymous)).to be true
           expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example 'Does not add the author as a follower', document: false do
+          expect { do_request }.not_to change(Follower, :count)
         end
 
         example 'Does not log activities for the author', document: false do
@@ -284,7 +289,7 @@ resource 'Comments' do
         parameter :anonymous, 'Change this comment to anonymous - true/false'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
-      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:comment) { create(:comment, author: @user, post: @initiative) }
       let(:id) { comment.id }

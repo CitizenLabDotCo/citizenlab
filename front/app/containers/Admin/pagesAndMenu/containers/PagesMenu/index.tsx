@@ -1,11 +1,14 @@
 import React from 'react';
 
-// components
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import Button from 'components/UI/Button';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 import { WrappedComponentProps } from 'react-intl';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+
+import Button from 'components/UI/Button';
+
 import { injectIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const PagesMenu = ({ intl: { formatMessage } }: WrappedComponentProps) => {
@@ -15,7 +18,7 @@ const PagesMenu = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       subtitle={formatMessage(messages.pageSubtitle)}
       rightSideCTA={
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           id="create-custom-page"
           linkTo={'/admin/pages-menu/pages/new'}

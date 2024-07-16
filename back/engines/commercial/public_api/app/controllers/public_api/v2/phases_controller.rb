@@ -23,6 +23,7 @@ module PublicApi
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
+        .includes([:project])
 
       phases = common_date_filters(phases)
       phases = phase_date_filters(phases)

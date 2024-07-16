@@ -1,26 +1,24 @@
 import React, { memo } from 'react';
+
+import { Spinner, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-// hooks
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
 import useLocalize from 'hooks/useLocalize';
 
-// components
-import ProjectTemplateCard from './ProjectTemplateCard';
-import SearchInput from 'components/UI/SearchInput';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import DepartmentFilter from '../components/DepartmentFilter';
-import PurposeFilter from './PurposeFilter';
-import ParticipationLevelFilter from './ParticipationLevelFilter';
 import Centerer from 'components/UI/Centerer';
+import SearchInput from 'components/UI/SearchInput';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import DepartmentFilter from '../components/DepartmentFilter';
+
+import messages from './messages';
+import ParticipationLevelFilter from './ParticipationLevelFilter';
+import ProjectTemplateCard from './ProjectTemplateCard';
+import PurposeFilter from './PurposeFilter';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -176,7 +174,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
                 <LoadMoreButton
                   processing={loadingMore}
                   onClick={onLoadMore}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.loadMoreTemplates} />
                 </LoadMoreButton>

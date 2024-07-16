@@ -1,32 +1,36 @@
 import React, { useState } from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from '../messages';
+
+import useAuthUser from 'api/me/useAuthUser';
 import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
+
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useProjectById from 'api/projects/useProjectById';
+import { isAdmin } from 'utils/permissions/roles';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+
+import messages from '../messages';
 
 export type ActionType = 'deleting' | 'copying';
 
 export interface Props {
   projectId: string;
+  folderId?: string;
   setError: (error: string | null) => void;
   setIsRunningAction?: (actionType: ActionType, isRunning: boolean) => void;
 }
 
 const ProjectMoreActionsMenu = ({
   projectId,
+  folderId,
   setError,
   setIsRunningAction,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: project } = useProjectById(projectId);
-  const folderId = project?.data.attributes.folder_id;
   const { data: authUser } = useAuthUser();
 
   const { mutate: deleteProject } = useDeleteProject();
@@ -43,8 +47,7 @@ const ProjectMoreActionsMenu = ({
   const userCanCopyProject =
     isAdmin(authUser) ||
     // If folderId is string, it means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId));
+    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
 
   const setLoadingState = (
     type: 'deleting' | 'copying',

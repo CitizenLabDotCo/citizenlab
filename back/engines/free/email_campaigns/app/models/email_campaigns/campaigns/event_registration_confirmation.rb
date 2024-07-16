@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -68,7 +70,7 @@ module EmailCampaigns
       event = attendance.event
       project = event.project
 
-      locale = recipient.locale
+      locale = Locale.new(recipient.locale)
       frontend_service = Frontend::UrlService.new
       event_url = frontend_service.model_to_url(event, locale: locale)
       project_url = frontend_service.model_to_url(project, locale: locale)

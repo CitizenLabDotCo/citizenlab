@@ -1,22 +1,19 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Modal from 'components/UI/Modal';
-import SharingButtons from 'components/Sharing/SharingButtons';
+import { Box } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-// i18n
-import T from 'components/T';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
-// style
-import { Box } from '@citizenlab/cl2-component-library';
+import SharingButtons from 'components/Sharing/SharingButtons';
+import T from 'components/T';
+import Modal from 'components/UI/Modal';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string;
@@ -78,12 +75,6 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
                         url={projectUrl}
                         whatsAppMessage={formatMessage(
                           messages.whatsAppMessage,
-                          {
-                            projectName: title,
-                          }
-                        )}
-                        facebookMessage={formatMessage(
-                          messages.facebookMessage,
                           {
                             projectName: title,
                           }

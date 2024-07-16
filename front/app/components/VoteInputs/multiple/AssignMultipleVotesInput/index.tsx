@@ -1,58 +1,50 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
   Text,
   colors,
   useBreakpoint,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-import NumberInput from './NumberInput';
-
-// api
-import useBasket from 'api/baskets/useBasket';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
+
 import useLocalize from 'hooks/useLocalize';
-import messages from './messages';
 
-// routing
-import { useSearchParams } from 'react-router-dom';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-// utils
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+
+import messages from './messages';
+import NumberInput from './NumberInput';
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
 
-// typings
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
 interface Props {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   fillWidth?: boolean;
   onIdeaPage?: boolean;
 }
 
 const AssignMultipleVotesInput = ({
   ideaId,
-  participationContext,
+  phase,
   fillWidth,
   onIdeaPage,
 }: Props) => {
@@ -63,9 +55,8 @@ const AssignMultipleVotesInput = ({
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context
-  const basketId = participationContext.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships?.user_basket?.data?.id;
 
-  // api
   const { data: basket } = useBasket(basketId);
   const { data: idea } = useIdeaById(ideaId);
 
@@ -73,11 +64,11 @@ const AssignMultipleVotesInput = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const budgetingDisabledReason = actionDescriptor?.disabled_reason;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
+  const votingDisabledReason = actionDescriptor?.disabled_reason;
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -91,21 +82,19 @@ const AssignMultipleVotesInput = ({
     }
 
     if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-      const participationContextId = participationContext.id;
-      const participationContextType = participationContext.type;
+      const phaseId = phase.id;
 
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: 1,
         },
       };
@@ -127,7 +116,7 @@ const AssignMultipleVotesInput = ({
 
   if (
     !actionDescriptor ||
-    budgetingDisabledReason === 'idea_not_in_current_phase' ||
+    votingDisabledReason === 'idea_not_in_current_phase' ||
     votes === undefined ||
     votes === null ||
     userHasVotesLeft === undefined
@@ -140,7 +129,7 @@ const AssignMultipleVotesInput = ({
     voting_term_plural_multiloc,
     voting_max_votes_per_idea,
     voting_max_total,
-  } = participationContext.attributes;
+  } = phase.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
 
@@ -155,17 +144,26 @@ const AssignMultipleVotesInput = ({
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
 
-  const minusButtonDisabledMessage = getMinusButtonDisabledMessage(
-    basketSubmitted,
-    onIdeaPage
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    action,
+    actionDescriptor.disabled_reason,
+    true
   );
 
-  const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
-    userHasVotesLeft,
-    basketSubmitted,
-    maxVotesPerIdeaReached,
-    onIdeaPage
-  );
+  const minusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getMinusButtonDisabledMessage(basketSubmitted, onIdeaPage);
+
+  const plusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getPlusButtonDisabledMessage(
+      userHasVotesLeft,
+      basketSubmitted,
+      maxVotesPerIdeaReached,
+      onIdeaPage
+    );
 
   const minusButtonDisabledExplanation = minusButtonDisabledMessage
     ? formatMessage(minusButtonDisabledMessage)
@@ -187,9 +185,8 @@ const AssignMultipleVotesInput = ({
         style={{ cursor: 'default' }}
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Tippy
+        <Tooltip
           disabled={!minusButtonDisabledExplanation}
-          interactive={true}
           placement="bottom"
           content={minusButtonDisabledExplanation}
         >
@@ -205,7 +202,7 @@ const AssignMultipleVotesInput = ({
               <h1 style={{ margin: '0px' }}>-</h1>
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
 
         <Box
           onClick={(event) => {
@@ -222,7 +219,7 @@ const AssignMultipleVotesInput = ({
         >
           <Box
             w={`${votes.toString().length * 20}px`}
-            maxWidth={isMobileOrSmaller ? '100px' : '160px'}
+            maxWidth={isPhoneOrSmaller ? '100px' : '160px'}
           >
             <NumberInput
               value={votes}
@@ -241,10 +238,9 @@ const AssignMultipleVotesInput = ({
             })}
           </Text>
         </Box>
-        <Tippy
+        <Tooltip
           disabled={!plusButtonDisabledExplanation}
-          interactive={true}
-          placement="bottom"
+          placement="bottom-end"
           content={plusButtonDisabledExplanation}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -259,15 +255,14 @@ const AssignMultipleVotesInput = ({
               <h1 style={{ margin: '0px' }}>+</h1>
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     );
   }
 
   return (
-    <Tippy
+    <Tooltip
       disabled={!plusButtonDisabledExplanation}
-      interactive={true}
       placement="bottom"
       content={plusButtonDisabledExplanation}
     >
@@ -281,10 +276,10 @@ const AssignMultipleVotesInput = ({
           width="100%"
           onClick={onAdd}
         >
-          {formatMessage(messages.vote)}
+          {formatMessage(messages.select)}
         </Button>
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 

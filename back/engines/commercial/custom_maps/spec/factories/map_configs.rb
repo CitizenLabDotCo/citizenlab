@@ -6,7 +6,10 @@ FactoryBot.define do
   end
 
   factory :map_config, class: 'CustomMaps::MapConfig' do
-    project
+    transient do
+      project { create(:project) }
+    end
+    mappable { project }
 
     trait :with_positioning do
       center { RGeo::Cartesian.factory.point(Faker::Address.longitude, Faker::Address.latitude) }
@@ -17,16 +20,24 @@ FactoryBot.define do
       tile_provider { generate(:tile_provider) }
     end
 
-    trait :with_layers do
+    trait :with_geojson_layers do
       after(:create) do |map_config, _evaluator|
-        create(:layer, :with_marker_svg, map_config: map_config)
+        create(:geojson_layer, :with_marker_svg, map_config: map_config)
       end
     end
 
-    trait :with_legend do
+    trait :with_esri_feature_layers do
       after(:create) do |map_config, _evaluator|
-        create_list(:legend_item, 2, map_config: map_config)
+        create(:esri_feature_layer, :with_marker_svg, map_config: map_config)
       end
+    end
+
+    trait :with_esri_web_map_id do
+      esri_web_map_id { SecureRandom.uuid }
+    end
+
+    trait :with_esri_base_map_id do
+      esri_base_map_id { SecureRandom.uuid }
     end
   end
 end

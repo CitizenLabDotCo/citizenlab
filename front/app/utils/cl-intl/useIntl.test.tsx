@@ -1,7 +1,10 @@
 import React from 'react';
-import useIntl from './useIntl';
-import { screen, render } from 'utils/testUtils/rtl';
+
 import { defineMessages } from 'react-intl';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import useIntl from './useIntl';
 
 const messages = defineMessages({
   regular: {

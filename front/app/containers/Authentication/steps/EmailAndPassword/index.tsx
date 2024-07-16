@@ -1,43 +1,39 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object, boolean } from 'yup';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextLink from '../_components/TextLink';
-import TextButton from '../_components/TextButton';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import sharedMessages from '../messages';
-import messages from './messages';
-import containerMessages from '../../messages';
+import { SetError } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, boolean } from 'yup';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Checkbox from 'components/HookForm/Checkbox';
+import Button from 'components/UI/Button';
 
-// errors
+import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
+import { isValidEmail } from 'utils/validate';
 
-// utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-import { trackEventByName } from 'utils/analytics';
+import containerMessages from '../../messages';
 import tracks from '../../tracks';
+import TextButton from '../_components/TextButton';
+import TextLink from '../_components/TextLink';
+import sharedMessages from '../messages';
 
-// typings
-import { SetError } from 'containers/Authentication/typings';
+import messages from './messages';
+
+// errors
 
 interface Props {
   loading: boolean;
@@ -80,25 +76,13 @@ const EmailAndPassword = ({
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const tokenLifetime =
     appConfigSettings?.core.authentication_token_lifetime_in_days;
-  const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
 
   const { formatMessage } = useIntl();
 
-  const emailSchema = phoneLoginEnabled
-    ? string()
-        .required(formatMessage(sharedMessages.emailOrPhoneMissingError))
-        .test(
-          '',
-          formatMessage(sharedMessages.emailOrPhoneNumberError),
-          (value) => {
-            if (value === undefined) return false;
-            return isValidEmail(value) || isValidPhoneNumber(value);
-          }
-        )
-    : string()
-        .required(formatMessage(sharedMessages.emailMissingError))
-        .email(formatMessage(sharedMessages.emailFormatError))
-        .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+  const emailSchema = string()
+    .required(formatMessage(sharedMessages.emailMissingError))
+    .email(formatMessage(sharedMessages.emailFormatError))
+    .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
   const schema = object({
     email: emailSchema,
@@ -141,11 +125,7 @@ const EmailAndPassword = ({
               id="email"
               type="email"
               autocomplete="email"
-              label={
-                phoneLoginEnabled
-                  ? formatMessage(sharedMessages.emailOrPhone)
-                  : formatMessage(sharedMessages.email)
-              }
+              label={formatMessage(sharedMessages.email)}
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">
@@ -158,7 +138,7 @@ const EmailAndPassword = ({
             />
           </Box>
           <Box mt="28px">
-            <Checkbox
+            <CheckboxWithLabel
               name="rememberMe"
               label={
                 <Text mt="0" mb="0" mr="4px">

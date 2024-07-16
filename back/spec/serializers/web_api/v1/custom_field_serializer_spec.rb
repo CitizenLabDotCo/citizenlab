@@ -45,7 +45,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        answer_visible_to: 'admins'
+        answer_visible_to: 'admins',
+        random_option_ordering: false
       })
     end
   end
@@ -53,8 +54,8 @@ describe WebApi::V1::CustomFieldSerializer do
   it 'swaps data images' do
     field = create(:custom_field)
     expect_any_instance_of(TextImageService).to(
-      receive(:render_data_images)
-        .with(field, :description_multiloc)
+      receive(:render_data_images_multiloc)
+        .with(field.description_multiloc, field: :description_multiloc, imageable: field)
         .and_return({ 'en' => 'Description with swapped images' })
     )
 
@@ -84,7 +85,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'We need a swimming pool.' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
-        constraints: {}
+        constraints: {},
+        random_option_ordering: false
       })
     end
   end
@@ -114,7 +116,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'Cycling survey' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: { 'next_page_id' => 'TEMP-ID-1' },
-        constraints: {}
+        constraints: {},
+        random_option_ordering: false
       })
     end
   end

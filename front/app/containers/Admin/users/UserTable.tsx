@@ -1,31 +1,26 @@
-// Libraries
 import React from 'react';
-import { TRole } from 'utils/permissions/roles';
-import { includes, isArray } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-// Components
+
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/Pagination';
-import UserTableRow from './UserTableRow';
-
-// Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// I18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Styles
+import { includes, isArray } from 'lodash-es';
 import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
-import Warning from 'components/UI/Warning';
 import { IQueryParameters, IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
+
+import Pagination from 'components/Pagination';
+import Warning from 'components/UI/Warning';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { TRole } from 'utils/permissions/roles';
+
+import events from './events';
+import messages from './messages';
+import tracks from './tracks';
+import UserTableRow from './UserTableRow';
 
 const Container = styled.div`
   flex: 1;
@@ -125,15 +120,14 @@ const UsersTable = ({
         {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
           <Warning>
             <span>
-              <b>@citizenlab.co</b> email addresses are not included as admins &
-              managers.
+              <b>@govocal.com & @citizenlab.co</b> email addresses are not
+              included as admins & managers.
             </span>
           </Warning>
         )}
         <Table mt="20px">
           <Thead>
             <Tr>
-              <Th />
               <Th />
               <SortableTh
                 sortDirection={
@@ -149,20 +143,28 @@ const UsersTable = ({
               >
                 <FormattedMessage {...messages.name} />
               </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.role} />
+                </Uppercase>
+              </Th>
               <SortableTh
                 sortDirection={
-                  sort === 'email'
+                  sort === 'last_active_at'
                     ? 'descending'
-                    : sort === '-email'
+                    : sort === '-last_active_at'
                     ? 'ascending'
                     : undefined
                 }
                 onClick={handleSortingOnChange(
-                  sort === 'email' ? '-email' : 'email'
+                  sort === 'last_active_at'
+                    ? '-last_active_at'
+                    : 'last_active_at'
                 )}
               >
-                <FormattedMessage {...messages.email} />
+                <FormattedMessage {...messages.lastActive} />
               </SortableTh>
+
               <SortableTh
                 sortDirection={
                   sort === 'created_at'
@@ -175,13 +177,9 @@ const UsersTable = ({
                   sort === 'created_at' ? '-created_at' : 'created_at'
                 )}
               >
-                <FormattedMessage {...messages.since} />
+                <FormattedMessage {...messages.joined} />
               </SortableTh>
-              <Th>
-                <Uppercase>
-                  <FormattedMessage {...messages.status} />
-                </Uppercase>
-              </Th>
+
               <Th>
                 <Uppercase>
                   <FormattedMessage tagName="div" {...messages.options} />

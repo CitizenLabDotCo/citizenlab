@@ -5,12 +5,13 @@ module Volunteering
     module V1
       class VolunteersController < VolunteeringController
         before_action :set_cause, only: %i[index create destroy]
-        before_action :set_participation_context, only: :index_xlsx
+        before_action :set_phase, only: :index_xlsx
         skip_before_action :authenticate_user
 
         def index
-          @volunteers = policy_scope(Volunteer).where(cause: @cause).includes(:user)
+          @volunteers = policy_scope(Volunteer).where(cause: @cause)
           @volunteers = paginate @volunteers
+          @volunteers = @volunteers.includes(:user)
 
           render json: linked_json(
             @volunteers,
@@ -20,18 +21,18 @@ module Volunteering
           )
         end
 
-        # GET projects/:project_id/volunteers/as_xlsx
         # GET phases/:phase_id/volunteers/as_xlsx
         def index_xlsx
           authorize %i[volunteering volunteer], :index_xlsx?
 
           @volunteers = policy_scope(Volunteer)
+            .order(:created_at)
             .joins(:cause)
-            .where(volunteering_causes: { participation_context_id: @participation_context })
+            .where(volunteering_causes: { phase_id: @phase })
             .includes(:user, :cause)
 
           I18n.with_locale(current_user&.locale) do
-            xlsx = Volunteering::XlsxService.new.generate_xlsx @participation_context, @volunteers, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+            xlsx = Volunteering::XlsxService.new.generate_xlsx @phase, @volunteers, view_private_attributes: true
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'volunteers.xlsx'
           end
         end
@@ -70,11 +71,9 @@ module Volunteering
           @cause = Cause.find(params[:cause_id])
         end
 
-        def set_participation_context
-          if params[:project_id]
-            @participation_context = Project.find(params[:project_id])
-          elsif params[:phase_id]
-            @participation_context = Phase.find(params[:phase_id])
+        def set_phase
+          if params[:phase_id]
+            @phase = Phase.find(params[:phase_id])
           else
             head :not_found
           end

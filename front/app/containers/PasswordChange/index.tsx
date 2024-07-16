@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import PasswordInput from 'components/HookForm/PasswordInput';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
-import ChangePasswordSuccess from './ChangePasswordSuccess';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import useChangePassword from 'api/users/useChangePassword';
+
+import PasswordInput from 'components/HookForm/PasswordInput';
 import {
   StyledContentContainer,
   Title,
@@ -14,44 +20,25 @@ import {
   LabelContainer,
   StyledPasswordIconTooltip,
 } from 'components/smallForm';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-
-// style
-import messages from './messages';
-import { stylingConsts } from 'utils/styleUtils';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-
-// services
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'api/me/useAuthUser';
+import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
-import clHistory from 'utils/cl-router/history';
+
+import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import meKeys from 'api/me/keys';
-import useChangePassword from 'api/users/useChangePassword';
+import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import ChangePasswordSuccess from './ChangePasswordSuccess';
+import messages from './messages';
 
 type FormValues = {
   current_password: string;
   password: string;
 };
 
-type Props = {
-  tenant: GetAppConfigurationChildProps;
-};
-
-const ChangePassword = ({ tenant }: Props) => {
+const ChangePassword = () => {
+  const { data: tenant } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const { mutateAsync: changePassword } = useChangePassword();
   const { formatMessage } = useIntl();
@@ -63,9 +50,7 @@ const ChangePassword = ({ tenant }: Props) => {
     : messages.titleAddPassword;
 
   const minimumPasswordLength =
-    (!isNilOrError(tenant) &&
-      tenant.attributes.settings.password_login?.minimum_length) ||
-    0;
+    tenant?.data.attributes.settings.password_login?.minimum_length || 0;
 
   const schemaPreviousPasswordExists = object({
     current_password: string().required(
@@ -120,33 +105,29 @@ const ChangePassword = ({ tenant }: Props) => {
   };
 
   if (success) return <ChangePasswordSuccess />;
+
   return (
-    <Box
-      width="100%"
-      minHeight={`calc(100vh - ${
-        stylingConsts.menuHeight + stylingConsts.footerHeight
-      }px)`}
-    >
-      <FormProvider {...methods}>
-        <Helmet
-          title={formatMessage(messages.helmetTitle)}
-          meta={[
-            {
-              name: 'description',
-              content: formatMessage(messages.helmetDescription),
-            },
-          ]}
+    <>
+      <Helmet
+        title={formatMessage(messages.helmetTitle)}
+        meta={[
+          {
+            name: 'description',
+            content: formatMessage(messages.helmetDescription),
+          },
+        ]}
+      />
+      <Box p="32px" pb="0">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
         />
-        <main>
-          <StyledContentContainer>
-            <Box mt="30px">
-              <GoBackButton
-                onClick={() => {
-                  clHistory.goBack();
-                }}
-              />
-            </Box>
-            <Title>{formatMessage(pageTitle)}</Title>
+      </Box>
+      <main>
+        <StyledContentContainer>
+          <Title>{formatMessage(pageTitle)}</Title>
+          <FormProvider {...methods}>
             <Form>
               {userHasPreviousPassword && (
                 <>
@@ -184,15 +165,11 @@ const ChangePassword = ({ tenant }: Props) => {
                 text={formatMessage(messages.submitButton)}
               />
             </Form>
-          </StyledContentContainer>
-        </main>
-      </FormProvider>
-    </Box>
+          </FormProvider>
+        </StyledContentContainer>
+      </main>
+    </>
   );
 };
 
-export default () => (
-  <GetAppConfiguration>
-    {(tenant) => <ChangePassword tenant={tenant} />}
-  </GetAppConfiguration>
-);
+export default ChangePassword;

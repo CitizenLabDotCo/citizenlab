@@ -1,15 +1,23 @@
 import React, { useContext } from 'react';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+
+import {
+  Box,
+  Icon,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import { darken } from 'polished';
-import messages from '../messages';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { getDefaultApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, FormContext } from '../contexts';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
+import { getDefaultApiErrorMessage } from 'utils/errorUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+
+import { APIErrorsContext, FormContext } from '../contexts';
+import messages from '../messages';
 
 const timeout = 350;
 
@@ -119,12 +127,11 @@ interface Props {
   fieldPath: string;
   ajvErrors?: string;
   didBlur?: boolean;
+  inputId: string;
 }
-
-export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
+const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
-
   const { getApiErrorMessage, showAllErrors } = useContext(FormContext);
 
   const fieldName = getFieldNameFromPath(fieldPath);
@@ -155,7 +162,12 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       enter={true}
       exit={true}
     >
-      <Container role="alert" className="e2e-error-message">
+      <Container
+        role="alert"
+        className="e2e-error-message"
+        id="error-display"
+        aria-describedby={inputId}
+      >
         <ContainerInner>
           <ErrorIcon name="alert-circle" fill={colors.error} />
 
@@ -202,3 +214,5 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
     </CSSTransition>
   );
 };
+
+export default ErrorDisplay;

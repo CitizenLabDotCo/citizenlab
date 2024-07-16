@@ -1,6 +1,8 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 let projectId = '';
+let phaseId: string;
 describe('Admin: ideation analysis', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -10,31 +12,61 @@ describe('Admin: ideation analysis', () => {
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
-      const ideaTitle1 = 'My first idea';
-      const ideaTitle2 = 'My second idea';
-      const ideaTitle3 = 'My third idea';
 
-      const ideaContent = randomString();
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle1, ideaContent);
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle2, ideaContent);
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle3, ideaContent);
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+          const ideaTitle1 = 'My first idea';
+          const ideaTitle2 = 'My second idea';
+          const ideaTitle3 = 'My third idea';
+
+          const ideaContent = randomString();
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle1,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle2,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle3,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
+        });
     });
   });
 
   it('creates an analysis from an ideation entry point', () => {
-    cy.visit('/admin/projects/' + projectId + '/ideas');
-    cy.get('#e2e-analysis-banner-button').click();
+    cy.intercept('GET', '**/insights', {
+      fixture: 'analysis_insights_ideation.json',
+    });
 
-    // Consent modal
-    cy.get('#e2e-analysis-consent-checkbox').click();
-    cy.get('#e2e-analysis-consent-button').click();
+    cy.visit('/admin/projects/' + projectId + '/ideas');
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
+    cy.get('#e2e-analysis-banner-button').click();
 
     cy.location('pathname').should(
       'include',
@@ -44,6 +76,9 @@ describe('Admin: ideation analysis', () => {
     // Launch modal
     cy.get('#e2e-analysis-launch-modal').should('exist');
     cy.get('#e2e-analysis-launch-modal-agree-button').click();
+
+    // Shows insights
+    cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
   });
 
   it('searches inputs correctly', () => {

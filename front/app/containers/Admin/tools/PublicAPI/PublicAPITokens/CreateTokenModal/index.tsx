@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 
-// form
-import { object, string } from 'yup';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import Input from 'components/HookForm/Input';
 import {
   Box,
   Button,
@@ -15,9 +7,21 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import useAddApiClient from 'api/api_clients/useAddApiClient';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { object, string } from 'yup';
+
+import useAddApiClient from 'api/api_clients/useAddApiClient';
+
+import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import messages from '../messages';
 
 interface FormValues {
   name: string;
@@ -83,7 +87,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
                 mt="40px"
               >
                 <Button
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   onClick={onClose}
                   disabled={isLoading}
                   type="button"
@@ -104,19 +108,32 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
           </Title>
           <Text>
             <FormattedMessage
-              {...messages.createTokenModalSuccessDescription}
+              {...messages.createTokenModalCreatedDescription}
               values={{
                 secret: <span>client_secret</span>,
               }}
             />
           </Text>
+          <Box mb="20px">
+            <Warning>
+              <FormattedMessage
+                {...messages.createTokenModalCreatedImportantText}
+                values={{
+                  secret: <span>client_secret</span>,
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
           <Box bgColor={colors.tealLight} py="4px" px="12px">
             <StyledSecretText fontWeight="bold" textAlign="center">
               {secret}
             </StyledSecretText>
           </Box>
           <Box display="flex" gap="12px" justifyContent="flex-end" mt="40px">
-            <Button buttonStyle="secondary" onClick={onClose}>
+            <Button buttonStyle="secondary-outlined" onClick={onClose}>
               {formatMessage(messages.createTokenModalSuccessClose)}
             </Button>
             <Button

@@ -1,47 +1,41 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin, isProjectModerator } from '../roles';
-import { IUser } from 'api/users/types';
 import { IProjectData } from 'api/projects/types';
+import { IUser } from 'api/users/types';
 
-definePermissionRule(
-  'project',
-  'create',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+import { definePermissionRule } from 'utils/permissions/permissions';
 
-definePermissionRule(
-  'project',
-  'delete',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+import { isAdmin, isProjectModerator } from '../roles';
 
-definePermissionRule(
-  'project',
-  'reorder',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+import { userModeratesFolder } from './projectFolderPermissions';
+
+definePermissionRule('project', 'create', (_project: IProjectData, user) => {
+  return isAdmin(user);
+});
+
+definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
+  return isAdmin(user);
+});
+
+definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
+  return isAdmin(user);
+});
 
 export function canModerateProject(
-  projectId: string | null | undefined,
-  user: IUser
+  project: IProjectData,
+  user: IUser | undefined
 ) {
-  if (projectId) {
-    return isAdmin(user) || isProjectModerator(user, projectId);
-  }
+  const projectId = project.id;
+  const projectFolderId = project.attributes.folder_id;
 
-  return isAdmin(user);
+  if (!user) return false;
+
+  return (
+    isAdmin(user) ||
+    (typeof projectFolderId === 'string' &&
+      userModeratesFolder(user, projectFolderId)) ||
+    isProjectModerator(user, projectId)
+  );
 }
 
-definePermissionRule(
-  'project',
-  'moderate',
-  (project: IProjectData, user: IUser) => {
-    return canModerateProject(project.id, user);
-  }
-);
+definePermissionRule('project', 'moderate', (project: IProjectData, user) => {
+  return canModerateProject(project, user);
+});

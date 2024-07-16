@@ -74,7 +74,9 @@ module Notifications
       project = activity.item
       followers = Follower.where(followable: project.topics).or(Follower.where(followable: project.areas))
       followers = followers.or(Follower.where(followable: project.folder)) if project.in_folder?
-      User.from_follows(followers).where.not(id: initiator_id).map do |recipient|
+      ProjectPolicy::InverseScope.new(
+        project, User.from_follows(followers).where.not(id: initiator_id)
+      ).resolve.map do |recipient|
         new(
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,

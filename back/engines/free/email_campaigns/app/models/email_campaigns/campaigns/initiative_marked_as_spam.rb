@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -79,7 +81,7 @@ module EmailCampaigns
           post_created_at: notification.post.created_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
           post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale),
+          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
           initiative_reactions_needed: notification.post.reactions_needed,
           initiative_expires_at: notification.post.expires_at.iso8601,
           spam_report_reason_code: notification.spam_report.reason_code,

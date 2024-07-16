@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -9,25 +8,19 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
-import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import { StyledBox } from './styles';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
-// analytics
+import Notifications from 'containers/MainHeader/Components/NotificationMenu/components/Notifications';
+import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
+
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/MainHeader/NotificationMenu/tracks';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import { StyledBox } from './styles';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();

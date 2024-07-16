@@ -1,5 +1,5 @@
+import { fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
 
 export const maxPageWidth = 1166;
 

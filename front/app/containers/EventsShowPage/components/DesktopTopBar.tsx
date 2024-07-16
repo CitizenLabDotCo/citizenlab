@@ -1,28 +1,20 @@
 import React from 'react';
 
-// components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
-// styling
-import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
-
-// typings
-import { IProjectData } from 'api/projects/types';
-import { useLocation } from 'react-router-dom';
-
-// intl
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import clHistory from 'utils/cl-router/history';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// api
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
-import { IEventData } from 'api/events/types';
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -35,19 +27,17 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
-  event?: IEventData;
+  event: IEventData;
 }
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
-  const user = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = isAdmin(user.data);
-  const isModerator = isProjectModerator(user.data, project.id);
 
   return (
     <Bar>
-      <Box mb="40px" display="flex" width="100%" justifyContent="space-between">
+      <Box display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {
@@ -57,9 +47,9 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {(isAdminUser || isModerator) && event && (
+        {canModerateProject(project, authUser) && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             m="0px"
             icon="edit"
             px="8px"

@@ -4,12 +4,12 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
-    let(:recipient) { create(:user, locale: 'en') }
-    let(:idea) { create(:idea, title_multiloc: { 'en' => 'Idea title' }) }
-    let(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, post: idea) }
-    let(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
-    let(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, post: idea, official_feedback: feedback) }
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:idea) { create(:idea, title_multiloc: { 'en' => 'Idea title' }) }
+    let_it_be(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, post: idea) }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
+    let_it_be(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, post: idea, official_feedback: feedback) }
+    let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:official_feedback_on_idea_you_follow_campaign).generate_commands(
         activity: activity,
@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

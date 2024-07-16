@@ -1,9 +1,14 @@
 import React from 'react';
-import { TRule } from '../rules';
-import { IOption } from 'typings';
+
 import { Select } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
+import { IOption } from 'typings';
+
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { TRule } from '../rules';
+
 import { generateOptions } from './utils';
 
 export interface Props {

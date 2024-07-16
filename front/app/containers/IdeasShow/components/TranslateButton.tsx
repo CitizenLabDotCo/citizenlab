@@ -1,20 +1,18 @@
 import React from 'react';
 
-// hooks
+import { SupportedLocale } from 'typings';
+
+import { IIdea } from 'api/ideas/types';
+
 import useLocale from 'hooks/useLocale';
 
-// tracks
-import tracks from '../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// components
 import Outlet from 'components/Outlet';
 
-// utils
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { getLanguage } from 'utils/i18n';
 
-// typings
-import { IIdea } from 'api/ideas/types';
+import tracks from '../tracks';
 
 interface Props {
   idea: IIdea;
@@ -22,12 +20,37 @@ interface Props {
   onClick: (clicked: boolean) => void;
 }
 
+const supportedLanguages = [
+  'ar',
+  'ca',
+  'da',
+  'de',
+  'el',
+  'en',
+  'es',
+  'fi',
+  'fr',
+  'hr',
+  'hu',
+  'it',
+  'lb',
+  'lv',
+  'mi',
+  'nb',
+  'nl',
+  'pl',
+  'pt',
+  'ro',
+  'sr',
+  'sv',
+  'tr',
+];
+
 const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
   const locale = useLocale();
-  if (isNilOrError(locale)) return null;
+  if (isNilOrError(locale) || !supportsTranslation(locale)) return null;
 
   const onTranslateIdea = () => {
-    // analytics
     if (translateButtonClicked) {
       trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
     } else {
@@ -46,5 +69,9 @@ const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
     />
   );
 };
+
+function supportsTranslation(locale: SupportedLocale) {
+  return supportedLanguages.includes(getLanguage(locale));
+}
 
 export default TranslateButton;

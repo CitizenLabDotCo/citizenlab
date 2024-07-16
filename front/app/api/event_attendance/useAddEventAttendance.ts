@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { omit } from 'lodash-es';
 import { CLErrors } from 'typings';
+
+import eventsKeys from 'api/events/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import eventsAttendancesKeys from './keys';
 import { IAddEventAttendanceProperties, IEventAttendance } from './types';
-import eventsKeys from 'api/events/keys';
 
 const addEventAttendance = async (
   requestBody: IAddEventAttendanceProperties

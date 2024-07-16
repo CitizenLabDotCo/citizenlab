@@ -1,20 +1,25 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   RankedTester,
   rankWith,
   scopeEndsWith,
   ControlProps,
 } from '@jsonforms/core';
-import React, { useContext, useEffect, useState } from 'react';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+import { UploadFile } from 'typings';
+
 import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { isNilOrError } from 'utils/helperUtils';
+
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import { FormContext } from '../../contexts';
-import { Box } from '@citizenlab/cl2-component-library';
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
 
 const ImageControl = ({
@@ -84,7 +89,12 @@ const ImageControl = ({
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

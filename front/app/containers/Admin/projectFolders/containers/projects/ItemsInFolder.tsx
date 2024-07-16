@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// api
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
+import useAuthUser from 'api/me/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
 import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolderMembership';
 
-// services
-import { PublicationStatus } from 'api/projects/types';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-// hooks
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useAuthUser from 'api/me/useAuthUser';
-
 // localisation
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const publicationStatuses: PublicationStatus[] = [
   'draft',
@@ -121,6 +117,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
                         : ['manage']
                     }
                     hideMoreActions
+                    folderId={projectFolderId}
                   />
                 </SortableRow>
               );

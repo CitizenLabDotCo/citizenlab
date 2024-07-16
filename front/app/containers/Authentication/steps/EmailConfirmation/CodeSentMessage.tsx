@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
+import { Box, Icon, Success, colors } from '@citizenlab/cl2-component-library';
+
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
-import { Box, Icon, Success } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 interface Props {
   email?: string;

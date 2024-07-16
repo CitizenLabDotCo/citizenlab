@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import campaignConsentKeys from './keys';
 import { ICampaignConsent, IUpdateCampaignConsentObject } from './types';
 
@@ -14,14 +16,13 @@ const updateCampaignConsents = async ({
       const idPart = campaignConsentId
         ? campaignConsentId
         : `by_campaign_id/${campaignId}`;
-      const tokenPart =
-        typeof unsubscriptionToken === 'string'
-          ? `?unsubscription_token=${unsubscriptionToken}`
-          : '';
       return fetcher<ICampaignConsent>({
-        path: `/consents/${idPart}${tokenPart}`,
+        path: `/consents/${idPart}`,
         action: 'patch',
-        body: { consent: { consented } },
+        body: {
+          consent: { consented },
+          unsubscription_token: unsubscriptionToken,
+        },
       });
     })
   );

@@ -9,107 +9,54 @@ describe FlagInappropriateContent::ToxicityDetectionService do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      stub_request_toxicity_detection! service
+      stub_classify_toxicity! service
     end
 
     it 'creates a new flag if toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
       service.flag_toxicity! idea, attributes: [:title_multiloc]
-      expect(idea.reload.inappropriate_content_flag).to be_present
-      expect(idea.reload.inappropriate_content_flag.toxicity_label).to be_present
+      idea.reload
+      expect(idea.inappropriate_content_flag).to be_present
+      expect(idea.inappropriate_content_flag.toxicity_label).to eq 'insult'
+      expect(idea.inappropriate_content_flag.ai_reason).to be_present
     end
 
     it 'creates no flag if no toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'My innocent idea' }, location_description: 'Wankerford')
       service.flag_toxicity! idea, attributes: [:title_multiloc]
-      expect(idea.reload.inappropriate_content_flag).to be_blank
+      idea.reload
+      expect(idea.inappropriate_content_flag).to be_blank
     end
 
     it 'reintroduces a deleted flag if no toxicity was detected' do
       comment = create(:comment, body_multiloc: { 'en' => 'wanker' })
       create(:inappropriate_content_flag, flaggable: comment, deleted_at: Time.now)
       service.flag_toxicity! comment, attributes: [:body_multiloc]
-      expect(comment.reload.inappropriate_content_flag).to be_present
-      expect(comment.reload.inappropriate_content_flag.deleted_at).to be_blank
-      expect(comment.reload.inappropriate_content_flag.toxicity_label).to be_present
+      comment.reload
+      expect(comment.inappropriate_content_flag).to be_present
+      expect(comment.inappropriate_content_flag.deleted_at).to be_blank
+      expect(comment.inappropriate_content_flag.toxicity_label).to eq 'insult'
+      expect(comment.inappropriate_content_flag.ai_reason).to be_present
     end
 
     it 'creates no flag if flagging feature is disabled' do
       SettingsService.new.deactivate_feature! 'flag_inappropriate_content'
       idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
       service.flag_toxicity! idea, attributes: [:title_multiloc]
-      expect(idea.reload.inappropriate_content_flag).to be_blank
-    end
-  end
-
-  describe 'extract_toxicity_label' do
-    it 'returns the strongest predicted label' do
-      res = [
-        {
-          'text' => 'once upon a time',
-          'detected_language' => 'en',
-          'is_inappropriate' => false,
-          'predictions' => {
-            'threat' => 0.94,
-            'identity_attack' => 0.02
-          }
-        },
-        {
-          'text' => 'there was a rabbit who breathed through its butt',
-          'detected_language' => 'en',
-          'is_inappropriate' => true,
-          'predictions' => {
-            'threat' => 0.15,
-            'sexually_explicit' => 0.54,
-            'insult' => 0.45
-          }
-        },
-        {
-          'text' => 'the rabbit sat down',
-          'detected_language' => 'en',
-          'is_inappropriate' => false,
-          'predictions' => {
-            'threat' => 0.30,
-            'sexually_explicit' => 0.02,
-            'insult' => 0.22
-          }
-        },
-        {
-          'text' => 'and then it died',
-          'detected_language' => 'en',
-          'is_inappropriate' => true,
-          'predictions' => {
-            'threat' => 0.49,
-            'identity_attack' => 0.02
-          }
-        }
-      ]
-
-      expect(service.extract_toxicity_label(res)).to eq 'sexually_explicit'
+      idea.reload
+      expect(idea.inappropriate_content_flag).to be_blank
     end
   end
 
   private
 
-  def stub_request_toxicity_detection!(service)
-    service.stub(:request_toxicity_detection) do |texts|
-      texts.map do |text|
-        res = {
-          'text' => text,
-          'detected_language' => 'es'
+  def stub_classify_toxicity!(service)
+    service.stub(:classify_toxicity) do |text|
+      if text.downcase.include? 'wanker'
+        {
+          toxicity_label: 'insult',
+          ai_reason: 'Insulting or a threat. The user\'s message contains insults directed at the AI, calling it a "wanker", "crybaby", and questioning its intellect in a sarcastic manner. While no direct threats are made, the tone is antagonistic and meant to provoke a negative response. The message does not contain any harmful, illegal, pornographic or spam content.'
         }
-        if text.downcase.include? 'wanker'
-          res['detected_language'] = 'en'
-          res['is_inappropriate'] = true
-          res['predictions'] = {
-            'threat' => 0.23068441,
-            'identity_attack' => 0.27322835,
-            'inflammatory' => 0.359929,
-            'insult' => 0.70558244,
-            'sexually_explicit' => 0.21283324
-          }
-        end
-        res
       end
     end
   end

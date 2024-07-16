@@ -1,10 +1,12 @@
 import React, { memo } from 'react';
 
-// components
-import Comments from 'components/PostShowComponents/Comments';
-// styling
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
@@ -12,7 +14,6 @@ import {
   rightColumnWidthTablet,
   postPageContentMaxWidth,
 } from './styleConstants';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -60,7 +61,7 @@ const Footer = memo<Props>(({ postId, postType, className }) => {
     <Container className={className || ''}>
       <Content>
         <ContentInner>
-          <Comments
+          <CommentsSection
             allowAnonymousParticipation={
               postType === 'initiative'
                 ? appConfiguration?.data.attributes.settings.initiatives

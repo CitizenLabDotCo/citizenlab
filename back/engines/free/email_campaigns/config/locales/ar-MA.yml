@@ -2,6 +2,7 @@ ar-MA:
   email_campaigns:
     campaign_type_description:
       "manual": رسائل رسمية
+      "manual_project_participants": الرسائل الرسمية للمشاركين في المشروع
       "admin_rights_received": تم استلام حقوق المسؤول
       "comment_deleted_by_admin": حذف حسابي
       "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
@@ -50,8 +51,10 @@ ar-MA:
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
       "user_digest": نظرة عامة أسبوعية
       "voting_basket_submitted": تأكيد التصويت
+      "native_survey_not_submitted": لم يتم إرسال الاستطلاع
       "voting_basket_not_submitted": لم يتم تقديم الأصوات
       "voting_last_chance": آخر فرصة للتصويت
+      "voting_phase_started": مرحلة المشروع الجديد مع التصويت
       "voting_results": نتائج التصويت
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
     general:
@@ -74,7 +77,7 @@ ar-MA:
       "link_terms_conditions": "الشروط والأحكام"
       "link_unsubscribe": "إلغاء الاشتراك"
       "powered_by": "مشغّل بواسطة"
-      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
+      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة Go Vocal بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
     follow:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
@@ -504,6 +507,13 @@ ar-MA:
       event_description: 'شكرا على المشاركة. تم تسجيل تصويتك. قم بزيارة منصة %{organizationName} لرؤية وإدارة أصواتك.'
       cta_see_votes_submitted: 'انظر التصويتات المقدمة'
       cta_message: 'انقر فوق الزر أدناه للمشاركة'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: أوشكت على الوصول! أرسل إجاباتك'
+      preheader: 'لم تكمل إجابتك على الاستبيان على منصة المشاركة %{organizationName}'
+      title_native_survey_not_submitted: 'اوشكت على الوصول! أرسل إجاباتك'
+      body_native_survey_not_submitted: 'لقد بدأت بمشاركة إجاباتك على %{phaseTitle} ولكنك لم ترسلها. سيتم إغلاق التقديم في %{phaseEndDate}. انقر على الزر أدناه للمتابعة من حيث توقفت.'
+      body_native_survey_not_submitted_no_date: 'لقد بدأت بمشاركة إجاباتك على %{phaseTitle} ولكنك لم ترسلها. انقر على الزر أدناه للمتابعة من حيث توقفت.'
+      cta_complete_your_survey_response: 'استئناف الرد على الاستطلاع الخاص بك'
     voting_basket_not_submitted:
       subject: '%{organizationName}: أنت لم ترسل أصواتك'
       preheader: 'لم ترسل أصواتك على منصة المشاركة %{organizationName}'
@@ -550,6 +560,7 @@ ar-MA:
         admins: 'للمسؤولين'
         admins_and_managers: 'للمسؤولين والمديرين'
         managers: 'للمديرين'
+        project_participants: 'للمشاركين في المشروع'
         registered_users: 'للمستخدمين المسجلين'
       recipient_segment:
         admins: 'المشرفون'
@@ -573,12 +584,13 @@ ar-MA:
         user_who_registers: 'المستخدم الذي يقوم بالتسجيل'
         user_who_was_invited: 'المستخدم الذي تمت دعوته'
         users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
-        users_who_follow_the_proposal: 'المستخدم الذي يتبع الاقتراح'
-        users_who_follow_the_input: 'المستخدم الذي يتابع المدخلات'
+        users_who_follow_the_proposal: 'المستخدمون الذين يتابعون الاقتراح'
+        users_who_follow_the_input: 'المستخدمون الذين يتابعون الإدخال'
         users_who_follow_the_project: 'المستخدمون الذين يتابعون المشروع'
         user_who_voted: 'المستخدم الذي صوت'
         user_with_unsubmitted_votes: 'المستخدم الذي لم يقدم أصواتهم'
         users_who_engaged_but_not_voted: 'المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا'
+        user_with_unsubmitted_survey: 'المستخدم الذي بدأ الاستطلاع ولكنه لم يرسله'
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
@@ -591,6 +603,7 @@ ar-MA:
         proposals: 'اقتراحات'
         reactions: 'تفاعلات'
         voting: 'التصويت'
+        surveys: 'الدراسات الاستقصائية'
       trigger:
         comment_is_deleted: 'تم حذف التعليق'
         comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
@@ -639,3 +652,4 @@ ar-MA:
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
         7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
         registration_to_event: 'التسجيل في هذا الحدث'
+        survey_1_day_after_draft_saved: 'يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة'

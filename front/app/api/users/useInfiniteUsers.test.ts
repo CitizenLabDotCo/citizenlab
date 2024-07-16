@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import useInfiniteUsers from './useInfiniteUsers';
 
-import { usersData } from './__mocks__/useUsers';
+import { usersData } from './__mocks__/_mockServer';
+import useInfiniteUsers from './useInfiniteUsers';
 
 export const links = {
   last: 'http://localhost:3000/web_api/v1/users?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',
@@ -19,8 +18,8 @@ export const links = {
 
 const apiPath = '*users';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: usersData, links }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: usersData, links }, { status: 200 });
   })
 );
 
@@ -51,10 +50,10 @@ describe('useInfiniteUsers', () => {
   it('returns data correctly with no next page', async () => {
     const newLinks = { ...links, next: null };
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({ data: usersData, links: newLinks })
+      http.get(apiPath, () => {
+        return HttpResponse.json(
+          { data: usersData, links: newLinks },
+          { status: 200 }
         );
       })
     );
@@ -79,8 +78,8 @@ describe('useInfiniteUsers', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

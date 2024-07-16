@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-// styling
-import { legacyColors, sizes, colors } from 'components/admin/Graphs/styling';
-
-// components
 import {
   ComposedChart,
   CartesianGrid,
@@ -14,26 +10,26 @@ import {
   Tooltip,
   Bar,
 } from 'recharts';
+
+import dashboardMessages from 'containers/Admin/dashboard/messages';
+
+import { legacyColors, sizes, colors } from 'components/admin/Graphs/styling';
+import { Legend as ILegend } from 'components/admin/Graphs/typings';
+import { IResolution } from 'components/admin/ResolutionControl';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { toFullMonth } from 'utils/dateUtils';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-import { Legend as ILegend } from 'components/admin/Graphs/typings';
-
-// i18n
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import dashboardMessages from 'containers/Admin/dashboard/messages';
-
-// utils
-import { hasNoData, parseMargin } from '../utils';
-import { toFullMonth } from 'utils/dateUtils';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { hasNoData, parseMargin } from '../utils';
+
+import { Props } from './typings';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 
@@ -124,6 +120,7 @@ const LineBarChart = <Row,>({
           legendDimensions,
           DEFAULT_LEGEND_OFFSET
         )}
+        accessibilityLayer
       >
         <CartesianGrid stroke={legacyColors.cartesianGrid} strokeWidth={0.5} />
         <XAxis

@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
 import useTopics from 'api/topics/useTopics';
+
 import UpdateFollowTopic from './UpdateFollowTopic';
 import UpdateOnboardingTopic from './UpdateOnboardingTopic';
 
@@ -23,7 +26,13 @@ const Topics = ({
   }
 
   return topics && topics.data.length > 0 ? (
-    <Box display="flex" gap="20px" width="100%" flexWrap="wrap">
+    <Box
+      display="flex"
+      gap="20px"
+      width="100%"
+      flexWrap="wrap"
+      id="e2e-follow-topics"
+    >
       {topics.data.map((topic) => {
         return action === 'updateOnboardingPreferences' ? (
           <UpdateOnboardingTopic key={topic.id} topic={topic} />

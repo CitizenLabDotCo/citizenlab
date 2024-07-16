@@ -88,4 +88,93 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.consentModalCancel',
     defaultMessage: 'Cancel',
   },
+  allResponses: {
+    id: 'app.containers.Admin.projects.project.survey.allResponses',
+    defaultMessage: 'All responses',
+  },
+  explore: {
+    id: 'app.containers.Admin.projects.project.survey.explore',
+    defaultMessage: 'Explore',
+  },
+  accuracy: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.accuracy',
+    defaultMessage: 'Accuracy: {accuracy}{percentage}',
+  },
+  percentage: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.percentage',
+    defaultMessage: '%',
+  },
+  refresh: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.refresh',
+    defaultMessage: '{ count } new responses',
+  },
+  regenerate: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.regenerate',
+    defaultMessage: 'Regenerate',
+  },
+  backgroundTaskFailedMessage: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage',
+    defaultMessage:
+      'There was an error generating the AI summary. Please try to regenerate it below.',
+  },
+  showSummaries: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.showInsights',
+    defaultMessage: 'Show AI insights',
+  },
+  hideSummaries: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.hideSummaries',
+    defaultMessage: 'Hide summaries for this question',
+  },
+  createAIAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.createAIAnalysis',
+    defaultMessage: 'Open AI analysis',
+  },
+  openAnalysisActions: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
+    defaultMessage: 'Open analysis actions',
+  },
+  inputsSelected: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.inputsSelected',
+    defaultMessage: 'inputs selected',
+  },
+  tooltipTextLimit: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.tooltipTextLimit',
+    defaultMessage:
+      'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
+  },
+  otherResponses: {
+    id: 'app.containers.Admin.projects.project.survey.otherResponses',
+    defaultMessage: 'Other responses',
+  },
+  allFiles: {
+    id: 'app.containers.Admin.projects.project.survey.allFiles',
+    defaultMessage: 'All files',
+  },
+  responses: {
+    id: 'app.containers.Admin.projects.project.survey.responses',
+    defaultMessage: 'Responses',
+  },
+  heatMap: {
+    id: 'app.containers.Admin.projects.project.survey.heatMap',
+    defaultMessage: 'Heat map',
+  },
+  heatmapView: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapView',
+    defaultMessage: 'Heat map view',
+  },
+  heatmapToggleTooltip: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleTooltip',
+    defaultMessage:
+      'The heat map is generated using Esri Smart Mapping. Heat maps are useful when there is a large amount of data points. For fewer points, it may be better to look at only the location points directly. {heatmapToggleEsriLinkText}',
+  },
+  heatmapToggleEsriLinkText: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleEsriLinkText',
+    defaultMessage:
+      'Learn more about heat maps generated using Esri Smart Mapping.',
+  },
+  heatmapToggleEsriLink: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleEsriLink',
+    defaultMessage:
+      'https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13',
+  },
 });

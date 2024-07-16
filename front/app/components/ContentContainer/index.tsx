@@ -1,36 +1,28 @@
 import React from 'react';
+
+import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
-import { stylingConsts, media } from 'utils/styleUtils';
-import bowser from 'bowser';
 
 const Outer = styled.div`
   width: 100%;
   position: relative;
   padding-left: 30px;
   padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   ${media.phone`
     padding-left: 20px;
     padding-right: 20px;
   `}
-
-  &:not(.ie) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 const Inner = styled.div<{ maxWidth?: string | number }>`
   width: 100%;
   max-width: ${({ maxWidth }) =>
     isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
-
-  &.ie {
-    margin-left: auto;
-    margin-right: auto;
-  }
 `;
 
 export interface Props {
@@ -63,13 +55,8 @@ const ContentContainer = ({
   }
 
   return (
-    <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
-      <Inner
-        className={`inner ${bowser.msie ? 'ie' : ''}`}
-        maxWidth={newMaxWidth}
-      >
-        {children}
-      </Inner>
+    <Outer id={id} className={className}>
+      <Inner maxWidth={newMaxWidth}>{children}</Inner>
     </Outer>
   );
 };

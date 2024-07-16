@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
-// components
+import {
+  Label,
+  ColorPickerInput,
+  calculateContrastRatio,
+  hexToRgb,
+} from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
+
 import {
   Section,
   SectionTitle,
@@ -9,20 +17,12 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
-
-// utils
-import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
-import { get } from 'lodash-es';
-
-// typings
-import { UploadFile } from 'typings';
 
 const ContrastWarning = styled(Warning)`
   margin-top: 10px;
@@ -182,11 +182,11 @@ export default ({
                   values={{
                     wcagLink: (
                       <a
-                        href="https://www.w3.org/TR/WCAG21/"
+                        href="https://www.w3.org/TR/WCAG22/"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        WCAG 2.1 AA
+                        WCAG 2.2 AA
                       </a>
                     ),
                     lineBreak: <br />,

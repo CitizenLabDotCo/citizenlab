@@ -1,7 +1,9 @@
 import React from 'react';
-import Field from '.';
-import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
+
 import { indices } from 'utils/helperUtils';
+import { render, screen, fireEvent, waitFor, act } from 'utils/testUtils/rtl';
+
+import Field from '.';
 
 const mockAddReferenceDistribution = jest.fn();
 

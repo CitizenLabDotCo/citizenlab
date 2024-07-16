@@ -65,7 +65,7 @@ namespace :fix_existing_tenants do
             attributes.each do |attribute|
               instance.send attribute
               begin
-                multiloc = TextImageService.new.swap_data_images instance, attribute
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
                 instance.send "#{attribute}=", multiloc
                 instance.save!
               rescue Exception => e
@@ -107,7 +107,7 @@ namespace :fix_existing_tenants do
                 end
                 multiloc[k] = doc.to_s
               end
-              multiloc = TextImageService.new.swap_data_images object, attribute
+              multiloc = TextImageService.new.swap_data_images_multiloc object[attribute], field: attribute, imageable: object
               object.send "#{attribute}=", multiloc
               object.save!
             end
@@ -205,7 +205,7 @@ namespace :fix_existing_tenants do
 
               instance.update_column(attribute, multiloc)
               begin
-                multiloc = TextImageService.new.swap_data_images instance, attribute
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
                 instance.send "#{attribute}=", multiloc
                 instance.save!
               rescue Exception => e

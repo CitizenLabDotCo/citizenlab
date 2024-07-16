@@ -2,6 +2,7 @@ nl-BE:
   email_campaigns:
     campaign_type_description:
       "manual": Officiële berichten
+      "manual_project_participants": Officiële berichten aan projectdeelnemers
       "admin_rights_received": Administratierechten ontvangen
       "comment_deleted_by_admin": Verwijderen van mijn reactie
       "comment_marked_as_spam": Reactie spammelding
@@ -50,8 +51,10 @@ nl-BE:
       "assignee_digest": Weekoverzicht van toegewezen ideeën
       "user_digest": Weekoverzicht
       "voting_basket_submitted": Bevestiging van stemming
+      "native_survey_not_submitted": Vragenlijst niet ingediend
       "voting_basket_not_submitted": Niet-ingediende stemmen
       "voting_last_chance": Laatste kans om te stemmen
+      "voting_phase_started": Nieuwe projectfase met stemmen
       "voting_results": Stemresultaten
       "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
     general:
@@ -74,7 +77,7 @@ nl-BE:
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
-      "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
+      "statement": "Je kreeg deze e-mail van Go Vocal in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "uitschrijven"
     follow:
       "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
@@ -504,6 +507,13 @@ nl-BE:
       event_description: 'Bedankt voor je deelname. Je stemmen zijn geregistreerd. Ga naar het platform van %{organizationName} om je stemmen te bekijken en te beheren.'
       cta_see_votes_submitted: 'Bekijk ingediende stemmen'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Bijna klaar! Stuur je antwoorden in'
+      preheader: 'Je hebt de vragenlijst op het participatieplatform van %{organizationName} niet afgerond'
+      title_native_survey_not_submitted: 'Bijna klaar! Stuur je antwoorden in'
+      body_native_survey_not_submitted: 'Je bent begonnen met het delen van je antwoorden op %{phaseTitle} maar hebt ze niet ingestuurd. Inzendingen sluiten op %{phaseEndDate}. Klik op de knop hieronder om verder te gaan waar je gebleven was.'
+      body_native_survey_not_submitted_no_date: 'Je bent begonnen met het delen van je antwoorden op %{phaseTitle} , maar hebt ze niet ingestuurd. Klik op de knop hieronder om verder te gaan waar je gebleven was.'
+      cta_complete_your_survey_response: 'Ga verder met het beantwoorden van de vragenlijst'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Je hebt je stemmen niet ingediend'
       preheader: 'Je hebt je stem niet uitgebracht op het participatieplatform van %{organizationName}'
@@ -529,7 +539,7 @@ nl-BE:
       cta_see_results: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
       subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
-      header_message: "%{firstName}Bedankt voor het registreren voor"
+      header_message: "%{firstName}, bedankt voor het registreren voor"
       event_details:
         labels:
           date: 'Datum'
@@ -550,6 +560,7 @@ nl-BE:
         admins: 'Aan platformbeheerders'
         admins_and_managers: 'Aan beheerders'
         managers: 'Aan beheerders'
+        project_participants: 'Aan projectdeelnemers'
         registered_users: 'Aan geregistreerde gebruikers'
       recipient_segment:
         admins: 'Platformbeheerders'
@@ -573,16 +584,17 @@ nl-BE:
         user_who_registers: 'Gebruiker die zich registreert'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
-        users_who_follow_the_proposal: 'Gebruiker die het voorstel volgt'
-        users_who_follow_the_input: 'Gebruiker die de bijdrage volgt'
+        users_who_follow_the_proposal: 'Gebruikers die het voorstel volgen'
+        users_who_follow_the_input: 'Gebruikers die de bijdrage volgen'
         users_who_follow_the_project: 'Gebruikers die het project volgen'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
         users_who_engaged_but_not_voted: 'Gebruikers die betrokken waren bij het project maar niet hebben gestemd'
+        user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
-        events: 'Evenementen'
+        events: 'Activiteiten'
         general: 'Algemeen'
         inputs: 'Bijdragen'
         internal_comments: 'Interne reacties'
@@ -591,6 +603,7 @@ nl-BE:
         proposals: 'Voorstellen'
         reactions: 'Reacties'
         voting: 'Stemming'
+        surveys: 'Vragenlijsten'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
         comment_is_flagged_as_spam: 'Reactie is gemarkeerd als spam'
@@ -638,4 +651,5 @@ nl-BE:
         voting_basket_submitted: 'Stemmen zijn verzonden'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
-        registration_to_event: 'Registratie voor een evenement'
+        registration_to_event: 'Registratie voor een activiteit'
+        survey_1_day_after_draft_saved: '1 dag nadat de gebruiker de vragenlijst voor het laatst in concept heeft opgeslagen'

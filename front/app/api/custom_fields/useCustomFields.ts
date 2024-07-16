@@ -1,51 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import customFieldsKeys from './keys';
-import {
-  ICustomFields,
-  CustomFieldsKeys,
-  ICustomFieldsParameters,
-  IFlatCustomField,
-} from './types';
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
-const fetchCustomFields = ({
-  projectId,
-  phaseId,
-  inputTypes,
-}: ICustomFieldsParameters) => {
-  const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields`
-    : `admin/projects/${projectId}/custom_fields`;
-
-  return fetcher<ICustomFields>({
-    path: `/${apiEndpoint}`,
-    action: 'get',
-    queryParams: {
-      input_types: inputTypes,
-    },
-  });
-};
+import { ICustomFieldsParameters, IFlatCustomField } from './types';
+import useRawCustomFields from './useRawCustomFields';
 
 const useCustomFields = ({
   projectId,
   phaseId,
   inputTypes,
+  copy,
 }: ICustomFieldsParameters) => {
-  const result = useQuery<
-    ICustomFields,
-    CLErrors,
-    ICustomFields,
-    CustomFieldsKeys
-  >({
-    queryKey: customFieldsKeys.list({
-      projectId,
-      phaseId,
-      inputTypes,
-    }),
-    queryFn: () => fetchCustomFields({ projectId, phaseId, inputTypes }),
-  });
+  const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
 
   const options = useCustomFieldOptions({
     projectId,
@@ -68,12 +32,17 @@ const useCustomFields = ({
       return {
         ...customField,
         ...customField.attributes,
+        map_config: customField.relationships?.map_config,
+        map_config_id: customField.relationships?.map_config?.data?.id,
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
                 id: option.data?.data.id,
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
+                other: option.data?.data.attributes.other || false,
+                image_id: option.data?.data.relationships.image?.data?.id,
+                temp_id: option.data?.data.attributes.temp_id,
               }))
             : [],
       };

@@ -2,6 +2,7 @@ de:
   email_campaigns:
     campaign_type_description:
       "manual": Offizielle Mitteilungen
+      "manual_project_participants": E-Mails an Projektteilnehmende
       "admin_rights_received": Admin-Rechte erhalten
       "comment_deleted_by_admin": Löschung eines Kommentars
       "comment_marked_as_spam": Kommentar wird als Spam markiert
@@ -50,8 +51,10 @@ de:
       "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
       "user_digest": Wöchentliche Übersicht
       "voting_basket_submitted": Bestätigung der Abstimmung
+      "native_survey_not_submitted": Umfrage nicht eingereicht
       "voting_basket_not_submitted": Nicht abgegebene Stimmen
       "voting_last_chance": Letzte Chance zur Abstimmung
+      "voting_phase_started": Neue Projektphase mit Abstimmung
       "voting_results": Abstimmungsergebnisse
       "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     general:
@@ -74,7 +77,7 @@ de:
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
-      "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
+      "statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     follow:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
@@ -375,7 +378,7 @@ de:
       no_projects: 'Noch keine Projekte erhalten'
       preheader: 'Ein Admin der Beteiligungsplattform %{organizationName} hat Sie soeben zu einer:einem Manager:in des folgenden Projektordners ernannt'
       subject: 'Sie wurden zu einer:einem Ordnermanager:in auf der Plattform von %{organizationName} ernannt'
-      text_manage_folder: 'Mit einem Ordner können Sie mehrere Beteiligungsprojekte zusammen organisieren. Als Ordner-Manager*in können Sie den Ordner und die Ordnerbeschreibung bearbeiten und neue Projekte erstellen (um Projekte zu löschen, müssen Sie Ihren Plattform-Admin kontaktieren). Sie werden außerdem Projektmanagementrechte für alle Projekte innerhalb des Ordners erhalten. So können Sie die Projekte bearbeiten, die Eingaben verwalten und E-Mails an Teilnehmende senden.'
+      text_manage_folder: 'Mit einem Ordner können Sie mehrere Beteiligungsprojekte zusammen organisieren. Als Ordner-Manager*in können Sie den Ordner und die Ordnerbeschreibung bearbeiten und neue Projekte erstellen (um Projekte zu löschen, müssen Sie Ihren Plattform-Admin kontaktieren). Sie werden außerdem Projektmanagementrechte für alle Projekte innerhalb des Ordners erhalten. So können Sie die Projekte bearbeiten, die Beiträge verwalten und E-Mails an Teilnehmende senden.'
       text_moderate_analyse_input: 'Sobald die Projekte gestartet wurden, werden die ersten Beiträge eingehen. Sie werden wöchentliche Berichte mit den wichtigsten Aktivitäten erhalten, damit Sie den Überblick behalten können. Mit dem Beitragsmanager in Ihrer Admin-Ansicht können Sie sich die Beiträge ansehen und sie verwalten (z. B. können Sie einen Status zuweisen und auf Beiträge und Kommentare antworten).'
       text_design_participatory_process: 'Sie können die verschiedenen Beteiligungsprojekte in Ihrem Ordner verwalten – konfigurieren Sie die Teilnahmemethode, fügen Sie eine Projektbeschreibung hinzu, hängen Sie Bilder an und informieren Sie über relevante Ereignisse. Sie können auch festlegen, wie Teilnehmende bei Ihren Projekten mitwirken können. Zum Beispiel können Sie die Zugriffsrechte festlegen und die Beitrags-, Abstimmungs- und Kommentareinstellungen konfigurieren.'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
@@ -432,8 +435,8 @@ de:
       today_by_author: "Heute von %{author}"
       yesterday_by_author: "Gestern von %{author}"
       x_days_ago_by_author: "Vor %{x} Tagen von %{author}"
-      trending_ideas: "Aktuelle Ideen"
-      trending_ideas_text: "Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei aktuellsten Ideen und was die Leute darüber sagen."
+      trending_ideas: "Beliebte Beiträge"
+      trending_ideas_text: "Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei beliebtesten Beiträge und was die Leute darüber sagen."
       no_notifications: "Keine Benachrichtigungen"
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
@@ -504,6 +507,13 @@ de:
       event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
       cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
       cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
+      preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
+      title_native_survey_not_submitted: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
+      body_native_survey_not_submitted: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht eingereicht. Die Einsendungen wird am %{phaseEndDate} geschlossen. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      body_native_survey_not_submitted_no_date: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den BUtton unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      cta_complete_your_survey_response: 'Umfrage fortsetzen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
@@ -550,6 +560,7 @@ de:
         admins: 'An Admins'
         admins_and_managers: 'An Admins & Manager*innen'
         managers: 'An Manager*innen'
+        project_participants: 'An Projektteilnehmende'
         registered_users: 'An registrierte Nutzer*innen'
       recipient_segment:
         admins: 'Admins'
@@ -579,6 +590,7 @@ de:
         user_who_voted: 'Nutzer*innen, die abgestimmt haben'
         user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
         users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
+        user_with_unsubmitted_survey: 'Nutzer*innen, die ihre Umfrage begonnen, aber noch nicht abgeschickt haben'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
@@ -591,6 +603,7 @@ de:
         proposals: 'Vorschläge'
         reactions: 'Reaktionen'
         voting: 'Abstimmung'
+        surveys: 'Umfragen'
       trigger:
         comment_is_deleted: 'Kommentar wird gelöscht'
         comment_is_flagged_as_spam: 'Kommentar wird als Spam markiert'
@@ -639,3 +652,4 @@ de:
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
         registration_to_event: 'Anmeldung zu einer Veranstaltung'
+        survey_1_day_after_draft_saved: '1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat'

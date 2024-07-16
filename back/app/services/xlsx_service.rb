@@ -15,7 +15,7 @@ class XlsxService
 
     wb.styles do |s|
       wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
+        sheet.add_row remove_duplicate_header_suffix(headers), style: header_style(s)
         hash_array.each do |hash|
           sheet.add_row(headers.map { |header| hash[header] })
         end
@@ -35,8 +35,12 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
+      xlsx_utils = XlsxExport::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+        if cell.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
+          [column_header, cell.value]
+        end
       end.to_h
     end
   end
@@ -247,12 +251,20 @@ class XlsxService
   def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
-    user_custom_fields = CustomField.with_resource_type('User').order(:ordering)
+    user_custom_fields = CustomField.registration.order(:ordering)
+
+    fields_to_columns = map_user_custom_fields_to_columns(user_custom_fields)
 
     user_custom_fields&.map do |field|
-      column_name = multiloc_service.t(field.title_multiloc)
+      column_name = fields_to_columns[field.id]
       { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
+  end
+
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
   end
 
   private
@@ -294,6 +306,20 @@ class XlsxService
     end
   end
 
+  def map_user_custom_fields_to_columns(user_custom_fields)
+    fields_to_columns = {}
+
+    user_custom_fields.group_by { |field| multiloc_service.t(field.title_multiloc) }.each do |title, fields|
+      if fields.size == 1
+        fields_to_columns[fields.first.id] = title
+      else # add suffix to titles to distinguish between fields with same title
+        fields.each_with_index { |field, i| fields_to_columns[field.id] = "#{title} (#{i + 1})" }
+      end
+    end
+
+    fields_to_columns
+  end
+
   def header_style(style)
     style.add_style b: true, alignment: { horizontal: :center, vertical: :top, wrap_text: true }
   end
@@ -302,10 +328,11 @@ class XlsxService
     "#{field_id}/#{option_key}"
   end
 
-  def format_author_name(input)
-    return input.author_name unless input.anonymous?
-
-    I18n.t 'xlsx_export.anonymous'
+  # Remove any suffixes added for duplicate column names
+  def remove_duplicate_header_suffix(headers)
+    headers.map do |header|
+      XlsxExport::Utils.new.remove_duplicate_column_name_suffix header
+    end
   end
 end
 

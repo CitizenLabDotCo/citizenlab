@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
-import moment, { Moment } from 'moment';
 
-// hooks
-import { useIntl } from 'utils/cl-intl';
-
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
-import Charts from './Charts';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
-
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
+import moment, { Moment } from 'moment';
 import { IOption } from 'typings';
 
+import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
+import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
+
+import { IResolution } from 'components/admin/ResolutionControl';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+
+import Charts from './Charts';
 import messages from './messages';
 
 interface Props {
-  uniqueVisitorDataDate: Moment;
+  uniqueVisitorDataDate: Moment | undefined;
 }
 
 const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
@@ -47,7 +43,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
   };
 
   if (!uniqueVisitorDataDate) {
-    return null;
+    return <Text>{formatMessage(messages.noData)}</Text>;
   }
 
   return (
@@ -56,7 +52,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
         <ChartFilters
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
-          currentProjectFilter={projectId}
+          projectId={projectId}
           resolution={resolution}
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
@@ -68,9 +64,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
       <Box p="10px">
         <Warning>
           <Text color="primary" m="0px">
-            {formatMessage(messages.dateInfo, {
-              date: uniqueVisitorDataDate.format('LL'),
-            })}
+            {formatMessage(messages.visitorCountHigherBanner)}
           </Text>
         </Warning>
       </Box>

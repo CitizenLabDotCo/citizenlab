@@ -20,15 +20,22 @@ describe('Information with events CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
-          publicationStatus: 'published',
-          participationMethod: 'information',
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
+          cy.apiCreatePhase({
+            projectId,
+            title: 'informationPhaseTitle',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            endAt: moment().add(1, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'information',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
         });
       });
   });

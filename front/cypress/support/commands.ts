@@ -1,13 +1,13 @@
 import 'cypress-file-upload';
 import './dnd';
-import {
-  ParticipationMethod,
-  VotingMethod,
-} from '../../app/utils/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
+import { IProjectAttributes } from '../../app/api/projects/types';
+import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
+import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -18,6 +18,7 @@ declare global {
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
+      setModeratorLoginCookie: typeof setModeratorLoginCookie;
       setConsentCookie: typeof setConsentCookie;
       setConsentAndAdminLoginCookies: typeof setConsentAndAdminLoginCookies;
       setLoginCookie: typeof setLoginCookie;
@@ -44,6 +45,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiLikeInitiative: typeof apiLikeInitiative;
+      apiLikeIdea: typeof apiLikeIdea;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -53,11 +55,13 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
+      apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
@@ -65,11 +69,24 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
+      apiRemoveAllReports: typeof apiRemoveAllReports;
+      apiSetPhasePermission: typeof apiSetPhasePermission;
+      apiGetPhasePermission: typeof apiGetPhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
-      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
+      apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
+      apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
+      apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
+      apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
+      apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
+      apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
+      apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
+      uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
+      apiGetSurveySchema: typeof apiGetSurveySchema;
+      uploadProjectFolderImage: typeof uploadProjectFolderImage;
+      uploadProjectImage: typeof uploadProjectImage;
     }
   }
 }
@@ -96,7 +113,7 @@ export function randomEmail() {
     .toLowerCase()}.com`;
 }
 
-export function unregisterServiceWorkers() {
+function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => {
@@ -106,14 +123,11 @@ export function unregisterServiceWorkers() {
   }
 }
 
-export function goToLandingPage() {
-  cy.wait(500);
+function goToLandingPage() {
   cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.wait(500);
 }
 
-export function login(email: string, password: string) {
+function login(email: string, password: string) {
   cy.wait(500);
   cy.visit('/');
   cy.get('#e2e-landing-page');
@@ -127,9 +141,10 @@ export function login(email: string, password: string) {
   cy.wait(500);
 }
 
-export function signUp() {
+function signUp() {
   cy.goToLandingPage();
-  cy.get('#e2e-navbar-signup-menu-item').click();
+  cy.get('#e2e-navbar-login-menu-item').click();
+  cy.get('#e2e-goto-signup').click();
   cy.get('#e2e-sign-up-container');
   cy.get('#e2e-sign-up-email-password-container');
 
@@ -152,7 +167,7 @@ export function signUp() {
   cy.get('.e2e-signup-success-close-button').wait(500).click();
 }
 
-export function apiLogin(email: string, password: string) {
+function apiLogin(email: string, password: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -168,24 +183,28 @@ export function apiLogin(email: string, password: string) {
   });
 }
 
-export function setLoginCookie(email: string, password: string) {
+function setLoginCookie(email: string, password: string) {
   return cy.apiLogin(email, password).then((res) => {
     cy.setCookie('cl2_jwt', res.body.jwt);
   });
 }
 
-export function setAdminLoginCookie() {
-  cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+function setAdminLoginCookie() {
+  cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
 }
 
-export function setConsentCookie() {
+function setModeratorLoginCookie() {
+  cy.setLoginCookie('moderator@govocal.com', 'democracy2.0');
+}
+
+function setConsentCookie() {
   cy.setCookie(
     'cl2_consent',
     '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
   );
 }
 
-export function setConsentAndAdminLoginCookies() {
+function setConsentAndAdminLoginCookies() {
   cy.setConsentCookie();
   cy.setAdminLoginCookie();
 }
@@ -228,7 +247,7 @@ function emailConfirmation(jwt: any) {
   });
 }
 
-export function apiSignup(
+function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
@@ -243,13 +262,16 @@ export function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        return originalResponse;
+        return {
+          ...originalResponse,
+          _jwt: jwt,
+        };
       });
     });
   });
 }
 
-export function apiConfirmUser(email: string, password: string) {
+function apiConfirmUser(email: string, password: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -257,7 +279,7 @@ export function apiConfirmUser(email: string, password: string) {
   });
 }
 
-export function apiCreateAdmin(
+function apiCreateAdmin(
   firstName: string,
   lastName: string,
   email: string,
@@ -267,7 +289,7 @@ export function apiCreateAdmin(
   IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
   so it's important to remove admins after creating them in order to not influence other tests.
   */
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -291,7 +313,7 @@ export function apiCreateAdmin(
   });
 }
 
-export function apiUpdateCurrentUser(attrs: IUserUpdate) {
+function apiUpdateCurrentUser(attrs: IUserUpdate) {
   cy.getCookie('cl2_jwt').then((cookie) => {
     if (!cookie) {
       return;
@@ -313,8 +335,43 @@ export function apiUpdateCurrentUser(attrs: IUserUpdate) {
   });
 }
 
-export function apiRemoveUser(userId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiUpdateUserCustomFields(
+  email: string,
+  password: string,
+  custom_field_values: Record<string, any>,
+  jwt?: any
+) {
+  const makeRequest = (jwt: any) => {
+    const userId = jwtDecode<{ sub: string }>(jwt).sub;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/users/${userId}`,
+      body: {
+        user: {
+          custom_field_values,
+        },
+      },
+    });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+
+      return makeRequest(jwt);
+    });
+  }
+}
+
+function apiRemoveUser(userId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -328,8 +385,8 @@ export function apiRemoveUser(userId: string) {
   });
 }
 
-export function apiGetUsersCount() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiGetUsersCount() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -343,8 +400,8 @@ export function apiGetUsersCount() {
   });
 }
 
-export function apiGetSeats() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiGetSeats() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -358,8 +415,8 @@ export function apiGetSeats() {
   });
 }
 
-export function apiGetAppConfiguration() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiGetAppConfiguration() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -373,14 +430,14 @@ export function apiGetAppConfiguration() {
   });
 }
 
-export function apiCreateModeratorForProject(
+function apiCreateModeratorForProject(
   firstName: string,
   lastName: string,
   email: string,
   password: string,
   projectId: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -409,18 +466,18 @@ export function apiCreateModeratorForProject(
   });
 }
 
-export function logout() {
+function logout() {
   cy.clearCookies();
   cy.reload();
 }
 
-export function acceptCookies() {
+function acceptCookies() {
   cy.get('#e2e-cookie-banner');
   cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
   cy.wait(200);
 }
 
-export function getIdeaById(ideaId: string) {
+function getIdeaById(ideaId: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -430,8 +487,8 @@ export function getIdeaById(ideaId: string) {
   });
 }
 
-export function getProjectBySlug(projectSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function getProjectBySlug(projectSlug: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -445,8 +502,8 @@ export function getProjectBySlug(projectSlug: string) {
   });
 }
 
-export function getProjectById(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function getProjectById(projectId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -460,7 +517,7 @@ export function getProjectById(projectId: string) {
   });
 }
 
-export function getTopics({ excludeCode }: { excludeCode?: string }) {
+function getTopics({ excludeCode }: { excludeCode?: string }) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -470,7 +527,7 @@ export function getTopics({ excludeCode }: { excludeCode?: string }) {
   });
 }
 
-export function getInitiativeStatuses() {
+function getInitiativeStatuses() {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -480,8 +537,8 @@ export function getInitiativeStatuses() {
   });
 }
 
-export function getAuthUser() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function getAuthUser() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -495,7 +552,7 @@ export function getAuthUser() {
   });
 }
 
-export function getArea(areaId: string) {
+function getArea(areaId: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -505,8 +562,8 @@ export function getArea(areaId: string) {
   });
 }
 
-export function getUserBySlug(userSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function getUserBySlug(userSlug: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -520,32 +577,34 @@ export function getUserBySlug(userSlug: string) {
   });
 }
 
-export function apiCreateIdea(
-  projectId: string,
-  ideaTitle: string,
-  ideaContent: string,
-  locationGeoJSON?: { type: string; coordinates: number[] },
-  locationDescription?: string,
-  jwt?: string,
-  budget?: number,
-  anonymous?: boolean
-) {
-  let headers: { 'Content-Type': string; Authorization: string } | null = null;
+type IdeaType = {
+  projectId: string;
+  ideaTitle: string;
+  ideaContent: string;
+  locationGeoJSON?: { type: string; coordinates: number[] };
+  locationDescription?: string;
+  jwt?: string;
+  budget?: number;
+  anonymous?: boolean;
+  phaseIds?: string[];
+};
 
-  if (jwt) {
-    headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    };
-  }
-
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: headers || {
+function apiCreateIdea({
+  projectId,
+  ideaTitle,
+  ideaContent,
+  locationGeoJSON,
+  locationDescription,
+  jwt,
+  budget,
+  anonymous,
+  phaseIds,
+}: IdeaType) {
+  const doRequest = (jwt: string) =>
+    cy.request({
+      headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/ideas',
@@ -565,14 +624,23 @@ export function apiCreateIdea(
           location_description: locationDescription,
           budget,
           anonymous,
+          phase_ids: phaseIds,
         },
       },
     });
+
+  if (jwt) {
+    return doRequest(jwt);
+  }
+
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+    return doRequest(adminJwt);
   });
 }
 
-export function apiRemoveIdea(ideaId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveIdea(ideaId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -586,7 +654,7 @@ export function apiRemoveIdea(ideaId: string) {
   });
 }
 
-export function apiCreateInitiative({
+function apiCreateInitiative({
   initiativeTitle,
   initiativeContent,
   assigneeId,
@@ -613,7 +681,7 @@ export function apiCreateInitiative({
     };
   }
 
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     adminJwt = response.body.jwt;
 
     return cy.request({
@@ -644,8 +712,8 @@ export function apiCreateInitiative({
   });
 }
 
-export function apiRemoveInitiative(initiativeId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveInitiative(initiativeId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -659,7 +727,7 @@ export function apiRemoveInitiative(initiativeId: string) {
   });
 }
 
-export function apiLikeInitiative(
+function apiLikeInitiative(
   email: string,
   password: string,
   initiativeId: string
@@ -678,11 +746,22 @@ export function apiLikeInitiative(
   });
 }
 
-export function apiDislikeIdea(
-  email: string,
-  password: string,
-  ideaId: string
-) {
+function apiLikeIdea(email: string, password: string, ideaId: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
+    });
+  });
+}
+
+function apiDislikeIdea(email: string, password: string, ideaId: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -697,12 +776,12 @@ export function apiDislikeIdea(
   });
 }
 
-export function apiCreateOfficialFeedbackForIdea(
+function apiCreateOfficialFeedbackForIdea(
   ideaId: string,
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -728,7 +807,7 @@ export function apiCreateOfficialFeedbackForIdea(
   });
 }
 
-export function apiAddComment(
+function apiAddComment(
   postId: string,
   postType: 'idea' | 'initiative',
   commentContent: string,
@@ -754,34 +833,32 @@ export function apiAddComment(
       },
     });
   } else {
-    return cy
-      .apiLogin('admin@citizenlab.co', 'democracy2.0')
-      .then((response) => {
-        const adminJwt = response.body.jwt;
+    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
 
-        return cy.request({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
-          },
-          method: 'POST',
-          url: `web_api/v1/${postType}s/${postId}/comments`,
-          body: {
-            comment: {
-              body_multiloc: {
-                en: commentContent,
-                'nl-BE': commentContent,
-              },
-              parent_id: commentParentId,
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'POST',
+        url: `web_api/v1/${postType}s/${postId}/comments`,
+        body: {
+          comment: {
+            body_multiloc: {
+              en: commentContent,
+              'nl-BE': commentContent,
             },
+            parent_id: commentParentId,
           },
-        });
+        },
       });
+    });
   }
 }
 
-export function apiRemoveComment(commentId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveComment(commentId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -800,38 +877,22 @@ export function apiRemoveComment(commentId: string) {
   });
 }
 
-export function apiCreateProject({
-  type,
+function apiCreateProject({
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
-  participationMethod,
-  votingMethod,
   assigneeId,
-  surveyUrl,
-  surveyService,
-  votingMaxTotal,
-  votingMaxVotesPerIdea,
-  postingEnabled,
-  allow_anonymous_participation,
+  visibleTo,
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
-  publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?: ParticipationMethod;
-  votingMethod?: VotingMethod;
+  publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
-  surveyUrl?: string;
-  votingMaxTotal?: number;
-  votingMaxVotesPerIdea?: number;
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
-  postingEnabled?: boolean;
-  allow_anonymous_participation?: boolean;
+  visibleTo?: IProjectAttributes['visible_to'];
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -843,7 +904,6 @@ export function apiCreateProject({
       url: 'web_api/v1/projects',
       body: {
         project: {
-          process_type: type,
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -862,47 +922,32 @@ export function apiCreateProject({
             'nl-BE': description,
           },
           default_assignee_id: assigneeId,
-          participation_method:
-            type === 'continuous' && !participationMethod
-              ? 'ideation'
-              : participationMethod,
-          voting_method: votingMethod,
-          survey_embed_url: surveyUrl,
-          survey_service: surveyService,
-          voting_max_total: votingMaxTotal,
-          voting_max_votes_per_idea: votingMaxVotesPerIdea,
-          posting_enabled: postingEnabled,
-          allow_anonymous_participation: allow_anonymous_participation,
+          visible_to: visibleTo,
         },
       },
     });
   });
 }
 
-export function apiEditProject({
+function apiEditProject({
   projectId,
-  type,
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
   assigneeId,
-  surveyUrl,
-  surveyService,
-  votingMaxTotal,
 }: {
   projectId: string;
-  type?: 'timeline' | 'continuous';
   title?: string;
   descriptionPreview?: string;
   description?: string;
-  publicationStatus?: 'draft' | 'published' | 'archived';
+  publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -914,7 +959,6 @@ export function apiEditProject({
       url: `web_api/v1/projects/${projectId}`,
       body: {
         project: {
-          ...(type && { process_type: type }),
           ...(publicationStatus && {
             admin_publication_attributes: {
               publication_status: publicationStatus,
@@ -939,30 +983,25 @@ export function apiEditProject({
             },
           }),
           ...(assigneeId && { default_assignee_id: assigneeId }),
-          ...(surveyUrl && { survey_embed_url: surveyUrl }),
-          ...(surveyService && { survey_service: surveyService }),
-          ...(votingMaxTotal && { voting_max_total: votingMaxTotal }),
         },
       },
     });
   });
 }
 
-export function apiCreateFolder({
-  type,
+function apiCreateFolder({
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   projectIds?: string[];
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     cy.request({
@@ -974,7 +1013,6 @@ export function apiCreateFolder({
       url: 'web_api/v1/project_folders',
       body: {
         project_folder: {
-          process_type: type,
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -996,8 +1034,8 @@ export function apiCreateFolder({
   });
 }
 
-export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     projectIds.map((projectId) => {
@@ -1013,8 +1051,8 @@ export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
     });
   });
 }
-export function apiRemoveProject(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveProject(projectId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1028,8 +1066,23 @@ export function apiRemoveProject(projectId: string) {
   });
 }
 
-export function apiRemoveFolder(folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemovePhase(phaseId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
+function apiRemoveFolder(folderId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1043,8 +1096,8 @@ export function apiRemoveFolder(folderId: string) {
   });
 }
 
-export function apiCreateCustomPage(title: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiCreateCustomPage(title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1069,8 +1122,8 @@ export function apiCreateCustomPage(title: string) {
     });
   });
 }
-export function apiRemoveCustomPage(customPageId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveCustomPage(customPageId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1084,13 +1137,12 @@ export function apiRemoveCustomPage(customPageId: string) {
   });
 }
 
-export function apiAddPoll(
-  type: 'Project' | 'Phase',
-  id: string,
+function apiAddPoll(
+  phaseId: string,
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     questions.forEach((question, index) => {
@@ -1102,8 +1154,7 @@ export function apiAddPoll(
         method: 'POST',
         url: 'web_api/v1/poll_questions',
         body: {
-          participation_context_id: id,
-          participation_context_type: type,
+          phase_id: phaseId,
           title_multiloc: { en: question.title },
           question_type: question.type,
           max_options: question.type === 'single_option' ? null : '2',
@@ -1127,7 +1178,7 @@ export function apiAddPoll(
   });
 }
 
-export function apiCreatePhase({
+function apiCreatePhase({
   projectId,
   title,
   startAt,
@@ -1142,23 +1193,31 @@ export function apiCreatePhase({
   votingMaxTotal,
   allow_anonymous_participation,
   votingMethod,
+  votingMaxVotesPerIdea,
+  votingMinTotal,
+  nativeSurveyButtonMultiloc,
+  nativeSurveyTitleMultiloc,
 }: {
   projectId: string;
   title: string;
   startAt: string;
-  endAt: string;
+  endAt?: string;
   participationMethod: ParticipationMethod;
-  canPost: boolean;
-  canReact: boolean;
-  canComment: boolean;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
+  votingMaxVotesPerIdea?: number;
+  votingMinTotal?: number;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1187,18 +1246,23 @@ export function apiCreatePhase({
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           campaigns_settings: { project_phase_started: true },
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
+          voting_min_total: votingMinTotal,
+          native_survey_button_multiloc: nativeSurveyButtonMultiloc,
+          native_survey_title_multiloc: nativeSurveyTitleMultiloc,
         },
       },
     });
   });
 }
 
-export function apiCreateCustomField(
+function apiCreateCustomField(
   fieldName: string,
   enabled: boolean,
-  required: boolean
+  required: boolean,
+  input_type = 'text'
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1212,7 +1276,7 @@ export function apiCreateCustomField(
         custom_field: {
           enabled,
           required,
-          input_type: 'text',
+          input_type,
           title_multiloc: {
             en: fieldName,
             'nl-BE': fieldName,
@@ -1223,8 +1287,29 @@ export function apiCreateCustomField(
   });
 }
 
-export function apiRemoveCustomField(fieldId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/users/custom_fields/${customFieldId}/custom_field_options`,
+      body: {
+        title_multiloc: {
+          en: optionName,
+          'nl-BE': optionName,
+        },
+      },
+    });
+  });
+}
+
+function apiRemoveCustomField(fieldId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1238,7 +1323,7 @@ export function apiRemoveCustomField(fieldId: string) {
   });
 }
 
-export function apiVerifyBogus(jwt: string, error?: string) {
+function apiVerifyBogus(jwt: string, error?: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -1254,7 +1339,7 @@ export function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
-export function apiCreateEvent({
+function apiCreateEvent({
   projectId,
   title,
   description,
@@ -1273,7 +1358,7 @@ export function apiCreateEvent({
   includeLocation?: boolean;
   onlineLink?: string;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1310,12 +1395,12 @@ export function apiCreateEvent({
   });
 }
 
-export function apiEnableProjectDescriptionBuilder({
+function apiEnableProjectDescriptionBuilder({
   projectId,
 }: {
   projectId: string;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1334,9 +1419,8 @@ export function apiEnableProjectDescriptionBuilder({
   });
 }
 
-export function apiCreateReportBuilder() {
-  const reportName = randomString();
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1348,15 +1432,79 @@ export function apiCreateReportBuilder() {
       url: 'web_api/v1/reports',
       body: {
         report: {
-          name: reportName,
+          name: phaseId ? undefined : randomString(),
+          phase_id: phaseId,
+          visible: phaseId ? visible : undefined,
         },
       },
     });
   });
 }
 
-export function apiRemoveReportBuilder(reportId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function removeReport(reportId: string, jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'DELETE',
+    url: `web_api/v1/reports/${reportId}`,
+  });
+}
+
+function apiRemoveReportBuilder(reportId?: string, jwt?: any) {
+  if (!reportId) return;
+
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return removeReport(reportId, jwt || adminJwt);
+  });
+}
+
+function apiRemoveAllReports() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: 'web_api/v1/reports',
+      })
+      .then((response) => {
+        return Promise.all(
+          response.body.data.map((report: any) =>
+            removeReport(report.id, adminJwt)
+          )
+        );
+      });
+  });
+}
+
+type IPhasePermissionAction =
+  | 'posting_idea'
+  | 'reacting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'voting'
+  | 'annotating_document';
+
+type ApiSetPermissionTypeProps = {
+  phaseId: string;
+  permissionBody?: any;
+  action: IPhasePermissionAction;
+};
+function apiSetPhasePermission({
+  phaseId,
+  permissionBody,
+  action,
+}: ApiSetPermissionTypeProps) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1364,16 +1512,55 @@ export function apiRemoveReportBuilder(reportId: string) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`,
       },
-      method: 'DELETE',
-      url: `web_api/v1/reports/${reportId}`,
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+      body: permissionBody,
     });
   });
 }
 
-export function apiUpdateAppConfiguration(
+function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+    });
+  });
+}
+
+function apiSetPermissionCustomField(
+  phaseId: string,
+  action: IPhasePermissionAction,
+  custom_field_id: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
+      body: {
+        custom_field_id,
+        required: true,
+      },
+    });
+  });
+}
+
+function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1390,45 +1577,136 @@ export function apiUpdateAppConfiguration(
   });
 }
 
-export function clickLocaleSwitcherAndType(title: string) {
+function clickLocaleSwitcherAndType(title: string) {
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
   });
 }
 
-export function apiUpdateHomepageSettings({
-  top_info_section_enabled,
-  bottom_info_section_enabled,
-  banner_avatars_enabled,
-  events_widget_enabled,
-  banner_layout,
-  banner_signed_out_header_multiloc,
-  banner_signed_out_subheader_multiloc,
-  banner_signed_in_header_multiloc,
-  banner_cta_signed_out_text_multiloc,
-  banner_signed_out_header_overlay_color,
-  banner_signed_out_header_overlay_opacity,
-  banner_cta_signed_out_type,
-  banner_cta_signed_in_type,
-  header_bg,
+function apiUpdateHomepageLayout({
+  craftjs_json,
 }: {
-  top_info_section_enabled?: boolean;
-  bottom_info_section_enabled?: boolean;
-  banner_avatars_enabled?: boolean;
-  events_widget_enabled?: boolean;
-  banner_layout?: string;
-  banner_signed_out_header_multiloc?: Record<string, string>;
-  banner_signed_out_subheader_multiloc?: Record<string, string>;
-  banner_signed_in_header_multiloc?: Record<string, string>;
-  banner_cta_signed_out_text_multiloc?: Record<string, string>;
-  banner_signed_out_header_overlay_color?: string;
-  banner_signed_out_header_overlay_opacity?: number;
-  banner_cta_signed_out_type?: string;
-  banner_cta_signed_in_type?: string;
-  header_bg?: string;
+  craftjs_json: Record<string, any>;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/home_pages/content_builder_layouts/homepage/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+          craftjs_json,
+        },
+      },
+    });
+  });
+}
+function apiCreateSmartGroupCustomField(
+  groupName: string,
+  customFieldId: string,
+  customFieldOptionId: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/groups',
+      body: {
+        group: {
+          membership_type: 'rules',
+          membership_counts: 0,
+          title_multiloc: {
+            en: groupName,
+            'nl-BE': groupName,
+          },
+          rules: [
+            {
+              customFieldId,
+              predicate: 'has_value',
+              ruleType: 'custom_field_select',
+              value: customFieldOptionId,
+            },
+          ],
+        },
+      },
+    });
+  });
+}
+
+function apiRemoveSmartGroup(smartGroupId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/groups/${smartGroupId}`,
+    });
+  });
+}
+
+const createBaseCustomField =
+  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+    title_multiloc:
+      input_type === 'page' ? {} : { en: `Question: ${input_type}` },
+    description_multiloc: {},
+    enabled: true,
+    id: randomString(),
+    key: input_type === 'page' ? 'page_1' : randomString(),
+    logic: {},
+    required: false,
+    input_type,
+    options: getOptions(input_type, imageId),
+    ordering: i,
+    ...(input_type === 'linear_scale'
+      ? {
+          maximum: 5,
+          minimum_label_multiloc: { en: 'Min label' },
+          maximum_label_multiloc: { en: 'Max label' },
+        }
+      : {}),
+  });
+
+const getOptions = (input_type: string, imageId?: string) => {
+  if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
+    return [
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 1` },
+        ...(imageId ? { image_id: imageId } : {}),
+      },
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 2` },
+        ...(imageId ? { image_id: imageId } : {}),
+      },
+    ];
+  }
+
+  return undefined;
+};
+
+function apiCreateSurveyQuestions(
+  phaseId: string,
+  inputTypes: ICustomFieldInputType[],
+  imageId?: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1437,24 +1715,131 @@ export function apiUpdateHomepageSettings({
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
-      url: `web_api/v1/home_page/`,
+      url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        home_page: {
-          top_info_section_enabled,
-          bottom_info_section_enabled,
-          banner_avatars_enabled,
-          events_widget_enabled,
-          banner_layout,
-          banner_signed_out_header_multiloc,
-          banner_signed_out_subheader_multiloc,
-          banner_signed_in_header_multiloc,
-          banner_cta_signed_out_text_multiloc,
-          banner_signed_out_header_overlay_color,
-          banner_signed_out_header_overlay_opacity,
-          banner_cta_signed_in_type,
-          banner_cta_signed_out_type,
-          header_bg,
+        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
+      },
+    });
+  });
+}
+
+function apiCreateSurveyResponse(
+  {
+    email,
+    password,
+    project_id,
+    fields,
+  }: {
+    email?: string;
+    password?: string;
+    project_id: string;
+    fields: Record<string, any>;
+  },
+  jwt?: any
+) {
+  const makeRequest = (jwt: any) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/ideas',
+      body: {
+        idea: {
+          publication_status: 'published',
+          project_id,
+          ...fields,
         },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
+      },
+    });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy
+      .apiLogin(email || 'admin@govocal.com', password || 'democracy2.0')
+      .then((response) => {
+        const jwt = response.body.jwt;
+        return makeRequest(jwt);
+      });
+  }
+}
+
+function uploadSurveyImageQuestionImage(base64: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/custom_field_option_images',
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
+function apiGetSurveySchema(phaseId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+    });
+  });
+}
+
+function uploadProjectFolderImage(folderId: string, base64: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/project_folders/${folderId}/images`,
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
+function uploadProjectImage(projectId: string, base64: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/images`,
+      body: {
+        image: { image: base64 },
       },
     });
   });
@@ -1477,7 +1862,7 @@ function bboxesIntersect(a: Bbox, b: Bbox) {
   );
 }
 
-export function intersectsViewport(subject?: any) {
+function intersectsViewport(subject?: any) {
   const viewportWidth = Cypress.config('viewportWidth');
   const viewportHeight = Cypress.config('viewportHeight');
 
@@ -1492,7 +1877,7 @@ export function intersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.true;
 }
 
-export function notIntersectsViewport(subject?: any) {
+function notIntersectsViewport(subject?: any) {
   const viewportWidth = Cypress.config('viewportWidth');
   const viewportHeight = Cypress.config('viewportHeight');
 
@@ -1521,6 +1906,8 @@ Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
+Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
+Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
@@ -1535,6 +1922,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
+Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
 Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
@@ -1547,12 +1935,15 @@ Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
+Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
+Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(
   'setConsentAndAdminLoginCookies',
   setConsentAndAdminLoginCookies
@@ -1567,6 +1958,7 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
+Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },
@@ -1577,8 +1969,27 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
-Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
+Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiLikeInitiative', apiLikeInitiative);
+Cypress.Commands.add(
+  'apiCreateSmartGroupCustomField',
+  apiCreateSmartGroupCustomField
+);
+Cypress.Commands.add('apiRemoveSmartGroup', apiRemoveSmartGroup);
+Cypress.Commands.add(
+  'apiSetPermissionCustomField',
+  apiSetPermissionCustomField
+);
+Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
+Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
+Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);
+Cypress.Commands.add(
+  'uploadSurveyImageQuestionImage',
+  uploadSurveyImageQuestionImage
+);
+Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
+Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
+Cypress.Commands.add('uploadProjectImage', uploadProjectImage);

@@ -1,6 +1,7 @@
-import { getActiveDestinations } from './utils';
-import { registerDestination, IDestinationConfig } from './destinations';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+
+import { registerDestination, IDestinationConfig } from './destinations';
+import { getActiveDestinations } from './utils';
 
 const mockAppConfiguration = {
   id: '1',

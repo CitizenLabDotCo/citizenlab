@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isEmpty, get } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Collapse from 'components/UI/Collapse';
+import { useQueryClient } from '@tanstack/react-query';
+import { isEmpty, get } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import usersKeys from 'api/users/keys';
+
 import {
   FormContainer,
   Form,
@@ -19,22 +21,17 @@ import {
   HelpImage,
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
+import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
 
-// services
-import { verifyCOW } from '../api/verification_methods/verify';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
+
+import { verifyCOW } from '../api/verification_methods/verify';
 import messages from '../messages';
 
-// images
 import helpImage from './COWHelpImage.png';
-import meKeys from 'api/me/keys';
-import usersKeys from 'api/users/keys';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   onCancel: () => void;
@@ -194,7 +191,7 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
             >
               <FormattedMessage {...messages.cancel} />
             </CancelButton>

@@ -1,11 +1,12 @@
-import ideasCountKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import ideasCountKeys from './keys';
 
 export type IdeasCountKeys = Keys<typeof ideasCountKeys>;
 
 export interface IQueryParameters {
-  projects?: string[] | null;
-  phase?: string | null;
+  projects?: string[];
+  phase?: string;
   topics?: string[];
   idea_status_id?: string;
   feedback_needed?: boolean;

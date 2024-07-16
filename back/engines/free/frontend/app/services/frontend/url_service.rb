@@ -52,8 +52,8 @@ module Frontend
     end
 
     def admin_project_folder_url(project_folder_id, locale: nil)
-      locale ||= app_config_instance.settings('core', 'locales').first
-      "#{app_config_instance.base_frontend_uri}/#{locale}/admin/projects/folders/#{project_folder_id}"
+      locale ||= Locale.default(config: app_config_instance)
+      "#{app_config_instance.base_frontend_uri}/#{locale.to_sym}/admin/projects/folders/#{project_folder_id}"
     end
 
     def slug_to_url(slug, classname, options = {})
@@ -76,7 +76,7 @@ module Frontend
     def home_url(options = {})
       url = config_from_options(options).base_frontend_uri
       locale = options[:locale]
-      locale ? "#{url}/#{locale}" : url
+      locale ? "#{url}/#{locale.locale_sym}" : url
     end
 
     def verification_url(options = {})
@@ -131,8 +131,9 @@ module Frontend
     end
 
     def unfollow_url(follower)
-      url = model_to_url(follower.followable, locale: follower.user&.locale)
-      url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}/following"
+      locale = follower.user ? Locale.new(follower.user.locale) : nil
+      url = model_to_url(follower.followable, locale: (follower.user.presence && locale))
+      url || "#{home_url(locale: locale)}/profile/#{follower.user.slug}/following"
     end
 
     def terms_conditions_url(configuration = app_config_instance)
@@ -151,8 +152,14 @@ module Frontend
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
 
-    def admin_project_ideas_url(project_id, configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/ideas"
+    def admin_project_url(project_id, configuration = app_config_instance)
+      project = Project.find(project_id)
+      last_phase_id = project ? TimelineService.new.current_or_last_can_contain_ideas_phase(project)&.id : nil
+      if last_phase_id
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
+      else
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/setup"
+      end
     end
 
     def admin_initiatives_url(configuration = app_config_instance)

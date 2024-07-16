@@ -2,6 +2,8 @@
 
 module ContentBuilder
   class WebApi::V1::LayoutImagesController < ApplicationController
+    include CarrierwaveErrorDetailsTransformation
+
     def create
       @image = LayoutImage.new image_params
       authorize @image
@@ -17,7 +19,7 @@ module ContentBuilder
         if @image.errors.details[:image].include?({ error: 'processing_error' })
           ErrorReporter.report_msg @image.errors.details.to_s
         end
-        render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
+        render json: { errors: transform_carrierwave_error_details(@image.errors, :image) }, status: :unprocessable_entity
       end
     end
 
@@ -29,13 +31,6 @@ module ContentBuilder
 
     def sidefx
       @sidefx ||= SideFxLayoutImageService.new
-    end
-
-    def transform_errors_details!(error_details)
-      # carrierwave does not return the error code symbols by default
-      error_details = error_details.dup
-      error_details[:image] = error_details[:image]&.uniq { |e| e[:error] }
-      error_details
     end
   end
 end

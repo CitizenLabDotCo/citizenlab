@@ -1,29 +1,32 @@
+import React, { KeyboardEvent, MouseEvent } from 'react';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import SignUpButton from 'containers/HomePage/SignUpButton';
+
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import SignUpButton from 'containers/HomePage/SignUpButton';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
-import useLocalize from 'hooks/useLocalize';
-import React, { KeyboardEvent, MouseEvent } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
-const CTA = ({ buttonStyle, signUpIn }: Props) => {
+const CTA = ({ buttonStyle, signUpIn, homepageSettings }: Props) => {
   const localize = useLocalize();
-  const { data: homepageSettings } = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const ctaType = homepageSettings.data.attributes.banner_cta_signed_out_type;
+    const ctaType = homepageSettings.banner_cta_signed_out_type;
 
     const customButtonText =
-      homepageSettings.data.attributes.banner_cta_signed_out_text_multiloc;
+      homepageSettings.banner_cta_signed_out_text_multiloc;
 
-    const customButtonUrl =
-      homepageSettings.data.attributes.banner_cta_signed_out_url;
+    const customButtonUrl = homepageSettings.banner_cta_signed_out_url;
 
     switch (ctaType) {
       case 'sign_up_button':

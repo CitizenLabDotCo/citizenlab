@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeAllowedTransitions from './useInitiativeAllowedTransitions';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useInitiativeAllowedTransitions from './useInitiativeAllowedTransitions';
 
 const apiPath = '*initiatives/:id/allowed_transitions';
 
@@ -20,10 +19,10 @@ const initiativeAllowedTransitionsData = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: initiativeAllowedTransitionsData })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: initiativeAllowedTransitionsData },
+      { status: 200 }
     );
   })
 );
@@ -50,8 +49,8 @@ describe('useInitiativeAllowedTransitions', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

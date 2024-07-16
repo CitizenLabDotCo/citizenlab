@@ -8,8 +8,8 @@ class WebApi::V1::MembershipsController < ApplicationController
   def index
     @memberships = policy_scope(Membership)
       .where(group_id: params[:group_id])
-      .includes(user: [:unread_notifications])
     @memberships = paginate @memberships
+    @memberships = @memberships.includes(user: [:unread_notifications])
 
     render json: linked_json(
       @memberships,

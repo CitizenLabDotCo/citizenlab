@@ -1,36 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
-// hooks
-import useProjectFolders from 'api/project_folders/useProjectFolders';
-import useLocalize from 'hooks/useLocalize';
-import { usePermission } from 'utils/permissions';
-
-// services
-import { IUpdatedProjectProperties } from 'api/projects/types';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-// components
 import {
   Radio,
   Select,
   IconTooltip,
   Error,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-
-// utils
-import { isNilOrError, isNil } from 'utils/helperUtils';
-
-// typings
+import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
+import { IUpdatedProjectProperties } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError, isNil } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+
+import messages from './messages';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -39,19 +33,26 @@ const StyledSectionField = styled(SectionField)`
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
+  isNewProject: boolean;
 }
 
 const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+  isNewProject,
+}: Props) => {
+  const { formatMessage } = useIntl();
   const { data: projectFolders } = useProjectFolders({});
   const { data: authUser } = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
     item: 'project_folder',
     action: 'create_project_in_folder_only',
+  });
+
+  const userCanCreateProjectAtTopLevel = usePermission({
+    item: 'project',
+    action: 'create',
   });
 
   const localize = useLocalize();
@@ -66,14 +67,14 @@ const ProjectFolderSelect = ({
       userCanCreateProjectInFolderOnly: boolean,
       folder_id?: string | null
     ) {
-      if (userCanCreateProjectInFolderOnly) {
-        // folder moderators always need to pick a folder
-        // when they create a project
-        return true;
-      } else if (folder_id) {
+      if (folder_id) {
         // when we already have a folder_id for our project,
         // the project folder select should be turned on
         // so we can see our selected folder.
+        return true;
+      } else if (isNewProject && userCanCreateProjectInFolderOnly) {
+        // folder moderators need to pick a folder
+        // only when they create a project
         return true;
       } else {
         return false;
@@ -89,6 +90,7 @@ const ProjectFolderSelect = ({
     userCanCreateProjectInFolderOnly,
     folder_id,
     authUser,
+    isNewProject,
   ]);
 
   if (isNilOrError(authUser)) {
@@ -103,7 +105,7 @@ const ProjectFolderSelect = ({
             label: '',
           },
           ...projectFolders.data
-            .filter((folder) => userModeratesFolder(authUser.data, folder.id))
+            .filter((folder) => userModeratesFolder(authUser, folder.id))
             .map((folder) => {
               return {
                 value: folder.id,
@@ -166,7 +168,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-no"
           label={<FormattedMessage {...messages.optionNo} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         <Radio
           onChange={onRadioFolderSelectChange}
@@ -175,7 +177,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-yes"
           label={<FormattedMessage {...messages.optionYes} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         {radioFolderSelect && (
           <Select
@@ -194,4 +196,4 @@ const ProjectFolderSelect = ({
   return null;
 };
 
-export default injectIntl(ProjectFolderSelect);
+export default ProjectFolderSelect;

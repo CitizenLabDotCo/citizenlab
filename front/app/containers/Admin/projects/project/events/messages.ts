@@ -93,9 +93,9 @@ export default defineMessages({
       'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
   eventAttendanceExportText: {
-    id: 'app.containers.AdminPage.ProjectEvents.eventAttendanceExportText',
+    id: 'app.containers.AdminPage.ProjectEvents.eventAttendanceExport',
     defaultMessage:
-      'In order to see event attendees, go to the {userTabLink} tab and create a smart group for the event. {supportArticleLink}.',
+      'To email attendees directly from the platform, platform admins must create a user group in the  {userTabLink} tab. {supportArticleLink}.',
   },
   usersTabLink: {
     id: 'app.containers.AdminPage.ProjectEvents.usersTabLink',
@@ -114,10 +114,10 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/5481527-adding-events-to-your-platform',
   },
-  mapSelectionLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel2',
+  refineOnMapInstructions: {
+    id: 'app.containers.AdminPage.ProjectEvents.refineOnMapInstructions',
     defaultMessage:
-      'Refine where your event location marker is shown by clicking on the map:',
+      'You can refine where your event location marker is shown by clicking on the map below.',
   },
   eventImage: {
     id: 'app.containers.AdminPage.ProjectEvents.eventImage',
@@ -206,5 +206,17 @@ export default defineMessages({
   attend: {
     id: 'app.containers.AdminPage.ProjectEvents.attend',
     defaultMessage: 'Attend',
+  },
+  exportAttendees: {
+    id: 'app.containers.AdminPage.ProjectEvents.exportAttendees',
+    defaultMessage: 'Export attendees',
+  },
+  attendees: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendees',
+    defaultMessage: 'attendees',
+  },
+  attendee: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendee',
+    defaultMessage: 'attendee',
   },
 });

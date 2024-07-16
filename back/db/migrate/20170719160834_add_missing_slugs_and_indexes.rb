@@ -12,11 +12,6 @@ class AddMissingSlugsAndIndexes < ActiveRecord::Migration[5.1]
 
     add_column :ideas, :slug, :string
 
-    Idea.all.each do |idea|
-      idea.generate_slug
-      idea.save
-    end
-
     change_column_null :ideas, :slug, false
     add_index :ideas, :slug, unique: true
   end

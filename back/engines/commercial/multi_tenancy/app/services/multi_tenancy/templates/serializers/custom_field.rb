@@ -21,6 +21,7 @@ module MultiTenancy
           minimum_select_count
           ordering
           title_multiloc
+          random_option_ordering
         ]
 
         # Enigmatic comment from the previous implementation:

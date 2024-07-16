@@ -1,6 +1,8 @@
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
-import { PublicationTab } from './';
+
 import { keys } from 'utils/helperUtils';
+
+import { PublicationTab } from './';
 
 export function getCurrentTab(
   statusCounts: IStatusCountsAll,

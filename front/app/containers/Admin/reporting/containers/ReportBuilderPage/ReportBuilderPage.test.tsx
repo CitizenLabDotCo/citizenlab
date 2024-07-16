@@ -1,15 +1,35 @@
 import React from 'react';
-import ReportBuilderPage from '.';
+
 import { render, screen, fireEvent, userEvent, act } from 'utils/testUtils/rtl';
 
-import clHistory from 'utils/cl-router/history';
+import ReportBuilderPage from '.';
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
+jest.mock('api/me/useAuthUser', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        id: '_1',
+        type: 'user',
+        attributes: {
+          slug: 'user-1',
+          locale: 'en',
+          roles: [{ type: 'admin' }],
+        },
+      },
+    },
+  }))
+);
+
 let mockReports;
 jest.mock('api/reports/useReports', () =>
   jest.fn(() => ({ data: { data: mockReports } }))
+);
+
+jest.mock('api/reports/useReport', () =>
+  jest.fn(() => ({ data: { data: mockReports[0] } }))
 );
 
 const mockCreateReport = jest.fn();
@@ -41,6 +61,12 @@ const reports = [
       name: 'Report 1',
       created_at: '2022-12-18',
       updated_at: '2022-12-19',
+      action_descriptors: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
     },
     relationships: {
       owner: {
@@ -56,6 +82,12 @@ const reports = [
       name: 'Report 2',
       created_at: '2022-12-20',
       updated_at: '2022-12-21',
+      action_descriptors: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
     },
     relationships: {
       owner: {
@@ -79,6 +111,7 @@ describe('<ReportBuilderPage />', () => {
       mockReports = [];
       render(<ReportBuilderPage />);
 
+      document.body.innerHTML;
       expect(
         screen.getByText('Create your first project report')
       ).toBeInTheDocument();
@@ -140,27 +173,12 @@ describe('<ReportBuilderPage />', () => {
       expect(mockDeleteReport).toHaveBeenCalledWith('r2');
     });
 
-    it('calls clHistory.push with correct arg when clicking "edit"', () => {
+    it('has print buttons', () => {
       mockReports = reports;
       render(<ReportBuilderPage />);
-      const editButtonSecondReport = screen.getAllByText('Edit')[1];
-      fireEvent.click(editButtonSecondReport);
+      const printButtons = screen.getAllByText('Duplicate');
 
-      expect(clHistory.push).toHaveBeenCalledWith(
-        '/admin/reporting/report-builder/r2/editor'
-      );
-    });
-
-    it('calls window.open with correct args when clicking "view"', () => {
-      mockReports = reports;
-      render(<ReportBuilderPage />);
-      const viewButtonSecondReport = screen.getAllByText('View')[1];
-      fireEvent.click(viewButtonSecondReport);
-
-      expect(mockOpen).toHaveBeenCalledWith(
-        '/admin/reporting/report-builder/r2/viewer',
-        '_blank'
-      );
+      expect(printButtons).toHaveLength(reports.length);
     });
   });
 });

@@ -44,6 +44,11 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them before <b>{endDate}</b>.',
   },
+  votingSubmittedInstructionsNoEndDate: {
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate',
+    defaultMessage:
+      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
+  },
   votingSubmittedInstructionsContinuous: {
     id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous',
     defaultMessage:
@@ -64,6 +69,19 @@ export default defineMessages({
   votes: {
     id: 'app.utils.votingMethodUtils.votes',
     defaultMessage: 'Votes',
+  },
+  midSentenceVote: {
+    id: 'app.utils.votingMethodUtils.midSentenceVote',
+    defaultMessage: 'vote',
+  },
+  midSentenceVotes: {
+    id: 'app.utils.votingMethodUtils.midSentenceVotes',
+    defaultMessage: 'votes',
+  },
+  numberOfVotes: {
+    id: 'app.utils.votingMethodUtils.numberOfVotes',
+    defaultMessage:
+      '{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}',
   },
   budgetingSubmissionInstructionsTotalBudget: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget',
@@ -86,6 +104,11 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructions2',
     defaultMessage:
       '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them before <b>{endDate}</b>.',
+  },
+  budgetingSubmittedInstructionsNoEndDate: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate',
+    defaultMessage:
+      '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point.',
   },
   budgetingSubmittedInstructionsContinuous: {
     id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous',
@@ -131,13 +154,13 @@ export default defineMessages({
       'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.',
   },
   cumulativeVotingInstructionsPreferredOptions: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions',
-    defaultMessage: 'Select your preferred options by tapping on “Vote”.',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2',
+    defaultMessage: 'Select your preferred options by tapping on "Select".',
   },
   cumulativeVotingInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2',
     defaultMessage:
-      'You can add a maximum number of {maxVotes} votes per option.',
+      'You can add a maximum number of {maxVotes} {voteTerm} per option.',
   },
   cumulativeVotingInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',

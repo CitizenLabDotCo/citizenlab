@@ -1,7 +1,8 @@
 import { Point } from 'geojson';
-import { geocode } from 'utils/locationTools';
-import { parse } from 'qs';
 import { isNumber } from 'lodash-es';
+import { parse } from 'qs';
+
+import { geocode } from 'utils/locationTools';
 
 export const getLocationGeojson = async (
   initialFormData: { [k: string]: any } | null,

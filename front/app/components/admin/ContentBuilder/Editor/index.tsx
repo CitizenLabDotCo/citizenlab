@@ -1,11 +1,11 @@
 import React from 'react';
+
 import {
   Editor as CraftEditor,
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
 
-// craft
 import RenderNode from './RenderNode';
 
 type EditorProps = {
@@ -31,9 +31,9 @@ const Editor: React.FC<EditorProps> = ({
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
-      onNodesChange={(data) =>
-        onNodesChange && onNodesChange(data.getSerializedNodes())
-      }
+      onNodesChange={(data) => {
+        onNodesChange && onNodesChange(data.getSerializedNodes());
+      }}
     >
       {children}
     </CraftEditor>

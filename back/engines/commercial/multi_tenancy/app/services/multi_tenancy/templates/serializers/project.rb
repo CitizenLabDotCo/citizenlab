@@ -3,7 +3,7 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Project < ParticipationContext
+      class Project < Base
         upload_attribute :header_bg
 
         attributes %i[
@@ -11,7 +11,6 @@ module MultiTenancy
           description_preview_multiloc
           include_all_areas
           internal_role
-          process_type
           title_multiloc
           visible_to
         ]

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 
-import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -9,12 +7,18 @@ import {
   rankWith,
   isDateControl,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import VerificationIcon from '../VerificationIcon';
-import { getSubtextElement } from './controlUtils';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+import moment from 'moment';
+
 import DateSinglePicker from 'components/admin/DateSinglePicker';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getSubtextElement } from './controlUtils';
 
 const DateControl = ({
   uischema,
@@ -57,7 +61,12 @@ const DateControl = ({
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

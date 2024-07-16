@@ -5,8 +5,8 @@ require 'rails_helper'
 describe BasketsIdeaPolicy do
   subject { described_class.new(user, baskets_idea) }
 
-  let(:context) { create(:continuous_single_voting_project) }
-  let(:basket) { create(:basket, participation_context: context) }
+  let(:context) { create(:single_phase_single_voting_project).phases.first }
+  let(:basket) { create(:basket, phase: context, submitted_at: nil) }
   let!(:baskets_idea) { create(:baskets_idea, basket: basket) }
 
   let(:scope) { BasketsIdeaPolicy::Scope.new(user, basket.baskets_ideas) }
@@ -44,6 +44,20 @@ describe BasketsIdeaPolicy do
     it { is_expected.to permit(:create)  }
     it { is_expected.to permit(:update)  }
     it { is_expected.to permit(:destroy) }
+
+    it 'indexes the baskets_idea' do
+      expect(scope.resolve.size).to eq 1
+    end
+  end
+
+  context 'for a submitted basket' do
+    let(:basket) { create(:basket, phase: context, submitted_at: Time.now) }
+    let(:user) { basket.user }
+
+    it { is_expected.to permit(:show)        }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
 
     it 'indexes the baskets_idea' do
       expect(scope.resolve.size).to eq 1

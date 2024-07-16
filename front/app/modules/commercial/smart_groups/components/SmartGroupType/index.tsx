@@ -1,13 +1,12 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { FC } from 'react';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-import messages from './messages';
-import adminUsersMessages from 'containers/Admin/users/messages';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
+
+import { MembershipType } from 'api/groups/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   MoreInfoLink,
@@ -18,21 +17,24 @@ import {
   Step2Button,
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
+import adminUsersMessages from 'containers/Admin/users/messages';
 
-import { MembershipType } from 'api/groups/types';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+
+import messages from './messages';
 
 const GroupType = styled(BaseGroupType)`
   background: ${colors.background};
 `;
 
 const IconWrapper = styled(BaseIconWrapper)`
-  background: ${transparentize(0.9, colors.orange)};
+  background: ${transparentize(0.9, colors.orange500)};
 `;
 
 const LightningBoltIcon = styled(Icon).attrs({ name: 'flash' })`
   width: 28px;
   height: 28px;
-  fill: ${colors.orange};
+  fill: ${colors.orange500};
 `;
 
 const BlackedOut = styled.div`
@@ -102,7 +104,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
       <Step2Button
         disabled={!isSmartGroupsEnabled}
         className="e2e-create-rules-group-button"
-        buttonStyle="cl-blue"
+        buttonStyle="admin-dark"
         onClick={onClick('rules')}
       >
         <FormattedMessage {...adminUsersMessages.step1CreateButtonSmart} />

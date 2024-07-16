@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesEditPage.metaTitle',
-    defaultMessage: 'Edit your initiative • {orgName}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesEditPage.metaTitle1',
+    defaultMessage: 'Edit your proposal | {orgName}',
   },
-  metaDescription: {
-    id: 'app.containers.InitiativesEditPage.metaDescription',
+  metaDescription1: {
+    id: 'app.containers.InitiativesEditPage.metaDescription1',
     defaultMessage:
-      'Edit your initiative. Add more information and make it even better.',
+      'Edit your proposal. Add more information and make it even better.',
   },
 });

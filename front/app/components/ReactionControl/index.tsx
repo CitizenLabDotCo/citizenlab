@@ -1,35 +1,30 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
-// components
-import ScreenReaderContent from './ScreenReaderContent';
-import ReactionButton from './ReactionButton';
-
-// services
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import { getLatestRelevantPhase } from 'api/phases/utils';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isRtl } from '@citizenlab/cl2-component-library';
 import { includes } from 'lodash-es';
-
-// style
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
 
-// typings
+import { TReactionMode } from 'api/idea_reactions/types';
+import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
+import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
+import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
 import usePhases from 'api/phases/usePhases';
-import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
-import { TReactionMode } from 'api/idea_reactions/types';
-import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
+import { getLatestRelevantPhase } from 'api/phases/utils';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import ReactionButton from './ReactionButton';
+import ScreenReaderContent from './ScreenReaderContent';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -55,13 +50,11 @@ interface Props {
     disabled_reason?: IdeaReactingDisabledReason
   ) => void;
   setRef?: (element: HTMLDivElement) => void;
-  ariaHidden?: boolean;
   className?: string;
   styleType: TStyleType;
 }
 
 const ReactionControl = ({
-  ariaHidden = false,
   ideaId,
   size,
   className,
@@ -71,15 +64,14 @@ const ReactionControl = ({
   const [reactingAnimation, setReactingAnimation] = useState<
     'up' | 'down' | null
   >(null);
+  const { formatMessage } = useIntl();
+  const [screenReaderMessage, setScreenReaderMessage] = useState<string>('');
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: addReaction, isLoading: addReactionIsLoading } =
     useAddIdeaReaction();
   const { mutate: deleteReaction, isLoading: deleteReactionIsLoading } =
     useDeleteIdeaReaction();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(
-    idea?.data.relationships.project.data.id
-  );
   const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
   const { data: reactionData } = useIdeaReaction(
     idea?.data.relationships.user_reaction?.data?.id
@@ -88,6 +80,26 @@ const ReactionControl = ({
   const reactionId =
     authUser && idea?.data?.relationships?.user_reaction?.data?.id;
   const myReactionMode = reactionId ? reactionData?.data.attributes.mode : null;
+
+  const setScreenReaderCancelReactionMessage = useCallback(
+    (reactionMode: TReactionMode) => {
+      const messageKey =
+        reactionMode === 'up'
+          ? messages.cancelLikeSuccess
+          : messages.cancelDislikeSuccess;
+      setScreenReaderMessage(formatMessage(messageKey));
+    },
+    [formatMessage]
+  );
+
+  const setScreenReaderReactionSuccessMessage = useCallback(
+    (reactionMode: TReactionMode) => {
+      const messageKey =
+        reactionMode === 'up' ? messages.likeSuccess : messages.dislikeSuccess;
+      setScreenReaderMessage(formatMessage(messageKey));
+    },
+    [formatMessage]
+  );
 
   const castReaction = useCallback(
     (reactionMode: 'up' | 'down') => {
@@ -105,6 +117,7 @@ const ReactionControl = ({
                 {
                   onSuccess: () => {
                     setReactingAnimation(null);
+                    setScreenReaderReactionSuccessMessage(reactionMode);
                   },
                 }
               );
@@ -120,6 +133,7 @@ const ReactionControl = ({
           {
             onSuccess: () => {
               setReactingAnimation(null);
+              setScreenReaderCancelReactionMessage(reactionMode);
             },
           }
         );
@@ -132,23 +146,29 @@ const ReactionControl = ({
           {
             onSuccess: () => {
               setReactingAnimation(null);
+              setScreenReaderReactionSuccessMessage(reactionMode);
             },
           }
         );
       }
     },
-    [authUser, addReaction, deleteReaction, ideaId, myReactionMode, reactionId]
+    [
+      authUser,
+      ideaId,
+      reactionId,
+      myReactionMode,
+      deleteReaction,
+      addReaction,
+      setScreenReaderReactionSuccessMessage,
+      setScreenReaderCancelReactionMessage,
+    ]
   );
 
   if (!idea) return null;
 
   const ideaAttributes = idea.data.attributes;
   const reactingActionDescriptor =
-    ideaAttributes.action_descriptor.reacting_idea;
-  const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled ||
-    reactingActionDescriptor.down.future_enabled
-  );
+    ideaAttributes.action_descriptors.reacting_idea;
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
@@ -160,34 +180,14 @@ const ReactionControl = ({
     phases?.data
       .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
-  const isContinuousProject =
-    project?.data.attributes.process_type === 'continuous';
   const latestRelevantIdeaPhase = ideaPhases
     ? getLatestRelevantPhase(ideaPhases)
     : null;
-  const participationContextType = isContinuousProject ? 'project' : 'phase';
-  const participationContextId = isContinuousProject
-    ? project?.data.id || null
-    : latestRelevantIdeaPhase?.id || null;
-  const participationContext = isContinuousProject
-    ? project.data || null
-    : latestRelevantIdeaPhase;
-  const isVotingContext =
-    participationContext?.attributes.participation_method === 'voting';
+  const phaseId = latestRelevantIdeaPhase?.id || null;
 
   // Reactions count
   const likesCount = ideaAttributes.likes_count;
   const dislikesCount = ideaAttributes.dislikes_count;
-
-  const showReactionControl = !!(
-    !isVotingContext &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0)
-  );
 
   const onClickLike = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -214,12 +214,12 @@ const ReactionControl = ({
       myReactionMode && reactionMode === myReactionMode
     );
 
-    if (!participationContextId || !participationContextType) return;
+    if (!phaseId) return;
 
     const context = {
       action: 'reacting_idea',
-      id: participationContextId,
-      type: participationContextType,
+      id: phaseId,
+      type: 'phase',
     } as const;
 
     const successAction: SuccessAction = {
@@ -250,63 +250,60 @@ const ReactionControl = ({
     return;
   };
 
-  if (idea && showReactionControl) {
-    // Only when disliking is explicitly disabled,
-    // we don't show the dislike button
-    const showDislike =
-      reactingActionDescriptor.down.enabled === true ||
-      (reactingActionDescriptor.down.enabled === false &&
-        reactingActionDescriptor.down.disabled_reason !== 'disliking_disabled');
+  // Only when disliking is explicitly disabled,
+  // we don't show the dislike button
+  const showDislike =
+    reactingActionDescriptor.down.enabled === true ||
+    (reactingActionDescriptor.down.enabled === false &&
+      reactingActionDescriptor.down.disabled_reason !==
+        'reacting_dislike_disabled');
 
-    return (
-      <>
-        <ScreenReaderContent
-          likesCount={likesCount}
-          dislikesCount={dislikesCount}
+  return (
+    <>
+      <ScreenReaderContent
+        likesCount={likesCount}
+        dislikesCount={dislikesCount}
+      />
+      <Container
+        className={[
+          className,
+          'e2e-reaction-controls',
+          myReactionMode === null ? 'neutral' : myReactionMode,
+        ]
+          .filter((item) => item)
+          .join(' ')}
+      >
+        <ReactionButton
+          buttonReactionMode="up"
+          userReactionMode={myReactionMode}
+          onClick={onClickLike}
+          className={reactingAnimation === 'up' ? 'reactionClick' : ''}
+          styleType={styleType}
+          size={size}
+          iconName="vote-up"
+          reactionsCount={likesCount}
+          ideaId={idea.data.id}
         />
-        <Container
-          className={[
-            className,
-            'e2e-reaction-controls',
-            myReactionMode === null ? 'neutral' : myReactionMode,
-          ]
-            .filter((item) => item)
-            .join(' ')}
-          aria-hidden={ariaHidden}
-        >
+
+        {showDislike && (
           <ReactionButton
-            buttonReactionMode="up"
+            buttonReactionMode="down"
             userReactionMode={myReactionMode}
-            onClick={onClickLike}
-            className={reactingAnimation === 'up' ? 'reactionClick' : ''}
-            ariaHidden={ariaHidden}
+            onClick={onClickDislike}
+            className={reactingAnimation === 'down' ? 'reactionClick' : ''}
             styleType={styleType}
             size={size}
-            iconName="vote-up"
-            reactionsCount={likesCount}
+            iconName="vote-down"
+            reactionsCount={dislikesCount}
             ideaId={idea.data.id}
           />
-
-          {showDislike && (
-            <ReactionButton
-              buttonReactionMode="down"
-              userReactionMode={myReactionMode}
-              onClick={onClickDislike}
-              className={reactingAnimation === 'down' ? 'reactionClick' : ''}
-              ariaHidden={ariaHidden}
-              styleType={styleType}
-              size={size}
-              iconName="vote-down"
-              reactionsCount={dislikesCount}
-              ideaId={idea.data.id}
-            />
-          )}
-        </Container>
-      </>
-    );
-  }
-
-  return null;
+        )}
+        <ScreenReaderOnly aria-live="polite">
+          {screenReaderMessage}
+        </ScreenReaderOnly>
+      </Container>
+    </>
+  );
 };
 
 export default ReactionControl;

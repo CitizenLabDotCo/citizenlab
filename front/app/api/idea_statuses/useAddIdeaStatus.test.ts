@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddIdeaStatus from './useAddIdeaStatus';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { ideaStatusesData } from './__mocks__/useIdeaStatuses';
+
+import { ideaStatusesData } from './__mocks__/_mockServer';
+import useAddIdeaStatus from './useAddIdeaStatus';
 
 const apiPath = '*idea_statuses';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: ideaStatusesData[0] }, { status: 200 });
   })
 );
 
@@ -40,8 +39,8 @@ describe('useAddIdeaStatus', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

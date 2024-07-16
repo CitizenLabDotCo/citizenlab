@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
 import clHistory from 'utils/cl-router/history';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import ProjectFolderGoBackButton from '.';
 
@@ -27,7 +28,7 @@ describe('ProjectFolderGoBackButton', () => {
       <ProjectFolderGoBackButton projectFolderId={projectFolderData.id} />
     );
     expect(screen.getByRole('button')).toBeInTheDocument();
-    expect(screen.getByText('TestFolder')).toBeInTheDocument();
+    expect(screen.getByText('Back to folder')).toBeInTheDocument();
   });
   it('pushes parent folder path to history when clicked', () => {
     render(

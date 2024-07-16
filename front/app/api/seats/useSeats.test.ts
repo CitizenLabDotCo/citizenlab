@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useSeats from './useSeats';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useSeats from './useSeats';
 
 const apiPath = '*users/seats';
 
@@ -18,8 +18,8 @@ const seatsData = {
   },
 };
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: seatsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: seatsData }, { status: 200 });
   })
 );
 
@@ -42,8 +42,8 @@ describe('useSeats', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

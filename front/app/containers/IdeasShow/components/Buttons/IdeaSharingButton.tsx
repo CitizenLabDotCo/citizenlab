@@ -1,19 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'utils/participationContexts';
 
-// i18n
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import SharingButtons from 'components/Sharing/SharingButtons';
+import messages from '../../messages';
 
 interface Props {
   className?: string;
@@ -36,11 +37,7 @@ const Component = ({ ideaId }: Props) => {
     const postUrl = `${location.origin}/ideas/${idea.data.attributes.slug}`;
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
-    const inputTerm = getInputTerm(
-      project.data.attributes.process_type,
-      project.data,
-      phases?.data
-    );
+    const inputTerm = getInputTerm(phases?.data);
 
     const utmParams = !isNilOrError(authUser)
       ? {
@@ -56,19 +53,6 @@ const Component = ({ ideaId }: Props) => {
     return (
       <SharingButtons
         url={postUrl}
-        facebookMessage={formatMessage(
-          getInputTermMessage(inputTerm, {
-            idea: messages.ideaFacebookMessage,
-            option: messages.optionFacebookMessage,
-            project: messages.projectFacebookMessage,
-            question: messages.questionFacebookMessage,
-            issue: messages.issueFacebookMessage,
-            contribution: messages.contributionFacebookMessage,
-          }),
-          {
-            postTitle,
-          }
-        )}
         whatsAppMessage={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaWhatsAppMessage,

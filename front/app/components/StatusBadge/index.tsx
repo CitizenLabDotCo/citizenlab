@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-import T from 'components/T';
-import styled from 'styled-components';
+
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+
+import T from 'components/T';
 
 const Container = styled.div<{ color: string }>`
   color: ${({ color }) => color};

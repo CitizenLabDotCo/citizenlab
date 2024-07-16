@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useModerationsCount from './useModerationsCount';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useModerationsCount from './useModerationsCount';
 
 const apiPath = '*moderations/moderations_count';
 
@@ -18,8 +18,8 @@ const moderationsCountData = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: moderationsCountData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: moderationsCountData }, { status: 200 });
   })
 );
 
@@ -42,8 +42,8 @@ describe('useModerationsCount', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

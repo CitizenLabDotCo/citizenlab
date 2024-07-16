@@ -1,42 +1,42 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import {
+  Select,
+  Box,
+  Icon,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
-import messages from '../../messages';
-
-// styling
 import styled from 'styled-components';
+import { IGraphFormat, IOption } from 'typings';
+
+import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
+import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
+import { ideasByProjectXlsxEndpoint } from 'api/ideas_by_project/util';
+import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
+import { reactionsByProjectXlsxEndpoint } from 'api/reactions_by_project/util';
+import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
+
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-import { media, colors } from 'utils/styleUtils';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCard,
   GraphCardInner,
   GraphCardHeaderWithFilter,
 } from 'components/admin/GraphWrappers';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
+
 import { HiddenLabel } from 'utils/a11y';
-import BarChart from 'components/admin/Graphs/BarChart';
-
-// typings
-import { IResource } from '..';
-import { IGraphFormat, IOption } from 'typings';
-
-// utils
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
-import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
-import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
-import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
-import { ideasByProjectXlsxEndpoint } from 'api/ideas_by_project/util';
-import { reactionsByProjectXlsxEndpoint } from 'api/reactions_by_project/util';
+
+import { IResource } from '..';
+import messages from '../../messages';
 
 const GraphCardTitle = styled.h3`
   margin: 0;

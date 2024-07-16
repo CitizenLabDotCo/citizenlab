@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaReaction from './useIdeaReaction';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IIdeaReaction } from './types';
+import useIdeaReaction from './useIdeaReaction';
 
 const apiPath = '*/reactions/:id';
 
@@ -35,8 +34,8 @@ export const reactionData: IIdeaReaction = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reactionData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: reactionData }, { status: 200 });
   })
 );
 
@@ -59,8 +58,8 @@ describe('useIdeaReaction', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

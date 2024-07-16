@@ -2,18 +2,16 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    def assign_defaults_for_participation_context
-      participation_context.posting_method = 'limited'
-      participation_context.posting_limited_max = 1
+    def assign_defaults_for_phase
+      phase.posting_method = 'limited'
+      phase.posting_limited_max = 1
     end
 
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
-    # This method is invoked after creation of the input,
-    # so store the new slug.
-    def assign_slug(input)
-      new_slug = SlugService.new.generate_slug input, input.id
-      input.update_column :slug, new_slug
+    def generate_slug(input)
+      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
+      SlugService.new.generate_slug input, input.id
     end
 
     def assign_defaults(input)
@@ -25,29 +23,57 @@ module ParticipationMethod
       'page'
     end
 
+    def default_fields(custom_form)
+      return [] if custom_form.persisted?
+
+      multiloc_service = MultilocService.new
+      [
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: 'page1',
+          resource: custom_form,
+          input_type: 'page'
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: CustomFieldService.new.generate_key(
+            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first,
+            false
+          ),
+          resource: custom_form,
+          input_type: 'select',
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
+          options: [
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option1',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option1')
+            ),
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option2',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
+            )
+          ]
+        )
+      ]
+    end
+
+    def allowed_extra_field_input_types
+      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point]
+    end
+
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.create(participation_context: participation_context)
-      CustomField.create(
-        resource: form,
-        input_type: 'page',
-        key: 'page_1'
-      )
-      field = CustomField.create(
-        resource: form,
-        input_type: 'select',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.title')
-      )
-      CustomFieldOption.create(
-        custom_field: field,
-        key: 'option1',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option1')
-      )
-      CustomFieldOption.create(
-        custom_field: field,
-        key: 'option2',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
-      )
-      participation_context.reload
+      form = CustomForm.new(participation_context: phase)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      form.save!
+      phase.reload
 
       form
     end
@@ -60,16 +86,16 @@ module ParticipationMethod
       true
     end
 
-    def never_update?
-      true
+    def update_if_published?
+      false
     end
 
     def creation_phase?
-      participation_context.project.timeline?
+      true
     end
 
     def custom_form
-      participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+      phase.custom_form || CustomForm.new(participation_context: phase)
     end
 
     def edit_custom_form_allowed?
@@ -89,6 +115,10 @@ module ParticipationMethod
     end
 
     def supports_survey_form?
+      true
+    end
+
+    def supports_permitted_by_everyone?
       true
     end
 

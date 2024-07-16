@@ -1,5 +1,9 @@
+import {
+  media,
+  fontSizes,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 export const GraphsContainer = styled.div`
   display: flex;

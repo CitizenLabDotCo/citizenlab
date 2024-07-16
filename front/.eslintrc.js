@@ -11,6 +11,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -23,6 +24,7 @@ module.exports = {
     'jsx-a11y',
     '@typescript-eslint',
     'unused-imports',
+    'import',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -58,6 +60,57 @@ module.exports = {
       'undefined',
     ],
     'id-match': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        pathGroups: [
+          { group: 'builtin', pattern: 'react', position: 'before' },
+          {
+            pattern: 'api/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'hooks/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'containers/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'components/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'utils/**',
+            group: 'internal',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+        distinctGroup: true,
+        'newlines-between': 'always',
+        alphabetize: {
+          order:
+            'asc' /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
+          caseInsensitive: true /* ignore case. Options: [true, false] */,
+        },
+      },
+    ],
     'jsx-a11y/alt-text': 'error',
     'jsx-a11y/anchor-is-valid': 'error',
     'jsx-a11y/aria-props': 'error',
@@ -109,6 +162,11 @@ module.exports = {
             name: '@testing-library/react',
             message:
               "Import React testing library exports from 'utils/testUtils/rtl' instead",
+          },
+          {
+            name: '@tippyjs/react',
+            message:
+              "Import Tooltip from component library instead of directly from '@tippyjs/react'",
           },
         ],
       },
@@ -165,9 +223,10 @@ module.exports = {
     ],
   },
   ignorePatterns: [
+    '.rollup.config.cjs',
     '.eslintrc.js',
     'internals',
     'server',
-    'app/containers/App/constants.js',
+    'app/containers/App/constants-commonjs.js',
   ],
 };

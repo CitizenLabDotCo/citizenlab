@@ -5,7 +5,7 @@ module MultiTenancy
     module Serializers
       module Polls
         class Response < Base
-          ref_attributes %i[participation_context user]
+          ref_attributes %i[phase user]
         end
       end
     end

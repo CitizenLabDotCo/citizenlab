@@ -1,47 +1,45 @@
 import React from 'react';
+
 import moment from 'moment';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Query } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// typings
-import { Query, QuerySchema } from 'api/analytics/types';
-import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
-
-// components
 import VisitorsOverview from './VisitorsOverview';
 
-const query = (): Query => {
-  const localesCountQuery: QuerySchema = {
-    fact: 'visit',
-    aggregations: {
-      all: 'count',
-      'dimension_date_first_action.date': 'first',
-    },
-  };
-
-  return {
-    query: localesCountQuery,
+type Response = {
+  data: {
+    type: 'analytics';
+    attributes: [
+      {
+        count: number;
+        first_dimension_date_created_date: string | null;
+      }
+    ];
   };
 };
 
-const Visitors = () => {
-  const { data: appConfig } = useAppConfiguration();
-  const { data: analytics } = useAnalytics<Response>(query());
-  const visitorsDashboardEnabled = useFeatureFlag({
-    name: 'visitors_dashboard',
-  });
+const query: Query = {
+  query: {
+    fact: 'session',
+    aggregations: {
+      all: 'count',
+      'dimension_date_created.date': 'first',
+    },
+  },
+};
 
-  if (!visitorsDashboardEnabled || !appConfig || !analytics) return null;
+const Visitors = () => {
+  const { data: analytics } = useAnalytics<Response>(query, undefined, true);
+
+  if (!analytics) {
+    return null;
+  }
 
   const [countData] = analytics.data.attributes;
-  if (!countData) return null;
-
-  const uniqueVisitorDataDate = moment(
-    countData.first_dimension_date_first_action_date
-  );
+  const firstDate = countData.first_dimension_date_created_date;
+  const uniqueVisitorDataDate =
+    typeof firstDate === 'string' ? moment(firstDate) : undefined;
 
   return <VisitorsOverview uniqueVisitorDataDate={uniqueVisitorDataDate} />;
 };

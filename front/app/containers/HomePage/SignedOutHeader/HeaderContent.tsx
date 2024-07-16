@@ -1,3 +1,14 @@
+import React from 'react';
+
+import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import {
   Container,
@@ -6,20 +17,15 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
-import { WrappedComponentProps } from 'react-intl';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
-import styled from 'styled-components';
+
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+
 import messages from '../messages';
 import tracks from '../tracks';
+
 import CTA from './CTA';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -33,6 +39,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 export const getButtonStyle = (fontColors: 'light' | 'dark') => {
@@ -48,8 +55,8 @@ const HeaderContent = ({
   align = 'center',
   fontColors,
   intl: { formatMessage },
+  homepageSettings,
 }: Props & WrappedComponentProps) => {
-  const { data: homepageSettings } = useHomepageSettings();
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -63,25 +70,24 @@ const HeaderContent = ({
   const buttonStyle = getButtonStyle(fontColors);
 
   if (!isNilOrError(homepageSettings)) {
-    const homepageAttributes = homepageSettings.data.attributes;
-    const headerTitle = !isEmptyMultiloc(
-      homepageAttributes.banner_signed_out_header_multiloc
-    )
-      ? localize(homepageAttributes.banner_signed_out_header_multiloc)
-      : formatMessage(messages.titleCity);
-    const headerSubtitle = !isEmptyMultiloc(
-      homepageAttributes.banner_signed_out_subheader_multiloc
-    )
-      ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
-      : formatMessage(messages.subtitleCity);
-    const headerImage = homepageAttributes.header_bg
-      ? homepageAttributes.header_bg.large
+    const headerTitle =
+      homepageSettings.banner_signed_out_header_multiloc &&
+      !isEmptyMultiloc(homepageSettings.banner_signed_out_header_multiloc)
+        ? localize(homepageSettings.banner_signed_out_header_multiloc)
+        : formatMessage(messages.titleCity);
+    const headerSubtitle =
+      homepageSettings.banner_signed_out_subheader_multiloc &&
+      !isEmptyMultiloc(homepageSettings.banner_signed_out_subheader_multiloc)
+        ? localize(homepageSettings.banner_signed_out_subheader_multiloc)
+        : formatMessage(messages.subtitleCity);
+    const headerImage = homepageSettings.header_bg
+      ? homepageSettings.header_bg.large
       : null;
     const hideAvatarsForThisLayout =
       isSmallerThanTablet &&
-      homepageAttributes.banner_layout === 'fixed_ratio_layout';
+      homepageSettings.banner_layout === 'fixed_ratio_layout';
     const displayHeaderAvatars =
-      homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
+      homepageSettings.banner_avatars_enabled && !hideAvatarsForThisLayout;
 
     return (
       <Container
@@ -110,7 +116,11 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        <CTA buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        <CTA
+          buttonStyle={buttonStyle}
+          signUpIn={signUpIn}
+          homepageSettings={homepageSettings}
+        />
       </Container>
     );
   }

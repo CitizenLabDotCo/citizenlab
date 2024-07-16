@@ -123,7 +123,7 @@ describe('Initiative manager', () => {
       cy.apiLikeInitiative(
         // Only admin accounts are confirmed by default (see User#set_confirmation_required),
         // and so allowed to react to initiatives.
-        'hello@citizenlab.co',
+        'hello@govocal.com',
         'democrazy',
         initiativeId1
       );
@@ -171,6 +171,7 @@ describe('Initiative manager', () => {
       cy.get('#e2e-feedback_needed_filter_toggle').click();
       cy.get('.e2e-initiative-row').should('have.length', 1);
     });
+
     after(() => {
       cy.apiRemoveInitiative(initiativeId1);
       cy.apiRemoveInitiative(initiativeId2);
@@ -203,6 +204,41 @@ describe('Initiative manager', () => {
       cy.get('.e2e-modal-close-button').click();
       // check if the modal is no longer on the page
       cy.get('#e2e-modal-container').should('have.length', 0);
+    });
+
+    // It closes when you delete the initiative
+    it('Closes when you delete the initiative', () => {
+      cy.getAuthUser().then((user) => {
+        const userId = user.body.data.id;
+
+        const initiativeTitle1 = randomString();
+        const initiativeContent1 = randomString();
+
+        // create initiative with signed-in admin/user as default assignee and give feedback
+        cy.apiCreateInitiative({
+          initiativeTitle: initiativeTitle1,
+          initiativeContent: initiativeContent1,
+          assigneeId: userId,
+        }).then((_initiative) => {
+          cy.visit('/admin/initiatives/');
+
+          cy.get('.e2e-initiative-manager-initiative-title')
+            .first()
+            .click()
+            .then(() => {
+              // check if the modal popped out and has the idea in it
+              cy.get('#e2e-modal-container').should('exist');
+              // delete the idea
+              cy.get(
+                '#e2e-initiative-manager-side-modal-delete-button'
+              ).click();
+              // click the browser's confirm button
+              cy.on('window:confirm', () => true);
+              // check if the modal is no longer on the page
+              cy.get('#e2e-modal-container').should('not.exist');
+            });
+        });
+      });
     });
   });
 
@@ -265,6 +301,18 @@ describe('Initiative manager', () => {
       cy.wait(500);
       // Check if initiative is there
       cy.get('.e2e-initiative-row').should('have.length', 1);
+    });
+  });
+
+  describe('Tag filter', () => {
+    it('navigates to the platform-wide tag settings when the user clicks "Edit tags" in the tags tab', () => {
+      cy.visit('/admin/initiatives/');
+      cy.get(
+        '[data-cy="e2e-admin-post-manager-filter-sidebar-topics"]'
+      ).click();
+      cy.get('[data-cy="e2e-post-manager-topic-filters-edit-tags"]').click();
+
+      cy.location('pathname').should('eq', `/en/admin/settings/topics`);
     });
   });
 });

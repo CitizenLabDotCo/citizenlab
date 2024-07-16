@@ -11,7 +11,7 @@ describe CustomFieldService do
     let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank', 'key4' => true, 'key5' => false } }
 
     it 'destructively deletes keys with blank values from the argument and returns the argument' do
-      cleaned_values = service.cleanup_custom_field_values! field_values
+      cleaned_values = service.compact_custom_field_values! field_values
       expect(field_values).to eq({ 'key3' => 'Not blank', 'key4' => true, 'key5' => false })
       expect(cleaned_values).to be field_values
     end
@@ -71,7 +71,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
         create(:custom_field, key: 'field7', input_type: 'number'),
         create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
-        create(:custom_field, key: 'field9', input_type: 'files', required: true)
+        create(:custom_field, key: 'field9', input_type: 'files', required: true),
+        create(:custom_field, key: 'field10', input_type: 'point')
       ]
       create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1)
       create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3)
@@ -82,6 +83,7 @@ describe CustomFieldService do
       create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
 
       schema = service.fields_to_json_schema(fields, locale)
+
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',
@@ -138,7 +140,11 @@ describe CustomFieldService do
               items: {
                 type: 'string',
                 format: 'data-url'
-              } } },
+              } },
+                        'field10' =>
+            { title: 'Did you attend',
+              description: 'Which councils are you attending in our city?',
+              type: 'string' } },
           required: %w[field2 field8 field9] }
       )
     end

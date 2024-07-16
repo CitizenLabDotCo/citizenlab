@@ -1,28 +1,21 @@
 import React, { useCallback } from 'react';
 
-// hooks
+import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { IOption, Multiloc } from 'typings';
 
-// components
-import { Box, Input } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from '../../_shared/PhaseFilter';
-import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
-import CollapseLongTextToggle from './CollapseLongTextToggle';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import PhaseFilter from 'components/UI/PhaseFilter';
 
-// i18n
-import messages from '../messages';
-import widgetMessages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import CollapseLongTextToggle from '../../SingleIdeaWidget/Settings/CollapseLongTextToggle';
+import messages from '../messages';
 import { Props } from '../typings';
-import { IOption } from 'typings';
-import { IProjectData } from 'api/projects/types';
 
-const isContinuousIdeationOrTimelineProject = ({ attributes }: IProjectData) =>
-  attributes.process_type === 'timeline' ||
-  attributes.participation_method === 'ideation';
+import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -43,7 +36,7 @@ const Settings = () => {
   }));
 
   const setTitle = useCallback(
-    (value: string) => {
+    (value: Multiloc) => {
       setProp((props: Props) => {
         props.title = value;
       });
@@ -91,27 +84,26 @@ const Settings = () => {
   return (
     <Box>
       <Box mb="20px">
-        <Input
+        <InputMultilocWithLocaleSwitcher
           label={formatMessage(messages.title)}
           type="text"
-          value={title}
+          valueMultiloc={title}
           onChange={setTitle}
         />
       </Box>
 
       <ProjectFilter
         projectId={projectId}
-        filter={isContinuousIdeationOrTimelineProject}
-        emptyValueMessage={widgetMessages.noProject}
+        emptyOptionMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 
       {projectId !== undefined && (
         <PhaseFilter
-          label={formatMessage(messages.ideationPhases)}
+          label={formatMessage(messages.ideationPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethod="ideation"
+          participationMethods={['ideation']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

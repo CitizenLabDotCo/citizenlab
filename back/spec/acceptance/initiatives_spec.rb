@@ -400,11 +400,11 @@ resource 'Initiatives' do
       end
     end
 
-    example_group 'with granular permissions' do
+    example_group 'with permissions on phase' do
       let(:group) { create(:group) }
 
       before do
-        PermissionsService.new.update_global_permissions
+        Permissions::PermissionsUpdateService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
           .update!(permitted_by: 'groups', groups: [group])
       end
@@ -458,6 +458,12 @@ resource 'Initiatives' do
 
       example 'Does not log activities for the author', document: false do
         expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
+      end
+
+      example 'Does not add the author as a follower of the initiative', document: false do
+        expect { do_request }.not_to change(Follower, :count)
+        initiative_id = response_data[:id]
+        expect(Follower.where(followable_id: initiative_id, user: @user)).not_to exist
       end
 
       describe 'when anonymous posting is not allowed' do

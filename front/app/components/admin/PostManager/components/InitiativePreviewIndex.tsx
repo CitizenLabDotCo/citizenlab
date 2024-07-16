@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-import GoBackButton from 'components/UI/GoBackButton';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import InitiativePostPreview from './PostPreview/Initiative/InitiativePostPreview';
+import { useParams } from 'react-router-dom';
+
+import GoBackButton from 'components/UI/GoBackButton';
+
+import clHistory from 'utils/cl-router/history';
+
 import { PreviewMode } from '..';
+
 import messages from './messages';
+import InitiativePostPreview from './PostPreview/Initiative/InitiativePostPreview';
 
 const InitiativePreviewIndex = () => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');

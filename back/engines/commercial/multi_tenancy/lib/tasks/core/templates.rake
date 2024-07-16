@@ -23,7 +23,7 @@ namespace :templates do
 
   task :import, %i[host file] => [:environment] do |_t, args|
     Tenant.find_by(host: args[:host]).switch do
-      serialized_models = YAML.load(File.read(args[:file]))
+      serialized_models = MultiTenancy::Templates::Utils.parse_yml_file(args[:file])
       MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
     end
   end
@@ -37,7 +37,7 @@ namespace :templates do
     )
 
     template_host_suffix = ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost')
-    template_tenants = Tenant.where("host LIKE '%#{template_host_suffix}'")
+    template_tenants = Tenant.not_deleted.where("host LIKE '%#{template_host_suffix}'")
     puts({ event: 'templates_generation', nb_templates: template_tenants.size }.to_json)
 
     template_tenants.each do |template_tenant|
@@ -49,7 +49,7 @@ namespace :templates do
 
   task :verify, [:output_file] => [:environment] do |_t, args|
     test_prefix = MultiTenancy::Templates::Utils.new.test_prefix
-    templates = MultiTenancy::Templates::Utils.new.available_external_templates(prefix: test_prefix)
+    templates = MultiTenancy::Templates::Utils.new.external_template_names(prefix: test_prefix)
     puts({ event: 'templates_verification', prefix: test_prefix, nb_templates: templates.size }.to_json)
     next if templates.empty?
 
@@ -79,16 +79,27 @@ namespace :templates do
 
     if failed_templates.present?
       puts({ event: 'templates_release', status: 'failed', failed_templates: failed_templates }.to_json)
-      next
+      exit(1)
     end
 
-    release_prefix = MultiTenancy::Templates::Utils.new.release_templates
+    template_utils = MultiTenancy::Templates::Utils.new
+    release_prefix = template_utils.release_templates
     puts({ event: 'templates_release', status: 'success', release_prefix: release_prefix }.to_json)
+
+    # Remove files of the previous release (the new test prefix). We do this to ensure
+    # that:
+    # - the next release won't be polluted by files from the previous releases
+    # - templates that no longer exist are removed
+    counts = template_utils.clear_test_templates
+    if counts[:errors_count].positive?
+      puts({ event: 'templates_cleanup', status: 'failed', counts: counts }.to_json)
+      exit(1)
+    end
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
     template_path = Rails.root.join('config/tenant_templates', "#{args[:template_name]}.yml")
-    serialized_models = YAML.load(File.read(template_path))
+    serialized_models = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
 
     serialized_models = MultiTenancy::Templates::Utils.change_locales(
       serialized_models,

@@ -1,18 +1,20 @@
 import React from 'react';
 
-// components
-import { Spinner } from '@citizenlab/cl2-component-library';
-
-// styling
+import { Spinner, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 export interface Props {
   admin?: boolean;
+  zIndex?: number;
+  background?: boolean;
 }
 
 // Centered spinner taking the navbar height (and admin sidebar) into account
-const FullPageContainer = styled.div<{ admin: boolean }>`
+const FullPageContainer = styled.div<{
+  admin: boolean;
+  zIndex?: number;
+  background: boolean;
+}>`
   position: fixed;
   top: ${(props) => props.theme.menuHeight}px;
   // 260px is the width of the admin sidebar
@@ -29,11 +31,19 @@ const FullPageContainer = styled.div<{ admin: boolean }>`
     media.tablet`
     min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
   `}
+
+  ${({ zIndex }) => (typeof zIndex === 'number' ? `z-index: ${zIndex};` : '')}
+  ${({ background }) =>
+    background ? `background: rgba(255,255,255,0.5);` : ''}
 `;
 
-const FullPageSpinner = ({ admin = false }: Props) => {
+const FullPageSpinner = ({
+  admin = false,
+  zIndex,
+  background = false,
+}: Props) => {
   return (
-    <FullPageContainer admin={admin}>
+    <FullPageContainer admin={admin} zIndex={zIndex} background={background}>
       <Spinner />
     </FullPageContainer>
   );

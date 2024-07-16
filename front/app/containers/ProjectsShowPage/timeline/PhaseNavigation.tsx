@@ -1,37 +1,29 @@
 import React, { memo, useCallback, useMemo } from 'react';
+
+import {
+  Button,
+  colors,
+  isRtl,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import Tippy from '@tippyjs/react';
-
-// tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// router
 import { useParams } from 'react-router-dom';
-import setPhaseURL from './setPhaseURL';
+import styled from 'styled-components';
 
-// components
-import { Button } from '@citizenlab/cl2-component-library';
-
-// api
+import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
-// style
-import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 
-// utils
-import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
 
-// typings
-import { IPhaseData } from 'api/phases/types';
+import setPhaseURL from './setPhaseURL';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;
@@ -67,180 +59,175 @@ const NextPhaseButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  buttonStyle?: 'secondary' | 'white';
+  buttonStyle?: 'secondary-outlined' | 'white';
   className?: string;
 }
 
-const PhaseNavigation = memo<Props & WrappedComponentProps>(
-  ({ projectId, buttonStyle, className, intl: { formatMessage } }) => {
-    const { data: phases } = usePhases(projectId);
-    const { phaseNumber } = useParams();
-    const { data: project } = useProjectById(projectId);
+const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
+  const { formatMessage } = useIntl();
+  const { data: phases } = usePhases(projectId);
+  const { phaseNumber } = useParams();
+  const { data: project } = useProjectById(projectId);
 
-    const selectedPhase = useMemo(() => {
-      if (!phases) return;
+  const selectedPhase = useMemo(() => {
+    if (!phases) return;
 
-      // if a phase parameter was provided, and it is valid, we set that as phase.
-      // otherwise, use the most logical phase
-      if (isValidPhase(phaseNumber, phases.data)) {
-        const phaseIndex = Number(phaseNumber) - 1;
-        return phases.data[phaseIndex];
-      }
-
-      return getLatestRelevantPhase(phases.data);
-    }, [phaseNumber, phases]);
-
-    const selectPhase = useCallback(
-      (phase: IPhaseData) => {
-        if (!phases || !project) return;
-        setPhaseURL(phase.id, phases.data, project.data);
-      },
-      [phases, project]
-    );
-
-    const goToNextPhase = useCallback(() => {
-      trackEventByName(tracks.clickNextPhaseButton);
-
-      if (phases) {
-        const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-        const selectedPhaseIndex = findIndex(
-          phases.data,
-          (phase) => phase.id === selectedPhaseId
-        );
-        const nextPhaseIndex =
-          phases.data.length >= selectedPhaseIndex + 2
-            ? selectedPhaseIndex + 1
-            : 0;
-        const nextPhase = phases.data[nextPhaseIndex];
-        selectPhase(nextPhase);
-      }
-    }, [phases, selectedPhase, selectPhase]);
-
-    const goToPreviousPhase = useCallback(() => {
-      trackEventByName(tracks.clickPreviousPhaseButton);
-
-      if (phases) {
-        const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-        const selectedPhaseIndex = findIndex(
-          phases.data,
-          (phase) => phase.id === selectedPhaseId
-        );
-        const prevPhaseIndex =
-          selectedPhaseIndex > 0
-            ? selectedPhaseIndex - 1
-            : phases.data.length - 1;
-        const prevPhase = phases.data[prevPhaseIndex];
-        selectPhase(prevPhase);
-      }
-    }, [phases, selectedPhase, selectPhase]);
-
-    const goToCurrentPhase = useCallback(() => {
-      if (phases) {
-        trackEventByName(tracks.clickCurrentPhaseButton);
-        const currentPhase = getCurrentPhase(phases.data);
-
-        if (currentPhase) {
-          selectPhase(currentPhase);
-        }
-      }
-    }, [phases, selectPhase]);
-
-    if (phases && phases.data.length > 1) {
-      const navButtonSize = '34px';
-      const navButtonStyle = buttonStyle || 'secondary';
-      const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-      const currentPhase = getCurrentPhase(phases.data);
-      const currentPhaseId = currentPhase ? currentPhase.id : null;
-
-      return (
-        <Container
-          className={`e2e-timeline-phase-navigation ${className || ''}`}
-        >
-          <Tippy
-            disabled={selectedPhaseId === phases.data[0].id}
-            interactive={false}
-            placement="bottom"
-            content={formatMessage(messages.previousPhase)}
-            theme="translucent"
-            arrow={false}
-            hideOnClick={true}
-          >
-            <div>
-              <PreviousPhaseButton
-                onClick={goToPreviousPhase}
-                icon="chevron-left"
-                iconColor={colors.textSecondary}
-                buttonStyle={navButtonStyle}
-                width={navButtonSize}
-                height={navButtonSize}
-                padding="0px"
-                disabled={selectedPhaseId === phases.data[0].id}
-                ariaLabel={formatMessage(messages.previousPhase)}
-                className="e2e-previous-phase"
-              />
-            </div>
-          </Tippy>
-          {currentPhaseId && (
-            <Tippy
-              disabled={selectedPhaseId === currentPhaseId}
-              interactive={false}
-              placement="bottom"
-              content={formatMessage(messages.currentPhase)}
-              theme="translucent"
-              arrow={false}
-              hideOnClick={true}
-            >
-              <div>
-                <Button
-                  onClick={goToCurrentPhase}
-                  icon="dot"
-                  iconSize="16px"
-                  iconColor={colors.success}
-                  buttonStyle={navButtonStyle}
-                  width={navButtonSize}
-                  height={navButtonSize}
-                  padding="0px"
-                  disabled={selectedPhaseId === currentPhaseId}
-                  ariaLabel={formatMessage(messages.currentPhase)}
-                  className="e2e-current-phase"
-                />
-              </div>
-            </Tippy>
-          )}
-          <Tippy
-            disabled={
-              selectedPhaseId === phases.data[phases.data.length - 1].id
-            }
-            interactive={false}
-            placement="bottom"
-            content={formatMessage(messages.nextPhase)}
-            theme="translucent"
-            arrow={false}
-            hideOnClick={true}
-          >
-            <div>
-              <NextPhaseButton
-                onClick={goToNextPhase}
-                icon="chevron-right"
-                iconColor={colors.textSecondary}
-                buttonStyle={navButtonStyle}
-                width={navButtonSize}
-                height={navButtonSize}
-                padding="0px"
-                disabled={
-                  selectedPhaseId === phases.data[phases.data.length - 1].id
-                }
-                ariaLabel={formatMessage(messages.nextPhase)}
-                className="e2e-next-phase"
-              />
-            </div>
-          </Tippy>
-        </Container>
-      );
+    // if a phase parameter was provided, and it is valid, we set that as phase.
+    // otherwise, use the most logical phase
+    if (isValidPhase(phaseNumber, phases.data)) {
+      const phaseIndex = Number(phaseNumber) - 1;
+      return phases.data[phaseIndex];
     }
 
-    return null;
-  }
-);
+    return getLatestRelevantPhase(phases.data);
+  }, [phaseNumber, phases]);
 
-export default injectIntl(PhaseNavigation);
+  const selectPhase = useCallback(
+    (phase: IPhaseData) => {
+      if (!phases || !project) return;
+      setPhaseURL(phase, phases.data, project.data);
+    },
+    [phases, project]
+  );
+
+  const goToNextPhase = useCallback(() => {
+    trackEventByName(tracks.clickNextPhaseButton);
+
+    if (phases) {
+      const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+      const selectedPhaseIndex = findIndex(
+        phases.data,
+        (phase) => phase.id === selectedPhaseId
+      );
+      const nextPhaseIndex =
+        phases.data.length >= selectedPhaseIndex + 2
+          ? selectedPhaseIndex + 1
+          : 0;
+      const nextPhase = phases.data[nextPhaseIndex];
+      selectPhase(nextPhase);
+    }
+  }, [phases, selectedPhase, selectPhase]);
+
+  const goToPreviousPhase = useCallback(() => {
+    trackEventByName(tracks.clickPreviousPhaseButton);
+
+    if (phases) {
+      const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+      const selectedPhaseIndex = findIndex(
+        phases.data,
+        (phase) => phase.id === selectedPhaseId
+      );
+      const prevPhaseIndex =
+        selectedPhaseIndex > 0
+          ? selectedPhaseIndex - 1
+          : phases.data.length - 1;
+      const prevPhase = phases.data[prevPhaseIndex];
+      selectPhase(prevPhase);
+    }
+  }, [phases, selectedPhase, selectPhase]);
+
+  const goToCurrentPhase = useCallback(() => {
+    if (phases) {
+      trackEventByName(tracks.clickCurrentPhaseButton);
+      const currentPhase = getCurrentPhase(phases.data);
+
+      if (currentPhase) {
+        selectPhase(currentPhase);
+      }
+    }
+  }, [phases, selectPhase]);
+
+  if (phases && phases.data.length > 1) {
+    const navButtonSize = '34px';
+    const navButtonStyle = buttonStyle || 'secondary-outlined';
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+    const currentPhase = getCurrentPhase(phases.data);
+    const currentPhaseId = currentPhase ? currentPhase.id : null;
+
+    return (
+      <Container className={`e2e-timeline-phase-navigation ${className || ''}`}>
+        <Tooltip
+          disabled={selectedPhaseId === phases.data[0].id}
+          placement="bottom"
+          content={formatMessage(messages.previousPhase)}
+          theme="translucent"
+          arrow={false}
+          hideOnClick={true}
+        >
+          <div>
+            <PreviousPhaseButton
+              onClick={goToPreviousPhase}
+              icon="chevron-left"
+              iconColor={colors.textSecondary}
+              buttonStyle={navButtonStyle}
+              width={navButtonSize}
+              height={navButtonSize}
+              padding="0px"
+              disabled={selectedPhaseId === phases.data[0].id}
+              ariaLabel={formatMessage(messages.previousPhase)}
+              className="e2e-previous-phase"
+              borderColor={colors.grey700}
+            />
+          </div>
+        </Tooltip>
+        {currentPhaseId && (
+          <Tooltip
+            disabled={selectedPhaseId === currentPhaseId}
+            placement="bottom"
+            content={formatMessage(messages.currentPhase)}
+            theme="translucent"
+            arrow={false}
+            hideOnClick={true}
+          >
+            <div>
+              <Button
+                onClick={goToCurrentPhase}
+                icon="dot"
+                iconSize="16px"
+                iconColor={colors.green500}
+                buttonStyle={navButtonStyle}
+                width={navButtonSize}
+                height={navButtonSize}
+                padding="0px"
+                disabled={selectedPhaseId === currentPhaseId}
+                ariaLabel={formatMessage(messages.currentPhase)}
+                className="e2e-current-phase"
+                borderColor={colors.grey700}
+              />
+            </div>
+          </Tooltip>
+        )}
+        <Tooltip
+          disabled={selectedPhaseId === phases.data[phases.data.length - 1].id}
+          placement="bottom"
+          content={formatMessage(messages.nextPhase)}
+          theme="translucent"
+          arrow={false}
+          hideOnClick={true}
+        >
+          <div>
+            <NextPhaseButton
+              onClick={goToNextPhase}
+              icon="chevron-right"
+              iconColor={colors.textSecondary}
+              buttonStyle={navButtonStyle}
+              width={navButtonSize}
+              height={navButtonSize}
+              padding="0px"
+              disabled={
+                selectedPhaseId === phases.data[phases.data.length - 1].id
+              }
+              ariaLabel={formatMessage(messages.nextPhase)}
+              className="e2e-next-phase"
+              borderColor={colors.grey700}
+            />
+          </div>
+        </Tooltip>
+      </Container>
+    );
+  }
+
+  return null;
+});
+
+export default PhaseNavigation;

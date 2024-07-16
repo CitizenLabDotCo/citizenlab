@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-// components
+import {
+  Box,
+  Icon,
+  Text,
+  Button,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
+import styled from 'styled-components';
+
 import Modal from 'components/UI/Modal';
-import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
-import BinInputs from './BinInputs';
 import Warning from 'components/UI/Warning';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// utils
+import { Bins } from '../../../api/reference_distribution/types';
 import {
   getExampleBins,
   isExampleBins,
@@ -24,10 +25,9 @@ import {
   removeBin,
   addBin,
 } from '../../../utils/bins';
-import { isEqual } from 'lodash-es';
 
-// typings
-import { Bins } from '../../../api/reference_distribution/types';
+import BinInputs from './BinInputs';
+import messages from './messages';
 
 const ClearAllButton = styled.button`
   cursor: pointer;
@@ -185,7 +185,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
         <Button
           icon="plus-circle"
           mt="16px"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           data-testid="add-new-bin-button"
           onClick={handleAddBin}
         >

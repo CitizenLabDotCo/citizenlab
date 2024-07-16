@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -45,7 +47,9 @@ module EmailCampaigns
 
     def self.default_schedule
       day, hour = [[:thursday, 13], [:saturday, 8]].sample
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2020)) do |s|
+      start_time = AppConfiguration.timezone.local(2020)
+
+      IceCube::Schedule.new(start_time) do |s|
         rule = IceCube::Rule.weekly(1).day(day).hour_of_day(hour)
         s.add_recurrence_rule(rule)
       end
@@ -104,7 +108,9 @@ module EmailCampaigns
     def content_worth_sending?(_)
       # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
       # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
-      @content_worth_sending ||= trending_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?
+      @content_worth_sending ||=
+        (recent_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?) ||
+        recent_initiatives.any?
     end
 
     private
@@ -120,19 +126,19 @@ module EmailCampaigns
     end
 
     def top_ideas
-      trending_ideas.limit N_TOP_IDEAS
+      recent_ideas.limit N_TOP_IDEAS
     end
 
-    def trending_ideas
+    def recent_ideas
       ti_service = TrendingIdeaService.new
 
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
+        .activity_after(1.week.ago)
 
       input_ideas = IdeasFinder.new({}, scope: ideas).find_records
-      trending_ids = ti_service.filter_trending(input_ideas).ids
-      ti_service.sort_trending ideas.where(id: trending_ids)
+      ti_service.sort_trending input_ideas
     end
 
     def users_to_projects
@@ -163,7 +169,7 @@ module EmailCampaigns
         dislikes_count: idea.dislikes_count,
         comments_count: idea.comments_count,
         published_at: idea.published_at&.iso8601,
-        url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
+        url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
         idea_images: idea.idea_images.map do |image|
           {
             ordering: image.ordering,
@@ -193,9 +199,15 @@ module EmailCampaigns
     def discover_projects_payload(project, recipient)
       {
         title_multiloc: project.title_multiloc,
-        url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+        url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
         created_at: project.created_at.iso8601
       }
+    end
+
+    def recent_initiatives
+      InitiativePolicy::Scope.new(nil, Initiative).resolve
+        .published
+        .activity_after(1.week.ago)
     end
 
     def new_initiatives(name_service, time:)

@@ -1,8 +1,11 @@
 import React from 'react';
-import ProjectRow, { Props } from '.';
-import { render, screen } from 'utils/testUtils/rtl';
-import { IUserData } from 'api/users/types';
+
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import ProjectRow, { Props } from '.';
 
 const publication: IAdminPublicationData = {
   id: '1',
@@ -54,6 +57,20 @@ const mockUserData: IUserData = {
     followings_count: 2,
   },
 };
+
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
 
 // Needed to render moreActionsMenu
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));

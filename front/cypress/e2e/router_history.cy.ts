@@ -23,7 +23,7 @@ describe('router history', () => {
 
   it('works with nested routes (show idea)', () => {
     // Get first idea
-    cy.get('#e2e-ideas-list > a')
+    cy.get('#e2e-ideas-list > div > a')
       .first()
       .invoke('attr', 'href')
       .then(($href) => {
@@ -31,7 +31,7 @@ describe('router history', () => {
         const path = $href.split('?')[0];
 
         // Click on idea
-        cy.get('#e2e-ideas-list > a').first().click();
+        cy.get('#e2e-ideas-list > div > a').first().click();
         cy.location('pathname').should('eq', path);
 
         // Go back with browser back button

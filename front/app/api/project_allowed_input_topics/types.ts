@@ -1,6 +1,8 @@
 import { IRelationship } from 'typings';
-import projectAllowedInputTopicsKeys from './keys';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectAllowedInputTopicsKeys from './keys';
 
 export type ProjectAllowedInputTopicsKeys = Keys<
   typeof projectAllowedInputTopicsKeys

@@ -18,7 +18,7 @@ resource 'AutoTaggings' do
       parameter :filters, 'Optional filters, in case the auto tagging should happen on a subset of inputs only'
     end
 
-    let(:project) { create(:project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:analysis) { create(:analysis, project: project) }
     let(:id) { analysis.id }
     # let(:input) { create(:idea, project: project) }

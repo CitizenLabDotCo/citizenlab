@@ -1,21 +1,15 @@
 import React from 'react';
 
-// hooks
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-
-// components
-import MultipleSelect from 'components/UI/MultipleSelect';
-
-// i18n
-import localize, { InjectedLocalized } from 'utils/localize';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
-// typings
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
+
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 type Props = {
   rule: TRule;

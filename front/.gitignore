@@ -25,14 +25,19 @@ browserstack.err
 .babel-cache/*
 .cache-loader/*
 app/tsconfig.tsbuildinfo
+build-storybook.log
 
 cypress/videos/
 cypress/screenshots/
 
 # Storybook generated output
-.out/
+storybook-static/*
 
 #Local VsCode config
 .vscode/*
 
 cypress.env
+
+# Rollup generated output
+.rollup.cache
+dist

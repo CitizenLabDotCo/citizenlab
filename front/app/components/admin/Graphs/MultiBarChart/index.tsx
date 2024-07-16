@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 
-// styling
-import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
-// components
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -17,20 +9,26 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+
+import { truncate } from 'utils/textUtils';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-// utils
-import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-
-// typings
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+
+import { Props } from './typings';
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 
@@ -99,6 +97,10 @@ const MultiBarChart = <Row,>({
         );
     };
 
+  const tickFormatter = (value: string) => {
+    return truncate(value, 42);
+  };
+
   return (
     <Container
       width={width}
@@ -122,6 +124,7 @@ const MultiBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
+        accessibilityLayer
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
@@ -174,6 +177,7 @@ const MultiBarChart = <Row,>({
           type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
+          tickFormatter={tickFormatter}
           {...yaxis}
         />
       </RechartsBarChart>

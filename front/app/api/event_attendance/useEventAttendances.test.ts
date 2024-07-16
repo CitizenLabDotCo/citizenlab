@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useEventAttendances from './useEventAttendances';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { eventAttendanceData } from './__mocks__/useEventAttendance';
+import useEventAttendances from './useEventAttendances';
 
 const apiPath = '*events/:eventId/attendances';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: eventAttendanceData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: eventAttendanceData }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useEventAttendances', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

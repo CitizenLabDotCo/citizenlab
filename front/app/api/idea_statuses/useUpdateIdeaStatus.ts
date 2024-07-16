@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import { CLErrors } from 'typings';
+
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import ideaStatusKeys from './keys';
 import { IIdeaStatus, IIdeaStatusUpdate } from './types';
 

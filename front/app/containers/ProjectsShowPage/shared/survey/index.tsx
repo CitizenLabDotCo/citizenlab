@@ -1,33 +1,30 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { TSurveyService } from 'utils/participationContexts';
 
-// components
-import TypeformSurvey from './TypeformSurvey';
-import SurveymonkeySurvey from './SurveymonkeySurvey';
-import GoogleFormsSurvey from './GoogleFormsSurvey';
-import EnalyzerSurvey from './EnalyzerSurvey';
-import QualtricsSurvey from './QualtricsSurvey';
-import SmartSurvey from './SmartSurvey';
-import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
-import SnapSurvey from './SnapSurvey';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { TSurveyService } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-import globalMessages from 'utils/messages';
-
-// styling
-import styled from 'styled-components';
-import SurveyXact from './SurveyXact';
-
-// utils
-import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
 import ParticipationPermission from '../ParticipationPermission';
+
+import EnalyzerSurvey from './EnalyzerSurvey';
+import GoogleFormsSurvey from './GoogleFormsSurvey';
+import messages from './messages';
+import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
+import QualtricsSurvey from './QualtricsSurvey';
+import SmartSurvey from './SmartSurvey';
+import SnapSurvey from './SnapSurvey';
+import SurveymonkeySurvey from './SurveymonkeySurvey';
+import SurveyXact from './SurveyXact';
+import TypeformSurvey from './TypeformSurvey';
 
 const Container = styled.div`
   position: relative;
@@ -45,17 +42,6 @@ interface Props {
   className?: string;
 }
 
-const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
-  project_inactive: messages.surveyDisabledProjectInactive,
-  not_active: messages.surveyDisabledNotActiveUser,
-  not_verified: messages.surveyDisabledNotVerified,
-  missing_data: messages.surveyDisabledNotActiveUser,
-  not_signed_in: messages.surveyDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.surveyDisabledNotPermitted,
-  not_survey: messages.surveyDisabledNotActivePhase,
-};
-
 const Survey = ({
   project,
   phaseId,
@@ -65,7 +51,11 @@ const Survey = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_survey;
+    project.attributes.action_descriptors.taking_survey;
+
+  const disabledMessage =
+    getPermissionsDisabledMessage('taking_survey', disabled_reason) || null;
+
   const email =
     !isNilOrError(authUser) && authUser.data.attributes.email
       ? authUser.data.attributes.email
@@ -75,18 +65,19 @@ const Survey = ({
   return (
     <ParticipationPermission
       id="project-survey"
-      projectId={project.id}
       action="taking_survey"
       enabled={enabled}
       phaseId={phaseId}
-      disabledMessage={
-        disabled_reason ? disabledMessages[disabled_reason] : null
-      }
+      disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.survey} />
         </ProjectPageSectionTitle>
+
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning} />
+        </ScreenReaderOnly>
 
         {surveyService === 'typeform' && (
           <TypeformSurvey

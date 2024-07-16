@@ -1,5 +1,7 @@
 import { Multiloc, IRelationship } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import topicsKeys from './keys';
 
 export type TopicsKeys = Keys<typeof topicsKeys>;

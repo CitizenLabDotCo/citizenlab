@@ -1,10 +1,12 @@
 import React from 'react';
+
+import { WrappedComponentProps } from 'react-intl';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const FormattedCurrency = ({

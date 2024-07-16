@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { render } from 'utils/testUtils/rtl';
 
 import ProjectDescriptionBuilderEditModePreview from '.';
@@ -25,7 +26,7 @@ describe('ProjectDescriptionBuilderEditModePreview', () => {
     );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/admin/project-description-builder/projects/id/preview'
+      '/en/admin/project-description-builder/projects/id/preview?selected_locale=en'
     );
   });
 });

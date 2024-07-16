@@ -1,31 +1,30 @@
 import React from 'react';
 
-// components
-import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
-
-// styles
+import {
+  Box,
+  Radio,
+  Icon,
+  Label,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
+import { useNode, Element } from '@craftjs/core';
 import styled from 'styled-components';
 
-// utils
-import { colors, media } from 'utils/styleUtils';
+import { FormattedMessage } from 'utils/cl-intl';
 
-// craft
-import { useNode, Element } from '@craftjs/core';
+import { ColumnLayout } from '../../typings';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// typings
-import { ColumnLayout } from '../../typings';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 
-const StyledBox = styled(Box)`
+export const TwoColumnWrapper = styled(Box)`
   min-height: 40px;
   width: 100%;
   gap: 24px;
@@ -44,15 +43,23 @@ const StyledBox = styled(Box)`
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
+
   return (
-    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
+    <TwoColumnWrapper
+      className="e2e-two-column"
+      columnLayout={columnLayout}
+      px={componentDefaultPadding}
+      maxWidth="1200px"
+      margin="0 auto"
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />
           <Element id={'right'} is={Container} canvas />
         </>
       )}
-    </StyledBox>
+    </TwoColumnWrapper>
   );
 };
 
@@ -73,7 +80,6 @@ export const TwoColumnSettings = () => {
         onChange={(value) => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
-        id="layout-1-1"
         name="columnLayout"
         value={'1-1'}
         label={
@@ -94,7 +100,6 @@ export const TwoColumnSettings = () => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
-        id="layout-2-1"
         name="columnLayout"
         value="2-1"
         label={
@@ -114,7 +119,6 @@ export const TwoColumnSettings = () => {
           setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
-        id="layout-1-2"
         name="columnLayout"
         value="1-2"
         label={
@@ -133,7 +137,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-TwoColumn.craft = {
+const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },
@@ -145,5 +149,7 @@ TwoColumn.craft = {
     hasChildren: true,
   },
 };
+
+TwoColumn.craft = twoColumnCraftConfig;
 
 export default TwoColumn;

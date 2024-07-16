@@ -1,17 +1,19 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileUtils';
+
+import {
+  colors,
+  fontSizes,
+  defaultOutline,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-// i18n
 import messages from 'components/UI/FileUploader/messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -74,9 +76,10 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
+  accept?: string;
 }
 
-const SingleFileInput = ({ className, id, onAdd }: Props) => {
+const SingleFileInput = ({ className, id, onAdd, accept }: Props) => {
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -109,6 +112,7 @@ const SingleFileInput = ({ className, id, onAdd }: Props) => {
         type="file"
         tabIndex={0}
         data-testid="fileInput"
+        accept={accept}
       />
       <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Title, Box, colors, Icon } from '@citizenlab/cl2-component-library';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 type SuccessFeedbackProps = {

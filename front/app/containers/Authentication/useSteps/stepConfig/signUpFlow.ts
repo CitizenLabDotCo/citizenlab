@@ -1,39 +1,36 @@
-// authentication
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
-import createAccountWithPassword, {
-  Parameters as CreateAccountParameters,
-} from 'api/authentication/sign_up/createAccountWithPassword';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import createAccountWithPassword, {
+  Parameters as CreateAccountParameters,
+} from 'api/authentication/sign_up/createAccountWithPassword';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
 
-// tracks
-import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
-// utils
-import { askCustomFields, showOnboarding } from './utils';
-
-// typings
+import tracks from '../../tracks';
 import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
   UpdateState,
 } from '../../typings';
+
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+import { askCustomFields, showOnboarding } from './utils';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  anySSOProviderEnabled: boolean
 ) => {
   return {
     // old sign up flow
@@ -194,16 +191,17 @@ export const signUpFlow = (
       SUBMIT: async (userId: string, formData: FormData) => {
         try {
           await updateUser({ userId, custom_field_values: formData });
+          invalidateCacheAfterUpdateUser(queryClient);
 
           const { requirements } = await getRequirements();
 
-          if (showOnboarding(requirements.onboarding)) {
-            setCurrentStep('sign-up:onboarding');
+          if (requirements.special.group_membership === 'require') {
+            setCurrentStep('closed');
             return;
           }
 
-          if (requirements.special.group_membership === 'require') {
-            setCurrentStep('closed');
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
             return;
           }
 
@@ -217,13 +215,13 @@ export const signUpFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
-        if (showOnboarding(requirements.onboarding)) {
-          setCurrentStep('sign-up:onboarding');
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
           return;
         }
 
@@ -240,6 +238,8 @@ export const signUpFlow = (
       SUBMIT: async (userId: string, onboarding: OnboardingType) => {
         try {
           await updateUser({ userId, onboarding });
+          invalidateCacheAfterUpdateUser(queryClient);
+
           const { requirements } = await getRequirements();
 
           if (requirements.special.group_membership === 'require') {

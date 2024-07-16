@@ -1,10 +1,13 @@
 import React from 'react';
-import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+
 import { IUserData } from 'api/users/types';
 
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
+import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
 
 const props: Props = {
   folderId: 'folderId',
@@ -50,8 +53,8 @@ jest.mock('api/project_folders/useProjectFolders', () => () => {
 const apiPath = '*project_folders/:folderId';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(500), ctx.json({}));
+  http.delete(apiPath, () => {
+    return HttpResponse.json({}, { status: 500 });
   })
 );
 

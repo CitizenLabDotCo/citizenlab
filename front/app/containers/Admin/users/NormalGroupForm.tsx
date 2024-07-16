@@ -1,25 +1,24 @@
 import React from 'react';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
+import { Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 import { object } from 'yup';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+import { MembershipType } from 'api/groups/types';
+
+import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-
-// Components
-import { SectionField } from 'components/admin/Section';
-import { Button } from '@citizenlab/cl2-component-library';
-
-// Typings
-import { Multiloc } from 'typings';
 
 type Props = {
   onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
@@ -30,10 +29,6 @@ export interface NormalFormValues {
   title_multiloc: Multiloc;
   membership_type: MembershipType;
 }
-
-// Style
-import styled from 'styled-components';
-import { MembershipType } from 'api/groups/types';
 
 export const Fill = styled.div`
   padding-top: 40px;

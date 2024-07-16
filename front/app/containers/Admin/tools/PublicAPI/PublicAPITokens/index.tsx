@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
 import {
   Title,
   Text,
@@ -15,11 +15,18 @@ import {
   Box,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import useDeleteApiClient from 'api/api_clients/useDeleteApiClient';
-import CreateTokenModal from './CreateTokenModal';
-import Modal from 'components/UI/Modal';
+
 import useApiClients from 'api/api_clients/useApiClients';
+import useDeleteApiClient from 'api/api_clients/useDeleteApiClient';
+
+import GoBackButton from 'components/UI/GoBackButton';
+import Modal from 'components/UI/Modal';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import CreateTokenModal from './CreateTokenModal';
+import messages from './messages';
 
 const PublicAPITokens = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,6 +50,10 @@ const PublicAPITokens = () => {
 
   return (
     <>
+      <Box w="100%">
+        <GoBackButton onClick={clHistory.goBack} />
+      </Box>
+
       <Title variant="h1">{formatMessage(messages.title)}</Title>
       <Box display="flex" justifyContent={'space-between'} mb="12px">
         <Text>

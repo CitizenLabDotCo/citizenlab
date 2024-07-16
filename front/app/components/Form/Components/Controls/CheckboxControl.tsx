@@ -1,5 +1,5 @@
 import React from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { Box, Checkbox } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -7,10 +7,15 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { FormLabel } from 'components/UI/FormComponents';
+
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
+
 import { getSubtextElement } from './controlUtils';
 
 const CheckboxControl = ({
@@ -30,24 +35,29 @@ const CheckboxControl = ({
 
   return (
     <>
-      <FormLabel
-        htmlFor={sanitizeForClassname(id)}
-        labelValue={getLabel(uischema, schema, path)}
-        optional={!required}
-        subtextValue={getSubtextElement(uischema.options?.description)}
-        subtextSupportsHtml
-      />
-      <Box display="flex" flexDirection="row">
+      <Box display="flex" alignItems="flex-start">
         <Checkbox
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
-          label={schema.description || null}
           disabled={uischema?.options?.readonly}
+          mr="8px"
+        />
+        <FormLabel
+          htmlFor={sanitizeForClassname(id)}
+          labelValue={getLabel(uischema, schema, path)}
+          optional={!required}
+          subtextValue={getSubtextElement(uischema.options?.description)}
+          subtextSupportsHtml
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={false}
+      />
     </>
   );
 };

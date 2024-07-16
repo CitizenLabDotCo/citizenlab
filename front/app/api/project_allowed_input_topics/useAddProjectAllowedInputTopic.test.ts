@@ -1,20 +1,19 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddProjectAllowedInputTopic from './useAddProjectAllowedInputTopic';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
+import useAddProjectAllowedInputTopic from './useAddProjectAllowedInputTopic';
 
 const apiPath = '*projects_allowed_input_topics';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: projectAllowedInputTopics[0] })
+  http.post(apiPath, () => {
+    return HttpResponse.json(
+      { data: projectAllowedInputTopics[0] },
+      { status: 200 }
     );
   })
 );
@@ -44,8 +43,8 @@ describe('useAddProjectAllowedInputTopic', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

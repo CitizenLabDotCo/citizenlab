@@ -1,30 +1,26 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// router
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import Footer from 'components/PostShowComponents/Footer';
+
+import { trackEventByName } from 'utils/analytics';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
-import Phone from './Phone';
 import LargerThanPhone from './LargerThanPhone';
-import Footer from 'components/PostShowComponents/Footer';
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import Phone from './Phone';
+import tracks from './tracks';
 
 interface Props {
   initiativeId: string;
   className?: string;
 }
 
-const InitiativesShow = ({ initiativeId }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
+const InitiativesShow = ({ initiativeId, className }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
@@ -36,7 +32,6 @@ const InitiativesShow = ({ initiativeId }: Props) => {
     setA11y_pronounceLatestOfficialFeedbackPost,
   ] = useState(false);
 
-  const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -76,51 +71,57 @@ const InitiativesShow = ({ initiativeId }: Props) => {
   };
 
   const onScrollToOfficialFeedback = () => {
-    if (officialFeedbackElement.current) {
-      officialFeedbackElement.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-      });
-    }
+    const feedbackElement = document.getElementById('official-feedback-feed');
+    if (feedbackElement) {
+      feedbackElement.setAttribute('tabindex', '-1'); // Make the feedback element focusable
 
-    setA11y_pronounceLatestOfficialFeedbackPost(true);
+      feedbackElement.focus();
+      feedbackElement.scrollIntoView({ behavior: 'smooth' });
+
+      // Listen for focus out to restore default tabbing behavior
+      feedbackElement.addEventListener('focusout', function () {
+        feedbackElement.removeAttribute('tabindex');
+      });
+
+      setA11y_pronounceLatestOfficialFeedbackPost(true);
+    }
   };
 
   return (
-    <Box id="e2e-initiative-show">
-      <InitiativeMeta initiativeId={initiativeId} />
-      {isSmallerThanPhone ? (
-        <Phone
-          initiativeId={initiativeId}
-          translateButtonClicked={translateButtonClicked}
-          a11y_pronounceLatestOfficialFeedbackPost={
-            a11y_pronounceLatestOfficialFeedbackPost
-          }
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-          onTranslateInitiative={onTranslateInitiative}
-        />
-      ) : (
-        <LargerThanPhone
-          initiativeId={initiativeId}
-          translateButtonClicked={translateButtonClicked}
-          a11y_pronounceLatestOfficialFeedbackPost={
-            a11y_pronounceLatestOfficialFeedbackPost
-          }
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-          onTranslateInitiative={onTranslateInitiative}
-        />
-      )}
-      <Suspense fallback={<LoadingComments />}>
-        <Footer postId={initiativeId} postType="initiative" />
-      </Suspense>
+    <div id="e2e-initiative-show" className={className}>
+      <main>
+        {isSmallerThanTablet ? (
+          <Phone
+            initiativeId={initiativeId}
+            translateButtonClicked={translateButtonClicked}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+            onTranslateInitiative={onTranslateInitiative}
+          />
+        ) : (
+          <LargerThanPhone
+            initiativeId={initiativeId}
+            translateButtonClicked={translateButtonClicked}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+            onTranslateInitiative={onTranslateInitiative}
+          />
+        )}
+        <Suspense fallback={<LoadingComments />}>
+          <Footer postId={initiativeId} postType="initiative" />
+        </Suspense>
+      </main>
       <Suspense fallback={null}>
         <Modals
           closeInitiativeSocialSharingModal={closeInitiativeSocialSharingModal}
           initiativeIdForSocialSharing={initiativeIdForSocialSharing}
         />
       </Suspense>
-    </Box>
+    </div>
   );
 };
 

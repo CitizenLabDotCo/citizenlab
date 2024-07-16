@@ -1,17 +1,19 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileUtils';
+
+import {
+  colors,
+  fontSizes,
+  defaultOutline,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
 
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import messages from './messages';
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -133,6 +135,17 @@ const fileAccept = [
   'video/x-matroska',
 
   '.jpg',
+  'image/jpg',
+  '.jpeg',
+  'image/jpeg',
+  '.gif',
+  'image/gif',
+  '.png',
+  'image/png',
+  '.webp',
+  'image/webp',
+  '.svg',
+  'image/svg+xml',
 ];
 
 interface Props {

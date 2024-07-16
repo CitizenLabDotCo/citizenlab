@@ -1,6 +1,8 @@
-import { ControlElement, JsonSchema } from '@jsonforms/core';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
+
+import { ControlElement, JsonSchema } from '@jsonforms/core';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 export const getSubtextElement = (description: string) => {
   return (
@@ -26,6 +28,7 @@ export const getOptions = (
         schema.items?.oneOf?.map((option) => ({
           value: option.const as string,
           label: (option.title || option.const) as string,
+          ...(option.image && { image: option.image }),
         }))) ||
       null
     );

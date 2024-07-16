@@ -1,28 +1,23 @@
 import React from 'react';
-import moment from 'moment';
 
-// hooks
-import usePhase from 'api/phases/usePhase';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
-// style
-import styled from 'styled-components';
 import {
+  useWindowSize,
   media,
   colors,
   fontSizes,
   viewportWidths,
   isRtl,
-} from 'utils/styleUtils';
-import { IPhaseData } from 'api/phases/types';
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
@@ -77,7 +72,7 @@ const HeaderTitleWrapper = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.h2`
+const HeaderTitle = styled.h3`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.l + 1}px;
   line-height: normal;
@@ -126,6 +121,7 @@ const PhaseTitle = ({
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
+  const { formatMessage } = useIntl();
 
   if (phase) {
     let phaseTitle = localize(phase.data.attributes.title_multiloc);
@@ -133,7 +129,10 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const { startDate, endDate } = getPhaseDates(phase.data);
+    const startDate = getLocalisedDateString(phase.data.attributes.start_at);
+    const endDate = phase.data.attributes.end_at
+      ? getLocalisedDateString(phase.data.attributes.end_at)
+      : formatMessage(messages.noEndDate);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
       phaseTitle = `${phaseNumber}. ${phaseTitle}`;
@@ -165,12 +164,3 @@ const PhaseTitle = ({
 };
 
 export default PhaseTitle;
-
-function getPhaseDates(phase: IPhaseData) {
-  const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
-  const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
-  const startDate = startMoment.format('LL');
-  const endDate = endMoment.format('LL');
-
-  return { startDate, endDate };
-}

@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
+
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { FollowableObject } from 'api/follow_unfollow/types';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import Topics from 'components/Topics';
-import Areas from 'components/Areas';
-import UserFollowingList from './UserFollowingList';
-import useAuthUser from 'api/me/useAuthUser';
-import FilterTabs, { TabData } from 'components/UI/FilterTabs';
-import tracks from 'components/FollowUnfollow/tracks';
-import { trackEventByName } from 'utils/analytics';
 import { useParams } from 'react-router-dom';
+
+import { FollowableObject } from 'api/follow_unfollow/types';
+import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Areas from 'components/Areas';
+import tracks from 'components/FollowUnfollow/tracks';
+import Topics from 'components/Topics';
+import FilterTabs, { TabData } from 'components/UI/FilterTabs';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import UserFollowingList from './UserFollowingList';
 
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
@@ -33,10 +40,10 @@ const Following = () => {
       label: messages.projects,
     },
     Initiative: {
-      label: messages.initiatives,
+      label: messages.proposals,
     },
     Idea: {
-      label: messages.ideas,
+      label: messages.inputs,
     },
     'ProjectFolders::Folder': {
       label: messages.projectFolders,
@@ -88,10 +95,20 @@ const Following = () => {
           getScreenReaderTextForTab={getScreenReaderTextForTab}
         />
       </Box>
-      {currentTab === 'Topics' && <Topics />}
-      {currentTab === 'Areas' && <Areas />}
+      {currentTab === 'Topics' && (
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <Topics />
+        </div>
+      )}
+      {currentTab === 'Areas' && (
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <Areas />
+        </div>
+      )}
       {currentTab !== 'Topics' && currentTab !== 'Areas' && (
-        <UserFollowingList value={currentTab} />
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <UserFollowingList value={currentTab} />
+        </div>
       )}
     </Box>
   );

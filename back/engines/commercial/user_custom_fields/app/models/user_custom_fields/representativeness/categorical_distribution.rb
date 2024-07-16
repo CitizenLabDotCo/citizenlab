@@ -35,11 +35,6 @@ module UserCustomFields
         end
       end
 
-      # Returns the expected count distribution for a given (total) number of users.
-      def expected_counts(nb_users)
-        probabilities.transform_values { |probability| (probability * nb_users).round(1) }
-      end
-
       def distribution_by_option_key
         @distribution_by_option_key ||= distribution.transform_keys do |option_id|
           option_id_to_key.fetch(option_id)

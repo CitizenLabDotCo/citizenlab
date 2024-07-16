@@ -1,40 +1,47 @@
 import React from 'react';
+
+import { media } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import ProjectCard from 'components/ProjectCard';
-
-// hooks
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-
-// style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
-// typings
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { PublicationStatus } from 'api/projects/types';
 
-const Container = styled.div`
+import ProjectCard from 'components/ProjectCard';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+const Container = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  list-style-type: none;
+  padding: 20px;
+  margin: 0;
 `;
 
-const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
+const ListItem = styled.li<{ isEven: boolean }>`
+  display: flex;
   flex-grow: 0;
   width: calc(100% * (1 / 2) - 10px);
   margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
   margin-bottom: 20px;
+
   &.oneCardPerRow {
     width: 100%;
     margin-right: 0px;
   }
+
   ${media.phone`
     width: 100%;
     margin: 0;
     margin-bottom: 20px;
   `};
+`;
+
+const StyledProjectCard = styled(ProjectCard)`
+  flex-grow: 1;
+  width: 100%;
 `;
 
 interface Props {
@@ -62,14 +69,17 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
       return (
         <Container className={className}>
           {adminPublications.map((item, index) => (
-            <StyledProjectCard
+            <ListItem
               key={item.id}
-              projectId={item.relationships.publication.data.id}
-              size="small"
               isEven={index % 2 !== 1}
-              hideDescriptionPreview={hideDescriptionPreview}
               className={adminPublications.length === 1 ? 'oneCardPerRow' : ''}
-            />
+            >
+              <StyledProjectCard
+                projectId={item.relationships.publication.data.id}
+                size="small"
+                hideDescriptionPreview={hideDescriptionPreview}
+              />
+            </ListItem>
           ))}
         </Container>
       );

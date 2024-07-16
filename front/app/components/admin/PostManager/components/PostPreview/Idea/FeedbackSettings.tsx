@@ -1,37 +1,27 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// typings
+import { Select, Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// styles
-import styled from 'styled-components';
-
-// components
-import { Select, Label } from '@citizenlab/cl2-component-library';
-
-// resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import { IIdeaStatuses } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdea } from 'api/ideas/types';
-import { IIdeaStatuses } from 'api/idea_statuses/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import useUsers from 'api/users/useUsers';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
+
+import tracks from '../../../tracks';
+import messages from '../messages';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -39,19 +29,13 @@ const StyledLabel = styled(Label)`
 
 const Container = styled.div``;
 
-interface DataProps {
-  prospectAssignees: GetUsersChildProps;
-}
-
-interface InputProps {
+interface Props {
   projectId: string;
   ideaId: string;
   className?: string;
 }
 
-interface Props extends InputProps, DataProps {}
-
-const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
+const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: authUser } = useAuthUser();
@@ -59,6 +43,9 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const { data: statuses } = useIdeaStatuses();
   const { mutate: updateIdea } = useUpdateIdea();
+  const { data: prospectAssignees } = useUsers({
+    can_moderate_project: projectId,
+  });
   const adminAtWorkId = authUser ? authUser.data.id : null;
 
   const getIdeaStatusOption = (idea: IIdea, statuses: IIdeaStatuses) => {
@@ -78,8 +65,8 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
   };
 
   const getAssigneeOptions = () => {
-    if (!isNilOrError(prospectAssignees.usersList)) {
-      const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
+    if (prospectAssignees) {
+      const assigneeOptions = prospectAssignees.data.map((assignee) => ({
         value: assignee.id,
         label: getFullName(assignee),
       }));
@@ -165,16 +152,4 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: ({ projectId, render }) => (
-    <GetUsers can_moderate_project={projectId}>{render}</GetUsers>
-  ),
-});
-
-export default (inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {(dataProps) => <FeedbackSettings {...inputProps} {...dataProps} />}
-    </Data>
-  );
-};
+export default FeedbackSettings;

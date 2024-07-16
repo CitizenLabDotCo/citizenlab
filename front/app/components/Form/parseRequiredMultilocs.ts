@@ -1,5 +1,6 @@
 import { JsonSchema7 } from '@jsonforms/core';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
+
 import { FormData } from './typings';
 
 // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
@@ -7,7 +8,7 @@ import { FormData } from './typings';
 
 export const parseRequiredMultilocsSchema = (
   schema: JsonSchema7,
-  locale: Locale
+  locale: SupportedLocale
 ) => {
   const requiredMultilocFields = schema.required?.filter((req) =>
     req.endsWith('_multiloc')
@@ -31,7 +32,7 @@ export const parseRequiredMultilocsSchema = (
 
 export const parseRequiredMultilocsData = (
   schema: JsonSchema7,
-  locale: Locale,
+  locale: SupportedLocale,
   data: FormData
 ) => {
   const requiredMultilocFields = schema.required?.filter((req) =>

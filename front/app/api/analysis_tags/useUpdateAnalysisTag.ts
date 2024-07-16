@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import analysesKeys from './keys';
 import { ITag, ITagUpdate } from './types';
 

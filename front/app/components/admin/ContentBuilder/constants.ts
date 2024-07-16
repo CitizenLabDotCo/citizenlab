@@ -5,3 +5,10 @@ export const IMAGES_LOADED_EVENT = 'imagesLoaded';
 export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
+
+export const DEFAULT_PADDING = '20px';
+
+export const CONTENT_BUILDER_Z_INDEX = {
+  main: 10000,
+  tooltip: 10010,
+};

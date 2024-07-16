@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
 
-// components
 import { Dropdown } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import ExportButtons from './ExportButtons';
-
-// style
 import styled from 'styled-components';
 
-// typings
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+
 import { ManagerType } from '../../';
+import messages from '../../messages';
+
+import ExportButtons from './ExportButtons';
 
 const DropdownButton = styled(Button)``;
 
@@ -29,7 +28,7 @@ export interface Props {
   type: ManagerType;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
-  selectedProject: string | undefined;
+  selectedProject?: string | undefined;
   className?: string;
 }
 
@@ -83,7 +82,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
           buttonStyle="admin-dark-text"
           onClick={this.toggleDropdown}
           icon="download"
-          iconPos="right"
+          iconPos="left"
           padding="0px"
         >
           <FormattedMessage {...messages.exports} />

@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesShow.metaTitle',
-    defaultMessage: 'Initiative: {initiativeTitle}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesShow.metaTitle1',
+    defaultMessage: 'Proposal: {initiativeTitle} | {orgName}',
   },
   invisibleTitleContent: {
     id: 'app.containers.InitiativesShow.invisibleTitleContent',
@@ -32,10 +32,6 @@ export default defineMessages({
   },
   twitterMessage: {
     id: 'app.containers.InitiativesShow.twitterMessage',
-    defaultMessage: 'Vote for {initiativeTitle} on',
-  },
-  facebookMessage: {
-    id: 'app.containers.InitiativesShow.facebookMessage',
     defaultMessage: 'Vote for {initiativeTitle} on',
   },
   whatsAppMessage: {

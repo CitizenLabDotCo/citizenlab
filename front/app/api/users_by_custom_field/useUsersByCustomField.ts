@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import usersByCustomFieldKeys from './keys';
 import {
   ICustomFieldParams,
   IUsersByCustomField,
   UsersByCustomFieldKeys,
 } from './types';
-import usersByCustomFieldKeys from './keys';
 
 const fetchUsersByCustomField = ({
   id,
@@ -19,9 +21,9 @@ const fetchUsersByCustomField = ({
   });
 
 const useUsersByCustomField = ({
-  enabled,
+  enabled = true,
   ...queryParameters
-}: ICustomFieldParams & { id: string; enabled: boolean }) => {
+}: ICustomFieldParams & { id: string; enabled?: boolean }) => {
   return useQuery<
     IUsersByCustomField,
     CLErrors,

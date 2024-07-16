@@ -20,16 +20,22 @@ describe('Volunteering survey CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
           publicationStatus: 'published',
-          participationMethod: 'volunteering',
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
-
+          cy.apiCreatePhase({
+            projectId,
+            title: 'volunteerPhaseTitle',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'volunteering',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
           cy.apiCreateEvent({
             projectId,
             title: 'Event title',

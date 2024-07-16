@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { FormLabel, FormSection } from 'components/UI/FormComponents';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
 import { useParams } from 'react-router-dom';
-import Checkbox from 'components/HookForm/Checkbox';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewIdeationForm/messages';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import { FormLabel, FormSection } from 'components/UI/FormComponents';
+
+import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   triggerModal: () => void;
@@ -64,9 +66,9 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
                 transform="translate(0,-1)"
               />
             </FormLabel>
-            <Checkbox
+            <CheckboxWithLabel
               name="anonymous"
-              id="e2e-post-anonymously-checkbox"
+              dataTestId="e2e-post-proposal-anonymously-checkbox"
               label={
                 <Text>
                   {formatMessage(profileVisibilityMessages.postAnonymously)}

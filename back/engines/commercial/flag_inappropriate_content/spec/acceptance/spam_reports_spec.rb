@@ -56,7 +56,7 @@ resource 'Spam Reports' do
     end
 
     example 'Deleting a spam report does not delete the flag when toxicity was detected', document: false do
-      create(:inappropriate_content_flag, flaggable: idea, toxicity_label: 'obscene')
+      create(:inappropriate_content_flag, flaggable: idea, toxicity_label: 'sexually_explicit')
       do_request
       expect(response_status).to eq 200
       expect(idea.reload.inappropriate_content_flag).to be_present

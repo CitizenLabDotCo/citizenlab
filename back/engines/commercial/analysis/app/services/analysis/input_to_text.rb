@@ -18,12 +18,10 @@ module Analysis
         {}
       end
       @custom_fields.each_with_object(initial_object) do |field, obj|
-        label = override_field_labels[field.id] || @multiloc_service.t(field.title_multiloc)
-        full_value = input_field_value(input, field)
-        next if full_value&.blank? || (full_value.is_a?(String) && full_value.strip.blank?)
-
-        value = truncate_values ? full_value&.truncate(truncate_values) : full_value
-        obj[label] = value
+        add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
+        if field.other_option_text_field
+          add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
+        end
       end
     end
 
@@ -73,7 +71,9 @@ module Analysis
       # We memoize as certain of these operations can be relatively slow,
       # especially in case of HTML fields, since they need to be converted to
       # plain text
-      return @memoized_field_values[input.id][custom_field.id] if input.id && @memoized_field_values[input.id][custom_field.id]
+      if input.id && custom_field.id && @memoized_field_values[input.id][custom_field.id]
+        return @memoized_field_values[input.id][custom_field.id]
+      end
 
       # We currently piggyback on the XlsxExport::ValueVisitor, which transforms
       # idea fields (built-in and custom) to string values suitable to display
@@ -81,8 +81,17 @@ module Analysis
       # input to a plaintext representation suitable for a LLM), so we are
       # reusing this. Probably this should be changed to its own implementation
       # once we optimize further for the LLM use case.
-      vv = XlsxExport::ValueVisitor.new(input, {}, app_configuration: @app_configuration)
+      vv = XlsxExport::ValueVisitor.new(input, custom_field.options.index_by(&:key), app_configuration: @app_configuration)
       @memoized_field_values[input.id][custom_field.id] = custom_field.accept(vv)
+    end
+
+    def add_field(field, input, obj, truncate_values: nil, override_field_labels: {})
+      label = override_field_labels[field.id] || @multiloc_service.t(field.title_multiloc)
+      full_value = input_field_value(input, field)
+      return if full_value&.blank? || (full_value.is_a?(String) && full_value.strip.blank?)
+
+      value = truncate_values ? full_value&.truncate(truncate_values) : full_value
+      obj[label] = value
     end
   end
 end

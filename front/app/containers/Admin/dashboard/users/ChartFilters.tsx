@@ -1,13 +1,14 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+import { Moment } from 'moment';
+import { IOption } from 'typings';
+
+import { useIntl } from 'utils/cl-intl';
+
 import GroupFilter from '../components/filters/GroupFilter';
 import TimeControl from '../components/TimeControl';
-
-// typings
-import { IOption } from 'typings';
-import { Moment } from 'moment';
+import messages from '../messages';
 
 interface Props {
   startAtMoment: Moment | null | undefined;
@@ -27,6 +28,8 @@ const ChartFilters = ({
   onGroupFilter,
   onChangeTimeRange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box width="100%" display="flex" mt="-10px">
       <TimeControl
@@ -37,6 +40,7 @@ const ChartFilters = ({
       <Box ml="12px">
         <GroupFilter
           currentGroupFilter={currentGroupFilter}
+          placeholder={formatMessage(messages.labelGroupFilter)}
           onGroupFilter={onGroupFilter}
         />
       </Box>

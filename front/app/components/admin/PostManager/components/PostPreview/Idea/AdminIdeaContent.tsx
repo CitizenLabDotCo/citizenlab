@@ -1,52 +1,51 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Title from 'components/PostShowComponents/Title';
+import {
+  IconTooltip,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
-import Body from 'components/PostShowComponents/Body';
 import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import CommentsSection from 'components/PostShowComponents/Comments';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
-import ReactionPreview from './ReactionPreview';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
+
 import {
   Top,
   Content,
   Container,
 } from 'components/admin/PostManager/components/PostPreview';
+import Body from 'components/PostShowComponents/Body';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
 
-// services
-import { ProcessType } from 'api/projects/types';
-
-// resources
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// utils
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import useLocalize from 'hooks/useLocalize';
 
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
+import FeedbackSettings from './FeedbackSettings';
+import ReactionPreview from './ReactionPreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;
@@ -171,11 +170,9 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
   if (!idea || !project) return null;
 
-  const handleClickDelete = (processType: ProcessType) => () => {
-    const deleteConfirmationMessage = {
-      continuous: messages.deleteInputConfirmation,
-      timeline: messages.deleteInputInTimelineConfirmation,
-    }[processType];
+  const handleClickDelete = () => {
+    const deleteConfirmationMessage =
+      messages.deleteInputInTimelineConfirmation;
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
       deleteIdea(idea.data.id, { onSuccess: closePreview });
@@ -196,9 +193,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   // AuthorId can be null if user has been deleted
   const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
-  const processType = project.data.attributes.process_type;
   const allowAnonymousParticipation =
-    project.data.attributes.allow_anonymous_participation ||
     currentPhase?.attributes.allow_anonymous_participation;
 
   return (
@@ -206,16 +201,26 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
       <Top>
         <Button
           mr="8px"
-          buttonStyle="secondary"
+          buttonStyle="primary"
           icon="edit"
           onClick={handleClickEdit}
         >
           <FormattedMessage {...messages.edit} />
         </Button>
         <Button
+          linkTo={`/ideas/${idea.data.attributes.slug}`}
+          // We open in a new tab not lose state of the input manager
+          openLinkInNewTab
+          icon="eye"
+          buttonStyle="secondary-outlined"
+        >
+          <FormattedMessage {...messages.view} />
+        </Button>
+        <Button
+          id="e2e-input-manager-side-modal-delete-button"
+          buttonStyle="text"
           icon="delete"
-          buttonStyle="delete"
-          onClick={handleClickDelete(processType)}
+          onClick={handleClickDelete}
         >
           <FormattedMessage {...messages.delete} />
         </Button>

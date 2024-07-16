@@ -1,36 +1,29 @@
 import React from 'react';
 
-// components
-import { Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-
-// api
-import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// routing
+import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-// utils
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// types
-import { IProjectData } from 'api/projects/types';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
+import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+
+import messages from './messages';
+
 interface Props {
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   ideaId: string;
   buttonStyle: 'primary' | 'primary-outlined';
   onIdeaPage?: boolean;
@@ -39,14 +32,14 @@ interface Props {
 const AssignSingleVoteButton = ({
   ideaId,
   buttonStyle,
-  participationContext,
+  phase,
   onIdeaPage,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: idea } = useIdeaById(ideaId);
   const { data: basket } = useBasket(
-    participationContext.relationships?.user_basket?.data?.id
+    phase.relationships?.user_basket?.data?.id
   );
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
@@ -54,8 +47,10 @@ const AssignSingleVoteButton = ({
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  // permissions
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const maxVotes = phase?.attributes.voting_max_total;
+  const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
+
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
 
   if (
     !actionDescriptor ||
@@ -71,21 +66,19 @@ const AssignSingleVoteButton = ({
     }
 
     if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-      const participationContextId = participationContext.id;
-      const participationContextType = participationContext.type;
+      const phaseId = phase.id;
 
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: 1,
         },
       };
@@ -95,12 +88,11 @@ const AssignSingleVoteButton = ({
   };
 
   const onAdd = async () => {
-    const maxVotes = participationContext?.attributes.voting_max_total;
     if (numberOfVotesCast === undefined) {
       return;
     }
 
-    if (maxVotes && numberOfVotesCast === maxVotes) {
+    if (maxVotesReached) {
       eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
       return;
     }
@@ -112,38 +104,58 @@ const AssignSingleVoteButton = ({
     setVotes?.(ideaId, 0);
   };
 
-  const buttonDisabledExplanation = basket?.data?.attributes.submitted_at
-    ? formatMessage(
+  const getButtonDisabledExplanation = () => {
+    const action =
+      phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+    const permissionDisabledMessage = getPermissionsDisabledMessage(
+      action,
+      actionDescriptor.disabled_reason,
+      true
+    );
+    if (permissionDisabledMessage) {
+      return formatMessage(permissionDisabledMessage);
+    }
+
+    if (basket?.data?.attributes.submitted_at) {
+      return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
         { votes: numberOfVotesCast ?? 0 }
-      )
-    : undefined;
+      );
+    }
+
+    if (maxVotesReached && !ideaInBasket) {
+      return formatMessage(messages.maxVotesReached);
+    }
+
+    return null;
+  };
+
+  const disabledButtonExplanation = getButtonDisabledExplanation();
 
   return (
-    <Tippy
-      disabled={!buttonDisabledExplanation}
-      interactive={true}
+    <Tooltip
+      disabled={!disabledButtonExplanation}
       placement="bottom"
-      content={buttonDisabledExplanation}
+      content={disabledButtonExplanation}
     >
       <div>
         <Button
           buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
           bgColor={ideaInBasket ? colors.success : undefined}
           borderColor={ideaInBasket ? colors.success : undefined}
-          disabled={!!buttonDisabledExplanation}
+          disabled={!!disabledButtonExplanation}
           processing={isProcessing}
           icon={ideaInBasket ? 'check' : 'vote-ballot'}
           className="e2e-single-vote-button"
           onClick={vote}
           text={
             ideaInBasket
-              ? formatMessage(messages.voted)
-              : formatMessage(messages.vote)
+              ? formatMessage(messages.selected)
+              : formatMessage(messages.select)
           }
         />
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 

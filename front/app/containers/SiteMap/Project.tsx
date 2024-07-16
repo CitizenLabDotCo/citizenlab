@@ -1,20 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { H3, H4 } from './';
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
 
-// components
-import ContinuousProject from './ContinuousProject';
-import TimelineProject from './TimelineProject';
-
-// hooks
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
-// intl
+import T from 'components/T';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
+import TimelineProject from './TimelineProject';
+
+import { H3, H4 } from './';
 
 interface Props {
   projectId: string;
@@ -41,11 +39,8 @@ const Project = ({ projectId, hightestTitle }: Props) => {
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>
-          {project.data.attributes.process_type === 'continuous' ? (
-            <ContinuousProject key={project.data.id} project={project.data} />
-          ) : (
-            <TimelineProject key={project.data.id} project={project.data} />
-          )}
+          <TimelineProject key={project.data.id} project={project.data} />
+
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
               <Link to={`/projects/${project.data.attributes.slug}/events`}>

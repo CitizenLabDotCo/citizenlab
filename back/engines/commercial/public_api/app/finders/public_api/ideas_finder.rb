@@ -47,15 +47,9 @@ module PublicApi
       return scope unless @type
 
       if @type == 'survey'
-        scope
-          .joins(:project)
-          .where(project: { participation_method: 'native_survey' })
-          .or(Idea.where.not(creation_phase_id: nil))
+        scope.native_survey
       elsif @type == 'idea'
-        scope
-          .where(creation_phase_id: nil)
-          .joins(:project)
-          .where.not(project: { participation_method: 'native_survey' })
+        scope.ideation
       else
         scope
       end

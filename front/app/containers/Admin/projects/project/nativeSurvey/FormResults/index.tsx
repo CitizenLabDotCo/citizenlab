@@ -1,154 +1,63 @@
-import React, { useState } from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React from 'react';
 
-// Hooks
-import useLocale from 'hooks/useLocale';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
-// components
-import {
-  Box,
-  Title,
-  Text,
-  Icon,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import useProjectById from 'api/projects/useProjectById';
+import useFormResults from 'api/survey_results/useSurveyResults';
 
-// i18n
+import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
-import useFormResults from 'api/survey_results/useSurveyResults';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// Services
-import { downloadSurveyResults } from 'api/survey_results/utils';
 import FormResultsQuestion from './FormResultsQuestion';
 
-const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const { projectId } = useParams() as {
+const FormResults = () => {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
-  const [isDownloading, setIsDownloading] = useState(false);
-  const locale = useLocale();
-  const [urlParams] = useSearchParams();
-  const phaseId = urlParams.get('phase_id');
+  const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
   const { data: formResults } = useFormResults({
-    projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale) || !project) {
+  if (!formResults || !project) {
     return null;
   }
 
   const { totalSubmissions, results } = formResults.data.attributes;
 
-  const handleDownloadResults = async () => {
-    try {
-      setIsDownloading(true);
-      await downloadSurveyResults(project.data, locale, phase?.data);
-    } catch (error) {
-      // Not handling errors for now
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
   const surveyResponseMessage =
     totalSubmissions > 0
-      ? formatMessage(messages.totalSurveyResponses2, {
+      ? formatMessage(messages.totalSurveyResponses, {
           count: totalSubmissions,
         })
-      : formatMessage(messages.noSurveyResponses2);
+      : formatMessage(messages.noSurveyResponses);
 
   return (
     <Box width="100%">
-      <Box width="100%" display="flex" alignItems="center">
-        <Box width="100%">
-          <Title variant="h2">{formatMessage(messages.surveyResults2)}</Title>
-          <Text variant="bodyM" color="textSecondary">
-            {surveyResponseMessage}
-          </Text>
-        </Box>
-        <Box>
-          <Button
-            icon="download"
-            data-cy="e2e-download-survey-results"
-            buttonStyle="secondary"
-            width="auto"
-            minWidth="312px"
-            onClick={handleDownloadResults}
-            processing={isDownloading}
-          >
-            {formatMessage(messages.downloadResults2)}
-          </Button>
-        </Box>
+      <Box width="100%">
+        <Text variant="bodyM" color="textSecondary">
+          {surveyResponseMessage}
+        </Text>
       </Box>
-
-      <Box
-        bgColor={colors.teal100}
-        borderRadius="3px"
-        px="12px"
-        py="4px"
-        mt="0px"
-        mb="32px"
-        role="alert"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box display="flex" gap="16px" alignItems="center">
-          <Icon
-            name="info-outline"
-            width="24px"
-            height="24px"
-            fill="textSecondary"
-          />
-          <Text variant="bodyM" color="textSecondary">
-            {formatMessage(messages.informationText2)}
-          </Text>
-        </Box>
-      </Box>
-
-      <Box maxWidth="524px">
-        {results.map(
-          (
-            {
-              question,
-              inputType,
-              answers,
-              totalResponses,
-              required,
-              customFieldId,
-            },
-            index
-          ) => {
+      <Box>
+        {totalSubmissions > 0 &&
+          results.map((result, index) => {
             return (
               <FormResultsQuestion
                 key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                required={required}
-                customFieldId={customFieldId}
+                questionNumber={index + 1}
+                result={result}
+                totalSubmissions={totalSubmissions}
               />
             );
-          }
-        )}
+          })}
       </Box>
     </Box>
   );
 };
 
-export default injectIntl(FormResults);
+export default FormResults;

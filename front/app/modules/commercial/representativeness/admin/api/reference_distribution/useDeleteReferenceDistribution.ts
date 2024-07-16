@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
+
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
-import usersByBirthyearKeys from 'api/users_by_birthyear/keys';
-import usersByGenderKeys from 'api/users_by_gender/keys';
 import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
-import referenceDistributionKeys from './keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import rScoreKeys from '../r_score/keys';
+
+import referenceDistributionKeys from './keys';
 
 const deleteReferenceDistribution = (id: string) =>
   fetcher({
@@ -21,14 +23,6 @@ const useDeleteReferenceDistribution = () => {
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: usersByBirthyearKeys.all(),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: usersByGenderKeys.all(),
       });
 
       queryClient.invalidateQueries({

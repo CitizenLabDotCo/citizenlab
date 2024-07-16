@@ -1,21 +1,19 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
 
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// services
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
-// utils
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useLocalize from 'hooks/useLocalize';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAuthUser from 'api/me/useAuthUser';
+
+import messages from './messages';
 
 interface Props {
   user: IUserData;
@@ -48,7 +46,7 @@ const UsersShowPageMeta = ({ user }: Props) => {
     return null;
   }
 
-  const usersShowPageIndexTitle = formatMessage(messages.metaTitle, {
+  const usersShowPageIndexTitle = formatMessage(messages.metaTitle1, {
     firstName,
     lastName,
   });

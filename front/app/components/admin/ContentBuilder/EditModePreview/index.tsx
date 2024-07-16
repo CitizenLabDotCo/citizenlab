@@ -1,10 +1,9 @@
 import React, { memo, useState } from 'react';
 
-// components
-import { Box, Icon, Button } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
-// styles
-import { stylingConsts, colors } from 'utils/styleUtils';
+import DesktopButton from './ViewButtons/DesktopButton';
+import MobileButton from './ViewButtons/MobileButton';
 
 type Props = {
   iframeSrc: string;
@@ -15,12 +14,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
   Props
 >(({ iframeSrc }, ref) => {
   const [isMobile, setIsMobile] = useState(true);
-  const colorIfDesktopView = isMobile ? colors.white : colors.primary;
-  const colorIfMobileView = isMobile ? colors.primary : colors.white;
-  const buttonProps = {
-    height: '40px',
-    width: '92px',
-  };
+
   return (
     <Box
       mt={`${stylingConsts.menuHeight + 20}px`}
@@ -29,37 +23,18 @@ const ContentBuilderEditModePreview = React.forwardRef<
     >
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" mb="16px">
-          <Button
-            bgColor={colorIfMobileView}
+          <MobileButton
+            active={isMobile}
             onClick={() => {
-              !isMobile && setIsMobile(true);
+              setIsMobile(true);
             }}
-            borderRadius="4px 0px 0px 4px"
-            bgHoverColor={colorIfMobileView}
-            borderColor={`${colors.primary}`}
-            id="e2e-mobile-preview"
-            {...buttonProps}
-          >
-            <Icon
-              name="tablet"
-              width="16px"
-              height="20px"
-              fill={colorIfDesktopView}
-            />
-          </Button>
-          <Button
-            bgColor={colorIfDesktopView}
+          />
+          <DesktopButton
+            active={!isMobile}
             onClick={() => {
-              isMobile && setIsMobile(false);
+              setIsMobile(false);
             }}
-            id="e2e-desktop-preview"
-            borderRadius="0px 4px 4px 0px"
-            bgHoverColor={colorIfDesktopView}
-            borderColor={`${colors.primary}`}
-            {...buttonProps}
-          >
-            <Icon name="desktop" width="20px" fill={colorIfMobileView} />
-          </Button>
+          />
         </Box>
         {/* Platform Container */}
         <Box

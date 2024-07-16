@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   Button,
@@ -6,18 +7,19 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import {
-  StatusWrapper,
-  StatusExplanation,
-} from './ReactionControl/SharedStyles';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
-import BorderContainer from './BorderContainer';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
 import { useIntl } from 'utils/cl-intl';
+
+import BorderContainer from './BorderContainer';
 import messages from './messages';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { StatusHeading, StatusExplanation } from './ReactionControl/Status';
 
 interface Props {
   initiativeId: string;
@@ -66,7 +68,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
     return (
       <BorderContainer>
         <Box mb="16px">
-          <StatusWrapper>{formatMessage(messages.cosponsor)}</StatusWrapper>
+          <StatusHeading>{formatMessage(messages.cosponsor)}</StatusHeading>
         </Box>
         <Box mb="20px">
           <Icon

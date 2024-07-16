@@ -1,20 +1,10 @@
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import {
-  TAppConfigurationSettingWithEnabled,
-  THomepageSetting,
-} from 'api/app_configuration/types';
 
-export type Parameters = HomepageSettingProps | AppConfigSettingProps;
-
-// For THomepageSetting, you can only use
-// this hook to check the allowed value, which still resides in appConfiguration
-type HomepageSettingProps = {
-  name: THomepageSetting;
-  onlyCheckAllowed: true;
-};
+export type Parameters = AppConfigSettingProps;
 
 type AppConfigSettingProps = {
-  name: TAppConfigurationSettingWithEnabled;
+  name: TAppConfigurationSetting;
   onlyCheckAllowed?: boolean;
 };
 
@@ -23,13 +13,12 @@ export default function useFeatureFlag({
   onlyCheckAllowed = false,
 }: Parameters): boolean {
   const { data: appConfiguration } = useAppConfiguration();
-  const tenantSettings = appConfiguration?.data.attributes.settings;
 
-  const setting = tenantSettings && tenantSettings[name];
-  const isEnabled =
-    setting && 'enabled' in setting ? setting.enabled : undefined;
+  if (!appConfiguration) return false;
 
-  return Boolean(
-    tenantSettings?.[name]?.allowed && (onlyCheckAllowed || isEnabled)
-  );
+  const setting = appConfiguration.data.attributes.settings[name];
+
+  return setting
+    ? setting.allowed && (onlyCheckAllowed || setting.enabled)
+    : false;
 }

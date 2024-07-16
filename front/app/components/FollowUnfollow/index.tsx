@@ -1,24 +1,32 @@
 import React from 'react';
+
 import {
   Button,
   ButtonStyles,
   BoxWidthProps,
   BoxPaddingProps,
+  colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { useLocation } from 'react-router-dom';
+
+import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
+import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useAuthUser from 'api/me/useAuthUser';
-import useABTest from 'api/experiments/useABTest';
-import useLocale from 'hooks/useLocale';
-import tracks from './tracks';
+
 import { trackEventByName } from 'utils/analytics';
-import { useLocation } from 'react-router-dom';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+import tracks from './tracks';
 
 interface Props extends BoxWidthProps, BoxPaddingProps {
   followableType: FollowableType;
@@ -28,6 +36,7 @@ interface Props extends BoxWidthProps, BoxPaddingProps {
   iconSize?: string;
   followableSlug?: string;
   buttonStyle?: ButtonStyles;
+  toolTipType?: 'input' | 'projectOrFolder';
 }
 
 const FollowUnfollow = ({
@@ -38,6 +47,7 @@ const FollowUnfollow = ({
   followableSlug,
   iconSize = '24px',
   buttonStyle = 'primary',
+  toolTipType,
   ...otherButtonProps
 }: Props) => {
   const isFollowingEnabled = useFeatureFlag({
@@ -129,21 +139,72 @@ const FollowUnfollow = ({
     loginAndFollow();
   };
 
+  const getTooltipContent = () => {
+    if (toolTipType === 'input') {
+      return (
+        <FormattedMessage
+          {...messages.followTooltipInputPage}
+          values={{
+            unsubscribeLink: (
+              <a
+                href={'/profile/edit'}
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: 'underline', color: colors.white }}
+              >
+                <FormattedMessage {...messages.unsubscribe} />
+              </a>
+            ),
+          }}
+        />
+      );
+    } else if (toolTipType === 'projectOrFolder') {
+      return (
+        <FormattedMessage
+          {...messages.followTooltipProjects}
+          values={{
+            unsubscribeLink: (
+              <a
+                href={'/profile/edit'}
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: 'underline', color: colors.white }}
+              >
+                <FormattedMessage {...messages.unsubscribe} />
+              </a>
+            ),
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
-    <Button
-      buttonStyle={buttonStyle}
-      icon="notification"
-      onClick={handleButtonClick}
-      iconSize={iconSize}
-      px="12px"
-      processing={isLoading}
-      {...otherButtonProps}
-      data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
+    <Tooltip
+      disabled={!toolTipType}
+      theme="dark"
+      maxWidth={280}
+      placement="bottom"
+      content={getTooltipContent()}
     >
-      {followersCount
-        ? `${followUnfollowText} (${followersCount})`
-        : followUnfollowText}
-    </Button>
+      <div>
+        <Button
+          buttonStyle={buttonStyle}
+          icon="notification"
+          onClick={handleButtonClick}
+          iconSize={iconSize}
+          px="12px"
+          processing={isLoading}
+          {...otherButtonProps}
+          data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
+        >
+          {followersCount
+            ? `${followUnfollowText} (${followersCount})`
+            : followUnfollowText}
+        </Button>
+      </div>
+    </Tooltip>
   );
 };
 

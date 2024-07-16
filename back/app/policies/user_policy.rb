@@ -103,26 +103,27 @@ class UserPolicy < ApplicationPolicy
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
-  def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    admin? ? shared + role_permitted_params : shared
+  def permitted_attributes_for_create
+    permitted_attributes_for_update.tap do |attributes|
+      attributes.delete(:avatar) unless AppConfiguration.instance.feature_activated?('user_avatars')
+    end
   end
 
-  def role_permitted_params
-    [roles: %i[type project_id project_folder_id]]
+  def permitted_attributes_for_update
+    # avatar is allowed even if the feature "user_avatars" is not activated to allow
+    # users to remove their avatar.
+    shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
   end
 
   private
 
   def allowed_custom_field_keys
-    allowed_fields = allowed_custom_fields
-    simple_keys = allowed_fields.support_single_value.pluck(:key).map(&:to_sym)
-    array_keys = allowed_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-    [*simple_keys, array_keys.index_with { |_k| [] }]
+    CustomFieldParamsService.new.custom_field_values_params allowed_custom_fields
   end
 
   def allowed_custom_fields
-    CustomField.with_resource_type('User').not_hidden
+    CustomField.registration.not_hidden
   end
 end
 

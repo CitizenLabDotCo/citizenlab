@@ -1,33 +1,16 @@
-import getAuthenticationRequirements from './getAuthenticationRequirements';
-
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
-import {
+import endpoints, {
   initiativeResponse,
-  projectResponse,
   phaseResponse,
   ideaResponse,
-} from './__mocks__/getAuthenticationRequirements';
-
-const initiativesPath = '*permissions/posting_initiative/requirements';
-const projectPath = '*projects/123/permissions/posting_idea/requirements';
-const phasePath = '*phases/456/permissions/posting_idea/requirements';
-const ideaPath = '*ideas/789/permissions/commenting_idea/requirements';
+} from './__mocks__/_mockServer';
+import getAuthenticationRequirements from './getAuthenticationRequirements';
 
 const server = setupServer(
-  rest.get(initiativesPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(initiativeResponse));
-  }),
-  rest.get(projectPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projectResponse));
-  }),
-  rest.get(phasePath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(phaseResponse));
-  }),
-  rest.get(ideaPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(ideaResponse));
-  })
+  endpoints['GET permissions/posting_initiative/requirements'],
+  endpoints['GET phases/:phaseId/permissions/posting_idea/requirements'],
+  endpoints['GET ideas/:ideaId/permissions/commenting_idea/requirements']
 );
 
 describe('getAuthenticationRequirements', () => {
@@ -41,16 +24,6 @@ describe('getAuthenticationRequirements', () => {
     });
 
     expect(result).toEqual(initiativeResponse);
-  });
-
-  it('returns project data correctly', async () => {
-    const result = await getAuthenticationRequirements({
-      type: 'project',
-      action: 'posting_idea',
-      id: '123',
-    });
-
-    expect(result).toEqual(projectResponse);
   });
 
   it('returns phase data correctly', async () => {

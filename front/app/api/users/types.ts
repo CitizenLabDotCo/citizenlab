@@ -1,8 +1,10 @@
-import { TRole } from 'utils/permissions/roles';
+import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
+
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
-import { ImageSizes, Locale, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { TRole } from 'utils/permissions/roles';
+
 import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
@@ -22,7 +24,7 @@ export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
   slug: string;
-  locale: Locale;
+  locale: SupportedLocale;
   highest_role:
     | 'super_admin'
     | 'admin'
@@ -53,6 +55,7 @@ export interface IUserAttributes {
   no_name?: boolean;
   no_password?: boolean;
   followings_count: number;
+  last_active_at?: string | null;
 }
 
 export interface IUserData {
@@ -79,7 +82,7 @@ export interface IUser {
 }
 
 export interface IUserUpdate {
-  userId: string;
+  userId?: string;
   first_name?: string;
   last_name?: string;
   email?: string;
@@ -106,7 +109,9 @@ export type Sort =
   | 'email'
   | '-email'
   | 'role'
-  | '-role';
+  | '-role'
+  | 'last_active_at'
+  | '-last_active_at';
 
 export interface IQueryParameters {
   pageNumber?: number;
@@ -116,7 +121,7 @@ export interface IQueryParameters {
   group?: string;
   can_moderate_project?: string;
   can_moderate?: true;
-  can_admin?: true;
+  can_admin?: boolean;
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;

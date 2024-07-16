@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import getCardSizes from './getCardSizes';
-import { isEqual } from 'lodash-es';
+
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
+import styled from 'styled-components';
 
-// components
+import { IAdminPublicationData } from 'api/admin_publications/types';
+
 import ProjectCard from 'components/ProjectCard';
-import ProjectFolderCard from './ProjectFolderCard';
 
-// types
-import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
-// utils
+import getCardSizes from './getCardSizes';
+import ProjectFolderCard from './ProjectFolderCard';
+import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const Container = styled.div<{ hide: boolean }>`
   display: ${({ hide }) => (hide ? 'none' : 'flex')};

@@ -1,30 +1,24 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
-// Services
+import { Box, Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+
+import Button from 'components/UI/Button';
+import UserSelect from 'components/UI/UserSelect';
+
+import { useIntl } from 'utils/cl-intl';
 import { isRegularUser } from 'utils/permissions/roles';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
-import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
-import { Box, Label } from '@citizenlab/cl2-component-library';
-import UserSelect from 'components/UI/UserSelect';
-
-// Style
-import styled from 'styled-components';
-
-// typings
-import { IUserData } from 'api/users/types';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -39,9 +33,6 @@ interface Props {
 
 const UserSearch = memo(({ projectId, label }: Props) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
 
   const [showModal, setShowModal] = useState(false);
@@ -79,10 +70,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const handleAddClick = () => {
     const isSelectedUserAModerator =
       moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal =
-      hasSeatBasedBillingEnabled &&
-      exceedsSeats.moderator &&
-      !isSelectedUserAModerator;
+    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
     if (shouldOpenModal) {
       openModal();
     } else {
@@ -111,7 +99,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
 
         <AddButton
           text={formatMessage(messages.addModerators)}
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           padding="10px 16px"
           onClick={handleAddClick}
@@ -120,15 +108,13 @@ const UserSearch = memo(({ projectId, label }: Props) => {
           data-cy="e2e-add-project-moderator-button"
         />
       </Box>
-      {hasSeatBasedBillingEnabled && (
-        <Suspense fallback={null}>
-          <AddModeratorsModal
-            addModerators={handleOnAddModeratorsClick}
-            showModal={showModal}
-            closeModal={closeModal}
-          />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <AddModeratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+        />
+      </Suspense>
     </Box>
   );
 });

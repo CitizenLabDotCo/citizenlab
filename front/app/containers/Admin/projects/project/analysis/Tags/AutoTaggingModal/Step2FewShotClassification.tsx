@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import { useParams } from 'react-router-dom';
+
 import {
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import Tag from '../Tag';
+import { useParams } from 'react-router-dom';
+
 import { ITagData } from 'api/analysis_tags/types';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+import Tag from '../Tag';
 
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
@@ -44,9 +48,14 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
       <Text>{formatMessage(messages.fewShotSubtitle)}</Text>
       <Text>{formatMessage(messages.fewShotSubtitle2)}</Text>
       <Box>
+        {customTags?.length === 0 && (
+          <Text textAlign="center" fontWeight="bold">
+            {formatMessage(messages.fewShotsEmpty)}
+          </Text>
+        )}
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
-            <Checkbox
+            <CheckboxWithLabel
               disabled={
                 (listFull && !selectedTagIds.includes(tag.id)) ||
                 !isElegible(tag)

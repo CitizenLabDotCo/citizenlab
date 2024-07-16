@@ -1,11 +1,15 @@
 import React, { useMemo } from 'react';
 
-import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
+
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import T from 'components/T';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 type Props = {
@@ -53,11 +57,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'number':
     case 'checkbox':
     case 'linear_scale': {
-      if (
-        rawValue === null ||
-        typeof rawValue === undefined ||
-        rawValue === ''
-      ) {
+      if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
       } else {
         return <>{rawValue}</>;

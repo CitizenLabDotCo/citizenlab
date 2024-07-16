@@ -1,34 +1,33 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
 
-// components
-import { Section, SectionField } from 'components/admin/Section';
 import {
+  colors,
+  fontSizes,
   Label,
   IconTooltip,
   Box,
   Button,
 } from '@citizenlab/cl2-component-library';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 import { string, object } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import RadioGroup from 'components/HookForm/RadioGroup';
-import Radio from 'components/HookForm/RadioGroup/Radio';
 
+import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
+
+import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
 import messages from './messages';
 
 export interface FormValues {

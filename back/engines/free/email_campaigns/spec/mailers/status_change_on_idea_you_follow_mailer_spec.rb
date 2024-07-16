@@ -4,34 +4,17 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
-    let(:recipient) { create(:user, locale: 'en') }
-    let(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.create! }
-    let(:idea) { create(:idea) }
-    let(:command) do
-      status = idea.idea_status
-
-      {
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.create! }
+    let_it_be(:idea) { create(:idea) }
+    let_it_be(:command) do
+      campaign.generate_commands(
         recipient: recipient,
-        event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          post_images: idea.idea_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          idea_status_id: status.id,
-          idea_status_title_multiloc: status.title_multiloc,
-          idea_status_code: status.code,
-          idea_status_color: status.color
-        }
-      }
+        activity: build(:activity, item: build(:notification, post: idea))
+      ).first.merge({ recipient: recipient })
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

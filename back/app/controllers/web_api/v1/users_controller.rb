@@ -21,32 +21,13 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
-    @users = @users.admin if params[:can_admin].present?
 
-    if params[:search].blank?
-      @users = case params[:sort]
-      when 'created_at'
-        @users.order(created_at: :asc)
-      when '-created_at'
-        @users.order(created_at: :desc)
-      when 'last_name'
-        @users.order(last_name: :asc)
-      when '-last_name'
-        @users.order(last_name: :desc)
-      when 'email'
-        @users.order(email: :asc) if view_private_attributes?
-      when '-email'
-        @users.order(email: :desc) if view_private_attributes?
-      when 'role'
-        @users.order_role(:asc)
-      when '-role'
-        @users.order_role(:desc)
-      when nil
-        @users
-      else
-        raise 'Unsupported sort method'
-      end
+    case params[:can_admin]&.downcase
+    when 'true' then @users = @users.admin
+    when 'false' then @users = @users.not_admin
     end
+
+    sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
 
@@ -129,10 +110,10 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     @user = User.new
-    @user.assign_attributes(permitted_attributes(@user))
-    authorize @user
-
-    if @user.save(context: :form_submission)
+    saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
+      authorize @user
+    end
+    if saved
       SideFxUserService.new.after_create(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -150,19 +131,12 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    mark_custom_field_values_to_clear!
-    user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
-    user_params[:onboarding] = @user.onboarding.merge(user_params[:onboarding] || {})
-    user_params = user_params.to_h
-    CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
-    @user.assign_attributes user_params
+    saved = UserService.upsert_in_web_api(@user, update_params) do
+      remove_image_if_requested!(@user, update_params, :avatar)
+      authorize(@user)
+    end
 
-    remove_image_if_requested!(@user, user_params, :avatar)
-
-    authorize @user
-    save_params = user_params.key?(:custom_field_values) ? { context: :form_submission } : {}
-    if @user.save save_params
+    if saved
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -179,7 +153,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def block
-    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+    block_end_at = Time.zone.now + app_configuration.settings('user_blocking', 'duration').days
 
     authorize @user, :block?
     if @user.update(
@@ -265,13 +239,14 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def reset_confirm_on_existing_no_password_user?
-    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+    return false unless app_configuration.feature_activated?('user_confirmation')
 
     original_user = @user
     errors = original_user.errors.details[:email]
     return false unless errors.any? { |hash| hash[:error] == :taken }
 
     existing_user = User.find_by(email: @user.email)
+    return false unless existing_user
     return false unless existing_user.no_password?
 
     # If any attributes try to change then ignore this found user
@@ -285,20 +260,58 @@ class WebApi::V1::UsersController < ApplicationController
     true
   end
 
-  def mark_custom_field_values_to_clear!
-    # We need to explicitly mark which custom field values
-    # should be cleared so we can distinguish those from
-    # the custom field value updates cleared out by the
-    # policy (which should stay like before instead of
-    # being cleared out).
-    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
-
-    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-      params[:user][:custom_field_values][clear_key] = nil
+  def sort_by_sort_param
+    @users = case params[:sort]
+    when 'created_at'
+      @users.order(created_at: :asc)
+    when '-created_at'
+      @users.order(created_at: :desc)
+    when 'last_active_at'
+      @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
+    when '-last_active_at'
+      @users.order(Arel.sql('last_active_at IS NULL, last_active_at DESC'))
+    when 'last_name'
+      @users.order(last_name: :asc)
+    when '-last_name'
+      @users.order(last_name: :desc)
+    when 'email'
+      @users.order(email: :asc) if view_private_attributes?
+    when '-email'
+      @users.order(email: :desc) if view_private_attributes?
+    when 'role'
+      @users.order_role(:asc)
+    when '-role'
+      @users.order_role(:desc)
+    when nil
+      @users
+    else
+      raise 'Unsupported sort method'
     end
   end
 
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
+  end
+
+  def update_params
+    @update_params ||= permitted_attributes(@user).tap do |attrs|
+      attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
+      attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
+      CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
+
+      # Even if the feature is not activated, we still want to allow the user to remove
+      # their avatar.
+      if !app_configuration.feature_activated?('user_avatars') && !attrs[:avatar].nil?
+        attrs.delete(:avatar)
+      end
+    end.permit!
+  end
+
+  def app_configuration
+    @app_configuration ||= AppConfiguration.instance
+  end
+
+  def params_service
+    @params_service ||= CustomFieldParamsService.new
   end
 end

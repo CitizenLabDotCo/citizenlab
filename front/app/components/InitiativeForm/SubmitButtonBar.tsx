@@ -1,11 +1,16 @@
 import React from 'react';
-import ContentContainer from 'components/ContentContainer';
+
+import { media } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
-import Button from 'components/UI/Button';
-import { media } from 'utils/styleUtils';
-import messages from './messages';
+
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
+
+import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledButton = styled(Button)`
   margin-right: 10px;
@@ -51,9 +56,14 @@ const SubmitFooterInner = styled.div`
 interface FormSubmitFooterProps {
   processing: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
-const SubmitButtonBar = ({ className, processing }: FormSubmitFooterProps) => {
+const SubmitButtonBar = ({
+  className,
+  processing,
+  onClick,
+}: FormSubmitFooterProps) => {
   const theme = useTheme();
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
@@ -69,6 +79,7 @@ const SubmitButtonBar = ({ className, processing }: FormSubmitFooterProps) => {
             textColor="#FFF"
             type="submit"
             processing={processing}
+            onClick={onClick}
           >
             <FormattedMessage
               {...(initiativeReviewRequired

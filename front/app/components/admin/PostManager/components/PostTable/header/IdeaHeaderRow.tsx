@@ -1,85 +1,38 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 
-// components
-import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// utils
-import { insertConfiguration } from 'utils/moduleUtils';
-import { roundPercentage } from 'utils/math';
-
-// typings
 import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Override,
-} from 'typings';
-import { SortAttribute as IdeasSortAttribute } from 'api/ideas/types';
-import { SortDirection } from 'utils/paginationUtils';
+  Thead,
+  Tr,
+  Th,
+  Checkbox,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { CellConfiguration, Override } from 'typings';
 
-// hooks
+import { Sort as IdeasSort } from 'api/ideas/types';
+
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
-interface SortableHeaderCellProps {
-  sortAttribute?: IdeasSortAttribute;
-  sortAttributeName: IdeasSortAttribute;
-  sortDirection?: 'ascending' | 'descending' | null;
-  infoTooltip?: React.ReactChild;
-  width: string;
-  onChange: () => void;
-  children: React.ReactNode;
-}
+import { FormattedMessage } from 'utils/cl-intl';
+import { roundPercentage } from 'utils/math';
+import { SortDirection } from 'utils/paginationUtils';
 
-export const SortableHeaderCell = ({
-  sortAttribute,
-  sortDirection,
-  sortAttributeName,
-  width,
-  infoTooltip,
-  onChange,
-  children,
-}: SortableHeaderCellProps) => {
-  return (
-    <Th
-      clickable
-      width={width}
-      sortDirection={
-        sortAttribute === sortAttributeName && sortDirection
-          ? sortDirection
-          : undefined
-      }
-      background={
-        sortAttribute === sortAttributeName ? colors.grey200 : undefined
-      }
-      infoTooltip={infoTooltip}
-      onClick={onChange}
-    >
-      {children}
-    </Th>
-  );
-};
+import messages from '../../../messages';
 
-export type IdeaHeaderCellComponentProps = {
-  sortAttribute?: IdeasSortAttribute;
+import SortableHeaderCell from './SortableHeaderCell';
+
+type IdeaHeaderCellComponentProps = {
+  sortAttribute?: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
   width: string;
   onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
 };
 
 interface Props {
   selectedProjectId?: string | null;
   selectedPhaseId?: string | null;
-  sortAttribute?: IdeasSortAttribute;
+  sortAttribute?: IdeasSort;
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;
@@ -87,7 +40,6 @@ interface Props {
 }
 
 const IdeaHeaderRow = ({
-  selectedProjectId,
   selectedPhaseId,
   sortAttribute,
   sortDirection,
@@ -95,12 +47,10 @@ const IdeaHeaderRow = ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => {
-  const [cells, setCells] = useState<
-    CellConfiguration<IdeaHeaderCellComponentProps>[]
-  >([
+  const cells = [
     {
       name: 'selection',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: toggleSelectAll,
       Component: ({
         allSelected,
@@ -118,7 +68,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'title',
-      cellProps: { width: 4 },
+      width: 4,
       Component: () => {
         return (
           <Th>
@@ -128,8 +78,19 @@ const IdeaHeaderRow = ({
       },
     },
     {
+      name: 'assignee',
+      width: 2,
+      Component: ({ width }) => {
+        return (
+          <Th width={width}>
+            <FormattedMessage {...messages.assignee} />
+          </Th>
+        );
+      },
+    },
+    {
       name: 'votes',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('votes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -143,7 +104,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'picks',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('baskets_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -157,7 +118,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'participants',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('baskets_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -171,7 +132,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'budget',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('budget'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -185,7 +146,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'comments',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('comments_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -199,7 +160,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'up',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('likes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -213,7 +174,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'down',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('dislikes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -227,7 +188,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'published_on',
-      cellProps: { width: 2 },
+      width: 2,
       onChange: handleSortClick('new'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -239,79 +200,41 @@ const IdeaHeaderRow = ({
         );
       },
     },
-  ]);
+  ];
 
-  const displayColumns = usePostManagerColumnFilter(
-    selectedProjectId,
-    selectedPhaseId
-  );
+  const displayColumns = usePostManagerColumnFilter(selectedPhaseId);
 
   const totalWidth = cells.reduce((acc, cell) => {
-    if (typeof cell.cellProps?.width === 'number') {
-      return cell.cellProps.width + acc;
-    }
-
-    return acc;
+    return cell.width + acc;
   }, 0);
 
   const renderCell = ({
-    cellProps = {},
+    width,
     name,
     Component,
     onChange,
-    onClick,
-    featureFlag,
   }: CellConfiguration<IdeaHeaderCellComponentProps>) => {
-    const handlers = {
-      ...(onChange ? { onChange } : {}),
-      ...(onClick ? { onClick } : {}),
-    };
-
-    const width = `${roundPercentage(
-      typeof cellProps.width === 'number' ? cellProps.width : 1,
-      totalWidth
-    )}%`;
-
-    const Content =
-      displayColumns && !displayColumns.has(name) ? null : (
-        <Component
-          sortAttribute={sortAttribute}
-          sortDirection={sortDirection}
-          allSelected={allSelected}
-          width={width}
-          {...handlers}
-          key={name}
-        />
-      );
-
-    if (!featureFlag) return Content;
-    return (
-      <FeatureFlag name={featureFlag} key={name}>
-        {Content}
-      </FeatureFlag>
-    );
-  };
-
-  const handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaHeaderCellComponentProps>
-    >
-  ) => {
-    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
+    return displayColumns.has(name) ? (
+      <Component
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        allSelected={allSelected}
+        width={`${roundPercentage(
+          typeof width === 'number' ? width : 1,
+          totalWidth
+        )}%`}
+        onChange={onChange}
+        key={name}
+      />
+    ) : null;
   };
 
   return (
-    <>
-      <Outlet
-        id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
-        onData={handleData}
-      />
-      <Thead>
-        <Tr background={colors.grey50}>
-          {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
-        </Tr>
-      </Thead>
-    </>
+    <Thead>
+      <Tr background={colors.grey50}>
+        {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
+      </Tr>
+    </Thead>
   );
 };
 

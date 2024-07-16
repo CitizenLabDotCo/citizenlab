@@ -1,8 +1,6 @@
-// hooks
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// typings
-import { IAppConfigurationData } from 'api/app_configuration/types';
 import { NilOrError } from 'utils/helperUtils';
 
 export type GetAppConfigurationChildProps = IAppConfigurationData | NilOrError;

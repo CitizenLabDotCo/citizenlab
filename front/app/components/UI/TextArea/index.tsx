@@ -1,18 +1,18 @@
 import React from 'react';
+
+import {
+  IconTooltip,
+  Label,
+  colors,
+  defaultInputStyle,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-
-// components
-import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-textarea-autosize';
-
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
-
-// style
 import styled from 'styled-components';
-import { colors, defaultInputStyle, isRtl } from 'utils/styleUtils';
+import { SupportedLocale } from 'typings';
 
-// typings
-import { Locale } from 'typings';
+import Error from 'components/UI/Error';
 
 const Container = styled.div``;
 
@@ -50,13 +50,13 @@ export type Props = {
   name?: string;
   label?: string | JSX.Element | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   maxRows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: (value: string, locale: Locale | undefined) => void;
+  onChange?: (value: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;

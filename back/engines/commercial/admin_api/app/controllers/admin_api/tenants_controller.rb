@@ -58,7 +58,7 @@ module AdminApi
     end
 
     def templates
-      render json: MultiTenancy::Templates::Utils.new.available_templates
+      render json: MultiTenancy::Templates::Utils.new.template_manifest
     end
 
     private
@@ -70,9 +70,9 @@ module AdminApi
     #
     # @param [Enumerable<Tenant>] tenants
     def serialize_tenants(tenants)
-      configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
-      tenants.sort_by(&:host).zip(configs).map do |tenant, config|
-        AdminApi::TenantSerializer.new(tenant, app_configuration: config)
+      configs = AppConfiguration.from_tenants(tenants).index_by(&:host)
+      tenants.sort_by(&:host).map do |tenant|
+        AdminApi::TenantSerializer.new(tenant, app_configuration: configs[tenant.host])
       end
     end
 

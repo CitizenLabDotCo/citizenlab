@@ -5,7 +5,7 @@ module IdBogus
     isolate_namespace IdBogus
 
     config.to_prepare do
-      Verification::VerificationService.add_method(
+      Verification.add_method(
         BogusVerification.new
       )
     end

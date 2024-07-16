@@ -15,8 +15,8 @@ export default defineMessages({
     defaultMessage: 'API documentation',
   },
   linkUrl: {
-    id: 'app.containers.Admin.tools.apiTokens.linkUrl',
-    defaultMessage: 'https://developers.citizenlab.co/reference-api-docs/',
+    id: 'app.containers.Admin.tools.apiTokens.linkUrl2',
+    defaultMessage: 'https://developers.citizenlab.co/api',
   },
   name: {
     id: 'app.containers.Admin.tools.apiTokens.name',
@@ -78,10 +78,15 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccess',
     defaultMessage: 'Your token has been created',
   },
-  createTokenModalSuccessDescription: {
-    id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessDescription2',
+  createTokenModalCreatedDescription: {
+    id: 'app.containers.Admin.tools.apiTokens.createTokenCreatedDescription',
     defaultMessage:
-      'Your token has been created. Please copy the { secret } below. You will not be able to see it again.',
+      'Your token has been created. Please copy the { secret } below and store it safely.',
+  },
+  createTokenModalCreatedImportantText: {
+    id: 'app.containers.Admin.tools.apiTokens.createTokenModalCreatedImportantText',
+    defaultMessage:
+      '<b>Important!</b> You can only copy this { secret } once. If you close this window you will not be able to see it again.',
   },
   createTokenModalSuccessCopy: {
     id: 'app.containers.Admin.tools.apiTokens.createTokenSuccessCopyMessage',

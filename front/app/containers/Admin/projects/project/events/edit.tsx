@@ -1,62 +1,66 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import moment from 'moment';
-import { isEmpty, get, isError } from 'lodash-es';
+import React, { useState, useEffect, FormEvent, lazy } from 'react';
 
-// components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import ErrorComponent from 'components/UI/Error';
-import DateTimePicker from 'components/admin/DateTimePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-import FileUploader from 'components/UI/FileUploader';
 import {
   Box,
   IconTooltip,
   Input,
   Label,
   Spinner,
+  Text,
   Title,
   Toggle,
+  colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import LocationInput, { Option } from 'components/UI/LocationInput';
-import Map from './components/map';
-import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
-import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// react query
-import { IEvent, IEventProperties } from 'api/events/types';
-import useAddEvent from 'api/events/useAddEvent';
-import useUpdateEvent from 'api/events/useUpdateEvent';
-import useEvent from 'api/events/useEvent';
-import useEventFiles from 'api/event_files/useEventFiles';
-import useAddEventFile from 'api/event_files/useAddEventFile';
-import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useEventImage from 'api/event_images/useEventImage';
-import useAddEventImage from 'api/event_images/useAddEventImage';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-
-// typings
+import { isEmpty, get, isError } from 'lodash-es';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+import { useTheme } from 'styled-components';
 import { Multiloc, CLError, UploadFile } from 'typings';
 
-// utils
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { useParams } from 'react-router-dom';
-import { geocode } from 'utils/locationTools';
-import { useTheme } from 'styled-components';
+import useAddEventFile from 'api/event_files/useAddEventFile';
+import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useEventFiles from 'api/event_files/useEventFiles';
+import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
+import useEventImage from 'api/event_images/useEventImage';
+import { IEvent, IEventProperties } from 'api/events/types';
+import useAddEvent from 'api/events/useAddEvent';
+import useEvent from 'api/events/useEvent';
+import useUpdateEvent from 'api/events/useUpdateEvent';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
-type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
+import DateTimePicker from 'components/admin/DateTimePicker';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
+import ErrorComponent from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import GoBackButton from 'components/UI/GoBackButton';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import LocationInput, { Option } from 'components/UI/LocationInput';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import {
+  roundToNearestMultipleOfFive,
+  calculateRoundedEndDate,
+} from 'utils/dateUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { geocode } from 'utils/locationTools';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import messages from './messages';
+
+const EventMap = lazy(() => import('./components/EventMap'));
+
+export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
   | Error
   | CLError[]
@@ -75,11 +79,11 @@ const AdminProjectEventEdit = () => {
     id: string;
     projectId: string;
   };
+  const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
 
-  // api
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
@@ -100,13 +104,16 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
-  const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data?.attributes?.location_point_geojson || null
+  );
+  const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
+    null
   );
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
@@ -119,6 +126,25 @@ const AdminProjectEventEdit = () => {
   const eventAttrs = event
     ? { ...event?.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
+
+  useEffect(() => {
+    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
+    if (!isInitialLoading) {
+      const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
+      const initialRoundedEndDate = calculateRoundedEndDate(
+        initialRoundedStartDate
+      );
+
+      setAttributeDiff({
+        start_at: event
+          ? event.data.attributes.start_at
+          : initialRoundedStartDate.toISOString(),
+        end_at: event
+          ? event.data.attributes.end_at
+          : initialRoundedEndDate.toISOString(),
+      });
+    }
+  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
@@ -151,29 +177,14 @@ const AdminProjectEventEdit = () => {
     }
   }, [eventAttrs.using_url]);
 
-  // Listen for map clicks to update the location point
-  useEffect(() => {
-    const subscriptions = [
-      leafletMapClicked$.subscribe(async (latLng) => {
-        const selectedPoint = {
-          type: 'Point',
-          coordinates: [latLng.lng, latLng.lat],
-        } as GeoJSON.Point;
-        setSubmitState('enabled');
-        setLocationPoint(selectedPoint);
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-  }, []);
-
   // When address 1 is updated, geocode the location point to match
   useEffect(() => {
     if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(eventAttrs.address_1);
+        const point = eventAttrs.address_1
+          ? await geocode(eventAttrs.address_1)
+          : null;
+        setGeocodedPoint(point);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
       }, 500);
@@ -261,20 +272,60 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url,
+      using_url: url as RouteType,
     });
     setErrors({});
   };
 
   const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
       if (!isInitialLoading) {
         setSubmitState('enabled');
         setAttributeDiff((previousState) => {
-          return {
+          const newAttributes = {
             ...previousState,
-            [name]: moment.toISOString(),
+            [name]: time.toISOString(),
           };
+
+          // If the start time is changed, update the end time
+          if (name === 'start_at' && newAttributes['start_at']) {
+            const duration = newAttributes['end_at']
+              ? moment
+                  .duration(
+                    moment(newAttributes['end_at']).diff(
+                      moment(previousState['start_at'])
+                    )
+                  )
+                  .asMinutes()
+              : 30;
+
+            newAttributes['end_at'] = calculateRoundedEndDate(
+              new Date(newAttributes['start_at']),
+              duration
+            ).toISOString();
+          } else if (name === 'end_at' && newAttributes['end_at']) {
+            const isStartDateAfterEndDate =
+              newAttributes['start_at'] && newAttributes['end_at']
+                ? newAttributes['start_at'] > newAttributes['end_at']
+                : false;
+
+            if (isStartDateAfterEndDate) {
+              const duration = moment
+                .duration(
+                  moment(previousState['end_at']).diff(
+                    moment(newAttributes['start_at'])
+                  )
+                )
+                .asMinutes();
+
+              newAttributes['start_at'] = calculateRoundedEndDate(
+                new Date(newAttributes['end_at']),
+                -duration
+              ).toISOString();
+            }
+          }
+
+          return newAttributes;
         });
         setErrors({});
       }
@@ -383,7 +434,6 @@ const AdminProjectEventEdit = () => {
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
-
     const locationPointUpdated =
       eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
 
@@ -479,322 +529,330 @@ const AdminProjectEventEdit = () => {
   }
 
   return (
-    <>
-      <SectionTitle>
-        {event && <FormattedMessage {...messages.editEventTitle} />}
-        {!event && <FormattedMessage {...messages.newEventTitle} />}
-      </SectionTitle>
+    <Box mt="44px" mx="44px">
+      <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
+        <GoBackButton linkTo={`/admin/projects/${projectId}/events`} />
+        <Box ref={containerRef}>
+          <SectionTitle>
+            {event && <FormattedMessage {...messages.editEventTitle} />}
+            {!event && <FormattedMessage {...messages.newEventTitle} />}
+          </SectionTitle>
 
-      <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
-        <Section>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              id="title"
-              label={<FormattedMessage {...messages.titleLabel} />}
-              type="text"
-              valueMultiloc={eventAttrs.title_multiloc}
-              onChange={handleTitleMultilocOnChange}
-            />
-            <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
-          </SectionField>
-
-          <SectionField className="fullWidth">
-            <Box width="860px">
-              <QuillMultilocWithLocaleSwitcher
-                id="description"
-                label={<FormattedMessage {...messages.descriptionLabel} />}
-                valueMultiloc={eventAttrs.description_multiloc}
-                onChange={handleDescriptionMultilocOnChange}
-                withCTAButton
-              />
-            </Box>
-            <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
-          </SectionField>
-          <SectionField>
-            <Label>{formatMessage(messages.eventImage)}</Label>
-            <ImagesDropzone
-              images={uploadedImage ? [uploadedImage] : []}
-              maxImagePreviewWidth="360px"
-              objectFit="contain"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png'],
-              }}
-              onAdd={handleOnImageAdd}
-              onRemove={handleOnImageRemove}
-              imagePreviewRatio={1 / 2}
-            />
-          </SectionField>
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-          >
-            {formatMessage(messages.eventDates)}
-          </Title>
-          <Box display="flex" flexDirection="column" maxWidth="400px">
-            <SectionField style={{ width: 'auto' }}>
-              <Label>
-                <FormattedMessage {...messages.dateStartLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.start_at}
-                onChange={handleDateTimePickerOnChange('start_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'start_at')} />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.datesEndLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.end_at}
-                onChange={handleDateTimePickerOnChange('end_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'end_at')} />
-            </SectionField>
-          </Box>
-
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-          >
-            {formatMessage(messages.eventLocation)}
-          </Title>
-
-          <SectionField>
-            <Box mt="16px" maxWidth="400px">
-              <Input
-                id="event-location"
-                label={formatMessage(messages.onlineEventLinkLabel)}
-                type="text"
-                value={eventAttrs.online_link}
-                onChange={handleOnlineLinkOnChange}
-                labelTooltipText={formatMessage(
-                  messages.onlineEventLinkTooltip
-                )}
-                placeholder={'https://...'}
-              />
-            </Box>
-            <ErrorComponent apiErrors={get(errors, 'online_link')} />
-          </SectionField>
-
-          <SectionField>
-            <Box maxWidth="400px">
-              <Box mb="8px">
-                <Label>
-                  {formatMessage(messages.addressOneLabel)}
-                  <IconTooltip
-                    content={formatMessage(messages.addressOneTooltip)}
-                  />
-                </Label>
-              </Box>
-
-              <LocationInput
-                id="event-location-picker"
-                className="e2e-event-location-input"
-                value={
-                  eventAttrs.address_1
-                    ? {
-                        value: eventAttrs.address_1,
-                        label: eventAttrs.address_1,
-                      }
-                    : null
-                }
-                onChange={(option: Option | null) => {
-                  handleAddress1OnChange(option?.value ? option.value : '');
-                }}
-                placeholder={formatMessage(messages.searchForLocation)}
-              />
-
-              <ErrorComponent apiErrors={get(errors, 'address_1')} />
-              <Box my="20px">
-                <InputMultilocWithLocaleSwitcher
-                  id="event-address-2"
-                  label={formatMessage(messages.addressTwoLabel)}
-                  type="text"
-                  valueMultiloc={eventAttrs.address_2_multiloc}
-                  onChange={handleAddress2OnChange}
-                  labelTooltipText={formatMessage(messages.addressTwoTooltip)}
-                  placeholder={formatMessage(messages.addressTwoPlaceholder)}
-                />
-              </Box>
-              {locationPoint && (
-                <Box maxWidth="400px" zIndex="0">
-                  <Box>
-                    <Map
-                      position={locationPoint}
-                      projectId={projectId}
-                      mapHeight="160px"
-                      hideLegend={true}
-                      singleClickEnabled={false}
-                    />
-                  </Box>
-                  <Button
-                    mt="8px"
-                    icon="position"
-                    buttonStyle="secondary"
-                    onClick={() => {
-                      setMapModalVisible(true);
-                    }}
-                  >
-                    {formatMessage(messages.refineOnMap)}
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          </SectionField>
-
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-            mt="48px"
-          >
-            {formatMessage(messages.attendanceButton)}
-          </Title>
-          <SectionField>
-            <Toggle
-              label={
-                <Box display="flex">
-                  {formatMessage(messages.toggleCustomAttendanceButtonLabel)}
-                  <Box ml="4px">
-                    <IconTooltip
-                      content={formatMessage(
-                        messages.toggleCustomAttendanceButtonTooltip
-                      )}
-                    />
-                  </Box>
-                </Box>
-              }
-              checked={attendanceOptionsVisible}
-              onChange={() => {
-                handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
-              }}
-            />
-          </SectionField>
-          {attendanceOptionsVisible && (
-            <>
+          <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
+            <Section>
               <SectionField>
-                <Box maxWidth="400px">
-                  <InputMultilocWithLocaleSwitcher
-                    id="event-address-2"
-                    label={formatMessage(messages.customButtonText)}
-                    type="text"
-                    valueMultiloc={eventAttrs.attend_button_multiloc}
-                    onChange={handleCustomButtonMultilocOnChange}
-                    labelTooltipText={formatMessage(
-                      messages.customButtonTextTooltip
-                    )}
-                    maxCharCount={28}
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  label={<FormattedMessage {...messages.titleLabel} />}
+                  type="text"
+                  valueMultiloc={eventAttrs.title_multiloc}
+                  onChange={handleTitleMultilocOnChange}
+                />
+                <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
+              </SectionField>
+
+              <SectionField className="fullWidth">
+                <Box width="860px">
+                  <QuillMultilocWithLocaleSwitcher
+                    id="description"
+                    label={<FormattedMessage {...messages.descriptionLabel} />}
+                    valueMultiloc={eventAttrs.description_multiloc}
+                    onChange={handleDescriptionMultilocOnChange}
+                    withCTAButton
                   />
                 </Box>
+                <ErrorComponent
+                  apiErrors={get(errors, 'description_multiloc')}
+                />
               </SectionField>
               <SectionField>
-                <Box maxWidth="400px">
+                <Label>{formatMessage(messages.eventImage)}</Label>
+                <ImagesDropzone
+                  images={uploadedImage ? [uploadedImage] : []}
+                  maxImagePreviewWidth="360px"
+                  objectFit="contain"
+                  acceptedFileTypes={{
+                    'image/*': ['.jpg', '.jpeg', '.png'],
+                  }}
+                  onAdd={handleOnImageAdd}
+                  onRemove={handleOnImageRemove}
+                  imagePreviewRatio={1 / 2}
+                />
+              </SectionField>
+              <Title
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+                style={{ fontWeight: '600' }}
+              >
+                {formatMessage(messages.eventDates)}
+              </Title>
+              <Box display="flex" flexDirection="column" maxWidth="400px">
+                <SectionField style={{ width: 'auto' }}>
+                  <Label>
+                    <FormattedMessage {...messages.dateStartLabel} />
+                  </Label>
+                  <DateTimePicker
+                    value={eventAttrs.start_at}
+                    onChange={handleDateTimePickerOnChange('start_at')}
+                  />
+                  <ErrorComponent apiErrors={get(errors, 'start_at')} />
+                </SectionField>
+
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.datesEndLabel} />
+                  </Label>
+                  <DateTimePicker
+                    value={eventAttrs.end_at}
+                    onChange={handleDateTimePickerOnChange('end_at')}
+                  />
+                  <ErrorComponent apiErrors={get(errors, 'end_at')} />
+                </SectionField>
+              </Box>
+
+              <Title
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+                style={{ fontWeight: '600' }}
+              >
+                {formatMessage(messages.eventLocation)}
+              </Title>
+
+              <SectionField>
+                <Box mt="16px" maxWidth="400px">
                   <Input
-                    label={formatMessage(messages.customButtonLink)}
+                    id="event-location"
+                    label={formatMessage(messages.onlineEventLinkLabel)}
                     type="text"
-                    value={eventAttrs.using_url}
-                    onChange={handleCustomButtonLinkOnChange}
+                    value={eventAttrs.online_link}
+                    onChange={handleOnlineLinkOnChange}
                     labelTooltipText={formatMessage(
-                      messages.customButtonLinkTooltip
+                      messages.onlineEventLinkTooltip
                     )}
                     placeholder={'https://...'}
                   />
                 </Box>
-                <ErrorComponent apiErrors={get(errors, 'using_url')} />
+                <ErrorComponent apiErrors={get(errors, 'online_link')} />
               </SectionField>
-              {!isNilOrError(locale) && (
-                <Box display="flex" flexWrap="wrap">
-                  <Box width="100%">
-                    <Label>{formatMessage(messages.preview)}</Label>
+
+              <SectionField>
+                <Box maxWidth="400px">
+                  <Box mb="8px">
+                    <Label>
+                      {formatMessage(messages.addressOneLabel)}
+                      <IconTooltip
+                        content={formatMessage(messages.addressOneTooltip)}
+                      />
+                    </Label>
                   </Box>
-                  <Button
-                    minWidth="160px"
-                    iconPos={'right'}
-                    icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
-                    iconSize="20px"
-                    bgColor={theme.colors.tenantPrimary}
-                    linkTo={eventAttrs.using_url}
-                    openLinkInNewTab={true}
-                  >
-                    {eventAttrs?.attend_button_multiloc?.[locale]
-                      ? eventAttrs?.attend_button_multiloc[locale]
-                      : formatMessage(messages.attend)}
-                  </Button>
+
+                  <LocationInput
+                    id="event-location-picker"
+                    className="e2e-event-location-input"
+                    value={
+                      eventAttrs.address_1
+                        ? {
+                            value: eventAttrs.address_1,
+                            label: eventAttrs.address_1,
+                          }
+                        : null
+                    }
+                    onChange={(option: Option | null) => {
+                      handleAddress1OnChange(option?.value ? option.value : '');
+                    }}
+                    placeholder={formatMessage(messages.searchForLocation)}
+                  />
+
+                  <ErrorComponent apiErrors={get(errors, 'address_1')} />
+                  <Box mt="20px" mb="8px">
+                    <InputMultilocWithLocaleSwitcher
+                      id="event-address-2"
+                      label={formatMessage(messages.addressTwoLabel)}
+                      type="text"
+                      valueMultiloc={eventAttrs.address_2_multiloc}
+                      onChange={handleAddress2OnChange}
+                      labelTooltipText={formatMessage(
+                        messages.addressTwoTooltip
+                      )}
+                      placeholder={formatMessage(
+                        messages.addressTwoPlaceholder
+                      )}
+                    />
+                  </Box>
+                  {locationPoint && (
+                    <Box maxWidth="400px" zIndex="0">
+                      <Box display="flex">
+                        <Text color="coolGrey600" my="4px" mr="4px">
+                          {formatMessage(messages.refineOnMap)}
+                        </Text>
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.refineOnMapInstructions
+                          )}
+                        />
+                      </Box>
+
+                      <Box>
+                        <EventMap
+                          mapHeight="230px"
+                          setSubmitState={setSubmitState}
+                          setLocationPoint={setLocationPoint}
+                          position={
+                            geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
+                            event?.data?.attributes?.location_point_geojson
+                          }
+                        />
+                      </Box>
+                    </Box>
+                  )}
                 </Box>
+              </SectionField>
+
+              <Title
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+                style={{ fontWeight: '600' }}
+                mt="48px"
+              >
+                {formatMessage(messages.attendanceButton)}
+              </Title>
+              <SectionField>
+                <Toggle
+                  label={
+                    <Box display="flex">
+                      {formatMessage(
+                        messages.toggleCustomAttendanceButtonLabel
+                      )}
+                      <Box ml="4px">
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.toggleCustomAttendanceButtonTooltip
+                          )}
+                        />
+                      </Box>
+                    </Box>
+                  }
+                  checked={attendanceOptionsVisible}
+                  onChange={() => {
+                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                  }}
+                />
+              </SectionField>
+              {attendanceOptionsVisible && (
+                <>
+                  <SectionField>
+                    <Box maxWidth="400px">
+                      <InputMultilocWithLocaleSwitcher
+                        id="event-address-2"
+                        label={formatMessage(messages.customButtonText)}
+                        type="text"
+                        valueMultiloc={eventAttrs.attend_button_multiloc}
+                        onChange={handleCustomButtonMultilocOnChange}
+                        labelTooltipText={formatMessage(
+                          messages.customButtonTextTooltip
+                        )}
+                        maxCharCount={28}
+                      />
+                    </Box>
+                  </SectionField>
+                  <SectionField>
+                    <Box maxWidth="400px">
+                      <Input
+                        label={formatMessage(messages.customButtonLink)}
+                        type="text"
+                        value={eventAttrs.using_url}
+                        onChange={handleCustomButtonLinkOnChange}
+                        labelTooltipText={formatMessage(
+                          messages.customButtonLinkTooltip
+                        )}
+                        placeholder={'https://...'}
+                      />
+                    </Box>
+                    <ErrorComponent apiErrors={get(errors, 'using_url')} />
+                  </SectionField>
+                  {!isNilOrError(locale) && (
+                    <Box display="flex" flexWrap="wrap">
+                      <Box width="100%">
+                        <Label>{formatMessage(messages.preview)}</Label>
+                      </Box>
+                      <Button
+                        minWidth="160px"
+                        iconPos={'right'}
+                        icon={
+                          attendanceOptionsVisible ? undefined : 'plus-circle'
+                        }
+                        iconSize="20px"
+                        bgColor={theme.colors.tenantPrimary}
+                        linkTo={eventAttrs.using_url}
+                        openLinkInNewTab={true}
+                      >
+                        {eventAttrs?.attend_button_multiloc?.[locale]
+                          ? eventAttrs?.attend_button_multiloc[locale]
+                          : formatMessage(messages.attend)}
+                      </Button>
+                    </Box>
+                  )}
+                </>
               )}
-            </>
-          )}
 
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-            mt="48px"
-          >
-            {formatMessage(messages.additionalInformation)}
-          </Title>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </Label>
-            <FileUploader
-              id="project-events-edit-form-file-uploader"
-              onFileAdd={handleEventFileOnAdd}
-              onFileRemove={handleEventFileOnRemove}
-              files={eventFiles}
-              apiErrors={isError(apiErrors) ? undefined : apiErrors}
-            />
-          </SectionField>
-        </Section>
+              <Title
+                variant="h4"
+                fontWeight="bold"
+                color="primary"
+                style={{ fontWeight: '600' }}
+                mt="48px"
+              >
+                {formatMessage(messages.additionalInformation)}
+              </Title>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.fileUploadLabel} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                    }
+                  />
+                </Label>
+                <FileUploader
+                  id="project-events-edit-form-file-uploader"
+                  onFileAdd={handleEventFileOnAdd}
+                  onFileRemove={handleEventFileOnRemove}
+                  files={eventFiles}
+                  apiErrors={isError(apiErrors) ? undefined : apiErrors}
+                />
+              </SectionField>
+            </Section>
 
-        <SubmitWrapper
-          loading={saving}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveButtonLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </form>
-      <Modal
-        opened={mapModalVisible}
-        close={() => {
-          setMapModalVisible(false);
-        }}
-        header={formatMessage(messages.refineLocationCoordinates)}
-        width={'800px'}
-      >
-        <Box p="16px">
-          {locationPoint && (
-            <Box>
-              <Label>
-                <FormattedMessage {...messages.mapSelectionLabel} />
-              </Label>
-              <Map
-                position={locationPoint}
-                projectId={projectId}
-                mapHeight="400px"
-              />
+            <Box
+              position="fixed"
+              borderTop={`1px solid ${colors.divider}`}
+              bottom="0"
+              w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+              ml={`-${defaultAdminCardPadding}px`}
+              background={colors.white}
+              display="flex"
+              justifyContent="flex-start"
+            >
+              <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+                <SubmitWrapper
+                  loading={saving}
+                  status={submitState}
+                  messages={{
+                    buttonSave: messages.saveButtonLabel,
+                    buttonSuccess: messages.saveSuccessLabel,
+                    messageError: messages.saveErrorMessage,
+                    messageSuccess: messages.saveSuccessMessage,
+                  }}
+                />
+              </Box>
             </Box>
-          )}
+          </form>
         </Box>
-      </Modal>
-    </>
+      </Box>
+    </Box>
   );
 };
 

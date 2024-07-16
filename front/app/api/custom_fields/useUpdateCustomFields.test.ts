@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateCustomFields from './useUpdateCustomFields';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import useUpdateCustomFields from './useUpdateCustomFields';
+
 let apiPath = '*admin/phases/:phaseId/custom_fields/update_all';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: [] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: [] }, { status: 200 });
   })
 );
 
@@ -39,8 +38,8 @@ describe('useUpdateCustomFields', () => {
     apiPath = '*admin/projects/:projectId/custom_fields/update_all';
 
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: [] }));
+      http.patch(apiPath, () => {
+        return HttpResponse.json({ data: [] }, { status: 200 });
       })
     );
 
@@ -61,8 +60,8 @@ describe('useUpdateCustomFields', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

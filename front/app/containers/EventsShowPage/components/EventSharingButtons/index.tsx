@@ -1,22 +1,18 @@
 import React from 'react';
 
-// components
-import SharingButtons from 'components/Sharing/SharingButtons';
+import { BoxFlexProps } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
+import { IEventData } from 'api/events/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
+import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
-import { IEventData } from 'api/events/types';
-import { BoxFlexProps } from '@citizenlab/cl2-component-library';
+import messages from './messages';
 
 interface Props {
   event: IEventData;
@@ -52,7 +48,6 @@ const EventSharingButtons = ({ event, hideTitle, justifyContent }: Props) => {
       return (
         <SharingButtons
           url={eventUrl}
-          facebookMessage={shareEventMessage}
           whatsAppMessage={shareEventMessage}
           twitterMessage={shareEventMessage}
           emailSubject={shareEventMessage}

@@ -1,29 +1,27 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// utils
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { WrappedComponentProps } from 'react-intl';
+
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
-
-// hooks
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
-import useLocalize from 'hooks/useLocalize';
 import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
-// components
+import useLocalize from 'hooks/useLocalize';
+
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-// i18n
-import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 const RegistrationCustomFieldOptions = memo(
   ({
@@ -69,7 +67,7 @@ const RegistrationCustomFieldOptions = memo(
         <>
           <ButtonWrapper>
             <Button
-              buttonStyle="cl-blue"
+              buttonStyle="admin-dark"
               icon="plus-circle"
               linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
             >
@@ -109,7 +107,7 @@ const RegistrationCustomFieldOptions = memo(
                         </TextCell>
                         <Button
                           linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
-                          buttonStyle="secondary"
+                          buttonStyle="secondary-outlined"
                           icon="edit"
                         >
                           {formatMessage(messages.editButtonLabel)}

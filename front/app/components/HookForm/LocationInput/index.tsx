@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
-import { get } from 'lodash-es';
+
+import Error, { TFieldName } from 'components/UI/Error';
 import LocationInputComponent, { Option } from 'components/UI/LocationInput';
 
 interface Props

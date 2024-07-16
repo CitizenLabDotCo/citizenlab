@@ -1,16 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-  LabelList,
-} from 'recharts';
 
 import {
   Box,
@@ -19,9 +7,24 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'react-router-dom';
+import {
+  BarChart as RechartsBarChart,
+  Bar,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  LabelList,
+} from 'recharts';
+
 import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 // Custom tooltip is rendered when the user hovers over a bar
@@ -165,7 +168,11 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
         <FormattedMessage {...messages.authorsByAge} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
-        <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
+        <RechartsBarChart
+          data={chartData}
+          margin={{ top: 20, left: 8, right: 8 }}
+          accessibilityLayer
+        >
           <XAxis dataKey="shortName" interval={0} tickLine={false} />
           <Bar stackId="a" dataKey="filtered" onClick={handleClick}>
             {chartData.map((entry, index) => (
@@ -187,7 +194,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
             ))}
           </Bar>
           <Tooltip content={<CustomTooltip />} />
-        </BarChart>
+        </RechartsBarChart>
       </ResponsiveContainer>
     </Box>
   );

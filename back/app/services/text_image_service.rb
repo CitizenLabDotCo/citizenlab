@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class TextImageService < ContentImageService
-  BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}.freeze
+  BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}
 
   protected
 
+  # Decodes the given HTML string into a Nokogiri document.
+  # @raise [DecodingError] if the HTML string is not valid.
+  # @param html_string [String] the HTML string to decode.
+  # @return [Nokogiri::HTML::DocumentFragment] the decoded HTML document.
   def decode_content(html_string)
     html_doc = Nokogiri::HTML.fragment html_string
     raise ContentImageService::DecodingError.new parse_errors: html_doc.errors if html_doc.errors.any?
@@ -12,10 +16,16 @@ class TextImageService < ContentImageService
     html_doc
   end
 
+  # Encodes the given HTML document into a string.
+  # @param [Nokogiri::HTML::DocumentFragment] html_doc the HTML document to encode.
+  # @return [String] the encoded HTML string.
   def encode_content(html_doc)
     html_doc.to_s
   end
 
+  # Returns the image elements in the given HTML document.
+  # @param html_doc [Nokogiri::HTML::DocumentFragment] the HTML document to search.
+  # @return [Nokogiri::XML::NodeSet] the image elements.
   def image_elements(html_doc)
     html_doc.css 'img'
   end
@@ -60,7 +70,7 @@ class TextImageService < ContentImageService
     html_string.include? code_attribute_for_element
   end
 
-  def precompute_for_rendering(_multiloc, imageable, _field)
+  def precompute_for_rendering_multiloc(_multiloc, imageable, _field)
     @precomputed_text_images = imageable.text_images.index_by do |ti|
       ti[code_attribute_for_model]
     end
