@@ -53,4 +53,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus',
     defaultMessage: 'Field status',
   },
+  nameCannotBeControlledYet: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.nameCannotBeControlledYet',
+    defaultMessage:
+      'The name field cannot be controlled yet- this will only be possible in the future.',
+  },
 });

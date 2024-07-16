@@ -58,6 +58,12 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
   const fieldNameMessage = getFieldNameMessage(field_type);
   if (!fieldNameMessage) return null;
 
+  const showTooltipAndDisableToggle = field_type === 'name' || disableEditing;
+  const customTooltipMessage =
+    field_type === 'name' && disableEditing === false
+      ? messages.nameCannotBeControlledYet
+      : undefined;
+
   return (
     <>
       <Box
@@ -85,13 +91,17 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
               {formatMessage(messages.edit)}
             </Button>
           )}
-          <Tooltip disabled={!disableEditing} placement="left">
+          <Tooltip
+            disabled={!showTooltipAndDisableToggle}
+            placement="left"
+            message={customTooltipMessage}
+          >
             <Box
               mb="-4px" // cancel out te bottom margin of the Toggle
             >
               <Toggle
                 checked={enabled}
-                disabled={disableEditing}
+                disabled={showTooltipAndDisableToggle}
                 onChange={() => {
                   updatePermissionsField({
                     id: field.id,
