@@ -160,6 +160,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:never_show?) { is_expected.to be false }
+  its(:supports_presentation_mode?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
   its(:sign_in_required_for_posting?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }

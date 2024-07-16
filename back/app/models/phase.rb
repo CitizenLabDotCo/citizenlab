@@ -82,7 +82,6 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
-  # before_validation :set_participation_method, on: :create
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
 
@@ -102,37 +101,46 @@ class Phase < ApplicationRecord
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-  # ideation? or voting?
-  with_options if: :can_contain_published_inputs? do
-    validates :presentation_mode,
-      inclusion: { in: PRESENTATION_MODES }
+  with_options if: ->(phase) { phase.method.supports_presentation_mode? } do
+    validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
+  end
 
+  with_options if: ->(phase) { phase.method.supports_posting_inputs? } do
     validates :posting_enabled, inclusion: { in: [true, false] }
     validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
+    validates :posting_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.method.supports_commenting? } do
     validates :commenting_enabled, inclusion: { in: [true, false] }
+  end
+
+  with_options if: ->(phase) { phase.method.supports_reacting? } do
     validates :reacting_enabled, inclusion: { in: [true, false] }
     validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
     validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
     validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
-    validates :input_term, inclusion: { in: INPUT_TERMS }
+  end
 
+  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_like_limited? } do
+    validates :reacting_like_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_dislike_limited? } do
+    validates :reacting_dislike_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.method.supports_input_term? } do
+    validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
   end
+
   validates :ideas_order, inclusion: {
     in: lambda do |pc|
       Factory.instance.participation_method_for(pc).allowed_ideas_orders
     end
   }, allow_nil: true
-  validates :posting_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_input? posting_limited?]
-  validates :reacting_like_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_published_inputs? reacting_like_limited?]
-  validates :reacting_dislike_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_published_inputs? reacting_dislike_limited?]
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
   # voting?
@@ -257,8 +265,8 @@ class Phase < ApplicationRecord
     participation_method == 'native_survey'
   end
 
-  def participation_method_instance
-    @participation_method_instance ||= Factory.instance.participation_method_for(self)
+  def method
+    @method ||= Factory.instance.participation_method_for(self)
   end
 
   private
@@ -333,12 +341,8 @@ class Phase < ApplicationRecord
     end
   end
 
-  def set_participation_method # TODO: Remove?
-    self.participation_method ||= 'ideation'
-  end
-
   def set_participation_method_defaults
-    participation_method_instance.assign_defaults_for_phase
+    method.assign_defaults_for_phase
   end
 
   def set_presentation_mode
@@ -351,16 +355,6 @@ class Phase < ApplicationRecord
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def can_contain_published_inputs?
-    ideation? || proposals? || voting?
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def can_contain_input?
-    can_contain_published_inputs? || native_survey?
   end
 end
 

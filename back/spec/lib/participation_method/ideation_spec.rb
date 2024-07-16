@@ -229,6 +229,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:transitive?) { is_expected.to be true }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
+  its(:supports_presentation_mode?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
