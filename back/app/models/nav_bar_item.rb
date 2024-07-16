@@ -76,14 +76,14 @@ class NavBarItem < ApplicationRecord
   end
 
   def fallback_title_multiloc
-    key_code = page? ? static_page.code : project? ? nil : code
+    return project.title_multiloc if project?
+
+    key_code = page? ? static_page.code : code
     key = "nav_bar_items.#{key_code}.title"
     if I18n.exists? key
       MultilocService.new.i18n_to_multiloc key
     elsif page?
       static_page.title_multiloc
-    elsif project?
-      project.title_multiloc
     end
   end
 end

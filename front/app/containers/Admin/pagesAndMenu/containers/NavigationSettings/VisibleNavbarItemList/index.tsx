@@ -82,7 +82,9 @@ const VisibleNavbarItemList = ({
       deleteCustomPage(pageId);
     }
   };
-
+  const isProjectItem = (navbarItem: Item) => {
+    return navbarItem.relationships.project.data !== null;
+  };
   return (
     <>
       <SubSectionTitle>
@@ -129,9 +131,14 @@ const VisibleNavbarItemList = ({
                   viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
-                  onClickDeleteButton={handleClickDelete(
-                    navbarItem.relationships.static_page.data?.id
-                  )}
+                  onClickDeleteButton={
+                    // Only show delete button for custom pages
+                    !isProjectItem(navbarItem)
+                      ? handleClickDelete(
+                          navbarItem.relationships.static_page.data?.id
+                        )
+                      : undefined
+                  }
                 />
               </SortableRow>
             ))}
