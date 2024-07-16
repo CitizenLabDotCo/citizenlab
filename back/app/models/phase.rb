@@ -241,11 +241,6 @@ class Phase < ApplicationRecord
   end
 
   # Used for validations (which are hard to delegate through the participation method)
-  def information?
-    participation_method == 'information'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
   def voting?
     participation_method == 'voting'
   end
