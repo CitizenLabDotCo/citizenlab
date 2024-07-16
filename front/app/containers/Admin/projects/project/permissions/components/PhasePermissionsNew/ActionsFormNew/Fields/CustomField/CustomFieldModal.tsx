@@ -10,10 +10,9 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import parentMessages from '../messages';
-import Tooltip from '../Tooltip';
-
-import messages from './messages';
+import parentMessages from '../../messages';
+import Tooltip from '../../Tooltip';
+import messages from '../messages';
 
 interface Props {
   field: IPermissionsFieldData;

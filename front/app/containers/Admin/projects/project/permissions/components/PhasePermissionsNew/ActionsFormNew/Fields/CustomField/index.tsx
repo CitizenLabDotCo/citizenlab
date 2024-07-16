@@ -16,10 +16,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Tooltip from '../Tooltip';
+import Tooltip from '../../Tooltip';
+import messages from '../messages';
 
 import CustomFieldModal from './CustomFieldModal';
-import messages from './messages';
 
 interface Props {
   field: IPermissionsFieldData;
