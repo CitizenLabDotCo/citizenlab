@@ -13,7 +13,6 @@ import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignName } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
@@ -89,7 +88,6 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
 const AdminPhaseEdit = () => {
-  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, phaseId } = useParams() as {
@@ -550,15 +548,11 @@ const AdminPhaseEdit = () => {
             )}
           </SectionField>
 
-          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
-            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            PhaseParticipationConfig needs to be refactored to functional component. */}
           <PhaseParticipationConfig
             phase={phase}
             onSubmit={handlePhaseParticipationConfigSubmit}
             onChange={handlePhaseParticipationConfigChange}
             apiErrors={errors}
-            appConfig={appConfig}
           />
           {phaseAttrs.participation_method === 'native_survey' && (
             <>
