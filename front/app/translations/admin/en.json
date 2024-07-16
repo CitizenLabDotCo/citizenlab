@@ -943,6 +943,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.email": "Email",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Field status",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.name": "Name",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.nameCannotBeControlledYet": "The name field cannot be controlled yet- this will only be possible in the future.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Optional",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.custom": "Custom",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.customSubtitle1": "Add your own rules on who can participate.",
