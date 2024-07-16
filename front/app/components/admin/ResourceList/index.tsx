@@ -17,7 +17,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-export const Container = styled.div`
+export const Container = styled.div<{ disableNestedStyles?: boolean }>`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
   justify-content: space-between !important;
@@ -28,6 +28,11 @@ export const Container = styled.div`
   padding-bottom: 10px;
   border-top: 1px solid ${colors.divider};
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  ${({ disableNestedStyles }) =>
+    disableNestedStyles
+      ? ''
+      : `
   &.last-item {
     border-bottom: 1px solid ${colors.divider};
   }
@@ -92,6 +97,7 @@ export const Container = styled.div`
     font-size: ${fontSizes.s}px;
     font-weight: 500;
   }
+  `}
 `;
 
 export const TextCell = styled.div`
@@ -123,6 +129,7 @@ export const Row = ({
   isLastItem,
   'data-testid': dataTestId,
   bgColor,
+  disableNestedStyles,
 }: {
   id?: string;
   className?: string;
@@ -130,6 +137,7 @@ export const Row = ({
   isLastItem?: boolean;
   'data-testid'?: string;
   bgColor?: string;
+  disableNestedStyles?: boolean;
 }) => (
   <div data-testid={dataTestId} style={{ background: bgColor }}>
     <CSSTransition classNames="list-item" timeout={timeout}>
@@ -138,6 +146,7 @@ export const Row = ({
         className={`e2e-admin-list-row ${className || ''} ${
           isLastItem ? 'last-item' : ''
         }`}
+        disableNestedStyles={disableNestedStyles}
       >
         {children}
       </Container>
