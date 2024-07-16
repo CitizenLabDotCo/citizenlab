@@ -29,7 +29,7 @@ module IdHoplr
 
       options = env['omniauth.strategy'].options
 
-      scope = %i[openid email profile]
+      scope = %i[openid email profile email_verified]
       scope << :neighbourhood if feature['neighbourhood_custom_field_key'].present?
       options[:scope] = scope
 
