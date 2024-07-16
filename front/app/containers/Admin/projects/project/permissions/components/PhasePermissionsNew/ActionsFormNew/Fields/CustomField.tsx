@@ -92,6 +92,7 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
         phaseId={phaseId}
         action={action}
         opened={isModalOpen}
+        disableEditing={disableEditing}
         onClose={() => setIsModalOpen(false)}
       />
     </>
