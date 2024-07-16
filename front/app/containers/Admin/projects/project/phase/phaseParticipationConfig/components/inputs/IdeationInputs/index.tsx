@@ -31,9 +31,9 @@ import SortingPicker from './SortingPicker';
 interface Props {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  reacting_enabled: boolean;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  reacting_enabled?: boolean | null;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
@@ -125,7 +125,7 @@ const IdeationInputs = ({
 
         <ToggleRow>
           <Toggle
-            checked={posting_enabled}
+            checked={posting_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
           />
@@ -134,7 +134,7 @@ const IdeationInputs = ({
 
         <ToggleRow>
           <Toggle
-            checked={commenting_enabled}
+            checked={commenting_enabled || false}
             onChange={toggleCommentingEnabled}
             label={formatMessage(messages.inputCommentingEnabled)}
           />
@@ -143,7 +143,7 @@ const IdeationInputs = ({
 
         <ToggleRow className="last">
           <Toggle
-            checked={reacting_enabled}
+            checked={reacting_enabled || false}
             onChange={toggleReactingEnabled}
             label={formatMessage(messages.inputReactingEnabled)}
           />
