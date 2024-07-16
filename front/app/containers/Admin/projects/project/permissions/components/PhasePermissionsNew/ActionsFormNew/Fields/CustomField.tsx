@@ -49,16 +49,25 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
         marginRight="20px"
         justifyContent="space-between"
       >
-        <Text m="0" mt="4px" fontSize="m">
-          {/* Has to be a span with style, because the SortableRow styled 
+        <Box>
+          <Text m="0" mt="4px" fontSize="m">
+            {/* Has to be a span with style, because the SortableRow styled 
         component has a p selector that overrides any colors defined on the
         Text component */}
-          <span
-            style={{ color: disableEditing ? colors.grey800 : colors.primary }}
-          >
-            {fieldName}
-          </span>
-        </Text>
+            <span
+              style={{
+                color: disableEditing ? colors.grey800 : colors.primary,
+              }}
+            >
+              {fieldName}
+            </span>
+          </Text>
+          <Text fontSize="xl" mt="0px">
+            {formatMessage(
+              field.attributes.required ? messages.required : messages.optional
+            )}
+          </Text>
+        </Box>
         <Box display="flex">
           <Button
             icon="edit"
