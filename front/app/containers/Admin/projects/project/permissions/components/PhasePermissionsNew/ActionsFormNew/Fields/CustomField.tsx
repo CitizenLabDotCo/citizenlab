@@ -46,7 +46,6 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
         w="100%"
         display="flex"
         alignItems="center"
-        marginRight="20px"
         justifyContent="space-between"
       >
         <Box>
@@ -62,7 +61,7 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
               {fieldName}
             </span>
           </Text>
-          <Text fontSize="xl" mt="0px">
+          <Text fontSize="s" m="0px">
             {formatMessage(
               field.attributes.required ? messages.required : messages.optional
             )}

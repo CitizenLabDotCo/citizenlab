@@ -68,7 +68,7 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                       bgColor={DISABLED_COLOR}
                       disableNestedStyles
                     >
-                      <Box py="8px" w="100%">
+                      <Box w="100%" pt="1px" pb="1px">
                         {fieldMarkup}
                       </Box>
                     </Row>
@@ -85,7 +85,9 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                     isLastItem={index === itemsList.length - 1}
                     disableNestedStyles
                   >
-                    {fieldMarkup}
+                    <Box ml="20px" w="100%">
+                      {fieldMarkup}
+                    </Box>
                   </SortableRow>
                 );
               })}
