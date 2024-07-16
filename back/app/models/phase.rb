@@ -257,6 +257,10 @@ class Phase < ApplicationRecord
     participation_method == 'native_survey'
   end
 
+  def participation_method_instance
+    @participation_method_instance ||= Factory.instance.participation_method_for(self)
+  end
+
   private
 
   def sanitize_description_multiloc
@@ -334,7 +338,7 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
-    Factory.instance.participation_method_for(self).assign_defaults_for_phase
+    participation_method_instance.assign_defaults_for_phase
   end
 
   def set_presentation_mode
