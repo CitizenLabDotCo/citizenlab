@@ -221,6 +221,7 @@ const PhaseParticipationConfig = ({
       reacting_dislike_method: 'unlimited',
       allow_anonymous_participation: false,
       presentation_mode: 'card',
+      input_term: 'idea',
       ideas_order: 'trending',
     };
 
@@ -541,51 +542,45 @@ const PhaseParticipationConfig = ({
           />
         )}
 
-        {participation_method === 'ideation' &&
-          input_term &&
-          typeof reacting_enabled === 'boolean' &&
-          typeof posting_enabled === 'boolean' &&
-          typeof commenting_enabled === 'boolean' && (
-            <IdeationInputs
-              input_term={input_term}
-              handleInputTermChange={handleInputTermChange}
-              posting_enabled={posting_enabled}
-              commenting_enabled={commenting_enabled}
-              reacting_enabled={reacting_enabled}
-              reacting_like_method={reacting_like_method}
-              reacting_dislike_method={reacting_dislike_method}
-              reacting_like_limited_max={reacting_like_limited_max}
-              reacting_dislike_limited_max={reacting_dislike_limited_max}
-              reacting_dislike_enabled={reacting_dislike_enabled}
-              noLikingLimitError={noLikingLimitError}
-              noDislikingLimitError={noDislikingLimitError}
-              allow_anonymous_participation={allow_anonymous_participation}
-              apiErrors={apiErrors}
-              togglePostingEnabled={togglePostingEnabled}
-              toggleCommentingEnabled={toggleCommentingEnabled}
-              toggleReactingEnabled={toggleReactingEnabled}
-              handleReactingLikeMethodOnChange={
-                handleReactingLikeMethodOnChange
-              }
-              handleReactingDislikeMethodOnChange={
-                handleReactingDislikeMethodOnChange
-              }
-              handleLikingLimitOnChange={handleLikingLimitOnChange}
-              handleDislikingLimitOnChange={handleDislikingLimitOnChange}
-              handleReactingDislikeEnabledOnChange={
-                handleReactingDislikeEnabledOnChange
-              }
-              handleAllowAnonymousParticipationOnChange={
-                handleAllowAnonymousParticipationOnChange
-              }
-              presentation_mode={presentation_mode}
-              handleIdeasDisplayChange={handleIdeasDisplayChange}
-              ideas_order={ideas_order}
-              handleIdeaDefaultSortMethodChange={
-                handleIdeaDefaultSortMethodChange
-              }
-            />
-          )}
+        {participation_method === 'ideation' && (
+          <IdeationInputs
+            input_term={input_term}
+            handleInputTermChange={handleInputTermChange}
+            posting_enabled={posting_enabled}
+            commenting_enabled={commenting_enabled}
+            reacting_enabled={reacting_enabled}
+            reacting_like_method={reacting_like_method}
+            reacting_dislike_method={reacting_dislike_method}
+            reacting_like_limited_max={reacting_like_limited_max}
+            reacting_dislike_limited_max={reacting_dislike_limited_max}
+            reacting_dislike_enabled={reacting_dislike_enabled}
+            noLikingLimitError={noLikingLimitError}
+            noDislikingLimitError={noDislikingLimitError}
+            allow_anonymous_participation={allow_anonymous_participation}
+            apiErrors={apiErrors}
+            togglePostingEnabled={togglePostingEnabled}
+            toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleReactingEnabled={toggleReactingEnabled}
+            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+            handleReactingDislikeMethodOnChange={
+              handleReactingDislikeMethodOnChange
+            }
+            handleLikingLimitOnChange={handleLikingLimitOnChange}
+            handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+            handleReactingDislikeEnabledOnChange={
+              handleReactingDislikeEnabledOnChange
+            }
+            handleAllowAnonymousParticipationOnChange={
+              handleAllowAnonymousParticipationOnChange
+            }
+            presentation_mode={presentation_mode}
+            handleIdeasDisplayChange={handleIdeasDisplayChange}
+            ideas_order={ideas_order}
+            handleIdeaDefaultSortMethodChange={
+              handleIdeaDefaultSortMethodChange
+            }
+          />
+        )}
 
         {participation_method === 'poll' && (
           <PollInputs
