@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty, isString } from 'lodash-es';
@@ -199,15 +199,16 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(null);
   };
 
-  const handlePhaseParticipationConfigChange = (
-    participationContextConfig: IPhaseParticipationConfig
-  ) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      ...participationContextConfig,
-    }));
-  };
+  const handlePhaseParticipationConfigChange = useCallback(
+    (participationContextConfig: IPhaseParticipationConfig) => {
+      setSubmitState('enabled');
+      setProjectAttributesDiff((projectAttributesDiff) => ({
+        ...projectAttributesDiff,
+        ...participationContextConfig,
+      }));
+    },
+    []
+  );
 
   const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({

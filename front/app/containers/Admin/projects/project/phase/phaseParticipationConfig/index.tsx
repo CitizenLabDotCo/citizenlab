@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
@@ -88,6 +88,7 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
 const PhaseParticipationConfig = ({
   phase,
   onSubmit,
+  onChange,
   className,
   apiErrors,
 }: Props) => {
@@ -200,8 +201,8 @@ const PhaseParticipationConfig = ({
     IPhaseParticipationConfig['voting_term_plural_multiloc']
   >(phase?.data.attributes.voting_term_plural_multiloc || null);
 
-  useEffect(() => {
-    const participationConfig = {
+  const participationConfig = useMemo(() => {
+    return {
       participation_method,
       posting_enabled,
       commenting_enabled,
@@ -223,7 +224,34 @@ const PhaseParticipationConfig = ({
       ideas_order,
       input_term,
     };
+  }, [
+    participation_method,
+    posting_enabled,
+    commenting_enabled,
+    reacting_enabled,
+    reacting_like_method,
+    reacting_like_limited_max,
+    reacting_dislike_enabled,
+    reacting_dislike_method,
+    allow_anonymous_participation,
+    voting_method,
+    voting_min_total,
+    voting_max_total,
+    voting_max_votes_per_idea,
+    survey_embed_url,
+    survey_service,
+    document_annotation_embed_url,
+    poll_anonymous,
+    presentation_mode,
+    ideas_order,
+    input_term,
+  ]);
 
+  useEffect(() => {
+    onChange(participationConfig);
+  }, [participationConfig, onChange]);
+
+  useEffect(() => {
     const validate = () => {
       const {
         noLikingLimitError,
@@ -259,31 +287,7 @@ const PhaseParticipationConfig = ({
         onSubmit(output);
       });
     return () => subscription.unsubscribe();
-  }, [
-    participation_method,
-    posting_enabled,
-    commenting_enabled,
-    reacting_enabled,
-    reacting_like_method,
-    reacting_like_limited_max,
-    reacting_dislike_enabled,
-    reacting_dislike_method,
-    allow_anonymous_participation,
-    voting_method,
-    voting_min_total,
-    voting_max_total,
-    voting_max_votes_per_idea,
-    survey_embed_url,
-    survey_service,
-    document_annotation_embed_url,
-    poll_anonymous,
-    presentation_mode,
-    ideas_order,
-    input_term,
-    onSubmit,
-    formatMessage,
-    appConfig,
-  ]);
+  }, [participationConfig, onSubmit, formatMessage, appConfig]);
 
   const handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod

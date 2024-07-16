@@ -1,4 +1,10 @@
-import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
+import React, {
+  FormEvent,
+  useEffect,
+  useState,
+  MouseEvent,
+  useCallback,
+} from 'react';
 
 import {
   Text,
@@ -135,9 +141,63 @@ const AdminPhaseEdit = () => {
     }
   }, [phaseFiles]);
 
-  if (!campaigns) {
-    return null;
-  }
+  const getAttributeDiff = useCallback(
+    (
+      participationContextConfig: IPhaseParticipationConfig,
+      attributeDiff: IUpdatedPhaseProperties
+    ) => {
+      return {
+        ...attributeDiff,
+        ...participationContextConfig,
+      };
+    },
+    []
+  );
+
+  const handlePhaseParticipationConfigChange = useCallback(
+    (participationContextConfig: IPhaseParticipationConfig) => {
+      const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+        acc[locale] = formatMessageWithLocale(
+          locale,
+          messages.defaultSurveyCTALabel
+        );
+        return acc;
+      }, {});
+
+      const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+        acc[locale] = formatMessageWithLocale(
+          locale,
+          messages.defaultSurveyTitleLabel
+        );
+        return acc;
+      }, {});
+
+      setSubmitState('enabled');
+      setAttributeDiff((attributeDiff) => ({
+        ...getAttributeDiff(participationContextConfig, attributeDiff),
+        ...(participationContextConfig.participation_method ===
+          'native_survey' &&
+          !attributeDiff.native_survey_button_multiloc &&
+          !phase?.data.attributes.native_survey_button_multiloc && {
+            native_survey_button_multiloc: surveyCTALabel,
+          }),
+        ...(participationContextConfig.participation_method ===
+          'native_survey' &&
+          !attributeDiff.native_survey_title_multiloc &&
+          !phase?.data.attributes.native_survey_button_multiloc && {
+            native_survey_title_multiloc: surveyTitle,
+          }),
+      }));
+    },
+    [
+      formatMessageWithLocale,
+      phase?.data.attributes.native_survey_button_multiloc,
+      tenantLocales,
+      getAttributeDiff,
+    ]
+  );
+
+  if (!campaigns) return null;
 
   const flatCampaigns = campaigns.pages.flatMap((page) => page.data);
   const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
@@ -248,55 +308,14 @@ const AdminPhaseEdit = () => {
     eventEmitter.emit('getPhaseParticipationConfig');
   };
 
-  const getAttributeDiff = (
-    participationContextConfig: IPhaseParticipationConfig
-  ) => {
-    return {
-      ...attributeDiff,
-      ...participationContextConfig,
-    };
-  };
-
-  const handlePhaseParticipationConfigChange = (
-    participationContextConfig: IPhaseParticipationConfig
-  ) => {
-    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyCTALabel
-      );
-      return acc;
-    }, {});
-
-    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyTitleLabel
-      );
-      return acc;
-    }, {});
-
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...getAttributeDiff(participationContextConfig),
-      ...(participationContextConfig.participation_method === 'native_survey' &&
-        !attributeDiff.native_survey_button_multiloc &&
-        !phase?.data.attributes.native_survey_button_multiloc && {
-          native_survey_button_multiloc: surveyCTALabel,
-        }),
-      ...(participationContextConfig.participation_method === 'native_survey' &&
-        !attributeDiff.native_survey_title_multiloc &&
-        !phase?.data.attributes.native_survey_button_multiloc && {
-          native_survey_title_multiloc: surveyTitle,
-        }),
-    });
-  };
-
   const handlePhaseParticipationConfigSubmit = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
-    const attributeDiff = getAttributeDiff(participationContextConfig);
-    save(projectId, phase?.data, attributeDiff);
+    const newAttributeDiff = getAttributeDiff(
+      participationContextConfig,
+      attributeDiff
+    );
+    save(projectId, phase?.data, newAttributeDiff);
   };
 
   const handleError = (error: { errors: CLErrors }) => {
