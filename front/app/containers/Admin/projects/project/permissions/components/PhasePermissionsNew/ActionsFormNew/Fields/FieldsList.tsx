@@ -9,6 +9,7 @@ import useReorderPermissionsField from 'api/permissions_fields/useReorderPermiss
 
 import { SortableList, SortableRow, Row } from 'components/admin/ResourceList';
 
+import { DISABLED_COLOR } from './constants';
 import CustomField from './CustomField';
 import DefaultField from './DefaultField';
 
@@ -62,7 +63,7 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
 
                 if (disableEditing) {
                   return (
-                    <Row key={field.id}>
+                    <Row key={field.id} bgColor={DISABLED_COLOR}>
                       <Box py="8px" w="100%">
                         {fieldMarkup}
                       </Box>

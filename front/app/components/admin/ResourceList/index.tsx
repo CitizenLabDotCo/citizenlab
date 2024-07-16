@@ -122,14 +122,16 @@ export const Row = ({
   children,
   isLastItem,
   'data-testid': dataTestId,
+  bgColor,
 }: {
   id?: string;
   className?: string;
   children: ReactNode;
   isLastItem?: boolean;
   'data-testid'?: string;
+  bgColor?: string;
 }) => (
-  <div data-testid={dataTestId}>
+  <div data-testid={dataTestId} style={{ background: bgColor }}>
     <CSSTransition classNames="list-item" timeout={timeout}>
       <Container
         id={id}

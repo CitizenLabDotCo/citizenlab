@@ -53,7 +53,11 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
           {/* Has to be a span with style, because the SortableRow styled 
         component has a p selector that overrides any colors defined on the
         Text component */}
-          <span style={{ color: colors.primary }}>{fieldName}</span>
+          <span
+            style={{ color: disableEditing ? colors.grey800 : colors.primary }}
+          >
+            {fieldName}
+          </span>
         </Text>
         <Box display="flex">
           <Button

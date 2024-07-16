@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import Tooltip from '../Tooltip';
 
+import { DISABLED_COLOR } from './constants';
 import EmailModal from './EmailModal';
 import messages from './messages';
 
@@ -66,8 +67,9 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
+        bgColor={disableEditing ? DISABLED_COLOR : undefined}
       >
-        <Text m="0" fontSize="m" color="primary">
+        <Text m="0" fontSize="m" color={disableEditing ? 'grey800' : 'primary'}>
           {formatMessage(fieldNameMessage)}
         </Text>
         <Box display="flex" flexDirection="row">
