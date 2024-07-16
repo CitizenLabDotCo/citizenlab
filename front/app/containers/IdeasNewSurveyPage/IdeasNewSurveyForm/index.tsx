@@ -178,14 +178,16 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     }
   };
 
-  const onSubmit = async (data: FormValues, published?: boolean) => {
+  const onSubmit = async (rawData: FormValues, published?: boolean) => {
+    const data = convertGeojsonToWKT(rawData);
+
     const requestBody = {
       ...data,
       project_id: project.data.id,
       ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
-      publication_status: data.publication_status || 'published',
+      publication_status: rawData.publication_status || 'published',
     };
 
     // Update or add the idea depending on if we have an existing draft idea
@@ -234,6 +236,38 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
       });
     }
   };
+
+  // GeoJSON values in the data may contain nested arrays, which Rails strong parameters cannot handle.
+  // This function converts GeoJSON values to 'well known text' (WKT) format before submitting the form.
+  // The BE will then convert the WKT back to GeoJSON, if valid, before saving the data.
+  function convertGeojsonToWKT(data) {
+    for (const key in data) {
+      if (typeof data[key] === 'object') {
+        for (const subKey in data[key]) {
+          if (['Point', 'LineString', 'Polygon'].includes(data[key][subKey])) {
+            const coordinates = data[key]['coordinates'].flat();
+            let coordinatesString = '';
+
+            for (let i = 0; i < coordinates.length; i++) {
+              coordinatesString += coordinates[i];
+              if (i < coordinates.length - 1) {
+                coordinatesString += i % 2 === 1 ? ', ' : ' ';
+              }
+            }
+
+            const nesting = data[key]['type'] === 'Polygon' ? 2 : 1;
+            data[key] =
+              `${data[key]['type'].toUpperCase()} ` +
+              `${'('.repeat(nesting)}${coordinatesString}${')'.repeat(
+                nesting
+              )}`;
+          }
+        }
+      }
+    }
+
+    return data;
+  }
 
   function calculateDynamicHeight() {
     const viewportHeight = window.innerHeight;
