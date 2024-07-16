@@ -6,6 +6,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -81,6 +82,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -526,6 +528,7 @@ const AdminProjectsProjectGeneral = () => {
                     onSubmit={handlePhaseParticipationConfigSubmit}
                     onChange={handlePhaseParticipationConfigChange}
                     apiErrors={apiErrors}
+                    appConfig={appConfig}
                   />
                 </ParticipationContextWrapper>
               </CSSTransition>

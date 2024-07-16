@@ -3,17 +3,12 @@ import React from 'react';
 import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage } from 'typings';
 
-import { IAppConfiguration } from 'api/app_configuration/types';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { IPhaseParticipationConfig } from '..';
+import { State } from '..';
 import messages from '../../../messages';
 
-export default (
-  state: IPhaseParticipationConfig & { appConfig?: IAppConfiguration },
-  formatMessage: FormatMessage
-) => {
+export default (state: State, formatMessage: FormatMessage) => {
   const {
     reacting_like_method,
     reacting_dislike_method,
