@@ -12,8 +12,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term
 
   %i[
-      voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-      native_survey_title_multiloc native_survey_button_multiloc
+      voting_method
+      voting_max_total
+      voting_min_total
+      voting_max_votes_per_idea
+      baskets_count
+      native_survey_title_multiloc
+      native_survey_button_multiloc
     ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       Factory.instance.participation_method_for(phase).supports_serializing?(attribute_name)

@@ -110,7 +110,6 @@ module Permissions
       end
     end
 
-
     def taking_survey_denied_reason_for_action
       unless phase.survey?
         TAKING_SURVEY_DENIED_REASONS[:not_survey]
