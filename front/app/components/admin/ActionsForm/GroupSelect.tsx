@@ -45,6 +45,7 @@ const GroupSelect = ({ groupIds, disabled = false, onChange }: Props) => {
       onChange={(options) => onChange(options.map((o) => o.value))}
       placeholder={<FormattedMessage {...messages.selectGroups} />}
       id="e2e-select-user-group"
+      bgColor={disabled ? '#f9f9f9' : undefined}
     />
   );
 };

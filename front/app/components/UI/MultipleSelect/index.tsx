@@ -18,6 +18,7 @@ export type Props = {
   className?: string;
   label?: React.ReactNode;
   isSearchable?: boolean;
+  bgColor?: string;
 };
 
 interface State {}
@@ -63,7 +64,14 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { id, className, disabled, label, isSearchable = true } = this.props;
+    const {
+      id,
+      className,
+      disabled,
+      label,
+      isSearchable = true,
+      bgColor,
+    } = this.props;
     let { value, placeholder, options, autoBlur } = this.props;
     const { inputId } = this.props;
 
@@ -90,7 +98,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           options={options}
           onChange={this.handleOnChange}
           isDisabled={disabled}
-          styles={selectStyles()}
+          styles={selectStyles({ backgroundColor: bgColor })}
           menuPosition="fixed"
           menuPlacement="auto"
           hideSelectedOptions
