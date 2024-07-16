@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
-import CSSTransition from 'react-transition-group/CSSTransition';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
@@ -52,9 +51,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import PhaseParticipationConfig, {
-  IPhaseParticipationConfig,
-} from '../phase/phaseParticipationConfig';
+import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -64,12 +61,7 @@ import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
-import {
-  StyledForm,
-  StyledSectionField,
-  ParticipationContextWrapper,
-  TIMEOUT,
-} from './components/styling';
+import { StyledForm, StyledSectionField } from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
 import validateTitle from './utils/validateTitle';
@@ -198,17 +190,6 @@ const AdminProjectsProjectGeneral = () => {
     }));
     setTitleError(null);
   };
-
-  const handlePhaseParticipationConfigChange = useCallback(
-    (participationContextConfig: IPhaseParticipationConfig) => {
-      setSubmitState('enabled');
-      setProjectAttributesDiff((projectAttributesDiff) => ({
-        ...projectAttributesDiff,
-        ...participationContextConfig,
-      }));
-    },
-    []
-  );
 
   const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -389,12 +370,6 @@ const AdminProjectsProjectGeneral = () => {
     saveForm();
   };
 
-  const handlePhaseParticipationConfigSubmit = (
-    participationContextConfig: IPhaseParticipationConfig
-  ) => {
-    saveForm(participationContextConfig);
-  };
-
   const handleStatusChange = (publicationStatus: PublicationStatus) => {
     setSubmitState('enabled');
     setPublicationStatus(publicationStatus);
@@ -509,29 +484,6 @@ const AdminProjectsProjectGeneral = () => {
               />
             </StyledSectionField>
           )}
-
-          <StyledSectionField>
-            {!project && (
-              <CSSTransition
-                classNames="participationcontext"
-                in={false}
-                timeout={TIMEOUT}
-                mountOnEnter={true}
-                unmountOnExit={true}
-                enter={true}
-                exit={false}
-              >
-                <ParticipationContextWrapper>
-                  <PhaseParticipationConfig
-                    project={project}
-                    onSubmit={handlePhaseParticipationConfigSubmit}
-                    onChange={handlePhaseParticipationConfigChange}
-                    apiErrors={apiErrors}
-                  />
-                </ParticipationContextWrapper>
-              </CSSTransition>
-            )}
-          </StyledSectionField>
 
           <TopicInputs
             selectedTopicIds={selectedTopicIds}
