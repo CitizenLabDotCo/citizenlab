@@ -139,6 +139,15 @@ const ParticipationMethodPicker = ({
             />
 
             <ParticipationMethodChoice
+              key="proposals"
+              title={formatMessage(messages2.ideationTitle)}
+              subtitle={formatMessage(messages2.ideationDescription)}
+              onClick={(event) => handleMethodSelect(event, 'proposals')}
+              image={ideationImage}
+              selected={selectedMethod === 'proposals'}
+            />
+
+            <ParticipationMethodChoice
               key="survey"
               title={formatMessage(messages2.surveyTitle)}
               subtitle={formatMessage(messages2.surveyDescription)}

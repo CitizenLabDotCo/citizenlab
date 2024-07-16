@@ -46,6 +46,7 @@ const participationMethodMessage: Record<
   MessageDescriptor
 > = {
   ideation: messages.ideationPhase,
+  proposals: messages.ideationPhase,
   information: messages.informationPhase,
   survey: messages.externalSurveyPhase,
   voting: messages.votingPhase,

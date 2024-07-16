@@ -301,6 +301,7 @@ const methodToConfig: {
   [method in ParticipationMethod]: ParticipationMethodConfig;
 } = {
   ideation: ideationConfig,
+  proposals: ideationConfig,
   native_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,

@@ -35,7 +35,8 @@ export default ({
     };
   } else if (
     participation_method === 'ideation' ||
-    participation_method === 'native_survey'
+    participation_method === 'native_survey' ||
+    participation_method === 'proposals'
   ) {
     output = omitBy(
       {

@@ -25,6 +25,7 @@ class Permission < ApplicationRecord
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
     'information' => [],
     'ideation' => %w[posting_idea commenting_idea reacting_idea],
+    'proposals' => %w[posting_idea commenting_idea reacting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
