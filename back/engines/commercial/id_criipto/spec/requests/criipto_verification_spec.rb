@@ -100,7 +100,7 @@ context 'criipto verification' do
         birthday_custom_field_key: 'birthdate',
         birthyear_custom_field_key: 'birthyear',
         municipality_code_custom_field_key: 'municipality_code',
-        method_name_multiloc: 'MitID'
+        ui_method_name: 'MitID'
       }]
     }
     configuration.save!

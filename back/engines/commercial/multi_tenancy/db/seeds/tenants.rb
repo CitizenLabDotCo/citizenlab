@@ -339,7 +339,7 @@ module MultiTenancy
                   client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
-                  method_name_multiloc: { en: 'MitID (Criipto)' }
+                  ui_method_name: 'MitID (Criipto)'
                 }
               ]
             },
