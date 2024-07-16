@@ -68,4 +68,8 @@ export default defineMessages({
     defaultMessage:
       'Email authentication cannot be controlled yet with this toggle— this will only be possible in the future.',
   },
+  notAsked: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAsked',
+    defaultMessage: 'Not asked',
+  },
 });

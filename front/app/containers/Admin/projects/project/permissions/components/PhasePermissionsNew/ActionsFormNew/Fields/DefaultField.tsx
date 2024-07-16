@@ -76,9 +76,26 @@ const DefaultField = ({ field, phaseId, disableEditing, action }: Props) => {
         alignItems="center"
         bgColor={disableEditing ? DISABLED_COLOR : undefined}
       >
-        <Text m="0" fontSize="m" color={disableEditing ? 'grey800' : 'primary'}>
-          {formatMessage(fieldNameMessage)}
-        </Text>
+        <Box>
+          <Text
+            m="0"
+            fontSize="m"
+            color={disableEditing ? 'grey800' : 'primary'}
+          >
+            {formatMessage(fieldNameMessage)}
+          </Text>
+          {field_type === 'name' && (
+            <Text
+              m="0"
+              fontSize="s"
+              color={disableEditing ? 'grey700' : 'grey800'}
+            >
+              {formatMessage(
+                field.attributes.enabled ? messages.required : messages.notAsked
+              )}
+            </Text>
+          )}
+        </Box>
         <Box display="flex" flexDirection="row">
           {field_type === 'email' && enabled && (
             <Button
