@@ -309,12 +309,10 @@ module MultiTenancy
                 },
                 {
                   name: 'id_card_lookup',
-                  method_name_multiloc: { en: 'Enter social security number' },
-                  card_id_multiloc: { en: 'Social security number' },
+                  ui_method_name: 'Enter social security number',
+                  card_id: 'Social security number',
                   card_id_placeholder: 'xx-xxxxx-xx',
-                  card_id_tooltip_multiloc: {
-                    en: 'You can find this number on you ID card. We check your number without storing it.'
-                  },
+                  card_id_tooltip: 'You can find this number on you ID card. We check your number without storing it.',
                   explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
                 },
                 {
@@ -339,7 +337,7 @@ module MultiTenancy
                   client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
-                  method_name_multiloc: { en: 'MitID (Criipto)' }
+                  ui_method_name: 'MitID (Criipto)'
                 }
               ]
             },
