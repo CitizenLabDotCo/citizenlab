@@ -17,6 +17,7 @@ import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 import { uuid4 } from '@sentry/utils';
+import { transparentize } from 'polished';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -248,6 +249,59 @@ export const getShapeSymbol = ({
     outline: {
       color: outlineColor || hexToRGBA(colors.white, 0.2),
       width: outlineWidth || 1,
+    },
+  });
+};
+
+// getLineSymbol
+// Description: Get a simple line symbol
+type LineSymbolProps = {
+  color?: string;
+  style?: EsriLineStyle;
+};
+
+export type EsriLineStyle =
+  | 'dash'
+  | 'dash-dot'
+  | 'dot'
+  | 'long-dash'
+  | 'long-dash-dot'
+  | 'long-dash-dot-dot'
+  | 'none'
+  | 'short-dash'
+  | 'short-dash-dot'
+  | 'short-dash-dot-dot'
+  | 'short-dot'
+  | 'solid';
+
+export const getLineSymbol = ({ style, color }: LineSymbolProps) => {
+  return new SimpleLineSymbol({
+    color: color || colors.black,
+    width: 2,
+    style: style || 'solid',
+  });
+};
+
+// getFillSymbol
+// Description: Get a fill symbol
+type FillSymbolProps = {
+  color?: string;
+  transparency?: number;
+  outlineStyle?: EsriLineStyle;
+};
+
+export const getFillSymbol = ({
+  transparency,
+  color,
+  outlineStyle,
+}: FillSymbolProps) => {
+  return new SimpleFillSymbol({
+    color: transparentize(transparency || 1.0, color || colors.coolGrey700),
+    style: 'diagonal-cross',
+    outline: {
+      color: [0, 0, 0, 0.8],
+      width: 2,
+      style: outlineStyle || 'dash',
     },
   });
 };
