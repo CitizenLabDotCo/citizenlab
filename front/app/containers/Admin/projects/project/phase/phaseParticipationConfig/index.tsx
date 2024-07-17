@@ -492,7 +492,7 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'document_annotation' && (
           <SectionField>
-            <Box display="flex">
+            <Box display="flex" alignItems="center">
               <Box mr="8px">
                 <SubSectionTitle>
                   {formatMessage(messages.konveioDocumentAnnotationEmbedUrl)}
