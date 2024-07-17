@@ -19,20 +19,20 @@ RSpec.describe ReportBuilder::Queries::Projects do
 
       # 2021
       @project1 = create(:project)
-      create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1), with_permissions: true)
+      create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
 
       @project2 = create(:project)
-      create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1), with_permissions: true)
-      create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil, with_permissions: true)
+      create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
+      create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil)
 
       # 2022
       @project3 = create(:project)
-      create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil, with_permissions: true)
+      create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil)
 
       # Project not published (should be filtered out)
       project4 = create(:project)
       project4.admin_publication.update!(publication_status: 'draft')
-      create(:phase, project: project4, start_at: Date.new(2022, 2, 1), end_at: nil, with_permissions: true)
+      create(:phase, project: project4, start_at: Date.new(2022, 2, 1), end_at: nil)
 
       # Empty project
       create(:project)
