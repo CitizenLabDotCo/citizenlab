@@ -84,7 +84,7 @@ module MultiTenancy
             },
             hoplr_login: {
               allowed: true,
-              enabled: false,
+              enabled: true,
               environment: 'test',
               client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
               client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
