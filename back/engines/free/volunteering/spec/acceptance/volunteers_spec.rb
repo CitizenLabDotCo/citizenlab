@@ -62,12 +62,12 @@ resource 'Volunteering Volunteers' do
 
         let(:cause_id) { cause.id }
 
-        example 'Try to volunteering for a cause, not as a group member', document: false do
+        example 'Try to volunteer for a cause, not as a group member', document: false do
           do_request
           assert_status 401
         end
 
-        example 'Try to volunteering for a cause, as a group member', document: false do
+        example 'Try to volunteer for a cause, as a group member', document: false do
           group.add_member(@user).save!
           do_request
           assert_status 201
