@@ -107,7 +107,11 @@ resource 'PermissionsField' do
     end
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
-    let(:permissions_field) { create(:permissions_field, field_type: 'email', required: false, enabled: false, config: { password: true, confirmed: true }) }
+    let(:permitted_by) { 'custom' }
+    let(:permissions_field) do
+      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+      PermissionsField.find_by(field_type: 'email')
+    end
     let(:id) { permissions_field.id }
     let(:required) { true }
     let(:enabled) { true }
