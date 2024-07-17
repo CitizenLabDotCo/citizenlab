@@ -56,7 +56,6 @@ const ParticipationMethodPicker = ({
   phase,
   handleParticipationMethodOnChange,
 }: Props) => {
-  console.log('participation_method', participation_method);
   const { formatMessage } = useIntl();
   const [selectedMethod, setSelectedMethod] =
     useState<ParticipationMethod | null>(participation_method);
