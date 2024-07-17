@@ -274,7 +274,7 @@ class Idea < ApplicationRecord
 
   # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
   # which are not supported by Rails strong params.
-  # This method converts the wkt strings for geographic values (e.g. for line, polygon, etc.) to GeoJSON.
+  # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
   #
   # RGeo gem & wkt strings:
   # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
@@ -291,7 +291,6 @@ class Idea < ApplicationRecord
       custom_field = custom_fields.find { |field| field.key == key }
       next unless CustomField::GEOGRAPHIC_INPUT_TYPES.include?(custom_field.input_type) && value.is_a?(String)
 
-      # TODO: What to do when parsing fails? N.B. will raise RGeo::Error::ParseError
       custom_field_values[key] = wkt_string_to_geojson(value)
     end
   end
