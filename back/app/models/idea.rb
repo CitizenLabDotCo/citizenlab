@@ -57,8 +57,8 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   extend OrderAsSpecified
 
-  before_create :parse_geojson_custom_field_values
-  before_update :parse_geojson_custom_field_values
+  before_create :process_geo_custom_field_values
+  before_update :process_geo_custom_field_values
 
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 
@@ -279,7 +279,7 @@ class Idea < ApplicationRecord
   #
   # RGeo gem & wkt strings:
   # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
-  def parse_geojson_custom_field_values
+  def process_geo_custom_field_values
     return if custom_field_values.blank?
 
     custom_fields = custom_form&.custom_fields
