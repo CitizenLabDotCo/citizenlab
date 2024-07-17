@@ -952,6 +952,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.nameCannotBeControlledYet2": "The first and last name cannot be controlled yet with this toggle— this will only be possible in the future.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAsked": "Not asked",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optional": "Optional",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField": "Remove field",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.custom": "Custom",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.customSubtitle1": "Add your own rules on who can participate.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.disableEditingExplanation1": "To customize access rights and collected information, select \"Custom\" above.",
