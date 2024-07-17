@@ -55,7 +55,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     authorize @permissions_field
     sidefx.before_update @permissions_field, current_user
     if @permissions_field.save
-      sidefx.before_update @permissions_field, current_user
+      sidefx.after_update @permissions_field, current_user
       render json: WebApi::V1::PermissionsFieldSerializer.new(
         @permissions_field,
         params: jsonapi_serializer_params
