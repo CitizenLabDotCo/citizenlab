@@ -12,4 +12,10 @@ module GeoJsonHelpers
   def location_point_geojson=(geojson_point)
     self.location_point = RGeo::GeoJSON.decode(geojson_point)
   end
+
+  def wkt_string_to_geojson(wkt_string)
+    rgeo_object = RGeo::Geographic.spherical_factory(srid: 4326).parse_wkt(wkt_string)
+
+    RGeo::GeoJSON.encode(rgeo_object)
+  end
 end
