@@ -232,6 +232,7 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
+  custom_permitted_by?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

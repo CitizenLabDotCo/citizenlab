@@ -28,10 +28,10 @@ export interface IPCPermission {
 export type PermittedBy =
   | 'everyone'
   | 'users'
-  | 'groups' // soon to be deprecated, not used if XXX feature flag active
+  | 'groups' // soon to be deprecated, not used if `custom_permitted_by` feature flag active
   | 'admins_moderators'
   | 'everyone_confirmed_email'
-  | 'custom'; // new permitted_by type, only used if XXXX feature flag active
+  | 'custom'; // new permitted_by type, only used if `custom_permitted_by` feature flag active
 
 export interface IPermissionUpdate {
   group_ids: string[];
