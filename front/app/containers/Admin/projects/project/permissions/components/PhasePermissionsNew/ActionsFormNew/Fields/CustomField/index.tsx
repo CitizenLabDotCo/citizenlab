@@ -88,7 +88,7 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
               iconColorOnHover={colors.black}
               iconWidth="20px"
               mr="8px"
-              a11y_buttonActionMessage="TODO"
+              a11y_buttonActionMessage={formatMessage(messages.removeField)}
               disabled={disableEditing}
               onClick={(e) => {
                 e?.preventDefault();

@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAsked',
     defaultMessage: 'Not asked',
   },
+  removeField: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField',
+    defaultMessage: 'Remove field',
+  },
 });
