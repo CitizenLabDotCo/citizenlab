@@ -161,7 +161,7 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      personal_data_explanation_key = if Factory.instance.voting_method_for(@phase).supports_public_visibility?
+      personal_data_explanation_key = if Factory.instance.participation_method_for(@phase).supports_public_visibility?
         'form_builder.pdf_export.personal_data_explanation_public'
       else
         'form_builder.pdf_export.personal_data_explanation_private'
