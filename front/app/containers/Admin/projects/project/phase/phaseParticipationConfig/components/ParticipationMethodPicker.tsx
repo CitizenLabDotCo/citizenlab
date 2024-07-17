@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   IconTooltip,
@@ -62,7 +62,9 @@ const ParticipationMethodPicker = ({
   const [methodToChangeTo, setMethodToChangeTo] =
     useState<ParticipationMethod | null>(null);
   const [showSurveyOptions, setShowSurveyOptions] = useState(
-    selectedMethod === 'native_survey'
+    participation_method === 'native_survey' ||
+      participation_method === 'survey' ||
+      participation_method === 'poll'
   );
   const [showChangeMethodModal, setShowChangeMethodModal] = useState(false);
   const closeModal = () => {
@@ -104,11 +106,6 @@ const ParticipationMethodPicker = ({
       changeMethod(method);
     }
   };
-
-  useEffect(() => {
-    setSelectedMethod(participation_method);
-    setShowSurveyOptions(participation_method === 'native_survey');
-  }, [participation_method]);
 
   return (
     <>

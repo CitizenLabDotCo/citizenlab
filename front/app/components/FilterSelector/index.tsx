@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent, useMemo } from 'react';
 
 import {
   Box,
@@ -203,6 +203,13 @@ const FilterSelector = ({
     }
   };
 
+  // We use a random id for the selectorId to ensure it doesn't conflict if multiple
+  // instances of the same filter selector are rendered on the same page.
+  const selectorId = useMemo(
+    () => `id-${name}-${Math.random().toString(36).slice(2, 11)}`,
+    [name]
+  );
+
   return (
     <Container
       id={id}
@@ -210,7 +217,7 @@ const FilterSelector = ({
         last ? 'last' : ''
       }`}
     >
-      <Box id={`id-${name}`}>
+      <Box id={selectorId}>
         {/* The id is used for aria-labelledby on the group
          which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
@@ -262,6 +269,7 @@ const FilterSelector = ({
         right={right}
         mobileRight={mobileRight}
         name={name}
+        selectorId={selectorId}
       />
     </Container>
   );

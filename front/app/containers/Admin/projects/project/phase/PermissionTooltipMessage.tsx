@@ -51,19 +51,14 @@ const PermissionTooltipMessage = ({
         />
       ) : (
         <>
-          <Text color="white" my="0px" variant="bodyS">
+          <Text my="0px" variant="bodyS">
             {formatMessage(messages.whoCanParticipate)}
           </Text>
           {permissions &&
             permissions?.length > 1 &&
             permissions?.map((permission) => {
               return (
-                <Text
-                  color="white"
-                  my="0px"
-                  variant="bodyS"
-                  key={permission.id}
-                >
+                <Text my="0px" variant="bodyS" key={permission.id}>
                   <FormattedMessage
                     {...getParticipationActionLabel(
                       permission.attributes.action
