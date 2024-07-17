@@ -11,14 +11,17 @@ import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typing
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import PhaseAccordion from '../PhasePermissions/PhaseAccordion';
+
 import ActionsFormNew from './ActionsFormNew';
 
 interface Props {
   project: IProjectData;
   phase: IPhaseData;
+  phaseNumber?: number;
 }
 
-const PhasePermissionsNew = ({ project, phase }: Props) => {
+const PhasePermissionsNew = ({ project, phase, phaseNumber }: Props) => {
   const { mutate: updatePhasePermission } = useUpdatePhasePermission(phase.id);
 
   const handlePermissionChange = ({
@@ -39,7 +42,7 @@ const PhasePermissionsNew = ({ project, phase }: Props) => {
     });
   };
 
-  return (
+  const phaseMarkup = (
     <Box
       minHeight="100px"
       display="flex"
@@ -47,16 +50,32 @@ const PhasePermissionsNew = ({ project, phase }: Props) => {
       flexDirection="column"
       background={colors.white}
     >
-      <ActionsFormNewWrapper
+      <PhasePermissionsNewInner
         phase={phase}
         onChange={handlePermissionChange}
         projectId={project.id}
       />
     </Box>
   );
+
+  const multiplePhases = phaseNumber !== undefined;
+
+  if (multiplePhases) {
+    return (
+      <PhaseAccordion
+        phaseTitle={phase.attributes.title_multiloc}
+        phaseNumber={phaseNumber}
+        onChange={() => {}}
+      >
+        {phaseMarkup}
+      </PhaseAccordion>
+    );
+  }
+
+  return phaseMarkup;
 };
 
-type ActionsFormWrapperProps = {
+type PhasePermissionsNewInnerProps = {
   phase: IPhaseData;
   onChange: ({
     permission,
@@ -67,11 +86,11 @@ type ActionsFormWrapperProps = {
   projectId: string;
 };
 
-const ActionsFormNewWrapper = ({
+const PhasePermissionsNewInner = ({
   phase,
   onChange,
   projectId,
-}: ActionsFormWrapperProps) => {
+}: PhasePermissionsNewInnerProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
 
   if (!permissions) {

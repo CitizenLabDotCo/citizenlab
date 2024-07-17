@@ -40,7 +40,7 @@ const Timeline = ({ projectId }: Props) => {
                 project={project.data}
                 phase={phase}
                 key={phase.id}
-                // phaseNumber={i + 1}
+                phaseNumber={i + 1}
               />
             );
           }
