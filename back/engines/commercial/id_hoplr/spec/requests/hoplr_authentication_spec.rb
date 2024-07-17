@@ -70,6 +70,7 @@ context 'hoplr authentication' do
     }
     configuration.save!
     host! 'example.org'
+    SettingsService.new.activate_feature!('user_confirmation')
   end
 
   def expect_user_to_have_attributes(user)
@@ -100,19 +101,19 @@ context 'hoplr authentication' do
     expect_user_to_have_attributes(user)
     expect(cookies[:cl2_jwt]).to be_present
 
-    expect(user[:confirmation_required]).to be(true)
+    expect(user.confirmation_required?).to be(true)
   end
 
   context 'when email is verified' do
     let(:email_verified) { true }
 
     it 'creates user that does not require email confirmation' do
-      get '/auth/hoplr?random-passthrough-param=somevalue'
+      get '/auth/hoplr'
       follow_redirect!
 
       user = User.last
       expect_user_to_have_attributes(user)
-      expect(user[:confirmation_required]).to be(false)
+      expect(user.confirmation_required?).to be(false)
     end
   end
 
@@ -124,7 +125,7 @@ context 'hoplr authentication' do
       follow_redirect!
 
       expect_user_to_have_attributes(user.reload)
-      expect(user[:confirmation_required]).to be(false)
+      expect(user.confirmation_required?).to be(false)
     end
 
     context "when existing user's email is not confirmed" do
@@ -133,10 +134,41 @@ context 'hoplr authentication' do
       context 'when email is verified' do
         let(:email_verified) { true }
 
-        it 'does not update confirmation_required' do
-          get '/auth/hoplr?random-passthrough-param=somevalue'
+        it "confirms user's email" do
+          get '/auth/hoplr'
           follow_redirect!
-          expect(User.last[:confirmation_required]).to be(true)
+          expect(User.last.confirmation_required?).to be(false)
+        end
+
+        context 'when SSO email is different from existing email' do
+          before do
+            user.update_columns(email: 'some@citizenlab.co')
+            user.identities.create!(
+              provider: 'hoplr',
+              user_id: user.id,
+              uid: '817624'
+            )
+          end
+
+          it "does not confirm user's email" do
+            get '/auth/hoplr'
+            follow_redirect!
+            expect(User.last.confirmation_required?).to be(true)
+          end
+
+          # rubocop:disable RSpec/NestedGroups
+          context 'when password login is disabled (when email can be updated)' do
+            before do
+              SettingsService.new.deactivate_feature!('password_login')
+            end
+
+            it "confirms user's email" do
+              get '/auth/hoplr'
+              follow_redirect!
+              expect(User.last.confirmation_required?).to be(false)
+            end
+          end
+          # rubocop:enable RSpec/NestedGroups
         end
       end
     end
