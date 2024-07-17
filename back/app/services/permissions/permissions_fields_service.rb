@@ -23,7 +23,7 @@ module Permissions
     def default_fields(permitted_by: 'users', permission: nil)
       # Built in fields
       name_field = PermissionsField.new(field_type: 'name', required: true, enabled: true, permission: permission)
-      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, locked: true, permission: permission, config: { password: true, confirmed: user_confirmation_enabled? })
+      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, permission: permission, config: { password: true, confirmed: user_confirmation_enabled? })
 
       # Global custom fields
       custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
@@ -32,6 +32,12 @@ module Permissions
       end
 
       default_fields = [name_field, email_field] + custom_permissions_fields
+
+      # Verification
+      if Verification::VerificationService.new.active_methods(AppConfiguration.instance).any?
+        verification_field = PermissionsField.new(field_type: 'verification', required: false, enabled: false, permission: permission)
+        default_fields = default_fields.insert(2, verification_field)
+      end
 
       fields = case permitted_by
       when 'everyone'
@@ -79,6 +85,10 @@ module Permissions
           field.save!
         end
       end
+
+      # TODO: JS - If a verification group is enabled then enable 'verification' field
+      # TODO: JS - If verification is enabled then enable any linked fields
+
     end
 
     def custom_permitted_by_enabled?
