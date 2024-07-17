@@ -57,8 +57,7 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   extend OrderAsSpecified
 
-  before_create :process_geo_custom_field_values
-  before_update :process_geo_custom_field_values
+  before_save :convert_wkt_geo_custom_field_values_to_geojson
 
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 
@@ -275,11 +274,11 @@ class Idea < ApplicationRecord
 
   # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
   # which are not supported by Rails strong params.
-  # This method parses the wkt strings for geographic values (e.g. for line, polygon, etc.) to GeoJSON.
+  # This method converts the wkt strings for geographic values (e.g. for line, polygon, etc.) to GeoJSON.
   #
   # RGeo gem & wkt strings:
   # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
-  def process_geo_custom_field_values
+  def convert_wkt_geo_custom_field_values_to_geojson
     return if custom_field_values.blank?
 
     custom_fields = custom_form&.custom_fields
