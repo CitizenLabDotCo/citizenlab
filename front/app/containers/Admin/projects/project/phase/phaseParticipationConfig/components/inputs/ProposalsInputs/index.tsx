@@ -11,7 +11,6 @@ import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -37,10 +36,6 @@ interface Props {
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
   noLikingLimitError: JSX.Element | null;
-  reacting_dislike_enabled: boolean | null | undefined;
-  reacting_dislike_method: 'unlimited' | 'limited' | null | undefined;
-  reacting_dislike_limited_max: number | null | undefined;
-  noDislikingLimitError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
@@ -48,14 +43,7 @@ interface Props {
   handleReactingLikeMethodOnChange: (
     reacting_like_method: 'unlimited' | 'limited'
   ) => void;
-  handleReactingDislikeMethodOnChange: (
-    reacting_dislike_method: 'unlimited' | 'limited'
-  ) => void;
   handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
-  handleDislikingLimitOnChange: (reacting_dislike_limited_max: string) => void;
-  handleReactingDislikeEnabledOnChange: (
-    reacting_dislike_enabled: boolean
-  ) => void;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
@@ -67,29 +55,22 @@ interface Props {
   ) => void;
 }
 
-const IdeationInputs = ({
+const ProposalsInputs = ({
   input_term,
   handleInputTermChange,
   posting_enabled,
   commenting_enabled,
   reacting_enabled,
   reacting_like_method,
-  reacting_dislike_method,
   allow_anonymous_participation,
   reacting_like_limited_max,
-  reacting_dislike_limited_max,
-  reacting_dislike_enabled,
   noLikingLimitError,
-  noDislikingLimitError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
   toggleReactingEnabled,
   handleReactingLikeMethodOnChange,
-  handleReactingDislikeMethodOnChange,
   handleLikingLimitOnChange,
-  handleDislikingLimitOnChange,
-  handleReactingDislikeEnabledOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -97,9 +78,7 @@ const IdeationInputs = ({
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const reactingLimited = useRef(
-    reacting_like_method === 'limited' || reacting_dislike_method === 'limited'
-  );
+  const reactingLimited = useRef(reacting_like_method === 'limited');
   const showReactingLimits = reactingLimited.current;
 
   return (
@@ -199,83 +178,6 @@ const IdeationInputs = ({
               )}
             </SectionField>
           )}
-          <FeatureFlag name="disable_disliking">
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.dislikingPosts} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.disableDislikingTooltip} />
-                  }
-                />
-              </SubSectionTitle>
-              <Radio
-                onChange={handleReactingDislikeEnabledOnChange}
-                currentValue={reacting_dislike_enabled}
-                value={true}
-                name="enableDisliking"
-                id="enableDisliking-true"
-                label={<FormattedMessage {...messages.dislikingEnabled} />}
-              />
-              <Radio
-                onChange={handleReactingDislikeEnabledOnChange}
-                currentValue={reacting_dislike_enabled}
-                value={false}
-                name="enableDisliking"
-                id="enableDisliking-false"
-                label={<FormattedMessage {...messages.dislikingDisabled} />}
-              />
-              <Error
-                apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
-              />
-            </SectionField>
-            {reacting_dislike_enabled && showReactingLimits && (
-              <SectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.dislikingMethodTitle} />
-                </SubSectionTitle>
-                <Radio
-                  onChange={handleReactingDislikeMethodOnChange}
-                  currentValue={reacting_dislike_method}
-                  value="unlimited"
-                  name="dislikingmethod"
-                  id="dislikingmethod-unlimited"
-                  label={<FormattedMessage {...messages.unlimited} />}
-                />
-                <Radio
-                  onChange={handleReactingDislikeMethodOnChange}
-                  currentValue={reacting_dislike_method}
-                  value="limited"
-                  name="dislikingmethod"
-                  id="dislikingmethod-limited"
-                  label={<FormattedMessage {...messages.limited} />}
-                />
-                {reacting_dislike_method === 'limited' && (
-                  <>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.maxDislikes} />
-                    </SubSectionTitle>
-                    <ReactingLimitInput
-                      id="disliking-limit"
-                      type="number"
-                      min="1"
-                      placeholder=""
-                      value={
-                        reacting_dislike_limited_max
-                          ? reacting_dislike_limited_max.toString()
-                          : null
-                      }
-                      onChange={handleDislikingLimitOnChange}
-                    />
-                    <Error
-                      text={noDislikingLimitError}
-                      apiErrors={apiErrors && apiErrors.reacting_limit}
-                    />
-                  </>
-                )}
-              </SectionField>
-            )}
-          </FeatureFlag>
         </>
       )}
 
@@ -301,4 +203,4 @@ const IdeationInputs = ({
   );
 };
 
-export default IdeationInputs;
+export default ProposalsInputs;
