@@ -178,11 +178,11 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     }
   };
 
-  const onSubmit = async (rawData: FormValues, published?: boolean) => {
-    const data = convertGeojsonToWKT(rawData);
+  const onSubmit = async (data: FormValues, published?: boolean) => {
+    const requestBodyConvertedData = convertGeojsonToWKT(data);
 
     const requestBody = {
-      ...data,
+      ...requestBodyConvertedData,
       project_id: project.data.id,
       ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
@@ -194,6 +194,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     const idea = ideaId
       ? await updateIdea({ id: ideaId, requestBody })
       : await addIdea(requestBody);
+
     setIdeaId(idea.data.id);
 
     const ideaAttributes = idea.data.attributes;
@@ -240,7 +241,9 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   // GeoJSON values in the data may contain nested arrays, which Rails strong parameters cannot handle.
   // This function converts GeoJSON values to 'well known text' (WKT) format before submitting the form.
   // The BE will then convert the WKT back to GeoJSON, if valid, before saving the data.
-  function convertGeojsonToWKT(data) {
+  function convertGeojsonToWKT(rawData: any) {
+    const data = Object.assign({}, rawData);
+
     for (const key in data) {
       if (typeof data[key] === 'object') {
         for (const subKey in data[key]) {
