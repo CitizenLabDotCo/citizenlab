@@ -208,4 +208,9 @@ export default defineMessages({
     defaultMessage:
       'This option requires the user confirmation feature to be enabled. Contact your GovSuccess manager to enable user confirmation first.',
   },
+  granularPermissionsOffMessage: {
+    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffMessage',
+    defaultMessage:
+      'Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.',
+  },
 });

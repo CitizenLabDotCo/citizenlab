@@ -302,7 +302,7 @@ nl-BE:
       header: "Je bevestigingscode "
       header_message: "Hallo %{firstName}!"
       confirm_email_address: "Bevestig uw e-mailadres"
-      thanks_for_signing_up1: "Bedankt voor je registratie op het participatieplatform van %{organizationName}."
+      thanks_for_signing_up1: "Bedankt voor je deelname. Voer deze bevestigingscode in het venster op het participatieplatform van %{organizationName} in:"
       best_regards: "Vriendelijke groeten,"
       ignore_email: "Als u geen code heeft aangevraagd, kunt u deze e-mail gerust negeren."
       expire_code: "Deze code zal vervallen in "
