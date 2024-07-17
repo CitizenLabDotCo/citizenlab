@@ -103,7 +103,8 @@ export type ActionDescriptorAction =
   | 'annotating_document'
   | 'taking_survey'
   | 'taking_poll'
-  | 'attending_event';
+  | 'attending_event'
+  | 'volunteering';
 
 // All disabled reasons
 export type DisabledReason =
@@ -115,6 +116,7 @@ export type DisabledReason =
   | ProjectPollDisabledReason
   | ProjectDocumentAnnotationDisabledReason
   | ProjectVotingDisabledReason
+  | ProjectVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
   | IdeaVotingDisabledReason;
