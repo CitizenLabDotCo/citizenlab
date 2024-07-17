@@ -300,6 +300,24 @@ RSpec.describe Idea do
         })
       end
 
+      it 'does not mutate non-string values (e.g. GeoJSON)' do
+        idea.custom_field_values = {
+          polygon_field: {
+            type: 'Polygon',
+            coordinates: [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        }
+
+        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+
+        expect(idea.custom_field_values).to eq({
+          'polygon_field' => {
+            'type' => 'Polygon',
+            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        })
+      end
+
       it 'adds closing coordinates to polygon if not in wkt string' do
         idea.custom_field_values = { polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))' }
         idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
