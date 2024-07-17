@@ -97,7 +97,7 @@ export const votingDefaultConfig: IPhaseParticipationConfig = {
   voting_max_votes_per_idea: 1,
   commenting_enabled: true,
   presentation_mode: 'card',
-  ideas_order: 'trending',
+  ideas_order: 'random',
   input_term: 'idea',
 };
 
