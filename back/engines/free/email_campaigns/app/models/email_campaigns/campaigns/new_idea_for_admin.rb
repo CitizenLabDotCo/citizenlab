@@ -83,7 +83,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       idea = activity.item
-      return [] if idea.participation_method_on_creation.never_show?
+      return [] if !idea.participation_method_on_creation.supports_public_visibility?
 
       [{
         event_payload: {

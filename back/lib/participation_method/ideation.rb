@@ -315,7 +315,7 @@ module ParticipationMethod
       %w[trending random popular -new new]
     end
 
-    def supports_presentation_mode?
+    def supports_public_visibility?
       true
     end
 

@@ -65,10 +65,6 @@ module ParticipationMethod
       []
     end
 
-    def never_show?
-      false
-    end
-
     def update_if_published?
       true
     end
@@ -86,7 +82,7 @@ module ParticipationMethod
       'custom_forms.categories.extra.title'
     end
 
-    def supports_presentation_mode?
+    def supports_public_visibility?
       false
     end
 

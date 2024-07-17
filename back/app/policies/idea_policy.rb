@@ -46,7 +46,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    return false if !record.draft? && record.participation_method_on_creation.never_show?
+    return false if !(record.draft? || record.participation_method_on_creation.supports_public_visibility?)
 
     project_show = ProjectPolicy.new(user, record.project).show?
     return true if project_show && %w[draft published].include?(record.publication_status)

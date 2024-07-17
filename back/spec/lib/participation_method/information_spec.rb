@@ -70,12 +70,6 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
@@ -125,7 +119,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
-  its(:supports_presentation_mode?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_input_term?) { is_expected.to be false }

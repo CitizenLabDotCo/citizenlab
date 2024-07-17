@@ -161,8 +161,11 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      participation_method = @phase.participation_method # TODO: Move participation method logic
-      personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
+      personal_data_explanation_key = if Factory.instance.voting_method_for(@phase).supports_public_visibility?
+        'form_builder.pdf_export.personal_data_explanation_public'
+      else
+        'form_builder.pdf_export.personal_data_explanation_private'
+      end
       pdf.text I18n.with_locale(@locale) {
         I18n.t(
           personal_data_explanation_key,

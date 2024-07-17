@@ -78,10 +78,6 @@ module ParticipationMethod
       form
     end
 
-    def never_show?
-      true
-    end
-
     def update_if_published?
       false
     end
