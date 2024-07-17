@@ -171,7 +171,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     it 'returns true for native survey attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be true
-        end
+      end
     end
 
     it 'returns false for the other attributes' do
