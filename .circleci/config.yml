@@ -702,6 +702,7 @@ jobs:
           background: true
       # Wait until build is finished.
       - run: |
+          sudo apt-get update && sudo apt-get install -y gettext-base
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
           # we cannot access localhost:3000, so we call it from the container
