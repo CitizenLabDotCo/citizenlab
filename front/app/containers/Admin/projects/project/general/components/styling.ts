@@ -5,9 +5,6 @@ import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-// other
-export const TIMEOUT = 350;
-
 export const StyledForm = styled.form`
   width: 500px;
 `;
