@@ -1,8 +1,8 @@
 class CustomFieldParamsService
-  def custom_field_values_params(custom_fields)
+  def custom_field_values_params(allowed_fields)
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    custom_fields.each do |field|
+    allowed_fields.each do |field|
       # Perhaps we could apply the visitor pattern here
       case field.input_type
       when 'multiselect', 'multiselect_image'
