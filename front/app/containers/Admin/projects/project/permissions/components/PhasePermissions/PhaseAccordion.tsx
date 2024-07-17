@@ -13,7 +13,7 @@ interface Props {
   phaseNumber: number;
   phaseTitle: Multiloc;
   children: React.ReactNode;
-  onChange: () => void;
+  onChange?: () => void;
 }
 
 const PhaseAccordion = ({

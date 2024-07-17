@@ -58,14 +58,13 @@ const PhasePermissionsNew = ({ project, phase, phaseNumber }: Props) => {
     </Box>
   );
 
-  const multiplePhases = phaseNumber !== undefined;
+  const showAccordion = phaseNumber !== undefined;
 
-  if (multiplePhases) {
+  if (showAccordion) {
     return (
       <PhaseAccordion
         phaseTitle={phase.attributes.title_multiloc}
         phaseNumber={phaseNumber}
-        onChange={() => {}}
       >
         {phaseMarkup}
       </PhaseAccordion>
