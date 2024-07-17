@@ -106,7 +106,7 @@ resource 'Permissions' do
         expect(status).to eq 200
         expect(response_data[:id]).to eq @phase.permissions.first.id
         expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-        expect(response_data.dig(:relationships, :groups)).to be_nil # No groups returned
+        expect(response_data.dig(:relationships, :groups, :data)).to eq [] # No groups returned
       end
 
       example 'Get one group permission', document: false do
