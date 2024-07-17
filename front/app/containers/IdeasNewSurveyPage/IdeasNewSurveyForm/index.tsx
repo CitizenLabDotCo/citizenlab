@@ -239,7 +239,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   };
 
   // GeoJSON values in the data may contain nested arrays, which Rails strong parameters cannot handle.
-  // This function converts GeoJSON values to 'well known text' (WKT) format before submitting the form.
+  // This function converts GeoJSON values to 'well known text' (WKT) format before submitting the form(s).
   // The BE will then convert the WKT back to GeoJSON, if valid, before saving the data.
   function convertGeojsonToWKT(rawData: any) {
     const data = Object.assign({}, rawData);
