@@ -27,7 +27,10 @@ import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
@@ -277,7 +280,10 @@ const CauseCard = ({ cause, className, project }: Props) => {
           <Tooltip
             disabled={!blockedAndUnfixable}
             placement="bottom"
-            content={formatMessage(messages.notOpenParticipation)}
+            content={formatMessage(
+              getPermissionsDisabledMessage('volunteering', disabled_reason) ??
+                messages.notOpenParticipation
+            )}
           >
             <div>
               <Button
