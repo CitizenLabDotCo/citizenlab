@@ -98,10 +98,25 @@ resource 'Permissions' do
     get 'web_api/v1/phases/:phase_id/permissions/:action' do
       let(:action) { @phase.permissions.first.action }
 
+      before do
+        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id))
+      end
+
       example_request 'Get one permission by action' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @phase.permissions.first.id
+        expect(response_data[:id]).to eq @phase.permissions.first.id
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+        expect(response_data.dig(:relationships, :groups)).to be_nil # No groups returned
+      end
+
+      example 'Get one group permission', document: false do
+        @phase.permissions.first.update!(permitted_by: 'groups')
+
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'groups'
+        expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
       end
     end
 

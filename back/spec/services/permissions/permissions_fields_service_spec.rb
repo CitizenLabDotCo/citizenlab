@@ -8,6 +8,7 @@ describe Permissions::PermissionsFieldsService do
   before do
     create(:custom_field_gender, enabled: true, required: false)
     SettingsService.new.activate_feature! 'custom_permitted_by'
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   # TODO: JS - Seems to be some leakage between tests, need to investigate
@@ -113,6 +114,55 @@ describe Permissions::PermissionsFieldsService do
 
         service.create_default_fields_for_custom_permitted_by(permission: permission)
         expect(permission.permissions_fields.count).to eq num_permissions_fields
+      end
+    end
+  end
+
+  describe '#enforce_restrictions' do
+    let(:permission) { create(:permission, permitted_by: 'custom') }
+
+    before { service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users') }
+
+    context 'email field is changed' do
+      let(:email_field) { permission.permissions_fields.find_by(field_type: 'email') }
+
+      it 'disables the name field if password is disabled' do
+        email_field.config['password'] = false
+
+        service.enforce_restrictions(email_field)
+        name_field = permission.permissions_fields.find_by(field_type: 'name')
+        name_field.reload
+        expect(name_field.enabled).to be false
+        expect(name_field.required).to be false
+      end
+
+      it 'enables the name field if password is enabled' do
+        email_field.config['password'] = true
+        name_field = permission.permissions_fields.find_by(field_type: 'name')
+        name_field.update!(enabled: false)
+
+        service.enforce_restrictions(email_field)
+        name_field.reload
+        expect(name_field.enabled).to be true
+        expect(name_field.required).to be true
+      end
+
+      it 'ensures confirmed is true when turned on at a platform level' do
+        email_field.config['confirmed'] = false
+
+        service.enforce_restrictions(email_field)
+        email_field.reload
+        expect(email_field.config['confirmed']).to be true
+      end
+
+      it 'ensures confirmed is false when turned off at a platform level' do
+        email_field.config['confirmed'] = true
+
+        SettingsService.new.deactivate_feature! 'user_confirmation'
+        service = described_class.new # Reset the service to pick up the new feature flag state
+        service.enforce_restrictions(email_field)
+        email_field.reload
+        expect(email_field.config['confirmed']).to be false
       end
     end
   end
