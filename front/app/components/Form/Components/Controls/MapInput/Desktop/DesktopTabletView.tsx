@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,6 +30,7 @@ import {
   handleMapClickPoint,
   checkCoordinateErrors,
   updateDataAndDisplay,
+  handlePointDrag,
 } from '../utils';
 
 type Props = {
@@ -67,10 +69,14 @@ const DesktopView = ({
   });
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
-  // Create refs for custom UI elements
+  // Create refs for some custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
+
+  // Create refs for dragging/editing a user's points on the map
+  const pointBeingDragged = useRef<Graphic | null>(null);
+  const temporaryDragGraphic = useRef<Graphic | null>(null);
 
   // Add custom UI elements to the map
   useEffect(() => {
@@ -126,9 +132,25 @@ const DesktopView = ({
     inputType === 'point' && handlePointChange?.(point);
   };
 
+  // TODO: Clean up!
+  handlePointDrag(
+    mapView,
+    handleMultiPointChange,
+    pointBeingDragged,
+    temporaryDragGraphic,
+    theme,
+    data,
+    inputType
+  );
+
   return (
     <>
-      <Box display="flex" flexDirection="column" mb="8px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        mb="8px"
+        style={{ cursor: 'pointer' }}
+      >
         {inputType === 'point' && (
           <Box mb="12px">
             <LocationTextInput

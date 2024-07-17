@@ -2,14 +2,15 @@ import Point from '@arcgis/core/geometry/Point';
 import Polyline from '@arcgis/core/geometry/Polyline';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
+import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import MapView from '@arcgis/core/views/MapView';
 import { colors } from '@citizenlab/cl2-component-library';
 import { JsonSchema } from '@jsonforms/core';
-import { DefinedError } from 'ajv';
-import { transparentize } from 'polished';
 
 import {
   esriPointToGeoJson,
+  getFillSymbol,
+  getLineSymbol,
   getMapPinSymbol,
   getShapeSymbol,
   goToMapLocation,
@@ -22,8 +23,8 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import messages from '../messages';
 
 // newPointGraphic
-// Description: Creates a new point graphic
-export const newPointGraphic = (point: GeoJSON.Point, color: string) => {
+// Description: Creates a new point (pin symbol) graphic
+export const newPinPointGraphic = (point: GeoJSON.Point, color: string) => {
   return new Graphic({
     geometry: new Point({
       longitude: point.coordinates[0],
@@ -108,9 +109,11 @@ export const handleMapClickMultipoint = (
 
   // Update the form data
   if (currentPointCoordinates) {
+    // Add to existing points
     currentPointCoordinates.push([newPoint[0], newPoint[1]]);
     handleMultiPointChange?.(currentPointCoordinates);
   } else {
+    // This is the user's first point
     handleMultiPointChange?.([newPoint[0], newPoint[1]]);
   }
 };
@@ -128,7 +131,7 @@ export const updatePointDataAndDisplay = ({
   // Set the address to the geocoded location
   reverseGeocodeAndSave(point, locale, setAddress);
   // Create a graphic and add the point and symbol to it
-  const graphic = newPointGraphic(point, tenantPrimaryColor);
+  const graphic = newPinPointGraphic(point, tenantPrimaryColor);
   // Add a pin to the clicked location and delete any existing one
   if (mapView) {
     addPointGraphicToMap(point, mapView, graphic);
@@ -144,7 +147,7 @@ type UpdatePointDataAndDisplayProps = {
 };
 
 // updateMultiPointsDataAndDisplay
-// Description: Handles the change of multiple points data
+// Description: Handles when multipoint (E.g. Line/Polygon) data changes
 export const updateMultiPointsDataAndDisplay = ({
   data,
   mapView,
@@ -154,7 +157,7 @@ export const updateMultiPointsDataAndDisplay = ({
   const coordinates = data;
 
   // Create graphics for the user input points
-  const graphics = coordinates?.map((coordinates) => {
+  const pointGraphics = coordinates?.map((coordinates) => {
     return new Graphic({
       geometry: new Point({
         longitude: coordinates[0],
@@ -163,68 +166,57 @@ export const updateMultiPointsDataAndDisplay = ({
       symbol: getShapeSymbol({
         shape: 'circle',
         color: tenantPrimaryColor,
-        sizeInPx: 12,
+        sizeInPx: 20,
         outlineColor: colors.white,
         outlineWidth: 2,
       }),
     });
   });
 
-  // Create an Esri line graphic connecting the points
+  // Create an Esri line graphic to connect the points
   const pointsForLine = coordinates?.map((coordinates) => [
     coordinates[0],
     coordinates[1],
   ]);
+  // If we have a polygon, we want to close the shape by connecting the first and last points
   if (inputType === 'polygon') {
-    // If we have a polygon, we want to close the shape
     pointsForLine?.push(coordinates[0]);
   }
+  // Create the Esri line object
   const polyline = new Polyline({
     paths: [
       pointsForLine?.map((coordinates) => [coordinates[0], coordinates[1]]),
     ],
   });
 
-  // Create styles for the line and fill
-  const simpleDashedLineSymbol = {
-    type: 'simple-line',
-    color: colors.black,
-    width: 2,
-    style: 'dash',
-  };
-
-  const crossFillSymbolWithDash = {
-    type: 'simple-fill',
-    color: transparentize(0.3, tenantPrimaryColor),
-    style: 'diagonal-cross',
-    outline: {
-      color: [0, 0, 0, 0.8],
-      width: 2,
-      style: 'dash',
-    },
-  };
-
   // Create the line graphic
-  const polylineGraphic = new Graphic({
+  const lineGraphic = new Graphic({
     geometry: polyline,
     symbol:
-      inputType === 'line' ? simpleDashedLineSymbol : crossFillSymbolWithDash,
+      inputType === 'line'
+        ? getLineSymbol({ style: 'dash' })
+        : getFillSymbol({
+            // Fills a polygon
+            transparency: 0.3,
+            color: tenantPrimaryColor,
+            outlineStyle: 'dash',
+          }),
   });
 
-  // Add all graphics to the map
+  // Add the point and line graphics to the map
   if (mapView) {
     // Remove any existing user input graphics
     const userInputLayer = getUserInputGraphicsLayer(mapView);
 
     if (userInputLayer) {
       userInputLayer.removeAll();
-      userInputLayer.add(polylineGraphic);
-      userInputLayer.addMany(graphics);
+      userInputLayer.add(lineGraphic);
+      userInputLayer.addMany(pointGraphics);
     } else {
-      // Add new graphics layer
+      // Add a new graphics layer to store the user inputs
       const graphicsLayer = new GraphicsLayer({ title: 'User Input' });
-      graphicsLayer.add(polylineGraphic);
-      graphicsLayer.addMany(graphics);
+      graphicsLayer.add(lineGraphic);
+      graphicsLayer.addMany(pointGraphics);
       mapView.map.add(graphicsLayer);
     }
   }
@@ -276,7 +268,7 @@ export const clearPointData = (
 };
 
 // checkCoordinateErrors
-// Description: Gets any nested coordinate errors raised by ajv
+// Description: Gets any nested coordinate errors raised by ajv validation
 export const checkCoordinateErrors = ({
   data,
   inputType,
@@ -286,11 +278,13 @@ export const checkCoordinateErrors = ({
   const validate = customAjv.compile(schema);
   if (inputType === 'line' || inputType === 'polygon') {
     if (!validate(data)) {
-      for (const err of validate.errors as DefinedError[]) {
-        if (err.keyword === 'minItems') {
-          return formatMessage(messages.minimumCoordinates, {
-            numPoints: inputType === 'line' ? 2 : 3,
-          });
+      if (validate.errors) {
+        for (const err of validate.errors) {
+          if (err.keyword === 'minItems') {
+            return formatMessage(messages.minimumCoordinates, {
+              numPoints: inputType === 'line' ? 2 : 3,
+            });
+          }
         }
       }
     }
@@ -362,6 +356,188 @@ export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
       (layer) => layer.title === 'User Input'
     ) as GraphicsLayer;
   }
-
   return;
+};
+
+// TODO: Clean up!
+// handlePointDrag
+// Description: Handles when a point a user added to a map is then dragged (edited)
+export const handlePointDrag = (
+  mapView: MapView | null | undefined,
+  handleMultiPointChange:
+    | ((points: number[][] | undefined) => void)
+    | undefined,
+  pointBeingDragged: React.MutableRefObject<Graphic | null>,
+  temporaryDragGraphic: React.MutableRefObject<Graphic | null>,
+  theme: any,
+  data: any,
+  inputType: 'point' | 'line' | 'polygon'
+) => {
+  // TODO: Clean up!
+  // Handle editing/dragging of existing points
+  mapView?.on('drag', (evt) => {
+    if (evt?.action === 'start') {
+      mapView.hitTest(evt).then((resp) => {
+        const clickedElement = resp?.results?.[0];
+
+        if (clickedElement) {
+          if (
+            clickedElement.type === 'graphic' &&
+            clickedElement.graphic.geometry.type === 'point'
+          ) {
+            evt.stopPropagation();
+            pointBeingDragged.current = clickedElement?.graphic;
+          }
+        }
+      });
+    } else if (evt.action === 'update') {
+      if (pointBeingDragged.current) {
+        evt.stopPropagation();
+
+        // if there is a tempGraphic, remove it
+        if (temporaryDragGraphic.current) {
+          mapView.graphics.remove(temporaryDragGraphic.current);
+        } else if (pointBeingDragged.current) {
+          // if there is no tempGraphic, this is the first update event, so remove original graphic
+          mapView.graphics.remove(pointBeingDragged.current);
+        }
+        // create new temp graphic and add it
+        if (pointBeingDragged?.current) {
+          temporaryDragGraphic.current = pointBeingDragged?.current?.clone();
+          temporaryDragGraphic.current.symbol = getShapeSymbol({
+            shape: 'circle',
+            color: theme.colors.tenantSecondary,
+            sizeInPx: 20,
+            outlineColor: colors.white,
+            outlineWidth: 2,
+          });
+        }
+
+        // get index of draggingGraphic in data
+        const dataCoordinates = getCoordinatesFromMultiPointData(
+          data,
+          inputType
+        );
+        const indexDragPointInData = dataCoordinates.findIndex(
+          (coord) =>
+            coord[0] === pointBeingDragged?.current?.geometry?.['longitude']
+        );
+
+        // Create a line graphic connecting the indexDragPointInData any any previous or next points
+
+        if (indexDragPointInData !== undefined && indexDragPointInData >= 0) {
+          const linePreviewPath: number[][] = [];
+
+          if (inputType === 'polygon' && indexDragPointInData === 0) {
+            linePreviewPath.push(dataCoordinates?.[dataCoordinates.length - 1]);
+            linePreviewPath.push([
+              mapView.toMap(evt).longitude,
+              mapView.toMap(evt).latitude,
+            ]);
+          }
+
+          if (indexDragPointInData > 0) {
+            linePreviewPath.push(dataCoordinates?.[indexDragPointInData - 1]);
+            linePreviewPath.push([
+              mapView.toMap(evt).longitude,
+              mapView.toMap(evt).latitude,
+            ]);
+          }
+          if (indexDragPointInData < dataCoordinates.length - 1) {
+            linePreviewPath.push(dataCoordinates?.[indexDragPointInData + 1]);
+          }
+
+          if (indexDragPointInData === 0 && inputType !== 'polygon') {
+            linePreviewPath.push([
+              mapView.toMap(evt).longitude,
+              mapView.toMap(evt).latitude,
+            ]);
+            if (dataCoordinates.length > 1) {
+              linePreviewPath.push(dataCoordinates?.[indexDragPointInData + 1]);
+            }
+          }
+
+          if (inputType === 'polygon') {
+            if (indexDragPointInData === dataCoordinates.length - 1) {
+              linePreviewPath.push(dataCoordinates?.[0]);
+            }
+          }
+          const lineGraphic = new Graphic({
+            geometry: new Polyline({
+              paths: [linePreviewPath],
+            }),
+            symbol: new SimpleLineSymbol({
+              color: [0, 0, 0, 0.5],
+              width: 2,
+              style: 'dash',
+            }),
+          });
+          mapView.graphics.removeAll();
+          mapView.graphics.add(lineGraphic);
+        }
+
+        if (temporaryDragGraphic.current) {
+          temporaryDragGraphic.current.geometry = mapView.toMap(evt);
+          mapView.graphics.add(temporaryDragGraphic.current);
+        }
+      }
+    } else if (evt.action === 'end') {
+      // on drag end, continue only if there is a draggingGraphic
+      if (pointBeingDragged) {
+        evt.stopPropagation();
+        // rm temp
+        if (temporaryDragGraphic.current) {
+          mapView.graphics.remove(temporaryDragGraphic.current);
+          // create new graphic based on original dragging graphic
+          const newGraphic = pointBeingDragged.current?.clone();
+          if (newGraphic && newGraphic.geometry) {
+            const newGeometry = temporaryDragGraphic?.current.geometry?.clone();
+            if (newGeometry) {
+              newGraphic.geometry = newGeometry;
+            }
+          }
+
+          // Replace graphic from User Input layer with new coordinates
+          newGraphic && mapView.graphics.add(newGraphic);
+
+          // Find the data point that corresponds to the dragged point
+          getUserInputGraphicsLayer(mapView)?.graphics.forEach((graphic) => {
+            if (graphic.geometry === pointBeingDragged.current?.geometry) {
+              const newCoordinates = [
+                newGraphic?.geometry?.['longitude'],
+                newGraphic?.geometry?.['latitude'],
+              ];
+
+              if (handleMultiPointChange) {
+                const dataCoordinates = getCoordinatesFromMultiPointData(
+                  data,
+                  inputType
+                );
+
+                const newData = dataCoordinates?.map((coord) => {
+                  if (
+                    coord[0] ===
+                    pointBeingDragged?.current?.geometry?.['longitude']
+                  ) {
+                    return newCoordinates;
+                  } else {
+                    return coord;
+                  }
+                });
+
+                handleMultiPointChange(newData);
+              }
+            }
+          });
+
+          // reset vars
+          mapView.graphics.removeAll();
+          pointBeingDragged.current = null;
+          temporaryDragGraphic.current = null;
+          // set cursor to pointer
+          mapView.container.style.cursor = 'pointer';
+        }
+      }
+    }
+  });
 };
