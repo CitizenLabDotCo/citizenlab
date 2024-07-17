@@ -13,6 +13,9 @@ module Permissions
     def create_default_fields_for_custom_permitted_by(permission: nil, previous_permitted_by: 'users')
       return unless permission&.permitted_by == 'custom' && permission&.permissions_fields&.empty?
 
+      # We cannot currently configure a 'custom' permitted_by with 'everyone' settings
+      previous_permitted_by = 'everyone_confirmed_email' if previous_permitted_by == 'everyone'
+
       fields = default_fields(permitted_by: previous_permitted_by, permission: permission)
       fields.each(&:save!)
     end
@@ -20,7 +23,7 @@ module Permissions
     def default_fields(permitted_by: 'users', permission: nil)
       # Built in fields
       name_field = PermissionsField.new(field_type: 'name', required: true, enabled: true, permission: permission)
-      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, locked: true, permission: permission, config: { password: true, confirmed: true })
+      email_field = PermissionsField.new(field_type: 'email', required: true, enabled: true, locked: true, permission: permission, config: { password: true, confirmed: user_confirmation_enabled? })
 
       # Global custom fields
       custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
@@ -58,8 +61,34 @@ module Permissions
       end
     end
 
+    # Called on update of individual fields to change values in others that are dependent
+    def enforce_restrictions(field)
+      permission = field.permission
+      if field.field_type == 'email'
+        if field.config['password'] == false
+          # When password is disabled, name should also be automatically disabled
+          permission.permissions_fields.find_by(field_type: 'name').update!(enabled: false, required: false)
+        else
+          # When password is enabled, name should also be automatically enabled
+          permission.permissions_fields.find_by(field_type: 'name').update!(enabled: true, required: true)
+        end
+
+        # Confirmation should currently always match platform default
+        if field.config['confirmed'] != user_confirmation_enabled?
+          field.config['confirmed'] = user_confirmation_enabled?
+          field.save!
+        end
+      end
+    end
+
     def custom_permitted_by_enabled?
       @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
+    end
+
+    private
+
+    def user_confirmation_enabled?
+      @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
     end
   end
 end
