@@ -38,34 +38,15 @@ import SurveyInputs from './components/inputs/SurveyInputs';
 import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { Container, StyledSection } from './components/shared/styling';
-import getOutput from './utils/getOutput';
+import {
+  defaultParticipationConfig,
+  ideationDefaultConfig,
+  IPhaseParticipationConfig,
+  nativeSurveyDefaultConfig,
+  surveyDefaultConfig,
+  votingDefaultConfig,
+} from './utils/participationMethodConfigs';
 import validatePhaseConfig from './utils/validate';
-
-export interface IPhaseParticipationConfig {
-  participation_method: ParticipationMethod;
-  posting_enabled?: boolean | null;
-  commenting_enabled?: boolean | null;
-  reacting_enabled?: boolean | null;
-  reacting_like_method?: 'unlimited' | 'limited' | null;
-  reacting_like_limited_max?: number | null;
-  reacting_dislike_enabled?: boolean | null;
-  allow_anonymous_participation?: boolean | null;
-  voting_method?: VotingMethod | null;
-  reacting_dislike_method?: 'unlimited' | 'limited' | null;
-  reacting_dislike_limited_max?: number | null;
-  presentation_mode?: 'map' | 'card' | null;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term?: InputTerm;
-  voting_min_total?: number | null;
-  voting_max_total?: number | null;
-  voting_max_votes_per_idea?: number | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  poll_anonymous?: boolean;
-  document_annotation_embed_url?: string | null;
-}
 
 export type ApiErrors = CLErrors | null | undefined;
 
@@ -109,42 +90,9 @@ const PhaseParticipationConfig = ({
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const [participationConfig, setParticipationConfig] =
-    useState<IPhaseParticipationConfig>({
-      participation_method:
-        phase?.data.attributes.participation_method || 'ideation',
-      posting_enabled: phase?.data.attributes.posting_enabled ?? true,
-      commenting_enabled: phase?.data.attributes.commenting_enabled ?? true,
-      reacting_enabled: phase?.data.attributes.reacting_enabled ?? true,
-      reacting_like_method:
-        phase?.data.attributes.reacting_like_method || 'unlimited',
-      reacting_like_limited_max:
-        phase?.data.attributes.reacting_like_limited_max || null,
-      reacting_dislike_enabled:
-        phase?.data.attributes.reacting_dislike_enabled ?? true,
-      reacting_dislike_method:
-        phase?.data.attributes.reacting_dislike_method || 'unlimited',
-      reacting_dislike_limited_max:
-        phase?.data.attributes.reacting_dislike_limited_max || null,
-      allow_anonymous_participation:
-        phase?.data.attributes.allow_anonymous_participation || false,
-      voting_method: phase?.data.attributes.voting_method || 'single_voting',
-      voting_min_total: phase?.data.attributes.voting_min_total || null,
-      voting_max_total: phase?.data.attributes.voting_max_total || null,
-      survey_service: phase?.data.attributes.survey_service || null,
-      survey_embed_url: phase?.data.attributes.survey_embed_url || null,
-      voting_max_votes_per_idea:
-        phase?.data.attributes.voting_max_votes_per_idea || null,
-      poll_anonymous: phase?.data.attributes.poll_anonymous || false,
-      presentation_mode: phase?.data.attributes.presentation_mode || 'card',
-      ideas_order: phase?.data.attributes.ideas_order || 'trending',
-      input_term: phase?.data.attributes.input_term || 'idea',
-      document_annotation_embed_url:
-        phase?.data.attributes.document_annotation_embed_url || null,
-      voting_term_singular_multiloc:
-        phase?.data.attributes.voting_term_singular_multiloc || null,
-      voting_term_plural_multiloc:
-        phase?.data.attributes.voting_term_plural_multiloc || null,
-    });
+    useState<IPhaseParticipationConfig>(
+      phase ? phase.data.attributes : ideationDefaultConfig
+    );
 
   const [noLikingLimitError, setNoLikingLimitError] =
     useState<JSX.Element | null>(null);
@@ -197,8 +145,7 @@ const PhaseParticipationConfig = ({
       .observeEvent('getPhaseParticipationConfig')
       .pipe(filter(() => validate()))
       .subscribe(() => {
-        const output = getOutput(participationConfig);
-        onSubmit(output);
+        onSubmit(participationConfig);
       });
     return () => subscription.unsubscribe();
   }, [participationConfig, onSubmit, formatMessage, appConfig]);
@@ -211,63 +158,16 @@ const PhaseParticipationConfig = ({
     const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
 
-    const ideationDefaultConfig: IPhaseParticipationConfig = {
-      participation_method,
-      posting_enabled: true,
-      commenting_enabled: true,
-      reacting_enabled: true,
-      reacting_like_method: 'unlimited',
-      reacting_dislike_enabled: true,
-      reacting_dislike_method: 'unlimited',
-      allow_anonymous_participation: false,
-      presentation_mode: 'card',
-      input_term: 'idea',
-      ideas_order: 'trending',
-    };
-
-    const votingDefaultConfig: IPhaseParticipationConfig = {
-      participation_method,
-      voting_method: 'single_voting',
-      voting_min_total: 0,
-      voting_max_total: 100,
-      voting_max_votes_per_idea: 1,
-      voting_term_singular_multiloc: {
-        en: 'vote',
-      },
-      voting_term_plural_multiloc: {
-        en: 'votes',
-      },
-    };
-
-    const surveyDefaultConfig: IPhaseParticipationConfig = {
-      participation_method,
-      survey_service: 'typeform',
-    };
-
-    const nativeSurveyDefaultConfig: IPhaseParticipationConfig = {
-      participation_method,
-      allow_anonymous_participation: false,
-      posting_enabled: true,
-      reacting_enabled: true,
-      reacting_like_method: 'unlimited',
-      reacting_dislike_enabled: true,
-      reacting_dislike_method: 'unlimited',
-    };
-
-    const commonConfig: IPhaseParticipationConfig = {
-      participation_method,
-    };
-
     setParticipationConfig(() => ({
+      ...defaultParticipationConfig,
+      participation_method,
+
       ...(ideation ? ideationDefaultConfig : {}),
       ...(voting ? votingDefaultConfig : {}),
       ...(survey ? surveyDefaultConfig : {}),
       ...(native_survey ? nativeSurveyDefaultConfig : {}),
-      ...commonConfig,
     }));
   };
-
-  console.log(participationConfig);
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
     setParticipationConfig((state) => ({

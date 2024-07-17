@@ -64,9 +64,8 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import PhaseParticipationConfig, {
-  IPhaseParticipationConfig,
-} from '../phase/phaseParticipationConfig';
+import PhaseParticipationConfig from '../phase/phaseParticipationConfig';
+import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig/utils/participationMethodConfigs';
 
 import CampaignRow from './CampaignRow';
 import messages from './messages';

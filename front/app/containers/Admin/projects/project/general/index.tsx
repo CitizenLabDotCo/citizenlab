@@ -51,7 +51,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig';
+import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig/utils/participationMethodConfigs';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
