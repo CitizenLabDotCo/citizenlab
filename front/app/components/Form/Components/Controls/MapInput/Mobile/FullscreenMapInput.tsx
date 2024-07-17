@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 
+import Graphic from '@arcgis/core/Graphic';
 import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
@@ -39,6 +40,7 @@ import {
   clearPointData,
   handleMapClickMultipoint,
   handleMapClickPoint,
+  handlePointDrag,
   updateDataAndDisplay,
 } from '../utils';
 
@@ -76,6 +78,10 @@ const FullscreenMapInput = memo<Props>(
     const modalPortalElement = document.getElementById('modal-portal');
     const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
+    // Create refs for dragging/editing a user's points on the map
+    const pointBeingDragged = useRef<Graphic | null>(null);
+    const temporaryDragGraphic = useRef<Graphic | null>(null);
+
     // Create refs for custom UI elements
     const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -104,7 +110,7 @@ const FullscreenMapInput = memo<Props>(
       [handleMultiPointChange, handlePointChange, inputType]
     );
 
-    // Add custom UI elements to the map
+    // Add the custom UI elements to the map
     useEffect(() => {
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
@@ -160,6 +166,17 @@ const FullscreenMapInput = memo<Props>(
       }
     };
 
+    // Add handling for when a user edits a point by dragging it
+    handlePointDrag({
+      mapView,
+      handleMultiPointChange,
+      pointBeingDragged,
+      temporaryDragGraphic,
+      theme,
+      data,
+      inputType,
+    });
+
     return modalPortalElement
       ? createPortal(
           <Box
@@ -180,9 +197,9 @@ const FullscreenMapInput = memo<Props>(
                 initialData={{
                   zoom: Number(mapConfig?.data.attributes.zoom_level),
                   center:
-                    inputType === 'point' // TODO: Clean up this logic + set to extent of the data instead.
+                    inputType === 'point'
                       ? data || mapConfig?.data.attributes.center_geojson
-                      : data?.[0] || mapConfig?.data.attributes.center_geojson,
+                      : mapConfig?.data.attributes.center_geojson,
                   showLegend: layerCount > 0,
                   showLayerVisibilityControl: layerCount > 0,
                   showLegendExpanded: true,

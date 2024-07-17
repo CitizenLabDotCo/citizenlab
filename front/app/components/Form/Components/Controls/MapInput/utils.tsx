@@ -3,6 +3,7 @@ import Polyline from '@arcgis/core/geometry/Polyline';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import LayerView from '@arcgis/core/views/layers/LayerView';
 import MapView from '@arcgis/core/views/MapView';
 import { colors } from '@citizenlab/cl2-component-library';
 import { JsonSchema } from '@jsonforms/core';
@@ -359,24 +360,48 @@ export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
   return;
 };
 
+// getUserInputGraphicsLayerView
+// Description: Gets the user input graphics LayerView
+export const getUserInputGraphicsLayerView = (mapView?: MapView | null) => {
+  if (mapView) {
+    return mapView?.layerViews?.find(
+      (layerView) => layerView?.layer?.title === 'User Input'
+    ) as LayerView;
+  }
+  return;
+};
+
 // TODO: Clean up!
 // handlePointDrag
 // Description: Handles when a point a user added to a map is then dragged (edited)
-export const handlePointDrag = (
-  mapView: MapView | null | undefined,
-  handleMultiPointChange:
-    | ((points: number[][] | undefined) => void)
-    | undefined,
-  pointBeingDragged: React.MutableRefObject<Graphic | null>,
-  temporaryDragGraphic: React.MutableRefObject<Graphic | null>,
-  theme: any,
-  data: any,
-  inputType: 'point' | 'line' | 'polygon'
-) => {
+export const handlePointDrag = ({
+  mapView,
+  handleMultiPointChange,
+  pointBeingDragged,
+  temporaryDragGraphic,
+  theme,
+  data,
+  inputType,
+}: HandlePointDragProps) => {
   // TODO: Clean up!
-  // Handle editing/dragging of existing points
   mapView?.on('drag', (evt) => {
     if (evt?.action === 'start') {
+      // // Other option: But you could manually query the GL by looping through it's graphics and checking the graphics attributes.
+      // // Try doing a query instead
+      // let pxToMeters = mapView.extent.width / mapView.width;
+      // const bufferCircle = new Circle({
+      //   center: {
+      //     longitude: mapView.toMap(evt).longitude,
+      //     latitude: mapView.toMap(evt).latitude,
+      //   },
+      //   radius: 10 * pxToMeters, // meters by default
+      // });
+      // const userLayer = getUserInputGraphicsLayerView(mapView);
+
+      // userLayer?.queryFeatures(q).then((result) => {
+      //   console.log({ result });
+      // });
+
       mapView.hitTest(evt).then((resp) => {
         const clickedElement = resp?.results?.[0];
 
@@ -540,4 +565,16 @@ export const handlePointDrag = (
       }
     }
   });
+};
+
+type HandlePointDragProps = {
+  mapView: MapView | null | undefined;
+  handleMultiPointChange:
+    | ((points: number[][] | undefined) => void)
+    | undefined;
+  pointBeingDragged: React.MutableRefObject<Graphic | null>;
+  temporaryDragGraphic: React.MutableRefObject<Graphic | null>;
+  theme: any;
+  data: any;
+  inputType: 'point' | 'line' | 'polygon';
 };

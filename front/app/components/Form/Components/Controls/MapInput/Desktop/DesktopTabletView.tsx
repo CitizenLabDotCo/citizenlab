@@ -78,7 +78,7 @@ const DesktopView = ({
   const pointBeingDragged = useRef<Graphic | null>(null);
   const temporaryDragGraphic = useRef<Graphic | null>(null);
 
-  // Add custom UI elements to the map
+  // Add the custom UI elements to the map
   useEffect(() => {
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
     if (inputType !== 'point') {
@@ -132,16 +132,16 @@ const DesktopView = ({
     inputType === 'point' && handlePointChange?.(point);
   };
 
-  // TODO: Clean up!
-  handlePointDrag(
+  // Add handling for when a user edits a point by dragging it
+  handlePointDrag({
     mapView,
     handleMultiPointChange,
     pointBeingDragged,
     temporaryDragGraphic,
     theme,
     data,
-    inputType
-  );
+    inputType,
+  });
 
   return (
     <>
