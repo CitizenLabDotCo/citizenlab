@@ -97,7 +97,7 @@ module Permissions
     end
 
     def reacting_denied_reason_for_action(reaction_mode: nil)
-      if !phase.ideation?
+      if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
@@ -109,7 +109,6 @@ module Permissions
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
-
 
     def taking_survey_denied_reason_for_action
       unless phase.survey?

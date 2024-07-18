@@ -162,8 +162,8 @@ module EmailCampaigns
     end
 
     def top_ideas
-      @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).reject do |idea|
-        idea.participation_method_on_creation.never_show?
+      @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).select do |idea|
+        idea.participation_method_on_creation.supports_public_visibility?
       end
     end
 

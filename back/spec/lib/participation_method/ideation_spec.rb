@@ -150,12 +150,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
@@ -193,12 +187,12 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[
-          voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count 
-          voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-          native_survey_title_multiloc native_survey_button_multiloc
-        ].each do |attribute|
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+        native_survey_title_multiloc native_survey_button_multiloc
+      ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
-        end
+      end
     end
   end
 
@@ -229,6 +223,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:transitive?) { is_expected.to be true }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
+  its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }

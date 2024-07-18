@@ -65,10 +65,6 @@ module ParticipationMethod
       []
     end
 
-    def never_show?
-      false
-    end
-
     def update_if_published?
       true
     end
@@ -84,6 +80,10 @@ module ParticipationMethod
 
     def extra_fields_category_translation_key
       'custom_forms.categories.extra.title'
+    end
+
+    def supports_public_visibility?
+      false
     end
 
     def supports_exports?

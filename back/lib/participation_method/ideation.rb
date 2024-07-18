@@ -315,6 +315,10 @@ module ParticipationMethod
       %w[trending random popular -new new]
     end
 
+    def supports_public_visibility?
+      true
+    end
+
     def supports_exports?
       true
     end

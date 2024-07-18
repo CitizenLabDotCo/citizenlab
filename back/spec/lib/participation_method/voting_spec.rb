@@ -165,17 +165,17 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#supports_serializing?' do
     it 'returns true for voting attributes' do
       %i[
-          voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count 
-          voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-        ].each do |attribute|
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+      ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be true
-        end
+      end
     end
 
     it 'returns false for the other attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
-        end
+      end
     end
   end
 
@@ -183,7 +183,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:validate_built_in_fields?) { is_expected.to be true }
-  its(:never_show?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be false }
   its(:update_if_published?) { is_expected.to be true }
   its(:sign_in_required_for_posting?) { is_expected.to be true }
