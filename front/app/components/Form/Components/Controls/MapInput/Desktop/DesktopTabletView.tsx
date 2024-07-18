@@ -107,6 +107,7 @@ const DesktopView = ({
         locale,
         theme,
         setAddress,
+        isMobileOrSmaller: false,
       });
     } else {
       // Clear the map if there is no data
@@ -141,6 +142,7 @@ const DesktopView = ({
     theme,
     data,
     inputType,
+    isMobileOrSmaller: false,
   });
 
   return (

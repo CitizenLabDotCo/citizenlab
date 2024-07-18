@@ -3,7 +3,6 @@ import Polyline from '@arcgis/core/geometry/Polyline';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
-import LayerView from '@arcgis/core/views/layers/LayerView';
 import MapView from '@arcgis/core/views/MapView';
 import { colors } from '@citizenlab/cl2-component-library';
 import { JsonSchema } from '@jsonforms/core';
@@ -154,6 +153,7 @@ export const updateMultiPointsDataAndDisplay = ({
   mapView,
   inputType,
   tenantPrimaryColor,
+  isMobileOrSmaller,
 }: UpdateMultiPointsDataAndDisplayProps) => {
   const coordinates = data;
 
@@ -167,7 +167,7 @@ export const updateMultiPointsDataAndDisplay = ({
       symbol: getShapeSymbol({
         shape: 'circle',
         color: tenantPrimaryColor,
-        sizeInPx: 20,
+        sizeInPx: isMobileOrSmaller ? 26 : 20,
         outlineColor: colors.white,
         outlineWidth: 2,
       }),
@@ -229,6 +229,7 @@ type UpdateMultiPointsDataAndDisplayProps = {
   inputType: 'point' | 'line' | 'polygon';
   tenantPrimaryColor: string;
   zoomToInputExtent?: boolean;
+  isMobileOrSmaller?: boolean;
 };
 
 // getUserInputPoints
@@ -320,6 +321,7 @@ export const updateDataAndDisplay = ({
   locale,
   theme,
   setAddress,
+  isMobileOrSmaller,
 }: UpdateDataAndDisplayProps) => {
   if (inputType === 'point') {
     updatePointDataAndDisplay({
@@ -336,6 +338,7 @@ export const updateDataAndDisplay = ({
       mapView,
       inputType,
       tenantPrimaryColor: theme.colors.tenantPrimary,
+      isMobileOrSmaller,
     });
   }
 };
@@ -347,6 +350,7 @@ type UpdateDataAndDisplayProps = {
   locale: string;
   theme: any;
   setAddress?: (address: Option) => void;
+  isMobileOrSmaller?: boolean;
 };
 
 // getUserInputGraphicsLayer
@@ -356,17 +360,6 @@ export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
     return mapView?.map?.layers?.find(
       (layer) => layer.title === 'User Input'
     ) as GraphicsLayer;
-  }
-  return;
-};
-
-// getUserInputGraphicsLayerView
-// Description: Gets the user input graphics LayerView
-export const getUserInputGraphicsLayerView = (mapView?: MapView | null) => {
-  if (mapView) {
-    return mapView?.layerViews?.find(
-      (layerView) => layerView?.layer?.title === 'User Input'
-    ) as LayerView;
   }
   return;
 };
@@ -382,29 +375,13 @@ export const handlePointDrag = ({
   theme,
   data,
   inputType,
+  isMobileOrSmaller,
 }: HandlePointDragProps) => {
   // TODO: Clean up!
   mapView?.on('drag', (evt) => {
     if (evt?.action === 'start') {
-      // // Other option: But you could manually query the GL by looping through it's graphics and checking the graphics attributes.
-      // // Try doing a query instead
-      // let pxToMeters = mapView.extent.width / mapView.width;
-      // const bufferCircle = new Circle({
-      //   center: {
-      //     longitude: mapView.toMap(evt).longitude,
-      //     latitude: mapView.toMap(evt).latitude,
-      //   },
-      //   radius: 10 * pxToMeters, // meters by default
-      // });
-      // const userLayer = getUserInputGraphicsLayerView(mapView);
-
-      // userLayer?.queryFeatures(q).then((result) => {
-      //   console.log({ result });
-      // });
-
       mapView.hitTest(evt).then((resp) => {
         const clickedElement = resp?.results?.[0];
-
         if (clickedElement) {
           if (
             clickedElement.type === 'graphic' &&
@@ -432,7 +409,7 @@ export const handlePointDrag = ({
           temporaryDragGraphic.current.symbol = getShapeSymbol({
             shape: 'circle',
             color: theme.colors.tenantSecondary,
-            sizeInPx: 20,
+            sizeInPx: isMobileOrSmaller ? 26 : 20,
             outlineColor: colors.white,
             outlineWidth: 2,
           });
@@ -577,4 +554,5 @@ type HandlePointDragProps = {
   theme: any;
   data: any;
   inputType: 'point' | 'line' | 'polygon';
+  isMobileOrSmaller?: boolean;
 };

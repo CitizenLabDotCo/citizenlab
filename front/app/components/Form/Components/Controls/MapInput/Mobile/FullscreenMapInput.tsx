@@ -132,6 +132,7 @@ const FullscreenMapInput = memo<Props>(
           inputType,
           locale,
           theme,
+          isMobileOrSmaller: true,
         });
       } else {
         clearPointData(mapView);
@@ -175,6 +176,7 @@ const FullscreenMapInput = memo<Props>(
       theme,
       data,
       inputType,
+      isMobileOrSmaller: true,
     });
 
     return modalPortalElement
