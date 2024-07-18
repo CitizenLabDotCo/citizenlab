@@ -78,7 +78,7 @@ fr:
       "link_unsubscribe": "Se désabonner"
       "powered_by": "Généré par"
       "recipient_statement": "Cet e-mail vous a été envoyé par %{organizationName} via Go Vocal, car vous êtes un utilisateur de la plateforme %{organizationLink}."
-      "unsubscribe_statement": "Vous pouvez %{unsubscribeLink} si vous ne souhaitez plus recevoir ces courriels à l'avenir."
+      "unsubscribe_statement": "Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
       "unsubscribe_text": "vous désabonner"
     follow:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
