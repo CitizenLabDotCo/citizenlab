@@ -2171,6 +2171,8 @@
   "app.containers.AdminPage.phase.methodPicker.linkWithReportBuilder1": "Link with in-platform report builder",
   "app.containers.AdminPage.phase.methodPicker.logic1": "Logic",
   "app.containers.AdminPage.phase.methodPicker.manyQuestionTypes1": "Wide range of question types",
+  "app.containers.AdminPage.phase.methodPicker.proposalsDescription": "Allow participants to upload ideas with a time and vote limit.",
+  "app.containers.AdminPage.phase.methodPicker.proposalsTitle": "Proposals, petitions or initiatives",
   "app.containers.AdminPage.phase.methodPicker.quickPoll1": "Quick poll",
   "app.containers.AdminPage.phase.methodPicker.quickPollDescription1": "Set up a short, multiple-choice questionnaire.",
   "app.containers.AdminPage.phase.methodPicker.reportingDescription1": "Provide information to users, visualise results from other phases and create data rich reports.",
