@@ -273,8 +273,8 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'replace_reportable_point_fields' do
-      it 'replaces each point field with 2 fields (1 for latitude & 1 for longitude) related by key' do
+    describe 'add_suffix_to_geo_fields_title_multiloc' do
+      it 'adds [Longitude, Latitude] suffix to geo fields title_multilocs' do
         create(
           :custom_field_point,
           resource: custom_form,
@@ -282,12 +282,12 @@ describe IdeaCustomFieldsService do
           title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }
         )
 
-        point_fields = service.reportable_fields.select { |field| field.input_type == 'point' }
-        expect(point_fields.map(&:key)).to match_array %w[where_is_it_zl5_latitude where_is_it_zl5_longitude]
-        expect(point_fields.map(&:title_multiloc)).to match_array [
-          { 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' },
-          { 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' }
-        ]
+        point_field = service.reportable_fields.find { |field| field.input_type == 'point' }
+        expect(point_field.title_multiloc)
+          .to eq({
+            'en' => 'Where is it? [Longitude, Latitude]',
+            'nl-NL' => 'Waar is het? [Lengtegraad, Breedtegraad]'
+          })
       end
     end
   end

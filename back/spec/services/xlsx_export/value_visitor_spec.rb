@@ -473,28 +473,15 @@ describe XlsxExport::ValueVisitor do
 
     describe '#visit_point' do
       let(:input_type) { 'point' }
-      let(:point_value) do
+      let(:value) do
         {
           'type' => 'Point',
           'coordinates' => [11.11, 22.22]
         }
       end
-      let(:model) { create(:idea, custom_field_values: { 'title_of_question_j97' => point_value }) }
 
-      context "when field key includes '_longitude'" do
-        let(:field_key) { 'title_of_question_j97_longitude' }
-
-        it 'returns the longitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '11.11'
-        end
-      end
-
-      context "when field key includes '_latitude'" do
-        let(:field_key) { 'title_of_question_j97_latitude' }
-
-        it 'returns the latitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '22.22'
-        end
+      it 'returns the GeoJSON value' do
+        expect(visitor.visit_point(field)).to eq value
       end
     end
 
