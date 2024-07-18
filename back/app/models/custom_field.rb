@@ -271,34 +271,6 @@ class CustomField < ApplicationRecord
     )
   end
 
-  def point_latitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_latitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
-  def point_longitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_longitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }

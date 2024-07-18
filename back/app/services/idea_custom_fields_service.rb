@@ -49,8 +49,7 @@ class IdeaCustomFieldsService
     filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
 
     # Importing of point fields is not yet implemented, but the fields are still included in the importable fields list.
-    # This is because this list is used to generate the example template
-    # XLSX file, where we want to show the latitude and longitude fields as separate columns.
+    # This is because this list is used to generate the example template XLSX file.
     add_suffix_to_geo_fields_title_multiloc(filtered_fields)
   end
 
