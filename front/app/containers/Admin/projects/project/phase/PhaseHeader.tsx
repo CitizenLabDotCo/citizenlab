@@ -162,7 +162,6 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 ]
               )}
             </Text>
-            {console.log(phase.attributes.participation_method)}
             <Box px="8px">·</Box>
             <Icon
               name="calendar"

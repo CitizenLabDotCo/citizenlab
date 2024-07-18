@@ -167,7 +167,7 @@ const PhaseParticipationConfig = ({
     const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
     const proposals = participation_method === 'proposals';
-    console.log(participation_method);
+
     setParticipationConfig(() => ({
       ...defaultParticipationConfig,
       participation_method,
