@@ -2119,7 +2119,7 @@
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Je hebt <b>{totalVotes} stemmen</b> die je aan de opties kunt toekennen.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Als je klaar bent, klik je op \"Verzenden\" om je stem uit te brengen.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "De stemming werd gesloten op <b>{endDate}.</b> Deelnemers konden <b>stemmen op 1 optie.</b>",
-  "app.utils.votingMethodUtils.singleVotingOneVotePreferredOption": "Selecteer de optie van je voorkeur door op \"Stemmen\" te tikken.",
+  "app.utils.votingMethodUtils.singleVotingOneVotePreferredOption": "Selecteer de optie van je voorkeur door op \"Selecteer\" te tikken.",
   "app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote2": "Je hebt <b>1 stem</b> die je aan een van de opties kunt toekennen.",
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "De stemming werd gesloten op <b>{endDate}.</b> Deelnemers konden <b>stemmen op zoveel opties als ze wilden.</b>",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "Je kunt op zoveel opties stemmen als je wilt.",
