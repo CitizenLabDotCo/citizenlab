@@ -3,14 +3,6 @@ import React, { PureComponent } from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
-const Fallback = styled.img`
-  object-fit: cover;
-  object-position: center center;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-`;
-
 const ImageElement = styled.img<{
   cover: boolean;
   fadeIn: boolean;
@@ -86,7 +78,7 @@ export default class Image extends PureComponent<Props, State> {
     const { isLazy } = this.props;
     const { loaded } = this.state;
 
-    let image = (
+    return (
       <ImageElement
         src={src}
         alt={alt}
@@ -102,19 +94,5 @@ export default class Image extends PureComponent<Props, State> {
         loading={isLazy ? 'lazy' : 'eager'}
       />
     );
-
-    if (cover) {
-      image = (
-        <Fallback
-          src={src}
-          alt={alt}
-          role={role}
-          className={className}
-          loading={isLazy ? 'lazy' : 'eager'}
-        />
-      );
-    }
-
-    return image;
   }
 }
