@@ -90,7 +90,7 @@ describe('<HiddenNavbarItemList />', () => {
     const faqItem = {
       pageCode: 'faq',
       pageId: '793d56cc-c8b3-4422-b393-972b71f82aa2',
-      pageTitleMultiloc: { en: 'FAQ' },
+      titleMultiloc: { en: 'FAQ' },
       type: 'page',
     };
 
@@ -100,7 +100,7 @@ describe('<HiddenNavbarItemList />', () => {
     const aboutItem = {
       pageCode: 'about',
       pageId: 'e7854e94-3074-4607-b66e-0422aa3d8359',
-      pageTitleMultiloc: { en: 'About' },
+      titleMultiloc: { en: 'About' },
       type: 'page',
     };
 
