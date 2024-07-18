@@ -1590,7 +1590,7 @@
   "app.containers.AdminPage.ProjectEdit.inputManagerLinkText": "Beitragsmanager",
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Beiträge",
   "app.containers.AdminPage.ProjectEdit.inputPostingEnabled": "Beiträge einreichen",
-  "app.containers.AdminPage.ProjectEdit.inputReactingEnabled": "Reagieren auf Beiträge",
+  "app.containers.AdminPage.ProjectEdit.inputReactingEnabled": "Beiträge liken und disliken (Daumen hoch und runter)",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardansicht",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Wählen Sie die Standardansicht für die Anzeige von Beiträgen: Karten in einer Listenansicht oder Pins auf einer Karte. Die Teilnehmenden können manuell zwischen den beiden Ansichten wechseln.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Konveio URL einbetten",
