@@ -1,30 +1,16 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
-import {
-  Radio,
-  IconTooltip,
-  Toggle,
-  IOption,
-} from '@citizenlab/cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import { ApiErrors } from '../../..';
-import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import {
-  StyledSectionField,
-  ToggleRow,
-  ReactingLimitInput,
-} from '../../shared/styling';
 import SortingPicker from '../_shared/SortingPicker';
+import UserActions from '../_shared/UserActions';
 
 interface Props {
   input_term: InputTerm | undefined;
@@ -77,10 +63,6 @@ const ProposalsInputs = ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
-  const { formatMessage } = useIntl();
-  const reactingLimited = useRef(reacting_like_method === 'limited');
-  const showReactingLimits = reactingLimited.current;
-
   return (
     <>
       <AnonymousPostingToggle
@@ -93,93 +75,21 @@ const ProposalsInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-      <StyledSectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForUsers} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
-          />
-        </SubSectionTitle>
 
-        <ToggleRow>
-          <Toggle
-            checked={posting_enabled || false}
-            onChange={togglePostingEnabled}
-            label={formatMessage(messages.inputPostingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
-        </ToggleRow>
-
-        <ToggleRow>
-          <Toggle
-            checked={commenting_enabled || false}
-            onChange={toggleCommentingEnabled}
-            label={formatMessage(messages.inputCommentingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-        </ToggleRow>
-
-        <ToggleRow className="last">
-          <Toggle
-            checked={reacting_enabled || false}
-            onChange={toggleReactingEnabled}
-            label={formatMessage(messages.inputReactingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
-        </ToggleRow>
-      </StyledSectionField>
-      {reacting_enabled && (
-        <>
-          {showReactingLimits && (
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.likingMethodTitle} />
-              </SubSectionTitle>
-              <Radio
-                onChange={handleReactingLikeMethodOnChange}
-                currentValue={reacting_like_method}
-                value="unlimited"
-                name="likingmethod"
-                id="likingmethod-unlimited"
-                label={<FormattedMessage {...messages.unlimited} />}
-              />
-              <Radio
-                onChange={handleReactingLikeMethodOnChange}
-                currentValue={reacting_like_method}
-                value="limited"
-                name="likingmethod"
-                id="likingmethod-limited"
-                label={<FormattedMessage {...messages.limited} />}
-              />
-              <Error apiErrors={apiErrors && apiErrors.reacting_method} />
-
-              {reacting_like_method === 'limited' && (
-                <>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.maxLikes} />
-                  </SubSectionTitle>
-                  <ReactingLimitInput
-                    id="liking-limit"
-                    type="number"
-                    min="1"
-                    placeholder=""
-                    value={
-                      reacting_like_limited_max
-                        ? reacting_like_limited_max.toString()
-                        : null
-                    }
-                    onChange={handleLikingLimitOnChange}
-                  />
-                  <Error
-                    text={noLikingLimitError}
-                    apiErrors={apiErrors && apiErrors.reacting_limit}
-                  />
-                </>
-              )}
-            </SectionField>
-          )}
-        </>
-      )}
+      <UserActions
+        posting_enabled={posting_enabled || false}
+        commenting_enabled={commenting_enabled || false}
+        reacting_enabled={reacting_enabled || false}
+        togglePostingEnabled={togglePostingEnabled}
+        toggleCommentingEnabled={toggleCommentingEnabled}
+        toggleReactingEnabled={toggleReactingEnabled}
+        apiErrors={apiErrors}
+        reacting_like_method={reacting_like_method}
+        reacting_like_limited_max={reacting_like_limited_max}
+        noLikingLimitError={noLikingLimitError}
+        handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+        handleLikingLimitOnChange={handleLikingLimitOnChange}
+      />
 
       <DefaultViewPicker
         presentation_mode={presentation_mode}
