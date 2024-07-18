@@ -87,13 +87,13 @@ const MapControl = ({ ...props }: ControlProps) => {
         const type =
           uischema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
 
-        // Add an extra coordinate to close the line to form a polygon
+        // Add an extra coordinate to close the line if we're forming a polygon
         type === 'Polygon' && coordinates.push(coordinates[0]);
 
         // Create the GeoJSON object
         const geoJSONObject = {
           type,
-          // Polygons use a double-nested array structure
+          // Polygons use a double-nested array structure, so we wrap the coordinates in an additional array if needed
           coordinates: type === 'LineString' ? coordinates : [coordinates],
         };
         handleChange(path, geoJSONObject);

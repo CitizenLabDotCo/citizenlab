@@ -38,9 +38,11 @@ import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
   clearPointData,
+  getInitialMapCenter,
   handleMapClickMultipoint,
   handleMapClickPoint,
   handlePointDrag,
+  MapInputType,
   updateDataAndDisplay,
 } from '../utils';
 
@@ -50,7 +52,7 @@ type Props = {
   data: any;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   mapViewSurveyPage?: MapView | null;
   questionPageMapView?: MapView | null;
 };
@@ -198,10 +200,7 @@ const FullscreenMapInput = memo<Props>(
                 layers={mapLayers}
                 initialData={{
                   zoom: Number(mapConfig?.data.attributes.zoom_level),
-                  center:
-                    inputType === 'point'
-                      ? data || mapConfig?.data.attributes.center_geojson
-                      : mapConfig?.data.attributes.center_geojson,
+                  center: getInitialMapCenter(inputType, mapConfig, data),
                   showLegend: layerCount > 0,
                   showLayerVisibilityControl: layerCount > 0,
                   showLegendExpanded: true,

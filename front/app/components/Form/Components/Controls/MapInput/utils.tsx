@@ -7,6 +7,8 @@ import MapView from '@arcgis/core/views/MapView';
 import { colors } from '@citizenlab/cl2-component-library';
 import { JsonSchema } from '@jsonforms/core';
 
+import { IMapConfig } from 'api/map_config/types';
+
 import {
   esriPointToGeoJson,
   getFillSymbol,
@@ -21,6 +23,8 @@ import { Option } from 'components/UI/LocationInput';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 import messages from '../messages';
+
+export type MapInputType = 'point' | 'line' | 'polygon';
 
 // newPointGraphic
 // Description: Creates a new point (pin symbol) graphic
@@ -185,9 +189,7 @@ export const updateMultiPointsDataAndDisplay = ({
   }
   // Create the Esri line object
   const polyline = new Polyline({
-    paths: [
-      pointsForLine?.map((coordinates) => [coordinates[0], coordinates[1]]),
-    ],
+    paths: [pointsForLine],
   });
 
   // Create the line graphic
@@ -226,7 +228,7 @@ export const updateMultiPointsDataAndDisplay = ({
 type UpdateMultiPointsDataAndDisplayProps = {
   data: number[][];
   mapView: MapView | null | undefined;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   tenantPrimaryColor: string;
   zoomToInputExtent?: boolean;
   isMobileOrSmaller?: boolean;
@@ -239,12 +241,12 @@ export const getUserInputPoints = (
 ): number[][] => {
   const filteredGraphics: Graphic[] = [];
 
-  // We store all user input data in a graphics layer called 'User Input'
+  // We store all user input data in it's own graphics layer
   const userGraphicsLayer = getUserInputGraphicsLayer(mapView);
 
   userGraphicsLayer?.graphics?.forEach((graphic) => {
     if (graphic.geometry.type === 'point') {
-      // We just want a list of the points
+      // We want just a list of the points
       filteredGraphics.push(graphic);
     }
   });
@@ -270,7 +272,8 @@ export const clearPointData = (
 };
 
 // checkCoordinateErrors
-// Description: Gets any nested coordinate errors raised by ajv validation
+// Description: Gets any nested coordinate errors raised by ajv validation.
+// Given the nested structure of the JSON schema for GeoJSON data, we need to check validity here.
 export const checkCoordinateErrors = ({
   data,
   inputType,
@@ -296,7 +299,7 @@ export const checkCoordinateErrors = ({
 
 type CheckCoordinateErrorsProps = {
   data: any;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   schema: JsonSchema;
   formatMessage: (message: any, values?: any) => string;
 };
@@ -305,7 +308,7 @@ type CheckCoordinateErrorsProps = {
 // Description: Gets the coordinates from the data
 export const getCoordinatesFromMultiPointData = (
   data: any,
-  inputType: 'point' | 'line' | 'polygon'
+  inputType: MapInputType
 ) => {
   return inputType === 'polygon'
     ? data?.coordinates?.[0]?.slice(0, -1)
@@ -346,7 +349,7 @@ export const updateDataAndDisplay = ({
 type UpdateDataAndDisplayProps = {
   data: any;
   mapView: MapView | null | undefined;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   locale: string;
   theme: any;
   setAddress?: (address: Option) => void;
@@ -362,6 +365,20 @@ export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
     ) as GraphicsLayer;
   }
   return;
+};
+
+// getInitialMapCenter
+// Description: Gets the initial map center when loading the map.
+export const getInitialMapCenter = (
+  inputType: MapInputType,
+  mapConfig: IMapConfig | undefined,
+  data: any
+) => {
+  if (inputType === 'point') {
+    return data || mapConfig?.data.attributes.center_geojson;
+  } else {
+    return mapConfig?.data.attributes.center_geojson;
+  }
 };
 
 // TODO: Clean up!
@@ -553,6 +570,6 @@ type HandlePointDragProps = {
   temporaryDragGraphic: React.MutableRefObject<Graphic | null>;
   theme: any;
   data: any;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   isMobileOrSmaller?: boolean;
 };

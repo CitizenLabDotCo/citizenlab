@@ -4,9 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import styled, { useTheme } from 'styled-components';
 
+import { MapInputType } from '../../utils';
+
 type InstructionAnimationProps = {
   instructionRef: React.RefObject<HTMLDivElement>;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   data: any;
 };
 

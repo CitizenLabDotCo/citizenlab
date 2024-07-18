@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { Point } from 'geojson';
 import { useTheme } from 'styled-components';
@@ -31,11 +31,13 @@ import {
   checkCoordinateErrors,
   updateDataAndDisplay,
   handlePointDrag,
+  getInitialMapCenter,
+  MapInputType,
 } from '../utils';
 
 type Props = {
   mapConfig?: IMapConfig;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   mapLayers?: Layer[];
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
@@ -168,10 +170,7 @@ const DesktopView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center:
-                inputType === 'point'
-                  ? data || mapConfig?.data.attributes.center_geojson
-                  : mapConfig?.data.attributes.center_geojson,
+              center: getInitialMapCenter(inputType, mapConfig, data),
               showLegend: layerCount > 0,
               showLayerVisibilityControl: layerCount > 0,
               onInit: onMapInit,
@@ -194,6 +193,12 @@ const DesktopView = ({
                 undoButtonRef={undoButtonRef}
                 undoEnabled={data}
                 inputType={inputType}
+                width="32px"
+                height="32px"
+                padding="7px"
+                iconSize="20px"
+                iconColor={colors.coolGrey500}
+                bgHoverColor={colors.grey100}
               />
             )}
             <ResetMapViewButton

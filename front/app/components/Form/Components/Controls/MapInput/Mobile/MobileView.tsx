@@ -24,7 +24,9 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
   checkCoordinateErrors,
   clearPointData,
+  getInitialMapCenter,
   getUserInputGraphicsLayer,
+  MapInputType,
   updateMultiPointsDataAndDisplay,
   updatePointDataAndDisplay,
 } from '../utils';
@@ -38,7 +40,7 @@ type Props = {
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   didBlur: boolean;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
 };
 
 const MobileView = ({
@@ -111,14 +113,6 @@ const MobileView = ({
     }
   }, [mapView, mapView?.map?.layers]);
 
-  const getMapCenter = () => {
-    if (inputType === 'point') {
-      return data || mapConfig?.data.attributes.center_geojson;
-    } else {
-      return mapConfig?.data.attributes.center_geojson;
-    }
-  };
-
   return (
     <>
       <Box display="flex" flexDirection="column" mb="8px">
@@ -144,7 +138,7 @@ const MobileView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: getMapCenter(),
+              center: getInitialMapCenter(inputType, mapConfig, data),
               showLegend: false,
               showLayerVisibilityControl: false,
               showZoomControls: false,
