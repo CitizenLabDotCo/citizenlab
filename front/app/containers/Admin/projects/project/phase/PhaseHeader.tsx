@@ -46,7 +46,7 @@ const participationMethodMessage: Record<
   MessageDescriptor
 > = {
   ideation: messages.ideationPhase,
-  proposals: messages.ideationPhase,
+  proposals: messages.proposalsPhase,
   information: messages.informationPhase,
   survey: messages.externalSurveyPhase,
   voting: messages.votingPhase,
@@ -162,6 +162,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 ]
               )}
             </Text>
+            {console.log(phase.attributes.participation_method)}
             <Box px="8px">·</Box>
             <Icon
               name="calendar"
