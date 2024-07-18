@@ -330,6 +330,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noGroups": "No groups",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.only": "Only",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Poll phase",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.proposalsPhase": "Proposals phase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>React:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Registered users",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Submit inputs:</b>  {participants}",
