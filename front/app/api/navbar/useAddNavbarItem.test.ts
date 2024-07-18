@@ -27,7 +27,7 @@ describe('useAddNavbarItem', () => {
     act(() => {
       result.current.mutate({
         type: 'default_item',
-        navbarTitleMultiloc: {
+        titleMultiloc: {
           en: 'test',
         },
         navbarCode: 'home',
@@ -53,7 +53,7 @@ describe('useAddNavbarItem', () => {
     act(() => {
       result.current.mutate({
         type: 'default_item',
-        navbarTitleMultiloc: {
+        titleMultiloc: {
           en: 'test',
         },
         navbarCode: 'home',
