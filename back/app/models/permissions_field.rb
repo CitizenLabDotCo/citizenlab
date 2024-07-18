@@ -27,7 +27,7 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
-  FIELD_TYPES = %w[custom_field email name].freeze
+  FIELD_TYPES = %w[custom_field email name verification].freeze
 
   # This attribute will be calculated but not persisted
   attribute :locked, :boolean, default: false

@@ -33,12 +33,6 @@ module Permissions
 
       default_fields = [name_field, email_field] + custom_permissions_fields
 
-      # Verification
-      if Verification::VerificationService.new.active_methods(AppConfiguration.instance).any?
-        verification_field = PermissionsField.new(field_type: 'verification', required: false, enabled: false, permission: permission)
-        default_fields = default_fields.insert(2, verification_field)
-      end
-
       fields = case permitted_by
       when 'everyone'
         # Remove custom fields and disable all fields
@@ -102,3 +96,5 @@ module Permissions
     end
   end
 end
+
+Permissions::PermissionsFieldsService.prepend(Verification::Patches::Permissions::PermissionsFieldsService)

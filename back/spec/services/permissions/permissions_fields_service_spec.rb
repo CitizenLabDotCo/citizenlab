@@ -61,34 +61,6 @@ describe Permissions::PermissionsFieldsService do
         expect(fields.pluck(:required)).to match_array([true, true, false])
         expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
       end
-
-      context 'when verification methods are available' do
-        before do
-          configuration = AppConfiguration.instance
-          settings = configuration.settings
-          settings['verification'] = {
-            allowed: true,
-            enabled: true,
-            verification_methods: [
-              { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' },
-              { name: 'id_card_lookup', method_name_multiloc: { en: 'By social security number' }, card_id_multiloc: { en: 'Social security number' }, card_id_placeholder: 'xx-xxxxx-xx', card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' }, explainer_image_url: 'https://some.fake/image.png' }
-            ]
-          }
-          configuration.save!
-        end
-
-        it 'returns verification in non-persisted default fields when permitted_by "users"' do
-          permission = create(:permission, permitted_by: 'users')
-
-          fields = service.fields_for_permission(permission)
-          expect(fields.count).to eq 4
-          expect(fields.map(&:persisted?)).to match_array [false, false, false, false]
-          expect(fields.pluck(:field_type)).to match_array(%w[name email verification custom_field])
-          expect(fields.pluck(:enabled)).to match_array([true, true, false, true])
-          expect(fields.pluck(:required)).to match_array([true, true, false, false])
-          expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-        end
-      end
     end
 
     context '"custom_permitted_by" feature flag is NOT enabled' do
