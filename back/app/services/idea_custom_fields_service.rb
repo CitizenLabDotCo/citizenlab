@@ -176,7 +176,7 @@ class IdeaCustomFieldsService
 
   def add_suffix_to_geo_fields_title_multiloc(fields)
     fields.map do |field|
-      if field.input_type == 'point'
+      if CustomField::GEOGRAPHIC_INPUT_TYPES.include? field.input_type
         field.title_multiloc = field.title_multiloc.to_h do |k, v|
           [
             k,

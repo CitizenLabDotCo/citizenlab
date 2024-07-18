@@ -42,6 +42,8 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
       create(:custom_field_multiline_text, resource: custom_form, key: 'multiline_text_field', title_multiloc: { 'en' => 'Multiline text field' })
       create(:custom_field_number, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' })
       create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
+      create(:custom_field_line, resource: custom_form, key: 'line_field', title_multiloc: { 'en' => 'Line field' })
+      create(:custom_field_polygon, resource: custom_form, key: 'polygon_field', title_multiloc: { 'en' => 'Polygon field' })
       create(:custom_field_linear_scale, resource: custom_form, key: 'linear_scale_field', title_multiloc: { 'en' => 'Linear scale field' })
 
       select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
@@ -74,6 +76,8 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Multiline text field',
         'Number field',
         'Point field [Longitude, Latitude]',
+        'Line field [Longitude, Latitude]',
+        'Polygon field [Longitude, Latitude]',
         'Linear scale field',
         'Select field',
         "If you picked 'Other', what are you thinking of?",

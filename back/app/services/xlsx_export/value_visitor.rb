@@ -78,6 +78,14 @@ module XlsxExport
       default(field)
     end
 
+    def visit_line(field)
+      default(field)
+    end
+
+    def visit_polygon(field)
+      default(field)
+    end
+
     def visit_page(_field)
       '' # The field does not capture data, so there is no value.
     end

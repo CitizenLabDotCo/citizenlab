@@ -485,6 +485,34 @@ describe XlsxExport::ValueVisitor do
       end
     end
 
+    describe '#visit_line' do
+      let(:input_type) { 'line' }
+      let(:value) do
+        {
+          'type' => 'LineString',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44]]
+        }
+      end
+
+      it 'returns the GeoJSON value' do
+        expect(visitor.visit_line(field)).to eq value
+      end
+    end
+
+    describe '#visit_polygon' do
+      let(:input_type) { 'polygon' }
+      let(:value) do
+        {
+          'type' => 'Polygon',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44], [11.11, 22.22]]
+        }
+      end
+
+      it 'returns the GeoJSON value' do
+        expect(visitor.visit_polygon(field)).to eq value
+      end
+    end
+
     describe '#visit_page' do
       let(:input_type) { 'page' }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.
