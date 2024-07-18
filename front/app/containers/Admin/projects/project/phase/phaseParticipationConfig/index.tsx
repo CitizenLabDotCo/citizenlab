@@ -44,6 +44,7 @@ import {
   ideationDefaultConfig,
   IPhaseParticipationConfig,
   nativeSurveyDefaultConfig,
+  proposalsDefaultConfig,
   surveyDefaultConfig,
   votingDefaultConfig,
 } from './utils/participationMethodConfigs';
@@ -158,6 +159,7 @@ const PhaseParticipationConfig = ({
     const native_survey = participation_method === 'native_survey';
     const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
+    const proposals = participation_method === 'proposals';
 
     setParticipationConfig(() => ({
       ...defaultParticipationConfig,
@@ -167,6 +169,7 @@ const PhaseParticipationConfig = ({
       ...(voting ? votingDefaultConfig : {}),
       ...(survey ? surveyDefaultConfig : {}),
       ...(native_survey ? nativeSurveyDefaultConfig : {}),
+      ...(proposals ? proposalsDefaultConfig : {}),
     }));
   };
 
