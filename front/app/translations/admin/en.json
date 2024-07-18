@@ -1086,6 +1086,7 @@
   "app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey": "Survey",
   "app.containers.Admin.reporting.widgets.MethodsUsed.poll": "Poll",
   "app.containers.Admin.reporting.widgets.MethodsUsed.previousXDays": "Previous {days} days: {count}",
+  "app.containers.Admin.reporting.widgets.MethodsUsed.proposals": "Proposals",
   "app.containers.Admin.reporting.widgets.MethodsUsed.survey": "External survey",
   "app.containers.Admin.reporting.widgets.MethodsUsed.volunteering": "Volunteering",
   "app.containers.Admin.reporting.widgets.MethodsUsed.voting": "Voting",
