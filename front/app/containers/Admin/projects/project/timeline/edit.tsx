@@ -145,9 +145,10 @@ const AdminPhaseEdit = () => {
       participationContextConfig: IPhaseParticipationConfig,
       attributeDiff: IUpdatedPhaseProperties
     ) => {
+      // Important to keep the order of the spread operators
       return {
-        ...attributeDiff,
         ...participationContextConfig,
+        ...attributeDiff,
       };
     },
     []
