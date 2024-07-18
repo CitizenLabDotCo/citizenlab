@@ -56,13 +56,13 @@ RSpec.describe ErrorReporter do
       expect(Rails.logger).to receive(:error).with(instance_of(String), {}).and_call_original
     end
 
-    it 'repors in-line created errors which do not have backtrace' do
+    it 'reports in-line created errors which do not have backtrace' do
       error = StandardError.new('test')
       expect_report(error)
       described_class.report(error)
     end
 
-    it 'repors runtime errors' do
+    it 'reports runtime errors' do
       expect_report(instance_of(TypeError))
       begin
         1 + nil
