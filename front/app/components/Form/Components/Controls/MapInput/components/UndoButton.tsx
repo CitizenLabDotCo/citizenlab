@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import {
   getUserInputGraphicsLayer,
   getUserInputPoints,
+  isLineOrPolygonInput,
   MapInputType,
 } from '../utils';
 
@@ -68,7 +69,7 @@ const UndoButton = ({
 
   return (
     <Box ref={undoButtonRef}>
-      {(inputType === 'line' || inputType === 'polygon') && (
+      {isLineOrPolygonInput(inputType) && (
         <Tooltip
           maxWidth="250px"
           placement={buttonStyle ? 'top' : 'right'}

@@ -42,6 +42,7 @@ import {
   handleMapClickMultipoint,
   handleMapClickPoint,
   handlePointDrag,
+  isLineOrPolygonInput,
   MapInputType,
   updateDataAndDisplay,
 } from '../utils';
@@ -50,7 +51,7 @@ type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
   data: any;
-  handlePointChange: (point: GeoJSON.Point | undefined) => void;
+  handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
   mapViewSurveyPage?: MapView | null;
@@ -62,7 +63,7 @@ const FullscreenMapInput = memo<Props>(
     setShowFullscreenMap,
     mapConfig,
     data,
-    handlePointChange,
+    handleSinglePointChange,
     handleMultiPointChange,
     inputType,
     questionPageMapView,
@@ -103,27 +104,19 @@ const FullscreenMapInput = memo<Props>(
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
         if (inputType === 'point') {
-          handleMapClickPoint(event, mapView, handlePointChange);
-        } else {
-          // Line or polygon input
+          handleMapClickPoint(event, mapView, handleSinglePointChange);
+        } else if (isLineOrPolygonInput(inputType)) {
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
-      [handleMultiPointChange, handlePointChange, inputType]
+      [handleMultiPointChange, handleSinglePointChange, inputType]
     );
 
     // Add the custom UI elements to the map
     useEffect(() => {
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
-    }, [
-      id,
-      inputType,
-      instructionRef,
-      mapView?.ui,
-      resetButtonRef,
-      undoButtonRef,
-    ]);
+    }, [instructionRef, mapView?.ui, resetButtonRef]);
 
     // Show graphic(s) on the map for user input
     useEffect(() => {
@@ -162,7 +155,7 @@ const FullscreenMapInput = memo<Props>(
           // Has 2 or more points
           return data?.coordinates?.length && data.coordinates.length >= 2;
         case 'polygon':
-          // Has 4 or more points (3 + 1 duplicated first point to close the polygon)
+          // Has 4 or more points (3 & 1 duplicated first point to close the polygon)
           return (
             data?.coordinates?.[0]?.length && data.coordinates?.[0].length >= 4
           );
@@ -170,16 +163,17 @@ const FullscreenMapInput = memo<Props>(
     };
 
     // Add handling for when a user edits a point by dragging it
-    handlePointDrag({
-      mapView,
-      handleMultiPointChange,
-      pointBeingDragged,
-      temporaryDragGraphic,
-      theme,
-      data,
-      inputType,
-      isMobileOrSmaller: true,
-    });
+    isLineOrPolygonInput(inputType) &&
+      handlePointDrag({
+        mapView,
+        handleMultiPointChange,
+        pointBeingDragged,
+        temporaryDragGraphic,
+        theme,
+        data,
+        inputType,
+        isMobileOrSmaller: true,
+      });
 
     return modalPortalElement
       ? createPortal(
@@ -268,17 +262,16 @@ const FullscreenMapInput = memo<Props>(
                       {formatMessage(messages.back)}
                     </Button>
                   )}
-                  {data &&
-                    inputType !== 'point' && ( // Only show for line/polygon input
-                      <UndoButton
-                        handleMultiPointChange={handleMultiPointChange}
-                        mapView={mapView}
-                        undoButtonRef={undoButtonRef}
-                        undoEnabled={data}
-                        inputType={inputType}
-                        buttonStyle="secondary"
-                      />
-                    )}
+                  {data && isLineOrPolygonInput(inputType) && (
+                    <UndoButton
+                      handleMultiPointChange={handleMultiPointChange}
+                      mapView={mapView}
+                      undoButtonRef={undoButtonRef}
+                      undoEnabled={data}
+                      inputType={inputType}
+                      buttonStyle="secondary"
+                    />
+                  )}
                   <Button
                     mr="20px"
                     onClick={() => {
