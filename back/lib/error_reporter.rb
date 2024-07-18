@@ -4,17 +4,25 @@
 # https://github.com/rails/rails/pull/43625/files
 class ErrorReporter
   class << self
-    # Report any unhandled exception, and swallow it.
-    #
-    #  ErrorReporter.handle do
-    #    1 + '1'
-    #  end
-    #
-    def handle(error_class = StandardError)
-      yield
-    rescue error_class => e
-      report(e)
-      nil
+    # Do not swallow exceptions in the test environment.
+    # Ideally, we should not rely on `Rails` constant since this file is in the lib folder.
+    if Rails.env.test?
+      def handle(_error_class = nil)
+        yield
+      end
+    else
+      # Report any unhandled exception, and swallow it.
+      #
+      #  ErrorReporter.handle do
+      #    1 + '1'
+      #  end
+      #
+      def handle(error_class = StandardError)
+        yield
+      rescue error_class => e
+        report(e)
+        nil
+      end
     end
 
     # Uncomment and write tests if you need it.
