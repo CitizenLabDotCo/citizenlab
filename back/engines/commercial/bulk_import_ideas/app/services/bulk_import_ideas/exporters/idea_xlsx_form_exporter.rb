@@ -31,7 +31,7 @@ module BulkImportIdeas::Exporters
         when 'number', 'linear_scale'
           field.maximum || 3
         when 'point'
-          rand(0.1..89.9).round(5)
+          { 'type' => 'Point', 'coordinates' => [4.34878, 50.85045] }
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end
