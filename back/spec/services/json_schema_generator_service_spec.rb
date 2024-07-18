@@ -498,6 +498,38 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_polygon' do
+    let(:field) { create(:custom_field, input_type: 'polygon', key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_polygon(field)).to eq({
+        required: %w[type coordinates],
+        type: 'object',
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['Polygon']
+          },
+          coordinates: {
+            type: 'array',
+            items: {
+              type: 'array',
+              minItems: 4,
+              items: {
+                type: 'array',
+                minItems: 2,
+                maxItems: 2,
+                items: {
+                  type: 'number'
+                }
+              }
+            }
+          }
+        }
+      })
+    end
+  end
+
   describe '#visit_linear_scale' do
     let(:field) { create(:custom_field_linear_scale, key: field_key) }
 

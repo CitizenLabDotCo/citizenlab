@@ -273,6 +273,84 @@ RSpec.describe Idea do
         end
       end
     end
+
+    describe '#convert_wkt_geo_custom_field_values_to_geojson' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:active_phase) { project.phases.first }
+      let(:custom_form) { create(:custom_form, participation_context: active_phase) }
+      let!(:point_field) { create(:custom_field_point, key: 'point_field', resource: custom_form) }
+      let!(:line_field) { create(:custom_field_line, key: 'line_field', resource: custom_form) }
+      let!(:polygon_field) { create(:custom_field_polygon, key: 'polygon_field', resource: custom_form) }
+      let(:idea) { build(:idea, creation_phase: active_phase) }
+
+      it 'converts valid wkt strings to GeoJSON' do
+        idea.custom_field_values = {
+          point_field: 'POINT (4.31 50.85)',
+          line_field: 'LINESTRING (4.30 50.85, 4.660 51.15)',
+          polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))'
+        }
+        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+        expect(idea.custom_field_values).to eq({
+          'point_field' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
+          'line_field' => { 'type' => 'LineString', 'coordinates' => [[4.3, 50.85], [4.66, 51.15]] },
+          'polygon_field' => {
+            'type' => 'Polygon',
+            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        })
+      end
+
+      it 'does not mutate non-string values (e.g. GeoJSON)' do
+        idea.custom_field_values = {
+          polygon_field: {
+            type: 'Polygon',
+            coordinates: [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        }
+
+        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+
+        expect(idea.custom_field_values).to eq({
+          'polygon_field' => {
+            'type' => 'Polygon',
+            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        })
+      end
+
+      it 'adds closing coordinates to polygon if not in wkt string' do
+        idea.custom_field_values = { polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))' }
+        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+
+        expect(idea.custom_field_values).to eq({
+          'polygon_field' => {
+            'type' => 'Polygon',
+            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          }
+        })
+      end
+
+      it 'raises error for an invalid coordinate in wkt string' do
+        idea.custom_field_values = { point_field: 'POINT (4.31)' }
+
+        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+          .to raise_error(RGeo::Error::ParseError, 'Numeric expected but :end found.')
+      end
+
+      it 'raises error for an insufficient coordinates in wkt string' do
+        idea.custom_field_values = { line_field: 'LINESTRING (4.30 50.85)' }
+
+        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+          .to raise_error(RGeo::Error::InvalidGeometry, 'LineString Cannot Have 1 Point')
+      end
+
+      it 'raises error for missing parentheses in wkt string' do
+        idea.custom_field_values = { polygon_field: 'POLYGON (4.3 50.85, 4.31 50.85, 4.31 50.86)' }
+
+        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+          .to raise_error(RGeo::Error::ParseError, ':begin expected but 4.3 found.')
+      end
+    end
   end
 
   context 'creation_phase' do
