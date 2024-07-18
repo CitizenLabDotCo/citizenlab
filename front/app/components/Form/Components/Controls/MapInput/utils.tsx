@@ -539,7 +539,7 @@ const generateLinePreview = ({
       coordinates[1] === pointBeingDragged?.current?.geometry?.['latitude']
   );
 
-  // Create a line graphic connecting the indexDragPointInData any any previous or next points
+  // Create a line graphic connecting the drag point preview to any previous or next points
   const linePreviewPath: number[][] = [];
 
   if (
@@ -556,6 +556,7 @@ const generateLinePreview = ({
   } else if (indexOfDragPoint === 0) {
     // Dragging the first point
     if (inputType === 'polygon') {
+      // Connect the line to the last point if we're forming a polygon
       linePreviewPath.push(
         currentDataCoordinates?.[currentDataCoordinates.length - 1]
       );
@@ -574,6 +575,7 @@ const generateLinePreview = ({
       mapView.toMap(event).latitude,
     ]);
     if (inputType === 'polygon') {
+      // Connect the line to the first point if we're forming a polygon
       linePreviewPath.push(currentDataCoordinates?.[0]);
     }
   }
