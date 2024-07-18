@@ -146,6 +146,12 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const showReadMoreButton = !!(
+      descriptionHeight &&
+      descriptionHeight > collapsedDescriptionMaxHeight &&
+      !expanded
+    );
+
     if (!isNilOrError(projectFolder)) {
       return (
         <Container className={className || ''}>
@@ -165,7 +171,7 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                   textColor={theme.colors.tenantText}
                   fontSize="m"
                   className="e2e-folder-description"
-                  disableTabbing={!expanded}
+                  disableTabbing={showReadMoreButton}
                 >
                   <T
                     value={projectFolder.attributes.description_multiloc}
@@ -174,28 +180,26 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                 </QuillEditedContent>
               </div>
             </ReactResizeDetector>
-            {descriptionHeight &&
-              descriptionHeight > collapsedDescriptionMaxHeight &&
-              !expanded && (
-                <ReadMoreOuterWrapper>
-                  <ReadMoreInnerWrapper>
-                    <ReadMoreButton
-                      id="e2e-project-description-read-more-button"
-                      buttonStyle="text"
-                      onClick={toggleExpandCollapse}
-                      textDecoration="underline"
-                      textDecorationHover="underline"
-                      textColor={colors.textSecondary}
-                      textHoverColor={theme.colors.tenantText}
-                      fontWeight="500"
-                      fontSize={`${fontSizes.m}px`}
-                      padding="0"
-                    >
-                      <FormattedMessage {...messages.readMore} />
-                    </ReadMoreButton>
-                  </ReadMoreInnerWrapper>
-                </ReadMoreOuterWrapper>
-              )}
+            {showReadMoreButton && (
+              <ReadMoreOuterWrapper>
+                <ReadMoreInnerWrapper>
+                  <ReadMoreButton
+                    id="e2e-project-description-read-more-button"
+                    buttonStyle="text"
+                    onClick={toggleExpandCollapse}
+                    textDecoration="underline"
+                    textDecorationHover="underline"
+                    textColor={colors.textSecondary}
+                    textHoverColor={theme.colors.tenantText}
+                    fontWeight="500"
+                    fontSize={`${fontSizes.m}px`}
+                    padding="0"
+                  >
+                    <FormattedMessage {...messages.readMore} />
+                  </ReadMoreButton>
+                </ReadMoreInnerWrapper>
+              </ReadMoreOuterWrapper>
+            )}
 
             {descriptionHeight &&
               descriptionHeight > collapsedDescriptionMaxHeight &&
