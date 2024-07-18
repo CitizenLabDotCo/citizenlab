@@ -6,6 +6,7 @@ import {
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
+import { pick } from 'lodash-es';
 import { filter } from 'rxjs/operators';
 import { CLErrors, Multiloc } from 'typings';
 
@@ -93,7 +94,13 @@ const PhaseParticipationConfig = ({
   const { formatMessage } = useIntl();
   const [participationConfig, setParticipationConfig] =
     useState<IPhaseParticipationConfig>(
-      phase ? phase.data.attributes : ideationDefaultConfig
+      // Only use the attributes from phase that are relevant to participation config
+      phase
+        ? (pick(
+            phase.data.attributes,
+            Object.keys(defaultParticipationConfig)
+          ) as IPhaseParticipationConfig)
+        : ideationDefaultConfig
     );
 
   const [noLikingLimitError, setNoLikingLimitError] =

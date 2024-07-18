@@ -140,20 +140,6 @@ const AdminPhaseEdit = () => {
     }
   }, [phaseFiles]);
 
-  const getAttributeDiff = useCallback(
-    (
-      participationContextConfig: IPhaseParticipationConfig,
-      attributeDiff: IUpdatedPhaseProperties
-    ) => {
-      // Important to keep the order of the spread operators
-      return {
-        ...participationContextConfig,
-        ...attributeDiff,
-      };
-    },
-    []
-  );
-
   const handlePhaseParticipationConfigChange = useCallback(
     (participationContextConfig: IPhaseParticipationConfig) => {
       const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
@@ -173,8 +159,10 @@ const AdminPhaseEdit = () => {
       }, {});
 
       setSubmitState('enabled');
+      // Important to keep the order of the spread operators
       setAttributeDiff((attributeDiff) => ({
-        ...getAttributeDiff(participationContextConfig, attributeDiff),
+        ...attributeDiff,
+        ...participationContextConfig,
         ...(participationContextConfig.participation_method ===
           'native_survey' &&
           !attributeDiff.native_survey_button_multiloc &&
@@ -193,7 +181,6 @@ const AdminPhaseEdit = () => {
       formatMessageWithLocale,
       phase?.data.attributes.native_survey_button_multiloc,
       tenantLocales,
-      getAttributeDiff,
     ]
   );
 
@@ -311,11 +298,11 @@ const AdminPhaseEdit = () => {
   const handlePhaseParticipationConfigSubmit = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
-    const newAttributeDiff = getAttributeDiff(
-      participationContextConfig,
-      attributeDiff
-    );
-    save(projectId, phase?.data, newAttributeDiff);
+    // Important to keep the order of the spread operators
+    save(projectId, phase?.data, {
+      ...attributeDiff,
+      ...participationContextConfig,
+    });
   };
 
   const handleError = (error: { errors: CLErrors }) => {

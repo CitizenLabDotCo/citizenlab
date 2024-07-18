@@ -34,10 +34,8 @@ export interface IPhaseParticipationConfig {
   document_annotation_embed_url?: string | null;
 }
 
-export const defaultParticipationConfig: Omit<
-  IPhaseParticipationConfig,
-  'participation_method'
-> = {
+export const defaultParticipationConfig: IPhaseParticipationConfig = {
+  participation_method: 'ideation',
   posting_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
