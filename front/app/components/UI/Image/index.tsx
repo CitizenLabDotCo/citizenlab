@@ -3,11 +3,12 @@ import React, { PureComponent } from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
-const Fallback = styled.div<{ src: string | undefined }>`
+const Fallback = styled.img`
+  object-fit: cover;
+  object-position: center center;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(${({ src }) => src});
 `;
 
 const ImageElement = styled.img<{
@@ -103,7 +104,15 @@ export default class Image extends PureComponent<Props, State> {
     );
 
     if (cover) {
-      image = <Fallback src={src} className={className} />;
+      image = (
+        <Fallback
+          src={src}
+          alt={alt}
+          role={role}
+          className={className}
+          loading={isLazy ? 'lazy' : 'eager'}
+        />
+      );
     }
 
     return image;
