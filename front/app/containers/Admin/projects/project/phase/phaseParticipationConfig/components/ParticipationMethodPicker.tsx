@@ -29,6 +29,7 @@ import messages from '../../../messages';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
+import proposalsImage from './assets/proposals.png';
 import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
@@ -137,10 +138,10 @@ const ParticipationMethodPicker = ({
 
             <ParticipationMethodChoice
               key="proposals"
-              title={formatMessage(messages2.ideationTitle)}
-              subtitle={formatMessage(messages2.ideationDescription)}
+              title={formatMessage(messages2.proposalsTitle)}
+              subtitle={formatMessage(messages2.proposalsDescription)}
               onClick={(event) => handleMethodSelect(event, 'proposals')}
-              image={ideationImage}
+              image={proposalsImage}
               selected={selectedMethod === 'proposals'}
             />
 
