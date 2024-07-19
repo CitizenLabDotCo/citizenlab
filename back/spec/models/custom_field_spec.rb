@@ -187,6 +187,44 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'page_layout validation' do
+    context 'for page custom_field' do
+      let(:page_custom_field) { build(:custom_field_page) }
+
+      it 'is valid when the page_layout is a valid value' do
+        page_custom_field.page_layout = 'default'
+        expect(page_custom_field.valid?).to be true
+
+        page_custom_field.page_layout = 'map'
+        expect(page_custom_field.valid?).to be true
+      end
+
+      it 'is invalid when the page_layout is a invalid value' do
+        page_custom_field.page_layout = 'invalid_value'
+        expect(page_custom_field.valid?).to be false
+      end
+
+      it 'is invalid when the page_layout is nil' do
+        page_custom_field.page_layout = nil
+        expect(page_custom_field.valid?).to be false
+      end
+    end
+
+    context 'for non-page custom_field' do
+      let(:custom_field) { build(:custom_field) }
+
+      it 'is valid when the page_layout is nil' do
+        custom_field.page_layout = nil
+        expect(custom_field.valid?).to be true
+      end
+
+      it 'is invalid when the page_layout is not nil' do
+        custom_field.page_layout = 'default'
+        expect(custom_field.valid?).to be false
+      end
+    end
+  end
+
   describe 'title_multiloc validation' do
     let(:form) { create(:custom_form) }
 
@@ -216,6 +254,7 @@ RSpec.describe CustomField do
       page_field = described_class.new(
         resource: form,
         input_type: 'page',
+        page_layout: 'default',
         key: 'field_key',
         title_multiloc: { 'en' => '' }
       )
@@ -415,6 +454,7 @@ RSpec.describe CustomField do
 
       it 'sets public by default if field is a page' do
         field.input_type = 'page'
+        field.page_layout = 'default'
         field.validate!
         expect(field.answer_visible_to).to eq 'public'
       end
