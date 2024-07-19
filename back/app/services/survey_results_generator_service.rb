@@ -158,7 +158,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     response_count = responses.size
 
     core_field_attributes(field, response_count).merge({
-      mapConfigId: field&.map_config&.id, pointResponses: responses
+      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
     })
   end
 
