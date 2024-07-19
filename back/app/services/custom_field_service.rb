@@ -62,14 +62,12 @@ class CustomFieldService
   end
 
   def fields_to_ui_schema(fields, locale = 'en')
-    puts 'YOLO!!!'
     fields.each_with_object({}) do |field, memo|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
         if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
-          puts "field_type: #{field.input_type}"
           send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
     end.tap do |output|
