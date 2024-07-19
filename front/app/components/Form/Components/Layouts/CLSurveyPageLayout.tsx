@@ -8,12 +8,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
-  JsonFormsDispatch,
   withJsonFormsLayoutProps,
   useJsonForms,
+  JsonFormsDispatch,
 } from '@jsonforms/react';
 import { useTheme } from 'styled-components';
 
+import EsriMap from 'components/EsriMap';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -70,6 +71,9 @@ const CLSurveyPageLayout = memo(
     const hasAnonymousWarning = document.getElementById(
       'anonymous-survey-warning'
     );
+
+    // Map page variables
+    const isMapPage = uiPages[currentStep].elements.length > 4;
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -201,77 +205,94 @@ const CLSurveyPageLayout = memo(
 
     return (
       <>
-        <Box display="flex" flexDirection="column" height="100%">
-          <Box
-            h="100%"
-            display="flex"
-            ref={pagesRef}
-            overflowY={hasAnonymousWarning ? 'auto' : undefined}
-            mb={hasAnonymousWarning ? '44px' : undefined}
-          >
-            {uiPages.map((page, index) => {
-              const pageElements = extractElementsByOtherOptionLogic(
-                page,
-                data
-              );
-              return (
-                currentStep === index && (
-                  <Box key={index} p="24px" w="100%">
-                    <Box display="flex" flexDirection="column">
-                      {page.options.title && (
-                        <Title
-                          as="h1"
-                          variant={isSmallerThanPhone ? 'h2' : 'h1'}
-                          m="0"
-                          mb="8px"
-                          color="tenantPrimary"
-                        >
-                          {page.options.title}
-                        </Title>
-                      )}
-                      {page.options.description && (
-                        <Box mb="48px">
-                          <QuillEditedContent
-                            fontWeight={400}
-                            textColor={theme.colors.tenantText}
-                          >
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: page.options.description,
-                              }}
-                            />
-                          </QuillEditedContent>
-                        </Box>
-                      )}
-                      {pageElements.map((elementUiSchema, index) => {
-                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
-                          elementUiSchema,
-                          data
-                        );
+        <Box
+          id="container"
+          display="flex"
+          flexDirection="row"
+          height="100%"
+          w="100%"
+        >
+          {isMapPage && (
+            <Box id="survey_page_map" width="60%">
+              <EsriMap height="100%" />
+            </Box>
+          )}
 
-                        return (
-                          <Box
-                            mb={hasOtherFieldBelow ? undefined : '28px'}
-                            key={index}
-                          >
-                            <JsonFormsDispatch
-                              renderers={renderers}
-                              cells={cells}
-                              uischema={elementUiSchema}
-                              schema={schema}
-                              path={path}
-                              enabled={enabled}
-                            />
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  </Box>
-                )
-              );
-            })}
+          <Box flex="1 1 auto" overflowY="auto" h="100%">
+            <Box display="flex" flexDirection="column" height="100%">
+              <Box
+                h="100%"
+                display="flex"
+                ref={pagesRef}
+                overflowY={hasAnonymousWarning ? 'auto' : undefined}
+                mb={hasAnonymousWarning ? '44px' : undefined}
+              >
+                {uiPages.map((page, index) => {
+                  const pageElements = extractElementsByOtherOptionLogic(
+                    page,
+                    data
+                  );
+                  return (
+                    currentStep === index && (
+                      <Box key={index} p="24px" w="100%">
+                        <Box display="flex" flexDirection="column">
+                          {page.options.title && (
+                            <Title
+                              as="h1"
+                              variant={isSmallerThanPhone ? 'h2' : 'h1'}
+                              m="0"
+                              mb="8px"
+                              color="tenantPrimary"
+                            >
+                              {page.options.title}
+                            </Title>
+                          )}
+                          {page.options.description && (
+                            <Box mb="48px">
+                              <QuillEditedContent
+                                fontWeight={400}
+                                textColor={theme.colors.tenantText}
+                              >
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: page.options.description,
+                                  }}
+                                />
+                              </QuillEditedContent>
+                            </Box>
+                          )}
+                          {pageElements.map((elementUiSchema, index) => {
+                            const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                              elementUiSchema,
+                              data
+                            );
+
+                            return (
+                              <Box
+                                mb={hasOtherFieldBelow ? undefined : '28px'}
+                                key={index}
+                              >
+                                <JsonFormsDispatch
+                                  renderers={renderers}
+                                  cells={cells}
+                                  uischema={elementUiSchema}
+                                  schema={schema}
+                                  path={path}
+                                  enabled={enabled}
+                                />
+                              </Box>
+                            );
+                          })}
+                        </Box>
+                      </Box>
+                    )
+                  );
+                })}
+              </Box>
+            </Box>
           </Box>
         </Box>
+
         {/*
           TODO:
           We should move the footer (progress bar and navigation buttons) into IdeasNewSurveyForm/index.tsx
@@ -282,7 +303,7 @@ const CLSurveyPageLayout = memo(
           progress update before entering a new page, rather than after leaving it.
         */}
         <Box
-          maxWidth="700px"
+          maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
           bottom={isSmallerThanPhone ? '0' : '40px'}
