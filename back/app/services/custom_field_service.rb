@@ -35,7 +35,7 @@ class CustomFieldService
           elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
+            send(:"#{field.input_type}_to_json_schema_field", field, locale)
           end
       end
     }.tap do |output|
@@ -62,13 +62,15 @@ class CustomFieldService
   end
 
   def fields_to_ui_schema(fields, locale = 'en')
+    puts 'YOLO!!!'
     fields.each_with_object({}) do |field, memo|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
         if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
-          send("#{field.input_type}_to_ui_schema_field", field, locale)
+          puts "field_type: #{field.input_type}"
+          send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
@@ -159,6 +161,20 @@ class CustomFieldService
       ui_schema[:'ui:widget'] = 'hidden' if field.hidden? || !field.enabled?
     end
   end
+
+  # # *** page ***
+
+  # def page_to_ui_schema_field(field, locale)
+  #   base_ui_schema_field(field, locale)
+  # end
+
+  # def page_to_json_schema_field(field, locale)
+  #   {
+  #     title: handle_title(field, locale),
+  #     description: handle_description(field, locale),
+  #     type: 'string'
+  #   }
+  # end
 
   # *** text ***
 

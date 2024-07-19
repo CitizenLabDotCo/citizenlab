@@ -42,6 +42,7 @@ class JsonFormsService
   end
 
   def input_ui_and_json_multiloc_schemas(fields, current_user, participation_method, input_term)
+    puts 'YOLO'
     return if fields.empty?
 
     fields.reject!(&:hidden?)
