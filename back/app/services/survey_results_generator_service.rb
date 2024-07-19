@@ -69,17 +69,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_point(field)
-    responses = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |response|
-        { response: response.value }
-      end
-    response_count = responses.size
+    geographic_input_type(field)
+  end
 
-    core_field_attributes(field, response_count).merge({
-      mapConfigId: field&.map_config&.id, pointResponses: responses
-    })
+  def visit_line(field)
+    geographic_input_type(field)
+  end
+
+  def visit_polygon(field)
+    geographic_input_type(field)
   end
 
   private
@@ -148,6 +146,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     else
       raise "Unsupported field type: #{field.input_type}"
     end
+  end
+
+  def geographic_input_type(field)
+    responses = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { response: response.value }
+      end
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      mapConfigId: field&.map_config&.id, pointResponses: responses
+    })
   end
 
   def build_select_response(answers, field, group_field)
