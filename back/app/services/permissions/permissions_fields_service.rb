@@ -79,10 +79,6 @@ module Permissions
           field.save!
         end
       end
-
-      # TODO: JS - If a verification group is enabled then enable 'verification' field
-      # TODO: JS - If verification is enabled then enable any linked fields
-
     end
 
     def custom_permitted_by_enabled?
