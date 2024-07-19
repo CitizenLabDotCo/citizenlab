@@ -80,8 +80,8 @@ class CustomField < ApplicationRecord
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
-  # validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
-  # validates :page_layout, absence: true, unless: :page?
+  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
+  validates :page_layout, absence: true, unless: :page?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
