@@ -69,15 +69,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_point(field)
-    responses_for_geographic_input_type(field)
+    responses_to_geographic_input_type(field)
   end
 
   def visit_line(field)
-    responses_for_geographic_input_type(field)
+    responses_to_geographic_input_type(field)
   end
 
   def visit_polygon(field)
-    responses_for_geographic_input_type(field)
+    responses_to_geographic_input_type(field)
   end
 
   private
@@ -148,7 +148,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def responses_for_geographic_input_type(field)
+  def responses_to_geographic_input_type(field)
     responses = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
