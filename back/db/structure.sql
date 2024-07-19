@@ -18,6 +18,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
+ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
@@ -215,6 +216,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
@@ -1107,10 +1109,10 @@ CREATE TABLE public.official_feedbacks (
 --
 
 CREATE VIEW public.analytics_build_feedbacks AS
- SELECT a.post_id,
-    min(a.feedback_first_date) AS feedback_first_date,
-    max(a.feedback_official) AS feedback_official,
-    max(a.feedback_status_change) AS feedback_status_change
+ SELECT post_id,
+    min(feedback_first_date) AS feedback_first_date,
+    max(feedback_official) AS feedback_official,
+    max(feedback_status_change) AS feedback_status_change
    FROM ( SELECT activities.item_id AS post_id,
             min(activities.created_at) AS feedback_first_date,
             0 AS feedback_official,
@@ -1125,7 +1127,7 @@ CREATE VIEW public.analytics_build_feedbacks AS
             0 AS feedback_status_change
            FROM public.official_feedbacks
           GROUP BY official_feedbacks.post_id) a
-  GROUP BY a.post_id;
+  GROUP BY post_id;
 
 
 --
@@ -1190,8 +1192,8 @@ CREATE TABLE public.projects (
 --
 
 CREATE VIEW public.analytics_dimension_projects AS
- SELECT projects.id,
-    projects.title_multiloc
+ SELECT id,
+    title_multiloc
    FROM public.projects;
 
 
@@ -1431,11 +1433,11 @@ CREATE TABLE public.events (
 --
 
 CREATE VIEW public.analytics_fact_events AS
- SELECT events.id,
-    events.project_id AS dimension_project_id,
-    (events.created_at)::date AS dimension_date_created_id,
-    (events.start_at)::date AS dimension_date_start_id,
-    (events.end_at)::date AS dimension_date_end_id
+ SELECT id,
+    project_id AS dimension_project_id,
+    (created_at)::date AS dimension_date_created_id,
+    (start_at)::date AS dimension_date_start_id,
+    (end_at)::date AS dimension_date_end_id
    FROM public.events;
 
 
@@ -1979,11 +1981,11 @@ CREATE TABLE public.impact_tracking_sessions (
 --
 
 CREATE VIEW public.analytics_fact_sessions AS
- SELECT impact_tracking_sessions.id,
-    impact_tracking_sessions.monthly_user_hash,
-    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
-    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
-    impact_tracking_sessions.user_id AS dimension_user_id
+ SELECT id,
+    monthly_user_hash,
+    (created_at)::date AS dimension_date_created_id,
+    (updated_at)::date AS dimension_date_updated_id,
+    user_id AS dimension_user_id
    FROM public.impact_tracking_sessions;
 
 
@@ -2812,7 +2814,8 @@ CREATE TABLE public.nav_bar_items (
     title_multiloc jsonb,
     static_page_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    project_id uuid
 );
 
 
@@ -5490,6 +5493,13 @@ CREATE INDEX index_nav_bar_items_on_ordering ON public.nav_bar_items USING btree
 
 
 --
+-- Name: index_nav_bar_items_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_project_id ON public.nav_bar_items USING btree (project_id);
+
+
+--
 -- Name: index_nav_bar_items_on_static_page_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6980,6 +6990,14 @@ ALTER TABLE ONLY public.cosponsors_initiatives
 
 
 --
+-- Name: nav_bar_items fk_rails_e8076fb9f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nav_bar_items
+    ADD CONSTRAINT fk_rails_e8076fb9f6 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: polls_response_options fk_rails_e871bf6e26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7491,6 +7509,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240510103700'),
 ('20240516113700'),
 ('20240606112752'),
-('20240612134240');
+('20240612134240'),
+('202407081751');
 
 
