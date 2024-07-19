@@ -70,6 +70,8 @@ class Project < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
+  has_one :nav_bar_item, dependent: :destroy
+
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
