@@ -160,20 +160,6 @@ class CustomFieldService
     end
   end
 
-  # # *** page ***
-
-  # def page_to_ui_schema_field(field, locale)
-  #   base_ui_schema_field(field, locale)
-  # end
-
-  # def page_to_json_schema_field(field, locale)
-  #   {
-  #     title: handle_title(field, locale),
-  #     description: handle_description(field, locale),
-  #     type: 'string'
-  #   }
-  # end
-
   # *** text ***
 
   def text_to_ui_schema_field(field, locale)
