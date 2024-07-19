@@ -76,7 +76,7 @@ fi:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"
       "link_unsubscribe": "Lopeta tilaus"
-      "powered_by": "Voimanlähteenä"
+      "powered_by": "Yhteistyössä"
       "recipient_statement": "Go Vocal lähetti sinulle tämän sähköpostin käyttäjän %{organizationName}puolesta, koska olet verkkotunnuksen %{organizationLink}rekisteröity käyttäjä."
       "unsubscribe_statement": "Voit %{unsubscribeLink} , jos et halua saada näitä sähköposteja jatkossa."
       "unsubscribe_text": "Lopeta tilaus"
@@ -153,7 +153,7 @@ fi:
       yesterday_by_author: 'Eilen %{author}'
       today_by_author: 'Tänään %{author}'
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
-      idea_section: Ideoita
+      idea_section: Ideat
       initiative_section: ehdotuksia
       title_initiatives_past_week: 'Sinulle on määrätty uusia ehdotuksia'
       title_successful_initiatives_past_week: 'Sinulle osoitetut ehdotukset, jotka saavuttivat kynnyksen'
@@ -596,8 +596,8 @@ fi:
         comments: 'Kommentit'
         content_moderation: 'Sisällön moderointi'
         events: 'Tapahtumat'
-        general: 'Kenraali'
-        inputs: 'Tulot'
+        general: 'Yleinen'
+        inputs: 'Toiminnat'
         internal_comments: 'Sisäiset kommentit'
         permissions: 'Käyttöoikeudet'
         projects: 'Projektit'
