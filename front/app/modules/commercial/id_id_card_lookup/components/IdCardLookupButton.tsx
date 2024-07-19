@@ -5,7 +5,6 @@ import {
   TVerificationMethod,
 } from 'api/verification_methods/types';
 
-import T from 'components/T';
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 interface Props {
@@ -25,7 +24,7 @@ const IdCardLookupButton = ({ method, last, onClick }: Props) => {
       onClick={handleOnClick}
       last={last}
     >
-      <T value={method.attributes.method_name_multiloc} />
+      {method.attributes.ui_method_name}
     </VerificationMethodButton>
   );
 };

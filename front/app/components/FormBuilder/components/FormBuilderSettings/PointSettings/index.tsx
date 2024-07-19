@@ -38,9 +38,10 @@ const StyledLabel = styled(Label)`
 type Props = {
   mapConfigIdName: string;
   field: IFlatCustomFieldWithIndex;
+  pageLayoutName?: string;
 };
 
-const PointSettings = ({ mapConfigIdName, field }: Props) => {
+const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -58,6 +59,11 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 
+  // Determine whether to show the map configuration option
+  const showMapConfigurationOption = pageLayoutName
+    ? watch(pageLayoutName) === 'map'
+    : true;
+
   // Default project map settings if not present
   const { data: appConfig } = useAppConfiguration();
 
@@ -74,8 +80,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
 
   // Load map state from mapConfig
   const mapLayers = useMemo(() => {
+    if (!showMapConfigurationOption) {
+      // Reset the map view if we're hiding the map
+      mapView?.destroy();
+    }
     return parseLayers(mapConfig, localize);
-  }, [localize, mapConfig]);
+  }, [localize, mapConfig, mapView, showMapConfigurationOption]);
 
   const onConfigureMapClick = useCallback(() => {
     if (!mapConfigId) {
@@ -159,6 +169,10 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     setMapView(mapView);
   }, []);
 
+  if (!showMapConfigurationOption) {
+    return null;
+  }
+
   if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
     return (
       <Box my="24px">
@@ -169,7 +183,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
 
   return (
     <>
-      <Box mb="24px">
+      <Box mb="24px" height={showMapConfigurationOption ? 'auto' : '1px'}>
         <StyledLabel
           htmlFor="maximumInput"
           value={<>{formatMessage(messages.mapConfiguration)}</>}

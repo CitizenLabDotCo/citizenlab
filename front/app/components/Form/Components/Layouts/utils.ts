@@ -23,6 +23,7 @@ export interface PageType extends Layout {
     id?: string;
     title?: string;
     description?: string;
+    map_config_id?: string;
   };
   label?: string;
   scope?: string;
