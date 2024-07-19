@@ -1409,8 +1409,7 @@ RSpec.describe InputUiSchemaGeneratorService do
     let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
     let(:field) do
       create(
-        :custom_field,
-        input_type: 'page',
+        :custom_field_page,
         key: field_key,
         title_multiloc: { 'en' => 'Page field title' },
         description_multiloc: { 'en' => 'Page field description' }
