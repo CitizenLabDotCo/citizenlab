@@ -166,4 +166,26 @@ describe Permissions::PermissionsFieldsService do
       end
     end
   end
+
+  describe '#enable_group_fields' do
+    let(:permission) { create(:permission, permitted_by: 'custom') }
+
+    it 'adds fields that are used in a group' do
+      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+
+      # Permissions field associated with one group
+      custom_field = create(:custom_field_text, :for_registration, enabled: true, required: false)
+      associated_group = create(:smart_group, slug: 'used', rules: [
+        { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
+      ])
+      permission.groups << associated_group
+
+      service.enable_group_fields(associated_group, permission)
+
+      binding.pry
+
+      # TODO: JS - Complete these tests
+
+    end
+  end
 end
