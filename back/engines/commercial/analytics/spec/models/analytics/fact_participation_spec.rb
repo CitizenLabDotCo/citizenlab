@@ -34,6 +34,7 @@ RSpec.describe Analytics::FactParticipation do
       end
     end
 
+    # TODO: move-old-proposals-test
     context 'when an initiative is created' do
       let!(:initiative) { create(:initiative) }
 

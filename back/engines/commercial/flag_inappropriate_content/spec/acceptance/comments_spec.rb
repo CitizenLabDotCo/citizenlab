@@ -33,6 +33,7 @@ resource 'Comments' do
     end
   end
 
+  # TODO: move-old-proposals-test
   patch 'web_api/v1/comments/:id' do
     before do
       SettingsService.new.activate_feature! 'moderation'

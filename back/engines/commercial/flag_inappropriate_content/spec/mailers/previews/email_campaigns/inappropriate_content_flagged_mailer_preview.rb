@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: move-old-proposals-test
 module EmailCampaigns
   class InappropriateContentFlaggedPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient

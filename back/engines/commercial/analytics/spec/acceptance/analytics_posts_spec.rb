@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Analytics - FactPosts model' do
   explanation 'Queries to summarise posts - ideas & initiatives/proposals.'
 
