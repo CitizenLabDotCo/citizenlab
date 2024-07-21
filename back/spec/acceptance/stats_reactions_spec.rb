@@ -64,7 +64,7 @@ resource 'Stats - Reactions' do
 
     describe 'with time filtering only' do
       let(:start_at) { now.beginning_of_week }
-      let(:end_at) { now.end_of_week }
+      let(:end_at) { start_at + 1.week }
 
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
@@ -142,7 +142,7 @@ resource 'Stats - Reactions' do
 
     describe 'with time filtering only' do
       let(:start_at) { now.beginning_of_week }
-      let(:end_at) { now.end_of_week }
+      let(:end_at) { start_at + 1.week }
 
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }

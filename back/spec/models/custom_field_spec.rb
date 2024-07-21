@@ -199,7 +199,7 @@ RSpec.describe CustomField do
         expect(page_custom_field.valid?).to be true
       end
 
-      it 'is invalid when the page_layout is a invalid value' do
+      it 'is invalid when the page_layout is an invalid value' do
         page_custom_field.page_layout = 'invalid_value'
         expect(page_custom_field.valid?).to be false
       end
