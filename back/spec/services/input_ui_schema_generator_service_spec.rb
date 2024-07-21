@@ -816,7 +816,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: 'About you',
-                  description: 'Please fill in some <strong>personal details</strong>.'
+                  description: 'Please fill in some <strong>personal details</strong>.',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -837,7 +838,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: 'About your cycling habits',
-                  description: 'Please indicate how you use <strong>a bike</strong>.'
+                  description: 'Please indicate how you use <strong>a bike</strong>.',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -858,7 +860,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: 'This is the end of the survey',
-                  description: 'Thank you for participating 🚀'
+                  description: 'Thank you for participating 🚀',
+                  map_config_id: nil
                 },
                 elements: []
               },
@@ -980,7 +983,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -1002,7 +1006,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -1046,7 +1051,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  map_config_id: nil
                 },
                 elements: [],
                 ruleArray: [
@@ -1416,6 +1422,8 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
+    let!(:map_config) { create(:map_config, mappable: field) }
+
     it 'returns the schema for the given field, with id, and without elements' do
       expect(generator.visit_page(field)).to eq({
         type: 'Page',
@@ -1423,7 +1431,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: field.input_type,
           id: field.id,
           title: 'Page field title',
-          description: 'Page field description'
+          description: 'Page field description',
+          map_config_id: map_config.id
         },
         elements: []
       })

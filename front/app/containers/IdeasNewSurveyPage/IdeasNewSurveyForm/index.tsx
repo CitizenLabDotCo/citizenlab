@@ -274,8 +274,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return `${dynamicHeight}px`;
   }
 
-  console.log({ hasMapView });
-
   return (
     <>
       <IdeasNewSurveyMeta />
