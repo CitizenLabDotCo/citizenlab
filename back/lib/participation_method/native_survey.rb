@@ -32,7 +32,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           key: 'page1',
           resource: custom_form,
-          input_type: 'page'
+          input_type: 'page',
+          page_layout: 'default'
         ),
         CustomField.new(
           id: SecureRandom.uuid,

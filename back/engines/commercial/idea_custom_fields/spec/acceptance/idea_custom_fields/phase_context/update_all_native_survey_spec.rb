@@ -37,7 +37,10 @@ resource 'Idea Custom Fields' do
         create(:custom_field, resource: custom_form) # field to destroy
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             # Inserted field first to test reordering of fields.
             {
               input_type: 'text',
@@ -116,7 +119,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'multiselect',
               title_multiloc: { en: 'Inserted field' },
@@ -218,7 +224,10 @@ resource 'Idea Custom Fields' do
         image2 = create(:custom_field_option_image, custom_field_option: nil)
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'multiselect_image',
               title_multiloc: { en: 'Inserted field' },
@@ -288,7 +297,10 @@ resource 'Idea Custom Fields' do
       example '[error] Add a field of unsupported input_type' do
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'topic_ids',
               title_multiloc: { 'en' => 'Topics field title' },
@@ -318,7 +330,8 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               {
                 id: page.id,
-                input_type: 'page'
+                input_type: 'page',
+                page_layout: 'default'
               },
               {
                 id: field.id,
@@ -356,7 +369,8 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               {
                 id: page.id,
-                input_type: 'page'
+                input_type: 'page',
+                page_layout: 'default'
               },
               {
                 id: field.id,
@@ -401,7 +415,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: select_field.id,
               input_type: 'multiselect',
@@ -459,7 +476,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: select_field.id,
               input_type: select_field.input_type,
@@ -519,7 +539,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: field.id,
               title_multiloc: { 'en' => 'Updated field' },
@@ -603,7 +626,10 @@ resource 'Idea Custom Fields' do
 
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 id: field_to_update.id,
                 options: []
@@ -622,7 +648,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               # input_type is not given
               title_multiloc: { 'en' => 'Inserted field' },
@@ -690,7 +719,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: field_to_update.id,
               title_multiloc: { 'en' => 'New title' },
@@ -739,6 +771,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -754,6 +787,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -791,6 +825,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -812,6 +847,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -820,6 +856,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -841,6 +878,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -886,6 +924,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -906,6 +945,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -930,6 +970,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -939,6 +980,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -947,6 +989,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -955,6 +998,7 @@ resource 'Idea Custom Fields' do
             {
               id: page4.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page4.title_multiloc,
               description_multiloc: page4.description_multiloc,
               required: false,
@@ -974,6 +1018,7 @@ resource 'Idea Custom Fields' do
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
             enabled: true,
             input_type: 'page',
+            page_layout: 'default',
             key: page_to_update.key,
             ordering: 0,
             required: false,
@@ -996,6 +1041,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1016,6 +1062,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1036,6 +1083,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page4.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page4.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1059,6 +1107,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1070,6 +1119,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1078,6 +1128,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1086,6 +1137,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 4' },
               description_multiloc: { 'en' => 'Page 4 description' },
               required: false,
@@ -1107,6 +1159,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1127,6 +1180,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1147,6 +1201,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1167,6 +1222,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 4' },
             updated_at: an_instance_of(String),
@@ -1187,6 +1243,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'New page with logic' },
               description_multiloc: { 'en' => 'New page with logic description' },
               required: false,
@@ -1196,6 +1253,7 @@ resource 'Idea Custom Fields' do
             {
               id: existing_page.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: existing_page.title_multiloc,
               description_multiloc: existing_page.description_multiloc,
               required: false,
@@ -1204,6 +1262,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-2',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Target page' },
               description_multiloc: { 'en' => 'Target page description' },
               required: false,
@@ -1225,6 +1284,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'New page with logic' },
             updated_at: an_instance_of(String),
@@ -1245,6 +1305,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: existing_page.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: existing_page.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1265,6 +1326,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Target page' },
             updated_at: an_instance_of(String),
@@ -1288,6 +1350,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1297,6 +1360,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1305,6 +1369,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1326,6 +1391,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1346,6 +1412,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1366,6 +1433,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1389,6 +1457,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1398,6 +1467,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1419,6 +1489,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1439,6 +1510,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1470,6 +1542,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1491,6 +1564,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1499,6 +1573,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 3' },
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
@@ -1520,6 +1595,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1565,6 +1641,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1585,6 +1662,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
@@ -1618,6 +1696,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1639,6 +1718,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1647,6 +1727,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1667,6 +1748,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1712,6 +1794,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1732,6 +1815,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1763,6 +1847,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1782,6 +1867,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1803,6 +1889,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1846,6 +1933,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1878,6 +1966,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1910,6 +1999,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1965,6 +2055,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1986,6 +2077,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2023,6 +2115,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2044,6 +2137,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -2052,6 +2146,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -2073,6 +2168,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2118,6 +2214,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2138,6 +2235,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2165,6 +2263,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2186,6 +2285,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2207,6 +2307,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2252,6 +2353,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2285,6 +2387,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2328,6 +2431,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2336,6 +2440,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-3',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 3' },
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
@@ -2360,6 +2465,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2438,6 +2544,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2458,6 +2565,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 4,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
@@ -2479,6 +2587,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2500,6 +2609,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2522,6 +2632,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2567,6 +2678,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2601,6 +2713,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2625,6 +2738,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -2633,6 +2747,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -2654,6 +2769,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2702,6 +2818,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2722,6 +2839,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2742,7 +2860,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: change_field.id,
               input_type: 'select',
@@ -2858,7 +2979,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               title_multiloc: { 'en' => 'Inserted field' },
               description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
@@ -2888,7 +3012,10 @@ resource 'Idea Custom Fields' do
           field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 title_multiloc: { 'en' => 'Inserted point custom field' },
                 description_multiloc: { 'en' => 'Inserted point custom field description' },
@@ -2927,6 +3054,7 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               {
                 input_type: 'page',
+                page_layout: 'default',
                 title_multiloc: { 'en' => 'Inserted page custom field' },
                 description_multiloc: { 'en' => 'Inserted page custom field description' },
                 required: false,
@@ -2936,6 +3064,7 @@ resource 'Idea Custom Fields' do
               {
                 id: field_to_update.id,
                 input_type: 'page',
+                page_layout: 'default',
                 title_multiloc: { 'en' => 'Updated page custom field' },
                 description_multiloc: { 'en' => 'Updated page custom field description' },
                 required: false,
@@ -2972,7 +3101,10 @@ resource 'Idea Custom Fields' do
           # }
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 title_multiloc: { 'en' => 'Inserted text custom field' },
                 description_multiloc: { 'en' => 'Inserted text custom field description' },
@@ -3030,6 +3162,7 @@ resource 'Idea Custom Fields' do
               {
                 id: custom_field1.id,
                 input_type: 'page',
+                page_layout: 'default',
                 map_config_id: nil
               },
               {

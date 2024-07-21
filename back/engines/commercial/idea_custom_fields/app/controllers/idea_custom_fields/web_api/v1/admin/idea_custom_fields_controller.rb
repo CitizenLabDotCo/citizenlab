@@ -282,6 +282,7 @@ module IdeaCustomFields
         :maximum_select_count,
         :minimum_select_count,
         :random_option_ordering,
+        :page_layout,
         :map_config_id,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,

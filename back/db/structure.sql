@@ -2224,7 +2224,8 @@ CREATE TABLE public.custom_fields (
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
+    random_option_ordering boolean DEFAULT false NOT NULL,
+    page_layout character varying
 );
 
 
@@ -7510,6 +7511,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240516113700'),
 ('20240606112752'),
 ('20240612134240'),
-('202407081751');
-
-
+('202407081751'),
+('20240719123811');

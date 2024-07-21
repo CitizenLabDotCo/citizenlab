@@ -112,6 +112,7 @@ describe WebApi::V1::CustomFieldSerializer do
         input_type: 'page',
         key: 'page_1',
         ordering: 0,
+        page_layout: 'default',
         required: false,
         title_multiloc: { 'en' => 'Cycling survey' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
