@@ -23,7 +23,7 @@ const Block = ({ number, text }: BlockProps) => {
       borderRadius={stylingConsts.borderRadius}
       border={`1px solid ${colors.blue700}`}
       bgColor={colors.teal50}
-      p="20px"
+      p="16px"
       w="220px"
     >
       <Box>{`${number}.`}</Box>
