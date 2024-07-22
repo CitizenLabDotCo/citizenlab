@@ -170,9 +170,11 @@ describe Permissions::PermissionsFieldsService do
   describe '#enable_group_fields' do
     let(:permission) { create(:permission, permitted_by: 'custom') }
 
-    it 'adds fields that are used in a group' do
-      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+    before do
+      described_class.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+    end
 
+    it 'adds fields that are used in a group' do
       # Permissions field associated with one group
       custom_field = create(:custom_field_text, :for_registration, enabled: true, required: false)
       associated_group = create(:smart_group, slug: 'used', rules: [
@@ -180,12 +182,23 @@ describe Permissions::PermissionsFieldsService do
       ])
       permission.groups << associated_group
 
+      expect(permission.permissions_fields.count).to eq 3
+
       service.enable_group_fields(associated_group, permission)
+      expect(permission.permissions_fields.count).to eq 4
+      expect(permission.permissions_fields.last.custom_field).to eq custom_field
+    end
 
-      binding.pry
+    it 'ignores any groups with rules that do not relate to custom fields' do
+      non_custom_field_group = create(:smart_group, slug: 'used', rules: [
+        { value: ['352f0ed5-c98d-4a68-8fae-6dc71fdc39b5'], ruleType: 'participated_in_project', predicate: 'posted_in' }
+      ])
+      permission.groups << non_custom_field_group
 
-      # TODO: JS - Complete these tests
+      expect(permission.permissions_fields.count).to eq 3
 
+      service.enable_group_fields(non_custom_field_group, permission)
+      expect(permission.permissions_fields.count).to eq 3
     end
   end
 end

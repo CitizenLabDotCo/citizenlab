@@ -82,11 +82,7 @@ module Permissions
     end
 
     def enable_group_fields(group, permission)
-      # TODO: Ignore any rules that don't have custom fields
-      group_custom_field_ids = group.rules.map do |rule|
-        rule['customFieldId']
-      end
-
+      group_custom_field_ids = group.rules.filter_map { |rule| rule['customFieldId'] }
       group_custom_field_ids.each do |custom_field_id|
         existing_permission_field = permission.permissions_fields.find_by(custom_field_id: custom_field_id)
         if existing_permission_field.nil?
