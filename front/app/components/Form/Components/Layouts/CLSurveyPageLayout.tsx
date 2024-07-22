@@ -303,20 +303,28 @@ const CLSurveyPageLayout = memo(
               <Box
                 aria-hidden={true}
                 height="30px"
-                pt="16px"
-                pb="8px"
+                py="20px"
                 ref={dragDividerRef}
+                position="absolute"
+                background="white"
+                w="100%"
+                zIndex="1000"
               >
                 <Box
                   mx="auto"
-                  w="60px"
-                  h="10px"
+                  w="40px"
+                  h="4px"
                   bgColor="lightgrey"
                   borderRadius="10px"
                 />
               </Box>
             )}
-            <Box display="flex" flexDirection="column" height="100%">
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="100%"
+              mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
+            >
               <Box h="100%" display="flex" ref={pagesRef}>
                 {uiPages.map((page, index) => {
                   const pageElements = extractElementsByOtherOptionLogic(

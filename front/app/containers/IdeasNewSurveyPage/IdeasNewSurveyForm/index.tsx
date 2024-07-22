@@ -105,11 +105,11 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
   useEffect(() => {
     // TODO: Find a better solution here
-    if (checkLayout) {
+    if (checkLayout && !isSmallerThanPhone) {
       setHasMapView(!!document.getElementById('survey_page_map'));
       setCheckLayout(false);
     }
-  }, [checkLayout]);
+  }, [checkLayout, isSmallerThanPhone]);
 
   /*
     TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
