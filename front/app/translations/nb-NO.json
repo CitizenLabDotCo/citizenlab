@@ -983,6 +983,7 @@
   "app.containers.App.appMetaDescription": "Velkommen til den digitale involveringsplattformen fra {orgName}. \nUtforsk lokale prosjekter og engasjer deg i diskusjonen!",
   "app.containers.App.loading": "Laster inn...",
   "app.containers.App.metaTitle1": "Plattform for innbyggerengasjement | {orgName}",
+  "app.containers.App.skipLinkText": "Gå til hovedinnhold",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "En konto med denne e-postadressen eksisterer allerede. Du kan logge av, logge på med denne e-postadressen og bekrefte kontoen din på innstillingssiden.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Vennligst skriv inn et token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
