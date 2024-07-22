@@ -20,7 +20,7 @@ module Verification
           requirements = super
 
           if (@check_groups && permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)) ||
-            verify_by_field?(permission)
+             verify_by_field?(permission)
             requirements[:special][:verification] = 'require'
           end
           requirements
