@@ -25,6 +25,5 @@ module ParticipationMethod
     # def supports_status?
     #   super # TODO: separate proposal statuses
     # end
-    # 
   end
 end
