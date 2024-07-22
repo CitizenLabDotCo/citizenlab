@@ -77,8 +77,15 @@ const ActionFormNew = ({
           />
         </Box>
       )}
+      <Box mt="20px">
+        <Fields
+          phaseId={phaseId}
+          action={action}
+          disableEditing={disableEditing}
+        />
+      </Box>
       {showGroupSelect(permittedBy) && (
-        <Box mt="20px">
+        <Box mt="28px">
           <Title variant="h4" color="primary">
             <FormattedMessage {...messages.restrictParticipation} />
           </Title>
@@ -98,13 +105,6 @@ const ActionFormNew = ({
           </Box>
         </Box>
       )}
-      <Box mt="28px">
-        <Fields
-          phaseId={phaseId}
-          action={action}
-          disableEditing={disableEditing}
-        />
-      </Box>
     </form>
   );
 };
