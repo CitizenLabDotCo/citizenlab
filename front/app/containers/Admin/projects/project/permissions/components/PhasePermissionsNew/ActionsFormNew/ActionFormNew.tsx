@@ -12,6 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import CardButtons from './CardButtons';
 import Fields from './Fields';
+import FlowVisualization from './FlowVisualization';
 import messages from './messages';
 import Tooltip from './Tooltip';
 
@@ -77,6 +78,9 @@ const ActionFormNew = ({
           />
         </Box>
       )}
+      <Box mt="20px">
+        <FlowVisualization />
+      </Box>
       <Box mt="20px">
         <Fields
           phaseId={phaseId}
