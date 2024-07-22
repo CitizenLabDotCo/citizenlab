@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Yritä uudelleen. Jos ongelma jatkuu, ota meihin yhteyttä",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Meillä oli ongelma, pahoittelut",
   "app.components.HookForm.Feedback.successMessage": "Lomake lähetetty onnistuneesti",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Vieritä vasemmalle.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Vieritä oikealle.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideoita on ladattu.",
   "app.components.IdeaCards.showMore": "Näytä lisää",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Piilota ideakortti.",
