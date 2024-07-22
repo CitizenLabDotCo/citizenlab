@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Prøv igjen. Ved fortsatt problem, kontakt oss",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Beklager, et problem oppstod på vår side",
   "app.components.HookForm.Feedback.successMessage": "Suksess. Ditt skjema er sendt inn",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Rull til venstre.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Rull til høyre.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideer er lastet inn.",
   "app.components.IdeaCards.showMore": "Vis mer",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Skjul ide-kort.",
