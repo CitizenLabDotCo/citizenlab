@@ -32,11 +32,16 @@ const IdeaFormBuilder = () => {
     phaseId: string;
   };
 
-  const { data: formCustomFields } = useFormCustomFields({
-    projectId,
-  });
   const { data: project } = useProjectById(projectId);
   const {data:phase} = usePhase(phaseId);
+
+  const participation_method = phase?.data.attributes.participation_method || 'ideation';
+
+  const { data: formCustomFields } = useFormCustomFields({
+    projectId,
+    phaseId: participation_method === 'ideation' ? undefined : phaseId,
+  });
+
 
   const locale = useLocale();
 
@@ -55,7 +60,7 @@ const IdeaFormBuilder = () => {
     <>
       <FormBuilder
         builderConfig={{
-          ...configs[phase.data.attributes.participation_method],
+          ...configs[participation_method],
           formCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
