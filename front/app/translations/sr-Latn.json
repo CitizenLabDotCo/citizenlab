@@ -983,6 +983,7 @@
   "app.containers.App.appMetaDescription": "Dobrodošli na participativnu platformu {orgName}.\nOtkrijte lokalne projekte i priključite se diskusiji!",
   "app.containers.App.loading": "Učitavanje...",
   "app.containers.App.metaTitle1": "Citizen engagement platform | {orgName}",
+  "app.containers.App.skipLinkText": "Skip to main content",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Унесите токен",
   "app.containers.Authentication.steps.Invitation.token": "Токен",
