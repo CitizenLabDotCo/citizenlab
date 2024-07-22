@@ -41,9 +41,6 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
       create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
       create(:custom_field_multiline_text, resource: custom_form, key: 'multiline_text_field', title_multiloc: { 'en' => 'Multiline text field' })
       create(:custom_field_number, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' })
-      create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
-      create(:custom_field_line, resource: custom_form, key: 'line_field', title_multiloc: { 'en' => 'Line field' })
-      create(:custom_field_polygon, resource: custom_form, key: 'polygon_field', title_multiloc: { 'en' => 'Polygon field' })
       create(:custom_field_linear_scale, resource: custom_form, key: 'linear_scale_field', title_multiloc: { 'en' => 'Linear scale field' })
 
       select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
@@ -58,9 +55,14 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
       image_multiselect_field = create(:custom_field_multiselect_image, resource: custom_form, key: 'image_select_field', title_multiloc: { 'en' => 'Image select field' })
       create(:custom_field_option, custom_field: image_multiselect_field, key: 'this', title_multiloc: { 'en' => 'Image1' })
       create(:custom_field_option, custom_field: image_multiselect_field, key: 'that', title_multiloc: { 'en' => 'Image2' })
+
+      # These will not be exported as we don't support their import via XLSX. Included here to document this fact.
+      create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
+      create(:custom_field_line, resource: custom_form, key: 'line_field', title_multiloc: { 'en' => 'Line field' })
+      create(:custom_field_polygon, resource: custom_form, key: 'polygon_field', title_multiloc: { 'en' => 'Polygon field' })
     end
 
-    it 'produces an xlsx file with all the fields for a survey phase' do
+    it 'produces an xlsx file with the expected fields for the survey phase' do
       xlsx = service.export
       xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
 
@@ -75,9 +77,6 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Text field',
         'Multiline text field',
         'Number field',
-        'Point field [Longitude, Latitude]',
-        'Line field [Longitude, Latitude]',
-        'Polygon field [Longitude, Latitude]',
         'Linear scale field',
         'Select field',
         "If you picked 'Other', what are you thinking of?",
