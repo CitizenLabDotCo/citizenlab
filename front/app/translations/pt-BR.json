@@ -983,6 +983,7 @@
   "app.containers.App.appMetaDescription": "Bem-vindo à plataforma de participação online de {orgName}.\nExplore projetos locais e participe da discussão!",
   "app.containers.App.loading": "Carregando…",
   "app.containers.App.metaTitle1": "Plataforma de envolvimento do cidadão | {orgName}",
+  "app.containers.App.skipLinkText": "Pular para o conteúdo principal",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Já existe uma conta com este e-mail. Você pode sair, fazer login com este endereço de e-mail e verificar sua conta na página de configurações.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Introduzir um token",
   "app.containers.Authentication.steps.Invitation.token": "Ficha",
