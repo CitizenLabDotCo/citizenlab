@@ -8,7 +8,7 @@ module Verification
         def requires_verification?(permission, user)
           return false unless %w[groups custom].include?(permission.permitted_by)
 
-          return false if user.in_any_groups? permission.groups && !verify_by_field?(permission) # if the user meets the requirements of any other group we don't need to ask for verification
+          return false if permission.groups.any? && user.in_any_groups?(permission.groups) && !verify_by_field?(permission) # if the user meets the requirements of any other group we don't need to ask for verification
           return false unless verification_service.find_verification_group(permission.groups) || verify_by_field?(permission)
 
           !user.verified?
@@ -20,7 +20,7 @@ module Verification
           requirements = super
 
           if (@check_groups && permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)) ||
-            verify_by_field?(permission)
+             verify_by_field?(permission)
             requirements[:special][:verification] = 'require'
           end
           requirements
