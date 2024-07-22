@@ -6,13 +6,10 @@
 #
 #  id              :uuid             not null, primary key
 #  permission_id   :uuid             not null
-#  custom_field_id :uuid
+#  custom_field_id :uuid             not null
 #  required        :boolean          default(TRUE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  field_type      :string           default("custom_field")
-#  enabled         :boolean          default(TRUE), not null
-#  config          :jsonb            not null
 #  ordering        :integer          default(0)
 #
 # Indexes
