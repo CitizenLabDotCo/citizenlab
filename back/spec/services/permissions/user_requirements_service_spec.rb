@@ -503,6 +503,65 @@ describe Permissions::UserRequirementsService do
             }
           })
         end
+
+        context 'there are groups on the permission' do
+          let(:group) { create(:group) }
+
+          before { permission.groups << group }
+
+          it 'does not permit a user if they are not in the group' do
+            expect(service.requirements(permission, user)).to eq({
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied',
+                  'gender' => 'satisfied',
+                  'extra_required_field' => 'satisfied',
+                  'extra_optional_field' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
+          end
+
+          it 'permits a user if they are in the group' do
+            create(:membership, user: user, group: group)
+            expect(service.requirements(permission, user)).to eq({
+              permitted: true,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied',
+                  'gender' => 'satisfied',
+                  'extra_required_field' => 'satisfied',
+                  'extra_optional_field' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'satisfied'
+                }
+              }
+            })
+          end
+        end
       end
 
       context 'when permitted_by is set to groups' do

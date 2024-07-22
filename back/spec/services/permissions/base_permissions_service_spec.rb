@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# TODO: JS - add more group tests for all permitted_by values
 describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
@@ -256,17 +257,11 @@ describe Permissions::BasePermissionsService do
 
         it { expect(denied_reason).to eq 'user_not_active' }
       end
-
-      context 'when permitted by is changed from groups to users' do
-        before { permission.update!(permitted_by: 'users') }
-
-        it { expect(denied_reason).to be_nil }
-      end
     end
 
-    context 'when permitted by "custom"' do
+    context 'when permitted by "verified"' do
       let(:groups) { create_list(:group, 2) }
-      let(:permission) { create(:permission, permitted_by: 'custom', groups: groups) }
+      let(:permission) { create(:permission, permitted_by: 'verified', groups: groups) }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -303,12 +298,6 @@ describe Permissions::BasePermissionsService do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
         it { expect(denied_reason).to eq 'user_not_active' }
-      end
-
-      context 'when permitted by is changed from groups to users' do
-        before { permission.update!(permitted_by: 'users') }
-
-        it { expect(denied_reason).to be_nil }
       end
     end
 

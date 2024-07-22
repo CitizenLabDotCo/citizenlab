@@ -31,23 +31,9 @@ module Permissions
     end
 
     # Called on update of individual fields to change values in others that are dependent
+    # TODO: JS - is this needed anymore?
     def enforce_restrictions(field)
-      permission = field.permission
-      if field.field_type == 'email'
-        if field.config['password'] == false
-          # When password is disabled, name should also be automatically disabled
-          permission.permissions_fields.find_by(field_type: 'name').update!(enabled: false, required: false)
-        else
-          # When password is enabled, name should also be automatically enabled
-          permission.permissions_fields.find_by(field_type: 'name').update!(enabled: true, required: true)
-        end
-
-        # Confirmation should currently always match platform default
-        if field.config['confirmed'] != user_confirmation_enabled?
-          field.config['confirmed'] = user_confirmation_enabled?
-          field.save!
-        end
-      end
+      field
     end
 
     def custom_permitted_by_enabled?

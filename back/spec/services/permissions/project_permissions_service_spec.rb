@@ -505,7 +505,7 @@ describe Permissions::ProjectPermissionsService do
 
       it 'returns `user_missing_requirements`' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
-        permission.update!(permitted_by: 'users')
+        permission.update!(permitted_by: 'users', global_custom_fields: true)
         gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
         expect(service.denied_reason_for_action('taking_poll')).to eq 'user_missing_requirements'
         gender_field.update!(required: false) # Removed the required field
@@ -778,6 +778,7 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
+  # TODO: JS - Running a load of permissions_fields queries it did not before
   describe 'action_descriptors' do
     it 'does not run more than 3 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
