@@ -983,7 +983,7 @@
   "app.containers.App.appMetaDescription": "Welkom bij het online participatieplatform van {orgName}.\nOntdek de projecten en neem deel aan de discussie!",
   "app.containers.App.loading": "Bezig met laden...",
   "app.containers.App.metaTitle1": "Burgerparticipatieplatform | {orgName}",
-  "app.containers.App.skipLinkText": "Overslaan naar hoofdinhoud",
+  "app.containers.App.skipLinkText": "Ga naar de hoofdinhoud",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Er bestaat al een account met dit e-mailadres. Je kunt je afmelden, inloggen met dit e-mailadres en je account verifiëren op de instellingenpagina.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Voer een token in",
   "app.containers.Authentication.steps.Invitation.token": "Token",
