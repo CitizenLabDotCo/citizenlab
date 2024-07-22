@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
 
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
 import { SupportedPermittedBy } from './typings';
 import { VISUALIZATION_STEPS } from './utils';
 
@@ -31,10 +33,14 @@ export default FlowVisualization;
 
 interface BlockProps {
   number: number;
-  text: string;
+  text: MessageDescriptor;
 }
 
+const VERIFICATION_PROVIDER = 'MitID';
+
 const Block = ({ number, text }: BlockProps) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box
       borderRadius={stylingConsts.borderRadius}
@@ -44,7 +50,9 @@ const Block = ({ number, text }: BlockProps) => {
       w="220px"
     >
       <Box>{`${number}.`}</Box>
-      <Box>{text}</Box>
+      <Box>
+        {formatMessage(text, { verificationProvider: VERIFICATION_PROVIDER })}
+      </Box>
     </Box>
   );
 };

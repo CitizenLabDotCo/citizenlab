@@ -1,31 +1,39 @@
+import { MessageDescriptor } from 'utils/cl-intl';
+
+import messages from './messages';
 import { SupportedPermittedBy } from './typings';
 
 const getConfirmedEmailVisualizationSteps = () => {
   return [
-    'Enter your email',
-    'Confirm your email',
-    'Complete the extra questions below',
+    messages.enterYourEmail,
+    messages.confirmYourEmail,
+    messages.completeTheExtraQuestionsBelow,
   ];
 };
 
 const getUsersVisualizationSteps = () => {
   return [
-    'Enter name, last name, email and password',
-    'Confirm your email',
-    'Complete the extra questions below',
+    messages.enterNameLastNameEmailAndPassword,
+    messages.confirmYourEmail,
+    messages.completeTheExtraQuestionsBelow,
   ];
 };
 
 const getCustomVisualiationSteps = () => {
-  return ['Authenticate with MitID', 'Complete the extra questions below'];
+  return [
+    messages.authenticateWithVerificationProvider,
+    messages.completeTheExtraQuestionsBelow,
+  ];
 };
 
-export const VISUALIZATION_STEPS: Record<SupportedPermittedBy, () => string[]> =
-  {
-    users: getUsersVisualizationSteps,
-    everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
-    custom: getCustomVisualiationSteps,
-  };
+export const VISUALIZATION_STEPS: Record<
+  SupportedPermittedBy,
+  () => MessageDescriptor[]
+> = {
+  users: getUsersVisualizationSteps,
+  everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
+  custom: getCustomVisualiationSteps,
+};
 
 const SUPPORTED_PERMITTED_BY: Set<SupportedPermittedBy> = new Set([
   'users',
