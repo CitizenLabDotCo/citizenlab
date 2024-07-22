@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import CardButtons from './CardButtons';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
+import { isSupportedPermittedBy } from './FlowVisualization/utils';
 import messages from './messages';
 import Tooltip from './Tooltip';
 
@@ -78,9 +79,11 @@ const ActionFormNew = ({
           />
         </Box>
       )}
-      <Box mt="20px">
-        <FlowVisualization />
-      </Box>
+      {isSupportedPermittedBy(permittedBy) && (
+        <Box mt="20px">
+          <FlowVisualization permittedBy={permittedBy} />
+        </Box>
+      )}
       <Box mt="20px">
         <Fields
           phaseId={phaseId}

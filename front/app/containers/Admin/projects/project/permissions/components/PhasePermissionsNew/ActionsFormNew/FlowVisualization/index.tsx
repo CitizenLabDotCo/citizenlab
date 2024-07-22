@@ -2,15 +2,32 @@ import React from 'react';
 
 import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
 
-const FlowVisualization = () => {
+import { SupportedPermittedBy } from './typings';
+import { VISUALIZATION_STEPS } from './utils';
+
+export interface Props {
+  permittedBy: SupportedPermittedBy;
+}
+
+const FlowVisualization = ({ permittedBy }: Props) => {
+  const visualizationSteps = VISUALIZATION_STEPS[permittedBy]();
+
   return (
     <Box display="flex" flexDirection="row">
-      <Block number={1} text="Enter and confirm email (or sign up with SSO)" />
-      <Edge />
-      <Block number={2} text="Something else" />
+      {visualizationSteps.map((step, index) => {
+        const last = index === visualizationSteps.length - 1;
+        return (
+          <>
+            <Block number={index + 1} text={step} />
+            {!last && <Edge />}
+          </>
+        );
+      })}
     </Box>
   );
 };
+
+export default FlowVisualization;
 
 interface BlockProps {
   number: number;
@@ -39,5 +56,3 @@ const Edge = () => {
     </Box>
   );
 };
-
-export default FlowVisualization;
