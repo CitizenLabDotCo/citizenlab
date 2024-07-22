@@ -6,8 +6,6 @@ module Verification
       module UserRequirementsService
         # Verification requirement can now come from either a group or a permissions_field
         def requires_verification?(permission, user)
-          return false unless %w[groups custom].include?(permission.permitted_by)
-
           return false if permission.groups.any? && user.in_any_groups?(permission.groups) && !verify_by_field?(permission) # if the user meets the requirements of any other group we don't need to ask for verification
           return false unless verification_service.find_verification_group(permission.groups) || verify_by_field?(permission)
 
@@ -19,7 +17,7 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
-          if (@check_groups && permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)) ||
+          if (@check_groups && permission.groups.any? && verification_service.find_verification_group(permission.groups)) ||
              verify_by_field?(permission)
             requirements[:special][:verification] = 'require'
           end

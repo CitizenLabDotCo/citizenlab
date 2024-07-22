@@ -19,7 +19,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators custom].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
@@ -52,12 +52,6 @@ class Permission < ApplicationRecord
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
-
-  def global_custom_fields
-    return false if permitted_by == 'custom'
-
-    super
-  end
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
