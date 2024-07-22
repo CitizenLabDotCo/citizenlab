@@ -52,7 +52,7 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Prilagođena sekcija početne stranice",
   "app.components.AnonymousPostingToggle.betaLabel": "БЕТА",
   "app.components.AnonymousPostingToggle.userAnonymity": "Анонимност корисника",
-  "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Users will be able to hide their identity from other users, project managers and admins. These contributions can still be moderated.",
+  "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "User name and email will be hidden from all other users, project managers and admins. You can still moderate contributions but demographic data will be anonymised and not recorded. ",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Дозволите корисницима да учествују анонимно",
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Корисници и даље могу да изаберу да учествују са својим правим именом, али ће имати могућност да анонимно поднесу прилоге ако то желе. Сви корисници ће и даље морати да се придржавају услова постављениһ на картици „Права приступа“ да би могли да дају свој допринос. Подаци корисничког профила неће бити доступни при извозу података о учешћу.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Сазнајте више о анонимности корисника у нашој {supportArticle}.",
