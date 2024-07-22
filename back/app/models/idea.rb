@@ -161,10 +161,10 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :native_survey, -> { where.not creation_phase_id: nil }
-  scope :ideation, -> { where creation_phase_id: nil }
+  scope :native_survey, -> { where.not creation_phase_id: nil } # TODO: Delete
+  scope :ideation, -> { where creation_phase_id: nil } # TODO: Delete
 
-  scope :draft_surveys, lambda {
+  scope :draft_surveys, lambda { # TODO: Delete
     where(publication_status: 'draft')
       .where.not(creation_phase_id: nil)
   }

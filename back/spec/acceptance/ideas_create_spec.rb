@@ -1,6 +1,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+def public_input_params(spec)
+  spec.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true, extra: 'Maximum 100 characters'
+  spec.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
+  spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
+  spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
+  spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
+  spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
+  # spec.parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # TODO: Separate engine
+end
+
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
 
@@ -26,16 +37,10 @@ resource 'Ideas' do
     let(:publication_status) { 'published' }
 
     context 'in an ideation phase' do
+      public_input_params(self)
       with_options scope: :idea do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
-        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-        parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
-        parameter :idea_images_attributes, 'an array of base64 images to create'
-        parameter :idea_files_attributes, 'an array of base64 files to create'
       end
 
       let(:with_permissions) { false }
@@ -393,6 +398,35 @@ resource 'Ideas' do
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:ideas_phases, 'invalid')
           end
+        end
+      end
+    end
+
+    context 'in a proposals phase' do
+      public_input_params(self)
+      with_options scope: :idea do
+        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+      end
+
+      let(:with_permissions) { false }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:input) { build(:proposal, project: project) }
+      let(:title_multiloc) { { 'en' => 'My proposal title' } }
+      let(:body_multiloc) { { 'en' => 'My proposal body' } }
+      let(:topic_ids) { [create(:topic, projects: [project]).id] }
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        parameter :idea_status_id, 'The status of the input, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'" # TODO: proposal statuses
+
+        example_request 'Create a proposal' do
+          assert_status 201
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to eq body_multiloc
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
         end
       end
     end

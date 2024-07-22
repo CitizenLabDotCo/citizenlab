@@ -37,18 +37,21 @@ resource 'Ideas' do
 
       describe do
         before do
+          # @ideas = %w[published published draft published published].map do |ps|
           @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
+          # @proposal = create(:proposal)
           survey_project = create(:single_phase_native_survey_project)
           create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
         end
 
-        example_request 'List all published ideas (default behaviour)' do
+        example_request 'List all published inputs (default behaviour)' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
+          # expect(json_response[:data].pluck(:id)).to include(@proposal.id)
         end
 
         example 'Don\'t list drafts (default behaviour)', document: false do
