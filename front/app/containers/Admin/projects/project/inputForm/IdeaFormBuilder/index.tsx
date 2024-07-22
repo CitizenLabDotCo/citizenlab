@@ -23,7 +23,6 @@ const configs = {
   proposals: proposalsConfig,
 };
 
-
 const IdeaFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
@@ -33,15 +32,15 @@ const IdeaFormBuilder = () => {
   };
 
   const { data: project } = useProjectById(projectId);
-  const {data:phase} = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
 
-  const participation_method = phase?.data.attributes.participation_method || 'ideation';
+  const participation_method =
+    phase?.data.attributes.participation_method || 'ideation';
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId: participation_method === 'ideation' ? undefined : phaseId,
   });
-
 
   const locale = useLocale();
 
@@ -54,7 +53,6 @@ const IdeaFormBuilder = () => {
   };
 
   if (!project || !phase) return null;
-
 
   return (
     <>
