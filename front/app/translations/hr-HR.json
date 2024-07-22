@@ -983,6 +983,7 @@
   "app.containers.App.appMetaDescription": "Dobrodošli na platformu za sudjelovanje {orgName}.\nOtkrijte lokalne projekte i priključite se raspravi!",
   "app.containers.App.loading": "Učitavanje...",
   "app.containers.App.metaTitle1": "Platforma za angažman građana | {orgName}",
+  "app.containers.App.skipLinkText": "Prijeđi na glavni sadržaj",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Račun s ovom e-poštom već postoji. Možete se odjaviti, prijaviti s ovom adresom e-pošte i potvrditi svoj račun na stranici postavki.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Unesite token",
   "app.containers.Authentication.steps.Invitation.token": "Znak",
