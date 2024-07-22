@@ -59,7 +59,7 @@ describe Permissions::UserRequirementsService do
         configuration.save!
 
         # Should probably add this to the 'custom_permission' factory
-        Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: custom_permission, previous_permitted_by: 'users')
+        Permissions::PermissionsFieldsService.new.persist_default_fields(permission: custom_permission, previous_permitted_by: 'users')
         custom_permission.permissions_fields.find_by(field_type: 'verification').update!(enabled: true, required: true)
       end
 

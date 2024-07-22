@@ -24,7 +24,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     authorize @permission
     previous_permitted_by = @permission.permitted_by_changed?(to: 'custom') ? @permission.permitted_by_was : nil
     if @permission.save
-      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(
+      Permissions::PermissionsFieldsService.new.persist_default_fields(
         permission: @permission,
         previous_permitted_by: previous_permitted_by
       )

@@ -488,7 +488,7 @@ describe Permissions::UserRequirementsService do
           let(:permission) { create(:permission, permitted_by: 'custom', groups: [group], global_custom_fields: false) }
 
           before do
-            Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(
+            Permissions::PermissionsFieldsService.new.persist_default_fields(
               permission: permission,
               previous_permitted_by: 'everyone_confirmed_email'
             )
@@ -855,7 +855,7 @@ describe Permissions::UserRequirementsService do
         let(:permission) { create(:permission, permitted_by: 'custom', global_custom_fields: true) }
 
         before do
-          Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+          Permissions::PermissionsFieldsService.new.persist_default_fields(permission: permission, previous_permitted_by: 'users')
         end
 
         it 'permits a fully registered confirmed resident' do
@@ -892,7 +892,7 @@ describe Permissions::UserRequirementsService do
 
     before do
       create(:custom_field_gender, enabled: true, required: false)
-      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(
+      Permissions::PermissionsFieldsService.new.persist_default_fields(
         permission: permission,
         previous_permitted_by: 'user'
       )

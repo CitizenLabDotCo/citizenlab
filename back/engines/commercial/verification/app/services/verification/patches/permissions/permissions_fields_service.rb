@@ -4,24 +4,16 @@ module Verification
   module Patches
     module Permissions
       module PermissionsFieldsService
-        def default_fields(permitted_by: 'users', permission: nil)
-          fields = super
+        def default_fields(_permission)
+          super
 
-          if verification_methods.any?
-            verification_field = PermissionsField.new(field_type: 'verification', id: SecureRandom.uuid, required: false, enabled: false, permission: permission)
-            fields.insert(2, verification_field)
-            fields.map.with_index do |field, index|
-              field.ordering = index # Reset ordering of all fields
-              field
-            end
-          end
-
-          fields
+          # TODO: JS - Add any custom fields that are enabled on the verification method
         end
 
         def enforce_restrictions(field)
           super
 
+          # TODO: JS - change so that this looks for groups OR verification not fields
           if field.field_type == 'verification' && field.enabled
             method = verification_methods.first
 

@@ -68,7 +68,7 @@ resource 'PermissionsField' do
 
       example 'List all persisted permissions fields and associated groups of a "custom" permission' do
         permission.update!(permitted_by: 'custom')
-        Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+        Permissions::PermissionsFieldsService.new.persist_default_fields(permission: permission, previous_permitted_by: 'users')
 
         # Permissions field not associated with any group
         create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
@@ -143,7 +143,7 @@ resource 'PermissionsField' do
 
     let(:permitted_by) { 'custom' }
     let(:permissions_field) do
-      Permissions::PermissionsFieldsService.new.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+      Permissions::PermissionsFieldsService.new.persist_default_fields(permission: permission, previous_permitted_by: 'users')
       PermissionsField.find_by(field_type: 'email')
     end
     let(:id) { permissions_field.id }

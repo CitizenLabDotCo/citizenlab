@@ -50,8 +50,7 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by_and_global_custom_fields, on: :create
-  before_validation :update_global_custom_fields, on: :update
+  before_validation :set_default_permitted_by, on: :create
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -84,16 +83,11 @@ class Permission < ApplicationRecord
 
   private
 
-  def set_permitted_by_and_global_custom_fields
+  def set_default_permitted_by
     self.permitted_by ||= if action == 'following'
       'everyone_confirmed_email'
     else
       'users'
     end
-    self.global_custom_fields ||= (permitted_by == 'users')
-  end
-
-  def update_global_custom_fields
-    self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
   end
 end

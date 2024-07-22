@@ -40,7 +40,7 @@ describe Permissions::PermissionsFieldsService do
 
     context 'permitted_by is "custom" and has no fields' do
       it 'creates default fields for the permission in the correct order' do
-        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+        service.persist_default_fields(permission: permission, previous_permitted_by: 'users')
         fields = permission.permissions_fields
         expect(fields.count).to eq 4
         expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field]
@@ -56,7 +56,7 @@ describe Permissions::PermissionsFieldsService do
     let(:verification_field) { permission.permissions_fields.find_by(field_type: 'verification') }
 
     before do
-      service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+      service.persist_default_fields(permission: permission, previous_permitted_by: 'users')
     end
 
     context 'when verification field is disabled' do

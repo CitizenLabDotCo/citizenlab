@@ -7,112 +7,90 @@ describe Permissions::PermissionsFieldsService do
 
   before do
     create(:custom_field_gender, enabled: true, required: false)
+    create(:custom_field_birthyear, enabled: true, required: true)
     SettingsService.new.activate_feature! 'custom_permitted_by'
     SettingsService.new.activate_feature! 'user_confirmation'
   end
 
-  # TODO: JS - Seems to be some leakage between tests, need to investigate
   describe '#fields_for_permission' do
-    context '"custom_permitted_by" feature flag is enabled' do
+    context 'global_custom_fields is true' do
       it 'returns non-persisted default fields when permitted_by "users"' do
-        permission = create(:permission, permitted_by: 'users')
-
-        fields = service.fields_for_permission(permission)
-        expect(fields.count).to eq 3
-        expect(fields.map(&:persisted?)).to match_array [false, false, false]
-        expect(fields.pluck(:field_type)).to match_array(%w[name email custom_field])
-        expect(fields.pluck(:enabled)).to match_array([true, true, true])
-        expect(fields.pluck(:required)).to match_array([true, true, false])
-        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-      end
-
-      it 'returns non-persisted & disabled default fields without custom fields when permitted_by "everyone"' do
-        permission = create(:permission, permitted_by: 'everyone')
-
+        permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:field_type)).to match_array(%w[name email])
-        expect(fields.pluck(:required)).to match_array([false, false])
-        expect(fields.pluck(:enabled)).to match_array([false, false])
-        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
+        expect(fields.pluck(:required)).to match_array([false, true])
       end
 
-      it 'returns non-persisted default fields with only email & not password when permitted_by "everyone_confirmed_email"' do
-        permission = create(:permission, permitted_by: 'everyone_confirmed_email')
-
+      it 'returns non-persisted default fields when permitted_by "verified"' do
+        permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:field_type)).to match_array(%w[name email])
-        expect(fields.pluck(:enabled)).to match_array([false, true])
-        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => false, 'confirmed' => true })
+        expect(fields.pluck(:required)).to match_array([false, true])
       end
 
-      it 'returns persisted fields when permitted_by "custom"' do
-        permission = create(:permission, permitted_by: 'custom')
-        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
-
-        fields = service.fields_for_permission(permission)
-        expect(fields.count).to eq 3
-        expect(fields.map(&:persisted?)).to match_array [true, true, true]
-        expect(fields.pluck(:field_type)).to match_array(%w[name email custom_field])
-        expect(fields.pluck(:enabled)).to match_array([true, true, true])
-        expect(fields.pluck(:required)).to match_array([true, true, false])
-        expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-      end
-    end
-
-    context '"custom_permitted_by" feature flag is NOT enabled' do
-      before { SettingsService.new.deactivate_feature! 'custom_permitted_by' }
-
-      it 'returns no fields by default' do
-        permission = create(:permission, permitted_by: 'users')
+      it 'returns no permissions fields when permitted_by "everyone"' do
+        permission = create(:permission, permitted_by: 'everyone', global_custom_fields: true)
         expect(service.fields_for_permission(permission)).to be_empty
       end
 
-      it 'returns only field_type: custom_field if feature flag is NOT enabled' do
-        permission = create(:permission, permitted_by: 'users')
-        email_field = create(:permissions_field, permission: permission, field_type: 'email')
-        birth_year_field = create(:permissions_field, permission: permission, field_type: 'custom_field', custom_field: create(:custom_field_birthyear))
+      it 'returns no permissions fields when permitted_by "everyone_confirmed_email"' do
+        permission = create(:permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: true)
+        expect(service.fields_for_permission(permission)).to be_empty
+      end
+    end
 
-        fields = service.fields_for_permission(permission)
-        expect(fields.count).to eq 1
-        expect(fields.first.field_type).to eq 'custom_field'
-        expect(fields.pluck(:id)).to include birth_year_field.id
-        expect(fields.pluck(:id)).not_to include email_field.id
+    context 'global_custom_fields is false' do
+      let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: false) }
+
+      it 'returns no fields by default for all permitted_by values' do
+        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
+          permission.update!(permitted_by: permitted_by)
+          expect(service.fields_for_permission(permission)).to be_empty
+        end
+      end
+
+      it 'returns persisted fields for all permitted_by values' do
+        domicile_field = create(:permissions_field, permission: permission, custom_field: create(:custom_field_domicile))
+        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
+          permission.update!(permitted_by: permitted_by)
+          fields = service.fields_for_permission(permission)
+          expect(fields.count).to eq 1
+          expect(fields.first.persisted?).to be true
+          expect(fields.first).to eq domicile_field
+        end
       end
     end
   end
 
   describe '#create_default_fields_for_custom_permitted_by' do
-    let(:permission) { create(:permission, permitted_by: 'custom') }
+    let(:permission) { create(:permission, permitted_by: 'users') }
 
-    context 'permitted_by is "custom" and has no fields' do
+    context 'permitted_by is "users" and has no persisted permissions fields' do
       it 'creates default fields for the permission in the correct order' do
-        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+        service.persist_default_fields(permission)
         fields = permission.permissions_fields
-        expect(fields.count).to eq 3
-        expect(fields.pluck(:field_type)).to eq %w[name email custom_field]
-        expect(fields.pluck(:ordering)).to eq [0, 1, 2]
-        expect(fields.pluck(:required)).to eq [true, true, false]
+        expect(fields.count).to eq 2
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:required)).to eq [false, true]
       end
     end
 
-    context 'permitted_by is not "custom"' do
-      it 'does nothing' do
-        permission.update!(permitted_by: 'users')
-        service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users')
+    context 'permitted_by is "everyone" and has no persisted permissions fields' do
+      it 'does not persist any fields as there are no defaults' do
+        permission.update!(permitted_by: 'everyone')
+        service.persist_default_fields(permission)
         expect(permission.permissions_fields).to be_empty
       end
     end
 
     context 'permission already has fields' do
       it 'does not add fields' do
-        service.create_default_fields_for_custom_permitted_by(permission: permission)
+        service.persist_default_fields(permission)
         num_permissions_fields = permission.permissions_fields.count
 
-        service.create_default_fields_for_custom_permitted_by(permission: permission)
+        service.persist_default_fields(permission)
         expect(permission.permissions_fields.count).to eq num_permissions_fields
       end
     end
@@ -121,7 +99,7 @@ describe Permissions::PermissionsFieldsService do
   describe '#enforce_restrictions' do
     let(:permission) { create(:permission, permitted_by: 'custom') }
 
-    before { service.create_default_fields_for_custom_permitted_by(permission: permission, previous_permitted_by: 'users') }
+    before { service.persist_default_fields(permission: permission, previous_permitted_by: 'users') }
 
     context 'email field is changed' do
       let(:email_field) { permission.permissions_fields.find_by(field_type: 'email') }
