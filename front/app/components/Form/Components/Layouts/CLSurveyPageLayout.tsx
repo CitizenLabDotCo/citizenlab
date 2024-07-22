@@ -299,8 +299,14 @@ const CLSurveyPageLayout = memo(
           )}
 
           <Box flex={'1 1 auto'} overflowY="auto" h="100%">
-            {isMapPage && (
-              <Box height="30px" pt="16px" pb="8px" ref={dragDividerRef}>
+            {isMapPage && isMobileOrSmaller && (
+              <Box
+                aria-hidden={true}
+                height="30px"
+                pt="16px"
+                pb="8px"
+                ref={dragDividerRef}
+              >
                 <Box
                   mx="auto"
                   w="60px"
