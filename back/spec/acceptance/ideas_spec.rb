@@ -194,7 +194,7 @@ resource 'Ideas' do
         end
 
         example 'Search for ideas' do
-          initiatives = [
+          ideas = [
             create(:idea, title_multiloc: { en: 'This idea is uniqque' }),
             create(:idea, title_multiloc: { en: 'This one origiinal' })
           ]
@@ -202,7 +202,7 @@ resource 'Ideas' do
           do_request search: 'uniqque'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq initiatives[0].id
+          expect(json_response[:data][0][:id]).to eq ideas[0].id
         end
 
         example 'List all ideas sorted by new' do

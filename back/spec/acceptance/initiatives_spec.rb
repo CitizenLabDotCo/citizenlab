@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Initiatives' do
   explanation 'Proposals from citizens (but more spontaneous than ideas) to the city.'
 
