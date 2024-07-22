@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
@@ -15,7 +16,13 @@ import PDFExportModal, {
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
-import { ideationConfig } from '../utils';
+import { ideationConfig, proposalsConfig } from '../utils';
+
+const configs = {
+  ideation: ideationConfig,
+  proposals: proposalsConfig,
+};
+
 
 const IdeaFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -29,6 +36,7 @@ const IdeaFormBuilder = () => {
     projectId,
   });
   const { data: project } = useProjectById(projectId);
+  const {data:phase} = usePhase(phaseId);
 
   const locale = useLocale();
 
@@ -40,13 +48,14 @@ const IdeaFormBuilder = () => {
     await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
 
-  if (!project) return null;
+  if (!project || !phase) return null;
+
 
   return (
     <>
       <FormBuilder
         builderConfig={{
-          ...ideationConfig,
+          ...configs[phase.data.attributes.participation_method],
           formCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,

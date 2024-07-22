@@ -92,6 +92,7 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
+  console.log(formCustomFields);
   const schema = object().shape({
     customFields: array().of(
       object().shape({
