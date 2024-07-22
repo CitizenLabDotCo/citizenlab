@@ -1,17 +1,17 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": crwdns208022:0crwdne208022:0
+      "inappropriate_content_flagged": crwdns2677409:0crwdne2677409:0
     admin_campaign_type_description:
-      "inappropriate_content_flagged": crwdns208024:0crwdne208024:0
+      "inappropriate_content_flagged": crwdns2677411:0crwdne2677411:0
     inappropriate_content_flagged:
-      subject: 'crwdns208026:0crwdne208026:0'
-      header_title: 'crwdns208028:0crwdne208028:0'
-      comment_author: 'crwdns208030:0%{authorName}crwdne208030:0'
-      idea_author: 'crwdns208032:0%{authorName}crwdne208032:0'
-      initiative_author: 'crwdns208034:0%{authorName}crwdne208034:0'
+      subject: 'crwdns2677413:0crwdne2677413:0'
+      header_title: 'crwdns2677415:0crwdne2677415:0'
+      comment_author: 'crwdns2677417:0%{authorName}crwdne2677417:0'
+      idea_author: 'crwdns2677419:0%{authorName}crwdne2677419:0'
+      initiative_author: 'crwdns2677421:0%{authorName}crwdne2677421:0'
       automatically_flagged: >
-        crwdns1368374:0crwdne1368374:0
+        crwdns2677423:0crwdne2677423:0
       how_to_review: >
-        crwdns1368376:0crwdne1368376:0
-      cta_review_post: 'crwdns208038:0crwdne208038:0'
+        crwdns2677425:0crwdne2677425:0
+      cta_review_post: 'crwdns2677427:0crwdne2677427:0'
