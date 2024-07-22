@@ -32,7 +32,7 @@ describe 'google authentication' do
             picture: 'https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/s96-c/photo.jpg',
             given_name: 'Boris',
             family_name: 'Brompton',
-            email_verified: true
+            email_verified: email_verified
           },
           id_token: 'eyJhbGciOiJSUzI1NiJsImtpZCI6IjZmNjc4MRJhNzEbOTlhNjU4ZTc2MGFhNWFhOTNlNWZjM2RjNzUyYjUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2OTI0ODQ0NDE4MTMtZGFtZGUwYWVtMWllNjlxcmFoNnRlcjhnbmRjbmY4cWYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2OTI0ODQ0NDE4MTMtZGFtZGUwYWVtMWllNjlxcmFoNnRlcjhnbmRjbmY4cWYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDE0ODE5NDYxMjQwMzkxODQ2NzQiLCJlbWFpbCI6ImZyYW5rLnZhbmRyb29nZW5icm9lY2tAb3V0bG9vay5iZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiZlhsYkVEMVgyRElxam10WVJ1LXZOZyIsIm5hbWUiOiJGcmFuayBWYW4gRHJvb2dlbmJyb2VjayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLVEyWVAwSnUzZW5FL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FDSGkzcmN2Smt1QkduV0VzX3ZqSFpEVEdhUlVFN1JYZWcvczk2LWMvcGhvdG8uanBnIiwiZ2l2ZW5fbmFtZSI6IkZyYW5rIiwiZmFtaWx5X25hbWUiOiJWYW4gRHJvb2dlbmJyb2VjayIsImxvY2FsZSI6Im5sIiwiaWF0IjoxNTU0OTcwOTY1LCJleHAiOjE1NTQ5NzQ1NjV9.JPl32XIxUMGj9aS8_Z4rKgWPx-f-jHf0KbinTUZh7OmpO9k5AAXTqw_qeA79vaZiyxfn24RFbYb-F4Wvnp1qnHGlMRkGFRhtYR474v1XoN1a9y8WYXsHclyP3beWmLSUmHzMrkme5hkK3Ejc7Fj0EaAjDpufmublpqQLXl8FRXU0Q9iDtceX6owU-LJDvfXeCmEuOrIE4psTY0Vtv4iPLiQWTaRVa_9QGJpxZQMqNyyDfyZerzwAHpfx3YMCqj5Tj3OUa-KrTgWAFrY3jUijdehwLQRwMlGpVUPGt7_dZsGxis3ZClWxO1h-IRzhVwvpMSnjycZl3GV9y2mgt9xSpw',
           raw_info: {
@@ -43,7 +43,7 @@ describe 'google authentication' do
             picture: 'https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/mo/photo.jpg',
             given_name: 'Boris',
             family_name: 'Brompton',
-            email_verified: true
+            email_verified: email_verified
           }
         },
         provider: 'google',
@@ -72,6 +72,8 @@ describe 'google authentication' do
     configuration.save!
     host! 'example.org'
   end
+
+  let(:email_verified) { true }
 
   it 'successfully authenticates an existing user' do
     user = create(:user, email: 'boris.brompton@orange.uk')
@@ -207,6 +209,17 @@ describe 'google authentication' do
         follow_redirect!
         user = User.find_by(email: 'boris.brompton@orange.uk')
         expect(user.confirmation_required?).to be(false)
+      end
+
+      context 'when email is not verified' do
+        let(:email_verified) { false }
+
+        it 'creates unconfirmed user' do
+          get '/auth/google'
+          follow_redirect!
+          user = User.find_by(email: 'boris.brompton@orange.uk')
+          expect(user.confirmation_required?).to be(true)
+        end
       end
     end
   end

@@ -112,7 +112,7 @@
       <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= assigned_initiative.images.first&.versions&.small %>">
               </span>
@@ -165,7 +165,7 @@
       <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - succesful_assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= succesful_assigned_initiative.images.first&.versions&.small %>">
               </span>
