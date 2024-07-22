@@ -45,13 +45,8 @@ class IdeaCustomFieldsService
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload]
-    filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
-
-    # Importing of geographic fields (point, line, and polygon) is not yet implemented, but the fields are still
-    # included in the importable fields list.
-    # This is because this list is used to generate the example template XLSX file.
-    add_suffix_to_geo_fields_title_multiloc(filtered_fields)
+    ignore_field_types = %w[page section date files image_files file_upload point line polygon]
+    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
   def enabled_fields

@@ -30,29 +30,6 @@ module BulkImportIdeas::Exporters
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number', 'linear_scale'
           field.maximum || 3
-        when 'point'
-          { 'type' => 'Point', 'coordinates' => [4.34878, 50.85045] }
-        when 'line'
-          { 'type' => 'LineString', 'coordinates' => [[4.31504, 50.87332], [4.37215, 50.85980]] }
-        when 'polygon'
-          { 'type' => 'Polygon', 'coordinates' => [[
-            [
-              4.33406,
-              50.86592
-            ],
-            [
-              4.38485,
-              50.85529
-            ],
-            [
-              4.358499,
-              50.83162
-            ],
-            [
-              4.33406,
-              50.86592
-            ]
-          ]] }
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end
