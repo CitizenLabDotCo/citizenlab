@@ -185,9 +185,13 @@ class OmniauthCallbackController < ApplicationController
   # @param [User] user
   def update_user!(auth, user, authver_method)
     attrs = authver_method.updateable_user_attrs
-    user_params = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    sso_user_attrs = authver_method.profile_to_user_attrs(auth)
+    user_params = sso_user_attrs.slice(*attrs).compact
     user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-    confirm_user = authver_method.email_confirmed?(auth)
+
+    sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
+    confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
+
     UserService.update_in_sso!(user, user_params, confirm_user)
   end
 

@@ -1,4 +1,15 @@
 <mj-head>
+  <mj-raw>
+    <style data-premailer="ignore">
+        /* Media query for mobile devices, aligned with front-end breakpoints */
+        @media (max-width: 769px) {
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+    </style>
+  </mj-raw>
+
   <mj-style inline="inline">
     h1 {
       font-size: 25px;

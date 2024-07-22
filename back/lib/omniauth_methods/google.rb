@@ -30,6 +30,10 @@ module OmniauthMethods
       super + %i[remote_avatar_url]
     end
 
+    def email_confirmed?(auth)
+      auth.extra.raw_info.email_verified
+    end
+
     private
 
     def remote_avatar_url(auth)
