@@ -24,6 +24,7 @@ export interface PageType extends Layout {
     title?: string;
     description?: string;
     map_config_id?: string;
+    page_layout?: 'map' | 'default' | null;
   };
   label?: string;
   scope?: string;

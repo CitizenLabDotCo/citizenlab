@@ -30,9 +30,7 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
@@ -40,7 +38,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
-import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -72,7 +69,6 @@ interface Props {
 }
 
 const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
@@ -309,18 +305,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
-              {allowAnonymousPosting && (
-                <Box
-                  w="100%"
-                  px={isSmallerThanPhone ? '16px' : '24px'}
-                  mt="12px"
-                  id="anonymous-survey-warning"
-                >
-                  <Warning icon="shield-checkered">
-                    {formatMessage(messages.anonymousSurveyMessage)}
-                  </Warning>
-                </Box>
-              )}
               <Form
                 schema={schema}
                 uiSchema={uiSchema}

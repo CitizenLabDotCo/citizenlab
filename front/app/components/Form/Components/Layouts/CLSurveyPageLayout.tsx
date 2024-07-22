@@ -1,4 +1,11 @@
-import React, { memo, useState, useEffect, useContext, useRef } from 'react';
+import React, {
+  memo,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useMemo,
+} from 'react';
 
 import {
   Box,
@@ -12,9 +19,20 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import useMapConfigById from 'api/map_config/useMapConfigById';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocalize from 'hooks/useLocalize';
+
 import EsriMap from 'components/EsriMap';
+import { parseLayers } from 'components/EsriMap/utils';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -27,6 +45,9 @@ import {
 import { FormContext } from 'components/Form/contexts';
 import { customAjv } from 'components/Form/utils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -34,6 +55,7 @@ import {
   isVisible,
 } from '../Controls/visibilityUtils';
 
+import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 
 // Handling survey pages in here. The more things that we have added to it,
@@ -53,6 +75,9 @@ const CLSurveyPageLayout = memo(
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [searchParams] = useSearchParams();
+    const { formatMessage } = useIntl();
+    const localize = useLocalize();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -62,18 +87,37 @@ const CLSurveyPageLayout = memo(
     const [scrollToError, setScrollToError] = useState(false);
     const theme = useTheme();
     const formState = useJsonForms();
-    const isSmallerThanPhone = useBreakpoint('phone');
+    const isMobileOrSmaller = useBreakpoint('phone');
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const hasAnonymousWarning = document.getElementById(
-      'anonymous-survey-warning'
-    );
 
-    // Map page variables
-    const isMapPage = uiPages[currentStep].elements.length > 4;
+    // Get project and relevant phase data
+    const { slug } = useParams() as {
+      slug: string;
+    };
+    const { data: project } = useProjectBySlug(slug);
+    const { data: phases } = usePhases(project?.data.id);
+    const phaseIdFromSearchParams = searchParams.get('phase_id');
+    const phaseId =
+      phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
+    const { data: phase } = usePhase(phaseId);
+
+    // Anonymous posting
+    const allowAnonymousPosting =
+      phase?.data?.attributes.allow_anonymous_participation;
+
+    // Map-related variables
+    const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
+    const isMapPage = uiPages[currentStep].options.page_layout === 'map';
+    const { data: mapConfig } = useMapConfigById(
+      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id
+    );
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
+    }, [localize, mapConfig]);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -208,25 +252,34 @@ const CLSurveyPageLayout = memo(
         <Box
           id="container"
           display="flex"
-          flexDirection="row"
+          flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
         >
           {isMapPage && (
-            <Box id="survey_page_map" width="60%">
-              <EsriMap height="100%" />
+            <Box
+              id="survey_page_map"
+              w={isMobileOrSmaller ? '100%' : '60%'}
+              minWidth="60%"
+              h="100%"
+            >
+              <EsriMap
+                layers={mapLayers}
+                initialData={{
+                  zoom: Number(mapConfig?.data.attributes.zoom_level),
+                  center: mapConfig?.data.attributes.center_geojson,
+                  showLegend: true,
+                  showLayerVisibilityControl: true,
+                }}
+                webMapId={mapConfig?.data.attributes.esri_web_map_id}
+                height="100%"
+              />
             </Box>
           )}
 
-          <Box flex="1 1 auto" overflowY="auto" h="100%">
+          <Box flex={'1 1 auto'} overflowY="auto" h="100%">
             <Box display="flex" flexDirection="column" height="100%">
-              <Box
-                h="100%"
-                display="flex"
-                ref={pagesRef}
-                overflowY={hasAnonymousWarning ? 'auto' : undefined}
-                mb={hasAnonymousWarning ? '44px' : undefined}
-              >
+              <Box h="100%" display="flex" ref={pagesRef}>
                 {uiPages.map((page, index) => {
                   const pageElements = extractElementsByOtherOptionLogic(
                     page,
@@ -236,10 +289,17 @@ const CLSurveyPageLayout = memo(
                     currentStep === index && (
                       <Box key={index} p="24px" w="100%">
                         <Box display="flex" flexDirection="column">
+                          {allowAnonymousPosting && (
+                            <Box w="100%" mb="12px">
+                              <Warning icon="shield-checkered">
+                                {formatMessage(messages.anonymousSurveyMessage)}
+                              </Warning>
+                            </Box>
+                          )}
                           {page.options.title && (
                             <Title
                               as="h1"
-                              variant={isSmallerThanPhone ? 'h2' : 'h1'}
+                              variant={isMobileOrSmaller ? 'h2' : 'h1'}
                               m="0"
                               mb="8px"
                               color="tenantPrimary"
@@ -306,7 +366,7 @@ const CLSurveyPageLayout = memo(
           maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
-          bottom={isSmallerThanPhone ? '0' : '40px'}
+          bottom={isMobileOrSmaller ? '0' : '40px'}
           zIndex="1010"
         >
           <Box background={colors.background}>
