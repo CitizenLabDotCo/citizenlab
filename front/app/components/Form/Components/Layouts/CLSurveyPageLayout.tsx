@@ -75,9 +75,12 @@ const CLSurveyPageLayout = memo(
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
+    const isMobileOrSmaller = useBreakpoint('phone');
     const [searchParams] = useSearchParams();
     const { formatMessage } = useIntl();
+    const formState = useJsonForms();
     const localize = useLocalize();
+    const theme = useTheme();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -85,14 +88,14 @@ const CLSurveyPageLayout = memo(
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
-    const theme = useTheme();
-    const formState = useJsonForms();
-    const isMobileOrSmaller = useBreakpoint('phone');
+    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
+
+    const draggableDivRef = useRef<HTMLDivElement>(null);
+    const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
-    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
     // Get project and relevant phase data
     const { slug } = useParams() as {
@@ -247,6 +250,23 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
     };
 
+    const onDragDivider = (event) => {
+      event.preventDefault();
+      // Change the height of the map container to match the drag event
+      if (draggableDivRef?.current) {
+        const clientY = event?.changedTouches?.[0]?.clientY;
+        if (clientY > 0 && clientY < document.body.clientHeight - 180) {
+          draggableDivRef.current.style.height = `${clientY}px`;
+        }
+      }
+    };
+
+    dragDividerRef?.current?.addEventListener(
+      'touchmove',
+      onDragDivider,
+      false
+    );
+
     return (
       <>
         <Box
@@ -262,6 +282,7 @@ const CLSurveyPageLayout = memo(
               w={isMobileOrSmaller ? '100%' : '60%'}
               minWidth="60%"
               h="100%"
+              ref={draggableDivRef}
             >
               <EsriMap
                 layers={mapLayers}
@@ -278,6 +299,17 @@ const CLSurveyPageLayout = memo(
           )}
 
           <Box flex={'1 1 auto'} overflowY="auto" h="100%">
+            {isMapPage && (
+              <Box height="30px" pt="16px" pb="8px" ref={dragDividerRef}>
+                <Box
+                  mx="auto"
+                  w="60px"
+                  h="10px"
+                  bgColor="lightgrey"
+                  borderRadius="10px"
+                />
+              </Box>
+            )}
             <Box display="flex" flexDirection="column" height="100%">
               <Box h="100%" display="flex" ref={pagesRef}>
                 {uiPages.map((page, index) => {
