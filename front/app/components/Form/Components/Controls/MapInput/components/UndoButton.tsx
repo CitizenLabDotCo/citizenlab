@@ -4,14 +4,19 @@ import MapView from '@arcgis/core/views/MapView';
 import {
   Button,
   Box,
-  colors,
   Tooltip,
   ButtonStyles,
+  ButtonProps,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getUserInputGraphicsLayer, getUserInputPoints } from '../utils';
+import {
+  getUserInputGraphicsLayer,
+  getUserInputPoints,
+  isLineOrPolygonInput,
+  MapInputType,
+} from '../utils';
 
 import messages from './messages';
 
@@ -19,7 +24,7 @@ type UndoButtonProps = {
   mapView?: MapView | null;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   undoEnabled: boolean;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   undoButtonRef?: RefObject<HTMLDivElement>;
   buttonStyle?: ButtonStyles;
 };
@@ -30,7 +35,14 @@ const UndoButton = ({
   undoEnabled,
   inputType,
   buttonStyle,
-}: UndoButtonProps) => {
+  width,
+  height,
+  iconColor,
+  bgHoverColor,
+  borderRadius,
+  padding,
+  iconSize,
+}: UndoButtonProps & ButtonProps) => {
   const { formatMessage } = useIntl();
   const [disabled, setDisabled] = useState(true);
 
@@ -57,7 +69,7 @@ const UndoButton = ({
 
   return (
     <Box ref={undoButtonRef}>
-      {(inputType === 'line' || inputType === 'polygon') && (
+      {isLineOrPolygonInput(inputType) && (
         <Tooltip
           maxWidth="250px"
           placement={buttonStyle ? 'top' : 'right'}
@@ -70,21 +82,18 @@ const UndoButton = ({
               onClick={() => {
                 undoLatest();
               }}
-              width={buttonStyle ? undefined : '32px'}
-              height={buttonStyle ? undefined : '32px'}
               buttonStyle={buttonStyle || 'white'}
-              iconColor={buttonStyle ? undefined : colors.coolGrey500}
-              bgHoverColor={buttonStyle ? undefined : colors.grey100}
               opacityDisabled="0.6"
-              borderRadius={buttonStyle ? undefined : '0px'}
-              padding={buttonStyle ? undefined : '7px'}
-              iconSize={buttonStyle ? undefined : '20px'}
-              boxShadow={
-                buttonStyle ? undefined : '0px 2px 2px rgba(0, 0, 0, 0.2)'
-              }
               disabled={disabled}
               text={buttonStyle ? formatMessage(messages.undo) : undefined}
               aria-label={formatMessage(messages.undoLastPoint)}
+              width={width}
+              height={height}
+              iconColor={iconColor}
+              bgHoverColor={bgHoverColor}
+              borderRadius={borderRadius}
+              padding={padding}
+              iconSize={iconSize}
             />
           </div>
         </Tooltip>

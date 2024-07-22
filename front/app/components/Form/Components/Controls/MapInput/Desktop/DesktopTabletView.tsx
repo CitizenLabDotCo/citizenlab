@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Graphic from '@arcgis/core/Graphic';
 import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { Point } from 'geojson';
 import { useTheme } from 'styled-components';
@@ -31,15 +31,18 @@ import {
   checkCoordinateErrors,
   updateDataAndDisplay,
   handlePointDrag,
+  getInitialMapCenter,
+  MapInputType,
+  isLineOrPolygonInput,
 } from '../utils';
 
 type Props = {
   mapConfig?: IMapConfig;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
   mapLayers?: Layer[];
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
-  handlePointChange: (point: GeoJSON.Point | undefined) => void;
+  handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
 
   didBlur: boolean;
@@ -53,7 +56,7 @@ const DesktopView = ({
   mapConfig,
   mapLayers,
   onMapInit,
-  handlePointChange,
+  handleSinglePointChange,
   handleMultiPointChange,
   didBlur,
   mapView,
@@ -69,7 +72,7 @@ const DesktopView = ({
   });
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
-  // Create refs for some custom UI elements
+  // Create refs for custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
   const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -81,13 +84,15 @@ const DesktopView = ({
   // Add the custom UI elements to the map
   useEffect(() => {
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
-    if (inputType !== 'point') {
-      // Only add for line/polygon input
+
+    if (isLineOrPolygonInput(inputType)) {
+      // Show these buttons in sequence for line/polygon inputs
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       return;
+    } else if (inputType === 'point') {
+      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
     }
-    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
   }, [
     id,
     inputType,
@@ -119,31 +124,31 @@ const DesktopView = ({
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
       if (inputType === 'point') {
-        handleMapClickPoint(event, mapView, handlePointChange);
-      } else {
-        // Line or polygon input
+        handleMapClickPoint(event, mapView, handleSinglePointChange);
+      } else if (isLineOrPolygonInput(inputType)) {
         handleMapClickMultipoint(event, mapView, handleMultiPointChange);
       }
     },
-    [handleMultiPointChange, handlePointChange, inputType]
+    [handleMultiPointChange, handleSinglePointChange, inputType]
   );
 
   // Handle typed address input
   const handleLocationInputChange = (point: Point | undefined) => {
-    inputType === 'point' && handlePointChange?.(point);
+    inputType === 'point' && handleSinglePointChange?.(point);
   };
 
   // Add handling for when a user edits a point by dragging it
-  handlePointDrag({
-    mapView,
-    handleMultiPointChange,
-    pointBeingDragged,
-    temporaryDragGraphic,
-    theme,
-    data,
-    inputType,
-    isMobileOrSmaller: false,
-  });
+  isLineOrPolygonInput(inputType) &&
+    handlePointDrag({
+      mapView,
+      handleMultiPointChange,
+      pointBeingDragged,
+      temporaryDragGraphic,
+      theme,
+      data,
+      inputType,
+      isMobileOrSmaller: false,
+    });
 
   return (
     <>
@@ -168,10 +173,7 @@ const DesktopView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center:
-                inputType === 'point'
-                  ? data || mapConfig?.data.attributes.center_geojson
-                  : mapConfig?.data.attributes.center_geojson,
+              center: getInitialMapCenter(inputType, mapConfig, data),
               showLegend: layerCount > 0,
               showLayerVisibilityControl: layerCount > 0,
               onInit: onMapInit,
@@ -179,21 +181,26 @@ const DesktopView = ({
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
           />
-          {inputType !== 'point' &&
-            data && ( // Only show for line/polygon input
-              <RemoveAnswerButton
-                mapView={mapView}
-                handleMultiPointChange={handleMultiPointChange}
-              />
-            )}
+          {isLineOrPolygonInput(inputType) && data && (
+            <RemoveAnswerButton
+              mapView={mapView}
+              handleMultiPointChange={handleMultiPointChange}
+            />
+          )}
           <Box>
-            {inputType !== 'point' && ( // Only show for line/polygon input
+            {isLineOrPolygonInput(inputType) && (
               <UndoButton
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}
                 undoButtonRef={undoButtonRef}
                 undoEnabled={data}
                 inputType={inputType}
+                width="32px"
+                height="32px"
+                padding="7px"
+                iconSize="20px"
+                iconColor={colors.coolGrey500}
+                bgHoverColor={colors.grey100}
               />
             )}
             <ResetMapViewButton

@@ -30,6 +30,7 @@ import messages from '../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
 import MobileView from './Mobile/MobileView';
+import { convertCoordinatesToGeoJSON } from './utils';
 
 const MapControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;
@@ -71,7 +72,7 @@ const MapControl = ({ ...props }: ControlProps) => {
   }, []);
 
   // Handler for when single point data changes
-  const handlePointChange = useCallback(
+  const handleSinglePointChange = useCallback(
     (point?: GeoJSON.Point) => {
       handleChange(path, point);
       setDidBlur(true);
@@ -82,27 +83,18 @@ const MapControl = ({ ...props }: ControlProps) => {
   // Handler for when multiple point data changes (line/polygon)
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
-      // Convert the points to a GeoJSON LineString or GeoJSON Polygon
       if (coordinates) {
-        const type =
-          uischema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
-
-        // Add an extra coordinate to close the line to form a polygon
-        type === 'Polygon' && coordinates.push(coordinates[0]);
-
-        // Create the GeoJSON object
-        const geoJSONObject = {
-          type,
-          // Polygons use a double-nested array structure
-          coordinates: type === 'LineString' ? coordinates : [coordinates],
-        };
+        const geoJSONObject = convertCoordinatesToGeoJSON(
+          coordinates,
+          uischema
+        );
         handleChange(path, geoJSONObject);
       } else {
         handleChange(path, undefined);
       }
       setDidBlur(true);
     },
-    [handleChange, path, uischema.options?.input_type]
+    [handleChange, path, uischema]
   );
 
   const getInstructionMessage = () => {
@@ -140,7 +132,7 @@ const MapControl = ({ ...props }: ControlProps) => {
           mapConfig={mapConfig}
           onMapInit={onMapInit}
           mapView={mapView}
-          handlePointChange={handlePointChange}
+          handleSinglePointChange={handleSinglePointChange}
           handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
           inputType={uischema?.options?.input_type}
@@ -153,7 +145,7 @@ const MapControl = ({ ...props }: ControlProps) => {
           inputType={uischema?.options?.input_type}
           onMapInit={onMapInit}
           mapView={mapView}
-          handlePointChange={handlePointChange}
+          handleSinglePointChange={handleSinglePointChange}
           didBlur={didBlur}
           handleMultiPointChange={handleMultiPointChange}
           {...props}

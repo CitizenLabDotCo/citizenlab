@@ -24,7 +24,11 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
   checkCoordinateErrors,
   clearPointData,
+  getCoordinatesFromMultiPointData,
+  getInitialMapCenter,
   getUserInputGraphicsLayer,
+  isLineOrPolygonInput,
+  MapInputType,
   updateMultiPointsDataAndDisplay,
   updatePointDataAndDisplay,
 } from '../utils';
@@ -35,17 +39,17 @@ type Props = {
   mapConfig?: IMapConfig;
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
-  handlePointChange: (point: GeoJSON.Point | undefined) => void;
+  handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   didBlur: boolean;
-  inputType: 'point' | 'line' | 'polygon';
+  inputType: MapInputType;
 };
 
 const MobileView = ({
   mapConfig,
   onMapInit,
   mapView,
-  handlePointChange,
+  handleSinglePointChange,
   handleMultiPointChange,
   inputType,
   didBlur,
@@ -74,28 +78,24 @@ const MobileView = ({
 
   // Show graphics on map when location point(s) change
   useEffect(() => {
-    if (inputType === 'point' && data) {
-      updatePointDataAndDisplay({
-        data,
-        mapView,
-        locale,
-        tenantPrimaryColor: theme.colors.tenantPrimary,
-        setAddress,
-      });
-      setShowMapOverlay(false);
-    } else if ((inputType === 'line' || inputType === 'polygon') && data) {
-      updateMultiPointsDataAndDisplay({
-        data:
-          // If we have a polygon, we want to first remove the last point which we added
-          // when we saved the data to close the line (duplicated first point to form a polygon).
-          inputType === 'polygon'
-            ? data?.coordinates?.[0]?.slice(0, -1)
-            : data?.coordinates,
-        mapView,
-        inputType,
-        tenantPrimaryColor: theme.colors.tenantPrimary,
-        zoomToInputExtent: true,
-      });
+    if (data) {
+      if (inputType === 'point') {
+        updatePointDataAndDisplay({
+          data,
+          mapView,
+          locale,
+          tenantPrimaryColor: theme.colors.tenantPrimary,
+          setAddress,
+        });
+      } else if (isLineOrPolygonInput(inputType)) {
+        updateMultiPointsDataAndDisplay({
+          data: getCoordinatesFromMultiPointData(data, inputType),
+          mapView,
+          inputType,
+          tenantPrimaryColor: theme.colors.tenantPrimary,
+          zoomToInputExtent: true,
+        });
+      }
       setShowMapOverlay(false);
     } else {
       clearPointData(mapView, setAddress);
@@ -103,21 +103,13 @@ const MobileView = ({
     }
   }, [data, inputType, locale, mapView, theme.colors.tenantPrimary]);
 
-  // If there is a user input graphics layer, zoom to the extent of the drawing
+  // If there is a user input, zoom to the extent of the drawing
   useEffect(() => {
     const graphicsLayer = getUserInputGraphicsLayer(mapView);
     if (graphicsLayer?.graphics) {
       mapView?.goTo(graphicsLayer.graphics);
     }
   }, [mapView, mapView?.map?.layers]);
-
-  const getMapCenter = () => {
-    if (inputType === 'point') {
-      return data || mapConfig?.data.attributes.center_geojson;
-    } else {
-      return mapConfig?.data.attributes.center_geojson;
-    }
-  };
 
   return (
     <>
@@ -126,7 +118,7 @@ const MobileView = ({
           {inputType === 'point' && (
             <LocationTextInput
               address={address}
-              handlePointChange={handlePointChange}
+              handlePointChange={handleSinglePointChange}
             />
           )}
         </Box>
@@ -144,7 +136,7 @@ const MobileView = ({
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: getMapCenter(),
+              center: getInitialMapCenter(inputType, mapConfig, data),
               showLegend: false,
               showLayerVisibilityControl: false,
               showZoomControls: false,
@@ -152,7 +144,7 @@ const MobileView = ({
             }}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
           />
-          {inputType !== 'point' && data && (
+          {isLineOrPolygonInput(inputType) && data && (
             <RemoveAnswerButton
               mapView={mapView}
               handleMultiPointChange={handleMultiPointChange}
@@ -178,7 +170,7 @@ const MobileView = ({
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
-          handlePointChange={handlePointChange}
+          handleSinglePointChange={handleSinglePointChange}
           handleMultiPointChange={handleMultiPointChange}
           inputType={inputType}
           mapViewSurveyPage={mapView}
