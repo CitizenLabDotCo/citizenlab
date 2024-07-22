@@ -32,7 +32,7 @@ const IdeaFormBuilder = () => {
 
   const locale = useLocale();
 
-  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
