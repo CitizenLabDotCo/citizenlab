@@ -708,8 +708,10 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_followers(exported_ideas, shift_timestamps: 0)
-    Follower.where(followable_id: ([@project.id] + exported_ideas.ids))
-    @project.followers.map do |follower|
+    followers = Follower.where(followable: @project)
+      .or(Follower.where(followable: exported_ideas))
+
+    followers.map do |follower|
       {
         'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
         'user_ref' => lookup_ref(follower.user_id, :user),
