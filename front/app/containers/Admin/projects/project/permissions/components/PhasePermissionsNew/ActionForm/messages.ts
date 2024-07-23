@@ -23,4 +23,8 @@ export default defineMessages({
     defaultMessage:
       'To customize access rights and collected information, close this window and select "Custom".',
   },
+  requirementsToParticipate: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.requirementsToParticipate',
+    defaultMessage: 'Requirements to participate',
+  },
 });

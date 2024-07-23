@@ -57,7 +57,17 @@ const ActionForm = ({
 
   return (
     <form>
-      <Box mb="20px">
+      <Box
+        mb="20px"
+        display="flex"
+        flexDirection="row"
+        w="100%"
+        maxWidth="996px"
+        justifyContent="space-between"
+      >
+        <Title variant="h4" m="0" color="primary">
+          <FormattedMessage {...messages.requirementsToParticipate} />
+        </Title>
         <AdminCollaboratorToggle
           checked={permittedBy === 'admins_moderators'}
           id={`participation-permission-admins-${permissionId}`}
