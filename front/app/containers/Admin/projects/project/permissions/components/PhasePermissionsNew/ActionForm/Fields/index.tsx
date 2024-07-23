@@ -39,7 +39,7 @@ const Fields = ({ phaseId, disableEditing, action }: Props) => {
   return (
     <Box maxWidth="844px">
       <Title variant="h4" color="primary">
-        <FormattedMessage {...messages.whatInformation} />
+        <FormattedMessage {...messages.extraQuestions} />
       </Title>
       <Box mt="20px">
         <FieldsList

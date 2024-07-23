@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { CardButton, Box } from '@citizenlab/cl2-component-library';
+import {
+  CardButton,
+  Box,
+  Icon,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
 
@@ -31,7 +36,14 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         <Box>
           <CardButton
             id="e2e-permission-anyone"
-            iconName="user-circle"
+            icon={
+              <Icon
+                name="user-circle"
+                fill={colors.teal200}
+                width="32px"
+                height="32px"
+              />
+            }
             title={formatMessage(messages.none)}
             subtitle={formatMessage(messages.noneSubtitle)}
             onClick={handleUpdate('everyone')}
@@ -43,7 +55,17 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
       <Box>
         <CardButton
           id="e2e-permission-email-confirmed-users"
-          iconName="email"
+          icon={
+            <Box display="flex" flexDirection="row">
+              <Icon
+                name="user-circle"
+                fill={colors.teal200}
+                width="32px"
+                height="32px"
+              />
+              <Icon name="email" fill={colors.teal300} width="16px" />
+            </Box>
+          }
           title={formatMessage(messages.emailConfirmation)}
           subtitle={formatMessage(messages.emailConfirmationSubtitle)}
           onClick={handleUpdate('everyone_confirmed_email')}
@@ -55,7 +77,18 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
       <Box>
         <CardButton
           id="e2e-permission-registered-users"
-          iconName="user-check"
+          icon={
+            <Box display="flex" flexDirection="row">
+              <Icon
+                name="user-circle"
+                fill={colors.teal200}
+                width="32px"
+                height="32px"
+              />
+              <Icon name="email" fill={colors.teal300} width="16px" />
+              <Icon name="list" fill={colors.teal300} width="16px" />
+            </Box>
+          }
           title={formatMessage(messages.accountCreation)}
           subtitle={formatMessage(messages.accountCreationSubtitle)}
           onClick={handleUpdate('users')}
@@ -66,7 +99,17 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
       <Box>
         <CardButton
           id="e2e-permission-custom"
-          iconName="cog"
+          icon={
+            <Box display="flex" flexDirection="row">
+              <Icon
+                name="user-circle"
+                fill={colors.teal200}
+                width="32px"
+                height="32px"
+              />
+              <Icon name="shield-check" fill={colors.teal300} width="16px" />
+            </Box>
+          }
           title={formatMessage(messages.ssoVerification)}
           subtitle={formatMessage(messages.ssoVerificationSubtitle)}
           onClick={handleUpdate('custom')}
