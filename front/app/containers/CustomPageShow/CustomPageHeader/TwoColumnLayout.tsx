@@ -33,7 +33,7 @@ const TwoColumnLayout = ({ pageData }: Props) => {
             fadeIn={false}
             isLazy={false}
             placeholderBg="transparent"
-            alt="Header background"
+            alt=""
           />
         </HeaderImageWrapper>
       )}
