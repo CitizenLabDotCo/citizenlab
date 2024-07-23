@@ -73,6 +73,7 @@ const InputManager = ({
     // without a project, we need this filter?
     filter_can_moderate: projectId ? undefined : true,
     phase: phaseId ? phaseId : undefined,
+    transitive: true,
   });
   const { data: ideas } = useIdeas(queryParameters);
   const { data: ideaStatuses } = useIdeaStatuses();
