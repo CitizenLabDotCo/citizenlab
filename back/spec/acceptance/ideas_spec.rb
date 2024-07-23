@@ -659,15 +659,16 @@ resource 'Ideas' do
     end
 
     delete 'web_api/v1/ideas/:id' do
+      let(:id) { input.id }
+
       context 'when the idea belongs to a phase' do
-        let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
+        let!(:input) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
-        let(:id) { idea.id }
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          idea.ideas_phases.create!(phase: phase)
+          input.ideas_phases.create!(phase: phase)
         end
 
         example 'the count starts at 1' do
@@ -682,10 +683,18 @@ resource 'Ideas' do
         end
       end
 
+      describe do
+        let(:input) { create(:proposal, author: user) }
+
+        example_request 'Delete a proposal' do
+          assert_status 200
+          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
       context 'when a voting context' do
         let(:project) { create(:single_phase_budgeting_project) }
-        let(:idea) { create(:idea, project: project, phases: project.phases) }
-        let(:id) { idea.id }
+        let(:input) { create(:idea, project: project, phases: project.phases) }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
           assert_status 401

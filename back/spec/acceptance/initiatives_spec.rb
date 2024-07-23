@@ -339,6 +339,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   post 'web_api/v1/initiatives' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -499,6 +500,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   patch 'web_api/v1/initiatives/:id' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -724,6 +726,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   patch 'web_api/v1/initiatives/:id/accept_cosponsorship_invite' do
     before do
       @initiative = create(:initiative)
@@ -742,6 +745,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
@@ -755,6 +759,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
       admin_header_token
