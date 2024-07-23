@@ -41,7 +41,7 @@ import {
   getInitialMapCenter,
   handleMapClickMultipoint,
   handleMapClickPoint,
-  handlePointDrag,
+  setupPointDrag,
   isLineOrPolygonInput,
   MapInputType,
   updateDataAndDisplay,
@@ -162,18 +162,20 @@ const FullscreenMapInput = memo<Props>(
       }
     };
 
-    // Add handling for when a user edits a point by dragging it
-    isLineOrPolygonInput(inputType) &&
-      handlePointDrag({
-        mapView,
-        handleMultiPointChange,
-        pointBeingDragged,
-        temporaryDragGraphic,
-        theme,
-        data,
-        inputType,
-        isMobileOrSmaller: true,
-      });
+    // Attach behaviour for when a user edits a point by dragging it
+    useEffect(() => {
+      isLineOrPolygonInput(inputType) &&
+        setupPointDrag({
+          mapView,
+          handleMultiPointChange,
+          pointBeingDragged,
+          temporaryDragGraphic,
+          tenantSecondaryColor: theme.colors.tenantSecondary,
+          data,
+          inputType,
+          isMobileOrSmaller: false,
+        });
+    }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
     return modalPortalElement
       ? createPortal(

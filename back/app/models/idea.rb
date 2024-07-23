@@ -281,17 +281,13 @@ class Idea < ApplicationRecord
   def convert_wkt_geo_custom_field_values_to_geojson
     return if custom_field_values.blank?
 
-    custom_fields = custom_form&.custom_fields
-    return unless custom_fields
+    geo_cf_keys = custom_form
+      &.custom_fields.to_a
+      .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
+      .map(&:key)
 
-    custom_fields_keys = custom_fields.map(&:key)
-    custom_field_values.each do |key, value|
-      next unless custom_fields_keys.include?(key)
-
-      custom_field = custom_fields.find { |field| field.key == key }
-      next unless CustomField::GEOGRAPHIC_INPUT_TYPES.include?(custom_field.input_type) && value.is_a?(String)
-
-      custom_field_values[key] = wkt_string_to_geojson(value)
+    custom_field_values.slice(*geo_cf_keys).each do |key, value|
+      custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
     end
   end
 end
