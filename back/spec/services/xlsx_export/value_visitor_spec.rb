@@ -480,8 +480,8 @@ describe XlsxExport::ValueVisitor do
         }
       end
 
-      it 'returns the GeoJSON value' do
-        expect(visitor.visit_point(field)).to eq value
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_point(field)).to eq '{"type":"Point","coordinates":[11.11,22.22]}'
       end
     end
 
@@ -494,8 +494,8 @@ describe XlsxExport::ValueVisitor do
         }
       end
 
-      it 'returns the GeoJSON value' do
-        expect(visitor.visit_line(field)).to eq value
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_line(field)).to eq '{"type":"LineString","coordinates":[[11.11,22.22],[11.33,22.44]]}'
       end
     end
 
@@ -508,8 +508,9 @@ describe XlsxExport::ValueVisitor do
         }
       end
 
-      it 'returns the GeoJSON value' do
-        expect(visitor.visit_polygon(field)).to eq value
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_polygon(field))
+          .to eq '{"type":"Polygon","coordinates":[[11.11,22.22],[11.33,22.44],[12.33,23.44],[11.11,22.22]]}'
       end
     end
 
