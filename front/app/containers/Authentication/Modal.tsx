@@ -37,6 +37,7 @@ import EmailPolicies from './steps/Policies/EmailPolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import GooglePolicies from './steps/Policies/GooglePolicies';
+import SSOVerification from './steps/SSOVerification';
 import Success from './steps/Success';
 import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
@@ -88,6 +89,9 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
+
+  // sso verification flow
+  'sso-verification:sso-providers': messages.verificationRequired,
 };
 
 const getHeaderMessage = (
@@ -424,6 +428,14 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
 
         {currentStep === 'verification-success' && (
           <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
+        )}
+
+        {/* sso verification flow */}
+        {currentStep === 'sso-verification:sso-providers' && (
+          <SSOVerification
+            onClickSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onClickLogin={transition(currentStep, 'GO_TO_LOGIN')}
+          />
         )}
       </Box>
     </Modal>

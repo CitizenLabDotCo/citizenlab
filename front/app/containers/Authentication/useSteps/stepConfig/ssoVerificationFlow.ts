@@ -1,0 +1,24 @@
+// import {
+//   GetRequirements,
+//   AuthenticationData,
+// } from '../../typings';
+
+import { Step } from './typings';
+
+export const ssoVerificationFlow = (
+  // _getAuthenticationData: () => AuthenticationData,
+  // _getRequirements: GetRequirements,
+  setCurrentStep: (step: Step) => void
+) => {
+  return {
+    'sso-verification:sso-providers': {
+      CLOSE: () => setCurrentStep('closed'),
+      CONTINUE_WITH_SSO: () => {
+        setCurrentStep('closed'); // tODO
+      },
+      GO_TO_LOGIN: () => {
+        setCurrentStep('sign-in:email-password');
+      },
+    },
+  };
+};

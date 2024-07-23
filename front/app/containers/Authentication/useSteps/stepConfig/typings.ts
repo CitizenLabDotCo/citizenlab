@@ -44,7 +44,10 @@ export type Step =
 
   // verification only (for onboarding and re-verification)
   | 'verification-only'
-  | 'verification-success';
+  | 'verification-success'
+
+  // sso verification flow
+  | 'sso-verification:sso-providers';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

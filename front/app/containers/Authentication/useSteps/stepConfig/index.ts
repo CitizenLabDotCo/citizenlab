@@ -12,6 +12,7 @@ import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
+import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 
 export const getStepConfig = (
@@ -57,6 +58,8 @@ export const getStepConfig = (
     ),
 
     ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
+
+    ...ssoVerificationFlow(setCurrentStep),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
