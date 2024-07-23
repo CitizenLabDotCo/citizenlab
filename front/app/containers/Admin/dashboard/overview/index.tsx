@@ -129,6 +129,7 @@ const OverviewDashboard = () => {
       />
       <GraphsContainer>
         <Column>
+          {/* Registration data is hidden when the user filters by project because it is not available. For more details, refer to: https://www.notion.so/govocal/Gent-is-struggling-to-access-the-data-on-their-visitor-dashboard-cecae17322a24ccdb4bd938a511159cc?d=78857b76019144ee97b6bd8de960ead1 */}
           {!currentProjectFilter && (
             <RegistrationsCard
               projectId={currentProjectFilter}
