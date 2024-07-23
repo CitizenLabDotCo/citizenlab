@@ -66,7 +66,7 @@ const ActionForm = ({
         justifyContent="space-between"
       >
         <Title variant="h4" m="0" color="primary">
-          <FormattedMessage {...messages.requirementsToParticipate} />
+          <FormattedMessage {...messages.authentication} />
         </Title>
         <AdminCollaboratorToggle
           checked={permittedBy === 'admins_moderators'}

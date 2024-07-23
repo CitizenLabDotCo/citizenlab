@@ -36,7 +36,7 @@ export const getPartipationRequirementMessage = (
       participantMessage = messages.everyone;
       break;
     case 'custom':
-      participantMessage = newMessages.custom;
+      participantMessage = newMessages.ssoVerification;
       break;
   }
   return formatMessage(participantMessage);

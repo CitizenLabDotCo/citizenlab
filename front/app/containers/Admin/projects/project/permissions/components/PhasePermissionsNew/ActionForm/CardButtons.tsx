@@ -6,10 +6,6 @@ import { PermittedBy } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
-
-import actionFormMessages from 'components/admin/ActionsForm/messages';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -36,10 +32,8 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
           <CardButton
             id="e2e-permission-anyone"
             iconName="user-circle"
-            title={formatMessage(permissionsMessages.permissionsAnyoneLabel)}
-            subtitle={formatMessage(
-              permissionsMessages.permissionsAnyoneLabelDescription
-            )}
+            title={formatMessage(messages.none)}
+            subtitle={formatMessage(messages.noneSubtitle)}
             onClick={handleUpdate('everyone')}
             selected={permittedBy === 'everyone'}
             height="100%"
@@ -50,10 +44,8 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         <CardButton
           id="e2e-permission-email-confirmed-users"
           iconName="email"
-          title={formatMessage(actionFormMessages.permissionsEmailConfirmLabel)}
-          subtitle={formatMessage(
-            actionFormMessages.permissionsEmailConfirmLabelDescription
-          )}
+          title={formatMessage(messages.emailConfirmation)}
+          subtitle={formatMessage(messages.emailConfirmationSubtitle)}
           onClick={handleUpdate('everyone_confirmed_email')}
           selected={permittedBy === 'everyone_confirmed_email'}
           disabled={!userConfirmationEnabled}
@@ -64,10 +56,8 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         <CardButton
           id="e2e-permission-registered-users"
           iconName="user-check"
-          title={formatMessage(actionFormMessages.permissionsUsersLabel)}
-          subtitle={formatMessage(
-            actionFormMessages.permissionsUsersLabelDescription
-          )}
+          title={formatMessage(messages.accountCreation)}
+          subtitle={formatMessage(messages.accountCreationSubtitle)}
           onClick={handleUpdate('users')}
           selected={permittedBy === 'users'}
           height="100%"
@@ -77,8 +67,8 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
         <CardButton
           id="e2e-permission-custom"
           iconName="cog"
-          title={formatMessage(messages.custom)}
-          subtitle={formatMessage(messages.customSubtitle)}
+          title={formatMessage(messages.ssoVerification)}
+          subtitle={formatMessage(messages.ssoVerificationSubtitle)}
           onClick={handleUpdate('custom')}
           selected={permittedBy === 'custom'}
           height="100%"
