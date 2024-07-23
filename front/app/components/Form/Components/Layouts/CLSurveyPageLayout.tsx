@@ -22,6 +22,7 @@ import {
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
@@ -115,12 +116,19 @@ const CLSurveyPageLayout = memo(
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
     const isMapPage = uiPages[currentStep].options.page_layout === 'map';
-    const { data: mapConfig } = useMapConfigById(
-      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id
+    const mapConfigId =
+      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+    const { data: fetchedMapConfig } = useMapConfigById(mapConfigId);
+    const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
+      null
     );
     const mapLayers = useMemo(() => {
       return parseLayers(mapConfig, localize);
     }, [localize, mapConfig]);
+
+    useEffect(() => {
+      setMapConfig(mapConfigId ? fetchedMapConfig : null);
+    }, [fetchedMapConfig, mapConfigId]);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
