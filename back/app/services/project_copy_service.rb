@@ -68,7 +68,7 @@ class ProjectCopyService < TemplateService
       @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['basket']                 = yml_baskets shift_timestamps: shift_timestamps
-      @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas
       @template['models']['idea_file']              = yml_idea_files exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea_image']             = yml_idea_images exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['ideas_phase']            = yml_ideas_phases exported_ideas, shift_timestamps: shift_timestamps
@@ -607,7 +607,7 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_baskets_ideas(exported_ideas, shift_timestamps: 0)
+  def yml_baskets_ideas(exported_ideas)
     BasketsIdea.where(idea: exported_ideas).map do |b|
       if lookup_ref(b.idea_id, :idea)
         {
