@@ -306,7 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Een minimum aantal stemmen is vereist",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Optie",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Tabblad Beheer Bijdragen",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configureer de stemopties op het tabblad Ingangsbeheer nadat je een fase hebt gemaakt.",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configureer de stemopties via het tabblad 'Beheer bijdragen' nadat je een fase hebt gemaakt.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configureer de stemopties in het {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Deelnemers",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Platform- en projectbeheerders",
