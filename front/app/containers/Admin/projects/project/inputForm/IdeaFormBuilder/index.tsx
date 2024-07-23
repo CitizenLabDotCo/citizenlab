@@ -39,7 +39,8 @@ const IdeaFormBuilder = () => {
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: participation_method === 'ideation' ? undefined : phaseId,
+    // Only use phaseId for proposals
+    phaseId: participation_method !== 'ideation' ? phaseId : undefined,
   });
 
   const locale = useLocale();
