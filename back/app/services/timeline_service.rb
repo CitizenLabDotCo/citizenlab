@@ -34,6 +34,9 @@ class TimelineService
   end
 
   def current_or_backup_transitive_phase(project, time = Time.now)
+    # This method is used to determine which project phase is the most relevant with
+    # respect to the input form. For example, to select the input term from the right
+    # phase.
     return if project.phases.blank?
 
     current = current_phase(project, time)
