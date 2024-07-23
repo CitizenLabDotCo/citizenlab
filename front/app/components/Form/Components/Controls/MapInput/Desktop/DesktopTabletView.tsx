@@ -30,7 +30,7 @@ import {
   handleMapClickPoint,
   checkCoordinateErrors,
   updateDataAndDisplay,
-  handlePointDrag,
+  setupPointDrag,
   getInitialMapCenter,
   MapInputType,
   isLineOrPolygonInput,
@@ -137,18 +137,20 @@ const DesktopView = ({
     inputType === 'point' && handleSinglePointChange?.(point);
   };
 
-  // Add handling for when a user edits a point by dragging it
-  isLineOrPolygonInput(inputType) &&
-    handlePointDrag({
-      mapView,
-      handleMultiPointChange,
-      pointBeingDragged,
-      temporaryDragGraphic,
-      theme,
-      data,
-      inputType,
-      isMobileOrSmaller: false,
-    });
+  // Attach behaviour for when a user edits a point by dragging it
+  useEffect(() => {
+    isLineOrPolygonInput(inputType) &&
+      setupPointDrag({
+        mapView,
+        handleMultiPointChange,
+        pointBeingDragged,
+        temporaryDragGraphic,
+        tenantSecondaryColor: theme.colors.tenantSecondary,
+        data,
+        inputType,
+        isMobileOrSmaller: false,
+      });
+  }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
   return (
     <>
