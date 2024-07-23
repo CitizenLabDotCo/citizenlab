@@ -38,11 +38,9 @@ class PermissionsField < ApplicationRecord
   validates :custom_field, presence: true
   validates :permission_id, uniqueness: { scope: :custom_field_id }
 
-  before_destroy :prevent_destroy
-
   def can_be_reordered?
-    # Only allow if not locked/hidden by verification
-    field_type == 'custom_field'
+    # TODO: JS - only allow if not locked/hidden by verification
+    true
   end
 
   def title_multiloc

@@ -39,7 +39,6 @@ resource 'PermissionsField' do
         assert_status 200
         expect(response_data.size).to eq 2
         expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
-        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to eq %w[custom_field custom_field]
         expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
           { data: { id: field1.id, type: 'custom_field' } },
           { data: { id: field2.id, type: 'custom_field' } }
@@ -53,22 +52,21 @@ resource 'PermissionsField' do
         permission # Create permission
       end
 
-      example 'List default permissions fields of a "user" permission' do
+      example 'List all default permissions fields of a "user" permission' do
+        permission.update!(global_custom_fields: true)
         custom_field = create(:custom_field_gender, required: false, enabled: true)
 
         do_request
 
         assert_status 200
-        expect(response_data.size).to eq 3
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true, false]
-        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email custom_field]
-        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id, permission.id]
+        expect(response_data.size).to eq 1
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [false]
+        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id]
         expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
       end
 
-      example 'List all persisted permissions fields and associated groups of a "custom" permission' do
-        permission.update!(permitted_by: 'custom')
-        Permissions::PermissionsFieldsService.new.persist_default_fields(permission: permission, previous_permitted_by: 'users')
+      example 'List all persisted permissions fields and associated groups of a "user" permission' do
+        permission.update!(global_custom_fields: false)
 
         # Permissions field not associated with any group
         create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
@@ -88,10 +86,9 @@ resource 'PermissionsField' do
         do_request
 
         assert_status 200
-        expect(response_data.size).to eq 4
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true, true, true]
-        expect(response_data.map { |d| d.dig(:attributes, :field_type) }).to match_array %w[name email custom_field custom_field]
-        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id, permission.id, permission.id]
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
+        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
         expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
         expect(response_data.last.dig(:relationships, :groups, :data).count).to eq 1
         expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
@@ -108,7 +105,7 @@ resource 'PermissionsField' do
 
       expect(response_data[:id]).to eq id
       expect(response_data.dig(:attributes, :created_at)).to be_present
-      expect(response_data[:attributes].keys).to match_array(%i[field_type required enabled config ordering locked title_multiloc created_at updated_at])
+      expect(response_data[:attributes].keys).to match_array(%i[required ordering locked title_multiloc created_at updated_at])
     end
   end
 
@@ -141,21 +138,13 @@ resource 'PermissionsField' do
     end
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
-    let(:permitted_by) { 'custom' }
-    let(:permissions_field) do
-      Permissions::PermissionsFieldsService.new.persist_default_fields(permission: permission, previous_permitted_by: 'users')
-      PermissionsField.find_by(field_type: 'email')
-    end
+    let(:permissions_field) { create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender)) }
     let(:id) { permissions_field.id }
     let(:required) { true }
-    let(:enabled) { true }
-    let(:config) { { password: false, confirmed: false } }
 
     example_request 'Update a permissions custom field' do
       assert_status 200
       expect(response_data.dig(:attributes, :required)).to be true
-      expect(response_data.dig(:attributes, :enabled)).to be true
-      expect(response_data.dig(:attributes, :config)).to eq config
     end
   end
 
@@ -165,10 +154,8 @@ resource 'PermissionsField' do
     end
 
     before do
-      permission = create(:permission, action: 'commenting_idea', permitted_by: 'custom')
-      @permissions_fields =
-        [create(:permissions_field, permission: permission, field_type: 'name')] +
-        create_list(:permissions_field, 3, permission: permission)
+      permission = create(:permission, action: 'commenting_idea', permitted_by: 'users')
+      @permissions_fields = create_list(:permissions_field, 4, permission: permission)
     end
 
     let(:permissions_field) { create(:permissions_field, required: false) }
@@ -188,17 +175,18 @@ resource 'PermissionsField' do
       end
     end
 
-    context 'Field cannot be reordered' do
-      let(:id) { @permissions_fields.first.id }
-      let(:ordering) { 3 }
-
-      example '[Error] Field cannot be reordered' do
-        do_request
-
-        expect(response_status).to eq 422
-        expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
-      end
-    end
+    # TODO: JS - only allow if not locked/hidden by verification
+    # context 'Field cannot be reordered' do
+    #   let(:id) { @permissions_fields.first.id }
+    #   let(:ordering) { 3 }
+    #
+    #   example '[Error] Field cannot be reordered' do
+    #     do_request
+    #
+    #     expect(response_status).to eq 422
+    #     expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
+    #   end
+    # end
   end
 
   delete 'web_api/v1/permissions_fields/:id' do

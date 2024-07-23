@@ -9,12 +9,12 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
     permissions_fields_service = Permissions::PermissionsFieldsService.new
     if permissions_fields_service.custom_permitted_by_enabled?
-      # NEW version for verified actions
+      # NEW non-paged version for verified actions
       permissions_fields = permissions_fields_service.fields_for_permission(permission)
       render json: WebApi::V1::PermissionsFieldSerializer.new(permissions_fields, params: jsonapi_serializer_params).serializable_hash
     else
       # Legacy version
-      permissions_fields = permission.permissions_fields.where(field_type: 'custom_field').order('custom_fields.ordering')
+      permissions_fields = permission.permissions_fields.order('custom_fields.ordering')
       permissions_fields = paginate permissions_fields
       permissions_fields = permissions_fields.includes(:custom_field)
 
@@ -113,10 +113,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_create
-    params.require(:permissions_field).permit(:required, :custom_field_id, :field_type, :enabled)
+    params.require(:permissions_field).permit(:required, :custom_field_id)
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required, :enabled, :ordering, config: {})
+    params.require(:permissions_field).permit(:required, :ordering)
   end
 end
