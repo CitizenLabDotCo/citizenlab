@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Nepieciešams minimālais balsu skaits",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Iespēja",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Ievades pārvaldnieka cilne",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Pēc fāzes izveides konfigurējiet balsošanas opcijas cilnē Ievades pārvaldnieks.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurējiet balsošanas opcijas vietnē {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Dalībnieki",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratori un vadītāji",
