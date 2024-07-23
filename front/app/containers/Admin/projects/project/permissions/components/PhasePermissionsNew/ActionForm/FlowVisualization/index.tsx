@@ -19,10 +19,10 @@ const FlowVisualization = ({ permittedBy }: Props) => {
       {visualizationSteps.map((step, index) => {
         const last = index === visualizationSteps.length - 1;
         return (
-          <>
+          <Box display="flex" flexDirection="row" key={index}>
             <Block number={index + 1} text={step} />
             {!last && <Edge />}
-          </>
+          </Box>
         );
       })}
     </Box>
