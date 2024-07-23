@@ -163,6 +163,11 @@ class Idea < ApplicationRecord
 
   scope :native_survey, -> { where.not creation_phase_id: nil } # TODO: Delete
   scope :ideation, -> { where creation_phase_id: nil } # TODO: Delete
+  scope :publicly_visible, -> do
+    joined = left_joins(:creation_phase)
+    joined.where(creation_phase_id: nil).or(joined.where(creation_phase: { participation_method: 'proposals' }))
+  end
+  scope :transitive, -> { where creation_phase_id: nil }
 
   scope :draft_surveys, lambda { # TODO: Delete
     where(publication_status: 'draft')
