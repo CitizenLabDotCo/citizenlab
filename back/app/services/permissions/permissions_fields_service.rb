@@ -20,16 +20,14 @@ module Permissions
     end
 
     def default_fields(permission)
-      if permission.allow_global_custom_fields?
-        # TODO: Apply custom fields related to groups and verification here too
-        custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
-        custom_fields.each_with_index.map do |field, index|
-          PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
-        end
-      else
-        []
+      return [] unless permission.allow_global_custom_fields?
+
+      # TODO: Apply custom fields related to groups and verification here too
+      custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
+      custom_fields.each_with_index.map do |field, index|
+        PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end
-    end
+  end
 
     def custom_permitted_by_enabled?
       @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')

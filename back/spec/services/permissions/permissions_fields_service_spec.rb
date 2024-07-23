@@ -64,7 +64,7 @@ describe Permissions::PermissionsFieldsService do
     end
   end
 
-  describe '#create_default_fields_for_custom_permitted_by' do
+  describe '#persist_default_fields' do
     let(:permission) { create(:permission, permitted_by: 'users') }
 
     context 'permitted_by is "users" and has no persisted permissions fields' do

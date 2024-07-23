@@ -7,41 +7,33 @@ module Verification
         def default_fields(permission)
           fields = super
 
-          # TODO: JS - Add any custom fields that are enabled on the verification method
-          if permission.verification_enabled?
-
-          end
+          add_verification_fields(permission, fields) if permission.verification_enabled?
           fields
         end
 
-        def add_verification_fields(field)
-          super
+        # Add any fields that are locked to verification method
+        # TODO: JS - Add this when we add groups or change permission too
+        def add_verification_fields(permission, fields)
+          ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
+          method = verification_methods.first
+          method&.locked_custom_fields&.each do |field_code|
+            custom_field = CustomField.find_by(code: field_code.to_s)
+            next if custom_field.nil?
 
-
-          # On change of permission to 'verified' we need to add the verification fields (if persisted)
-          # On adding a group we need to add the verification fields (if persisted)
-
-          # TODO: JS - change so that this looks for groups OR verification not fields
-          # if field.field_type == 'verification' && field.enabled
-          #   method = verification_methods.first
-          #
-          #   # Ensure that locked_custom_fields from the verification method are always present
-          #   ordering = 3 # Any locked fields to get inserted/moved above any other custom fields
-          #   method&.locked_custom_fields&.each do |field_code|
-          #     custom_field = CustomField.find_by(code: field_code.to_s)
-          #     next if custom_field.nil?
-          #
-          #     existing_permission_field = field.permission.permissions_fields.find_by(custom_field: custom_field)
-          #     if existing_permission_field.nil?
-          #       # Insert a new one if it's not already there
-          #       PermissionsField.create!(field_type: 'custom_field', custom_field: custom_field, required: true, enabled: true, ordering: ordering, permission: field.permission)
-          #     else
-          #       # Update the existing one
-          #       existing_permission_field.update!(ordering: ordering, required: true)
-          #     end
-          #     ordering += 1
-          #   end
-          # end
+            existing_permission_field = fields.find { |field| field[:custom_field_id] == custom_field.id }
+            if existing_permission_field.nil?
+              # Insert a new one if it's not already there
+              new_field = PermissionsField.new(custom_field: custom_field, required: true, ordering: ordering, permission: permission)
+              fields.insert(ordering, new_field)
+            else
+              # Set the existing one to true and move to the top
+              existing_permission_field.ordering = ordering
+              existing_permission_field.required = true
+              fields.insert(ordering, fields.delete(existing_permission_field))
+            end
+            ordering += 1
+          end
+          fields.each_with_index { |field, index| field.ordering = index }
         end
 
         private

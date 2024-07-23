@@ -6,9 +6,8 @@ describe Permissions::PermissionsFieldsService do
   let(:service) { described_class.new }
 
   before do
-    @gender_field = create(:custom_field_gender, enabled: false, required: false)
     @birthyear_field = create(:custom_field_birthyear, enabled: true, required: false)
-    SettingsService.new.activate_feature! 'custom_permitted_by'
+    @gender_field = create(:custom_field_gender, enabled: false, required: false)
     SettingsService.new.activate_feature! 'user_confirmation'
 
     configuration = AppConfiguration.instance
@@ -21,83 +20,54 @@ describe Permissions::PermissionsFieldsService do
     configuration.save!
   end
 
+  # TODO: Add tests for #adding new group to permission when fields are persisted
+  # TODO: Add tests for #changing permitted_by to verified when fields are persisted
+  # In different test files though permissions_spec.rb?
+
   describe '#fields_for_permission' do
-    it 'returns verification in non-persisted default fields when permitted_by "users"' do
-      permission = create(:permission, permitted_by: 'users')
+    context 'when permission is not permitted_by "verified" and there are no groups' do
+      let(:permission) { create(:permission, permitted_by: 'users') }
 
-      fields = service.fields_for_permission(permission)
-      expect(fields.count).to eq 4
-      expect(fields.map(&:persisted?)).to eq [false, false, false, false]
-      expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field]
-      expect(fields.pluck(:enabled)).to eq [true, true, false, true]
-      expect(fields.pluck(:required)).to eq [true, true, false, false]
-      expect(fields.find { |f| f.field_type == 'email' }.config).to match({ 'password' => true, 'confirmed' => true })
-    end
-  end
-
-  describe '#create_default_fields_for_custom_permitted_by' do
-    let(:permission) { create(:permission, permitted_by: 'custom') }
-
-    context 'permitted_by is "custom" and has no fields' do
-      it 'creates default fields for the permission in the correct order' do
-        service.persist_default_fields(permission: permission, previous_permitted_by: 'users')
-        fields = permission.permissions_fields
-        expect(fields.count).to eq 4
-        expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field]
-        expect(fields.pluck(:ordering)).to eq [0, 1, 2, 3]
-        expect(fields.pluck(:enabled)).to eq [true, true, false, true]
-        expect(fields.pluck(:required)).to eq [true, true, false, false]
-      end
-    end
-  end
-
-  describe '#enforce_restrictions' do
-    let(:permission) { create(:permission, permitted_by: 'custom') }
-    let(:verification_field) { permission.permissions_fields.find_by(field_type: 'verification') }
-
-    before do
-      service.persist_default_fields(permission: permission, previous_permitted_by: 'users')
-    end
-
-    context 'when verification field is disabled' do
-      it 'does not create a permissions_field' do
-        service.enforce_restrictions(verification_field)
-        fields = permission.reload.permissions_fields
-        expect(fields.pluck(:ordering)).to eq [0, 1, 2, 3]
-        expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field]
-        expect(fields.pluck(:required)).to eq [true, true, false, false]
+      it 'returns default fields without those linked to verification' do
+        fields = service.fields_for_permission(permission)
+        expect(fields.pluck(:ordering)).to eq [0]
+        expect(fields.pluck(:required)).to eq [false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear]
       end
     end
 
-    context 'when verification field is enabled' do
-      before { verification_field.update!(enabled: true, required: true) }
+    context 'when permission is permitted_by "verified"' do
+      let(:permission) { create(:permission, permitted_by: 'verified') }
 
-      it 'creates a permission_field if it does not exist' do
-        service.enforce_restrictions(verification_field)
-        fields = permission.reload.permissions_fields
-        expect(fields.pluck(:ordering)).to eq [0, 1, 2, 3, 4]
-        expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field custom_field]
-        expect(fields.pluck(:required)).to eq [true, true, true, true, false]
+      it 'adds additional fields linked to verification method' do
+        permission = create(:permission, permitted_by: 'verified')
+        fields = service.fields_for_permission(permission)
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
       end
 
-      it 'sets the field to required and reorders if the permission_field is created but not required' do
-        create(:permissions_field, permission: permission, field_type: 'custom_field', custom_field: @gender_field, enabled: true, required: false, ordering: 4)
+      it 'sets the field to required and reorders if the permission_field is already there but not required' do
+        @gender_field.update!(enabled: true)
 
         # check initial state
-        fields = permission.permissions_fields
-        expect(fields.pluck(:required)).to eq [true, true, true, false, false]
+        permission = create(:permission, permitted_by: 'users')
+        fields = service.fields_for_permission(permission)
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:required)).to eq [false, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear gender]
 
         # check has changed after enforcing restrictions
-        service.enforce_restrictions(verification_field)
-        fields = permission.reload.permissions_fields
-        expect(fields.pluck(:ordering)).to eq [0, 1, 2, 3, 4]
-        expect(fields.pluck(:field_type)).to eq %w[name email verification custom_field custom_field]
-        expect(fields.pluck(:required)).to eq [true, true, true, true, false]
+        permission.update!(permitted_by: 'verified')
+        fields = service.fields_for_permission(permission)
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
       end
+    end
+
+    context 'when permission has verified groups"' do
+      # TODO: JS - Tests for verification groups
     end
   end
 end
