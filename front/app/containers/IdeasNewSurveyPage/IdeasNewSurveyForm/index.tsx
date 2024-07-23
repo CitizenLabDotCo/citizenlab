@@ -186,6 +186,12 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     }
   };
 
+  // Re-check the page layout on desktop when the form changes
+  const onFormChange = () => {
+    !isSmallerThanPhone &&
+      setCheckCurrentLayout((currentValue) => !currentValue);
+  };
+
   const onSubmit = async (data: FormValues, published?: boolean) => {
     const requestBody = {
       ...data,
@@ -314,9 +320,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                 getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
-                onChange={() => {
-                  setCheckCurrentLayout((currentValue) => !currentValue);
-                }}
+                onChange={onFormChange}
               />
             </Box>
           </Box>

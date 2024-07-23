@@ -306,7 +306,7 @@ const CLSurveyPageLayout = memo(
                 py="20px"
                 ref={dragDividerRef}
                 position="absolute"
-                background="white"
+                background={colors.white}
                 w="100%"
                 zIndex="1000"
               >
@@ -314,7 +314,7 @@ const CLSurveyPageLayout = memo(
                   mx="auto"
                   w="40px"
                   h="4px"
-                  bgColor="lightgrey"
+                  bgColor={colors.grey400}
                   borderRadius="10px"
                 />
               </Box>
