@@ -18,7 +18,6 @@ describe CustomFieldParamsService do
   describe 'custom_field_values_params' do
     it 'returns flattened keys and keys with complex values' do
       output = service.custom_field_values_params fields
-      pp output
       expect(output).to eq [
         :text_field,
         :point_field,
