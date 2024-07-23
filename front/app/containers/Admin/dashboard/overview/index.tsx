@@ -129,16 +129,18 @@ const OverviewDashboard = () => {
       />
       <GraphsContainer>
         <Column>
-          <RegistrationsCard
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
-            hideRegistrationRate
-          />
+          {!currentProjectFilter && (
+            <RegistrationsCard
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+              layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+              hideRegistrationRate
+            />
+          )}
         </Column>
-        <Column>
+        <Column fullWidth={!!currentProjectFilter}>
           <ParticipantsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
