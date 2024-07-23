@@ -59,6 +59,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
           onChangeResolution={setResolution}
           showAllTime={false}
           minDate={uniqueVisitorDataDate}
+          showProjectFilter={false}
         />
       </Box>
       <Box p="10px">
