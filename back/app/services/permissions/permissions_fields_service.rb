@@ -5,7 +5,6 @@ module Permissions
     def fields_for_permission(permission)
       return permission.permissions_fields unless permission.global_custom_fields
 
-
       default_fields(permission)
     end
 
@@ -27,7 +26,14 @@ module Permissions
       custom_fields.each_with_index.map do |field, index|
         PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end
-  end
+    end
+
+    def persist_related_group_fields(permission)
+      return if permission.global_custom_fields
+
+      # TODO: JS - persist group fields
+      false
+    end
 
     def custom_permitted_by_enabled?
       @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')

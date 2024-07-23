@@ -566,10 +566,15 @@ describe Permissions::UserRequirementsService do
 
       context 'when permitted_by is set to groups' do
         let(:group) { create(:group) }
-        let(:permission) { create(:permission, permitted_by: 'groups', groups: [group], global_custom_fields: false) }
+        let(:permission) do
+          permission = create(:permission, permitted_by: 'users', groups: [group])
+          permission.update!(global_custom_fields: false) # As global_custom_fields is fixed to true on creation for groups
+          permission
+        end
 
         context 'user is not in the group' do
           before do
+            permission
             field = CustomField.find_by code: 'birthyear'
             create(:permissions_field, permission: permission, custom_field: field, required: true)
           end

@@ -3,6 +3,10 @@
 class WebApi::V1::PermissionsFieldSerializer < WebApi::V1::BaseSerializer
   attributes :required, :locked, :ordering, :created_at, :updated_at, :title_multiloc
 
+  attribute :default do |object|
+    !object.persisted?
+  end
+
   has_one :permission
   has_one :custom_field
 

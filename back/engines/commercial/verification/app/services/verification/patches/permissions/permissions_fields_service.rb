@@ -36,6 +36,12 @@ module Verification
           fields.each_with_index { |field, index| field.ordering = index }
         end
 
+        def persist_related_verification_fields(permission)
+          return if permission.global_custom_fields
+
+          # TODO: JS - persist group fields
+        end
+
         private
 
         def verification_methods
