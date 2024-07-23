@@ -178,7 +178,7 @@ const PostTable = ({
           bodyRows: true,
         }}
       >
-        {type === 'Initiatives' || type === 'ProjectProposals' ? (
+        {type === 'Initiatives' ? (
           <InitiativesHeaderRow
             sortAttribute={sortAttribute as InitiativesSort}
             sortDirection={sortDirection}
@@ -186,8 +186,11 @@ const PostTable = ({
             toggleSelectAll={toggleSelectAll}
             handleSortClick={handleSortClick}
           />
-        ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+        ) : type === 'AllIdeas' ||
+          type === 'ProjectIdeas' ||
+          type === 'ProjectProposals' ? (
           <IdeaHeaderRow
+            type={type}
             selectedProjectId={selectedProjectId}
             selectedPhaseId={selectedPhaseId}
             sortAttribute={sortAttribute}
