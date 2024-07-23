@@ -288,6 +288,15 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
             </Box>
           );
         }
+        case 'point': {
+          return <p>TODO: Point</p>;
+        }
+        case 'line': {
+          return <p>TODO: Line</p>;
+        }
+        case 'polygon': {
+          return <p>TODO: Polygon</p>;
+        }
         case 'file_upload': {
           // We don't support file upload fields in an analysis at the moment
           return null;
