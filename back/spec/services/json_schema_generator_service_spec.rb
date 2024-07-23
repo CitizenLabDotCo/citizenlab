@@ -453,8 +453,7 @@ RSpec.describe JsonSchemaGeneratorService do
         type: 'object',
         properties: {
           type: {
-            type: 'string',
-            enum: ['Point']
+            const: 'Point'
           },
           coordinates: {
             type: 'array',
@@ -478,8 +477,7 @@ RSpec.describe JsonSchemaGeneratorService do
         type: 'object',
         properties: {
           type: {
-            type: 'string',
-            enum: ['LineString']
+            const: 'LineString'
           },
           coordinates: {
             type: 'array',
@@ -507,8 +505,7 @@ RSpec.describe JsonSchemaGeneratorService do
         type: 'object',
         properties: {
           type: {
-            type: 'string',
-            enum: ['Polygon']
+            const: 'Polygon'
           },
           coordinates: {
             type: 'array',

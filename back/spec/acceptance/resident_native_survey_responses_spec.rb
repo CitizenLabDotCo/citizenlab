@@ -195,37 +195,36 @@ resource 'Ideas' do
       end
 
       describe 'with custom_field_values_params for geo fields' do
-        [
-          {
-            factory: :custom_field_point,
-            param_value: 'POINT (4.31 50.85)',
-            expected_stored_value: { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }
-          },
-          {
-            factory: :custom_field_line,
-            param_value: 'LINESTRING (4.30 50.85, 4.660 51.15)',
-            expected_stored_value: { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] }
-          },
-          {
-            factory: :custom_field_polygon,
-            param_value: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
-            expected_stored_value: {
-              'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-            }
-          }
-        ].each do |field_desc|
-          describe do
-            let(:project) { create(:single_phase_native_survey_project) }
-            let(:form) { create(:custom_form, participation_context: project.phases.first) }
-            let!(:survey_field) { create(field_desc[:factory], key: 'custom_field_name1', required: true, resource: form) }
-            let!(:custom_field_name1) { field_desc[:param_value] }
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:form) { create(:custom_form, participation_context: project.phases.first) }
 
-            example_request "Create a response with a #{field_desc[:factory]} field" do
+        where(:factory, :param_value, :expected_stored_value) do
+          [
+            [:custom_field_point, 'POINT (4.31 50.85)', { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }],
+            [
+              :custom_field_line,
+              'LINESTRING (4.30 50.85, 4.660 51.15)',
+              { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] }
+            ],
+            [
+              :custom_field_polygon,
+              'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
+              { 'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]] }
+            ]
+          ]
+        end
+
+        with_them do
+          describe do
+            let!(:survey_field) { create(factory, key: 'custom_field_name1', required: true, resource: form) }
+            let!(:custom_field_name1) { param_value }
+
+            example_request "Create a response with a #{params[:factory]} field" do
               assert_status 201
               json_response = json_parse(response_body)
               idea_from_db = Idea.find(json_response[:data][:id])
               expect(idea_from_db.custom_field_values).to eq({
-                'custom_field_name1' => field_desc[:expected_stored_value]
+                'custom_field_name1' => expected_stored_value
               })
             end
           end

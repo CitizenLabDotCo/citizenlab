@@ -388,12 +388,12 @@ export const getInitialMapCenter = (
 
 // handlePointDrag
 // Description: Handles when a user-added point is then dragged (I.e. edited)
-export const handlePointDrag = ({
+export const setupPointDrag = ({
   mapView,
   handleMultiPointChange,
   pointBeingDragged,
   temporaryDragGraphic,
-  theme,
+  tenantSecondaryColor,
   data,
   inputType,
   isMobileOrSmaller,
@@ -432,7 +432,7 @@ export const handlePointDrag = ({
         // Change the symbol colour so we can identify it as the preview point
         temporaryDragGraphic.current.symbol = getShapeSymbol({
           shape: 'circle',
-          color: theme.colors.tenantSecondary,
+          color: tenantSecondaryColor,
           sizeInPx: isMobileOrSmaller ? 26 : 20,
           outlineColor: colors.white,
           outlineWidth: 2,
@@ -507,7 +507,7 @@ type HandlePointDragProps = {
     | undefined;
   pointBeingDragged: React.MutableRefObject<Graphic | null>;
   temporaryDragGraphic: React.MutableRefObject<Graphic | null>;
-  theme: any;
+  tenantSecondaryColor: string;
   data: any;
   inputType: MapInputType;
   isMobileOrSmaller?: boolean;
