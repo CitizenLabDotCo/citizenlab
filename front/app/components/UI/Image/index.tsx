@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
@@ -40,59 +40,40 @@ interface Props {
   className?: string;
 }
 
-interface State {
-  loaded: boolean;
-}
+const Image: React.FC<Props> = ({
+  id,
+  src,
+  alt,
+  role,
+  cover = false,
+  fadeIn = true,
+  fadeInDuration,
+  placeholderBg = colors.background,
+  isLazy = true,
+  className,
+}) => {
+  const [loaded, setLoaded] = useState(false);
 
-export default class Image extends PureComponent<Props, State> {
-  static defaultProps = {
-    alt: '',
-    fadeIn: true,
-    placeholderBg: colors.background,
-    isLazy: true,
+  const handleImageLoaded = () => {
+    setLoaded(true);
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loaded: false,
-    };
-  }
+  return (
+    <ImageElement
+      src={src}
+      alt={alt}
+      role={role}
+      cover={cover}
+      fadeIn={fadeIn}
+      fadeInDuration={fadeInDuration}
+      placeholderBg={placeholderBg}
+      loaded={loaded}
+      onLoad={handleImageLoaded}
+      id={id}
+      className={className || ''}
+      loading={isLazy ? 'lazy' : 'eager'}
+    />
+  );
+};
 
-  handleImageLoaded = () => {
-    this.setState({ loaded: true });
-  };
-
-  render() {
-    const {
-      id,
-      src,
-      alt,
-      role,
-      cover,
-      fadeIn,
-      fadeInDuration,
-      placeholderBg,
-      className,
-    } = this.props;
-    const { isLazy } = this.props;
-    const { loaded } = this.state;
-
-    return (
-      <ImageElement
-        src={src}
-        alt={alt}
-        role={role}
-        cover={!!cover}
-        fadeIn={!!fadeIn}
-        fadeInDuration={fadeInDuration}
-        placeholderBg={placeholderBg}
-        loaded={loaded}
-        onLoad={this.handleImageLoaded}
-        id={id}
-        className={className || ''}
-        loading={isLazy ? 'lazy' : 'eager'}
-      />
-    );
-  }
-}
+export default Image;
