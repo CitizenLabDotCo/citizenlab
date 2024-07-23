@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "crwdns777209:0crwdne777209:0",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "crwdns209398:0crwdne209398:0",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "crwdns777211:0crwdne777211:0",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "crwdns2677451:0crwdne2677451:0",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "crwdns777213:0{optionsPageLink}crwdne777213:0",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "crwdns2016762:0crwdne2016762:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "crwdns1442896:0crwdne1442896:0",
