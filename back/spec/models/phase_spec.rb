@@ -68,6 +68,7 @@ RSpec.describe Phase do
     it 'can be voting' do
       p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
+      byebug
     end
 
     it 'can be changed from ideation to voting' do

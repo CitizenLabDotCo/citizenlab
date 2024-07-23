@@ -159,10 +159,10 @@ resource 'Phases' do
       response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
 
       let(:project_id) { @project.id }
-      let(:phase) { build(:phase) }
+      let(:phase) { build(:phase, participation_method: participation_method) }
       let(:title_multiloc) { phase.title_multiloc }
       let(:description_multiloc) { phase.description_multiloc }
-      let(:participation_method) { phase.participation_method }
+      let(:participation_method) { 'ideation' }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
       let(:campaigns_settings) { phase.campaigns_settings }
@@ -272,7 +272,7 @@ resource 'Phases' do
       end
 
       context 'native survey' do
-        let(:phase) { build(:native_survey_phase) }
+        let(:participation_method) { 'native_survey' }
         let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
         let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
 
@@ -285,7 +285,7 @@ resource 'Phases' do
           # A new native survey phase does not have a default form.
           expect(phase_in_db.custom_form).to be_nil
 
-          expect(phase_in_db.participation_method).to eq 'native_survey'
+          expect(phase_in_db.send(:raw_participation_method)).to eq 'native_survey'
           expect(phase_in_db.title_multiloc).to match title_multiloc
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
@@ -423,7 +423,7 @@ resource 'Phases' do
       let(:phase) { create(:phase, project: @project) }
       let(:id) { phase.id }
       let(:description_multiloc) { phase.description_multiloc }
-      let(:participation_method) { phase.participation_method }
+      let(:participation_method) { 'ideation' }
       let(:posting_enabled) { false }
       let(:posting_method) { 'limited' }
       let(:posting_limited_max) { 5 }

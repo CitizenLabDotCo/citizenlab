@@ -4,6 +4,7 @@ require 'uri'
 
 module Surveys
   class TypeformWebhookManager
+    # TODO: Remove dependency on raw participation method
     # @param [Typeform::Api] tf_api
     # @param [String] typeform_secret_token Token used to verify that requests
     #   are coming from Typeform.
