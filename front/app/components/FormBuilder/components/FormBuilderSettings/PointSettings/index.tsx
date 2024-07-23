@@ -183,7 +183,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
 
   return (
     <>
-      <Box mb="24px" height={showMapConfigurationOption ? 'auto' : '1px'}>
+      <Box mb="24px">
         <StyledLabel
           htmlFor="maximumInput"
           value={<>{formatMessage(messages.mapConfiguration)}</>}

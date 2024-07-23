@@ -263,6 +263,7 @@ const CLSurveyPageLayout = memo(
       // Change the height of the map container to match the drag event
       if (draggableDivRef?.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
+        // Don't allow the div to be dragged outside bounds of survey page
         if (clientY > 0 && clientY < document.body.clientHeight - 180) {
           draggableDivRef.current.style.height = `${clientY}px`;
         }
