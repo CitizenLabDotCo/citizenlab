@@ -10,6 +10,25 @@ RSpec.describe Permission do
   end
 
   describe 'global_custom_fields' do
+    context 'everyone' do
+      it 'is false when created' do
+        permission = create(:permission, :by_everyone)
+        expect(permission.global_custom_fields).to be_falsey
+      end
+
+      it 'is false when updated to everyone_confirmed_email' do
+        permission = create(:permission, global_custom_fields: true)
+        permission.update!(permitted_by: 'everyone')
+        expect(permission.global_custom_fields).to be_falsey
+      end
+
+      it 'is false even when set to true' do
+        permission = create(:permission, :by_everyone)
+        permission.update!(global_custom_fields: true)
+        expect(permission.global_custom_fields).to be_falsey
+      end
+    end
+
     context 'everyone_confirmed_email' do
       it 'is false when created' do
         permission = create(:permission, :by_everyone_confirmed_email)
@@ -32,6 +51,13 @@ RSpec.describe Permission do
     context 'user' do
       it 'is true when created' do
         permission = create(:permission, :by_users, global_custom_fields: nil)
+        expect(permission.global_custom_fields).to be_truthy
+      end
+    end
+
+    context 'verified' do
+      it 'is true when created' do
+        permission = create(:permission, :by_verified, global_custom_fields: nil)
         expect(permission.global_custom_fields).to be_truthy
       end
     end
@@ -66,15 +92,6 @@ RSpec.describe Permission do
         expect(permissions.size).to eq(1)
         expect(permissions).to include(permission_posting)
       end
-    end
-  end
-
-  describe 'permitted_by "custom"' do
-    let(:groups) { create_list(:group, 2) }
-    let(:permission) { create(:permission, permitted_by: 'custom', groups: groups) }
-
-    it 'permissions are valid' do
-      expect(permission).to be_valid
     end
   end
 end

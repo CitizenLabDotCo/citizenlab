@@ -22,12 +22,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def update
     @permission.assign_attributes(permission_params)
     authorize @permission
-    previous_permitted_by = @permission.permitted_by_changed?(to: 'custom') ? @permission.permitted_by_was : nil
     if @permission.save
-      Permissions::PermissionsFieldsService.new.persist_default_fields(
-        permission: @permission,
-        previous_permitted_by: previous_permitted_by
-      )
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
