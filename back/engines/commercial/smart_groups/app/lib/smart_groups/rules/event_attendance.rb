@@ -116,7 +116,7 @@ module SmartGroups::Rules
         .pluck(:id, :title_multiloc)
         # Ensure the titles are ordered in the same way as the event_ids
         .sort_by { |id, _| event_ids.index(id) }
-        .map { |_, title_multiloc| multiloc_service.t(title_multiloc, locale: locale) }
+        .map { |_, title_multiloc| multiloc_service.t(title_multiloc, locale) }
         .join(', ')
     end
 
