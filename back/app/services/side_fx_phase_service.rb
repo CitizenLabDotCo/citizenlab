@@ -22,7 +22,7 @@ class SideFxPhaseService
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_created',
       phase,
-      phase.participation_method,
+      phase.send(:raw_participation_method),
       phase.survey_service,
       phase.survey_embed_url
     )
@@ -71,8 +71,8 @@ class SideFxPhaseService
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_changed',
       phase,
-      phase.participation_method_previous_change&.dig(0) || phase.participation_method,
-      phase.participation_method,
+      phase.participation_method_previous_change&.dig(0) || phase.send(:raw_participation_method),
+      phase.send(:raw_participation_method),
       phase.survey_service_previous_change&.dig(0) || phase.survey_service,
       phase.survey_service,
       phase.survey_embed_url_previous_change&.dig(0) || phase.survey_embed_url,
@@ -84,7 +84,7 @@ class SideFxPhaseService
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_to_be_deleted',
       phase.id,
-      phase.participation_method,
+      phase.send(:raw_participation_method),
       phase.survey_service,
       phase.survey_embed_url
     )

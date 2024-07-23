@@ -55,9 +55,9 @@ class Permission < ApplicationRecord
   before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
-    return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
+    return [] if permission_scope && !permission_scope.is_a?(Phase)
 
-    ACTIONS[permission_scope&.participation_method]
+    ACTIONS[permission_scope&.send(:raw_participation_method)]
   end
 
   # Remove any actions that are not enabled on the project

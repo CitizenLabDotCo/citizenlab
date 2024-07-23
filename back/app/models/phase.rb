@@ -99,46 +99,46 @@ class Phase < ApplicationRecord
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
 
-  validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :raw_participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-  with_options if: ->(phase) { phase.method.supports_public_visibility? } do
+  with_options if: ->(phase) { phase.participation_method.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
   end
 
-  with_options if: ->(phase) { phase.method.supports_posting_inputs? } do
+  with_options if: ->(phase) { phase.participation_method.supports_posting_inputs? } do
     validates :posting_enabled, inclusion: { in: [true, false] }
     validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
     validates :posting_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_commenting? } do
+  with_options if: ->(phase) { phase.participation_method.supports_commenting? } do
     validates :commenting_enabled, inclusion: { in: [true, false] }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? } do
+  with_options if: ->(phase) { phase.participation_method.supports_reacting? } do
     validates :reacting_enabled, inclusion: { in: [true, false] }
     validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
     validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
     validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_like_limited? } do
+  with_options if: ->(phase) { phase.participation_method.supports_reacting? && phase.reacting_like_limited? } do
     validates :reacting_like_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_dislike_limited? } do
+  with_options if: ->(phase) { phase.participation_method.supports_reacting? && phase.reacting_dislike_limited? } do
     validates :reacting_dislike_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_input_term? } do
+  with_options if: ->(phase) { phase.participation_method.supports_input_term? } do
     validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
   end
 
   validates :ideas_order, inclusion: {
-    in: lambda do |pc|
-      Factory.instance.participation_method_for(pc).allowed_ideas_orders
+    in: lambda do |phase|
+      phase.participation_method.allowed_ideas_orders
     end
   }, allow_nil: true
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
@@ -242,16 +242,37 @@ class Phase < ApplicationRecord
 
   # Used for validations (which are hard to delegate through the participation method)
   def voting?
-    participation_method == 'voting'
+    raw_participation_method == 'voting'
   end
 
   # Used for validations (which are hard to delegate through the participation method)
   def native_survey?
-    participation_method == 'native_survey'
+    raw_participation_method == 'native_survey'
   end
 
-  def method
-    @method ||= Factory.instance.participation_method_for(self)
+  def participation_method
+    @participation_method ||= case super
+    when 'information'
+      ::ParticipationMethod::Information.new(self)
+    when 'ideation'
+      ::ParticipationMethod::Ideation.new(self)
+    when 'proposals'
+      ::ParticipationMethod::Proposals.new(self)
+    when 'native_survey'
+      ::ParticipationMethod::NativeSurvey.new(self)
+    when 'document_annotation'
+      ::ParticipationMethod::DocumentAnnotation.new(self)
+    when 'survey'
+      ::ParticipationMethod::Survey.new(self)
+    when 'voting'
+      ::ParticipationMethod::Voting.new(self)
+    when 'poll'
+      ::ParticipationMethod::Poll.new(self)
+    when 'volunteering'
+      ::ParticipationMethod::Volunteering.new(self)
+    else
+      ::ParticipationMethod::None.new
+    end
   end
 
   private
@@ -327,7 +348,7 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
-    method.assign_defaults_for_phase
+    participation_method.assign_defaults_for_phase
   end
 
   def set_presentation_mode
@@ -340,6 +361,11 @@ class Phase < ApplicationRecord
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase
+  end
+
+  def raw_participation_method
+    # Used to validate the participation method
+    self[:participation_method]
   end
 end
 
