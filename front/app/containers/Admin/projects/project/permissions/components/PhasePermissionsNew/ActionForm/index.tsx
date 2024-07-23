@@ -34,7 +34,7 @@ const showGroupSelect = (permittedBy: PermittedBy) => {
   return permittedBy !== 'everyone' && permittedBy !== 'admins_moderators';
 };
 
-const ActionFormNew = ({
+const ActionForm = ({
   phaseId,
   permissionData,
   groupIds,
@@ -116,4 +116,4 @@ const ActionFormNew = ({
   );
 };
 
-export default ActionFormNew;
+export default ActionForm;

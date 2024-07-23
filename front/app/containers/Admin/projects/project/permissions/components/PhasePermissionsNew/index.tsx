@@ -13,7 +13,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import PhaseAccordion from '../PhasePermissions/PhaseAccordion';
 
-import ActionsFormNew from './ActionsFormNew';
+import ActionForms from './ActionForms';
 
 interface Props {
   project: IProjectData;
@@ -100,7 +100,7 @@ const PhasePermissionsNewInner = ({
 
   return (
     <Box mb="40px">
-      <ActionsFormNew
+      <ActionForms
         permissions={permissions.data}
         onChange={onChange}
         postType={config.postType}

@@ -11,7 +11,7 @@ import { getPermissionActionSectionSubtitle } from 'components/admin/ActionsForm
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ActionFormNew from './ActionFormNew';
+import ActionForm from './ActionForm';
 
 type PostTypeProps =
   | {
@@ -78,7 +78,7 @@ const ActionsFormNew = ({
                 })}
               />
             </Title>
-            <ActionFormNew
+            <ActionForm
               phaseId={phaseId}
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}

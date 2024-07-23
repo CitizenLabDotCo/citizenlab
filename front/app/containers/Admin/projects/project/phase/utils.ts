@@ -8,7 +8,7 @@ import { Localize } from 'hooks/useLocalize';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import newMessages from '../permissions/components/PhasePermissionsNew/ActionsFormNew/messages';
+import newMessages from '../permissions/components/PhasePermissionsNew/ActionForm/messages';
 
 import messages from './messages';
 
