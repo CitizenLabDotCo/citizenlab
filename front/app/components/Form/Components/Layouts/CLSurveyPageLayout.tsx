@@ -270,11 +270,7 @@ const CLSurveyPageLayout = memo(
       }
     };
 
-    dragDividerRef?.current?.addEventListener(
-      'touchmove',
-      onDragDivider,
-      false
-    );
+    dragDividerRef?.current?.addEventListener('touchmove', onDragDivider);
 
     return (
       <>
