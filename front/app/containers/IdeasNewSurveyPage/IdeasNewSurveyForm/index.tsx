@@ -85,8 +85,8 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
-  const [checkLayout, setCheckLayout] = useState(false);
-  const [hasMapView, setHasMapView] = useState(false);
+  const [checkCurrentLayout, setCheckCurrentLayout] = useState(false);
+  const [usingMapView, setUsingMapView] = useState(false);
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -103,13 +103,13 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
   useWindowSize();
 
+  // Check if the current survey page is using the map view, so we can set the correct header width
   useEffect(() => {
-    // TODO: Find a better solution here
-    if (checkLayout && !isSmallerThanPhone) {
-      setHasMapView(!!document.getElementById('survey_page_map'));
-      setCheckLayout(false);
+    if (checkCurrentLayout && !isSmallerThanPhone) {
+      setUsingMapView(!!document.getElementById('survey_page_map'));
+      setCheckCurrentLayout(false);
     }
-  }, [checkLayout, isSmallerThanPhone]);
+  }, [checkCurrentLayout, isSmallerThanPhone]);
 
   /*
     TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
@@ -284,7 +284,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           mx="auto"
           position="relative"
           top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth={hasMapView ? '1100px' : '700px'}
+          maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
@@ -299,7 +299,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           >
             <Box
               background={colors.white}
-              maxWidth={hasMapView ? '1100px' : '700px'}
+              maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight()}
@@ -314,7 +314,9 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                 getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
-                setCheckLayout={setCheckLayout}
+                onChange={() => {
+                  setCheckCurrentLayout((currentValue) => !currentValue);
+                }}
               />
             </Box>
           </Box>

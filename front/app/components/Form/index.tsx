@@ -56,7 +56,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
-  setCheckLayout?: (checkLayout: boolean) => void;
+  onChange?: () => void;
 }
 
 const Form = memo(
@@ -72,7 +72,7 @@ const Form = memo(
     layout,
     footer,
     onSubmit,
-    setCheckLayout,
+    onChange,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -157,7 +157,7 @@ const Form = memo(
             config={config}
             locale={locale}
             onChange={(data) => {
-              setCheckLayout && setCheckLayout(true);
+              onChange && onChange();
               setData(data);
             }}
             onSubmit={handleSubmit}
