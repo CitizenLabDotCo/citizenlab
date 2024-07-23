@@ -182,8 +182,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       type: 'object',
       properties: {
         type: {
-          type: 'string',
-          enum: ['Point']
+          const: 'Point'
         },
         coordinates: {
           type: 'array',
@@ -203,8 +202,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       type: 'object',
       properties: {
         type: {
-          type: 'string',
-          enum: ['LineString']
+          const: 'LineString'
         },
         coordinates: {
           type: 'array',
@@ -228,8 +226,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       type: 'object',
       properties: {
         type: {
-          type: 'string',
-          enum: ['Polygon']
+          const: 'Polygon'
         },
         coordinates: {
           type: 'array',
