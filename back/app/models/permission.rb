@@ -82,6 +82,15 @@ class Permission < ApplicationRecord
     sql
   end
 
+  def verification_enabled?
+    false
+  end
+
+  def allow_global_custom_fields?
+    return true if (%w[users verified groups].include? permitted_by)
+    false
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields
@@ -96,9 +105,6 @@ class Permission < ApplicationRecord
   def update_global_custom_fields
     self.global_custom_fields = false unless allow_global_custom_fields?
   end
-
-  def allow_global_custom_fields?
-    return true if (%w[users verified].include? permitted_by)
-    false
-  end
 end
+
+Permission.include(Verification::Patches::Permission)

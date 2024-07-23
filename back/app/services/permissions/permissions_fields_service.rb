@@ -5,6 +5,7 @@ module Permissions
     def fields_for_permission(permission)
       return permission.permissions_fields unless permission.global_custom_fields
 
+
       default_fields(permission)
     end
 
@@ -19,21 +20,15 @@ module Permissions
     end
 
     def default_fields(permission)
-      # TODO: Apply custom fields related to groups and verification here too
-      if %w[everyone everyone_confirmed_email].include?(permission.permitted_by)
-        []
-      else
+      if permission.allow_global_custom_fields?
+        # TODO: Apply custom fields related to groups and verification here too
         custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
         custom_fields.each_with_index.map do |field, index|
           PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
         end
+      else
+        []
       end
-    end
-
-    # Called on update of individual fields to change values in others that are dependent
-    # TODO: JS - is this needed anymore?
-    def enforce_restrictions(field)
-      field
     end
 
     def custom_permitted_by_enabled?

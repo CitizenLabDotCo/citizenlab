@@ -4,10 +4,10 @@ module Verification
   module Patches
     module Permissions
       module UserRequirementsService
-        # Verification requirement can now come from either a group or a permissions_field
+        # Verification requirement can now come from either a group or the permitted_by value
         def requires_verification?(permission, user)
-          return false if permission.groups.any? && user.in_any_groups?(permission.groups) && !verify_by_field?(permission) # if the user meets the requirements of any other group we don't need to ask for verification
-          return false unless verification_service.find_verification_group(permission.groups) || verify_by_field?(permission)
+          return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
+          return false unless verification_service.find_verification_group(permission.groups) || permission.permitted_by == 'verified'
 
           !user.verified?
         end
@@ -17,8 +17,7 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
-          if (@check_groups && permission.groups.any? && verification_service.find_verification_group(permission.groups)) ||
-             verify_by_field?(permission)
+          if @check_groups && permission.verification_enabled?
             requirements[:special][:verification] = 'require'
           end
           requirements
@@ -30,13 +29,14 @@ module Verification
 
           if user.verified?
             requirements[:special][:verification] = 'satisfied'
-          elsif (permission.groups.any? && user.in_any_groups?(permission.groups)) && !verify_by_field?(permission)
+          elsif user_allowed_through_other_groups?(permission, user)
             requirements[:special][:verification] = 'dont_ask'
           end
         end
 
-        def verify_by_field?(permission)
-          permission.permitted_by == 'custom' && permission.permissions_fields.find_by(field_type: 'verification')&.required
+        # User can be in other groups that are not verification groups and therefore not need to be verified
+        def user_allowed_through_other_groups?(permission, user)
+         (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
         end
 
         def verification_service
