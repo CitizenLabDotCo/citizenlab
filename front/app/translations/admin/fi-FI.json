@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Vähimmäismäärä ääniä vaaditaan",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Vaihtoehto",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Input Manager -välilehti",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Määritä äänestysasetukset Input manager -välilehdellä vaiheen luomisen jälkeen.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Määritä äänestysasetukset kohdassa {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Osallistujat",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Järjestelmänvalvojat ja johtajat",
