@@ -178,7 +178,7 @@ const PostTable = ({
           bodyRows: true,
         }}
       >
-        {type === 'Initiatives' ? (
+        {type === 'Initiatives' || type === 'ProjectProposals' ? (
           <InitiativesHeaderRow
             sortAttribute={sortAttribute as InitiativesSort}
             sortDirection={sortDirection}

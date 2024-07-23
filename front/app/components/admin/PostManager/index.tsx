@@ -52,6 +52,7 @@ export const StyledInput = styled(Input)`
 export type ManagerType =
   | 'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
   | 'ProjectIdeas' // should come with projectId
-  | 'Initiatives';
+  | 'Initiatives'
+  | 'ProjectProposals';
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 export type PreviewMode = 'view' | 'edit';

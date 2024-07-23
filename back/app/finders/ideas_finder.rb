@@ -5,7 +5,8 @@ class IdeasFinder < ApplicationFinder
     scope ||= _base_scope
     super(
       params,
-      scope: only_idea_inputs_scope(scope),
+      # scope: only_idea_inputs_scope(scope),
+      scope: scope,
       includes: includes,
       current_user: current_user
     )
@@ -13,9 +14,9 @@ class IdeasFinder < ApplicationFinder
 
   private
 
-  def only_idea_inputs_scope(scope)
-    scope.ideation
-  end
+  # def only_idea_inputs_scope(scope)
+  #   scope.ideation
+  # end
 
   def ideas_condition(ids)
     where(id: ids)
