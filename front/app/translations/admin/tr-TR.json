@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Asgari bir oy sayısı gereklidir",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Seçenek",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Girdi Yöneticisi sekmesi",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Bir aşama oluşturduktan sonra Girdi yöneticisi sekmesinde oylama seçeneklerini yapılandırın.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Oylama seçeneklerini {optionsPageLink}adresinde yapılandırın.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Katılımcılar",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Yöneticiler ve müdürler",

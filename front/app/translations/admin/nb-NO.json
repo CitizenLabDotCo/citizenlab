@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Det kreves et minimum antall stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Fanen Input Manager",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Konfigurer stemmealternativene i kategorien Input manager etter å ha opprettet en fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurer stemmealternativene i {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Deltakere",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratorer og ledere",

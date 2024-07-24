@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Потребан је минималан број гласова",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcija",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Input Manager tab",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Configure the voting options in the {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Participants",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Admins & managers",
