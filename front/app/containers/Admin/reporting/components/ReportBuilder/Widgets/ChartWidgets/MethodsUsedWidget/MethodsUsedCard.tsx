@@ -20,6 +20,7 @@ import { Props } from './typings';
 const PARTICIPATION_METHODS: ParticipationMethod[] = [
   'information',
   'ideation',
+  'proposals',
   'native_survey',
   'voting',
   'volunteering',
@@ -31,6 +32,7 @@ const PARTICIPATION_METHODS: ParticipationMethod[] = [
 const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   information: messages.information,
   ideation: messages.ideation,
+  proposals: messages.proposals,
   native_survey: messages.nativeSurvey,
   voting: messages.voting,
   volunteering: messages.volunteering,

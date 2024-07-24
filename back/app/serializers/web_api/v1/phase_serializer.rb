@@ -17,12 +17,12 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     native_survey_title_multiloc native_survey_button_multiloc
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
-      Factory.instance.participation_method_for(phase).supports_serializing?(attribute_name)
+      phase.pmethod.supports_serializing?(attribute_name)
     }
   end
 
   attribute :votes_count, if: proc { |phase, params|
-    Factory.instance.participation_method_for(phase).supports_serializing?(:votes_count) \
+    phase.pmethod.supports_serializing?(:votes_count) \
     && (
       (current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))) \
       || TimelineService.new.phase_is_complete?(phase)
@@ -30,13 +30,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :voting_term_singular_multiloc, if: proc { |phase|
-    Factory.instance.participation_method_for(phase).supports_serializing?(:voting_term_singular_multiloc)
+    phase.pmethod.supports_serializing?(:voting_term_singular_multiloc)
   } do |phase|
     phase.voting_term_singular_multiloc_with_fallback
   end
 
   attribute :voting_term_plural_multiloc, if: proc { |phase|
-    Factory.instance.participation_method_for(phase).supports_serializing?(:voting_term_plural_multiloc)
+    phase.pmethod.supports_serializing?(:voting_term_plural_multiloc)
   } do |phase|
     phase.voting_term_plural_multiloc_with_fallback
   end

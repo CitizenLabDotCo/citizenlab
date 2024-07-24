@@ -76,7 +76,7 @@ describe('<SignedOutHeader />', () => {
       expect(
         screen.getByTestId('homepage-two-column-layout-header-image')
       ).toHaveStyle({
-        'min-width': '50%',
+        width: '50%',
       });
     });
   });

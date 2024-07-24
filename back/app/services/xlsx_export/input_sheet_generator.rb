@@ -8,7 +8,7 @@ module XlsxExport
       @inputs = inputs
       @phase = phase
       @include_private_attributes = include_private_attributes
-      @participation_method = Factory.instance.participation_method_for phase
+      @participation_method = phase.pmethod
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
       @url_service = Frontend::UrlService.new
