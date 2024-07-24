@@ -3,9 +3,9 @@ import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { IQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
-import { IQueryParameters, Sort } from 'api/initiatives/types';
 import useTopics from 'api/topics/useTopics';
 
 import Outlet from 'components/Outlet';
@@ -17,7 +17,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import PostTable from './components/PostTable';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-import InitiativeFeedbackToggle from './components/TopLevelFilters/InitiativeFeedbackToggle';
+import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
   LeftColumn,
@@ -57,8 +57,8 @@ const ProjectProposalsManager = ({
   const { data: initiativeStatuses } = useInitiativeStatuses();
   const { data: proposalTopics } = useTopics();
   const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
-    pageSize: 10,
     sort: 'new',
+    phase: phaseId,
   });
   const { data: proposals } = useIdeas({
     projects: [projectId],
@@ -120,25 +120,25 @@ const ProjectProposalsManager = ({
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, pageNumber: 1, topics });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (initiativeStatus: string) => {
+  const onChangeStatus = (_initiativeStatus: string) => {
     setQueryParameters({
       ...queryParameters,
-      pageNumber: 1,
-      initiative_status: initiativeStatus,
+      'page[number]': 1,
+      // initiative_status: initiativeStatus, // Fix later when statuses are updated
     });
   };
 
   const onChangeAssignee = (assignee: string | undefined) => {
-    setQueryParameters({ ...queryParameters, pageNumber: 1, assignee });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, assignee });
   };
 
   const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
-      pageNumber: 1,
+      'page[number]': 1,
       feedback_needed: feedbackNeeded,
     });
   };
@@ -148,19 +148,19 @@ const ProjectProposalsManager = ({
   };
 
   const onChangePage = (pageNumber: number) => {
-    setQueryParameters({ ...queryParameters, pageNumber });
+    setQueryParameters({ ...queryParameters, 'page[number]': pageNumber });
   };
 
   const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
     setQueryParameters({
       ...queryParameters,
-      pageNumber: 1,
+      'page[number]': 1,
       search: event.target.value,
     });
   };
 
   const onChangeSorting = (sort: Sort) => {
-    setQueryParameters({ ...queryParameters, pageNumber: 1, sort });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, sort });
   };
 
   const currentPage = getPageNumberFromUrl(proposals.links.self);
@@ -175,9 +175,10 @@ const ProjectProposalsManager = ({
           handleAssigneeFilterChange={onChangeAssignee}
           type={'ProjectProposals'}
         />
-        <InitiativeFeedbackToggle
+        <IdeaFeedbackToggle
           value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
+          project={projectId}
           queryParameters={queryParameters}
         />
         <StyledExportMenu type={'ProjectProposals'} selection={selection} />
@@ -209,7 +210,7 @@ const ProjectProposalsManager = ({
               statuses={initiativeStatuses?.data ?? []}
               topics={proposalTopics.data}
               selectedTopics={queryParameters.topics}
-              selectedStatus={queryParameters.initiative_status}
+              // selectedStatus={queryParameters.initiative_status}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
             />
