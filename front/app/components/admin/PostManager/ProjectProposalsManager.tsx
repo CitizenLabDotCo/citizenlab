@@ -43,7 +43,7 @@ interface Props {
   defaultFilterMenu: TFilterMenu;
 }
 
-const ProposalsManager = ({
+const ProjectProposalsManager = ({
   defaultFilterMenu,
   visibleFilterMenus,
   projectId,
@@ -259,7 +259,7 @@ const ProposalsManager = ({
 export default (inputProps: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <ProposalsManager {...inputProps} />
+      <ProjectProposalsManager {...inputProps} />
     </DndProvider>
   );
 };

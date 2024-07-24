@@ -8,7 +8,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ProposalsInputManager from 'components/admin/PostManager/ProposalsInputManager';
+import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -76,7 +76,7 @@ const AdminProjectProposals = () => {
       </Box>
 
       {project && (
-        <ProposalsInputManager
+        <ProjectProposalsManager
           projectId={project.data.id}
           phaseId={phaseId}
           visibleFilterMenus={timelineProjectVisibleFilterMenus}
