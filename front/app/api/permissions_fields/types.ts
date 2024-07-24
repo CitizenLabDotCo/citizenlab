@@ -47,7 +47,7 @@ export interface IPermissionsFieldData {
   type: 'permissions_field';
   attributes: {
     created_at: string;
-    lock: string;
+    lock: null | 'verification' | 'groups';
     ordering: number;
     persisted: boolean;
     required: boolean;
