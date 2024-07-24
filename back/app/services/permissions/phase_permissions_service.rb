@@ -79,8 +79,8 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_action
-      if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
-        POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
+      if !participation_method.supports_posting_inputs?
+        POSTING_DENIED_REASONS[:posting_not_supported]
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
       elsif user && posting_limit_reached?
@@ -90,14 +90,14 @@ module Permissions
 
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
-        COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
+        COMMENTING_DENIED_REASONS[:commenting_not_supported]
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end
     end
 
     def reacting_denied_reason_for_action(reaction_mode: nil)
-      if !phase.ideation?
+      if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
@@ -162,7 +162,7 @@ module Permissions
     end
 
     def participation_method
-      @participation_method ||= Factory.instance.participation_method_for(phase)
+      @participation_method ||= phase.pmethod
     end
   end
 end

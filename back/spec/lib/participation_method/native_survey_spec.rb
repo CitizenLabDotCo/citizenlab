@@ -110,7 +110,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
-      let(:input) { build(:idea, publication_status: 'draft', idea_status: nil) }
+      let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
       it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
         participation_method.assign_defaults input
@@ -120,23 +120,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
 
     context 'when the proposed idea status is not available' do
-      let(:input) { build(:idea) }
+      let(:input) { build(:idea, idea_status: nil) }
 
       it 'raises ActiveRecord::RecordNotFound' do
         expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
       end
-    end
-  end
-
-  describe '#never_show?' do
-    it 'returns true' do
-      expect(participation_method.never_show?).to be true
-    end
-  end
-
-  describe '#posting_allowed?' do
-    it 'returns true' do
-      expect(participation_method.posting_allowed?).to be true
     end
   end
 
@@ -146,47 +134,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#creation_phase?' do
-    let(:project) { create(:project_with_active_native_survey_phase) }
-    let(:phase) { project.phases.first }
-
-    it 'returns true' do
-      expect(participation_method.creation_phase?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project_form) { create(:custom_form, participation_context: phase.project) }
     let(:phase) { create(:native_survey_phase) }
 
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
-    end
-  end
-
-  describe '#edit_custom_form_allowed?' do
-    context 'when there are no responses' do
-      it 'returns true' do
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-
-    context 'when there are responses' do
-      before do
-        IdeaStatus.create_defaults
-        create(:idea, project: phase.project, creation_phase: phase)
-      end
-
-      it 'returns true' do
-        phase.reload
-        expect(participation_method.edit_custom_form_allowed?).to be true
-      end
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns true' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be true
     end
   end
 
@@ -208,15 +161,30 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#include_data_in_email?' do
-    it 'returns false' do
-      expect(participation_method.include_data_in_email?).to be false
+  describe '#supports_serializing?' do
+    it 'returns true for native survey attributes' do
+      %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be true
+      end
+    end
+
+    it 'returns false for the other attributes' do
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+      ].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be false
+      end
     end
   end
 
+  its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be true }
+  its(:supports_input_term?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
