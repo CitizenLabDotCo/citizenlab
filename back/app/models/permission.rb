@@ -91,6 +91,12 @@ class Permission < ApplicationRecord
     false
   end
 
+  # TEMP: Whilst verified actions are in beta
+  def permitted_by
+    return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
+    super
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields
@@ -104,6 +110,10 @@ class Permission < ApplicationRecord
 
   def update_global_custom_fields
     self.global_custom_fields = false unless allow_global_custom_fields?
+  end
+
+  def verified_actions_enabled?
+    @verified_actions_enabled = AppConfiguration.instance.feature_activated?('verified_actions')
   end
 end
 

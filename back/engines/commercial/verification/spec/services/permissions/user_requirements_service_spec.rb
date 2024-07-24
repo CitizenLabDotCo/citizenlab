@@ -43,7 +43,7 @@ describe Permissions::UserRequirementsService do
       let(:custom_permission) { create(:permission, permitted_by: 'custom') }
 
       before do
-        SettingsService.new.activate_feature! 'custom_permitted_by'
+        SettingsService.new.activate_feature! 'verified_actions'
 
         # TODO: JS - Can we add this into a factory or something?
         configuration = AppConfiguration.instance

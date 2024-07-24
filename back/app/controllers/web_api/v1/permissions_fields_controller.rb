@@ -8,7 +8,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     authorize PermissionsField.new(permission: permission)
 
     permissions_fields_service = Permissions::PermissionsFieldsService.new
-    if permissions_fields_service.custom_permitted_by_enabled?
+    if permissions_fields_service.verified_actions_enabled?
       # NEW non-paged version for verified actions
       permissions_fields = permissions_fields_service.fields_for_permission(permission)
       render json: WebApi::V1::PermissionsFieldSerializer.new(permissions_fields, params: jsonapi_serializer_params).serializable_hash

@@ -446,7 +446,7 @@ module MultiTenancy
               enabled: false,
               allowed: true
             },
-            custom_permitted_by: {
+            verified_actions: {
               enabled: true,
               allowed: true
             }

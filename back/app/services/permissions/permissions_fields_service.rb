@@ -35,8 +35,8 @@ module Permissions
       false
     end
 
-    def custom_permitted_by_enabled?
-      @custom_permitted_by_enabled ||= AppConfiguration.instance.feature_activated?('custom_permitted_by')
+    def verified_actions_enabled?
+      @verified_actions_enabled ||= AppConfiguration.instance.feature_activated?('verified_actions')
     end
 
     private

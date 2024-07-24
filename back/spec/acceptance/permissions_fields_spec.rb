@@ -27,7 +27,7 @@ resource 'PermissionsField' do
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: project).id }
 
-    context 'feature flag "custom_permitted_by" is NOT enabled' do
+    context 'feature flag "verified_actions" is NOT enabled' do
       example 'List all permissions fields of a permission' do
         field1, field2 = create_list(:custom_field, 2)
         [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
@@ -46,9 +46,9 @@ resource 'PermissionsField' do
       end
     end
 
-    context 'feature flag "custom_permitted_by" is enabled' do
+    context 'feature flag "verified_actions" is enabled' do
       before do
-        SettingsService.new.activate_feature! 'custom_permitted_by'
+        SettingsService.new.activate_feature! 'verified_actions'
         permission # Create permission
       end
 

@@ -9,6 +9,19 @@ RSpec.describe Permission do
     end
   end
 
+  describe 'permitted_by' do
+    it 'returns "users" when "groups" is set and verified actions feature is turned on' do
+      SettingsService.new.activate_feature! 'verified_actions'
+      permission = create(:permission, permitted_by: 'groups')
+      expect(permission.permitted_by).to eq 'users'
+    end
+
+    it 'returns "groups" when verified actions is turned off' do
+      permission = create(:permission, permitted_by: 'groups')
+      expect(permission.permitted_by).to eq 'groups'
+    end
+  end
+
   describe 'global_custom_fields' do
     context 'everyone' do
       it 'is false when created' do
