@@ -84,6 +84,7 @@ class Phase < ApplicationRecord
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
+  before_save :reload_participation_method, if: :will_save_change_to_participation_method?
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -324,6 +325,10 @@ class Phase < ApplicationRecord
 
   def set_participation_method_defaults
     pmethod.assign_defaults_for_phase
+  end
+
+  def reload_participation_method
+    @pmethod = Factory.instance.participation_method_for(self)
   end
 
   def set_presentation_mode
