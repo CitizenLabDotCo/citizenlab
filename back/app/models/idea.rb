@@ -162,10 +162,10 @@ class Idea < ApplicationRecord
   }
 
   scope :native_survey, -> { where.not creation_phase_id: nil } # TODO: Delete
-  scope :ideation, -> { where creation_phase_id: nil } # TODO: Delete
   scope :publicly_visible, -> do
-    joined = left_joins(:creation_phase)
-    joined.where(creation_phase_id: nil).or(joined.where(creation_phase: { participation_method: 'proposals' }))
+    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
+    where(creation_phase_id: nil)
+      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
   end
   scope :transitive, -> { where creation_phase_id: nil }
 
