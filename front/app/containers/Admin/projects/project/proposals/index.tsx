@@ -53,7 +53,7 @@ const AdminProjectProposals = () => {
           </Box>
         </Box>
         <Text color="textSecondary">
-          <FormattedMessage {...messages.subtitleInputManager} />
+          <FormattedMessage {...messages.subtitleInputProjectProposals} />
         </Text>
       </Box>
 

@@ -424,6 +424,10 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
   },
+  subtitleInputProjectProposals: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
+    defaultMessage: 'Manage proposals, give feedback and assign topics.',
+  },
   hiddenFieldsTip: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip',
     defaultMessage:
