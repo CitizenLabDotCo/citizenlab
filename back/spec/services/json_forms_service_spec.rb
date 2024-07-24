@@ -244,7 +244,7 @@ describe JsonFormsService do
         end
       end
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
-      let(:participation_method) { Factory.instance.participation_method_for(project) }
+      let(:participation_method) { project.pmethod }
       let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, participation_method, input_term }
 
       context 'when resident' do

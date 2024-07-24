@@ -15,8 +15,8 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input.publication_status = 'published'
-      input.idea_status = IdeaStatus.find_by!(code: 'proposed')
+      input.publication_status ||= 'published'
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
     end
 
     def form_structure_element
@@ -79,32 +79,12 @@ module ParticipationMethod
       form
     end
 
-    def never_show?
-      true
-    end
-
-    def posting_allowed?
-      true
-    end
-
     def update_if_published?
       false
     end
 
-    def creation_phase?
-      true
-    end
-
     def custom_form
       phase.custom_form || CustomForm.new(participation_context: phase)
-    end
-
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      true
     end
 
     def supports_exports?
@@ -115,6 +95,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_posting_inputs?
+      true
+    end
+
     def supports_survey_form?
       true
     end
@@ -123,8 +107,8 @@ module ParticipationMethod
       true
     end
 
-    def include_data_in_email?
-      false
+    def supports_serializing?(attribute)
+      %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
     end
 
     def return_disabled_actions?
