@@ -14,7 +14,7 @@ import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
-import InitiativesCount from './components/InitiativesCount';
+import IdeasCount from './components/IdeasCount';
 import PostTable from './components/PostTable';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import InitiativeFeedbackToggle from './components/TopLevelFilters/InitiativeFeedbackToggle';
@@ -193,7 +193,7 @@ const ProposalsManager = ({
           />
         </LeftColumn>
         <MiddleColumnTop>
-          <InitiativesCount queryParameters={queryParameters} />
+          <IdeasCount project={projectId} queryParameters={queryParameters} />
           <StyledInput icon="search" onChange={onChangeSearchTerm} />
         </MiddleColumnTop>
       </ThreeColumns>
