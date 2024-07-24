@@ -22,7 +22,7 @@ const Timeline = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const isCustomPermittedByEnabled = useFeatureFlag({
-    name: 'custom_permitted_by',
+    name: 'verified_actions',
   });
 
   if (!phases || !project) {
