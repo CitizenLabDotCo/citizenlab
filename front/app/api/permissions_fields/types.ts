@@ -30,39 +30,26 @@ export interface IPermissionsField {
 }
 
 export interface IPermissionsFieldAdd {
-  custom_field_id: string;
-  required: boolean;
+  action: string;
   phaseId?: string | null;
   projectId?: string | null;
-  action: string;
+  required: boolean;
+  custom_field_id: string;
 }
 
-export type EmailConfig = {
-  password: boolean;
-  confirmed: boolean;
-};
-
 export interface IPermissionCustomFieldUpdate {
-  id: string;
+  permission_id: string;
   required?: boolean;
-  verified?: boolean;
-  enabled?: boolean;
-  config?: EmailConfig;
 }
 
 export interface IPermissionsFieldData {
   id: string;
   type: 'permissions_field';
   attributes: {
-    config: Record<string, never> | EmailConfig;
-    // Is an EmailConfig if field_type is 'email'
-    // Is an empty object otherwise
-
     created_at: string;
-    enabled: boolean;
-    field_type: 'name' | 'email' | 'custom_field';
-    locked: boolean;
+    lock: string;
     ordering: number;
+    persisted: boolean;
     required: boolean;
     title_multiloc?: Multiloc;
     updated_at: string;
@@ -78,7 +65,7 @@ export interface IPermissionsFieldData {
       data: {
         id: string;
         type: 'custom_field';
-      } | null;
+      };
     };
   };
 }
