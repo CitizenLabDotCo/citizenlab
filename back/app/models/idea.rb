@@ -274,6 +274,7 @@ class Idea < ApplicationRecord
     custom_field_values.slice(*geo_cf_keys).each do |key, value|
       custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
     end
+  end
 
   def transitive_input_term
     current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
