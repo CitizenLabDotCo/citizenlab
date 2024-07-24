@@ -537,6 +537,11 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
     defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
   },
+  optionsToVoteOnDescWihoutPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase',
+    defaultMessage:
+      'Configure the voting options in the Input manager tab after creating a phase.',
+  },
   optionsPageText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',

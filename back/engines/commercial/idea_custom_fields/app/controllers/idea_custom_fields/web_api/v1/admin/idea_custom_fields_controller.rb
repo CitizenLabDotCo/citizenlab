@@ -52,7 +52,7 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      @participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      @participation_method = @custom_form.participation_context.pmethod
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -320,7 +320,7 @@ module IdeaCustomFields
     end
 
     def serializer_params(custom_form)
-      participation_method = Factory.instance.participation_method_for custom_form.participation_context
+      participation_method = custom_form.participation_context.pmethod
       jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
     end
   end

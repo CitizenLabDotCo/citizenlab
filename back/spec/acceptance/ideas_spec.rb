@@ -37,18 +37,21 @@ resource 'Ideas' do
 
       describe do
         before do
+          # @ideas = %w[published published draft published published].map do |ps|
           @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
+          # @proposal = create(:proposal)
           survey_project = create(:single_phase_native_survey_project)
           create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
         end
 
-        example_request 'List all published ideas (default behaviour)' do
+        example_request 'List all published inputs (default behaviour)' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
+          # expect(json_response[:data].pluck(:id)).to include(@proposal.id)
         end
 
         example 'Don\'t list drafts (default behaviour)', document: false do
@@ -194,7 +197,7 @@ resource 'Ideas' do
         end
 
         example 'Search for ideas' do
-          initiatives = [
+          ideas = [
             create(:idea, title_multiloc: { en: 'This idea is uniqque' }),
             create(:idea, title_multiloc: { en: 'This one origiinal' })
           ]
@@ -202,7 +205,7 @@ resource 'Ideas' do
           do_request search: 'uniqque'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq initiatives[0].id
+          expect(json_response[:data][0][:id]).to eq ideas[0].id
         end
 
         example 'List all ideas sorted by new' do
@@ -656,15 +659,16 @@ resource 'Ideas' do
     end
 
     delete 'web_api/v1/ideas/:id' do
+      let(:id) { input.id }
+
       context 'when the idea belongs to a phase' do
-        let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
+        let!(:input) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
-        let(:id) { idea.id }
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          idea.ideas_phases.create!(phase: phase)
+          input.ideas_phases.create!(phase: phase)
         end
 
         example 'the count starts at 1' do
@@ -679,10 +683,18 @@ resource 'Ideas' do
         end
       end
 
+      describe do
+        let(:input) { create(:proposal, author: user) }
+
+        example_request 'Delete a proposal' do
+          assert_status 200
+          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
       context 'when a voting context' do
         let(:project) { create(:single_phase_budgeting_project) }
-        let(:idea) { create(:idea, project: project, phases: project.phases) }
-        let(:id) { idea.id }
+        let(:input) { create(:idea, project: project, phases: project.phases) }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
           assert_status 401

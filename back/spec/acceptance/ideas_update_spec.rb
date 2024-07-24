@@ -1,6 +1,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+def public_input_params(spec)
+  spec.parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters', scope: :idea
+  spec.parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft', scope: :idea
+  spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
+  spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
+  spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
+  spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
+  # spec.parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # TODO: Separate engine
+end
+
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
 
@@ -11,7 +22,6 @@ resource 'Ideas' do
       parameter :project_id, 'The idea of the project that hosts the idea'
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
-      parameter :idea_status_id, 'The status of the idea, only allowed for admins'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :anonymous, 'Post this idea anonymously'
     end
@@ -22,12 +32,8 @@ resource 'Ideas' do
     let(:id) { input.id }
 
     context 'in an ideation phase' do
+      public_input_params(self)
       with_options scope: :idea do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
-        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-        parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end
@@ -161,6 +167,8 @@ resource 'Ideas' do
       end
 
       context 'when admin' do
+        parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+
         before { header_token_for(admin) }
 
         let(:admin) { create(:admin) }
@@ -333,6 +341,8 @@ resource 'Ideas' do
       end
 
       context 'when moderator' do
+        parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+
         before { header_token_for create(:project_moderator, projects: [project]) }
 
         let(:idea_status_id) { create(:idea_status).id }
@@ -342,6 +352,37 @@ resource 'Ideas' do
           json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
         end
+      end
+    end
+
+    context 'in a proposals phase' do
+      public_input_params(self)
+      with_options scope: :idea do
+        parameter :custom_field_name1, 'A value for one custom field'
+        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+      end
+
+      let(:input) { create(:proposal) }
+      let!(:form) { create(:custom_form, :with_default_fields, participation_context: input.creation_phase) }
+      let!(:text_field) { create(:custom_field_text, key: 'custom_field_name1', required: true, resource: form) }
+      let(:custom_field_name1) { 'changed value' }
+
+      context 'when author' do
+        before { header_token_for(author) }
+
+        let(:author) { input.author }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+        example_request 'Update an initiative' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
+          expect(json_response.dig(:data, :attributes, :custom_field_name1)).to eq custom_field_name1
+        end
+
+        # TODO: Do not allow changing the project or phases
+        # TODO: Update the cosponsors
+        # TODO: Update the input status
       end
     end
 

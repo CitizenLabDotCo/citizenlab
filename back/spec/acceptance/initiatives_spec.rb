@@ -14,6 +14,7 @@ resource 'Initiatives' do
     header_token_for @user
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives' do
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -175,6 +176,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/as_markers' do
     before do
       locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
@@ -209,6 +211,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/as_xlsx' do
     before { admin_header_token }
 
@@ -242,6 +245,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/filter_counts' do
     before do
       Initiative.all.each(&:destroy!)
@@ -335,6 +339,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   post 'web_api/v1/initiatives' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -495,6 +500,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   patch 'web_api/v1/initiatives/:id' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -720,6 +726,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   patch 'web_api/v1/initiatives/:id/accept_cosponsorship_invite' do
     before do
       @initiative = create(:initiative)
@@ -738,6 +745,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
@@ -751,6 +759,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
       admin_header_token

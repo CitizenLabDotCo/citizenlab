@@ -34,13 +34,16 @@ class TimelineService
   end
 
   def current_or_backup_transitive_phase(project, time = Time.now)
+    # This method is used to determine which project phase is the most relevant with
+    # respect to the input form. For example, to select the input term from the right
+    # phase.
     return if project.phases.blank?
 
     current = current_phase(project, time)
-    current_method = current && Factory.instance.participation_method_for(current)
+    current_method = current&.pmethod
     return current if current_method&.transitive? || (current_method&.supports_posting_inputs? && current_method&.supports_public_visibility?) # ideation, voting, proposals, but not native surveys
 
-    project.phases.select { |phase| Factory.instance.participation_method_for(phase).transitive? }&.last
+    project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
   def current_and_future_phases(project, time = Time.now)
