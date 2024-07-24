@@ -23,7 +23,7 @@ module Verification
             existing_permission_field = fields.find { |field| field[:custom_field_id] == custom_field.id }
             if existing_permission_field.nil?
               # Insert a new one if it's not already there
-              new_field = PermissionsField.new(custom_field: custom_field, required: true, ordering: ordering, permission: permission, lcok: 'verification')
+              new_field = PermissionsField.new(custom_field: custom_field, required: true, ordering: ordering, permission: permission, lock: 'verification')
               fields.insert(ordering, new_field)
             else
               # Set the existing one to true and move to the top
