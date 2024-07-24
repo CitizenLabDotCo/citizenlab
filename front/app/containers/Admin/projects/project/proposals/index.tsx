@@ -13,10 +13,10 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
 import ownMessages from './messages';
-import NewIdeaButton from './NewIdeaButton';
 
 type TFilterMenu = 'topics' | 'statuses';
 
