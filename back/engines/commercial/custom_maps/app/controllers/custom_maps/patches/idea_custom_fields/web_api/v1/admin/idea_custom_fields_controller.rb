@@ -11,12 +11,15 @@ module CustomMaps
                 set_custom_field
                 # pp @custom_field
 
-                phase = Phase.find(params[:phase_id])
-                results = SurveyResultsGeneratorService.new(phase).generate_results_by_inputs
-                pp results
+                # phase = Phase.find(params[:phase_id])
+                # results_by_inputs = SurveyResultsGeneratorService.new(phase).generate_results_by_inputs
+                geojson_hash = { type: 'FeatureCollection', features: [] }
 
-                json = { type: 'Feature', geometry: { type: 'Point', coordinates: [2.5, 4.0] }, properties: { color: 'red' } }.to_json
-                send_data json, type: 'application/json', filename: 'phase.geojson'
+                geojson_hash[:features] << {
+                  type: 'Feature', geometry: { type: 'Point', coordinates: [4.35, 50.84] }, properties: { color: 'red' }
+                }
+
+                send_data geojson_hash.to_json, type: 'application/json', filename: 'phase.geojson'
               end
 
               def include_in_index_response
