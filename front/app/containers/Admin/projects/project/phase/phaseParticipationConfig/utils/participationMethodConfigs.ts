@@ -104,3 +104,19 @@ export const surveyDefaultConfig: IPhaseParticipationConfig = {
   participation_method: 'survey',
   survey_service: 'typeform',
 };
+
+export const proposalsDefaultConfig: IPhaseParticipationConfig = {
+  ...defaultParticipationConfig,
+  participation_method: 'proposals',
+  posting_enabled: true,
+  commenting_enabled: true,
+  reacting_enabled: true,
+  reacting_like_method: 'unlimited',
+  reacting_dislike_enabled: false,
+  reacting_dislike_method: undefined,
+  allow_anonymous_participation: false,
+  reacting_dislike_limited_max: null,
+  presentation_mode: 'card',
+  // input_term: 'proposal', // TODO: add later
+  ideas_order: 'trending',
+};

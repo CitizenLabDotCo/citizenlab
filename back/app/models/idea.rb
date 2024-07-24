@@ -196,7 +196,7 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    (creation_phase || project).pmethod
   end
 
   private
@@ -266,13 +266,13 @@ class Idea < ApplicationRecord
 
   def current_phase_input_term
     current_phase = TimelineService.new.current_phase project
-    current_phase.input_term if current_phase && Factory.instance.participation_method_for(current_phase).supports_input_term?
+    current_phase.input_term if current_phase&.pmethod&.supports_input_term?
   end
 
   def last_past_phase_input_term
     past_phases = TimelineService.new.past_phases(project).select { |phase| phase_ids.include? phase.id }
     past_phases_with_input_term = past_phases.select do |phase|
-      Factory.instance.participation_method_for(phase).supports_input_term?
+      phase.pmethod.supports_input_term?
     end
     past_phases_with_input_term.last&.input_term
   end
@@ -280,7 +280,7 @@ class Idea < ApplicationRecord
   def first_future_phase_input_term
     future_phases = TimelineService.new.future_phases(project).select { |phase| phase_ids.include? phase.id }
     future_phases_with_input_term = future_phases.select do |phase|
-      Factory.instance.participation_method_for(phase).supports_input_term?
+      phase.pmethod.supports_input_term?
     end
     future_phases_with_input_term.first&.input_term
   end

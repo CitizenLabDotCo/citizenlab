@@ -66,7 +66,7 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, locale.locale_sym).html_safe if multiloc
+    multiloc_service.t(multiloc, locale.to_s).html_safe if multiloc
   end
 
   # Truncates localized multiloc string, avoiding cutting string in the middle of HTML link and breaking the mail view.

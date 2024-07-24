@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "crwdns213082:0crwdne213082:0",
   "app.components.HookForm.Feedback.submissionErrorTitle": "crwdns213084:0crwdne213084:0",
   "app.components.HookForm.Feedback.successMessage": "crwdns213086:0crwdne213086:0",
+  "app.components.HorizontalScroll.scrollLeftLabel": "crwdns2677447:0crwdne2677447:0",
+  "app.components.HorizontalScroll.scrollRightLabel": "crwdns2677449:0crwdne2677449:0",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "crwdns2400638:0{sortOder}crwdne2400638:0",
   "app.components.IdeaCards.showMore": "crwdns213088:0crwdne213088:0",
   "app.components.IdeasMap.a11y_hideIdeaCard": "crwdns213144:0crwdne213144:0",

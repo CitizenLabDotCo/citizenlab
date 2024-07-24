@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.ideation',
     defaultMessage: 'Ideation',
   },
+  proposals: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.proposals',
+    defaultMessage: 'Proposals',
+  },
   nativeSurvey: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey',
     defaultMessage: 'Survey',

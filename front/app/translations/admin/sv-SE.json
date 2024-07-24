@@ -306,6 +306,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Ett minsta antal röster krävs",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Fliken Input Manager",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Konfigurera röstningsalternativen på fliken Input manager när du har skapat en fas.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurera röstningsalternativen i {optionsPageLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.participationTab": "Deltagare",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratörer och chefer",

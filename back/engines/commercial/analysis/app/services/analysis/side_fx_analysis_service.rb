@@ -37,7 +37,7 @@ module Analysis
 
     def fallback_custom_fields(analysis)
       if !analysis.participation_context.custom_form
-        participation_method = Factory.instance.participation_method_for(analysis.participation_context)
+        participation_method = analysis.participation_context.pmethod
         participation_method.create_default_form!
         analysis.participation_context.reload # Necessary to find back the created custom form
       end

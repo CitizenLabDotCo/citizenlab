@@ -12,7 +12,7 @@ module EmailCampaigns
     def campaign_mail
       attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
         Event.find(event.event_attributes.id),
-        locale.locale_sym
+        locale.to_s
       )
 
       super
