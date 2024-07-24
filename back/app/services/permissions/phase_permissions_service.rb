@@ -162,7 +162,7 @@ module Permissions
     end
 
     def participation_method
-      @participation_method ||= Factory.instance.participation_method_for(phase)
+      @participation_method ||= phase.pmethod
     end
   end
 end

@@ -40,10 +40,10 @@ class TimelineService
     return if project.phases.blank?
 
     current = current_phase(project, time)
-    current_method = current && Factory.instance.participation_method_for(current)
+    current_method = current&.pmethod
     return current if current_method&.transitive? || (current_method&.supports_posting_inputs? && current_method&.supports_public_visibility?) # ideation, voting, proposals, but not native surveys
 
-    project.phases.select { |phase| Factory.instance.participation_method_for(phase).transitive? }&.last
+    project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
   def current_and_future_phases(project, time = Time.now)

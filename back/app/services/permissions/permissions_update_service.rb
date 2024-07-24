@@ -60,7 +60,7 @@ class Permissions::PermissionsUpdateService
   end
 
   def fix_permitted_by(scope)
-    if scope && !Factory.instance.participation_method_for(scope).supports_permitted_by_everyone?
+    if scope&.pmethod&.supports_permitted_by_everyone?
       Permission.where(permission_scope: scope, permitted_by: 'everyone').update!(permitted_by: 'users')
     end
   end
