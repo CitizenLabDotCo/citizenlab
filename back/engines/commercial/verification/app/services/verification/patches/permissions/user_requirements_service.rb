@@ -36,7 +36,7 @@ module Verification
 
         # User can be in other groups that are not verification groups and therefore not need to be verified
         def user_allowed_through_other_groups?(permission, user)
-         (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
+          (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
         end
 
         def verification_service

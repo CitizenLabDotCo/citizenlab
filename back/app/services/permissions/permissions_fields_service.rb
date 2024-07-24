@@ -17,7 +17,7 @@ module Permissions
 
       # Now create the default fields
       fields = default_fields(permission)
-      return unless fields.present?
+      return if fields.blank?
 
       fields.each(&:save!)
     end

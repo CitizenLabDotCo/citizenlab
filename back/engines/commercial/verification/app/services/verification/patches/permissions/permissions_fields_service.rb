@@ -41,7 +41,7 @@ module Verification
         end
 
         def persist_related_verification_fields(permission)
-          return if permission.global_custom_fields
+          nil if permission.global_custom_fields
 
           # TODO: JS - persist group fields
         end

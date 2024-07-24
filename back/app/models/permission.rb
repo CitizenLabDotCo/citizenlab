@@ -87,13 +87,15 @@ class Permission < ApplicationRecord
   end
 
   def allow_global_custom_fields?
-    return true if (%w[users verified groups].include? permitted_by)
+    return true if %w[users verified groups].include? permitted_by
+
     false
   end
 
   # TEMP: Whilst verified actions are in beta
   def permitted_by
     return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
+
     super
   end
 

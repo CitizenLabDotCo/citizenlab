@@ -65,9 +65,5 @@ describe Permissions::PermissionsFieldsService do
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
       end
     end
-
-    context 'when permission has verified groups"' do
-      # TODO: JS - Tests for verification groups
-    end
   end
 end

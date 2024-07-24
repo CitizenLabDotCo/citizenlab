@@ -23,7 +23,7 @@ describe Permissions::PermissionsFieldsService do
       end
 
       it 'returns non-persisted default fields when permitted_by "verified"' do
-        permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
+        permission = create(:permission, permitted_by: 'verified', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to match_array [false, false]

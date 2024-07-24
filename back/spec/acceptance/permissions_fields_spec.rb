@@ -180,7 +180,6 @@ resource 'PermissionsField' do
           assert_status 404
         end
       end
-
     end
   end
 

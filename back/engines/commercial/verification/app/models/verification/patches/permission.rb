@@ -8,6 +8,7 @@ module Verification
           def verification_enabled?
             return true if permitted_by == 'verified'
             return true if groups.any? && VerificationService.new.find_verification_group(groups)
+
             false
           end
         end
