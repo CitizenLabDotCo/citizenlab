@@ -136,11 +136,7 @@ class Phase < ApplicationRecord
     before_validation :set_input_term
   end
 
-  validates :ideas_order, inclusion: {
-    in: lambda do |pc|
-      Factory.instance.participation_method_for(pc).allowed_ideas_orders
-    end
-  }, allow_nil: true
+  validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
   # voting?
