@@ -15,7 +15,7 @@ export const ideationConfig: FormBuilderConfig = {
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.customToolboxTitle,
 
-  toolboxFieldsToExclude: ['page', 'file_upload', 'point'],
+  toolboxFieldsToExclude: ['page', 'file_upload', 'point', 'line', 'polygon'],
   displayBuiltInFields: true,
   formCustomFields: undefined,
 
