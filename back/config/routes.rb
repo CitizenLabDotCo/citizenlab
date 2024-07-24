@@ -163,6 +163,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        get :as_geojson, on: :member, action: 'as_geojson'
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
