@@ -19,7 +19,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators custom].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
@@ -50,14 +50,8 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
-
-  def global_custom_fields
-    return false if permitted_by == 'custom'
-
-    super
-  end
+  before_validation :set_permitted_by_and_global_custom_fields, on: :create
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -88,6 +82,23 @@ class Permission < ApplicationRecord
     sql
   end
 
+  def verification_enabled?
+    false
+  end
+
+  def allow_global_custom_fields?
+    return true if %w[users verified groups].include? permitted_by
+
+    false
+  end
+
+  # TEMP: Whilst verified actions are in beta
+  def permitted_by
+    return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
+
+    super
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields
@@ -96,10 +107,16 @@ class Permission < ApplicationRecord
     else
       'users'
     end
-    self.global_custom_fields ||= (permitted_by == 'users')
+    self.global_custom_fields ||= allow_global_custom_fields?
   end
 
   def update_global_custom_fields
-    self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
+    self.global_custom_fields = false unless allow_global_custom_fields?
+  end
+
+  def verified_actions_enabled?
+    @verified_actions_enabled = AppConfiguration.instance.feature_activated?('verified_actions')
   end
 end
+
+Permission.include(Verification::Patches::Permission)

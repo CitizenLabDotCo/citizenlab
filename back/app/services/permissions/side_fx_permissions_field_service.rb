@@ -4,7 +4,9 @@ module Permissions
   class SideFxPermissionsFieldService
     include SideFxHelper
 
-    def before_create(_permissions_field, _user); end
+    def before_create(permissions_field, _user)
+      Permissions::PermissionsFieldsService.new.persist_default_fields permissions_field.permission
+    end
 
     def after_create(permissions_field, user)
       LogActivityJob.perform_later permissions_field, 'created', user, permissions_field.created_at.to_i
@@ -13,7 +15,6 @@ module Permissions
     def before_update(_permissions_field, _user); end
 
     def after_update(permissions_field, user)
-      Permissions::PermissionsFieldsService.new.enforce_restrictions(permissions_field)
       LogActivityJob.perform_later permissions_field, 'changed', user, permissions_field.updated_at.to_i
     end
 

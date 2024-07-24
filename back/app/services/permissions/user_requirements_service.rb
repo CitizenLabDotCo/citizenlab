@@ -20,14 +20,10 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    if permission.global_custom_fields && !permissions_fields_service.custom_permitted_by_enabled?
-      registration_fields
-    else
-      permissions_fields_service.fields_for_permission(permission).select { |f| f[:field_type] == 'custom_field' }.map do |permissions_field|
-        permissions_field.custom_field.tap do |field|
-          field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
-          field.required = permissions_field.required
-        end
+    permissions_fields_service.fields_for_permission(permission).map do |permissions_field|
+      permissions_field.custom_field.tap do |field|
+        field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
+        field.required = permissions_field.required
       end
     end
   end
@@ -58,14 +54,14 @@ class Permissions::UserRequirementsService
   end
 
   def base_requirements(permission)
-    return base_requirements_new(permission) if permissions_fields_service.custom_permitted_by_enabled?
-
-    # Legacy requirements - without custom permitted_by
-    everyone = base_requirements_template(permission)
+    everyone = base_requirements_template(permission).deep_dup.tap do |requirements|
+      # Custom fields and group membership can now be required on all permissions
+      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
+      requirements[:special][:group_membership] = 'require' if @check_groups && permission.groups.any?
+    end
 
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
       requirements[:built_in][:email] = 'require'
-      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
       requirements[:special][:confirmation] = 'require' if app_configuration.feature_activated?('user_confirmation')
     end
 
@@ -74,10 +70,6 @@ class Permissions::UserRequirementsService
       requirements[:built_in][:last_name] = 'require'
       requirements[:onboarding].transform_values! { 'ask' } if onboarding_possible?
       requirements[:special][:password] = 'require'
-    end
-
-    groups = users.deep_dup.tap do |requirements|
-      requirements[:special][:group_membership] = 'require' if @check_groups
     end
 
     case permission.permitted_by
@@ -89,40 +81,8 @@ class Permissions::UserRequirementsService
       else
         app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
       end
-    when 'groups'
-      groups
-    else # users | admins_moderators'
+    else # users | groups | verified | admins_moderators
       users
-    end
-  end
-
-  # Requirements driven by the new permissions fields (currently feature flagged)
-  def base_requirements_new(permission)
-    base = base_requirements_template(permission)
-    return base if permission.permitted_by == 'everyone'
-
-    fields = permissions_fields_service.fields_for_permission(permission)
-    email_field = fields.find { |f| f[:field_type] == 'email' }
-    name_field = fields.find { |f| f[:field_type] == 'name' }
-
-    base.deep_dup.tap do |requirements|
-      requirements[:built_in][:first_name] = name_field.enabled ? 'require' : 'dont_ask'
-      requirements[:built_in][:last_name] = name_field.enabled ? 'require' : 'dont_ask'
-      requirements[:built_in][:email] = email_field.enabled ? 'require' : 'dont_ask'
-
-      if email_field.enabled
-        requirements[:special][:password] = 'require' if email_field.config['password']
-        requirements[:special][:confirmation] = 'require' if email_field.config['confirmed'] && app_configuration.feature_activated?('user_confirmation')
-      end
-
-      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
-
-      requirements[:special][:group_membership] = 'require' if @check_groups && permission.permitted_by == 'custom' && permission.groups.present?
-
-      # TODO: JS - will need changing when onboarding is implemented as a permissions_field
-      requirements[:onboarding].transform_values! { 'ask' } if (permission.permitted_by == 'users' || permission.permitted_by == 'admins_moderators') && onboarding_possible?
-
-      # TODO: JS - implement verification
     end
   end
 

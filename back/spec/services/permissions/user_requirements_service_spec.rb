@@ -503,14 +503,78 @@ describe Permissions::UserRequirementsService do
             }
           })
         end
+
+        context 'there are groups on the permission' do
+          let(:group) { create(:group) }
+
+          before { permission.groups << group }
+
+          it 'does not permit a user if they are not in the group' do
+            expect(service.requirements(permission, user)).to eq({
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied',
+                  'gender' => 'satisfied',
+                  'extra_required_field' => 'satisfied',
+                  'extra_optional_field' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
+          end
+
+          it 'permits a user if they are in the group' do
+            create(:membership, user: user, group: group)
+            expect(service.requirements(permission, user)).to eq({
+              permitted: true,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied',
+                  'gender' => 'satisfied',
+                  'extra_required_field' => 'satisfied',
+                  'extra_optional_field' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'satisfied'
+                }
+              }
+            })
+          end
+        end
       end
 
       context 'when permitted_by is set to groups' do
         let(:group) { create(:group) }
-        let(:permission) { create(:permission, permitted_by: 'groups', groups: [group], global_custom_fields: false) }
+        let(:permission) do
+          permission = create(:permission, permitted_by: 'users', groups: [group])
+          permission.update!(global_custom_fields: false) # As global_custom_fields is fixed to true on creation for groups
+          permission
+        end
 
         context 'user is not in the group' do
           before do
+            permission
             field = CustomField.find_by code: 'birthyear'
             create(:permissions_field, permission: permission, custom_field: field, required: true)
           end
@@ -821,7 +885,7 @@ describe Permissions::UserRequirementsService do
   describe '#requirements_fields' do
     let(:custom_fields) { [true, false, false].map { |required| create(:custom_field, required: required) } }
     let(:permission) do
-      create(:permission, global_custom_fields: global_custom_fields).tap do |permission|
+      create(:permission).tap do |permission|
         custom_fields.take(2).each do |field|
           create(:permissions_field, permission: permission, custom_field: field, required: !field.required)
         end
@@ -831,18 +895,16 @@ describe Permissions::UserRequirementsService do
     let(:requirements_custom_fields) { service.requirements_custom_fields permission }
 
     context 'when global_custom_fields is true' do
-      let(:global_custom_fields) { true }
-
-      it 'returns only custom fields' do
+      it 'returns default fields' do
+        permission.update!(global_custom_fields: true)
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [true, false, false]
       end
     end
 
     context 'when global_custom_fields is false' do
-      let(:global_custom_fields) { false }
-
-      it 'returns the global fields' do
+      it 'returns only the permissions fields' do
+        permission.update!(global_custom_fields: false)
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.take(2).map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [false, true]
       end

@@ -24,8 +24,8 @@ FactoryBot.define do
       permitted_by { 'everyone_confirmed_email' }
     end
 
-    trait :by_custom do
-      permitted_by { 'custom' }
+    trait :by_verified do
+      permitted_by { 'verified' }
     end
 
     factory :global_permission do

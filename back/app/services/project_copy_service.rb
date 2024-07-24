@@ -389,9 +389,10 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
+    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
+    custom_fields = CustomField.where(resource: custom_forms)
     map_configs = CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
-      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
+      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
 
     map_configs.map do |map_config|
       yml_map_config = {

@@ -13,6 +13,7 @@ module MultiTenancy
             %w[users groups admins_moderators]
           end.sample
           permission.permitted_by = permitted_by
+          # TODO: JS - work out a way of doing this for new permissions
           if permitted_by == 'groups'
             permission.groups = Group.all.shuffle.take(rand(5))
           end

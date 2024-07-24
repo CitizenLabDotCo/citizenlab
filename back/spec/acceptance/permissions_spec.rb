@@ -99,14 +99,16 @@ resource 'Permissions' do
       let(:action) { @phase.permissions.first.action }
 
       before do
-        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id))
+        create(:custom_field_gender, enabled: true, required: true)
+        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
       end
 
       example_request 'Get one permission by action' do
         expect(status).to eq 200
         expect(response_data[:id]).to eq @phase.permissions.first.id
         expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-        expect(response_data.dig(:relationships, :groups, :data)).to eq [] # No groups returned
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
+        # TODO: JS - Default Permissions fields not returned as relationships - needed?
       end
 
       example 'Get one group permission', document: false do
@@ -139,30 +141,25 @@ resource 'Permissions' do
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @phase.permissions.first.action }
+      let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
       context 'permitted_by: groups' do
         let(:permitted_by) { 'groups' }
-        let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
         example_request 'Update a permission with groups permitted_by' do
           assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
-          expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
 
-      context 'permitted_by: custom' do
-        let(:permitted_by) { 'custom' }
-        let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+      context 'permitted_by: everyone_confirmed_email' do
+        let(:permitted_by) { 'everyone_confirmed_email' }
 
-        before { SettingsService.new.activate_feature! 'custom_permitted_by' }
-
-        example_request 'Permissions fields are created when permission is updated with "custom" permitted_by' do
+        example_request 'Update group IDs when permitted_by "everyone_confirmed_email"' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
-          expect(response_data.dig(:relationships, :permissions_fields, :data).count).to eq 2
         end
       end
     end
