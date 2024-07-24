@@ -10,8 +10,12 @@ module Permissions
 
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
     def persist_default_fields(permission)
-      return unless permission.permissions_fields.empty?
+      return unless permission.global_custom_fields && permission.permissions_fields.empty?
 
+      # First update global custom fields to false
+      permission.update!(global_custom_fields: false)
+
+      # Now create the default fields
       fields = default_fields(permission)
       return unless fields.present?
 

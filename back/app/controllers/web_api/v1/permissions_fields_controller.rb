@@ -2,7 +2,7 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_field, only: %i[show update destroy reorder]
+  before_action :set_permissions_field, only: %i[show destroy reorder]
 
   def index
     authorize PermissionsField.new(permission: permission)
@@ -51,6 +51,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def update
+    @permissions_field = persist_and_find_permission_field
     @permissions_field.assign_attributes permission_params_for_update
     authorize @permissions_field
     sidefx.before_update @permissions_field, current_user
@@ -62,6 +63,25 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
       ).serializable_hash, status: :ok
     else
       render json: { errors: @permissions_field.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # Try and add default fields, then find the field in the persisted fields
+  def persist_and_find_permission_field
+    begin
+      PermissionsField.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      # Try and save the default fields, then find the field by custom_field_id in the persisted fields
+      raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
+
+      permission = Permission.find(permission_params_for_update[:permission_id])
+      raise ActiveRecord::RecordNotFound unless permission
+
+      Permissions::PermissionsFieldsService.new.persist_default_fields permission
+      field = permission.permissions_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
+      raise ActiveRecord::RecordNotFound unless field
+
+      field
     end
   end
 
@@ -117,6 +137,6 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required, :ordering)
+    params.require(:permissions_field).permit(:required, :ordering, :permission_id, :custom_field_id)
   end
 end

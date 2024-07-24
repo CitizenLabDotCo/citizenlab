@@ -117,34 +117,70 @@ resource 'PermissionsField' do
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
     let(:required) { false }
-    let(:custom_field_id) { create(:custom_field).id }
+    let(:custom_field_id) { create(:custom_field, enabled: false).id }
 
-    before { permission } # Create permission
+    before do
+      create(:custom_field_gender, enabled: true) # Create a default custom field
+      permission # Create permission
+    end
 
-    example_request 'Create a permission - custom field association' do
+    example_request 'Create a new permission custom field association' do
       assert_status 201
 
       json_response = json_parse response_body
       expect(json_response.dig(:data, :relationships, :custom_field, :data, :id)).to eq custom_field_id
       expect(json_response.dig(:data, :attributes, :required)).to eq required
+      expect(PermissionsField.all.count).to eq 2 # Default custom field persisted + new custom field
     end
   end
 
   patch 'web_api/v1/permissions_fields/:id' do
     with_options scope: :permissions_field do
       parameter :required, 'Whether filling out the field is mandatory'
-      parameter :enabled, 'Is this field enabled? Delete should be used instead field_type = "custom_field"'
-      parameter :config, 'Configuration for the field - only allowed currently on field_type = "email"'
+      parameter :permission_id, 'Required if no fields are yet persisted'
+      parameter :custom_field_id, 'Required if no fields are yet persisted'
     end
     ValidationErrorHelper.new.error_fields self, PermissionsField
 
-    let(:permissions_field) { create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender)) }
-    let(:id) { permissions_field.id }
-    let(:required) { true }
+    context 'fields already exist' do
+      let(:permissions_field) { create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender)) }
+      let(:id) { permissions_field.id }
+      let(:required) { true }
 
-    example_request 'Update a permissions custom field' do
-      assert_status 200
-      expect(response_data.dig(:attributes, :required)).to be true
+      example_request 'Update a permissions custom field' do
+        assert_status 200
+        expect(response_data.dig(:attributes, :required)).to be true
+      end
+    end
+
+    context 'no fields are yet persisted' do
+      let(:permissions_field) { Permissions::PermissionsFieldsService.new.fields_for_permission(permission).first }
+      let(:id) { permissions_field.id }
+      let(:required) { true }
+
+      before do
+        permission.update!(global_custom_fields: true)
+        create(:custom_field_gender, enabled: true) # Create a default custom field
+      end
+
+      context 'permission and custom field IDs are provided' do
+        let(:custom_field_id) { permissions_field.custom_field_id }
+        let(:permission_id) { permission.id }
+
+        example_request 'Persist default fields and update a permissions field' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :required)).to be true
+          expect(response_data[:id]).not_to eq id # New field created by persisting defaults so ID will change
+          expect(response_data.dig(:relationships, :custom_field, :data, :id)).to eq custom_field_id
+        end
+      end
+
+      context 'permission and custom field IDs are NOT provided' do
+        example_request '[ERROR] permission not found' do
+          assert_status 404
+        end
+      end
+
     end
   end
 
