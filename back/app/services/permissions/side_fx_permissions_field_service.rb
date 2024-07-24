@@ -13,7 +13,6 @@ module Permissions
     def before_update(_permissions_field, _user); end
 
     def after_update(permissions_field, user)
-      Permissions::PermissionsFieldsService.new.enforce_restrictions(permissions_field)
       LogActivityJob.perform_later permissions_field, 'changed', user, permissions_field.updated_at.to_i
     end
 

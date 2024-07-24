@@ -105,7 +105,7 @@ resource 'PermissionsField' do
 
       expect(response_data[:id]).to eq id
       expect(response_data.dig(:attributes, :created_at)).to be_present
-      expect(response_data[:attributes].keys).to match_array(%i[required ordering locked title_multiloc created_at updated_at default])
+      expect(response_data[:attributes].keys).to match_array(%i[required ordering lock title_multiloc created_at updated_at persisted])
     end
   end
 

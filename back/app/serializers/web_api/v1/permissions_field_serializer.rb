@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsFieldSerializer < WebApi::V1::BaseSerializer
-  attributes :required, :locked, :ordering, :created_at, :updated_at, :title_multiloc
+  attributes :required, :lock, :ordering, :created_at, :updated_at, :title_multiloc
 
-  attribute :default do |object|
+  attribute :persisted do |object|
     !object.persisted?
   end
 
