@@ -189,6 +189,10 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  def pmethod
+    @pmethod ||= Factory.instance.participation_method_for(self)
+  end
+
   private
 
   def admin_publication_must_exist
