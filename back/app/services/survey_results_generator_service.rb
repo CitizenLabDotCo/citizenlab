@@ -3,6 +3,7 @@
 class SurveyResultsGeneratorService < FieldVisitorService
   def initialize(phase, group_mode: nil, group_field_id: nil)
     super()
+    @phase = phase
     @group_mode = group_mode
     @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
@@ -23,6 +24,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
         results: results,
         totalSubmissions: inputs.size
       }
+    end
+  end
+
+  def generate_results_by_inputs
+    inputs = @inputs
+    inputs.each_with_object({}) do |input, accu|
+      @inputs = @phase.ideas.native_survey.published.where(id: input.id)
+
+      accu[input.id] ||= generate_results
     end
   end
 
