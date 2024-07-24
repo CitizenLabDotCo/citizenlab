@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Precedente",
   "app.components.form.ErrorDisplay.save": "Risparmiare",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Inizia a digitare per cercare per email o nome dell'utente...",
-  "app.components.form.anonymousSurveyMessage": "Tutte le risposte a questo sondaggio sono anonime.",
   "app.components.form.controls.addressInputAriaLabel": "Indirizzo di ingresso",
   "app.components.form.controls.addressInputPlaceholder6": "Inserisci un indirizzo...",
   "app.components.form.controls.adminFieldTooltip": "Campo visibile solo agli amministratori",
