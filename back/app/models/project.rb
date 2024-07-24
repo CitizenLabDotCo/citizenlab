@@ -194,7 +194,7 @@ class Project < ApplicationRecord
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
     # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
-    @pmethod ||= ParticipationMethod::Ideation.new(participation_context.phases.first)
+    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
   end
 
   private

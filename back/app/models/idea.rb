@@ -191,7 +191,7 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    (creation_phase || project).pmethod
   end
 
   private
