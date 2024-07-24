@@ -157,7 +157,7 @@ const Form = memo(
             config={config}
             locale={locale}
             onChange={(data) => {
-              onChange && onChange();
+              onChange?.();
               setData(data);
             }}
             onSubmit={handleSubmit}

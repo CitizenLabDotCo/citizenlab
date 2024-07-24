@@ -60,9 +60,10 @@ const PageLayoutSettings = ({ pageLayoutName }: Props) => {
                             {formatMessage(messages.normalPage)}
                           </Text>
                         }
-                        key={'default'}
                         onChange={() => {
-                          setValue(pageLayoutName, 'default');
+                          setValue(pageLayoutName, 'default', {
+                            shouldDirty: true,
+                          });
                         }}
                       />
                     </Box>
@@ -89,9 +90,10 @@ const PageLayoutSettings = ({ pageLayoutName }: Props) => {
                             </Text>
                           </Box>
                         }
-                        key={'map'}
                         onChange={() => {
-                          setValue(pageLayoutName, 'map');
+                          setValue(pageLayoutName, 'map', {
+                            shouldDirty: true,
+                          });
                         }}
                       />
                     </Box>
