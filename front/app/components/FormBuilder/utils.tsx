@@ -147,6 +147,8 @@ export function getAdditionalSettings(
         />
       );
     case 'point':
+    case 'line':
+    case 'polygon':
       return (
         <PointSettings
           mapConfigIdName={`customFields.${field.index}.map_config_id`}
@@ -228,7 +230,13 @@ const getInputTypeStringKey = (
       translatedStringKey = messages.fileUpload;
       break;
     case 'point':
-      translatedStringKey = messages.locationAnswer;
+      translatedStringKey = messages.dropPin;
+      break;
+    case 'line':
+      translatedStringKey = messages.drawRoute;
+      break;
+    case 'polygon':
+      translatedStringKey = messages.drawPolygon;
       break;
   }
 

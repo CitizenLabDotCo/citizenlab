@@ -30,8 +30,9 @@ import messages from '../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
 import MobileView from './Mobile/MobileView';
+import { convertCoordinatesToGeoJSON } from './multiPointUtils';
 
-const PointControl = ({ ...props }: ControlProps) => {
+const MapControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;
 
   const localize = useLocalize();
@@ -70,14 +71,43 @@ const PointControl = ({ ...props }: ControlProps) => {
     setMapView(mapView);
   }, []);
 
-  // Handle when the data (point) changes
-  const handlePointChange = useCallback(
+  // Handler for when single point data changes
+  const handleSinglePointChange = useCallback(
     (point?: GeoJSON.Point) => {
       handleChange(path, point);
       setDidBlur(true);
     },
     [handleChange, path]
   );
+
+  // Handler for when multiple point data changes (line/polygon)
+  const handleMultiPointChange = useCallback(
+    (coordinates?: number[][]) => {
+      if (coordinates) {
+        const geoJSONObject = convertCoordinatesToGeoJSON(
+          coordinates,
+          uischema
+        );
+        handleChange(path, geoJSONObject);
+      } else {
+        handleChange(path, undefined);
+      }
+      setDidBlur(true);
+    },
+    [handleChange, path, uischema]
+  );
+
+  const getInstructionMessage = () => {
+    if (isTabletOrSmaller) {
+      return uischema?.options?.input_type === 'point'
+        ? formatMessage(messages.tapOnMapToAddOrType)
+        : formatMessage(messages.tapOnMapMultipleToAdd);
+    } else {
+      return uischema?.options?.input_type === 'point'
+        ? formatMessage(messages.clickOnMapToAddOrType)
+        : formatMessage(messages.clickOnMapMultipleToAdd);
+    }
+  };
 
   return (
     <>
@@ -92,11 +122,7 @@ const PointControl = ({ ...props }: ControlProps) => {
         <Label>
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
-            <Box my="auto">
-              {isTabletOrSmaller
-                ? formatMessage(messages.tapOnMapToAdd)
-                : formatMessage(messages.clickOnMapToAdd)}
-            </Box>
+            <Box my="auto">{getInstructionMessage()}</Box>
           </Box>
         </Label>
       </Box>
@@ -106,18 +132,22 @@ const PointControl = ({ ...props }: ControlProps) => {
           mapConfig={mapConfig}
           onMapInit={onMapInit}
           mapView={mapView}
-          handlePointChange={handlePointChange}
+          handleSinglePointChange={handleSinglePointChange}
+          handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
+          inputType={uischema?.options?.input_type}
           {...props}
         />
       ) : (
         <DesktopTabletView
           mapConfig={mapConfig}
           mapLayers={mapLayers}
+          inputType={uischema?.options?.input_type}
           onMapInit={onMapInit}
           mapView={mapView}
-          handlePointChange={handlePointChange}
+          handleSinglePointChange={handleSinglePointChange}
           didBlur={didBlur}
+          handleMultiPointChange={handleMultiPointChange}
           {...props}
         />
       )}
@@ -125,11 +155,16 @@ const PointControl = ({ ...props }: ControlProps) => {
   );
 };
 
-export default withJsonFormsControlProps(PointControl);
+export default withJsonFormsControlProps(MapControl);
 
-export const pointControlTester = (uischema) => {
-  if (uischema?.options?.input_type === 'point') {
+export const mapControlTester = (uischema) => {
+  if (
+    uischema?.options?.input_type === 'point' ||
+    uischema?.options?.input_type === 'polygon' ||
+    uischema?.options?.input_type === 'line'
+  ) {
     return 1000;
   }
+
   return -1;
 };

@@ -67,6 +67,18 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_line(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
+  end
+
+  def visit_polygon(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
+  end
+
   def visit_linear_scale(field)
     default(field).tap do |ui_field|
       ui_field[:options][:minimum_label] = multiloc_service.t(field.minimum_label_multiloc)

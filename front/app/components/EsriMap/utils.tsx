@@ -1,6 +1,7 @@
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import Layer from '@arcgis/core/layers/Layer';
@@ -17,6 +18,7 @@ import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 import { uuid4 } from '@sentry/utils';
+import { transparentize } from 'polished';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -250,6 +252,88 @@ export const getShapeSymbol = ({
       width: outlineWidth || 1,
     },
   });
+};
+
+// getLineSymbol
+// Description: Get a simple line symbol
+type LineSymbolProps = {
+  color?: string;
+  style?: EsriLineStyle;
+};
+
+export type EsriLineStyle =
+  | 'dash'
+  | 'dash-dot'
+  | 'dot'
+  | 'long-dash'
+  | 'long-dash-dot'
+  | 'long-dash-dot-dot'
+  | 'none'
+  | 'short-dash'
+  | 'short-dash-dot'
+  | 'short-dash-dot-dot'
+  | 'short-dot'
+  | 'solid';
+
+export const getLineSymbol = ({ style, color }: LineSymbolProps) => {
+  return new SimpleLineSymbol({
+    color: color || colors.black,
+    width: 2,
+    style: style || 'solid',
+  });
+};
+
+// getFillSymbol
+// Description: Get a fill symbol
+type FillSymbolProps = {
+  color?: string;
+  transparency?: number;
+  outlineStyle?: EsriLineStyle;
+};
+
+export const getFillSymbol = ({
+  transparency,
+  color,
+  outlineStyle,
+}: FillSymbolProps) => {
+  return new SimpleFillSymbol({
+    color: transparentize(transparency || 1.0, color || colors.coolGrey700),
+    style: 'diagonal-cross',
+    outline: {
+      color: [0, 0, 0, 0.8],
+      width: 2,
+      style: outlineStyle || 'dash',
+    },
+  });
+};
+
+// newPointGraphic
+// Description: Creates a new point (pin symbol) graphic
+export const newPinPointGraphic = (point: GeoJSON.Point, color: string) => {
+  return new Graphic({
+    geometry: new Point({
+      longitude: point.coordinates[0],
+      latitude: point.coordinates[1],
+    }),
+    symbol: getMapPinSymbol({
+      color,
+      sizeInPx: 44,
+    }),
+  });
+};
+
+// addPointGraphicToMap
+// Description: Adds a point graphic to the map
+export const addPointGraphicToMap = (
+  point: GeoJSON.Point,
+  mapView: MapView | null | undefined,
+  graphic: Graphic
+) => {
+  if (mapView) {
+    mapView.graphics.removeAll();
+    mapView.graphics.add(graphic);
+    goToMapLocation(point, mapView);
+  }
 };
 
 // changeCursorOnHover

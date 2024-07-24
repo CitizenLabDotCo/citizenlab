@@ -42,6 +42,34 @@ FactoryBot.define do
       input_type { 'point' }
     end
 
+    factory :custom_field_line do
+      title_multiloc do
+        {
+          'en' => 'Where should we add the new cycle-path?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw a line to indicate the route of the new cycle-path.'
+        }
+      end
+      input_type { 'line' }
+    end
+
+    factory :custom_field_polygon do
+      title_multiloc do
+        {
+          'en' => 'Where should we build new housing?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw the area where you think we should build new housing.'
+        }
+      end
+      input_type { 'polygon' }
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {

@@ -36,6 +36,10 @@ const MapContainer = styled(Box)`
     max-height: 200px !important;
   }
 
+  .esri-ui-corner .esri-component {
+    box-shadow: none !important;
+  }
+
   ${media.phone`
     .esri-legend {
       max-width: 240px !important;

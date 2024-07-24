@@ -94,6 +94,7 @@
     "json-stable-stringify": "1.0.2",
     "jwt-decode": "3.1.2",
     "lodash-es": "4.17.21",
+    "lottie-react": "^2.4.0",
     "moment": "2.29.4",
     "moment-timezone": "0.5.44",
     "path-to-regexp": "6.2.1",

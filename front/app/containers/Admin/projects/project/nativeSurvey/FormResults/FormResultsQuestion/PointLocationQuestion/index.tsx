@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner, Toggle } from '@citizenlab/cl2-component-library';
@@ -28,6 +28,7 @@ const PointLocationQuestion = ({
   customFieldId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
   const { projectId } = useParams() as {
@@ -37,6 +38,11 @@ const PointLocationQuestion = ({
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
   const [showHeatMap, setShowHeatMap] = useState<boolean>(false);
+
+  // Add reset button to the map
+  useEffect(() => {
+    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+  }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
   const { data: customMapConfig, isLoading: isLoadingCustomMapConfig } =
@@ -75,7 +81,11 @@ const PointLocationQuestion = ({
             heatmap={showHeatMap}
             onInit={setMapView}
           />
-          <ResetMapViewButton mapView={mapView} mapConfig={mapConfig} />
+          <ResetMapViewButton
+            mapView={mapView}
+            mapConfig={mapConfig}
+            resetButtonRef={resetButtonRef}
+          />
         </>
       )}
     </Box>

@@ -69,6 +69,14 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_line(field)
+    default(field)
+  end
+
+  def visit_polygon(field)
+    default(field)
+  end
+
   def visit_linear_scale(field)
     default(field)
   end
