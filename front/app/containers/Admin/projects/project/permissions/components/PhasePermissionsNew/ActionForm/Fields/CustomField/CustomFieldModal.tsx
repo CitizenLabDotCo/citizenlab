@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Box, Select, Title } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
+import useAddPermissionsField from 'api/permissions_fields/useAddPermissionsField';
 import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
 
 import Modal from 'components/UI/Modal';
@@ -35,6 +37,34 @@ const CustomFieldModal = ({
     action,
   });
 
+  const { mutate: addPermissionsField } = useAddPermissionsField({
+    phaseId,
+    action,
+  });
+
+  const handleUpdatePermissionsField = (option: IOption) => {
+    // This 'persisted' attribute is used to determine whether
+    // this field is 'real' and actually exists in our database.
+    // By default, we get back a bunch of 'fake' fields from the API,
+    // and only when we edit something for the first time will
+    // we get the 'real' persisted ones.
+    // So until then, we cannot actually update them, because
+    // their ids are not real. We can only add new ones.
+    if (field.attributes.persisted) {
+      updatePermissionsField({
+        id: field.id,
+        required: option.value === 'required',
+      });
+    } else {
+      addPermissionsField({
+        phaseId,
+        action,
+        required: option.value === 'required',
+        custom_field_id: field.relationships.custom_field.data.id,
+      });
+    }
+  };
+
   const options = [
     { value: 'required', label: formatMessage(messages.required) },
     { value: 'optional', label: formatMessage(messages.optional) },
@@ -58,12 +88,7 @@ const CustomFieldModal = ({
           value={field.attributes.required ? 'required' : 'optional'}
           label={formatMessage(messages.fieldStatus)}
           options={options}
-          onChange={(option) => {
-            updatePermissionsField({
-              permission_id: field.id,
-              required: option.value === 'required',
-            });
-          }}
+          onChange={handleUpdatePermissionsField}
         />
       </Box>
     </Modal>

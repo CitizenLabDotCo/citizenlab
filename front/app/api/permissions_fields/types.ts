@@ -38,7 +38,7 @@ export interface IPermissionsFieldAdd {
 }
 
 export interface IPermissionCustomFieldUpdate {
-  permission_id: string;
+  id: string;
   required?: boolean;
 }
 
