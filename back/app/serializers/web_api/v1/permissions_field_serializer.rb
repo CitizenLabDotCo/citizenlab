@@ -4,7 +4,7 @@ class WebApi::V1::PermissionsFieldSerializer < WebApi::V1::BaseSerializer
   attributes :required, :lock, :ordering, :created_at, :updated_at, :title_multiloc
 
   attribute :persisted do |object|
-    !object.persisted?
+    object.persisted?
   end
 
   has_one :permission
