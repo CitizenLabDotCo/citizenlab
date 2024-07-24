@@ -285,6 +285,12 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when fully registered resident who is not a group member' do
+        it { expect(denied_reason).to eq 'user_not_verified' }
+      end
+
+      context 'when verified resident who is not a group member' do
+        before { user.update!(verified: true) }
+
         it { expect(denied_reason).to eq 'user_not_in_group' }
       end
 
