@@ -101,37 +101,37 @@ class Phase < ApplicationRecord
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-  with_options if: ->(phase) { phase.method.supports_public_visibility? } do
+  with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
   end
 
-  with_options if: ->(phase) { phase.method.supports_posting_inputs? } do
+  with_options if: ->(phase) { phase.pmethod.supports_posting_inputs? } do
     validates :posting_enabled, inclusion: { in: [true, false] }
     validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
     validates :posting_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_commenting? } do
+  with_options if: ->(phase) { phase.pmethod.supports_commenting? } do
     validates :commenting_enabled, inclusion: { in: [true, false] }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? } do
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? } do
     validates :reacting_enabled, inclusion: { in: [true, false] }
     validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
     validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
     validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_like_limited? } do
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? && phase.reacting_like_limited? } do
     validates :reacting_like_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_reacting? && phase.reacting_dislike_limited? } do
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? && phase.reacting_dislike_limited? } do
     validates :reacting_dislike_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
   end
 
-  with_options if: ->(phase) { phase.method.supports_input_term? } do
+  with_options if: ->(phase) { phase.pmethod.supports_input_term? } do
     validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
   end
@@ -250,8 +250,8 @@ class Phase < ApplicationRecord
     participation_method == 'native_survey'
   end
 
-  def method
-    @method ||= Factory.instance.participation_method_for(self)
+  def pmethod
+    @pmethod ||= Factory.instance.participation_method_for(self)
   end
 
   private
@@ -327,7 +327,7 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
-    method.assign_defaults_for_phase
+    pmethod.assign_defaults_for_phase
   end
 
   def set_presentation_mode
