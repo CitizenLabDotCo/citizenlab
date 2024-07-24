@@ -28,6 +28,7 @@ import useLocalize from 'hooks/useLocalize';
 import EsriMap from 'components/EsriMap';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import { parseLayers } from 'components/EsriMap/utils';
+import { FormData } from 'components/Form/typings';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -37,12 +38,13 @@ import messages from '../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
-  clearPointData,
-  getInitialMapCenter,
   handleMapClickMultipoint,
-  handleMapClickPoint,
-  setupPointDrag,
   isLineOrPolygonInput,
+  setupPointDrag,
+} from '../multiPointUtils';
+import { clearPointData, handleMapClickPoint } from '../pointUtils';
+import {
+  getInitialMapCenter,
   MapInputType,
   updateDataAndDisplay,
 } from '../utils';
@@ -50,7 +52,7 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: any;
+  data: FormData;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
@@ -165,6 +167,7 @@ const FullscreenMapInput = memo<Props>(
     // Attach behaviour for when a user edits a point by dragging it
     useEffect(() => {
       isLineOrPolygonInput(inputType) &&
+        handleMultiPointChange &&
         setupPointDrag({
           mapView,
           handleMultiPointChange,
@@ -173,7 +176,7 @@ const FullscreenMapInput = memo<Props>(
           tenantSecondaryColor: theme.colors.tenantSecondary,
           data,
           inputType,
-          isMobileOrSmaller: false,
+          pointSymbolSize: 26,
         });
     }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
