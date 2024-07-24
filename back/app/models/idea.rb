@@ -161,7 +161,7 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :native_survey, -> { where.not creation_phase_id: nil } # TODO: Delete
+  scope :native_survey, -> { where(creation_phase_id: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
   scope :publicly_visible, -> do
     visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
     where(creation_phase_id: nil)
@@ -170,8 +170,7 @@ class Idea < ApplicationRecord
   scope :transitive, -> { where creation_phase_id: nil }
 
   scope :draft_surveys, lambda { # TODO: Delete
-    where(publication_status: 'draft')
-      .where.not(creation_phase_id: nil)
+    native_survey.where(publication_status: 'draft')
   }
 
   def just_published?
