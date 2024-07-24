@@ -167,7 +167,7 @@ const ProjectProposalsManager = ({
   const lastPage = getPageNumberFromUrl(proposals.links.last);
 
   return (
-    <>
+    <DndProvider backend={HTML5Backend}>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
@@ -253,14 +253,8 @@ const ProjectProposalsManager = ({
       <Suspense fallback={null}>
         <LazyStatusChangeModal />
       </Suspense>
-    </>
-  );
-};
-
-export default (inputProps: Props) => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <ProjectProposalsManager {...inputProps} />
     </DndProvider>
   );
 };
+
+export default ProjectProposalsManager;

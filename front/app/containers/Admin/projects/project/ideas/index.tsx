@@ -82,6 +82,7 @@ const AdminProjectIdeas = () => {
 
       {project && (
         <InputManager
+          key={phaseId}
           projectId={project.data.id}
           phases={phases?.data}
           phaseId={phaseId}

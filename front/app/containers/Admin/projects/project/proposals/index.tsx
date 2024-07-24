@@ -77,6 +77,7 @@ const AdminProjectProposals = () => {
 
       {project && (
         <ProjectProposalsManager
+          key={phaseId}
           projectId={project.data.id}
           phaseId={phaseId}
           visibleFilterMenus={timelineProjectVisibleFilterMenus}
