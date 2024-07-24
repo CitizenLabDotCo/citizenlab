@@ -248,7 +248,28 @@ class Phase < ApplicationRecord
   end
 
   def pmethod
-    @pmethod ||= Factory.instance.participation_method_for(self)
+    @pmethod ||= case participation_method
+    when 'information'
+      ParticipationMethod::Information.new(self)
+    when 'ideation'
+      ParticipationMethod::Ideation.new(self)
+    when 'proposals'
+      ParticipationMethod::Proposals.new(self)
+    when 'native_survey'
+      ParticipationMethod::NativeSurvey.new(self)
+    when 'document_annotation'
+      ParticipationMethod::DocumentAnnotation.new(self)
+    when 'survey'
+      ParticipationMethod::Survey.new(self)
+    when 'voting'
+      ParticipationMethod::Voting.new(self)
+    when 'poll'
+      ParticipationMethod::Poll.new(self)
+    when 'volunteering'
+      ParticipationMethod::Volunteering.new(self)
+    else
+      ParticipationMethod::None.new
+    end
   end
 
   private
