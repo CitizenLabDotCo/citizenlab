@@ -95,7 +95,7 @@ RSpec.describe Project do
   end
 
   describe 'pmethod' do
-    it "returns an instance of ParticipationMethod::Ideation" do
+    it 'returns an instance of ParticipationMethod::Ideation' do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
     end
   end
