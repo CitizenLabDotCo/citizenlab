@@ -161,13 +161,13 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :publicly_visible, -> do
+  scope :publicly_visible, lambda {
     visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
     where(creation_phase: nil)
-    .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
-  end
+      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+  }
   scope :transitive, -> { where creation_phase: nil }
-  
+
   scope :native_survey, -> { where(creation_phase: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
   scope :draft_surveys, lambda { # TODO: Delete
     native_survey.where(publication_status: 'draft')
