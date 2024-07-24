@@ -32,9 +32,7 @@ const Fields = ({ phaseId, disableEditing, action }: Props) => {
     action,
   });
 
-  const selectedCustomFields = permissionFields?.data.filter(
-    (field) => field.attributes.field_type === 'custom_field'
-  );
+  const selectedCustomFields = permissionFields?.data;
 
   return (
     <Box maxWidth="844px">

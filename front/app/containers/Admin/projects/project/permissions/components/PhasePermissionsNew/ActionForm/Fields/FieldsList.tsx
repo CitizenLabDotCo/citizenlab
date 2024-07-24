@@ -11,8 +11,6 @@ import { SortableList, SortableRow, Row } from 'components/admin/ResourceList';
 
 import { DISABLED_COLOR } from './constants';
 import CustomField from './CustomField';
-import EmailField from './EmailField';
-import NameField from './NameField';
 
 interface Props {
   phaseId: string;
@@ -33,36 +31,12 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
       {permissionFields && (
         <SortableList
           items={permissionFields.data}
-          lockFirstNItems={2}
           onReorder={(fieldId, newOrder) => {
             reorderPermissionsField({ id: fieldId, ordering: newOrder });
           }}
         >
-          {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
+          {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
-              {lockedItemsList?.map((field: IPermissionsFieldData) => {
-                if (field.attributes.field_type === 'email') {
-                  return (
-                    <EmailField
-                      key={field.id}
-                      field={field}
-                      phaseId={phaseId}
-                      action={action}
-                      disableEditing={disableEditing}
-                    />
-                  );
-                }
-
-                return (
-                  <NameField
-                    key={field.id}
-                    field={field}
-                    phaseId={phaseId}
-                    action={action}
-                    disableEditing={disableEditing}
-                  />
-                );
-              })}
               {itemsList.map((field: IPermissionsFieldData, index: number) => {
                 const fieldMarkup = (
                   <CustomField
