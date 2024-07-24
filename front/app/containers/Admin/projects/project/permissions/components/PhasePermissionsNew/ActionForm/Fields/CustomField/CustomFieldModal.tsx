@@ -10,8 +10,6 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import parentMessages from '../../messages';
-import Tooltip from '../../Tooltip';
 import messages from '../messages';
 
 interface Props {
@@ -20,7 +18,6 @@ interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
   opened: boolean;
-  disableEditing: boolean;
   onClose: () => void;
 }
 
@@ -30,7 +27,6 @@ const CustomFieldModal = ({
   phaseId,
   action,
   opened,
-  disableEditing,
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -58,24 +54,17 @@ const CustomFieldModal = ({
       close={onClose}
     >
       <Box p="32px">
-        <Tooltip
-          disabled={!disableEditing}
-          placement="top"
-          message={parentMessages.disableEditingExplanationFromModal}
-        >
-          <Select
-            value={field.attributes.required ? 'required' : 'optional'}
-            label={formatMessage(messages.fieldStatus)}
-            options={options}
-            disabled={disableEditing}
-            onChange={(option) => {
-              updatePermissionsField({
-                id: field.id,
-                required: option.value === 'required',
-              });
-            }}
-          />
-        </Tooltip>
+        <Select
+          value={field.attributes.required ? 'required' : 'optional'}
+          label={formatMessage(messages.fieldStatus)}
+          options={options}
+          onChange={(option) => {
+            updatePermissionsField({
+              permission_id: field.id,
+              required: option.value === 'required',
+            });
+          }}
+        />
       </Box>
     </Modal>
   );

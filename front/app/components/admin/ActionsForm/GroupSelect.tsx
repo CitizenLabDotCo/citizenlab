@@ -18,11 +18,10 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface Props {
   groupIds?: string[];
-  disabled?: boolean;
   onChange: (groups: string[]) => void;
 }
 
-const GroupSelect = ({ groupIds, disabled = false, onChange }: Props) => {
+const GroupSelect = ({ groupIds, onChange }: Props) => {
   const { data: groups } = useGroups({});
   const localize = useLocalize();
 
@@ -40,12 +39,10 @@ const GroupSelect = ({ groupIds, disabled = false, onChange }: Props) => {
   return (
     <StyledMultipleSelect
       value={groupIds ?? []}
-      disabled={disabled}
       options={groupsOptions()}
       onChange={(options) => onChange(options.map((o) => o.value))}
       placeholder={<FormattedMessage {...messages.selectGroups} />}
       id="e2e-select-user-group"
-      bgColor={disabled ? '#f9f9f9' : undefined}
     />
   );
 };
