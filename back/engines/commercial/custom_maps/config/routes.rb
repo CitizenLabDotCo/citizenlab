@@ -24,6 +24,26 @@ CustomMaps::Engine.routes.draw do
   end
 end
 
+IdeaCustomFields::Engine.routes.draw do
+  namespace :web_api, defaults: { format: :json } do
+    namespace :v1 do
+      namespace :admin do
+        resources :phases, only: [] do
+          resources(
+            :custom_fields,
+            only: %i[index show],
+            controller: 'idea_custom_fields',
+            defaults: { container_type: 'Phase' }
+          ) do
+            get :as_geojson, on: :member, action: 'as_geojson'
+          end
+        end
+      end
+    end
+  end
+end
+
 Rails.application.routes.draw do
   mount CustomMaps::Engine => '', as: 'custom_maps'
+  mount IdeaCustomFields::Engine => '', as: 'geo_idea_custom_fields'
 end
