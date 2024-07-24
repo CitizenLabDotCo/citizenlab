@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Torneu-ho a provar. Si el problema persisteix, poseu-vos en contacte amb nosaltres",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Hi ha hagut un problema per part nostra, ho sentim",
   "app.components.HookForm.Feedback.successMessage": "Formulari enviat correctament",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Desplaça't cap a l'esquerra.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Desplaceu-vos cap a la dreta.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "S'han carregat {sortOder} idees.",
   "app.components.IdeaCards.showMore": "Mostrar més",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Amaga la targeta d'idees.",

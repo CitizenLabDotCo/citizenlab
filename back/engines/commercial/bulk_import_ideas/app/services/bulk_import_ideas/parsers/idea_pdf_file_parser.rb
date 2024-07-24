@@ -9,7 +9,7 @@ module BulkImportIdeas::Parsers
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
+      @form_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
     end
 
     # Synchronous version not implemented for PDFs
