@@ -24,8 +24,8 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
-  # This attribute will be calculated but not persisted
-  attribute :locked, :boolean, default: false
+  # This attribute will be calculated but not persisted - TODO: JS - Must be in 'verification' or 'groups'
+  attribute :lock, :string, default: false
 
   acts_as_list column: :ordering, top_of_list: 0, scope: :permission
 

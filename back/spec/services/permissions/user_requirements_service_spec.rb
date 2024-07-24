@@ -885,7 +885,7 @@ describe Permissions::UserRequirementsService do
   describe '#requirements_fields' do
     let(:custom_fields) { [true, false, false].map { |required| create(:custom_field, required: required) } }
     let(:permission) do
-      create(:permission, global_custom_fields: global_custom_fields).tap do |permission|
+      create(:permission).tap do |permission|
         custom_fields.take(2).each do |field|
           create(:permissions_field, permission: permission, custom_field: field, required: !field.required)
         end
@@ -895,18 +895,16 @@ describe Permissions::UserRequirementsService do
     let(:requirements_custom_fields) { service.requirements_custom_fields permission }
 
     context 'when global_custom_fields is true' do
-      let(:global_custom_fields) { true }
-
-      it 'returns only custom fields' do
+      it 'returns default fields' do
+        permission.update!(global_custom_fields: true)
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [true, false, false]
       end
     end
 
     context 'when global_custom_fields is false' do
-      let(:global_custom_fields) { false }
-
-      it 'returns the global fields' do
+      it 'returns only the permissions fields' do
+        permission.update!(global_custom_fields: false)
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.take(2).map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [false, true]
       end
