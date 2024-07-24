@@ -25,6 +25,7 @@ class Permission < ApplicationRecord
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
     'information' => [],
     'ideation' => %w[posting_idea commenting_idea reacting_idea],
+    'proposals' => %w[posting_idea commenting_idea reacting_idea],
     'native_survey' => %w[posting_idea],
     'survey' => %w[taking_survey],
     'poll' => %w[taking_poll],
@@ -61,8 +62,7 @@ class Permission < ApplicationRecord
 
   # Remove any actions that are not enabled on the project
   def self.enabled_actions(permission_scope)
-    participation_method = Factory.instance.participation_method_for(permission_scope)
-    return available_actions(permission_scope) if participation_method&.return_disabled_actions?
+    return available_actions(permission_scope) if permission_scope&.pmethod&.return_disabled_actions?
 
     available_actions(permission_scope).filter_map do |action|
       next if

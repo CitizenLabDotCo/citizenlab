@@ -438,6 +438,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            proposals_participation_method: {
+              enabled: true,
+              allowed: true
+            },
             management_feed: {
               enabled: true,
               allowed: true
