@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx as_geojson delete_inputs]
+  before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
@@ -82,11 +82,6 @@ class WebApi::V1::PhasesController < ApplicationController
       xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
-  end
-
-  def as_geojson
-    json = { type: 'Feature', geometry: { type: 'Point', coordinates: [2.5, 4.0] }, properties: { color: 'red' } }.to_json
-    send_data json, type: 'application/json', filename: 'phase.geojson'
   end
 
   def delete_inputs

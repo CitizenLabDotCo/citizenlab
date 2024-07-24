@@ -22,3 +22,5 @@ module IdeaCustomFields
     end
   end
 end
+
+IdeaCustomFields::IdeaCustomFieldPolicy.prepend(CustomMaps::Patches::IdeaCustomFields::IdeaCustomFieldPolicy)

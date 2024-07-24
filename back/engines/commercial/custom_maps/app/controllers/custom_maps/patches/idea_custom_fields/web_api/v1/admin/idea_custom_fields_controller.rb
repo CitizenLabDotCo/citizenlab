@@ -7,6 +7,18 @@ module CustomMaps
         module V1
           module Admin
             module IdeaCustomFieldsController
+              def as_geojson
+                # puts 'as_geojson debug'
+                set_custom_field
+                # pp @custom_field
+
+                # set_custom_form
+                # pp @custom_form
+
+                json = { type: 'Feature', geometry: { type: 'Point', coordinates: [2.5, 4.0] }, properties: { color: 'red' } }.to_json
+                send_data json, type: 'application/json', filename: 'phase.geojson'
+              end
+
               def include_in_index_response
                 %i[options options.image map_config]
               end

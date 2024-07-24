@@ -43,10 +43,6 @@ class PhasePolicy < ApplicationPolicy
     survey_results?
   end
 
-  def as_geojson?
-    survey_results?
-  end
-
   def delete_inputs?
     active_moderator?
   end

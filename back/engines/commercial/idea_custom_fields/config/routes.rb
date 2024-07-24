@@ -24,6 +24,7 @@ IdeaCustomFields::Engine.routes.draw do
           ) do
             patch 'update_all', on: :collection
             resources :custom_field_options, controller: '/web_api/v1/custom_field_options', only: %i[show]
+            get :as_geojson, on: :member, action: 'as_geojson'
           end
         end
       end
