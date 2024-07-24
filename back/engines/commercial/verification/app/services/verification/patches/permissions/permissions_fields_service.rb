@@ -16,6 +16,8 @@ module Verification
         def add_verification_fields(permission, fields)
           ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
           method = verification_methods.first
+          return fields unless method.respond_to?(:locked_custom_fields)
+
           method&.locked_custom_fields&.each do |field_code|
             custom_field = CustomField.find_by(code: field_code.to_s)
             next if custom_field.nil?

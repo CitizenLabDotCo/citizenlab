@@ -39,13 +39,12 @@ describe Permissions::UserRequirementsService do
       end
     end
 
-    context 'when permitted_by is set "custom" and permission_field is enabled' do
-      let(:custom_permission) { create(:permission, permitted_by: 'custom') }
+    context 'when permitted_by is set to "verified" and permission_field is enabled' do
+      let(:custom_permission) { create(:permission, permitted_by: 'verified') }
 
       before do
         SettingsService.new.activate_feature! 'verified_actions'
 
-        # TODO: JS - Can we add this into a factory or something?
         configuration = AppConfiguration.instance
         settings = configuration.settings
         settings['verification'] = {
@@ -57,10 +56,6 @@ describe Permissions::UserRequirementsService do
           ]
         }
         configuration.save!
-
-        # Should probably add this to the 'custom_permission' factory
-        Permissions::PermissionsFieldsService.new.persist_default_fields(permission: custom_permission, previous_permitted_by: 'users')
-        custom_permission.permissions_fields.find_by(field_type: 'verification').update!(enabled: true, required: true)
       end
 
       context 'there is no user' do
