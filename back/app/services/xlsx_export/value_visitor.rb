@@ -75,16 +75,15 @@ module XlsxExport
     end
 
     def visit_point(field)
-      value_key = field.key.delete_suffix('_latitude').delete_suffix('_longitude')
-      return '' if model.custom_field_values[value_key].blank?
+      JSON.generate(value_for(field))
+    end
 
-      coordinates = model.custom_field_values[value_key]['coordinates']
+    def visit_line(field)
+      JSON.generate(value_for(field))
+    end
 
-      if field.key.end_with? '_latitude'
-        coordinates.last.to_s
-      elsif field.key.end_with? '_longitude'
-        coordinates.first.to_s
-      end
+    def visit_polygon(field)
+      JSON.generate(value_for(field))
     end
 
     def visit_page(_field)

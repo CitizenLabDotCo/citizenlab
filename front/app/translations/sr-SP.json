@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Покушајте поново. Ако се проблем настави, контактирајте нас",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Дошло је до проблема на нашој страни, извините",
   "app.components.HookForm.Feedback.successMessage": "Образац је успешно послат",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Scroll left.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Scroll right.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideas have loaded.",
   "app.components.IdeaCards.showMore": "Прикажи више",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Сакриј картицу идеја.",

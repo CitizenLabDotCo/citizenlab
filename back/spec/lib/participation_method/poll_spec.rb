@@ -70,27 +70,9 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
-  describe '#posting_allowed?' do
-    it 'returns false' do
-      expect(participation_method.posting_allowed?).to be false
-    end
-  end
-
   describe '#update_if_published?' do
     it 'returns true' do
       expect(participation_method.update_if_published?).to be true
-    end
-  end
-
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
     end
   end
 
@@ -99,19 +81,7 @@ RSpec.describe ParticipationMethod::Poll do
     let(:project_form) { create(:custom_form, participation_context: phase.project) }
 
     it 'returns the custom form of the project' do
-      expect(participation_method.custom_form.participation_context_id).to eq project.id
-    end
-  end
-
-  describe '#edit_custom_form_allowed?' do
-    it 'returns true' do
-      expect(participation_method.edit_custom_form_allowed?).to be true
-    end
-  end
-
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns false' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
+      expect(participation_method.custom_form.participation_context_id).to eq phase.id
     end
   end
 
@@ -133,15 +103,25 @@ RSpec.describe ParticipationMethod::Poll do
     end
   end
 
-  describe '#include_data_in_email?' do
-    it 'returns true' do
-      expect(participation_method.include_data_in_email?).to be true
+  describe '#supports_serializing?' do
+    it 'returns false for all attributes' do
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+        native_survey_title_multiloc native_survey_button_multiloc
+      ].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be false
+      end
     end
   end
 
+  its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
-  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
+  its(:supports_input_term?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }

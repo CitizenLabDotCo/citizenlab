@@ -22,15 +22,16 @@ import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
 import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
-  checkCoordinateErrors,
-  clearPointData,
+  isLineOrPolygonInput,
+  updateMultiPointsDataAndDisplay,
   getCoordinatesFromMultiPointData,
+} from '../multiPointUtils';
+import { updatePointDataAndDisplay, clearPointData } from '../pointUtils';
+import {
+  checkCoordinateErrors,
   getInitialMapCenter,
   getUserInputGraphicsLayer,
-  isLineOrPolygonInput,
   MapInputType,
-  updateMultiPointsDataAndDisplay,
-  updatePointDataAndDisplay,
 } from '../utils';
 
 import FullscreenMapInput from './FullscreenMapInput';

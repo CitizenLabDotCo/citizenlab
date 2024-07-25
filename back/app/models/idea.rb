@@ -185,30 +185,15 @@ class Idea < ApplicationRecord
   end
 
   def input_term
-    return creation_phase.input_term if participation_method_on_creation.creation_phase?
-
-    current_phase = TimelineService.new.current_phase project
-    return current_phase.input_term if current_phase&.can_contain_ideas?
-
-    case phases.size
-    when 0
-      Phase::DEFAULT_INPUT_TERM
-    when 1
-      phases[0].input_term
+    if participation_method_on_creation.transitive?
+      transitive_input_term
     else
-      now = Time.zone.now
-      phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
-      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at&.<= now }
-      if first_past_phase_with_ideas
-        first_past_phase_with_ideas.input_term
-      else # now is before the first phase with ideas
-        phases_with_ideas.first.input_term
-      end
+      creation_phase.input_term
     end
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    (creation_phase || project).pmethod
   end
 
   private
@@ -263,7 +248,7 @@ class Idea < ApplicationRecord
       return
     end
 
-    if !participation_method_on_creation.creation_phase?
+    if participation_method_on_creation.transitive?
       errors.add(
         :creation_phase,
         :invalid_participation_method,
@@ -289,6 +274,31 @@ class Idea < ApplicationRecord
     custom_field_values.slice(*geo_cf_keys).each do |key, value|
       custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
     end
+  end
+
+  def transitive_input_term
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+  end
+
+  def current_phase_input_term
+    current_phase = TimelineService.new.current_phase project
+    current_phase.input_term if current_phase&.pmethod&.supports_input_term?
+  end
+
+  def last_past_phase_input_term
+    past_phases = TimelineService.new.past_phases(project).select { |phase| phase_ids.include? phase.id }
+    past_phases_with_input_term = past_phases.select do |phase|
+      phase.pmethod.supports_input_term?
+    end
+    past_phases_with_input_term.last&.input_term
+  end
+
+  def first_future_phase_input_term
+    future_phases = TimelineService.new.future_phases(project).select { |phase| phase_ids.include? phase.id }
+    future_phases_with_input_term = future_phases.select do |phase|
+      phase.pmethod.supports_input_term?
+    end
+    future_phases_with_input_term.first&.input_term
   end
 end
 

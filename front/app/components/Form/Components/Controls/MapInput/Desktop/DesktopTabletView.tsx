@@ -25,15 +25,16 @@ import LocationTextInput from '../components/LocationTextInput';
 import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
-  clearPointData,
   handleMapClickMultipoint,
-  handleMapClickPoint,
+  isLineOrPolygonInput,
+  setupPointDrag,
+} from '../multiPointUtils';
+import { clearPointData, handleMapClickPoint } from '../pointUtils';
+import {
   checkCoordinateErrors,
   updateDataAndDisplay,
-  setupPointDrag,
   getInitialMapCenter,
   MapInputType,
-  isLineOrPolygonInput,
 } from '../utils';
 
 type Props = {
@@ -140,6 +141,7 @@ const DesktopView = ({
   // Attach behaviour for when a user edits a point by dragging it
   useEffect(() => {
     isLineOrPolygonInput(inputType) &&
+      handleMultiPointChange &&
       setupPointDrag({
         mapView,
         handleMultiPointChange,
@@ -148,7 +150,6 @@ const DesktopView = ({
         tenantSecondaryColor: theme.colors.tenantSecondary,
         data,
         inputType,
-        isMobileOrSmaller: false,
       });
   }, [data, handleMultiPointChange, inputType, mapView, theme]);
 

@@ -472,6 +472,18 @@ FactoryBot.define do
         end
       end
 
+      factory :single_phase_proposals_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :proposals_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
+
       factory :single_phase_native_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(

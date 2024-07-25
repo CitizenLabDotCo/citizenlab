@@ -226,10 +226,6 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context.project
-      phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
-
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -271,34 +267,6 @@ class CustomField < ApplicationRecord
     )
   end
 
-  def point_latitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_latitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
-  def point_longitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_longitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
@@ -319,6 +287,15 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def input_term
+    phase = if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
+    phase&.input_term || Phase::DEFAULT_INPUT_TERM
   end
 
   private
