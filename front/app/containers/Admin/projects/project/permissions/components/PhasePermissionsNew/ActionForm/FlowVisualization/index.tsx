@@ -4,6 +4,7 @@ import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import Arrow from './Arrow';
 import { SupportedPermittedBy } from './typings';
 import { VISUALIZATION_STEPS } from './utils';
 
@@ -60,7 +61,7 @@ const Block = ({ number, text }: BlockProps) => {
 const Edge = () => {
   return (
     <Box w="20px" display="flex" flexDirection="column" justifyContent="center">
-      <Box w="100%" borderBottom={`1px solid ${colors.blue700}`} h="1px" />
+      <Arrow />
     </Box>
   );
 };
