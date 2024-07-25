@@ -129,6 +129,25 @@ const CLSurveyPageLayout = memo(
       return parseLayers(mapConfig, localize);
     }, [localize, mapConfig]);
 
+    const initialData = useMemo(
+      () => ({
+        onInit: (view: MapView) => {
+          setMapView(view);
+        },
+        showLegend: true,
+        showLayerVisibilityControl: true,
+        showLegendExpanded: true,
+        showZoomControls: isMobileOrSmaller ? false : true,
+        zoom: Number(mapConfig?.data?.attributes.zoom_level),
+        center: mapConfig?.data?.attributes.center_geojson,
+      }),
+      [
+        isMobileOrSmaller,
+        mapConfig?.data?.attributes.center_geojson,
+        mapConfig?.data?.attributes.zoom_level,
+      ]
+    );
+
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);
 
@@ -309,17 +328,7 @@ const CLSurveyPageLayout = memo(
             >
               <EsriMap
                 layers={mapLayers}
-                initialData={{
-                  onInit: (view: MapView) => {
-                    setMapView(view);
-                  },
-                  showLegend: true,
-                  showLayerVisibilityControl: true,
-                  showLegendExpanded: true,
-                  showZoomControls: isMobileOrSmaller ? false : true,
-                  zoom: Number(mapConfig?.data?.attributes.zoom_level),
-                  center: mapConfig?.data?.attributes.center_geojson,
-                }}
+                initialData={initialData}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
                 height="100%"
               />
