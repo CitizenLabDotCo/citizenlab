@@ -69,7 +69,7 @@ const Edge = () => {
       flexDirection="column"
       justifyContent="center"
     >
-      <Arrow width={20} />
+      <Arrow width={EDGE_WIDTH} />
     </Box>
   );
 };
