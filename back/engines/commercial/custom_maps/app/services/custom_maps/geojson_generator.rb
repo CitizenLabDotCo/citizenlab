@@ -16,11 +16,19 @@ module CustomMaps
 
       @inputs.each do |input|
         geojson_hash[:features] << {
-          type: 'Feature', geometry: input.custom_field_values[@field.key], properties: { number: 42 }
+          type: 'Feature', geometry: input.custom_field_values[@field.key], properties: generate_properties(input)
         }
       end
 
       geojson_hash.to_json
+    end
+
+    private
+
+    def generate_properties(input)
+      @fields_in_form.each_with_object({}) do |field, accu|
+        accu[field.key] = CustomFieldForGeojson.new(field).value_from(input)
+      end
     end
   end
 end
