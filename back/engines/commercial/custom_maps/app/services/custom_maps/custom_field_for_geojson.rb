@@ -10,9 +10,9 @@ module CustomMaps
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
     end
 
-    # def column_header
-    #   multiloc_service.t(custom_field.title_multiloc)
-    # end
+    def question_title
+      multiloc_service.t(custom_field.title_multiloc)
+    end
 
     def value_from(model)
       visitor = GeojsonValueVisitor.new(model, option_index, app_configuration: @app_configuration)

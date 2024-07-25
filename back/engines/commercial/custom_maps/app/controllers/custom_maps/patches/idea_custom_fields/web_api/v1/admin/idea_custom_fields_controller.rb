@@ -10,9 +10,11 @@ module CustomMaps
               def as_geojson
                 set_custom_field
                 phase = Phase.find(params[:phase_id])
-                geojson = CustomMaps::GeojsonGenerator.new(phase, @custom_field, false).generate_geojson
+                geojson = I18n.with_locale(current_user.locale) do
+                  CustomMaps::GeojsonGenerator.new(phase, @custom_field, false).generate_geojson
+                end
 
-                send_data geojson, type: 'application/json', filename: 'phase.geojson'
+                send_data geojson, type: 'application/json', filename: 'my_survey.geojson'
               end
 
               def include_in_index_response

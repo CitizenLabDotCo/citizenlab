@@ -27,7 +27,9 @@ module CustomMaps
 
     def generate_properties(input)
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[field.key] = CustomFieldForGeojson.new(field).value_from(input)
+        field_for_geojson = CustomFieldForGeojson.new(field)
+
+        accu[field_for_geojson.question_title] = field_for_geojson.value_from(input)
       end
     end
   end
