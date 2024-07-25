@@ -92,11 +92,6 @@ const ProjectContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-height: 580px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
-  padding-bottom: 30px;
 
   ${media.phone`
     padding-left: 20px;
@@ -229,7 +224,6 @@ const ContentFooter = styled.div`
 
   &.hidden {
     border: none;
-    margin-top: 0px;
   }
 
   ${media.phone`
@@ -448,7 +442,13 @@ const MediumProjectCard = memo<InputProps>(
       const ctaMessage = getCTAMessage();
 
       const contentHeader = (
-        <ContentHeader className="hasContent hasRightContent hasContent hasLeftContent">
+        <ContentHeader
+          className={`${
+            !ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'
+          } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
+            !ctaMessage && !countdown ? 'noContent' : ''
+          }`}
+        >
           {countdown && (
             <Box
               minHeight={`${ContentHeaderHeight}px`}
