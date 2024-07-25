@@ -37,7 +37,7 @@ import messages from './messages';
 import tracks from './tracks';
 
 const Container = styled(Link)`
-  width: calc(33% - 12px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
