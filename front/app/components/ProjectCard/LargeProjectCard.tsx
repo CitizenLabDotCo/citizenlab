@@ -52,22 +52,15 @@ const Container = styled(Link)`
   cursor: pointer;
   align-items: stretch;
   justify-content: space-between;
+
   ${defaultCardStyle};
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
 
-  ${media.phone`
-    width: 100%;
-  `}
-
   ${media.desktop`
     ${defaultCardHoverStyle};
-  `}
-
-  ${media.phone`
-    width: 100%;
   `}
 `;
 
@@ -244,13 +237,6 @@ const ContentFooter = styled.div`
     border: none;
     margin-top: 0px;
   }
-
-  ${media.phone`
-    height: 20px;
-    flex-basis: 20px;
-    margin: 0px;
-    padding: 0px;
-  `}
 `;
 
 const ContentHeaderLabel = styled.span`
@@ -462,7 +448,11 @@ const LargeProjectCard = memo<InputProps>(
 
       const contentHeader = (
         <ContentHeader
-          className={`hasContent hasRightContent hasContent hasLeftContent`}
+          className={`${
+            !ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'
+          } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
+            !ctaMessage && !countdown ? 'noContent' : ''
+          }`}
         >
           {countdown && (
             <Box
@@ -527,7 +517,6 @@ const LargeProjectCard = memo<InputProps>(
           }}
         >
           {screenReaderContent}
-          {contentHeader}
 
           <ProjectImageContainer>
             {imageUrl ? (
@@ -551,6 +540,7 @@ const LargeProjectCard = memo<InputProps>(
           </ProjectImageContainer>
 
           <ProjectContent>
+            {contentHeader}
             <ContentBody aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
