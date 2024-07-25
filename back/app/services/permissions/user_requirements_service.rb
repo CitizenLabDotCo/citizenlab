@@ -10,13 +10,17 @@ class Permissions::UserRequirementsService
     requirements = base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
-    permitted = requirements.values.none? do |subrequirements|
-      subrequirements.value? 'require'
-    end
-    {
-      permitted: permitted,
-      requirements: requirements
-    }
+    requirements
+  end
+
+  def permitted?(requirements)
+    return false if requirements[:authentication][:missing_user_attributes].any?
+    return false if requirements[:require_verification]
+    # return false if requirements[:custom_fields].values.any? { |value| value == 'required' }
+    return false if requirements[:show_onboarding]
+    return false if requirements[:group_membership]
+
+    true
   end
 
   def requirements_custom_fields(permission)
@@ -36,78 +40,79 @@ class Permissions::UserRequirementsService
   private
 
   def base_requirements_template(permission)
-    {
-      built_in: {
-        first_name: 'dont_ask',
-        last_name: 'dont_ask',
-        email: 'dont_ask'
-      },
-      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
-      onboarding: { topics_and_areas: 'dont_ask' },
-      special: {
-        password: 'dont_ask',
-        confirmation: 'dont_ask',
-        verification: 'dont_ask',
-        group_membership: 'dont_ask'
-      }
-    }
+    # {
+    #   built_in: {
+    #     first_name: 'dont_ask',
+    #     last_name: 'dont_ask',
+    #     email: 'dont_ask'
+    #   },
+    #   custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
+    #   onboarding: { topics_and_areas: 'dont_ask' },
+    #   special: {
+    #     password: 'dont_ask',
+    #     confirmation: 'dont_ask',
+    #     verification: 'dont_ask',
+    #     group_membership: 'dont_ask'
+    #   }
+    # }
+
   end
 
   def base_requirements(permission)
-    everyone = base_requirements_template(permission).deep_dup.tap do |requirements|
-      # Custom fields and group membership can now be required on all permissions
-      requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
-      requirements[:special][:group_membership] = 'require' if @check_groups && permission.groups.any?
+    users_requirements = {
+      authentication: {
+        permitted_by: permission.permitted_by,
+        missing_user_attributes: [:first_name, :last_name, :email, :confirmation, :password]
+      },
+      require_verification: false,
+      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
+      show_onboarding: onboarding_possible?,
+      group_membership: @check_groups && permission.groups.any?
+    }
+
+    everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
+      requirements[:authentication][:missing_user_attributes] = [:email, :confirmation]
+      requirements[:show_onboarding] = false
     end
 
-    everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
-      requirements[:built_in][:email] = 'require'
-      requirements[:special][:confirmation] = 'require' if app_configuration.feature_activated?('user_confirmation')
-    end
-
-    users = everyone_confirmed_email.deep_dup.tap do |requirements|
-      requirements[:built_in][:first_name] = 'require'
-      requirements[:built_in][:last_name] = 'require'
-      requirements[:onboarding].transform_values! { 'ask' } if onboarding_possible?
-      requirements[:special][:password] = 'require'
+    everyone_requirements = everyone_confirmed_email_requirements.deep_dup.tap do |requirements|
+      requirements[:authentication][:missing_user_attributes] = []
     end
 
     case permission.permitted_by
     when 'everyone'
-      everyone
+      everyone_requirements
     when 'everyone_confirmed_email'
       if permission.action == 'following'
-        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email_requirements : users_requirements
       else
-        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email_requirements : users_requirements
       end
     else # users | groups | verified | admins_moderators
-      users
+      users_requirements
     end
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
     return requirements unless user
 
-    requirements[:built_in]&.each_key do |attribute|
-      requirements[:built_in][attribute] = 'satisfied' unless user.send(attribute).nil?
+    requirements[:authentication][:missing_user_attributes]&.each do |attribute|
+      requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
+    requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless user.confirmation_required?
+
+    # TODO: Delete from array here
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
     end
-    %w[topics_and_areas].each do |onboarding_key|
-      requirements[:onboarding][onboarding_key] = 'satisfied' if user.onboarding[onboarding_key] == 'satisfied'
+
+    # NOTE: slightly over-designed at the moment as only one type of onboarding is possible at the moment
+    if requirements[:onboarding]
+      requirements[:onboarding] = %w[topics_and_areas].all? { |onboarding_key| user.onboarding[onboarding_key] == 'satisfied' }
     end
-    requirements[:special]&.each_key do |special_key|
-      is_satisfied = case special_key
-      when :password
-        !user.no_password?
-      when :confirmation
-        !user.confirmation_required?
-      when :group_membership
-        permission.groups.present? && user.in_any_groups?(permission.groups)
-      end
-      requirements[:special][special_key] = 'satisfied' if is_satisfied
+
+    if requirements[:group_membership]
+      requirements[:group_membership] = !user.in_any_groups?(permission.groups)
     end
   end
 

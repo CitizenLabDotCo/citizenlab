@@ -18,19 +18,20 @@ module Verification
           requirements = super
 
           if @check_groups && permission.verification_enabled?
-            requirements[:special][:verification] = 'require'
+            requirements[:require_verification] = true
           end
           requirements
         end
 
         def mark_satisfied_requirements!(requirements, permission, user)
           super
-          return unless requirements[:special][:verification] == 'require'
+          return unless requirements[:require_verification]
 
+          # TODO: JS - does the front-end care about the difference between dont_ask and satisfied that we had before?
           if user.verified?
-            requirements[:special][:verification] = 'satisfied'
+            requirements[:require_verification] = false
           elsif user_allowed_through_other_groups?(permission, user)
-            requirements[:special][:verification] = 'dont_ask'
+            requirements[:require_verification] = false
           end
         end
 
