@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Anterior",
   "app.components.form.ErrorDisplay.save": "Guardar",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Comece a digitar para pesquisar por e-mail ou nome do usuário...",
-  "app.components.form.anonymousSurveyMessage": "Todas as respostas a esta pesquisa são anônimas",
   "app.components.form.controls.addressInputAriaLabel": "Entrada de endereço",
   "app.components.form.controls.addressInputPlaceholder6": "Digite um endereço...",
   "app.components.form.controls.adminFieldTooltip": "Somente os administradores podem ver",

@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Tidligere",
   "app.components.form.ErrorDisplay.save": "Gem",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begynd at skrive for at søge efter brugerens e-mail eller navn...",
-  "app.components.form.anonymousSurveyMessage": "Alle svar på denne undersøgelse er anonymiseret",
   "app.components.form.controls.addressInputAriaLabel": "Indtastning af adresse",
   "app.components.form.controls.addressInputPlaceholder6": "Indtast en adresse...",
   "app.components.form.controls.adminFieldTooltip": "Felt kun synligt for administratorer",

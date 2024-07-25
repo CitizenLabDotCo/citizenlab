@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Προηγούμενο",
   "app.components.form.ErrorDisplay.save": "Αποθήκευση",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Ξεκινήστε να πληκτρολογείτε για αναζήτηση με βάση το email ή το όνομα του χρήστη...",
-  "app.components.form.anonymousSurveyMessage": "Όλες οι απαντήσεις σε αυτή την έρευνα είναι ανώνυμες",
   "app.components.form.controls.addressInputAriaLabel": "Εισαγωγή διεύθυνσης",
   "app.components.form.controls.addressInputPlaceholder6": "Εισάγετε μια διεύθυνση...",
   "app.components.form.controls.adminFieldTooltip": "Πεδίο ορατό μόνο στους διαχειριστές",

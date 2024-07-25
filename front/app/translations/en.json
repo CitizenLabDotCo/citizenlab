@@ -634,7 +634,7 @@
   "app.components.form.ErrorDisplay.previous": "Previous",
   "app.components.form.ErrorDisplay.save": "Save",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start typing to search by user email or name...",
-  "app.components.form.anonymousSurveyMessage": "All responses to this survey are anonymized",
+  "app.components.form.anonymousSurveyMessage2": "All responses to this survey are anonymized.",
   "app.components.form.controls.addressInputAriaLabel": "Address input",
   "app.components.form.controls.addressInputPlaceholder6": "Enter an address...",
   "app.components.form.controls.adminFieldTooltip": "Field only visible to admins",
