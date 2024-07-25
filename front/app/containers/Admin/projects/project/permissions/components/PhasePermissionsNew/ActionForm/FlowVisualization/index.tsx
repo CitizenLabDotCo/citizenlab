@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
@@ -32,15 +37,30 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
   return (
     <Box display="flex" flexDirection="row">
       {visualizationSteps.map((step, index) => {
-        const len = visualizationSteps.length;
-        const last = index === len - 1;
         return (
           <Box display="flex" flexDirection="row" key={index}>
-            <Block number={len === 1 ? undefined : index + 1} text={step} />
-            {!last && <Edge />}
+            <Block
+              number={visualizationSteps.length === 1 ? undefined : index + 1}
+              text={step}
+            />
+            <Edge />
           </Box>
         );
       })}
+      <Box display="flex" alignItems="center">
+        <Box
+          bgColor={colors.green100}
+          border={`1px solid ${colors.green700}`}
+          w="40px"
+          h="40px"
+          borderRadius="20px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Icon name="check" fill={colors.green700} />
+        </Box>
+      </Box>
     </Box>
   );
 };
