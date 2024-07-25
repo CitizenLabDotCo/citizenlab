@@ -563,19 +563,3 @@ export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
     });
   }
 };
-
-// setCenterAndZoom
-// Description: Set the center and zoom level of the map
-export const setCenterAndZoom = (
-  mapView: MapView,
-  center: GeoJSON.Point,
-  zoom: number
-) => {
-  const esriCenterPoint = new Point({
-    longitude: center.coordinates[0],
-    latitude: center.coordinates[1],
-  });
-
-  mapView.center = esriCenterPoint;
-  mapView.zoom = zoom;
-};
