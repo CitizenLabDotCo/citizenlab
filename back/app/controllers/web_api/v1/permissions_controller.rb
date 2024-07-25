@@ -31,8 +31,14 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def requirements
     authorize @permission
-    json_requirements = user_requirements_service.requirements @permission, current_user
-    render json: raw_json({ requirements: json_requirements }), status: :ok
+    permissions_service = Permissions::BasePermissionsService.new(current_user, user_requirements_service: user_requirements_service)
+    requirements = user_requirements_service.requirements @permission, current_user
+    json_requirements = {
+      permitted: user_requirements_service.permitted?(requirements),
+      disabled_reason: permissions_service.denied_reason_for_action(permission_action, scope: permission_scope),
+      requirements: requirements
+    }
+    render json: raw_json( json_requirements ), status: :ok
   end
 
   def schema

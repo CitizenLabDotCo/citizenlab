@@ -202,23 +202,18 @@ resource 'Permissions' do
 
         example_request 'Get the participation requirements of a user in a phase' do
           assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+          expect(response_data[:attributes]).to eq({
             permitted: true,
+            disabled_reason: nil,
             requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
+              authentication: {
+                permitted_by: 'everyone',
+                missing_user_attributes: []
               },
+              verification: false,
               custom_fields: {},
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
+              onboarding: false,
+              group_membership: false
             }
           })
         end
@@ -247,23 +242,18 @@ resource 'Permissions' do
         # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+          expect(response_data[:attributes]).to eq({
             permitted: false,
+            disabled_reason: 'user_missing_requirements',
             requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'dont_ask',
-                email: 'satisfied'
+              authentication: {
+                permitted_by: 'everyone_confirmed_email',
+                missing_user_attributes: ['confirmation']
               },
+              verification: false,
               custom_fields: {},
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'dont_ask',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
+              onboarding: false,
+              group_membership: false
             }
           })
         end
@@ -280,23 +270,18 @@ resource 'Permissions' do
 
       example_request 'Get the participation requirements of a user in the global scope' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: true,
+          disabled_reason: nil,
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'everyone',
+              missing_user_attributes: []
             },
+            verification: false,
             custom_fields: {},
-            onboarding: { topics_and_areas: 'dont_ask' },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: false,
+            group_membership: false
           }
         })
       end
@@ -324,27 +309,21 @@ resource 'Permissions' do
 
       example_request 'Get the global registration requirements when custom fields are asked' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: false,
+          disabled_reason: 'user_missing_requirements',
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'require',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: %w[last_name password]
             },
+            verification: false,
             custom_fields: {
-              birthyear: 'require',
-              gender: 'satisfied',
-              extra_field: 'require'
+              birthyear: 'required',
+              extra_field: 'required'
             },
-            onboarding: { topics_and_areas: 'ask' },
-            special: {
-              password: 'require',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: true,
+            group_membership: false
           }
         })
       end
@@ -364,23 +343,18 @@ resource 'Permissions' do
 
       example_request 'Get the participation requirements of a user in an idea' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: true,
+          disabled_reason: 'user_missing_requirements',
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
             },
+            verification: false,
             custom_fields: {},
-            onboarding: { topics_and_areas: 'ask' },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: true,
+            group_membership: false
           }
         })
       end

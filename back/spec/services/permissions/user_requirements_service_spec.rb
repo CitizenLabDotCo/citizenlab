@@ -46,9 +46,9 @@ describe Permissions::UserRequirementsService do
               permitted_by: 'everyone',
               missing_user_attributes: []
             },
-            require_verification: false,
+            verification: false,
             custom_fields: {},
-            show_onboarding: false,
+            onboarding: false,
             group_membership: false
           }
         end
@@ -97,9 +97,9 @@ describe Permissions::UserRequirementsService do
               permitted_by: 'everyone_confirmed_email',
               missing_user_attributes: %i[email confirmation]
             },
-            require_verification: false,
+            verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            show_onboarding: false,
+            onboarding: false,
             group_membership: false
           })
         end
@@ -114,9 +114,9 @@ describe Permissions::UserRequirementsService do
               permitted_by: 'everyone_confirmed_email',
               missing_user_attributes: [:confirmation]
             },
-            require_verification: false,
+            verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            show_onboarding: false,
+            onboarding: false,
             group_membership: false
           })
         end
@@ -126,15 +126,15 @@ describe Permissions::UserRequirementsService do
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
-                                       authentication: {
-                                         permitted_by: 'everyone_confirmed_email',
-                                         missing_user_attributes: []
-                                       },
-                                       require_verification: false,
-                                       custom_fields: { 'birthyear' => 'optional' },
-                                       show_onboarding: false,
-                                       group_membership: false
-                                     })
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: { 'birthyear' => 'optional' },
+            onboarding: false,
+            group_membership: false
+          })
         end
 
         it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
@@ -142,106 +142,62 @@ describe Permissions::UserRequirementsService do
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
-                                       authentication: {
-                                         permitted_by: 'everyone_confirmed_email',
-                                         missing_user_attributes: [:confirmation]
-                                       },
-                                       require_verification: false,
-                                       custom_fields: {},
-                                       show_onboarding: false,
-                                       group_membership: false
-                                     })
-          # expect(service.requirements(permission, user)).to eq({
-          #   permitted: false,
-          #   requirements: {
-          #     built_in: {
-          #       first_name: 'satisfied',
-          #       last_name: 'satisfied',
-          #       email: 'satisfied'
-          #     },
-          #     custom_fields: {
-          #       'birthyear' => 'satisfied'
-          #     },
-          #     onboarding: { topics_and_areas: 'dont_ask' },
-          #     special: {
-          #       password: 'satisfied',
-          #       confirmation: 'require',
-          #       verification: 'dont_ask',
-          #       group_membership: 'dont_ask'
-          #     }
-          #   }
-          # })
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: [:confirmation]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
+          })
         end
 
         it 'permits a fully registered confirmed resident' do
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
           })
         end
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
-          expect(service.requirements(permission, user)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: [:confirmation]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
           })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'everyone_confirmed_email',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
           })
         end
       end
@@ -255,108 +211,74 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a visitor' do
-          expect(service.requirements(permission, nil)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'require',
-                last_name: 'require',
-                email: 'require'
-              },
-              custom_fields: {
-                'birthyear' => 'require',
-                'gender' => 'ask',
-                'extra_required_field' => 'require',
-                'extra_optional_field' => 'ask'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'require',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: %i[first_name last_name email confirmation password]
+            },
+            verification: false,
+            custom_fields: {
+              'birthyear' => 'required',
+              'gender' => 'optional',
+              'extra_required_field' => 'required',
+              'extra_optional_field' => 'optional'
+            },
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'does not permit a light confirmed resident' do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-          expect(service.requirements(permission, user)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'require',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'require',
-                'gender' => 'ask',
-                'extra_required_field' => 'require',
-                'extra_optional_field' => 'ask'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'require',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: %i[first_name password]
+            },
+            verification: false,
+            custom_fields: {
+              'birthyear' => 'required',
+              'gender' => 'optional',
+              'extra_required_field' => 'required',
+              'extra_optional_field' => 'optional'
+            },
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'does not permit a fully registered unconfirmed resident' do
           user.reset_confirmation_and_counts
-          expect(service.requirements(permission, user)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: [:confirmation]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'permits a fully registered confirmed resident' do
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
@@ -365,83 +287,50 @@ describe Permissions::UserRequirementsService do
           app_configuration.settings['core']['onboarding'] = false
           app_configuration.save!
 
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
           })
         end
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
-          expect(service.requirements(permission, user)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: [:confirmation]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
@@ -451,55 +340,33 @@ describe Permissions::UserRequirementsService do
           before { permission.groups << group }
 
           it 'does not permit a user if they are not in the group' do
-            expect(service.requirements(permission, user)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied',
-                  'gender' => 'satisfied',
-                  'extra_required_field' => 'satisfied',
-                  'extra_optional_field' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'satisfied',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: true
             })
           end
 
           it 'permits a user if they are in the group' do
             create(:membership, user: user, group: group)
-            expect(service.requirements(permission, user)).to eq({
-              permitted: true,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied',
-                  'gender' => 'satisfied',
-                  'extra_required_field' => 'satisfied',
-                  'extra_optional_field' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'satisfied',
-                  verification: 'dont_ask',
-                  group_membership: 'satisfied'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: false
             })
           end
         end
@@ -508,7 +375,7 @@ describe Permissions::UserRequirementsService do
       context 'when permitted_by is set to groups' do
         let(:group) { create(:group) }
         let(:permission) do
-          permission = create(:permission, permitted_by: 'users', groups: [group])
+          permission = create(:permission, permitted_by: 'groups', groups: [group])
           permission.update!(global_custom_fields: false) # As global_custom_fields is fixed to true on creation for groups
           permission
         end
@@ -521,122 +388,85 @@ describe Permissions::UserRequirementsService do
           end
 
           it 'does not permit a visitor' do
-            expect(service.requirements(permission, nil)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'require',
-                  last_name: 'require',
-                  email: 'require'
-                },
-                custom_fields: {
-                  'birthyear' => 'require'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'require',
-                  confirmation: 'require',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: %i[first_name last_name email confirmation password]
+              },
+              verification: false,
+              custom_fields: {
+                'birthyear' => 'required'
+              },
+              onboarding: true,
+              group_membership: true
             })
           end
 
           it 'does not permit a light unconfirmed resident' do
             user.reset_confirmation_and_counts
             user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
-            expect(service.requirements(permission, user)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'require',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'require',
-                  confirmation: 'require',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: %i[first_name confirmation password]
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: true
             })
           end
 
           it 'does not permit a fully registered confirmed resident' do
-            expect(service.requirements(permission, user)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'satisfied',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: true
             })
           end
 
           it 'does not permit an unconfirmed admin' do
             user.add_role 'admin'
             user.reset_confirmation_and_counts
-            expect(service.requirements(permission, user)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'require',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: [:confirmation]
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: true
             })
           end
 
           it 'does not permit a confirmed admin' do
+            # TODO: JS - Should this be true?
             user.add_role 'admin'
-            expect(service.requirements(permission, user)).to eq({
-              permitted: false,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {
-                  'birthyear' => 'satisfied'
-                },
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'satisfied',
-                  verification: 'dont_ask',
-                  group_membership: 'require'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: true
             })
           end
         end
@@ -645,141 +475,106 @@ describe Permissions::UserRequirementsService do
           before { create(:membership, user: user, group: group) }
 
           it 'permits a fully registered confirmed resident who is in the group' do
-            expect(service.requirements(permission, user)).to eq({
-              permitted: true,
-              requirements: {
-                built_in: {
-                  first_name: 'satisfied',
-                  last_name: 'satisfied',
-                  email: 'satisfied'
-                },
-                custom_fields: {},
-                onboarding: { topics_and_areas: 'ask' },
-                special: {
-                  password: 'satisfied',
-                  confirmation: 'satisfied',
-                  verification: 'dont_ask',
-                  group_membership: 'satisfied'
-                }
-              }
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'groups',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: false
             })
           end
         end
       end
 
-      context 'when permitted_by is set to admins_moderators' do
+      context 'when permitted_by is set to admins_moderators and user confirmation feature is off' do
         let(:permission) { create(:permission, permitted_by: 'admins_moderators', global_custom_fields: false) }
 
         before { SettingsService.new.deactivate_feature! 'user_confirmation' }
 
         it 'does not permit a visitor' do
-          expect(service.requirements(permission, nil)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'require',
-                last_name: 'require',
-                email: 'require'
-              },
-              custom_fields: {},
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'require',
-                confirmation: 'dont_ask',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'admins_moderators',
+              missing_user_attributes: %i[first_name last_name email confirmation password]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'does not permit a light unconfirmed resident' do
           user.reset_confirmation_and_counts
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-          expect(service.requirements(permission, user)).to eq({
-            permitted: false,
-            requirements: {
-              built_in: {
-                first_name: 'require',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {},
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'require',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'admins_moderators',
+              missing_user_attributes: %i[first_name password]
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
+        # TODO: JS - should this be true?
         it 'permits a fully registered unconfirmed resident' do
           user.reset_confirmation_and_counts
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {},
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'admins_moderators',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'permits an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {},
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'admins_moderators',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {},
-              onboarding: { topics_and_areas: 'ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'admins_moderators',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: true,
+            group_membership: false
           })
         end
       end
@@ -795,28 +590,17 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a fully registered confirmed resident' do
-          expect(service.requirements(permission, user)).to eq({
-            permitted: true,
-            requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
-              },
-              custom_fields: {
-                'birthyear' => 'satisfied',
-                'gender' => 'satisfied',
-                'extra_required_field' => 'satisfied',
-                'extra_optional_field' => 'satisfied'
-              },
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
-            }
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements).to eq({
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
+            },
+            verification: false,
+            custom_fields: {},
+            onboarding: false,
+            group_membership: false
           })
         end
       end
