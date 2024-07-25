@@ -186,16 +186,17 @@ resource 'PermissionsField' do
   patch 'web_api/v1/permissions_fields/:id/reorder' do
     with_options scope: :permissions_field do
       parameter :ordering, 'The position, starting from 0, where the permissions field should be at. Fields after will move down.', required: true
+      parameter :permission_id, 'Required if no fields are yet persisted'
+      parameter :custom_field_id, 'Required if no fields are yet persisted'
     end
 
-    before do
-      permission = create(:permission, action: 'commenting_idea', permitted_by: 'users')
-      @permissions_fields = create_list(:permissions_field, 4, permission: permission)
-    end
+    context 'fields already exist' do
+      before do
+        permission = create(:permission, action: 'commenting_idea', permitted_by: 'users')
+        @permissions_fields = create_list(:permissions_field, 4, permission: permission)
+      end
 
-    let(:permissions_field) { create(:permissions_field, required: false) }
-
-    context 'Field can be reordered' do
+      let(:permissions_field) { create(:permissions_field, required: false) }
       let(:id) { @permissions_fields.last.id }
       let(:ordering) { 1 }
 
@@ -207,6 +208,31 @@ resource 'PermissionsField' do
         expect(response_data.dig(:attributes, :ordering)).to match ordering
         expect(PermissionsField.order(:ordering)[1].id).to eq id
         expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..3).to_a
+      end
+    end
+
+    context 'fields are not yet persisted' do
+      let(:permission) { create(:permission, permitted_by: 'users') }
+      let(:permissions_field) { Permissions::PermissionsFieldsService.new.fields_for_permission(permission).last }
+      let(:id) { permissions_field.id }
+      let(:custom_field_id) { permissions_field.custom_field_id }
+      let(:permission_id) { permission.id }
+      let(:ordering) { 1 }
+
+      before do
+        # Create a default custom fields
+        create(:custom_field_gender, enabled: true)
+        create(:custom_field_birthyear, enabled: true)
+        create(:custom_field_domicile, enabled: true)
+      end
+
+      example_request 'Persist default fields and reorder a permissions field' do
+        assert_status 200
+        expect(response_data[:id]).not_to eq id # New field created by persisting defaults so ID will change
+        expect(response_data.dig(:relationships, :custom_field, :data, :id)).to eq custom_field_id
+        expect(response_data.dig(:attributes, :ordering)).to match ordering
+        expect(PermissionsField.order(:ordering)[1].id).to eq response_data[:id]
+        expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
       end
     end
 

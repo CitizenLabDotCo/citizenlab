@@ -2,7 +2,7 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_field, only: %i[show destroy reorder]
+  before_action :set_permissions_field, only: %i[show destroy]
 
   def index
     authorize PermissionsField.new(permission: permission)
@@ -66,24 +66,8 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     end
   end
 
-  # Try and add default fields, then find the field in the persisted fields
-  def persist_and_find_permission_field
-    PermissionsField.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
-    raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
-
-    permission = Permission.find(permission_params_for_update[:permission_id])
-    raise ActiveRecord::RecordNotFound unless permission
-
-    Permissions::PermissionsFieldsService.new.persist_default_fields permission
-    field = permission.permissions_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
-    raise ActiveRecord::RecordNotFound unless field
-
-    field
-  end
-
   def reorder
+    @permissions_field = persist_and_find_permission_field
     authorize @permissions_field
     @permissions_field.errors.add(:permissions_field, 'only field types of custom_field can be reordered') unless @permissions_field.can_be_reordered?
 
@@ -112,6 +96,23 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
 
   def set_permissions_field
     @permissions_field = authorize PermissionsField.find(params[:id])
+  end
+
+  # Try and add default fields, then find the field in the persisted fields
+  def persist_and_find_permission_field
+    PermissionsField.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
+    raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
+
+    permission = Permission.find(permission_params_for_update[:permission_id])
+    raise ActiveRecord::RecordNotFound unless permission
+
+    Permissions::PermissionsFieldsService.new.persist_default_fields permission
+    field = permission.permissions_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
+    raise ActiveRecord::RecordNotFound unless field
+
+    field
   end
 
   def permission
