@@ -173,11 +173,11 @@ class IdeaCustomFieldsService
   def add_suffix_to_geo_fields_title_multiloc(fields)
     fields.map do |field|
       if CustomField::GEOGRAPHIC_INPUT_TYPES.include? field.input_type
-        field.title_multiloc = field.title_multiloc.to_h do |k, v|
+        field.title_multiloc = field.title_multiloc.to_h do |locale, title|
           [
-            k,
-            "#{v} [#{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}, " \
-            "#{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}]"
+            locale,
+            "#{title} [#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.longitude') }}, " \
+            "#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.latitude') }}]"
           ]
         end
       end
