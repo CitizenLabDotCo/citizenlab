@@ -3,7 +3,7 @@
 class IdeaCustomFieldsService
   def initialize(custom_form)
     @custom_form = custom_form
-    @participation_method = Factory.instance.participation_method_for custom_form.participation_context
+    @participation_method = custom_form.participation_context.pmethod
   end
 
   def all_fields
@@ -21,7 +21,7 @@ class IdeaCustomFieldsService
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
 
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
+    add_suffix_to_geo_fields_title_multiloc(filtered_fields)
   end
 
   def visible_fields
@@ -45,13 +45,8 @@ class IdeaCustomFieldsService
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload]
-    filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
-
-    # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
-    # included in the importable fields list. This is because this list is used to generate the example template
-    # XLSX file, where we want to show the latitude and longitude fields as separate columns.
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
+    ignore_field_types = %w[page section date files image_files file_upload point line polygon]
+    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
   def enabled_fields
@@ -175,16 +170,19 @@ class IdeaCustomFieldsService
 
   private
 
-  # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::IdeaXlsxFormExporter#export
-  # can produce separate columns for latitude and longitude.
-  def replace_point_fields_with_lat_and_lon_point_fields(fields)
+  def add_suffix_to_geo_fields_title_multiloc(fields)
     fields.map do |field|
-      if field.input_type == 'point'
-        [field.point_latitude_field, field.point_longitude_field]
-      else
-        field
+      if CustomField::GEOGRAPHIC_INPUT_TYPES.include? field.input_type
+        field.title_multiloc = field.title_multiloc.to_h do |locale, title|
+          [
+            locale,
+            "#{title} [#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.longitude') }}, " \
+            "#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.latitude') }}]"
+          ]
+        end
       end
+
+      field
     end.flatten
   end
 

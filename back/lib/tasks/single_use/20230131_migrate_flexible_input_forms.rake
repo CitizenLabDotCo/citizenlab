@@ -113,7 +113,7 @@ class FlexibleInputFormMigrator
   end
 
   def merge_ideation_fields(fields, custom_form)
-    participation_method = Factory.instance.participation_method_for custom_form.participation_context
+    participation_method = custom_form.participation_context.pmethod
     default_fields = participation_method.default_fields(custom_form)
     constraints = participation_method.constraints
     updated_fields = []

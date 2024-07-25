@@ -152,8 +152,7 @@ module BulkImportIdeas::Importers
       return unless idea_row[:phase_id]
 
       phase = Phase.find(idea_row[:phase_id])
-      participation_method = Factory.instance.participation_method_for phase
-      idea_attributes[:creation_phase_id] = phase.id if participation_method.supports_survey_form?
+      idea_attributes[:creation_phase_id] = phase.id if !phase.pmethod.transitive?
       idea_attributes[:phases] = [phase]
     end
 

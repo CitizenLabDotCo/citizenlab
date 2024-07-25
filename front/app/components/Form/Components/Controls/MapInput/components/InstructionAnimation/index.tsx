@@ -4,12 +4,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import styled, { useTheme } from 'styled-components';
 
+import { FormData } from 'components/Form/typings';
+
 import { MapInputType } from '../../utils';
 
 type InstructionAnimationProps = {
   instructionRef: React.RefObject<HTMLDivElement>;
   inputType: MapInputType;
-  data: any;
+  data: FormData;
 };
 
 const StyledBox = styled(Box)<{ tenantColor: string }>`

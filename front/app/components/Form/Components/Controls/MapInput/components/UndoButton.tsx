@@ -11,10 +11,10 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import { isLineOrPolygonInput } from '../multiPointUtils';
 import {
   getUserInputGraphicsLayer,
   getUserInputPoints,
-  isLineOrPolygonInput,
   MapInputType,
 } from '../utils';
 

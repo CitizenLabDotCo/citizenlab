@@ -1,6 +1,7 @@
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import Layer from '@arcgis/core/layers/Layer';
@@ -304,6 +305,35 @@ export const getFillSymbol = ({
       style: outlineStyle || 'dash',
     },
   });
+};
+
+// newPointGraphic
+// Description: Creates a new point (pin symbol) graphic
+export const newPinPointGraphic = (point: GeoJSON.Point, color: string) => {
+  return new Graphic({
+    geometry: new Point({
+      longitude: point.coordinates[0],
+      latitude: point.coordinates[1],
+    }),
+    symbol: getMapPinSymbol({
+      color,
+      sizeInPx: 44,
+    }),
+  });
+};
+
+// addPointGraphicToMap
+// Description: Adds a point graphic to the map
+export const addPointGraphicToMap = (
+  point: GeoJSON.Point,
+  mapView: MapView | null | undefined,
+  graphic: Graphic
+) => {
+  if (mapView) {
+    mapView.graphics.removeAll();
+    mapView.graphics.add(graphic);
+    goToMapLocation(point, mapView);
+  }
 };
 
 // changeCursorOnHover

@@ -32,6 +32,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formCustomFields: undefined,
 
   displayBuiltInFields: false,
+  builtInFields: [],
   showStatusBadge: true,
   isLogicEnabled: true,
   alwaysShowCustomFields: true,

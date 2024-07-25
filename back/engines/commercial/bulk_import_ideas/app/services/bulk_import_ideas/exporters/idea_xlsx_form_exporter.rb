@@ -30,8 +30,6 @@ module BulkImportIdeas::Exporters
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number', 'linear_scale'
           field.maximum || 3
-        when 'point'
-          rand(0.1..89.9).round(5)
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end

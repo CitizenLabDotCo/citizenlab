@@ -183,7 +183,7 @@ RSpec.describe Idea do
 
         context 'when the idea belongs to one phase' do
           let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
-          let(:past_phase) { project.phases.detect(&:ideation?) }
+          let(:past_phase) { project.phases.detect { |phase| phase.participation_method == 'ideation' } }
           let(:idea) { build(:idea, project: project, phases: [past_phase]) }
 
           it 'returns the default input_term' do

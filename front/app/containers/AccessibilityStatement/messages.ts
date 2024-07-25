@@ -151,9 +151,9 @@ export default defineMessages({
     defaultMessage: 'Map line and polygon drawing in surveys',
   },
   mapLinePolygonInputsException: {
-    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputsException',
+    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputsException2',
     defaultMessage:
-      'Line and polygon drawing in surveys does not meet accessibility standards as shapes cannot be drawn on the map using a keyboard. An alternative input is not provided at this time due to technical complexity. Additionally, the map is not accessible to screen reader users as map extent and layers are not audibly presented to provide context. If using these methods in a survey, we recommend also including a way in the survey to contact the project owner for an alternative method of input.',
+      'Line and polygon drawing in surveys does not meet accessibility standards as shapes cannot be drawn on the map using a keyboard. An alternative input is not provided at this time due to technical complexity. Additionally, the map is not accessible to screen reader users as map extent and layers are not audibly presented to provide context. If using these methods, we recommend also including a way in the survey to contact the project owner for an alternative method to complete the survey.',
   },
   screenReaderSearchResults: {
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',

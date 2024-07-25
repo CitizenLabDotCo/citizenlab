@@ -30,7 +30,7 @@ import messages from '../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
 import MobileView from './Mobile/MobileView';
-import { convertCoordinatesToGeoJSON } from './utils';
+import { convertCoordinatesToGeoJSON } from './multiPointUtils';
 
 const MapControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;
