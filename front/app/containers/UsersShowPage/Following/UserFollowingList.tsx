@@ -7,7 +7,7 @@ import {
   useBreakpoint,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useFollowers from 'api/follow_unfollow/useFollowers';
@@ -15,7 +15,7 @@ import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import InitiativeCard from 'components/InitiativeCard';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import ProjectCard from 'components/ProjectCard';
+import ProjectCard from 'components/ProjectCard/SmallProjectCard';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,6 +25,33 @@ import messages from '../messages';
 interface Props {
   value: FollowableObject;
 }
+
+const List = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+
+  &::after {
+    content: '';
+    flex: 1 0 calc(33.333% - 20px);
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  flex: 1 0 calc(33.333% - 20px);
+
+  @media (max-width: 600px) {
+    flex: 1 0 100%;
+  }
+`;
 
 const UserFollowingList = ({ value }: Props) => {
   const {
@@ -52,68 +79,63 @@ const UserFollowingList = ({ value }: Props) => {
           </Text>
         </Box>
       ) : (
-        <Box display="flex" flexWrap="wrap" gap="20px" w="100%">
+        <List>
           {flatFollowers.map((follower) => {
             if (follower.relationships.followable.data.type === 'idea') {
               return (
-                <Box
-                  key={follower.id}
-                  display="flex"
-                  flex="1 0 calc(50% - 20px)"
-                >
+                <ListItem key={follower.id}>
                   <Box width="100%">
                     <IdeaCard
                       ideaId={follower.relationships.followable.data.id}
                       showFollowButton
                     />
                   </Box>
-                </Box>
+                </ListItem>
               );
             } else if (
               follower.relationships.followable.data.type === 'initiative'
             ) {
               return (
-                <Box
+                <ListItem
                   key={follower.id}
-                  display="flex"
-                  flexGrow={0}
-                  w={
-                    isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
-                  }
+                  style={{
+                    width: isSmallerThanPhone ? '100%' : 'calc(33.333% - 20px)',
+                  }}
                 >
                   <InitiativeCard
                     initiativeId={follower.relationships.followable.data.id}
                     showFollowButton
                   />
-                </Box>
+                </ListItem>
               );
             } else if (
               follower.relationships.followable.data.type === 'project'
             ) {
               return (
-                <ProjectCard
-                  key={follower.id}
-                  projectId={follower.relationships.followable.data.id}
-                  size="small"
-                  showFollowButton
-                />
+                <ListItem key={follower.id}>
+                  <ProjectCard
+                    projectId={follower.relationships.followable.data.id}
+                    showFollowButton
+                  />
+                </ListItem>
               );
             } else if (
               follower.relationships.followable.data.type === 'folder'
             ) {
               return (
-                <ProjectFolderCard
-                  key={follower.id}
-                  folderId={follower.relationships.followable.data.id}
-                  size="small"
-                  layout="threecolumns"
-                  showFollowButton
-                />
+                <ListItem key={follower.id}>
+                  <ProjectFolderCard
+                    folderId={follower.relationships.followable.data.id}
+                    size="small"
+                    layout="threecolumns"
+                    showFollowButton
+                  />
+                </ListItem>
               );
             }
             return null;
           })}
-        </Box>
+        </List>
       )}
       {hasNextPage && (
         <Button
