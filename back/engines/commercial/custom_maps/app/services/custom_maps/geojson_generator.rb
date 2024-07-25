@@ -25,16 +25,14 @@ module CustomMaps
 
     def generate_properties(input)
       @fields_in_form.each_with_object({}) do |field, accu|
-        field_for_geojson = CustomFieldForGeojson.new(field)
-
-        accu[@field_ids_to_titles[field.id]] = field_for_geojson.value_from(input)
+        accu[@field_ids_to_titles[field.id]] = CustomFieldForGeojson.new(field).value_from(input)
       end
     end
 
     def set_non_colliding_titles
       field_ids_to_titles = map_field_ids_to_titles
 
-      colliding = field_ids_to_titles.values.group_by(&:itself).select { |_k, v| v.size > 1 }.map(&:first)
+      colliding = field_ids_to_titles.values.group_by(&:itself).select { |_id, title| title.size > 1 }.map(&:first)
 
       colliding.each do |colliding_title|
         n = 1
