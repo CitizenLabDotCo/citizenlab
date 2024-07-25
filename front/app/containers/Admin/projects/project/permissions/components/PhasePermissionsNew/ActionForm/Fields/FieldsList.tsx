@@ -7,20 +7,16 @@ import { IPermissionsFieldData } from 'api/permissions_fields/types';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 import useReorderPermissionsField from 'api/permissions_fields/useReorderPermissionsField';
 
-import { SortableList, SortableRow, Row } from 'components/admin/ResourceList';
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
-import { DISABLED_COLOR } from './constants';
 import CustomField from './CustomField';
-import EmailField from './EmailField';
-import NameField from './NameField';
 
 interface Props {
   phaseId: string;
-  disableEditing: boolean;
   action: IPhasePermissionAction;
 }
 
-const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
+const FieldsList = ({ phaseId, action }: Props) => {
   const { data: permissionFields } = usePermissionsFields({
     phaseId,
     action,
@@ -28,66 +24,52 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
 
   const { mutate: reorderPermissionsField } = useReorderPermissionsField();
 
+  if (permissionFields && permissionFields.data.length === 0) {
+    return null;
+  }
+
   return (
     <>
       {permissionFields && (
         <SortableList
           items={permissionFields.data}
-          lockFirstNItems={2}
-          onReorder={(fieldId, newOrder) => {
-            reorderPermissionsField({ id: fieldId, ordering: newOrder });
+          onReorder={(permissionFieldId, newOrder) => {
+            const permissionsField = permissionFields.data.find(
+              (field) => field.id === permissionFieldId
+            );
+
+            if (!permissionsField) return;
+
+            // This 'persisted' attribute is used to determine whether
+            // this field is 'real' and actually exists in our database.
+            // By default, we get back a bunch of 'fake' fields from the API,
+            // and only when we edit something for the first time will
+            // we get the 'real' persisted ones.
+            //
+            // So on the first edit, when persisted is still false,
+            // we also need to send the permission_id
+            // and the custom_field_id, so that the backend can create
+            // the 'real' persisted field.
+            if (permissionsField.attributes.persisted) {
+              reorderPermissionsField({
+                id: permissionFieldId,
+                ordering: newOrder,
+              });
+            } else {
+              reorderPermissionsField({
+                id: permissionFieldId,
+                permission_id:
+                  permissionsField.relationships.permission.data.id,
+                custom_field_id:
+                  permissionsField.relationships.custom_field.data.id,
+                ordering: newOrder,
+              });
+            }
           }}
         >
-          {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
+          {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
-              {lockedItemsList?.map((field: IPermissionsFieldData) => {
-                if (field.attributes.field_type === 'email') {
-                  return (
-                    <EmailField
-                      key={field.id}
-                      field={field}
-                      phaseId={phaseId}
-                      action={action}
-                      disableEditing={disableEditing}
-                    />
-                  );
-                }
-
-                return (
-                  <NameField
-                    key={field.id}
-                    field={field}
-                    phaseId={phaseId}
-                    action={action}
-                    disableEditing={disableEditing}
-                  />
-                );
-              })}
               {itemsList.map((field: IPermissionsFieldData, index: number) => {
-                const fieldMarkup = (
-                  <CustomField
-                    key={field.id}
-                    field={field}
-                    phaseId={phaseId}
-                    action={action}
-                    disableEditing={disableEditing}
-                  />
-                );
-
-                if (disableEditing) {
-                  return (
-                    <Row
-                      key={field.id}
-                      bgColor={DISABLED_COLOR}
-                      disableNestedStyles
-                    >
-                      <Box w="100%" pt="2px" pb="1px">
-                        {fieldMarkup}
-                      </Box>
-                    </Row>
-                  );
-                }
-
                 return (
                   <SortableRow
                     key={field.id}
@@ -99,7 +81,12 @@ const FieldsList = ({ phaseId, disableEditing, action }: Props) => {
                     disableNestedStyles
                   >
                     <Box ml="20px" w="100%">
-                      {fieldMarkup}
+                      <CustomField
+                        key={field.id}
+                        field={field}
+                        phaseId={phaseId}
+                        action={action}
+                      />
                     </Box>
                   </SortableRow>
                 );

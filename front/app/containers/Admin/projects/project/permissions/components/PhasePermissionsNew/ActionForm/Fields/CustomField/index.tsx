@@ -16,7 +16,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Tooltip from '../../Tooltip';
 import messages from '../messages';
 
 import CustomFieldModal from './CustomFieldModal';
@@ -24,11 +23,11 @@ import CustomFieldModal from './CustomFieldModal';
 interface Props {
   field: IPermissionsFieldData;
   phaseId: string;
-  disableEditing: boolean;
+  disabled?: boolean;
   action: IPhasePermissionAction;
 }
 
-const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
+const CustomField = ({ field, phaseId, disabled = false, action }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,15 +52,11 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
             m="0"
             mt="4px"
             fontSize="m"
-            color={disableEditing ? 'grey800' : 'primary'}
+            color={disabled ? 'grey800' : 'primary'}
           >
             {fieldName}
           </Text>
-          <Text
-            fontSize="s"
-            m="0px"
-            color={disableEditing ? 'grey700' : 'grey800'}
-          >
+          <Text fontSize="s" m="0px" color={disabled ? 'grey700' : 'grey800'}>
             {formatMessage(
               field.attributes.required ? messages.required : messages.optional
             )}
@@ -81,21 +76,19 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
           >
             {formatMessage(messages.edit)}
           </Button>
-          <Tooltip disabled={!disableEditing} placement="left">
-            <IconButton
-              iconName="delete"
-              iconColor={colors.grey700}
-              iconColorOnHover={colors.black}
-              iconWidth="20px"
-              mr="8px"
-              a11y_buttonActionMessage={formatMessage(messages.removeField)}
-              disabled={disableEditing}
-              onClick={(e) => {
-                e?.preventDefault();
-                deletePermissionsField(field.id);
-              }}
-            />
-          </Tooltip>
+          <IconButton
+            iconName="delete"
+            iconColor={colors.grey700}
+            iconColorOnHover={colors.black}
+            iconWidth="20px"
+            mr="8px"
+            a11y_buttonActionMessage={formatMessage(messages.removeField)}
+            disabled={disabled}
+            onClick={(e) => {
+              e?.preventDefault();
+              deletePermissionsField(field.id);
+            }}
+          />
         </Box>
       </Box>
       <CustomFieldModal
@@ -104,7 +97,6 @@ const CustomField = ({ field, phaseId, disableEditing, action }: Props) => {
         phaseId={phaseId}
         action={action}
         opened={isModalOpen}
-        disableEditing={disableEditing}
         onClose={() => setIsModalOpen(false)}
       />
     </>

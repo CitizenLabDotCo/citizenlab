@@ -18,6 +18,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
+ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
 ALTER TABLE IF EXISTS ONLY public.permissions_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
@@ -215,6 +216,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
@@ -2812,7 +2814,8 @@ CREATE TABLE public.nav_bar_items (
     title_multiloc jsonb,
     static_page_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    project_id uuid
 );
 
 
@@ -2884,13 +2887,10 @@ CREATE TABLE public.permissions (
 CREATE TABLE public.permissions_fields (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     permission_id uuid NOT NULL,
-    custom_field_id uuid,
+    custom_field_id uuid NOT NULL,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    field_type character varying DEFAULT 'custom_field'::character varying,
-    enabled boolean DEFAULT true NOT NULL,
-    config jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer DEFAULT 0
 );
 
@@ -5494,6 +5494,13 @@ CREATE INDEX index_nav_bar_items_on_ordering ON public.nav_bar_items USING btree
 
 
 --
+-- Name: index_nav_bar_items_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_project_id ON public.nav_bar_items USING btree (project_id);
+
+
+--
 -- Name: index_nav_bar_items_on_static_page_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6984,6 +6991,14 @@ ALTER TABLE ONLY public.cosponsors_initiatives
 
 
 --
+-- Name: nav_bar_items fk_rails_e8076fb9f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nav_bar_items
+    ADD CONSTRAINT fk_rails_e8076fb9f6 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: polls_response_options fk_rails_e871bf6e26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7497,6 +7512,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240606112752'),
 ('20240612134240'),
 ('20240701143612'),
-('20240710101033');
+('202407081751'),
+('20240710101033'),
+('20240722090955');
 
 

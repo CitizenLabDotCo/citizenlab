@@ -6,7 +6,6 @@ import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissio
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-
 const data = {
   id: 'customFieldId1',
   type: 'permissions_field',
@@ -47,7 +46,7 @@ describe('useUpdatePermissionsField', () => {
       () =>
         useUpdatePermissionsField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -73,7 +72,7 @@ describe('useUpdatePermissionsField', () => {
       () =>
         useUpdatePermissionsField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),

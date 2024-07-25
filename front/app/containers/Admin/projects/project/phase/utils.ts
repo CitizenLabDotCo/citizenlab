@@ -35,7 +35,7 @@ export const getPartipationRequirementMessage = (
     case 'everyone':
       participantMessage = messages.everyone;
       break;
-    case 'custom':
+    case 'verified':
       participantMessage = newMessages.ssoVerification;
       break;
   }

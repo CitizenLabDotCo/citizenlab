@@ -43,6 +43,8 @@ export type IPhasePermissionAction =
   | 'voting'
   | 'annotating_document';
 
+export type Action = IGlobalPermissionAction | IPhasePermissionAction;
+
 export interface IPhasePermissionData {
   id: string;
   type: string;

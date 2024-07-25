@@ -10,18 +10,15 @@ import { FieldSelectionModal } from 'components/admin/ActionsForm/UserFieldSelec
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import Tooltip from '../Tooltip';
-
 import FieldsList from './FieldsList';
 import messages from './messages';
 
 interface Props {
   phaseId: string;
-  disableEditing: boolean;
   action: IPhasePermissionAction;
 }
 
-const Fields = ({ phaseId, disableEditing, action }: Props) => {
+const Fields = ({ phaseId, action }: Props) => {
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsFields({
     phaseId,
@@ -32,9 +29,7 @@ const Fields = ({ phaseId, disableEditing, action }: Props) => {
     action,
   });
 
-  const selectedCustomFields = permissionFields?.data.filter(
-    (field) => field.attributes.field_type === 'custom_field'
-  );
+  const selectedCustomFields = permissionFields?.data;
 
   return (
     <Box maxWidth="844px">
@@ -42,26 +37,19 @@ const Fields = ({ phaseId, disableEditing, action }: Props) => {
         <FormattedMessage {...messages.extraQuestions} />
       </Title>
       <Box mt="20px">
-        <FieldsList
-          phaseId={phaseId}
-          disableEditing={disableEditing}
-          action={action}
-        />
+        <FieldsList phaseId={phaseId} action={action} />
       </Box>
       <Box mt="20px" w="100%" display="flex">
-        <Tooltip disabled={!disableEditing}>
-          <Button
-            buttonStyle="admin-dark"
-            disabled={disableEditing}
-            icon="plus-circle"
-            onClick={(e) => {
-              e.preventDefault();
-              setShowSelectionModal(true);
-            }}
-          >
-            <FormattedMessage {...messages.addAQuestion} />
-          </Button>
-        </Tooltip>
+        <Button
+          buttonStyle="admin-dark"
+          icon="plus-circle"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowSelectionModal(true);
+          }}
+        >
+          <FormattedMessage {...messages.addAQuestion} />
+        </Button>
         {selectedCustomFields && (
           <FieldSelectionModal
             showSelectionModal={showSelectionModal}

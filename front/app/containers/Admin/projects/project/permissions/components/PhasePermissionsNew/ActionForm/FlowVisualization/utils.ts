@@ -1,44 +1,82 @@
+import { IPermissionsFieldData } from 'api/permissions_fields/types';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 import { SupportedPermittedBy } from './typings';
 
-const getConfirmedEmailVisualizationSteps = () => {
-  return [
+const removeNull = (
+  array: (MessageDescriptor | null)[]
+): MessageDescriptor[] => {
+  return array.filter((el) => el !== null) as MessageDescriptor[];
+};
+
+// Visualization steps
+const getNoneVisualizationSteps = (
+  _permissionsFields: IPermissionsFieldData[]
+) => {
+  return [messages.noActionsAreRequired];
+};
+
+const getConfirmedEmailVisualizationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.enterYourEmail,
     messages.confirmYourEmail,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
-const getUsersVisualizationSteps = () => {
-  return [
+const getUsersVisualizationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.enterNameLastNameEmailAndPassword,
     messages.confirmYourEmail,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
-const getCustomVisualiationSteps = () => {
-  return [
+const getVerifiedVisualiationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.authenticateWithVerificationProvider,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
 export const VISUALIZATION_STEPS: Record<
   SupportedPermittedBy,
-  () => MessageDescriptor[]
+  (permissionsFields: IPermissionsFieldData[]) => MessageDescriptor[]
 > = {
+  everyone: getNoneVisualizationSteps,
   users: getUsersVisualizationSteps,
   everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
-  custom: getCustomVisualiationSteps,
+  verified: getVerifiedVisualiationSteps,
 };
 
 const SUPPORTED_PERMITTED_BY: Set<SupportedPermittedBy> = new Set([
+  'everyone',
   'users',
   'everyone_confirmed_email',
-  'custom',
+  'verified',
 ]);
 
 export const isSupportedPermittedBy = (

@@ -374,6 +374,7 @@ describe Permissions::IdeaPermissionsService do
   end
 
   describe 'action_descriptors' do
+    # TODO: JS - running an additional query for permissions_fields
     it 'does not run more than 3 queries for 5 ideas in a project with default user permissions' do
       user = create(:user)
       phase = TimelineService.new.current_phase(create(:project_with_current_phase))

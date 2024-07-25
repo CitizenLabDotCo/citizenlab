@@ -36,8 +36,7 @@ import messages from './messages';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
-  projectId?: string | null;
-  phaseId?: string | null;
+  phaseId?: string;
   onChange: ({
     permission,
     permittedBy,
@@ -48,7 +47,6 @@ type UserFieldSelectionProps = {
 
 const UserFieldSelection = ({
   permission,
-  projectId,
   phaseId,
   onChange,
 }: UserFieldSelectionProps) => {
@@ -62,23 +60,19 @@ const UserFieldSelection = ({
   });
   const { data: globalRegistrationFields } = useUserCustomFields();
   const initialFields = usePermissionsFields({
-    projectId,
     phaseId,
     action: permission.attributes.action,
   });
   const { mutate: addPermissionCustomField, isLoading } =
     useAddPermissionsField({
       phaseId,
-      projectId,
       action: permission.attributes.action,
     });
   const { mutate: updatePermissionCustomField } = useUpdatePermissionsField({
-    projectId,
     phaseId,
     action: permission.attributes.action,
   });
   const { mutate: deletePermissionsField } = useDeletePermissionsField({
-    projectId,
     phaseId,
     action: permission.attributes.action,
   });
@@ -102,7 +96,6 @@ const UserFieldSelection = ({
       custom_field_id: field.id,
       required: false,
       phaseId,
-      projectId,
       action: permission.attributes.action,
     });
   };

@@ -1,30 +1,66 @@
 import React from 'react';
 
-import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
+
+import { IPhasePermissionAction } from 'api/permissions/types';
+import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import Arrow from './Arrow';
 import { SupportedPermittedBy } from './typings';
 import { VISUALIZATION_STEPS } from './utils';
 
-export interface Props {
+interface Props {
   permittedBy: SupportedPermittedBy;
+  phaseId: string;
+  action: IPhasePermissionAction;
 }
 
-const FlowVisualization = ({ permittedBy }: Props) => {
-  const visualizationSteps = VISUALIZATION_STEPS[permittedBy]();
+const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
+  const { data: permissionsFields } = usePermissionsFields({
+    phaseId,
+    action,
+  });
+
+  if (!permissionsFields?.data) return null;
+
+  const visualizationSteps = VISUALIZATION_STEPS[permittedBy](
+    permissionsFields?.data
+  );
 
   return (
     <Box display="flex" flexDirection="row">
       {visualizationSteps.map((step, index) => {
-        const last = index === visualizationSteps.length - 1;
         return (
           <Box display="flex" flexDirection="row" key={index}>
-            <Block number={index + 1} text={step} />
-            {!last && <Edge />}
+            <Block
+              number={visualizationSteps.length === 1 ? undefined : index + 1}
+              text={step}
+            />
+            <Edge />
           </Box>
         );
       })}
+      <Box display="flex" alignItems="center">
+        <Box
+          bgColor={colors.green100}
+          border={`1px solid ${colors.green700}`}
+          w="40px"
+          h="40px"
+          borderRadius="20px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Icon name="check" fill={colors.green700} />
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -32,7 +68,7 @@ const FlowVisualization = ({ permittedBy }: Props) => {
 export default FlowVisualization;
 
 interface BlockProps {
-  number: number;
+  number?: number;
   text: MessageDescriptor;
 }
 
@@ -49,7 +85,7 @@ const Block = ({ number, text }: BlockProps) => {
       p="16px"
       w="220px"
     >
-      <Box>{`${number}.`}</Box>
+      {number && <Box>{`${number}.`}</Box>}
       <Box>
         {formatMessage(text, { verificationProvider: VERIFICATION_PROVIDER })}
       </Box>
@@ -57,10 +93,17 @@ const Block = ({ number, text }: BlockProps) => {
   );
 };
 
+const EDGE_WIDTH = 20;
+
 const Edge = () => {
   return (
-    <Box w="20px" display="flex" flexDirection="column" justifyContent="center">
-      <Box w="100%" borderBottom={`1px solid ${colors.blue700}`} h="1px" />
+    <Box
+      w={`${EDGE_WIDTH}px`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      <Arrow width={EDGE_WIDTH} />
     </Box>
   );
 };

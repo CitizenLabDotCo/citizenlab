@@ -15,7 +15,6 @@ import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
 import { isSupportedPermittedBy } from './FlowVisualization/utils';
 import messages from './messages';
-import Tooltip from './Tooltip';
 
 interface Props {
   phaseId: string;
@@ -53,8 +52,6 @@ const ActionForm = ({
   const isSurveyAction =
     phaseType === 'nativeSurvey' && action === 'posting_idea';
 
-  const disableEditing = permittedBy !== 'custom';
-
   return (
     <form>
       <Box
@@ -91,15 +88,15 @@ const ActionForm = ({
       )}
       {isSupportedPermittedBy(permittedBy) && (
         <Box mt="20px">
-          <FlowVisualization permittedBy={permittedBy} />
+          <FlowVisualization
+            permittedBy={permittedBy}
+            phaseId={phaseId}
+            action={action}
+          />
         </Box>
       )}
       <Box mt="20px">
-        <Fields
-          phaseId={phaseId}
-          action={action}
-          disableEditing={disableEditing}
-        />
+        <Fields phaseId={phaseId} action={action} />
       </Box>
       {showGroupSelect(permittedBy) && (
         <Box mt="28px">
@@ -110,15 +107,12 @@ const ActionForm = ({
            * a Box of exactly the same size as the child component
            */}
           <Box w="300px">
-            <Tooltip disabled={!disableEditing}>
-              <GroupSelect
-                groupIds={groupIds}
-                disabled={disableEditing}
-                onChange={(groups) => {
-                  onChange(permissionData.attributes.permitted_by, groups);
-                }}
-              />
-            </Tooltip>
+            <GroupSelect
+              groupIds={groupIds}
+              onChange={(groups) => {
+                onChange(permissionData.attributes.permitted_by, groups);
+              }}
+            />
           </Box>
         </Box>
       )}

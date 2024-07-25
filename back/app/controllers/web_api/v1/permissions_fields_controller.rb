@@ -2,19 +2,19 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_field, only: %i[show update destroy reorder]
+  before_action :set_permissions_field, only: %i[show destroy]
 
   def index
     authorize PermissionsField.new(permission: permission)
 
     permissions_fields_service = Permissions::PermissionsFieldsService.new
-    if permissions_fields_service.custom_permitted_by_enabled?
-      # NEW version for verified actions
+    if permissions_fields_service.verified_actions_enabled?
+      # NEW non-paged version for verified actions
       permissions_fields = permissions_fields_service.fields_for_permission(permission)
       render json: WebApi::V1::PermissionsFieldSerializer.new(permissions_fields, params: jsonapi_serializer_params).serializable_hash
     else
       # Legacy version
-      permissions_fields = permission.permissions_fields.where(field_type: 'custom_field').order('custom_fields.ordering')
+      permissions_fields = permission.permissions_fields.order('custom_fields.ordering')
       permissions_fields = paginate permissions_fields
       permissions_fields = permissions_fields.includes(:custom_field)
 
@@ -51,6 +51,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def update
+    @permissions_field = persist_and_find_permission_field
     @permissions_field.assign_attributes permission_params_for_update
     authorize @permissions_field
     sidefx.before_update @permissions_field, current_user
@@ -66,6 +67,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def reorder
+    @permissions_field = persist_and_find_permission_field
     authorize @permissions_field
     @permissions_field.errors.add(:permissions_field, 'only field types of custom_field can be reordered') unless @permissions_field.can_be_reordered?
 
@@ -96,6 +98,23 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     @permissions_field = authorize PermissionsField.find(params[:id])
   end
 
+  # Try and add default fields, then find the field in the persisted fields
+  def persist_and_find_permission_field
+    PermissionsField.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
+    raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
+
+    permission = Permission.find(permission_params_for_update[:permission_id])
+    raise ActiveRecord::RecordNotFound unless permission
+
+    Permissions::PermissionsFieldsService.new.persist_default_fields permission
+    field = permission.permissions_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
+    raise ActiveRecord::RecordNotFound unless field
+
+    field
+  end
+
   def permission
     @permission ||= Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
@@ -113,10 +132,10 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def permission_params_for_create
-    params.require(:permissions_field).permit(:required, :custom_field_id, :field_type, :enabled)
+    params.require(:permissions_field).permit(:required, :custom_field_id)
   end
 
   def permission_params_for_update
-    params.require(:permissions_field).permit(:required, :enabled, :ordering, config: {})
+    params.require(:permissions_field).permit(:required, :ordering, :permission_id, :custom_field_id)
   end
 end

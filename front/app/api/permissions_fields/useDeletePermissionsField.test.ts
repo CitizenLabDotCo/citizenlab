@@ -22,7 +22,7 @@ describe('useDeletePermissionsField', () => {
       () =>
         useDeletePermissionsField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -47,7 +47,7 @@ describe('useDeletePermissionsField', () => {
       () =>
         useDeletePermissionsField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),

@@ -78,7 +78,7 @@ module Permissions
     end
 
     def denied_when_permitted_by_groups?(permission)
-      %w[groups custom].include?(permission.permitted_by) && permission.groups && !user.in_any_groups?(permission.groups)
+      permission.groups.any? && !user.in_any_groups?(permission.groups)
     end
   end
 end

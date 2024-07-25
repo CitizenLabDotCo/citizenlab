@@ -112,8 +112,8 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
           }
           title={formatMessage(messages.ssoVerification)}
           subtitle={formatMessage(messages.ssoVerificationSubtitle)}
-          onClick={handleUpdate('custom')}
-          selected={permittedBy === 'custom'}
+          onClick={handleUpdate('verified')}
+          selected={permittedBy === 'verified'}
           height="100%"
         />
       </Box>

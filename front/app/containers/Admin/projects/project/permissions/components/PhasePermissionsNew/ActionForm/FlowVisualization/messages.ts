@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider',
     defaultMessage: 'Authenticate with {verificationProvider}',
   },
+  noActionsAreRequired: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired',
+    defaultMessage: 'No actions are required to participate',
+  },
 });

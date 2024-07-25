@@ -4,10 +4,10 @@ module Verification
   module Patches
     module Permissions
       module UserRequirementsService
+        # Verification requirement can now come from either a group or the permitted_by value
         def requires_verification?(permission, user)
-          return false unless permission.permitted_by == 'groups'
-          return false if user.in_any_groups? permission.groups # if the user meets the requirements of any other group we don't need to ask for verification
-          return false unless verification_service.find_verification_group(permission.groups)
+          return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
+          return false unless verification_service.find_verification_group(permission.groups) || permission.permitted_by == 'verified'
 
           !user.verified?
         end
@@ -17,7 +17,7 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
-          if @check_groups && permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)
+          if @check_groups && permission.verification_enabled?
             requirements[:special][:verification] = 'require'
           end
           requirements
@@ -29,9 +29,14 @@ module Verification
 
           if user.verified?
             requirements[:special][:verification] = 'satisfied'
-          elsif user.in_any_groups? permission.groups
+          elsif user_allowed_through_other_groups?(permission, user)
             requirements[:special][:verification] = 'dont_ask'
           end
+        end
+
+        # User can be in other groups that are not verification groups and therefore not need to be verified
+        def user_allowed_through_other_groups?(permission, user)
+          (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
         end
 
         def verification_service

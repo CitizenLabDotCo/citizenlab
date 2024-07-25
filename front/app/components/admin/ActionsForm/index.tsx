@@ -23,23 +23,10 @@ const ActionPermissionWrapper = styled.div`
   }
 `;
 
-type PostTypeProps =
-  | {
-      postType: 'defaultInput';
-      projectId: string;
-    }
-  | {
-      postType: 'nativeSurvey';
-      projectId: string;
-    }
-  | {
-      postType: 'initiative';
-      projectId: null;
-    };
-
-type SharedProps = {
+type Props = {
+  postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
   permissions: IPermissionData[];
-  phaseId?: string | null;
+  phaseId?: string;
   onChange: ({
     permission,
     permittedBy,
@@ -48,15 +35,7 @@ type SharedProps = {
   }: HandlePermissionChangeProps) => void;
 };
 
-type Props = PostTypeProps & SharedProps;
-
-const ActionsForm = ({
-  permissions,
-  postType,
-  onChange,
-  projectId,
-  phaseId,
-}: Props) => {
+const ActionsForm = ({ permissions, postType, onChange, phaseId }: Props) => {
   const [previousUsersGlobalCustomFields, setPreviousUsersGlobalCustomFields] =
     useState(true);
   const [
@@ -142,7 +121,6 @@ const ActionsForm = ({
                 >
                   <UserFieldSelection
                     permission={permission}
-                    projectId={projectId}
                     phaseId={phaseId}
                     onChange={onChange}
                   />

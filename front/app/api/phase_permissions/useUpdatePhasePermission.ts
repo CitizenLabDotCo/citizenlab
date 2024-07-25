@@ -20,7 +20,7 @@ const updatePhasePermission = ({
     body: { permissionId, permission },
   });
 
-const useUpdatePhasePermission = (phaseId?: string | null) => {
+const useUpdatePhasePermission = (phaseId?: string) => {
   const queryClient = useQueryClient();
   return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
     mutationFn: updatePhasePermission,

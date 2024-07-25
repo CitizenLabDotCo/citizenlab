@@ -1,9 +1,6 @@
 import { Multiloc } from 'typings';
 
-import {
-  IGlobalPermissionAction,
-  IPhasePermissionAction,
-} from 'api/permissions/types';
+import { Action } from 'api/permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -20,9 +17,8 @@ export type IItemParameters = {
 };
 
 export type IListParameters = {
-  phaseId?: string | null;
-  projectId?: string | null;
-  action: IGlobalPermissionAction | IPhasePermissionAction;
+  phaseId?: string;
+  action: Action;
 };
 
 export interface IPermissionsField {
@@ -30,39 +26,32 @@ export interface IPermissionsField {
 }
 
 export interface IPermissionsFieldAdd {
-  custom_field_id: string;
+  action: Action;
+  phaseId?: string;
   required: boolean;
-  phaseId?: string | null;
-  projectId?: string | null;
-  action: string;
+  custom_field_id: string;
 }
 
-export type EmailConfig = {
-  password: boolean;
-  confirmed: boolean;
-};
-
-export interface IPermissionCustomFieldUpdate {
+export type IPermissionCustomFieldUpdate = {
   id: string;
+
+  // These two should be defined if the
+  // field is not persisted yet.
+  permission_id?: string;
+  custom_field_id?: string;
+
+  // the actual parameter
   required?: boolean;
-  verified?: boolean;
-  enabled?: boolean;
-  config?: EmailConfig;
-}
+};
 
 export interface IPermissionsFieldData {
   id: string;
   type: 'permissions_field';
   attributes: {
-    config: Record<string, never> | EmailConfig;
-    // Is an EmailConfig if field_type is 'email'
-    // Is an empty object otherwise
-
     created_at: string;
-    enabled: boolean;
-    field_type: 'name' | 'email' | 'custom_field';
-    locked: boolean;
+    lock: null | 'verification' | 'groups';
     ordering: number;
+    persisted: boolean;
     required: boolean;
     title_multiloc?: Multiloc;
     updated_at: string;
@@ -78,7 +67,7 @@ export interface IPermissionsFieldData {
       data: {
         id: string;
         type: 'custom_field';
-      } | null;
+      };
     };
   };
 }

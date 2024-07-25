@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Select, Title } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
@@ -10,8 +11,6 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import parentMessages from '../../messages';
-import Tooltip from '../../Tooltip';
 import messages from '../messages';
 
 interface Props {
@@ -20,7 +19,6 @@ interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
   opened: boolean;
-  disableEditing: boolean;
   onClose: () => void;
 }
 
@@ -30,7 +28,6 @@ const CustomFieldModal = ({
   phaseId,
   action,
   opened,
-  disableEditing,
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -38,6 +35,32 @@ const CustomFieldModal = ({
     phaseId,
     action,
   });
+
+  const handleUpdatePermissionsField = (option: IOption) => {
+    // This 'persisted' attribute is used to determine whether
+    // this field is 'real' and actually exists in our database.
+    // By default, we get back a bunch of 'fake' fields from the API,
+    // and only when we edit something for the first time will
+    // we get the 'real' persisted ones.
+    //
+    // So on the first edit, when persisted is still false,
+    // we also need to send the permission_id
+    // and the custom_field_id, so that the backend can create
+    // the 'real' persisted field.
+    if (field.attributes.persisted) {
+      updatePermissionsField({
+        id: field.id,
+        required: option.value === 'required',
+      });
+    } else {
+      updatePermissionsField({
+        id: field.id,
+        permission_id: field.relationships.permission.data.id,
+        custom_field_id: field.relationships.custom_field.data.id,
+        required: option.value === 'required',
+      });
+    }
+  };
 
   const options = [
     { value: 'required', label: formatMessage(messages.required) },
@@ -58,24 +81,12 @@ const CustomFieldModal = ({
       close={onClose}
     >
       <Box p="32px">
-        <Tooltip
-          disabled={!disableEditing}
-          placement="top"
-          message={parentMessages.disableEditingExplanationFromModal}
-        >
-          <Select
-            value={field.attributes.required ? 'required' : 'optional'}
-            label={formatMessage(messages.fieldStatus)}
-            options={options}
-            disabled={disableEditing}
-            onChange={(option) => {
-              updatePermissionsField({
-                id: field.id,
-                required: option.value === 'required',
-              });
-            }}
-          />
-        </Tooltip>
+        <Select
+          value={field.attributes.required ? 'required' : 'optional'}
+          label={formatMessage(messages.fieldStatus)}
+          options={options}
+          onChange={handleUpdatePermissionsField}
+        />
       </Box>
     </Modal>
   );
