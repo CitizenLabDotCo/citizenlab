@@ -19,7 +19,7 @@ const getUsersVisualizationSteps = () => {
   ];
 };
 
-const getCustomVisualiationSteps = () => {
+const getVerifiedVisualiationSteps = () => {
   return [
     messages.authenticateWithVerificationProvider,
     messages.completeTheExtraQuestionsBelow,
@@ -32,13 +32,13 @@ export const VISUALIZATION_STEPS: Record<
 > = {
   users: getUsersVisualizationSteps,
   everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
-  custom: getCustomVisualiationSteps,
+  verified: getVerifiedVisualiationSteps,
 };
 
 const SUPPORTED_PERMITTED_BY: Set<SupportedPermittedBy> = new Set([
   'users',
   'everyone_confirmed_email',
-  'custom',
+  'verified',
 ]);
 
 export const isSupportedPermittedBy = (
