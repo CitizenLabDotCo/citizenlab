@@ -315,6 +315,8 @@ const CLSurveyPageLayout = memo(
                   },
                   showLegend: true,
                   showLayerVisibilityControl: true,
+                  showLegendExpanded: true,
+                  showZoomControls: isMobileOrSmaller ? false : true,
                   zoom: Number(mapConfig?.data?.attributes.zoom_level),
                   center: mapConfig?.data?.attributes.center_geojson,
                 }}
