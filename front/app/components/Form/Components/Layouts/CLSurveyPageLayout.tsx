@@ -132,7 +132,7 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);
 
-      // Re-set center and zoom when new map config is fetched
+      // Set center and zoom when new map config is fetched
       if (mapView && mapConfig?.data?.attributes?.center_geojson) {
         setCenterAndZoom(
           mapView,
