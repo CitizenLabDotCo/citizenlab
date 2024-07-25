@@ -42,8 +42,10 @@ const CustomFieldModal = ({
     // By default, we get back a bunch of 'fake' fields from the API,
     // and only when we edit something for the first time will
     // we get the 'real' persisted ones.
-    // So until then, we cannot actually update them, because
-    // their ids are not real. We can only add new ones.
+    // Until then, we cannot actually update them using their
+    // ids, because their ids are not real.
+    // So instead we use the phase, action and custom_field_id
+    // (which effectively creates these fields in the BE).
     if (field.attributes.persisted) {
       updatePermissionsField({
         id: field.id,
