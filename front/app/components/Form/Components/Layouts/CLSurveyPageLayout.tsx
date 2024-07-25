@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   colors,
@@ -33,7 +34,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
-import { parseLayers } from 'components/EsriMap/utils';
+import { parseLayers, setCenterAndZoom } from 'components/EsriMap/utils';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -114,10 +115,12 @@ const CLSurveyPageLayout = memo(
       phase?.data?.attributes.allow_anonymous_participation;
 
     // Map-related variables
+    const [mapView, setMapView] = useState<MapView | undefined | null>(null);
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
     const isMapPage = uiPages[currentStep].options.page_layout === 'map';
-    const mapConfigId =
-      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+    const mapConfigId = isMapPage
+      ? uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id
+      : undefined;
     const { data: fetchedMapConfig } = useMapConfigById(mapConfigId);
     const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
       null
@@ -128,7 +131,22 @@ const CLSurveyPageLayout = memo(
 
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);
-    }, [fetchedMapConfig, mapConfigId]);
+
+      // Re-set center and zoom when new map config is fetched
+      if (mapView && mapConfig?.data?.attributes?.center_geojson) {
+        setCenterAndZoom(
+          mapView,
+          mapConfig?.data?.attributes?.center_geojson,
+          Number(mapConfig?.data?.attributes?.zoom_level)
+        );
+      }
+    }, [
+      fetchedMapConfig,
+      mapConfig?.data?.attributes?.center_geojson,
+      mapConfig?.data?.attributes?.zoom_level,
+      mapConfigId,
+      mapView,
+    ]);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -292,10 +310,13 @@ const CLSurveyPageLayout = memo(
               <EsriMap
                 layers={mapLayers}
                 initialData={{
-                  zoom: Number(mapConfig?.data.attributes.zoom_level),
-                  center: mapConfig?.data.attributes.center_geojson,
+                  onInit: (view: MapView) => {
+                    setMapView(view);
+                  },
                   showLegend: true,
                   showLayerVisibilityControl: true,
+                  zoom: Number(mapConfig?.data?.attributes.zoom_level),
+                  center: mapConfig?.data?.attributes.center_geojson,
                 }}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
                 height="100%"
