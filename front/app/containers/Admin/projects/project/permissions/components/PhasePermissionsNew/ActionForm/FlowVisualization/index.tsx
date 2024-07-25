@@ -18,10 +18,11 @@ const FlowVisualization = ({ permittedBy }: Props) => {
   return (
     <Box display="flex" flexDirection="row">
       {visualizationSteps.map((step, index) => {
-        const last = index === visualizationSteps.length - 1;
+        const len = visualizationSteps.length;
+        const last = index === len - 1;
         return (
           <Box display="flex" flexDirection="row" key={index}>
-            <Block number={index + 1} text={step} />
+            <Block number={len === 1 ? undefined : index + 1} text={step} />
             {!last && <Edge />}
           </Box>
         );
@@ -33,7 +34,7 @@ const FlowVisualization = ({ permittedBy }: Props) => {
 export default FlowVisualization;
 
 interface BlockProps {
-  number: number;
+  number?: number;
   text: MessageDescriptor;
 }
 
@@ -50,7 +51,7 @@ const Block = ({ number, text }: BlockProps) => {
       p="16px"
       w="220px"
     >
-      <Box>{`${number}.`}</Box>
+      {number && <Box>{`${number}.`}</Box>}
       <Box>
         {formatMessage(text, { verificationProvider: VERIFICATION_PROVIDER })}
       </Box>

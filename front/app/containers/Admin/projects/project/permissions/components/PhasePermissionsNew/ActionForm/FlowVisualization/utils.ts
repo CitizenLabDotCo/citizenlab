@@ -3,6 +3,10 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import { SupportedPermittedBy } from './typings';
 
+const getNoneVisualizationSteps = () => {
+  return [messages.noActionsAreRequired];
+};
+
 const getConfirmedEmailVisualizationSteps = () => {
   return [
     messages.enterYourEmail,
@@ -30,12 +34,14 @@ export const VISUALIZATION_STEPS: Record<
   SupportedPermittedBy,
   () => MessageDescriptor[]
 > = {
+  everyone: getNoneVisualizationSteps,
   users: getUsersVisualizationSteps,
   everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
   verified: getVerifiedVisualiationSteps,
 };
 
 const SUPPORTED_PERMITTED_BY: Set<SupportedPermittedBy> = new Set([
+  'everyone',
   'users',
   'everyone_confirmed_email',
   'verified',
