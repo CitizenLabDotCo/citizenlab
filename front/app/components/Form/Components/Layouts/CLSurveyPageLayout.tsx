@@ -324,7 +324,7 @@ const CLSurveyPageLayout = memo(
             </Box>
           )}
 
-          <Box flex={'1 1 auto'} overflowY="auto" h="100%">
+          <Box flex={'1 1 auto'} overflowY="auto" h="100%" ref={pagesRef}>
             {isMapPage && isMobileOrSmaller && (
               <Box
                 aria-hidden={true}
@@ -351,7 +351,7 @@ const CLSurveyPageLayout = memo(
               height="100%"
               mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
             >
-              <Box h="100%" display="flex" ref={pagesRef}>
+              <Box h="100%" display="flex">
                 {uiPages.map((page, index) => {
                   const pageElements = extractElementsByOtherOptionLogic(
                     page,
