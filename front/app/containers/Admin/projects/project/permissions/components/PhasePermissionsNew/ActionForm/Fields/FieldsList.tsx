@@ -24,13 +24,47 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   const { mutate: reorderPermissionsField } = useReorderPermissionsField();
 
+  if (permissionFields && permissionFields.data.length === 0) {
+    return null;
+  }
+
   return (
     <>
       {permissionFields && (
         <SortableList
           items={permissionFields.data}
-          onReorder={(fieldId, newOrder) => {
-            reorderPermissionsField({ id: fieldId, ordering: newOrder });
+          onReorder={(permissionFieldId, newOrder) => {
+            const permissionsField = permissionFields.data.find(
+              (field) => field.id === permissionFieldId
+            );
+
+            if (!permissionsField) return;
+
+            // This 'persisted' attribute is used to determine whether
+            // this field is 'real' and actually exists in our database.
+            // By default, we get back a bunch of 'fake' fields from the API,
+            // and only when we edit something for the first time will
+            // we get the 'real' persisted ones.
+            //
+            // So on the first edit, when persisted is still false,
+            // we also need to send the permission_id
+            // and the custom_field_id, so that the backend can create
+            // the 'real' persisted field.
+            if (permissionsField.attributes.persisted) {
+              reorderPermissionsField({
+                id: permissionFieldId,
+                ordering: newOrder,
+              });
+            } else {
+              reorderPermissionsField({
+                id: permissionFieldId,
+                permission_id:
+                  permissionsField.relationships.permission.data.id,
+                custom_field_id:
+                  permissionsField.relationships.custom_field.data.id,
+                ordering: newOrder,
+              });
+            }
           }}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (

@@ -8,14 +8,21 @@ import { IPermissionsField } from './types';
 
 type ReorderPermissionsField = {
   id: string;
+
+  // These two should be defined if the
+  // field is not persisted yet.
+  permission_id?: string;
+  custom_field_id?: string;
+
+  // the actual parameter
   ordering: number;
 };
 
-const reorderPermissionsField = ({ id, ordering }: ReorderPermissionsField) =>
+const reorderPermissionsField = ({ id, ...body }: ReorderPermissionsField) =>
   fetcher<IPermissionsField>({
     path: `/permissions_fields/${id}/reorder`,
     action: 'patch',
-    body: { ordering },
+    body,
   });
 
 const useReorderPermissionsField = () => {
