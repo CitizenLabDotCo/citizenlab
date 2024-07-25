@@ -42,10 +42,11 @@ const CustomFieldModal = ({
     // By default, we get back a bunch of 'fake' fields from the API,
     // and only when we edit something for the first time will
     // we get the 'real' persisted ones.
-    // Until then, we cannot actually update them using their
-    // ids, because their ids are not real.
-    // So instead we use the phase, action and custom_field_id
-    // (which effectively creates these fields in the BE).
+    //
+    // So on the first edit, when persisted is still false,
+    // we also need to send the permission_id
+    // and the custom_field_id, so that the backend can create
+    // the 'real' persisted field.
     if (field.attributes.persisted) {
       updatePermissionsField({
         id: field.id,
@@ -53,10 +54,10 @@ const CustomFieldModal = ({
       });
     } else {
       updatePermissionsField({
-        phaseId,
-        action,
-        required: option.value === 'required',
+        id: field.id,
+        permission_id: field.relationships.permission.data.id,
         custom_field_id: field.relationships.custom_field.data.id,
+        required: option.value === 'required',
       });
     }
   };

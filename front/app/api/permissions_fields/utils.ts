@@ -1,17 +1,6 @@
 import { isInitiativeAction } from 'api/initiative_action_descriptors/utils';
 import { Action } from 'api/permissions/types';
 
-import {
-  IPermissionCustomFieldUpdate,
-  PermissionsFieldUpdatePersisted,
-} from './types';
-
-export const isPersistedUpdate = (
-  update: IPermissionCustomFieldUpdate
-): update is PermissionsFieldUpdatePersisted => {
-  return 'id' in update;
-};
-
 export const getPath = (parameters: {
   action: Action;
   phaseId?: string;

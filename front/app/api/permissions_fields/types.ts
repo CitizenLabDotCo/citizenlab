@@ -32,16 +32,17 @@ export interface IPermissionsFieldAdd {
   custom_field_id: string;
 }
 
-export type IPermissionCustomFieldUpdate =
-  | PermissionsFieldUpdatePersisted
-  | PermissionsFieldUpdateNotPersisted;
-
-export interface PermissionsFieldUpdatePersisted {
+export type IPermissionCustomFieldUpdate = {
   id: string;
-  required?: boolean;
-}
 
-type PermissionsFieldUpdateNotPersisted = IPermissionsFieldAdd;
+  // These two should be defined if the
+  // field is not persisted yet.
+  permission_id?: string;
+  custom_field_id?: string;
+
+  // the actual parameter
+  required?: boolean;
+};
 
 export interface IPermissionsFieldData {
   id: string;
