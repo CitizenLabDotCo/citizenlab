@@ -5,7 +5,6 @@ import { IOption } from 'typings';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_fields/types';
-import useAddPermissionsField from 'api/permissions_fields/useAddPermissionsField';
 import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
 
 import Modal from 'components/UI/Modal';
@@ -37,11 +36,6 @@ const CustomFieldModal = ({
     action,
   });
 
-  const { mutate: addPermissionsField } = useAddPermissionsField({
-    phaseId,
-    action,
-  });
-
   const handleUpdatePermissionsField = (option: IOption) => {
     // This 'persisted' attribute is used to determine whether
     // this field is 'real' and actually exists in our database.
@@ -56,7 +50,7 @@ const CustomFieldModal = ({
         required: option.value === 'required',
       });
     } else {
-      addPermissionsField({
+      updatePermissionsField({
         phaseId,
         action,
         required: option.value === 'required',

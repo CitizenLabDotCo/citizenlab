@@ -1,9 +1,6 @@
 import { Multiloc } from 'typings';
 
-import {
-  IGlobalPermissionAction,
-  IPhasePermissionAction,
-} from 'api/permissions/types';
+import { Action } from 'api/permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -22,7 +19,7 @@ export type IItemParameters = {
 export type IListParameters = {
   phaseId?: string | null;
   projectId?: string | null;
-  action: IGlobalPermissionAction | IPhasePermissionAction;
+  action: Action;
 };
 
 export interface IPermissionsField {
@@ -30,17 +27,23 @@ export interface IPermissionsField {
 }
 
 export interface IPermissionsFieldAdd {
-  action: string;
+  action: Action;
   phaseId?: string | null;
   projectId?: string | null;
   required: boolean;
   custom_field_id: string;
 }
 
-export interface IPermissionCustomFieldUpdate {
+export type IPermissionCustomFieldUpdate =
+  | PermissionsFieldUpdatePersisted
+  | PermissionsFieldUpdateNotPersisted;
+
+export interface PermissionsFieldUpdatePersisted {
   id: string;
   required?: boolean;
 }
+
+type PermissionsFieldUpdateNotPersisted = IPermissionsFieldAdd;
 
 export interface IPermissionsFieldData {
   id: string;

@@ -14,16 +14,28 @@ import {
   IPermissionCustomFieldUpdate,
   IListParameters,
 } from './types';
+import { isPersistedUpdate, getPath } from './utils';
 
-const updatePermissionsField = ({
-  id,
-  ...body
-}: IPermissionCustomFieldUpdate) =>
-  fetcher<IPermissionsField>({
-    path: `/permissions_fields/${id}`,
-    action: 'patch',
-    body,
-  });
+const updatePermissionsField = (params: IPermissionCustomFieldUpdate) => {
+  if (isPersistedUpdate(params)) {
+    const { id, ...body } = params;
+
+    return fetcher<IPermissionsField>({
+      path: `/permissions_fields/${id}`,
+      action: 'patch',
+      body,
+    });
+  } else {
+    return fetcher<IPermissionsField>({
+      path: getPath(params),
+      action: 'patch',
+      body: {
+        custom_field_id: params.custom_field_id,
+        required: params.required,
+      },
+    });
+  }
+};
 
 const useUpdatePermissionsField = ({
   phaseId,
