@@ -88,7 +88,11 @@ const ActionForm = ({
       )}
       {isSupportedPermittedBy(permittedBy) && (
         <Box mt="20px">
-          <FlowVisualization permittedBy={permittedBy} />
+          <FlowVisualization
+            permittedBy={permittedBy}
+            phaseId={phaseId}
+            action={action}
+          />
         </Box>
       )}
       <Box mt="20px">

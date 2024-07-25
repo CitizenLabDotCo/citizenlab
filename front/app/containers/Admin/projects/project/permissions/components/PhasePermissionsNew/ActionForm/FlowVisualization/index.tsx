@@ -2,18 +2,32 @@ import React from 'react';
 
 import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
 
+import { IPhasePermissionAction } from 'api/permissions/types';
+import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import Arrow from './Arrow';
 import { SupportedPermittedBy } from './typings';
 import { VISUALIZATION_STEPS } from './utils';
 
-export interface Props {
+interface Props {
   permittedBy: SupportedPermittedBy;
+  phaseId: string;
+  action: IPhasePermissionAction;
 }
 
-const FlowVisualization = ({ permittedBy }: Props) => {
-  const visualizationSteps = VISUALIZATION_STEPS[permittedBy]();
+const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
+  const { data: permissionsFields } = usePermissionsFields({
+    phaseId,
+    action,
+  });
+
+  if (!permissionsFields?.data) return null;
+
+  const visualizationSteps = VISUALIZATION_STEPS[permittedBy](
+    permissionsFields?.data
+  );
 
   return (
     <Box display="flex" flexDirection="row">

@@ -1,38 +1,70 @@
+import { IPermissionsFieldData } from 'api/permissions_fields/types';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 import { SupportedPermittedBy } from './typings';
 
-const getNoneVisualizationSteps = () => {
+const removeNull = (
+  array: (MessageDescriptor | null)[]
+): MessageDescriptor[] => {
+  return array.filter((el) => el !== null) as MessageDescriptor[];
+};
+
+// Visualization steps
+const getNoneVisualizationSteps = (
+  _permissionsFields: IPermissionsFieldData[]
+) => {
   return [messages.noActionsAreRequired];
 };
 
-const getConfirmedEmailVisualizationSteps = () => {
-  return [
+const getConfirmedEmailVisualizationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.enterYourEmail,
     messages.confirmYourEmail,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
-const getUsersVisualizationSteps = () => {
-  return [
+const getUsersVisualizationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.enterNameLastNameEmailAndPassword,
     messages.confirmYourEmail,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
-const getVerifiedVisualiationSteps = () => {
-  return [
+const getVerifiedVisualiationSteps = (
+  permissionsFields: IPermissionsFieldData[]
+) => {
+  const customFieldsStep =
+    permissionsFields.length > 0
+      ? messages.completeTheExtraQuestionsBelow
+      : null;
+
+  return removeNull([
     messages.authenticateWithVerificationProvider,
-    messages.completeTheExtraQuestionsBelow,
-  ];
+    customFieldsStep,
+  ]);
 };
 
 export const VISUALIZATION_STEPS: Record<
   SupportedPermittedBy,
-  () => MessageDescriptor[]
+  (permissionsFields: IPermissionsFieldData[]) => MessageDescriptor[]
 > = {
   everyone: getNoneVisualizationSteps,
   users: getUsersVisualizationSteps,
