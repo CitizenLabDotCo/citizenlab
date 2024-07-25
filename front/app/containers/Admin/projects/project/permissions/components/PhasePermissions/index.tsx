@@ -21,7 +21,7 @@ interface Props {
 }
 
 const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
-  const [openedPhaseId, setOpenedPhaseId] = useState<string | null>(null);
+  const [openedPhaseId, setOpenedPhaseId] = useState<string>();
   const { mutate: updatePhasePermission } =
     useUpdatePhasePermission(openedPhaseId);
 
@@ -72,7 +72,7 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
         phaseNumber={phaseNumber}
         phaseTitle={phase.attributes.title_multiloc}
         onChange={() => {
-          setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
+          setOpenedPhaseId(openedPhaseId === phase.id ? undefined : phase.id);
         }}
       >
         {phaseActionsForm}
@@ -92,11 +92,7 @@ type ActionsFormWrapperProps = {
   projectId: string;
 };
 
-const ActionsFormWrapper = ({
-  phase,
-  onChange,
-  projectId,
-}: ActionsFormWrapperProps) => {
+const ActionsFormWrapper = ({ phase, onChange }: ActionsFormWrapperProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
 
   if (!permissions) {
@@ -111,7 +107,6 @@ const ActionsFormWrapper = ({
         permissions={permissions.data}
         onChange={onChange}
         postType={config.postType}
-        projectId={projectId}
         phaseId={phase.id}
       />
     </Box>

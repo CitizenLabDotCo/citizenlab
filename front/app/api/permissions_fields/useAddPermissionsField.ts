@@ -21,11 +21,7 @@ const addPermissionsField = async (params: IPermissionsFieldAdd) =>
     },
   });
 
-const useAddPermissionsField = ({
-  phaseId,
-  projectId,
-  action,
-}: IListParameters) => {
+const useAddPermissionsField = ({ phaseId, action }: IListParameters) => {
   const queryClient = useQueryClient();
   return useMutation<IPermissionsField, CLErrors, IPermissionsFieldAdd>({
     mutationFn: addPermissionsField,
@@ -33,7 +29,6 @@ const useAddPermissionsField = ({
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.list({
           phaseId,
-          projectId,
           action,
         }),
       });

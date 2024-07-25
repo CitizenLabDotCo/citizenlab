@@ -17,8 +17,7 @@ export type IItemParameters = {
 };
 
 export type IListParameters = {
-  phaseId?: string | null;
-  projectId?: string | null;
+  phaseId?: string;
   action: Action;
 };
 
@@ -28,8 +27,7 @@ export interface IPermissionsField {
 
 export interface IPermissionsFieldAdd {
   action: Action;
-  phaseId?: string | null;
-  projectId?: string | null;
+  phaseId?: string;
   required: boolean;
   custom_field_id: string;
 }

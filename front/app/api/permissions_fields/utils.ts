@@ -1,8 +1,8 @@
 import { isInitiativeAction } from 'api/initiative_action_descriptors/utils';
+import { Action } from 'api/permissions/types';
 
 import {
   IPermissionCustomFieldUpdate,
-  IPermissionsFieldAdd,
   PermissionsFieldUpdatePersisted,
 } from './types';
 
@@ -12,10 +12,13 @@ export const isPersistedUpdate = (
   return 'id' in update;
 };
 
-export const getPath = (parameters: IPermissionsFieldAdd): `/${string}` => {
-  return isInitiativeAction(parameters.action)
-    ? `/permissions/${parameters.action}/permissions_fields`
-    : parameters.phaseId
-    ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_fields`
-    : `/projects/${parameters.projectId}/permissions/${parameters.action}/permissions_fields`;
+export const getPath = (parameters: {
+  action: Action;
+  phaseId?: string;
+}): `/${string}` => {
+  if (isInitiativeAction(parameters.action)) {
+    return `/permissions/${parameters.action}/permissions_fields`;
+  }
+
+  return `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_fields`;
 };

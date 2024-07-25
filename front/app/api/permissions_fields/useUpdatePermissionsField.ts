@@ -37,11 +37,7 @@ const updatePermissionsField = (params: IPermissionCustomFieldUpdate) => {
   }
 };
 
-const useUpdatePermissionsField = ({
-  phaseId,
-  projectId,
-  action,
-}: IListParameters) => {
+const useUpdatePermissionsField = ({ phaseId, action }: IListParameters) => {
   const queryClient = useQueryClient();
   return useMutation<IPermissionsField, CLErrors, IPermissionCustomFieldUpdate>(
     {
@@ -50,7 +46,6 @@ const useUpdatePermissionsField = ({
         queryClient.invalidateQueries({
           queryKey: permissionsFieldsKeys.list({
             phaseId,
-            projectId,
             action,
           }),
         });

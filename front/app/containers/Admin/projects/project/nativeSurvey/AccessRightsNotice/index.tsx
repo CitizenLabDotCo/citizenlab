@@ -36,7 +36,6 @@ const AccessRightsNotice = ({
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { data: userCustomFields } = useUserCustomFields();
   const { data: permissionCustomFields } = usePermissionsFields({
-    projectId,
     phaseId,
     action: 'posting_idea',
   });

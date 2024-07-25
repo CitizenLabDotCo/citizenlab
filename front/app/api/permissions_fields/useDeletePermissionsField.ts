@@ -11,11 +11,7 @@ const deletePermissionsField = (id: string) =>
     action: 'delete',
   });
 
-const useDeletePermissionsField = ({
-  phaseId,
-  projectId,
-  action,
-}: IListParameters) => {
+const useDeletePermissionsField = ({ phaseId, action }: IListParameters) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -24,7 +20,6 @@ const useDeletePermissionsField = ({
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.list({
           phaseId,
-          projectId,
           action,
         }),
       });

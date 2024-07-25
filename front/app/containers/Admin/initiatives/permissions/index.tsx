@@ -71,7 +71,6 @@ const PermissionsInitiatives = () => {
             permissions={permissions}
             onChange={handlePermissionChange}
             postType="initiative"
-            projectId={null}
           />
         </Section>
       </Box>
