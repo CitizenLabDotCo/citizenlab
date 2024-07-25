@@ -7,10 +7,10 @@ import React, {
   useMemo,
 } from 'react';
 
-import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   colors,
+  Spinner,
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -34,7 +34,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
-import { parseLayers, setCenterAndZoom } from 'components/EsriMap/utils';
+import { parseLayers } from 'components/EsriMap/utils';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -50,6 +50,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -57,6 +58,7 @@ import {
   isVisible,
 } from '../Controls/visibilityUtils';
 
+import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 
@@ -109,19 +111,16 @@ const CLSurveyPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-
-    // Anonymous posting
     const allowAnonymousPosting =
       phase?.data?.attributes.allow_anonymous_participation;
 
     // Map-related variables
-    const [mapView, setMapView] = useState<MapView | undefined | null>(null);
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
     const isMapPage = uiPages[currentStep].options.page_layout === 'map';
-    const mapConfigId = isMapPage
-      ? uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id
-      : undefined;
-    const { data: fetchedMapConfig } = useMapConfigById(mapConfigId);
+    const mapConfigId =
+      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+    const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
+      useMapConfigById(mapConfigId);
     const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
       null
     );
@@ -129,43 +128,14 @@ const CLSurveyPageLayout = memo(
       return parseLayers(mapConfig, localize);
     }, [localize, mapConfig]);
 
-    const initialData = useMemo(
-      () => ({
-        onInit: (view: MapView) => {
-          setMapView(view);
-        },
-        showLegend: true,
-        showLayerVisibilityControl: true,
-        showLegendExpanded: true,
-        showZoomControls: isMobileOrSmaller ? false : true,
-        zoom: Number(mapConfig?.data?.attributes.zoom_level),
-        center: mapConfig?.data?.attributes.center_geojson,
-      }),
-      [
-        isMobileOrSmaller,
-        mapConfig?.data?.attributes.center_geojson,
-        mapConfig?.data?.attributes.zoom_level,
-      ]
-    );
-
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);
+    }, [fetchedMapConfig, mapConfigId]);
 
-      // Set center and zoom when new map config is fetched
-      if (mapView && mapConfig?.data?.attributes?.center_geojson) {
-        setCenterAndZoom(
-          mapView,
-          mapConfig?.data?.attributes?.center_geojson,
-          Number(mapConfig?.data?.attributes?.zoom_level)
-        );
-      }
-    }, [
-      fetchedMapConfig,
-      mapConfig?.data?.attributes?.center_geojson,
-      mapConfig?.data?.attributes?.zoom_level,
-      mapConfigId,
-      mapView,
-    ]);
+    // Emit event when page changes and map is fetched
+    useEffect(() => {
+      eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
+    }, [currentStep, isFetchingMapConfig]);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -309,6 +279,16 @@ const CLSurveyPageLayout = memo(
 
     dragDividerRef?.current?.addEventListener('touchmove', onDragDivider);
 
+    if (isFetchingMapConfig) {
+      return (
+        <Box h="100%" w="100%" display="flex">
+          <Box mx="auto" my="auto">
+            <Spinner />
+          </Box>
+        </Box>
+      );
+    }
+
     return (
       <>
         <Box
@@ -328,7 +308,14 @@ const CLSurveyPageLayout = memo(
             >
               <EsriMap
                 layers={mapLayers}
-                initialData={initialData}
+                initialData={{
+                  showLegend: true,
+                  showLayerVisibilityControl: true,
+                  showLegendExpanded: true,
+                  showZoomControls: isMobileOrSmaller ? false : true,
+                  zoom: Number(mapConfig?.data?.attributes.zoom_level),
+                  center: mapConfig?.data?.attributes.center_geojson,
+                }}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
                 height="100%"
               />

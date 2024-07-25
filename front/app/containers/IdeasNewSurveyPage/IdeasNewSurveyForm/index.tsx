@@ -28,11 +28,13 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
+import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import eventEmitter from 'utils/eventEmitter';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -85,7 +87,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
-  const [checkCurrentLayout, setCheckCurrentLayout] = useState(false);
   const [usingMapView, setUsingMapView] = useState(false);
 
   const { data: draftIdea, status: draftIdeaStatus } =
@@ -102,14 +103,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
   // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
   useWindowSize();
-
-  // Check if the current survey page is using the map view, so we can set the correct header width
-  useEffect(() => {
-    if (checkCurrentLayout && !isSmallerThanPhone) {
-      setUsingMapView(!!document.getElementById('survey_page_map'));
-      setCheckCurrentLayout(false);
-    }
-  }, [checkCurrentLayout, isSmallerThanPhone]);
 
   /*
     TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
@@ -161,6 +154,19 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
+  // Listen for survey page change event
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('survey_page_map'));
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
   if (
     // inputSchemaError should display an error page instead
@@ -184,12 +190,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
       return onSubmit(data, false);
     }
-  };
-
-  // Re-check the page layout on desktop when the form changes
-  const onFormChange = () => {
-    !isSmallerThanPhone &&
-      setCheckCurrentLayout((currentValue) => !currentValue);
   };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
@@ -320,7 +320,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                 getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
-                onChange={onFormChange}
               />
             </Box>
           </Box>
