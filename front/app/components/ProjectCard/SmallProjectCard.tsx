@@ -455,7 +455,11 @@ const SmallProjectCard = memo<InputProps>(
 
       const contentHeader = (
         <ContentHeader
-          className={`hasContent hasRightContent hasContent hasLeftContent`}
+          className={`${
+            !ctaMessage ? undefined : 'hasContent hasRightContent'
+          } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
+            !ctaMessage && !countdown ? 'noContent' : ''
+          }`}
         >
           {countdown && (
             <Box
