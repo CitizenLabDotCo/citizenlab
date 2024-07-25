@@ -59,10 +59,17 @@ const Block = ({ number, text }: BlockProps) => {
   );
 };
 
+const EDGE_WIDTH = 20;
+
 const Edge = () => {
   return (
-    <Box w="20px" display="flex" flexDirection="column" justifyContent="center">
-      <Arrow />
+    <Box
+      w={`${EDGE_WIDTH}px`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      <Arrow width={20} />
     </Box>
   );
 };

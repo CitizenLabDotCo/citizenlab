@@ -2,10 +2,10 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-const Arrow = () => {
+const Arrow = ({ width }: { width: number }) => {
   return (
     <svg
-      width="20"
+      width={width.toString()}
       height="12"
       viewBox="0 0 18 7"
       fill={colors.blue700}
