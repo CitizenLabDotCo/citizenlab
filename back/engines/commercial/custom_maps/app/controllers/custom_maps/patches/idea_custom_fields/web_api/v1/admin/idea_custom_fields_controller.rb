@@ -11,7 +11,7 @@ module CustomMaps
                 set_custom_field
                 phase = Phase.find(params[:phase_id])
                 geojson = I18n.with_locale(current_user.locale) do
-                  CustomMaps::GeojsonGenerator.new(phase, @custom_field, false).generate_geojson
+                  CustomMaps::GeojsonGenerator.new(phase, @custom_field).generate_geojson
                 end
 
                 send_data geojson, type: 'application/json', filename: 'my_survey.geojson'
