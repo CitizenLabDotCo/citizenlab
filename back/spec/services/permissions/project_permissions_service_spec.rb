@@ -554,29 +554,42 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe '"attending_event" denied_reason_for_project' do
-    it 'returns `user_not_signed_in` when user needs to be signed in' do
-      project = create(:project_with_current_phase)
-      expect(service.denied_reason_for_action('attending_event', nil, project)).to eq 'user_not_signed_in'
+    context 'user not signed in' do
+      let(:user) { nil }
+      let(:project) { create(:project_with_current_phase) }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_signed_in'
+      end
     end
 
-    it 'returns `user_not_in_group` when the idea is in the current phase and voting is not permitted' do
-      project = create(:project_with_current_phase, current_phase_attrs: { with_permissions: true })
-      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'attending_event')
-      permission.update!(
-        permitted_by: 'groups',
-        group_ids: create_list(:group, 2).map(&:id)
-      )
-      expect(service.denied_reason_for_action('attending_event', create(:user), project)).to eq 'user_not_in_group'
+    context 'idea is in the current phase and voting is not permitted' do
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
+
+      it 'returns `user_not_in_group`' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'attending_event')
+        permission.update!(
+          permitted_by: 'groups',
+          group_ids: create_list(:group, 2).map(&:id)
+        )
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_in_group'
+      end
     end
 
-    it "returns 'project_inactive' when the timeline is over" do
-      project = create(:project_with_past_phases)
-      expect(service.denied_reason_for_action('attending_event', create(:user), project)).to eq 'project_inactive'
+    context 'when the timeline is over' do
+      let(:project) { create(:project_with_past_phases) }
+
+      it "returns 'project_inactive' when the timeline is over" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      end
     end
 
-    it "returns 'project_inactive' when the project is archived" do
-      project = create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.denied_reason_for_action('attending_event', create(:user), project)).to eq 'project_inactive'
+    context 'when the timeline is over' do
+      let(:project) { create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it "returns 'project_inactive' when the project is archived" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      end
     end
   end
 
