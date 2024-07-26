@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "Καλώς ήρθατε στην διαδικτυακή πλατφόρμα συμμετοχής του {orgName}. Εξερευνήστε τοπικά έργα και συμμετέχετε στη συζήτηση!",
   "app.containers.App.loading": "Φόρτωση...",
   "app.containers.App.metaTitle1": "Πλατφόρμα εμπλοκής των πολιτών | {orgName}",
+  "app.containers.App.skipLinkText": "Μετάβαση στο κύριο περιεχόμενο",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ένας λογαριασμός με αυτό το email υπάρχει ήδη. Μπορείτε να αποσυνδεθείτε, να συνδεθείτε με αυτή τη διεύθυνση ηλεκτρονικού ταχυδρομείου και να επαληθεύσετε το λογαριασμό σας στη σελίδα ρυθμίσεων.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Παρακαλούμε εισάγετε ένα διακριτικό",
   "app.containers.Authentication.steps.Invitation.token": "Token",
