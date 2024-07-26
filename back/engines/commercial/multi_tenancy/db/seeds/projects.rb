@@ -17,31 +17,38 @@ module MultiTenancy
       end
 
       def create_mixed_3_methods_project
-        project = Project.create(
+        project = Project.create!(
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
           description_multiloc: runner.rand_description_multiloc,
-          slug: 'mixed-3-methods-project'
+          slug: 'mixed-3-methods-project',
+          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
+          allowed_input_topics: Topic.all
         )
-        project.phases.create(
+        project.phases.create!(
           title_multiloc: { 'en' => 'Past proposals phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
           start_at: Date.today - 30.days,
           end_at: Date.today - 11.days,
+          campaigns_settings: { project_phase_started: true }
         )
-        project.phases.create(
+        project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
           start_at: Date.today - 10.days,
           end_at: Date.today + 10.days,
+          campaigns_settings: { project_phase_started: true }
         )
-        project.phases.create(
+        project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'native_survey',
           start_at: Date.today + 11.days,
           end_at: nil,
+          campaigns_settings: { project_phase_started: true },
+          native_survey_title_multiloc: { 'en' => 'Survey' },
+          native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
       end
 
