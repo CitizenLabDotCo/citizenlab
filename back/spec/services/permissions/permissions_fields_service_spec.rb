@@ -42,11 +42,11 @@ describe Permissions::PermissionsFieldsService do
     end
 
     context 'global_custom_fields is false' do
-      let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: false) }
+      let(:permission) { create(:permission, permitted_by: 'users') }
 
       it 'returns no fields by default for all permitted_by values' do
         %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
-          permission.update!(permitted_by: permitted_by)
+          permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           expect(service.fields_for_permission(permission)).to be_empty
         end
       end
@@ -54,7 +54,7 @@ describe Permissions::PermissionsFieldsService do
       it 'returns persisted fields for all permitted_by values' do
         domicile_field = create(:permissions_field, permission: permission, custom_field: create(:custom_field_domicile))
         %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
-          permission.update!(permitted_by: permitted_by)
+          permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
           expect(fields.first.persisted?).to be true

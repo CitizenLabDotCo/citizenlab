@@ -73,7 +73,7 @@ describe Permissions::PermissionsUpdateService do
       expect(phase.permissions).to be_empty
 
       service.update_permissions_for_scope(phase)
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
     end
   end
 end

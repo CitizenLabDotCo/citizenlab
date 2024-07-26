@@ -114,7 +114,7 @@ class Permission < ApplicationRecord
   def update_global_custom_fields
     return if verified_actions_enabled?
 
-    self.global_custom_fields = false if (permitted_by == 'users')
+    self.global_custom_fields = false unless allow_global_custom_fields?
   end
 
   def verified_actions_enabled?
