@@ -189,7 +189,9 @@ resource 'Permissions' do
 
       let(:action) { 'reacting_initiative' }
 
-      example_request 'Reset a permission to use global custom fields and no groups' do
+      example 'Reset a permission to use global custom fields and no groups' do
+
+        do_request
         assert_status 200
         expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
         expect(response_data.dig(:attributes, :global_custom_fields)).to eq true
