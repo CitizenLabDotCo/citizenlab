@@ -17,21 +17,20 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
+          # TODO: JS - does check groups need to only work with group based verification?
           if @check_groups && permission.verification_enabled?
-            requirements[:require_verification] = true
+            requirements[:verification] = true
           end
           requirements
         end
 
         def mark_satisfied_requirements!(requirements, permission, user)
           super
-          return unless requirements[:require_verification]
+          return unless requirements[:verification]
 
           # TODO: JS - does the front-end care about the difference between dont_ask and satisfied that we had before?
-          if user.verified?
-            requirements[:require_verification] = false
-          elsif user_allowed_through_other_groups?(permission, user)
-            requirements[:require_verification] = false
+          if user.verified? || user_allowed_through_other_groups?(permission, user)
+            requirements[:verification] = false
           end
         end
 

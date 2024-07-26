@@ -15,11 +15,16 @@ class Permissions::UserRequirementsService
 
   def permitted?(requirements)
     return false if requirements[:authentication][:missing_user_attributes].any?
-    return false if requirements[:require_verification]
-    return false if requirements[:custom_fields].values.any? { |value| value == 'required' }
+    return false if requirements[:verification]
+    return false if requirements[:custom_fields].values.any?('required')
     return false if requirements[:group_membership]
 
     true
+  end
+
+  def permitted_for_permission?(permission, user)
+    requirements = requirements(permission, user)
+    permitted?(requirements)
   end
 
   def requirements_custom_fields(permission)
@@ -42,7 +47,7 @@ class Permissions::UserRequirementsService
     users_requirements = {
       authentication: {
         permitted_by: permission.permitted_by,
-        missing_user_attributes: [:first_name, :last_name, :email, :confirmation, :password]
+        missing_user_attributes: %i[first_name last_name email confirmation password]
       },
       verification: false,
       custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
@@ -51,7 +56,7 @@ class Permissions::UserRequirementsService
     }
 
     everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
-      requirements[:authentication][:missing_user_attributes] = [:email, :confirmation]
+      requirements[:authentication][:missing_user_attributes] = %i[email confirmation]
       requirements[:onboarding] = false
     end
 
@@ -76,7 +81,7 @@ class Permissions::UserRequirementsService
   def mark_satisfied_requirements!(requirements, permission, user)
     return requirements unless user
 
-    requirements[:authentication][:missing_user_attributes].excluding([:confirmation,:password])&.each do |attribute|
+    requirements[:authentication][:missing_user_attributes].excluding(%i[confirmation password])&.each do |attribute|
       requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?

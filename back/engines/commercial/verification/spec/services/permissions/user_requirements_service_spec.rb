@@ -13,8 +13,9 @@ describe Permissions::UserRequirementsService do
       context 'there is no user' do
         it 'requires verification' do
           requirements = service.requirements(group_permission, nil)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:verification]).to be true
         end
       end
 
@@ -23,8 +24,9 @@ describe Permissions::UserRequirementsService do
 
         it 'requires verification' do
           requirements = service.requirements(group_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:verification]).to be true
         end
       end
 
@@ -33,14 +35,15 @@ describe Permissions::UserRequirementsService do
 
         it 'verification is satisfied' do
           requirements = service.requirements(group_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('satisfied')
-          expect(requirements[:permitted]).to be true
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:verification]).to be false
         end
       end
     end
 
     context 'when permitted_by is set to "verified" and permission_field is enabled' do
-      let(:custom_permission) { create(:permission, permitted_by: 'verified') }
+      let(:verified_permission) { create(:permission, permitted_by: 'verified') }
 
       before do
         SettingsService.new.activate_feature! 'verified_actions'
@@ -60,9 +63,10 @@ describe Permissions::UserRequirementsService do
 
       context 'there is no user' do
         it 'requires verification' do
-          requirements = service.requirements(custom_permission, nil)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          requirements = service.requirements(verified_permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
         end
       end
 
@@ -70,9 +74,10 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:user, verified: false) }
 
         it 'requires verification' do
-          requirements = service.requirements(custom_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
         end
       end
 
@@ -80,9 +85,10 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:user, verified: true) }
 
         it 'verification is satisfied' do
-          requirements = service.requirements(custom_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('satisfied')
-          expect(requirements[:permitted]).to be true
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be false
         end
       end
     end
@@ -93,7 +99,8 @@ describe Permissions::UserRequirementsService do
 
       it 'verification is not required' do
         requirements = service.requirements(group_permission, nil)
-        expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
+        expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+        expect(requirements[:verification]).to be false
       end
     end
 
@@ -102,7 +109,8 @@ describe Permissions::UserRequirementsService do
 
       it 'verification is not required' do
         requirements = service.requirements(permission, nil)
-        expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
+        expect(requirements[:authentication][:permitted_by]).to eq 'users'
+        expect(requirements[:verification]).to be false
       end
     end
   end

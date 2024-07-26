@@ -70,7 +70,7 @@ module Permissions
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
       return if UserRoleService.new.can_moderate? scope, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
-      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
+      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.permitted_for_permission?(permission, user)
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
       return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
 
