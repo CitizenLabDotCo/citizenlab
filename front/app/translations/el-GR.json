@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Δοκιμάστε ξανά. Εάν το πρόβλημα παραμένει, επικοινωνήστε μαζί μας",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Υπήρξε ένα πρόβλημα από την πλευρά μας, συγγνώμη",
   "app.components.HookForm.Feedback.successMessage": "Η φόρμα υποβλήθηκε επιτυχώς",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Μετακινηθείτε προς τα αριστερά.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Μετακινηθείτε προς τα δεξιά.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} οι ιδέες έχουν φορτωθεί.",
   "app.components.IdeaCards.showMore": "Εμφάνιση περισσότερων",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Απόκρυψη κάρτας ιδέας.",
