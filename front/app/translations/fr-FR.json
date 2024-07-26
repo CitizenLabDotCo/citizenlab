@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Essayez à nouveau. Si le problème persiste, contactez-nous",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Il y a eu un problème de notre côté, désolé",
   "app.components.HookForm.Feedback.successMessage": "Modifications sauvegardées avec succès",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Faire défiler vers la gauche.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Faire défiler vers la droite.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "Les idées ont été chargées dans l'ordre suivant : {sortOder}.",
   "app.components.IdeaCards.showMore": "Afficher plus d'idées",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Cachez la carte des idées.",
