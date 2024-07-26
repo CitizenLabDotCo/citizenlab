@@ -37,11 +37,10 @@ resource 'Ideas' do
 
       describe do
         before do
-          # @ideas = %w[published published draft published published].map do |ps|
-          @ideas = %w[published published draft published published published].map do |ps|
+          @ideas = %w[published published draft published published].map do |ps|
             create(:idea, publication_status: ps)
           end
-          # @proposal = create(:proposal)
+          @proposal = create(:proposal)
           survey_project = create(:single_phase_native_survey_project)
           create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
         end
@@ -51,7 +50,16 @@ resource 'Ideas' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
-          # expect(json_response[:data].pluck(:id)).to include(@proposal.id)
+          expect(json_response[:data].pluck(:id)).to include(@proposal.id)
+        end
+
+        example 'List all transitive inputs' do
+          do_request transitive: true
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 4
+          expect(json_response[:data].pluck(:id)).to match_array [@ideas[0].id, @ideas[1].id, @ideas[3].id, @ideas[4].id]
         end
 
         example 'Don\'t list drafts (default behaviour)', document: false do
@@ -150,12 +158,12 @@ resource 'Ideas' do
 
         example 'List all ideas in a basket' do
           basket = create(:basket)
-          [@ideas[1], @ideas[2], @ideas[5]].each { _1.baskets << basket }
+          [@ideas[1], @ideas[2], @ideas[4]].each { |idea| idea.baskets << basket }
 
           do_request(basket_id: basket.id)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[5].id]
+          expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[4].id]
         end
 
         example 'List all ideas in published projects' do
@@ -304,18 +312,19 @@ resource 'Ideas' do
 
       describe do
         before do
+          factories = [:idea, :idea, :idea, :proposal, :idea, :idea, :idea]
           locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
           placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
-          @ideas = locations.zip(placenames).map do |location, placename|
+          @ideas = factories.zip(locations, placenames).map do |factory, location, placename|
             create(
-              :idea,
+              factory,
               location_point_geojson: { 'type' => 'Point', 'coordinates' => location },
               title_multiloc: { 'en' => placename }
             )
           end
         end
 
-        example 'List all idea markers within a bounding box' do
+        example 'List all inputs markers within a bounding box' do
           do_request(bounding_box: '[51.208758,3.224363,50.000667,5.715281]') # Bruges-Bastogne
 
           expect(status).to eq(200)
@@ -324,7 +333,7 @@ resource 'Ideas' do
           expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
         end
 
-        example 'List all idea markers in a phase of a project', document: false do
+        example 'List all inputs markers in a phase of a project', document: false do
           pr = create(:project_with_phases)
           ph1 = pr.phases.first
           ph2 = pr.phases.second
