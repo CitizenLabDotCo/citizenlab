@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "Witamy na internetowej platformie uczestnictwa {orgName}. \nPoznaj lokalne projekty i zaangażuj się w dyskusję!",
   "app.containers.App.loading": "Ładowanie...",
   "app.containers.App.metaTitle1": "Platforma zaangażowania obywateli | {orgName}",
+  "app.containers.App.skipLinkText": "Przejdź do głównej treści",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konto z tym adresem e-mail już istnieje. Możesz się wylogować, zalogować przy użyciu tego adresu e-mail i zweryfikować swoje konto na stronie ustawień.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Proszę wprowadzić token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
