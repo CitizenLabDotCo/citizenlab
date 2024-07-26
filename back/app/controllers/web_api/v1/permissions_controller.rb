@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update requirements schema]
+  before_action :set_permission, only: %i[show update reset requirements schema]
   skip_before_action :authenticate_user
 
   def index
@@ -30,11 +30,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def reset
-    @permission.update!(global_custom_fields: true)
-    @permission.permission_custom_fields.destroy_all
-    # @permission.groups.de
-
+    authorize @permission
+    @permission.global_custom_fields = true
     if @permission.save
+      @permission.permissions_fields.destroy_all
+      @permission.groups_permissions.destroy_all
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
