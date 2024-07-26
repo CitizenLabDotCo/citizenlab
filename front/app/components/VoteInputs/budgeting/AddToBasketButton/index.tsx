@@ -5,6 +5,7 @@ import {
   Icon,
   colors,
   Tooltip,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
@@ -150,34 +151,39 @@ const AddToBasketButton = ({
     : undefined;
 
   return (
-    <Tooltip
-      disabled={!disabledExplanation}
-      placement="bottom"
-      content={disabledExplanation}
-    >
-      <div>
-        <Button
-          onClick={handleAddRemoveButtonClick}
-          disabled={!buttonEnabled}
-          buttonStyle={buttonStyle}
-          processing={isProcessing}
-          bgColor={ideaInBasket ? colors.green500 : undefined}
-          textColor={ideaInBasket ? colors.white : undefined}
-          textHoverColor={ideaInBasket ? colors.white : undefined}
-          bgHoverColor={ideaInBasket ? colors.green500 : undefined}
-          borderColor={ideaInBasket ? colors.success : undefined}
-          width="100%"
-          className={`e2e-assign-budget-button ${
-            ideaInBasket ? 'in-basket' : 'not-in-basket'
-          }`}
-        >
-          {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
-          <FormattedMessage {...buttonMessage} />
-          <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
-          <ScreenReaderCurrencyValue amount={ideaBudget} currency={currency} />
-        </Button>
-      </div>
-    </Tooltip>
+    <Box w="100%">
+      <Tooltip
+        disabled={!disabledExplanation}
+        placement="bottom"
+        content={disabledExplanation}
+      >
+        <div>
+          <Button
+            onClick={handleAddRemoveButtonClick}
+            disabled={!buttonEnabled}
+            buttonStyle={buttonStyle}
+            processing={isProcessing}
+            bgColor={ideaInBasket ? colors.green500 : undefined}
+            textColor={ideaInBasket ? colors.white : undefined}
+            textHoverColor={ideaInBasket ? colors.white : undefined}
+            bgHoverColor={ideaInBasket ? colors.green500 : undefined}
+            borderColor={ideaInBasket ? colors.success : undefined}
+            width="100%"
+            className={`e2e-assign-budget-button ${
+              ideaInBasket ? 'in-basket' : 'not-in-basket'
+            }`}
+          >
+            {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
+            <FormattedMessage {...buttonMessage} />
+            <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
+            <ScreenReaderCurrencyValue
+              amount={ideaBudget}
+              currency={currency}
+            />
+          </Button>
+        </div>
+      </Tooltip>
+    </Box>
   );
 };
 

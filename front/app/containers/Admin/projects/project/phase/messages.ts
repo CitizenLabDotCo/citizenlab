@@ -123,6 +123,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument',
     defaultMessage: '<b>Annotating document:</b>  {participants}',
   },
+  attendingEvent: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent',
+    defaultMessage: '<b>Attending event:</b>  {participants}',
+  },
   and: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
     defaultMessage: 'and',
