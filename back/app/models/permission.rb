@@ -51,8 +51,8 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :update_global_custom_fields, on: :update
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -92,7 +92,7 @@ class Permission < ApplicationRecord
     false
   end
 
-  # TEMP: Whilst verified actions are in beta
+  # TODO: Remove when verified actions are out of beta
   def permitted_by
     return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
 
@@ -110,8 +110,11 @@ class Permission < ApplicationRecord
     self.global_custom_fields ||= allow_global_custom_fields?
   end
 
+  # TODO: Method not needed once verified actions are out of beta
   def update_global_custom_fields
-    self.global_custom_fields = false unless allow_global_custom_fields?
+    return if verified_actions_enabled?
+
+    self.global_custom_fields = false if (permitted_by == 'users')
   end
 
   def verified_actions_enabled?
