@@ -25,6 +25,10 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import LineMapPreview from './MapPreview/LineMapPreview';
+import PointMapPreview from './MapPreview/PointMapPreview';
+import PolygonMapPreview from './MapPreview/PolygonMapPreview';
+
 type Props = {
   customFieldId: string;
   input: IInputsData;
@@ -94,6 +98,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const { formatMessage } = useIntl();
+
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -289,13 +294,34 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           );
         }
         case 'point': {
-          return <p>TODO: Point</p>;
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PointMapPreview rawValue={rawValue} />
+            </Box>
+          );
         }
         case 'line': {
-          return <p>TODO: Line</p>;
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <LineMapPreview rawValue={rawValue} />
+            </Box>
+          );
         }
         case 'polygon': {
-          return <p>TODO: Polygon</p>;
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PolygonMapPreview rawValue={rawValue} />
+            </Box>
+          );
         }
         case 'file_upload': {
           // We don't support file upload fields in an analysis at the moment
