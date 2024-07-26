@@ -183,6 +183,19 @@ resource 'Permissions' do
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
     end
+
+    patch 'web_api/v1/permissions/:action/reset' do
+      ValidationErrorHelper.new.error_fields(self, Permission)
+
+      let(:action) { 'reacting_initiative' }
+
+      example_request 'Reset a permission to use global custom fields and no groups' do
+        assert_status 200
+        expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+        expect(response_data.dig(:attributes, :global_custom_fields)).to eq true
+        # expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+      end
+    end
   end
 
   context 'when resident' do

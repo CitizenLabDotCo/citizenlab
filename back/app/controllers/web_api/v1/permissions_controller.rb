@@ -29,6 +29,18 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
+  def reset
+    @permission.update!(global_custom_fields: true)
+    @permission.permission_custom_fields.destroy_all
+    # @permission.groups.de
+
+    if @permission.save
+      render json: serialize(@permission), status: :ok
+    else
+      render json: { errors: @permission.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def requirements
     authorize @permission
     json_requirements = user_requirements_service.requirements @permission, current_user
