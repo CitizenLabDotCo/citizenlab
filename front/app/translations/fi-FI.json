@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "Tervetuloa {orgName}online-osallistumisalustaan. \nTutustu paikallisiin hankkeisiin ja osallistu keskusteluun!",
   "app.containers.App.loading": "Ladataan...",
   "app.containers.App.metaTitle1": "Kansalaisten sitouttamisalusta | {orgName}",
+  "app.containers.App.skipLinkText": "Siirry pääsisältöön",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua ulos, kirjautua sisään tällä sähköpostiosoitteella ja vahvistaa tilisi asetussivulla.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Anna tunnus",
   "app.containers.Authentication.steps.Invitation.token": "Token",
