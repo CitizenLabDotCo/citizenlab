@@ -38,7 +38,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       disabled_reason: permissions_service.denied_reason_for_action(permission_action, scope: permission_scope),
       requirements: requirements
     }
-    render json: raw_json( json_requirements ), status: :ok
+    render json: raw_json(json_requirements), status: :ok
   end
 
   def schema
