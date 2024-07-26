@@ -266,7 +266,6 @@ resource 'PermissionsField' do
       end
     end
 
-
     context 'fields are not yet persisted' do
       let(:permission) { create(:permission, permitted_by: 'users') }
       let(:permissions_field) { Permissions::PermissionsFieldsService.new.fields_for_permission(permission).last }
@@ -295,6 +294,5 @@ resource 'PermissionsField' do
         expect(PermissionsField.all.map { |field| field.custom_field.code }).not_to include 'domicile'
       end
     end
-
   end
 end
