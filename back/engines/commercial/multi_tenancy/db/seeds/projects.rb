@@ -6,7 +6,18 @@ module MultiTenancy
   module Seeds
     class Projects < Base
       def run
-        runner.num_projects.times do
+        create_fixed_projects
+        create_random_projects
+      end
+
+      private
+
+      def create_fixed_projects
+        # TODO
+      end
+
+      def create_random_projects
+        (runner.num_projects - Project.count).times do
           project = Project.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
@@ -45,8 +56,6 @@ module MultiTenancy
           end
         end
       end
-
-      private
 
       def configure_timeline_for(project)
         start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
