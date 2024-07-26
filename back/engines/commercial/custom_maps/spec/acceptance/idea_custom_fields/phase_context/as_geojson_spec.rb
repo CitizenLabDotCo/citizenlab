@@ -121,6 +121,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
 
+        expect(json_response.keys).to eq %i[type features]
         expect(json_response[:type]).to eq('FeatureCollection')
 
         expect(json_response[:features]).to match_array([
@@ -148,17 +149,17 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [3.3, 4.4] },
             properties: {
-              'Text q title': '',
-              'Multiline q title': '',
-              'Select q title': '',
+              'Text q title': nil,
+              'Multiline q title': nil,
+              'Select q title': nil,
               'Multiselect q title': '',
               'Multiselect image q title': '',
-              'Linear scale q title': '',
-              'Number q title': '',
-              'File upload q title': '',
+              'Linear scale q title': nil,
+              'Number q title': nil,
+              'File upload q title': nil,
               'Point q title [Longitude, Latitude]': { type: 'Point', coordinates: [3.3, 4.4] },
-              'Line q title [Longitude, Latitude]': '',
-              'Polygon q title [Longitude, Latitude]': ''
+              'Line q title [Longitude, Latitude]': nil,
+              'Polygon q title [Longitude, Latitude]': nil
             }
           }
         ])
