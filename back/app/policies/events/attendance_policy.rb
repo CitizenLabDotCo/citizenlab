@@ -24,7 +24,7 @@ class Events::AttendancePolicy < ApplicationPolicy
     return false unless active?
     return false unless user.id == record.attendee_id
 
-    reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'attending_event', user, record.event.project
+    reason = Permissions::ProjectPermissionsService.new(record.event.project, user).denied_reason_for_action 'attending_event'
     return false if reason
 
     ProjectPolicy.new(user, record.event.project).show?

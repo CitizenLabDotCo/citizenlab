@@ -6,6 +6,10 @@ module ParticipationMethod
       @phase = phase
     end
 
+    def transitive?
+      false
+    end
+
     def assign_defaults_for_phase
       # Default is to do nothing.
     end
@@ -53,36 +57,21 @@ module ParticipationMethod
       false
     end
 
+    def proposed_budget_in_form?
+      false
+    end
+
     def allowed_ideas_orders
       []
-    end
-
-    def never_show?
-      false
-    end
-
-    def posting_allowed?
-      false
     end
 
     def update_if_published?
       true
     end
 
-    def creation_phase?
-      false
-    end
-
     def custom_form
-      phase.project.custom_form || CustomForm.new(participation_context: phase.project)
-    end
-
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      false
+      context = transitive? ? phase.project : phase
+      context.custom_form || CustomForm.new(participation_context: context)
     end
 
     def sign_in_required_for_posting?
@@ -93,11 +82,11 @@ module ParticipationMethod
       'custom_forms.categories.extra.title'
     end
 
-    def supports_exports?
+    def supports_public_visibility?
       false
     end
 
-    def supports_publication?
+    def supports_exports?
       false
     end
 
@@ -121,7 +110,15 @@ module ParticipationMethod
       true
     end
 
+    def supports_posting_inputs?
+      false
+    end
+
     def supports_idea_form?
+      false
+    end
+
+    def supports_input_term?
       false
     end
 
@@ -133,11 +130,11 @@ module ParticipationMethod
       false
     end
 
-    def include_data_in_email?
-      true
+    def supports_answer_visible_to?
+      false
     end
 
-    def supports_answer_visible_to?
+    def supports_serializing?(_attribute)
       false
     end
 

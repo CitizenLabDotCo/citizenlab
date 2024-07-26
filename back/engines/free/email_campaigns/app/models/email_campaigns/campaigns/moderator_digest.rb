@@ -150,7 +150,7 @@ module EmailCampaigns
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.all.select do |idea|
-        idea.participation_method_on_creation.include_data_in_email? &&
+        idea.participation_method_on_creation.supports_public_visibility? &&
           (idea_activity_count(idea) > 0 || idea.published_at > Time.now - days_ago)
       end
       top_ideas = top_ideas.sort_by do |idea|
