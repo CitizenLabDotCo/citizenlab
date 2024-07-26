@@ -4,7 +4,7 @@ import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../messages';
 
 const HeatmapTooltipContent = () => {
   const { formatMessage } = useIntl();

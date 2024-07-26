@@ -13,9 +13,9 @@ import T from 'components/T';
 import Files from '../Files';
 
 import InputType from './InputType';
-import LineLocationQuestion from './LineLocationQuestion';
-import PointLocationQuestion from './PointLocationQuestion';
-import PolygonLocationQuestion from './PolygonLocationQuestion';
+import LineLocationQuestion from './MappingQuestions/LineLocationQuestion';
+import PointLocationQuestion from './MappingQuestions/PointLocationQuestion';
+import PolygonLocationQuestion from './MappingQuestions/PolygonLocationQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {

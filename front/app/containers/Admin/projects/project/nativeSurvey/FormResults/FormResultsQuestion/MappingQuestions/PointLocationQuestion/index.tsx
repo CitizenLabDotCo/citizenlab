@@ -12,14 +12,15 @@ import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../messages';
+import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 
 import HeatmapTooltipContent from './HeatmapTooltipContent';
 
 type Props = {
   pointResponses: { response: GeoJSON.Point }[];
   mapConfigId?: string;
-  customFieldId?: string;
+  customFieldId: string;
 };
 
 const PointLocationQuestion = ({
@@ -31,8 +32,9 @@ const PointLocationQuestion = ({
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   // State variables
@@ -60,13 +62,19 @@ const PointLocationQuestion = ({
   return (
     <Box>
       <Box mt="-32px" display="flex" justifyContent="flex-end" mb="8px">
-        <Toggle
-          checked={showHeatMap}
-          onChange={() => {
-            setShowHeatMap((showHeatMap) => !showHeatMap);
-          }}
-          label={<HeatmapTooltipContent />}
-        />
+        <Box display="flex" gap="24px">
+          <ExportGeoJSONButton
+            customFieldId={customFieldId}
+            phaseId={phaseId}
+          />
+          <Toggle
+            checked={showHeatMap}
+            onChange={() => {
+              setShowHeatMap((showHeatMap) => !showHeatMap);
+            }}
+            label={<HeatmapTooltipContent />}
+          />
+        </Box>
       </Box>
 
       {isLoading ? (

@@ -12,12 +12,13 @@ import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../messages';
+import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 
 type Props = {
   polygonResponses: { response: GeoJSON.Polygon }[];
   mapConfigId?: string;
-  customFieldId?: string;
+  customFieldId: string;
 };
 
 const PolygonLocationQuestion = ({
@@ -29,8 +30,9 @@ const PolygonLocationQuestion = ({
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   // State variables
@@ -56,6 +58,7 @@ const PolygonLocationQuestion = ({
 
   return (
     <Box>
+      <ExportGeoJSONButton customFieldId={customFieldId} phaseId={phaseId} />
       {isLoading ? (
         <Spinner />
       ) : (
