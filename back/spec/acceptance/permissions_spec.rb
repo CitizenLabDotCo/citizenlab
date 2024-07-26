@@ -182,7 +182,7 @@ resource 'Permissions' do
 
         do_request
         assert_status 200
-        expect(response_data.dig(:attributes, :global_custom_fields)).to eq true
+        expect(response_data.dig(:attributes, :global_custom_fields)).to be true
         expect(permission.permissions_fields.count).to eq 0
         expect(permission.permissions_fields.count).to eq 0
       end
