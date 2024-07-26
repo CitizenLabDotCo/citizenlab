@@ -25,7 +25,7 @@ def feedback_needed_filter_parameter(s)
   s.parameter :feedback_needed, 'Only count initiatives that need feedback', required: false
 end
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 resource 'Stats - Initiatives' do
   explanation 'The various stats endpoints can be used to show certain properties of initiatives.'
   header 'Content-Type', 'application/json'
