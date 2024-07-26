@@ -72,6 +72,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle',
     defaultMessage: 'Who can annotate the document?',
   },
+  permissionAction_attending_event_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle',
+    defaultMessage: 'Who can sign up to attend an event?',
+  },
   phase: {
     id: 'app.containers.AdminPage.groups.permissions.phase',
     defaultMessage: 'Phase ',

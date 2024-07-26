@@ -13,7 +13,7 @@ export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 
-type ProjectDisabledReason =
+export type ProjectDisabledReason =
   | 'project_not_visible'
   | 'project_inactive'
   | UserDisabledReason;
@@ -98,7 +98,8 @@ export type ActionDescriptorAction =
   | 'budgeting'
   | 'annotating_document'
   | 'taking_survey'
-  | 'taking_poll';
+  | 'taking_poll'
+  | 'attending_event';
 
 // All disabled reasons
 export type DisabledReason =

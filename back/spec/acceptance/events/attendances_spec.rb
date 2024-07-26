@@ -78,6 +78,40 @@ resource 'Event attendances' do
     context 'when the user is an admin' do
       example_request 'Register another user to an event', pending: 'TODO'
     end
+
+    context 'when the event has granular permissions' do
+      let(:user) { create(:user) }
+      let(:group) { create(:group) }
+      let(:project) do
+        create(
+          :single_phase_native_survey_project,
+          phase_attrs: { with_permissions: true }
+        )
+      end
+
+      let(:event) do
+        event = create(:event, project: project)
+        permissions = event.project.phases.first.permissions
+        permission = permissions.find_by(action: 'attending_event')
+        permission.update!(permitted_by: 'groups', groups: [group])
+        event
+      end
+
+      let(:event_id) { event.id }
+
+      before { header_token_for(user) }
+
+      example 'Register oneself to an event, not as a group member', document: false do
+        do_request
+        assert_status 401
+      end
+
+      example 'Register oneself to an event, as a group member', document: false do
+        group.add_member(user).save!
+        do_request
+        assert_status 201
+      end
+    end
   end
 
   delete 'web_api/v1/event_attendances/:id' do
