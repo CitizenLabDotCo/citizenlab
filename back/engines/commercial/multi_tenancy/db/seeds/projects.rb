@@ -19,12 +19,30 @@ module MultiTenancy
       def create_mixed_3_methods_project
         project = Project.create(
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
-          slug: 'mixed-3-methods-project',
-          description_multiloc: runner.rand_description_multiloc
+          description_multiloc: runner.rand_description_multiloc,
+          slug: 'mixed-3-methods-project'
         )
-        # past_proposals_phase = project.phases.create()
-        # current_ideation_phase = project.phases.create()
-        # future_survey_phase = project.phases.create()
+        project.phases.create(
+          title_multiloc: { 'en' => 'Past proposals phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'proposals',
+          start_at: Date.today - 30.days,
+          end_at: Date.today - 11.days,
+        )
+        project.phases.create(
+          title_multiloc: { 'en' => 'Current ideation phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'ideation',
+          start_at: Date.today - 10.days,
+          end_at: Date.today + 10.days,
+        )
+        project.phases.create(
+          title_multiloc: { 'en' => 'Future native survey phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'native_survey',
+          start_at: Date.today + 11.days,
+          end_at: nil,
+        )
       end
 
       def create_random_projects
