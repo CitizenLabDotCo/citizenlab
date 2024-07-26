@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "Wëllkomm op der participativer Plattform vum {Zesumme Vereinfachen}. Kuckt d'Projeten an diskutéiert mat!",
   "app.containers.App.loading": "Um Lueden ... ",
   "app.containers.App.metaTitle1": "Bierger Engagement Plattform | {orgName}",
+  "app.containers.App.skipLinkText": "Wiesselt op den Haaptinhalt",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "E Kont mat dëser E-Mail gëtt et schonn. Dir kënnt Iech ausloggen, Iech mat dëser E-Mailadress aloggen an Äre Kont op der Astellungssäit verifizéieren.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Gitt w.e.g. en Token un",
   "app.containers.Authentication.steps.Invitation.token": "Token",
