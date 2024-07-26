@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "Добродошли на онлајн платформу за учешће {orgName}. \nИстражите локалне пројекте и укључите се у дискусију!",
   "app.containers.App.loading": "Учитавање...",
   "app.containers.App.metaTitle1": "Citizen engagement platform | {orgName}",
+  "app.containers.App.skipLinkText": "Skip to main content",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Налог са овом е-поштом већ постоји. Можете се одјавити, пријавити са овом адресом е-поште и верификовати свој налог на страници са подешавањима.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Унесите токен",
   "app.containers.Authentication.steps.Invitation.token": "Токен",
