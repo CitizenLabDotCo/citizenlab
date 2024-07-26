@@ -985,6 +985,7 @@
   "app.containers.App.appMetaDescription": "مرحباً في منصة {orgName} للمُشاركة عبر الإنترنت.استكشف مشروعات محلية وشارك في نقاشات!\n     ",
   "app.containers.App.loading": "التحميل جارٍ...",
   "app.containers.App.metaTitle1": "منصة مشاركة المواطنين | {orgName}",
+  "app.containers.App.skipLinkText": "انتقل إلى المحتوى الرئيسي",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "حساب بهذا البريد الإلكتروني موجود بالفعل. يمكنك تسجيل الخروج وتسجيل الدخول باستخدام عنوان البريد الإلكتروني هذا والتحقق من حسابك في صفحة الإعدادات.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "الرجاء إدخال رمز مميز",
   "app.containers.Authentication.steps.Invitation.token": "رمز",
