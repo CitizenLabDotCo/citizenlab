@@ -28,23 +28,23 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Past proposals phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
-          start_at: Date.today - 30.days,
-          end_at: Date.today - 11.days,
+          start_at: Time.zone.today - 30.days,
+          end_at: Time.zone.today - 11.days,
           campaigns_settings: { project_phase_started: true }
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
-          start_at: Date.today - 10.days,
-          end_at: Date.today + 10.days,
+          start_at: Time.zone.today - 10.days,
+          end_at: Time.zone.today + 10.days,
           campaigns_settings: { project_phase_started: true }
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'native_survey',
-          start_at: Date.today + 11.days,
+          start_at: Time.zone.today + 11.days,
           end_at: nil,
           campaigns_settings: { project_phase_started: true },
           native_survey_title_multiloc: { 'en' => 'Survey' },
