@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Συμμετέχοντες",
   "app.containers.EventsShow.attending": "που παρακολουθεί το",
   "app.containers.EventsShow.editEvent": "Επεξεργασία συμβάντος",
-  "app.containers.EventsShow.emailSharingBody": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle} στο {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Ημερομηνία και ώρα εκδήλωσης",
   "app.containers.EventsShow.eventFrom2": "Από το \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Πηγαίνετε πίσω",

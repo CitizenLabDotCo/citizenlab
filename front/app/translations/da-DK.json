@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Deltagere",
   "app.containers.EventsShow.attending": "deltager",
   "app.containers.EventsShow.editEvent": "Rediger begivenhed",
-  "app.containers.EventsShow.emailSharingBody": "Deltag i dette arrangement: {eventTitle} på {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Dato og klokkeslæt for begivenheden",
   "app.containers.EventsShow.eventFrom2": "Fra \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Gå tilbage",

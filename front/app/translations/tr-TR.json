@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Katılımcılar",
   "app.containers.EventsShow.attending": "katılıyor",
   "app.containers.EventsShow.editEvent": "Etkinliği düzenle",
-  "app.containers.EventsShow.emailSharingBody": "Bu etkinliğe katılın: {eventTitle} {eventLocation}adresinden",
   "app.containers.EventsShow.eventDateTimeIcon": "Etkinlik tarihi ve saati",
   "app.containers.EventsShow.eventFrom2": "\"{projectTitle}\" adresinden",
   "app.containers.EventsShow.goBack": "Geri dön",
