@@ -278,8 +278,8 @@ ach:
       description: "crwdns2618529:0crwdne2618529:0"
     pdf_export:
       personal_data: 'crwdns2618531:0crwdne2618531:0'
-      personal_data_explanation_ideation: "crwdns2618533:0%{organizationName}crwdnd2618533:0%{organizationName}crwdne2618533:0"
-      personal_data_explanation_native_survey: "crwdns2618535:0%{organizationName}crwdnd2618535:0%{organizationName}crwdne2618535:0"
+      personal_data_explanation_public: "crwdns2677497:0%{organizationName}crwdnd2677497:0%{organizationName}crwdne2677497:0"
+      personal_data_explanation_private: "crwdns2677499:0%{organizationName}crwdnd2677499:0%{organizationName}crwdne2677499:0"
       first_name: 'crwdns2618537:0crwdne2618537:0'
       last_name: 'crwdns2618539:0crwdne2618539:0'
       email_address: 'crwdns2618541:0crwdne2618541:0'
