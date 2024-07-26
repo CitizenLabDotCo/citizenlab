@@ -1,13 +1,9 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 describe Permissions::BasePermissionsService do
-  let(:service) { described_class.new }
+  let(:service) { described_class.new(user) }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
+  before { SettingsService.new.activate_feature! 'user_confirmation' }
 
   describe 'denied_reason_for_permission' do
     before do
@@ -36,7 +32,7 @@ describe Permissions::BasePermissionsService do
     end
 
     let(:permission) { create(:permission, permitted_by: permitted_by) }
-    let(:denied_reason) { service.send(:user_denied_reason, permission, user) }
+    let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
     context 'when permitted by everyone' do
       let(:permitted_by) { 'everyone' }

@@ -347,11 +347,13 @@ const HomepageBannerSettings = () => {
       flexDirection="column"
       gap="16px"
     >
-      <Warning>
-        <Text color="primary" m="0px">
-          {formatMessage(messages.customizationNotAvailable)}
-        </Text>
-      </Warning>
+      {!customHomepageBannerAllowed && (
+        <Warning>
+          <Text color="primary" m="0px">
+            {formatMessage(messages.customizationNotAvailable)}
+          </Text>
+        </Warning>
+      )}
       <LayoutSettingField
         bannerLayout={homepageSettings.banner_layout}
         onChange={(value) => {

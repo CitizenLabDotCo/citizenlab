@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase',
     defaultMessage: 'Ideation phase',
   },
+  proposalsPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.proposalsPhase',
+    defaultMessage: 'Proposals phase',
+  },
   informationPhase: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase',
     defaultMessage: 'Information phase',

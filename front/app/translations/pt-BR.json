@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Tente novamente. Se o problema persistir, contate-nos",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Havia um problema por aqui, desculpe",
   "app.components.HookForm.Feedback.successMessage": "Formulário enviado com sucesso",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Role para a esquerda.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Role para a direita.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideias foram carregadas.",
   "app.components.IdeaCards.showMore": "Mostrar mais",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Esconder o cartão de ideia.",

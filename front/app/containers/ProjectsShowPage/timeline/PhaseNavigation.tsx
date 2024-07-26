@@ -166,6 +166,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               disabled={selectedPhaseId === phases.data[0].id}
               ariaLabel={formatMessage(messages.previousPhase)}
               className="e2e-previous-phase"
+              borderColor={colors.grey700}
             />
           </div>
         </Tooltip>
@@ -183,7 +184,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
                 onClick={goToCurrentPhase}
                 icon="dot"
                 iconSize="16px"
-                iconColor={colors.success}
+                iconColor={colors.green500}
                 buttonStyle={navButtonStyle}
                 width={navButtonSize}
                 height={navButtonSize}
@@ -191,6 +192,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
                 disabled={selectedPhaseId === currentPhaseId}
                 ariaLabel={formatMessage(messages.currentPhase)}
                 className="e2e-current-phase"
+                borderColor={colors.grey700}
               />
             </div>
           </Tooltip>
@@ -217,6 +219,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               }
               ariaLabel={formatMessage(messages.nextPhase)}
               className="e2e-next-phase"
+              borderColor={colors.grey700}
             />
           </div>
         </Tooltip>

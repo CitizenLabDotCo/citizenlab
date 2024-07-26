@@ -63,19 +63,21 @@ class ProjectCopyService < TemplateService
     end
 
     if include_ideas
-      @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
-      @template['models']['basket']              = yml_baskets shift_timestamps: shift_timestamps
-      @template['models']['idea']                = yml_ideas shift_timestamps: shift_timestamps
-      @template['models']['baskets_idea']        = yml_baskets_ideas shift_timestamps: shift_timestamps
-      @template['models']['idea_file']           = yml_idea_files shift_timestamps: shift_timestamps
-      @template['models']['idea_image']          = yml_idea_images shift_timestamps: shift_timestamps
-      @template['models']['ideas_phase']         = yml_ideas_phases shift_timestamps: shift_timestamps
-      @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
-      @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
-      @template['models']['reaction'] = yml_reactions shift_timestamps: shift_timestamps
-      @template['models']['follower'] = yml_followers shift_timestamps: shift_timestamps
+      exported_ideas = @project.ideas.published
+
+      @template['models']['user']                   = yml_users anonymize_users, exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['basket']                 = yml_baskets shift_timestamps: shift_timestamps
+      @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas
+      @template['models']['idea_file']              = yml_idea_files exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['idea_image']             = yml_idea_images exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['ideas_phase']            = yml_ideas_phases exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['comment']                = yml_comments exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['official_feedback']      = yml_official_feedback exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['reaction']               = yml_reactions exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['follower']               = yml_followers exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
-      @template['models']['events/attendance'] = yml_attendances shift_timestamps: shift_timestamps
+      @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
 
     @template
@@ -389,9 +391,10 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
+    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
+    custom_fields = CustomField.where(resource: custom_forms)
     map_configs = CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
-      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
+      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
 
     map_configs.map do |map_config|
       yml_map_config = {
@@ -426,10 +429,10 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_users(anonymize_users, shift_timestamps: 0)
+  def yml_users(anonymize_users, exported_ideas, shift_timestamps: 0)
     service = AnonymizeUserService.new
     user_ids = []
-    idea_ids = @project.ideas.ids
+    idea_ids = exported_ideas.ids
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
@@ -565,9 +568,10 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_ideas(shift_timestamps: 0)
+  def yml_ideas(exported_ideas, shift_timestamps: 0)
     custom_fields = CustomField.where(resource: CustomForm.where(participation_context: (@project.phases + [@project])))
-    @project.ideas.published.map do |idea|
+
+    exported_ideas.map do |idea|
       yml_idea = {
         'title_multiloc' => idea.title_multiloc,
         'body_multiloc' => idea.body_multiloc,
@@ -596,14 +600,15 @@ class ProjectCopyService < TemplateService
         end,
         'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
       }
+
       yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
       store_ref yml_idea, idea.id, :idea
       yml_idea
     end
   end
 
-  def yml_baskets_ideas(shift_timestamps: 0)
-    BasketsIdea.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |b|
+  def yml_baskets_ideas(exported_ideas)
+    BasketsIdea.where(idea: exported_ideas).map do |b|
       if lookup_ref(b.idea_id, :idea)
         {
           'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -614,8 +619,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_idea_files(shift_timestamps: 0)
-    IdeaFile.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
+  def yml_idea_files(exported_ideas, shift_timestamps: 0)
+    IdeaFile.where(idea: exported_ideas).map do |i|
       {
         'idea_ref' => lookup_ref(i.idea_id, :idea),
         'name' => i.name,
@@ -627,8 +632,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_idea_images(shift_timestamps: 0)
-    IdeaImage.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
+  def yml_idea_images(exported_ideas, shift_timestamps: 0)
+    IdeaImage.where(idea: exported_ideas).map do |i|
       {
         'idea_ref' => lookup_ref(i.idea_id, :idea),
         'remote_image_url' => i.image_url,
@@ -639,8 +644,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_ideas_phases(shift_timestamps: 0)
-    IdeasPhase.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
+  def yml_ideas_phases(exported_ideas, shift_timestamps: 0)
+    IdeasPhase.where(idea: exported_ideas).map do |i|
       {
         'idea_ref' => lookup_ref(i.idea_id, :idea),
         'phase_ref' => lookup_ref(i.phase_id, :phase),
@@ -652,8 +657,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_comments(shift_timestamps: 0)
-    (Comment.where(parent_id: nil).where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where.not(parent_id: nil).where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
+  def yml_comments(exported_ideas, shift_timestamps: 0)
+    Comment.where(post: exported_ideas).map do |c|
       yml_comment = {
         'author_ref' => lookup_ref(c.author_id, :user),
         'author_hash' => c.author_hash,
@@ -671,8 +676,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_official_feedback(shift_timestamps: 0)
-    OfficialFeedback.where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea').map do |o|
+  def yml_official_feedback(exported_ideas, shift_timestamps: 0)
+    OfficialFeedback.where(post: exported_ideas).map do |o|
       yml_official_feedback = {
         'post_ref' => lookup_ref(o.post_id, :idea),
         'user_ref' => lookup_ref(o.user_id, :user),
@@ -686,8 +691,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_reactions(shift_timestamps: 0)
-    idea_ids = @project.ideas.published.where.not(author_id: nil).ids
+  def yml_reactions(exported_ideas, shift_timestamps: 0)
+    idea_ids = exported_ideas.ids
     comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
@@ -702,9 +707,11 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_followers(shift_timestamps: 0)
-    Follower.where(followable_id: ([@project.id] + @project.ideas.published.where.not(author_id: nil).ids))
-    @project.followers.map do |follower|
+  def yml_followers(exported_ideas, shift_timestamps: 0)
+    followers = Follower.where(followable: @project)
+      .or(Follower.where(followable: exported_ideas))
+
+    followers.map do |follower|
       {
         'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
         'user_ref' => lookup_ref(follower.user_id, :user),

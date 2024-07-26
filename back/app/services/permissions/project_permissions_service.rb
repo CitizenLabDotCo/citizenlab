@@ -1,43 +1,45 @@
-# frozen_string_literal: true
-
 module Permissions
   class ProjectPermissionsService < PhasePermissionsService
     PROJECT_DENIED_REASONS = {
       project_not_visible: 'project_not_visible'
     }.freeze
 
-    def denied_reason_for_action(action, user, project, reaction_mode: nil)
-      project_visible_reason = project_visible_disabled_reason(project, user)
-      if project_visible_reason
-        project_visible_reason
-      else
-        phase = @timeline_service.current_phase_not_archived project
-        super action, user, phase, project: project, reaction_mode: reaction_mode
-      end
+    def initialize(project, user, user_requirements_service: nil)
+      @timeline_service = TimelineService.new
+      phase = @timeline_service.current_phase_not_archived project
+      phase.project = project if phase # Performance optimization (keep preloaded relationships)
+      super(phase, user, user_requirements_service: user_requirements_service)
+      @project ||= project
+    end
+
+    def denied_reason_for_action(action, reaction_mode: nil)
+      project_visible_disabled_reason || super(action, reaction_mode: reaction_mode)
     end
 
     # Future enabled phases
-    def future_enabled_phase(action, user, project, reaction_mode: nil)
+    def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
-      @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(action, user, phase, reaction_mode: reaction_mode) }
+      @timeline_service.future_phases(project, time).find do |phase|
+        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action(action, reaction_mode: reaction_mode)
+      end
     end
 
-    def action_descriptors(project, user)
-      posting_disabled_reason = denied_reason_for_action 'posting_idea', user, project
-      commenting_disabled_reason = denied_reason_for_action 'commenting_idea', user, project
-      reacting_disabled_reason = denied_reason_for_action 'reacting_idea', user, project
-      liking_disabled_reason = denied_reason_for_action 'reacting_idea', user, project, reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', user, project, reaction_mode: 'down'
-      annotating_document_disabled_reason = denied_reason_for_action 'annotating_document', user, project
-      taking_survey_disabled_reason = denied_reason_for_action 'taking_survey', user, project
-      taking_poll_disabled_reason = denied_reason_for_action 'taking_poll', user, project
-      voting_disabled_reason = denied_reason_for_action 'voting', user, project
-      attending_event_disabled_reason = denied_reason_for_action 'attending_event', user, project
+    def action_descriptors
+      posting_disabled_reason = denied_reason_for_action 'posting_idea'
+      commenting_disabled_reason = denied_reason_for_action 'commenting_idea'
+      reacting_disabled_reason = denied_reason_for_action 'reacting_idea'
+      liking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
+      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
+      annotating_document_disabled_reason = denied_reason_for_action 'annotating_document'
+      taking_survey_disabled_reason = denied_reason_for_action 'taking_survey'
+      taking_poll_disabled_reason = denied_reason_for_action 'taking_poll'
+      voting_disabled_reason = denied_reason_for_action 'voting'
+      attending_event_disabled_reason = denied_reason_for_action 'attending_event'
       {
         posting_idea: {
           enabled: !posting_disabled_reason,
           disabled_reason: posting_disabled_reason,
-          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea', user, project)&.start_at
+          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea')&.start_at
         },
         commenting_idea: {
           enabled: !commenting_disabled_reason,
@@ -85,8 +87,10 @@ module Permissions
 
     private
 
+    attr_reader :project
+
     # Project methods
-    def project_visible_disabled_reason(project, user)
+    def project_visible_disabled_reason
       user_can_moderate = user && UserRoleService.new.can_moderate?(project, user)
       return if user_can_moderate
 

@@ -2,6 +2,7 @@
 
 class WebApi::V1::PhasesController < ApplicationController
   before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
+  around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
   def index
@@ -23,12 +24,8 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
-    saved = false
-    ActiveRecord::Base.transaction do
-      saved = @phase.save
-      check_timeline_inconsistencies! @phase.project if saved
-    end
-    if saved
+
+    if @phase.save
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
@@ -40,12 +37,8 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.assign_attributes phase_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
-    saved = false
-    ActiveRecord::Base.transaction do
-      saved = @phase.save
-      check_timeline_inconsistencies! @phase.project if saved
-    end
-    if saved
+
+    if @phase.save
       sidefx.after_update(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
@@ -55,13 +48,10 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def destroy
     sidefx.before_destroy(@phase, current_user)
-    phase = nil
-    ActiveRecord::Base.transaction do
-      participation_method = Factory.instance.participation_method_for @phase
-      @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
+    phase = ActiveRecord::Base.transaction do
+      @phase.ideas.each(&:destroy!) if !@phase.pmethod.transitive?
 
-      phase = @phase.destroy
-      check_timeline_inconsistencies! @phase.project if phase.destroyed?
+      @phase.destroy
     end
     if phase.destroyed?
       sidefx.after_destroy(@phase, current_user)
@@ -154,10 +144,31 @@ class WebApi::V1::PhasesController < ApplicationController
     params.require(:phase).permit(permitted)
   end
 
-  def check_timeline_inconsistencies!(project)
-    # This code is meant to be temporary to find the cause of the timeline inconsistency bugs
-    if project.reload.phases.any? { |phase| !phase.valid? }
-      raise 'Timeline change would lead to inconsistencies!'
+  def detect_invalid_timeline_changes
+    project = if params[:project_id]
+      Project.find(params[:project_id])
+    else
+      Phase.find(params[:id]).project
+    end
+
+    phases_before = project.phases.map(&:dup)
+    valid_before = project.phases.all?(&:valid?)
+
+    yield
+
+    project.reload
+    phases_after = project.phases
+    valid_after = phases_after.all?(&:valid?)
+
+    if valid_before && !valid_after
+      ErrorReporter.report_msg(
+        'request introduced invalid phases', extra: {
+          project_id: project.id,
+          phases_before: phases_before.sort_by(&:start_at).map(&:attributes),
+          phases_after: phases_after.sort_by(&:start_at).map(&:attributes),
+          params: params.to_unsafe_h
+        }
+      )
     end
   end
 end

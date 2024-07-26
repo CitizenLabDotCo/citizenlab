@@ -175,6 +175,8 @@
   "app.components.HookForm.Feedback.submissionError": "Try again. If the issue persists, contact us",
   "app.components.HookForm.Feedback.submissionErrorTitle": "There was a problem on our end, sorry",
   "app.components.HookForm.Feedback.successMessage": "Form successfully submitted",
+  "app.components.HorizontalScroll.scrollLeftLabel": "Scroll left.",
+  "app.components.HorizontalScroll.scrollRightLabel": "Scroll right.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideas have loaded.",
   "app.components.IdeaCards.showMore": "Show more",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Hide idea card.",

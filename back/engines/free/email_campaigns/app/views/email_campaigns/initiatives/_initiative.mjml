@@ -1,7 +1,7 @@
 <mj-table cellpadding="15">
   <tr style="border:1px solid #ecedee; background-color: #FFFFFF" class="initiative">
     <% if serialized_initiative.header_bg.versions.small %>
-      <td style="width: 80px;">
+      <td class="hide-on-mobile" style="width: 80px;">
         <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
           <%= image_tag(serialized_initiative.header_bg.versions.small, width: '180px') %>
         </span>
