@@ -305,6 +305,7 @@ const CLSurveyPageLayout = memo(
               minWidth="60%"
               h="100%"
               ref={draggableDivRef}
+              key={`esri_map_${currentStep}`}
             >
               <EsriMap
                 layers={mapLayers}
