@@ -30,8 +30,7 @@ module CustomMaps
     end
 
     def set_non_colliding_titles
-      field_ids_to_titles = map_field_ids_to_titles
-
+      field_ids_to_titles = @fields_in_form.to_h { |field| [field.id, @multiloc_service.t(field.title_multiloc)] }
       colliding = field_ids_to_titles.values.group_by(&:itself).select { |_id, title| title.size > 1 }.map(&:first)
 
       colliding.each do |colliding_title|
@@ -46,12 +45,6 @@ module CustomMaps
       end
 
       field_ids_to_titles
-    end
-
-    def map_field_ids_to_titles
-      @fields_in_form.each_with_object({}) do |field, accu|
-        accu[field.id] = @multiloc_service.t(field.title_multiloc)
-      end
     end
   end
 end
