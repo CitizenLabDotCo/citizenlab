@@ -312,7 +312,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          factories = [:idea, :idea, :idea, :proposal, :idea, :idea, :idea]
+          factories = %i[idea idea idea proposal idea idea idea]
           locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
           placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
           @ideas = factories.zip(locations, placenames).map do |factory, location, placename|

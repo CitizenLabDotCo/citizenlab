@@ -13,14 +13,25 @@ module MultiTenancy
       private
 
       def create_fixed_projects
-        # TODO
+        create_mixed_3_methods_project
+      end
+
+      def create_mixed_3_methods_project
+        project = Project.create(
+          title_multiloc: { 'en' => 'Mixed 3 methods project' },
+          slug: 'mixed-3-methods-project',
+          description_multiloc: runner.rand_description_multiloc
+        )
+        # past_proposals_phase = project.phases.create()
+        # current_ideation_phase = project.phases.create()
+        # future_survey_phase = project.phases.create()
       end
 
       def create_random_projects
         (runner.num_projects - Project.count).times do
           project = Project.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
             visible_to: %w[admins groups public public public][rand(5)],
@@ -43,8 +54,8 @@ module MultiTenancy
             end
           end
 
-          configure_timeline_for(project)
-          configure_events_for(project)
+          configure_random_timeline_for(project)
+          configure_random_events_for(project)
 
           ([User.find_by(email: 'moderator@govocal.com')] + User.where.not(email: %w[admin@govocal.com user@govocal.com]).shuffle.take(rand(5))).each do |some_moderator|
             some_moderator.add_role 'project_moderator', project_id: project.id
@@ -57,13 +68,13 @@ module MultiTenancy
         end
       end
 
-      def configure_timeline_for(project)
+      def configure_random_timeline_for(project)
         start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
         rand(8).times do
           start_at += 1.day
           phase = project.phases.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
             end_at: (start_at += rand(150).days),
             participation_method: %w[ideation voting poll information ideation ideation][rand(6)],
@@ -113,12 +124,12 @@ module MultiTenancy
         end
       end
 
-      def configure_events_for(project)
+      def configure_random_events_for(project)
         rand(5).times do
           start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
           event = project.events.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             location_multiloc: runner.create_for_some_locales { Faker::Address.street_address },
             start_at: start_at,
             end_at: start_at + rand(12).hours
