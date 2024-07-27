@@ -162,6 +162,7 @@ resource 'Idea Custom Fields' do
     let(:idea2) do
       create(
         :idea,
+        author_id: nil,
         creation_phase: phase,
         project: project,
         custom_field_values: { custom_field_point.key => { type: 'Point', coordinates: [3.3, 4.4] } }
@@ -209,6 +210,11 @@ resource 'Idea Custom Fields' do
               'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': {
                 type: 'Polygon',
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
+              },
+              user_data: {
+                'Auteur-ID': idea1.author_id,
+                'E-mail van auteur': idea1.author.email,
+                'Auteur naam': idea1.author_name
               }
             }
           },
@@ -226,7 +232,8 @@ resource 'Idea Custom Fields' do
               'Upload de foto': nil,
               'Markeer de locatie op de kaart [Lengtegraad, Breedtegraad]': { type: 'Point', coordinates: [3.3, 4.4] },
               'Teken de route op de kaart [Lengtegraad, Breedtegraad]': nil,
-              'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': nil
+              'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': nil,
+              user_data: nil
             }
           }
         ])
@@ -235,7 +242,7 @@ resource 'Idea Custom Fields' do
       context 'when custom field is not a geographic type' do
         let(:custom_field_id) { custom_field_text.id }
 
-        example 'Generate GeoJSON for responses to a non-mapping question' do
+        example '[Error] Generate GeoJSON for responses to a non-mapping question' do
           expect { do_request }.to raise_error(
             RuntimeError,
             "Custom field with input_type: 'text' is not a geographic type"

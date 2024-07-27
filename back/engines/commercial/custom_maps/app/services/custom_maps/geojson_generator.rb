@@ -24,9 +24,26 @@ module CustomMaps
     private
 
     def generate_properties(input)
+      properties = generate_answers_to_questions(input)
+      properties[:user_data] = generate_user_data(input)
+
+      properties
+    end
+
+    def generate_answers_to_questions(input)
       @fields_in_form.each_with_object({}) do |field, accu|
         accu[@field_ids_to_titles[field.id]] = CustomFieldForGeojson.new(field).value_from(input)
       end
+    end
+
+    def generate_user_data(input)
+      return nil if input&.author.nil?
+
+      {
+        translation_for('author_id') => input&.author&.id,
+        translation_for('author_email') => input&.author&.email,
+        translation_for('author_fullname') => input&.author_name
+      }
     end
 
     def set_non_colliding_titles
@@ -45,6 +62,10 @@ module CustomMaps
       end
 
       field_ids_to_titles
+    end
+
+    def translation_for(key)
+      I18n.t key, scope: 'xlsx_export.column_headers'
     end
   end
 end

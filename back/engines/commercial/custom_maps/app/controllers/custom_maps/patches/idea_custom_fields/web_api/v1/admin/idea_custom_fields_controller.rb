@@ -20,7 +20,7 @@ module CustomMaps
               end
 
               def raise_error_if_not_geographic_field
-                return if @custom_field.geographic?
+                return if @custom_field.geographic_input?
 
                 raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
               end
