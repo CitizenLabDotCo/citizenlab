@@ -238,7 +238,7 @@ resource 'Idea Custom Fields' do
         example 'Generate GeoJSON for responses to a non-mapping question' do
           expect { do_request }.to raise_error(
             RuntimeError,
-            'Custom field is not a geographic type'
+            "Custom field with input_type: 'text' is not a geographic type"
           )
         end
       end

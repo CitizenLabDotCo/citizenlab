@@ -9,7 +9,7 @@ module CustomMaps
             module IdeaCustomFieldsController
               def as_geojson
                 set_custom_field
-                raise 'Custom field is not a geographic type' unless @custom_field.geographic?
+                raise_error_if_not_geographic_field
 
                 phase = Phase.find(params[:phase_id])
                 geojson = I18n.with_locale(current_user.locale) do
@@ -17,6 +17,12 @@ module CustomMaps
                 end
 
                 send_data geojson, type: 'application/json', filename: 'my_survey.geojson'
+              end
+
+              def raise_error_if_not_geographic_field
+                return if @custom_field.geographic?
+
+                raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
               end
 
               def include_in_index_response
