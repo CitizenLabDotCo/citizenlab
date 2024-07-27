@@ -9,6 +9,8 @@ module CustomMaps
             module IdeaCustomFieldsController
               def as_geojson
                 set_custom_field
+                raise 'Custom field is not a geographic type' unless @custom_field.geographic?
+
                 phase = Phase.find(params[:phase_id])
                 geojson = I18n.with_locale(current_user.locale) do
                   CustomMaps::GeojsonGenerator.new(phase, @custom_field).generate_geojson

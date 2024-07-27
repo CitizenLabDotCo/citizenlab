@@ -180,7 +180,7 @@ resource 'Idea Custom Fields' do
 
     context 'when admin' do
       before do
-        admin = create(:user, roles: [{ type: 'admin' }], locale: 'nl-NL')
+        admin = create(:admin, locale: 'nl-NL')
         header_token_for admin
       end
 
@@ -230,6 +230,25 @@ resource 'Idea Custom Fields' do
             }
           }
         ])
+      end
+
+      context 'when custom field is not a geographic type' do
+        let(:custom_field_id) { custom_field_text.id }
+
+        example 'Generate GeoJSON for responses to a non-mapping question' do
+          expect { do_request }.to raise_error(
+            RuntimeError,
+            'Custom field is not a geographic type'
+          )
+        end
+      end
+    end
+
+    context 'when regular user' do
+      before { header_token_for create(:user) }
+
+      example_request '[Unauthorized] Generate GeoJSON for responses to a mapping question' do
+        assert_status 401
       end
     end
   end
