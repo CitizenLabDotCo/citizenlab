@@ -12,65 +12,129 @@ resource 'Idea Custom Fields' do
     let(:form) { create(:custom_form, participation_context: phase) }
 
     let(:custom_field_text) do
-      create(:custom_field_text, resource: form, title_multiloc: { 'en' => 'Text q title' })
+      create(
+        :custom_field_text,
+        resource: form,
+        title_multiloc: { 'en' => 'What is your job title?', 'nl-NL' => 'Wat is uw functie?' }
+      )
     end
     let(:custom_field_multiline_text) do
       create(
         :custom_field_multiline_text,
         resource: form,
-        title_multiloc: { 'en' => 'Multiline q title' }
+        title_multiloc: {
+          'en' => 'What are your main responsibilities?',
+          'nl-NL' => 'Wat zijn uw belangrijkste verantwoordelijkheden?'
+        }
       )
     end
 
     let(:custom_field_select) do
-      create(:custom_field_select, resource: form, title_multiloc: { 'en' => 'Select q title' })
+      create(
+        :custom_field_select,
+        resource: form,
+        title_multiloc: { 'en' => 'Select your favourite color', 'nl-NL' => 'Selecteer uw favoriete kleur' }
+      )
     end
     let(:custom_field_option1) do
-      create(:custom_field_option, custom_field: custom_field_select, title_multiloc: { 'en' => 'Option 1' })
+      create(
+        :custom_field_option,
+        custom_field: custom_field_select,
+        title_multiloc: { 'en' => 'Option 1', 'nl-NL' => 'Optie 1' }
+      )
     end
 
     let(:custom_field_multiselect) do
-      create(:custom_field_multiselect, resource: form, title_multiloc: { 'en' => 'Multiselect q title' })
+      create(
+        :custom_field_multiselect,
+        resource: form,
+        title_multiloc: {
+          'en' => 'Select the languages that you speak',
+          'nl-NL' => 'Selecteer de talen die u spreekt'
+        }
+      )
     end
     let(:custom_field_option2) do
-      create(:custom_field_option, custom_field: custom_field_multiselect, title_multiloc: { 'en' => 'Option 2' })
+      create(
+        :custom_field_option,
+        custom_field: custom_field_multiselect,
+        title_multiloc: { 'en' => 'Option 2', 'nl-NL' => 'Optie 2' }
+      )
     end
     let(:custom_field_option3) do
-      create(:custom_field_option, custom_field: custom_field_multiselect, title_multiloc: { 'en' => 'Option 3' })
+      create(
+        :custom_field_option,
+        custom_field: custom_field_multiselect,
+        title_multiloc: { 'en' => 'Option 3', 'nl-NL' => 'Optie 3' }
+      )
     end
 
     let(:custom_field_multiselect_image) do
-      create(:custom_field_multiselect_image, resource: form, title_multiloc: { 'en' => 'Multiselect image q title' })
+      create(
+        :custom_field_multiselect_image,
+        resource: form,
+        title_multiloc: { 'en' => 'Select the best photo', 'nl-NL' => 'Selecteer de beste foto' }
+      )
     end
     let(:custom_field_option4) do
-      create(:custom_field_option, custom_field: custom_field_multiselect_image, title_multiloc: { 'en' => 'Option 4' })
+      create(
+        :custom_field_option,
+        custom_field: custom_field_multiselect_image,
+        title_multiloc: { 'en' => 'Option 4', 'nl-NL' => 'Optie 4' }
+      )
     end
     let(:custom_field_option5) do
-      create(:custom_field_option, custom_field: custom_field_multiselect_image, title_multiloc: { 'en' => 'Option 5' })
+      create(:custom_field_option,
+        custom_field: custom_field_multiselect_image,
+        title_multiloc: { 'en' => 'Option 5', 'nl-NL' => 'Optie 5' })
     end
 
     let(:custom_field_linear_scale) do
-      create(:custom_field_linear_scale, resource: form, title_multiloc: { 'en' => 'Linear scale q title' })
+      create(
+        :custom_field_linear_scale,
+        resource: form,
+        title_multiloc: { 'en' => 'Rate your satisfaction', 'nl-NL' => 'Beoordeel uw tevredenheid' }
+      )
     end
 
     let(:custom_field_number) do
-      create(:custom_field_number, resource: form, title_multiloc: { 'en' => 'Number q title' })
+      create(
+        :custom_field_number,
+        resource: form,
+        title_multiloc: { 'en' => 'What size shoes do you use?', 'nl-NL' => 'Welke maat schoenen gebruik je?' }
+      )
     end
 
     let(:custom_field_file_upload) do
-      create(:custom_field_file_upload, resource: form, title_multiloc: { 'en' => 'File upload q title' })
+      create(
+        :custom_field_file_upload,
+        resource: form,
+        title_multiloc: { 'en' => 'Upload the photo', 'nl-NL' => 'Upload de foto' }
+      )
     end
 
     let(:custom_field_point) do
-      create(:custom_field_point, resource: form, title_multiloc: { 'en' => 'Point q title' })
+      create(
+        :custom_field_point,
+        resource: form,
+        title_multiloc: { 'en' => 'Mark the location on the map', 'nl-NL' => 'Markeer de locatie op de kaart' }
+      )
     end
 
     let(:custom_field_line) do
-      create(:custom_field_line, resource: form, title_multiloc: { 'en' => 'Line q title' })
+      create(
+        :custom_field_line,
+        resource: form,
+        title_multiloc: { 'en' => 'Draw the route on the map', 'nl-NL' => 'Teken de route op de kaart' }
+      )
     end
 
     let(:custom_field_polygon) do
-      create(:custom_field_polygon, resource: form, title_multiloc: { 'en' => 'Polygon q title' })
+      create(
+        :custom_field_polygon,
+        resource: form,
+        title_multiloc: { 'en' => 'Draw the area on the map', 'nl-NL' => 'Teken het gebied op de kaart' }
+      )
     end
 
     let(:idea1) do
@@ -115,7 +179,10 @@ resource 'Idea Custom Fields' do
     end
 
     context 'when admin' do
-      before { admin_header_token }
+      before do
+        admin = create(:user, roles: [{ type: 'admin' }], locale: 'nl-NL')
+        header_token_for admin
+      end
 
       example_request 'Generate GeoJSON for responses to a mapping question' do
         assert_status 200
@@ -129,17 +196,17 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [1.1, 2.2] },
             properties: {
-              'Text q title': 'Text answer',
-              'Multiline q title': 'Multiline answer',
-              'Select q title': 'Option 1',
-              'Multiselect q title': ['Option 2', 'Option 3'],
-              'Multiselect image q title': ['Option 4', 'Option 5'],
-              'Linear scale q title': 3,
-              'Number q title': 42,
-              'File upload q title': file.file.url,
-              'Point q title [Longitude, Latitude]': { type: 'Point', coordinates: [1.1, 2.2] },
-              'Line q title [Longitude, Latitude]': { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
-              'Polygon q title [Longitude, Latitude]': {
+              'Wat is uw functie?': 'Text answer',
+              'Wat zijn uw belangrijkste verantwoordelijkheden?': 'Multiline answer',
+              'Selecteer uw favoriete kleur': 'Optie 1',
+              'Selecteer de talen die u spreekt': ['Optie 2', 'Optie 3'],
+              'Selecteer de beste foto': ['Optie 4', 'Optie 5'],
+              'Beoordeel uw tevredenheid': 3,
+              'Welke maat schoenen gebruik je?': 42,
+              'Upload de foto': file.file.url,
+              'Markeer de locatie op de kaart [Lengtegraad, Breedtegraad]': { type: 'Point', coordinates: [1.1, 2.2] },
+              'Teken de route op de kaart [Lengtegraad, Breedtegraad]': { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
+              'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': {
                 type: 'Polygon',
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
               }
@@ -149,17 +216,17 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [3.3, 4.4] },
             properties: {
-              'Text q title': nil,
-              'Multiline q title': nil,
-              'Select q title': nil,
-              'Multiselect q title': nil,
-              'Multiselect image q title': nil,
-              'Linear scale q title': nil,
-              'Number q title': nil,
-              'File upload q title': nil,
-              'Point q title [Longitude, Latitude]': { type: 'Point', coordinates: [3.3, 4.4] },
-              'Line q title [Longitude, Latitude]': nil,
-              'Polygon q title [Longitude, Latitude]': nil
+              'Wat is uw functie?': nil,
+              'Wat zijn uw belangrijkste verantwoordelijkheden?': nil,
+              'Selecteer uw favoriete kleur': nil,
+              'Selecteer de talen die u spreekt': nil,
+              'Selecteer de beste foto': nil,
+              'Beoordeel uw tevredenheid': nil,
+              'Welke maat schoenen gebruik je?': nil,
+              'Upload de foto': nil,
+              'Markeer de locatie op de kaart [Lengtegraad, Breedtegraad]': { type: 'Point', coordinates: [3.3, 4.4] },
+              'Teken de route op de kaart [Lengtegraad, Breedtegraad]': nil,
+              'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': nil
             }
           }
         ])
