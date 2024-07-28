@@ -1,5 +1,10 @@
 module CustomMaps
   module GeojsonExport
+    # This class is responsible for generating a GeoJSON representation of the answers to a survey mapping question.
+    # It generates a GeoJSON FeatureCollection, with a Feature for each response to the question.
+    # Each Feature has a geometry attribute, with its value representing the response,
+    # Each Feature also has a properties attribute, with a value that includes all the answers to the survey questions
+    # for the respective survey submission, along with selected user (input.author) data.
     class GeojsonGenerator
       def initialize(phase, field)
         @phase = phase

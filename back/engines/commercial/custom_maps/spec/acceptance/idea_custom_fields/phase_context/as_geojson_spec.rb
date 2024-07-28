@@ -237,7 +237,7 @@ resource 'Idea Custom Fields' do
                 type: 'Polygon',
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
               },
-              'User data': { # To be translated - will need to update this value when nl-NL translation is added
+              'User data': { # To be translated - will need to update this key when nl-NL translation is added
                 'Auteur-ID': idea1.author_id,
                 'E-mail van auteur': idea1.author.email,
                 'Auteur naam': idea1.author_name,
@@ -263,7 +263,7 @@ resource 'Idea Custom Fields' do
               'Markeer de locatie op de kaart [Lengtegraad, Breedtegraad]': { type: 'Point', coordinates: [3.3, 4.4] },
               'Teken de route op de kaart [Lengtegraad, Breedtegraad]': nil,
               'Teken het gebied op de kaart [Lengtegraad, Breedtegraad]': nil,
-              'User data': nil # To be translated - will need to update this value when nl-NL translation is added
+              'User data': nil # To be translated - will need to update this key when nl-NL translation is added
             }
           }
         ])
