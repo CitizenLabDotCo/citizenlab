@@ -31,7 +31,7 @@ module CustomMaps
         }
 
         properties.merge!(generate_answers_to_questions(input))
-        properties[:user_data] = generate_user_data(input)
+        properties[translation_for('user_data')] = generate_user_data(input)
 
         properties
       end

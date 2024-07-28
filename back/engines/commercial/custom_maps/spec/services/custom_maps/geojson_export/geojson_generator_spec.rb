@@ -72,7 +72,7 @@ describe CustomMaps::GeojsonExport::GeojsonGenerator do
           'Published at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
           'Field for text question' => 'Text answer 1',
-          'user_data' => {
+          'User data' => {
             'Author ID' => idea1.author.id,
             'Author email' => idea1.author.email,
             'Author name' => idea1.author_name,
@@ -84,7 +84,7 @@ describe CustomMaps::GeojsonExport::GeojsonGenerator do
           'Published at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
           'Field for text question' => 'Text answer 2',
-          'user_data' => {
+          'User data' => {
             'Author ID' => idea2.author.id,
             'Author email' => idea2.author.email,
             'Author name' => idea2.author_name,
