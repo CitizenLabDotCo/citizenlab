@@ -25,7 +25,12 @@ module CustomMaps
       private
 
       def generate_properties(input)
-        properties = generate_answers_to_questions(input)
+        properties = {
+          translation_for('input_id') => input.id,
+          translation_for('published_at') => input.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s
+        }
+
+        properties.merge!(generate_answers_to_questions(input))
         properties[:user_data] = generate_user_data(input)
 
         properties

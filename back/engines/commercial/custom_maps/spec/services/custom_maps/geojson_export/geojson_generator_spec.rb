@@ -68,6 +68,8 @@ describe CustomMaps::GeojsonExport::GeojsonGenerator do
     it "includes survey responses & selected user data for each input, in each related GeoJSON Feature's properties" do
       expect(parsed_json['features'].pluck('properties')).to match_array([
         {
+          'ID' => idea1.id,
+          'Published at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
           'Field for text question' => 'Text answer 1',
           'user_data' => {
@@ -78,6 +80,8 @@ describe CustomMaps::GeojsonExport::GeojsonGenerator do
           }
         },
         {
+          'ID' => idea2.id,
+          'Published at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
           'Field for text question' => 'Text answer 2',
           'user_data' => {

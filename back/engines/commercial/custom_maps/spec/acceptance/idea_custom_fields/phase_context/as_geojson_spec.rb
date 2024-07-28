@@ -221,6 +221,8 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [1.1, 2.2] },
             properties: {
+              ID: idea1.id,
+              'Gepubliceerd op': idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
               'Wat is uw functie?': 'Text answer',
               'Wat zijn uw belangrijkste verantwoordelijkheden?': 'Multiline answer',
               'Selecteer uw favoriete kleur': 'Optie 1',
@@ -248,6 +250,8 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [3.3, 4.4] },
             properties: {
+              ID: idea2.id,
+              'Gepubliceerd op': idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
               'Wat is uw functie?': nil,
               'Wat zijn uw belangrijkste verantwoordelijkheden?': nil,
               'Selecteer uw favoriete kleur': nil,
