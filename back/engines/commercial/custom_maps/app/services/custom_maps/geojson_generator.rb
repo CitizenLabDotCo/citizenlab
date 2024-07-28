@@ -39,11 +39,25 @@ module CustomMaps
     def generate_user_data(input)
       return nil if input&.author.nil?
 
+      basic_author_data(input).merge(user_custom_field_values_data(input))
+    end
+
+    def basic_author_data(input)
       {
         translation_for('author_id') => input&.author&.id,
         translation_for('author_email') => input&.author&.email,
         translation_for('author_fullname') => input&.author_name
       }
+    end
+
+    def user_custom_field_values_data(input)
+      registration_fields.each_with_object({}) do |field, accu|
+        accu[@multiloc_service.t(field.title_multiloc)] = if field.code == 'domicile'
+          DomicileFieldForGeojson.new(field, :author).value_from(input)
+        else
+          CustomFieldForGeojson.new(field, :author).value_from(input)
+        end
+      end
     end
 
     def set_non_colliding_titles
@@ -66,6 +80,10 @@ module CustomMaps
 
     def translation_for(key)
       I18n.t key, scope: 'xlsx_export.column_headers'
+    end
+
+    def registration_fields
+      @registration_fields ||= CustomField.registration.includes(:options).order(:ordering).all
     end
   end
 end

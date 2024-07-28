@@ -137,9 +137,33 @@ resource 'Idea Custom Fields' do
       )
     end
 
+    let(:custom_field_gender) do
+      create(
+        :custom_field_gender,
+        title_multiloc: { 'en' => 'Gender', 'nl-NL' => 'Geslacht' }
+      )
+    end
+    let!(:custom_field_option_female) do
+      create(:custom_field_option,
+        custom_field: custom_field_gender,
+        key: 'female',
+        title_multiloc: { 'en' => 'Female', 'nl-NL' => 'Vrouw' })
+    end
+
+    let!(:custom_field_domicile) do
+      create(
+        :custom_field_domicile,
+        title_multiloc: { 'en' => 'Place of residence', 'nl-NL' => 'Woonplaats' }
+      )
+    end
+    let!(:area) { create(:area, title_multiloc: { 'en' => 'Brussels', 'nl-NL' => 'Bruxelles' }) }
+
+    let(:user) { create(:user, custom_field_values: { gender: 'female', domicile: area.id }) }
+
     let(:idea1) do
       create(
         :idea,
+        author: user,
         creation_phase: phase,
         project: project,
         custom_field_values: {
@@ -214,7 +238,9 @@ resource 'Idea Custom Fields' do
               user_data: {
                 'Auteur-ID': idea1.author_id,
                 'E-mail van auteur': idea1.author.email,
-                'Auteur naam': idea1.author_name
+                'Auteur naam': idea1.author_name,
+                Geslacht: 'Vrouw',
+                Woonplaats: 'Bruxelles'
               }
             }
           },
@@ -239,7 +265,7 @@ resource 'Idea Custom Fields' do
         ])
       end
 
-      context 'when custom field is not a geographic type' do
+      context 'when custom field is not a geographic input type' do
         let(:custom_field_id) { custom_field_text.id }
 
         example '[Error] Generate GeoJSON for responses to a non-mapping question' do
