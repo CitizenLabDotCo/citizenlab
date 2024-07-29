@@ -267,6 +267,7 @@ pl:
       submitted_at: 'Zgłoszony pod adresem'
       tags: 'Tagi'
       title: 'Tytuł'
+      user_data: 'Dane użytkownika'
       votes_count: 'Głosy'
   form_builder:
     default_select_field:
