@@ -32,6 +32,7 @@ import {
   handleProjectCardOnClick,
   handleProjectTitleOnClick,
   ProjectImage,
+  ProjectTitle,
 } from './Helpers';
 import ProjectHeader, {
   ContentHeaderBottomMargin,
@@ -132,23 +133,6 @@ const ContentBody = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-`;
-
-const ProjectTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
-  color: ${({ theme }) => theme.colors.tenantText};
-  margin: 0;
-  padding: 0;
-
-  ${isRtl`
-    text-align: right;
-  `}
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const ProjectDescription = styled.div`
