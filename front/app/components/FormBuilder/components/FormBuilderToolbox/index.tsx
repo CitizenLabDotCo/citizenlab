@@ -223,6 +223,15 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
+        <ToolboxItem
+          icon="upload-file"
+          label={formatMessage(messages.shapefileUpload)}
+          onClick={() => addField('shapefile_upload')}
+          data-cy="e2e-file-shapefile-field"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="shapefile_upload"
+          disabled={isCustomFieldsDisabled}
+        />
         {isLocationAnswerEnabled && (
           <>
             <ToolboxItem

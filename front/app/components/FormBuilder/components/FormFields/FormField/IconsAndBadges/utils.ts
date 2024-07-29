@@ -46,6 +46,7 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
     case 'section':
       return 'section';
     case 'file_upload':
+    case 'shapefile_upload':
     case 'files':
       return 'upload-file';
     default:
