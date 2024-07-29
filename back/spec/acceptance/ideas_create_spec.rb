@@ -9,7 +9,6 @@ def public_input_params(spec)
   spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
   spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
   spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
-  # spec.parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # TODO: Separate engine
 end
 
 resource 'Ideas' do
@@ -298,6 +297,7 @@ resource 'Ideas' do
         before { admin_header_token }
 
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'"
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # Tested in separate engine
 
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
 
@@ -424,6 +424,7 @@ resource 'Ideas' do
         before { admin_header_token }
 
         parameter :idea_status_id, 'The status of the input, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'" # TODO: proposal statuses
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # Tested in separate engine
 
         example_request 'Create a proposal' do
           assert_status 201
