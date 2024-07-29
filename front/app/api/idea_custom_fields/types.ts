@@ -21,7 +21,6 @@ export type TCustomFieldCode =
   | 'gender'
   | 'birthyear'
   | 'domicile'
-  | 'education'
   | 'title_multiloc'
   | 'body_multiloc'
   | 'topic_ids'
