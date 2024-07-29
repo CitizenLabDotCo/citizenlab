@@ -267,6 +267,7 @@ el:
       submitted_at: 'Υποβλήθηκε στο'
       tags: 'Ετικέτες'
       title: 'Τίτλος'
+      user_data: 'Δεδομένα χρήστη'
       votes_count: 'Ψήφοι'
   form_builder:
     default_select_field:
