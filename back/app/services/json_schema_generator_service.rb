@@ -272,21 +272,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
-  def visit_shapefile_upload(_field)
-    {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string'
-        },
-        content: {
-          type: 'string'
-        },
-        name: {
-          type: 'string'
-        }
-      }
-    }
+  def visit_shapefile_upload(field)
+    visit_file_upload(field)
   end
 
   private

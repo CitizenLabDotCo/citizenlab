@@ -130,6 +130,11 @@ RSpec.describe CustomField do
       expect(files_field.file_upload?).to be true
     end
 
+    it 'returns true when the input_type is "shapefile_upload"' do
+      files_field = described_class.new input_type: 'shapefile_upload'
+      expect(files_field.file_upload?).to be true
+    end
+
     it 'returns false otherwise' do
       other_field = described_class.new input_type: 'something_else'
       expect(other_field.file_upload?).to be false
