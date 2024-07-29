@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Si us plau, ompliu el vostre any de naixement",
   "app.utils.errors.default.ajv_error_date_any": "Si us plau, ompliu una data vàlida",
   "app.utils.errors.default.ajv_error_domicile_required": "Si us plau, ompliu el vostre lloc de residència",
-  "app.utils.errors.default.ajv_error_education_required": "Si us plau, ompliu el vostre nivell d'educació",
   "app.utils.errors.default.ajv_error_gender_required": "Si us plau, ompliu el vostre gènere",
   "app.utils.errors.default.ajv_error_invalid": "No és vàlid",
   "app.utils.errors.default.ajv_error_maxItems": "No es pot incloure més de {limit, plural, one {# element} other {# elements}}",

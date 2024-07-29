@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Συμπληρώστε το έτος γέννησής σας",
   "app.utils.errors.default.ajv_error_date_any": "Συμπληρώστε μια έγκυρη ημερομηνία",
   "app.utils.errors.default.ajv_error_domicile_required": "Συμπληρώστε τον τόπο κατοικίας σας",
-  "app.utils.errors.default.ajv_error_education_required": "Συμπληρώστε το επίπεδο εκπαίδευσής σας",
   "app.utils.errors.default.ajv_error_gender_required": "Συμπληρώστε το φύλο σας",
   "app.utils.errors.default.ajv_error_invalid": "δεν είναι έγκυρο",
   "app.utils.errors.default.ajv_error_maxItems": "Δεν μπορεί να περιλαμβάνει περισσότερα από {limit, plural, one {# στοιχείο} other {# στοιχεία}}",

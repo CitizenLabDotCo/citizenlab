@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Fyll ut fødselsåret ditt",
   "app.utils.errors.default.ajv_error_date_any": "Fyll ut en gyldig dato",
   "app.utils.errors.default.ajv_error_domicile_required": "Fyll ut bostedet ditt",
-  "app.utils.errors.default.ajv_error_education_required": "Fyll ut utdanningsnivået ditt",
   "app.utils.errors.default.ajv_error_gender_required": "Fyll ut kjønnet ditt",
   "app.utils.errors.default.ajv_error_invalid": "Er ugyldig",
   "app.utils.errors.default.ajv_error_maxItems": "Kan ikke inneholde mer enn {limit, plural, one {# element} other {# elementer}}",

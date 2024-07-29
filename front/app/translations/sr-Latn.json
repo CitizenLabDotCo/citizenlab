@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Unesite svoju godinu rođenja",
   "app.utils.errors.default.ajv_error_date_any": "Unesite važeći datum",
   "app.utils.errors.default.ajv_error_domicile_required": "Unesite svoje mesto stanovanja",
-  "app.utils.errors.default.ajv_error_education_required": "Unesite svoj nivo obrazovanja",
   "app.utils.errors.default.ajv_error_gender_required": "Unesite kog ste roda",
   "app.utils.errors.default.ajv_error_invalid": "Nije važeće",
   "app.utils.errors.default.ajv_error_maxItems": "Ne može da sadrži više od {limit, plural, one {# artikal} other {# artikli}}",

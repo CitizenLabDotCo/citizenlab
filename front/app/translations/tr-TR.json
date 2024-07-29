@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Lütfen doğum yılınızı girin",
   "app.utils.errors.default.ajv_error_date_any": "Lütfen geçerli bir tarih girin",
   "app.utils.errors.default.ajv_error_domicile_required": "Lütfen ikamet ettiğiniz yeri girin",
-  "app.utils.errors.default.ajv_error_education_required": "Lütfen eğitim seviyenizi girin",
   "app.utils.errors.default.ajv_error_gender_required": "Lütfen cinsiyetinizi girin",
   "app.utils.errors.default.ajv_error_invalid": "Geçersiz",
   "app.utils.errors.default.ajv_error_maxItems": "En çok {limit, plural, one {# öğe} other {# öğe}} bulunabilir",

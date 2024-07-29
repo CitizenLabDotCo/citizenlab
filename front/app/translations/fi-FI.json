@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Täytä syntymävuotesi",
   "app.utils.errors.default.ajv_error_date_any": "Täytä kelvollinen päivämäärä",
   "app.utils.errors.default.ajv_error_domicile_required": "Täytä asuinpaikkasi",
-  "app.utils.errors.default.ajv_error_education_required": "Täytä koulutustasosi",
   "app.utils.errors.default.ajv_error_gender_required": "Täytä sukupuolesi",
   "app.utils.errors.default.ajv_error_invalid": "Ei kelpaa",
   "app.utils.errors.default.ajv_error_maxItems": "Enintään {limit, plural, one {# kohdetta} other {# kohdetta}}",

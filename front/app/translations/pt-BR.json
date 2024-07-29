@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Por favor, preencha o seu ano de nascimento",
   "app.utils.errors.default.ajv_error_date_any": "Por favor, preencha uma data válida",
   "app.utils.errors.default.ajv_error_domicile_required": "Por favor, preencha o seu local de residência",
-  "app.utils.errors.default.ajv_error_education_required": "Por favor, preencha o seu nível de escolaridade",
   "app.utils.errors.default.ajv_error_gender_required": "Por favor, preencha o seu gênero",
   "app.utils.errors.default.ajv_error_invalid": "É inválido",
   "app.utils.errors.default.ajv_error_maxItems": "Não pode incluir mais de {limit, plural, one {# item} other {# itens}}",

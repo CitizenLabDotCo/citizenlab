@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Fyll i ditt födelseår",
   "app.utils.errors.default.ajv_error_date_any": "Fyll i ett giltigt datum",
   "app.utils.errors.default.ajv_error_domicile_required": "Fyll i din bostadsort",
-  "app.utils.errors.default.ajv_error_education_required": "Fyll i din utbildningsnivå",
   "app.utils.errors.default.ajv_error_gender_required": "Fyll i ditt kön",
   "app.utils.errors.default.ajv_error_invalid": "Är ogiltigt",
   "app.utils.errors.default.ajv_error_maxItems": "Får inte inkludera mer än {limit, plural, one {# objekt} other {# objekt}}",

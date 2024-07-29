@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Udfyld venligst dit fødselsår",
   "app.utils.errors.default.ajv_error_date_any": "Udfyld venligst en gyldig dato",
   "app.utils.errors.default.ajv_error_domicile_required": "Udfyld venligst dit bopælssted",
-  "app.utils.errors.default.ajv_error_education_required": "Udfyld venligst dit uddannelsesniveau",
   "app.utils.errors.default.ajv_error_gender_required": "Udfyld venligst dit køn",
   "app.utils.errors.default.ajv_error_invalid": "Er ugyldig",
   "app.utils.errors.default.ajv_error_maxItems": "Kan ikke indeholde mere end {limit, plural, one {# genstand} other {# genstande}}",

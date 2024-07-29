@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Bitte geben Sie Ihr Geburtsjahr ein",
   "app.utils.errors.default.ajv_error_date_any": "Bitte geben Sie ein gültiges Datum ein",
   "app.utils.errors.default.ajv_error_domicile_required": "Bitte geben Sie Ihren Wohnort ein",
-  "app.utils.errors.default.ajv_error_education_required": "Bitte geben Sie Ihren Bildungsgrad ein",
   "app.utils.errors.default.ajv_error_gender_required": "Bitte geben Sie Ihr Geschlecht ein",
   "app.utils.errors.default.ajv_error_invalid": "Ist ungültig",
   "app.utils.errors.default.ajv_error_maxItems": "Nicht mehr als {limit, plural, one {# Antwort} other {# Antworten}}",

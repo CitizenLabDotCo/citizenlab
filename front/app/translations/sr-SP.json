@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Молимо вас да унесете своју годину рођења",
   "app.utils.errors.default.ajv_error_date_any": "Молимо унесите важећи датум",
   "app.utils.errors.default.ajv_error_domicile_required": "Молимо вас да унесете своје место становања",
-  "app.utils.errors.default.ajv_error_education_required": "Молимо вас да унесете свој ниво образовања",
   "app.utils.errors.default.ajv_error_gender_required": "Унесите свој пол",
   "app.utils.errors.default.ajv_error_invalid": "Је неважећи",
   "app.utils.errors.default.ajv_error_maxItems": "Не може укључити више од {limit, plural, one {# ставка} other {# предмета}}",

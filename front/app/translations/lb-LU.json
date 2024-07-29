@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "W.e.g. drot Äert Gebuertsjoer an",
   "app.utils.errors.default.ajv_error_date_any": "W.e.g. drot e gëltegen Datum an",
   "app.utils.errors.default.ajv_error_domicile_required": "W.e.g. drot Äre Wunnuert an",
-  "app.utils.errors.default.ajv_error_education_required": "W.e.g. drot Äre Bildungsniveau an",
   "app.utils.errors.default.ajv_error_gender_required": "W.e.g. drot Äert Geschlecht an",
   "app.utils.errors.default.ajv_error_invalid": "Ass ongëlteg",
   "app.utils.errors.default.ajv_error_maxItems": "Däerf net méi wéi {limit, plural, one {# objet} other {# objeten}}enthalen",

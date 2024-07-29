@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Inserisci il tuo anno di nascita",
   "app.utils.errors.default.ajv_error_date_any": "Si prega di inserire una data valida",
   "app.utils.errors.default.ajv_error_domicile_required": "Inserisci il tuo luogo di residenza",
-  "app.utils.errors.default.ajv_error_education_required": "Inserisci il tuo livello di istruzione",
   "app.utils.errors.default.ajv_error_gender_required": "Inserisci il tuo sesso",
   "app.utils.errors.default.ajv_error_invalid": "Non è valido",
   "app.utils.errors.default.ajv_error_maxItems": "Non può includere più di {limit, plural, one {# item} other {# elementi}}",

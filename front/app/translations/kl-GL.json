@@ -1578,7 +1578,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Inussiarnersumik ukioq inuuiit allaguk",
   "app.utils.errors.default.ajv_error_date_any": "Inussiarnersumik ullumik atorsinnaasumik allagit",
   "app.utils.errors.default.ajv_error_domicile_required": "Inussiarnersumik sumi najugaqarnerlutit allaguk",
-  "app.utils.errors.default.ajv_error_education_required": "Inussiarnersumik ilinniarsimanerpit qaffasissusaa allaguk",
   "app.utils.errors.default.ajv_error_gender_required": "Inussiarnersumik suiaassutsit allaguk",
   "app.utils.errors.default.ajv_error_invalid": "Is invalid",
   "app.utils.errors.default.ajv_error_maxItems": "Ukunannga annertunermik imaqarsinnaanngilaq {limit, plural, one {# item} other {# items}}",

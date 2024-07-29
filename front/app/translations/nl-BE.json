@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Vul je geboortejaar in",
   "app.utils.errors.default.ajv_error_date_any": "Vul een geldige datum in",
   "app.utils.errors.default.ajv_error_domicile_required": "Vul je woonplaats in",
-  "app.utils.errors.default.ajv_error_education_required": "Vul je opleidingsniveau in",
   "app.utils.errors.default.ajv_error_gender_required": "Vul je geslacht in",
   "app.utils.errors.default.ajv_error_invalid": "Is ongeldig",
   "app.utils.errors.default.ajv_error_maxItems": "Kan niet meer dan {limit, plural, one {# artikel} other {# artikelen}} bevatten",

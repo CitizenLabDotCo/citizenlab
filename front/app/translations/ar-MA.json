@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "يرجى إدخال عام الميلاد",
   "app.utils.errors.default.ajv_error_date_any": "يرجى إدخال تاريخ صالح",
   "app.utils.errors.default.ajv_error_domicile_required": "يرجى إدخال محل الإقامة",
-  "app.utils.errors.default.ajv_error_education_required": "يرجى إدخال المستوى التعليمي",
   "app.utils.errors.default.ajv_error_gender_required": "يرجى إدخال نوع الجنس",
   "app.utils.errors.default.ajv_error_invalid": "غير صالح",
   "app.utils.errors.default.ajv_error_maxItems": "لا يجوز تضمين أكثر من {limit, plural, one {# عنصر} other {# عنصر/عناصر}}",
