@@ -8,7 +8,7 @@ module OmniauthMethods
 
       env['omniauth.strategy'].options[:client_id] = configuration.settings('facebook_login', 'app_id')
       env['omniauth.strategy'].options[:client_secret] = configuration.settings('facebook_login', 'app_secret')
-      env['omniauth.strategy'].options[:info_fields] = 'first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)'
+      env['omniauth.strategy'].options[:info_fields] = 'first_name,last_name,email,birthday,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)'
     end
 
     def profile_to_user_attrs(auth)

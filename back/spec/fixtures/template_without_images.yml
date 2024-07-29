@@ -246,28 +246,6 @@ models:
     updated_at: 2019-01-29 12:36:25 UTC
     enabled: true
     code:
-  - &3
-    resource_type: User
-    key: education
-    input_type: select
-    title_multiloc:
-      en: Education
-      da-DK: Education
-      de-DE: Bildungsweg
-      en-CA: Education
-      en-GB: Education
-      fr-BE: Education
-      fr-FR: Education
-      nb: Education
-      nl-BE: Opleiding
-      nl-NL: Opleiding
-    description_multiloc: {}
-    required: false
-    ordering: 3
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-    enabled: false
-    code: education
   custom_field_option:
   - custom_field_ref: *1
     key: active_politician
@@ -336,118 +314,6 @@ models:
       nl-BE: Onbepaald
       nl-NL: Onbepaald
     ordering: 2
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '2'
-    title_multiloc:
-      en: Lower secondary education
-      da-DK: Lower secondary education
-      de-DE: Sekundarstufe I
-      en-CA: Lower secondary education
-      en-GB: Lower secondary education
-      fr-BE: Education secondaire (1er cycle)
-      fr-FR: Education secondaire (1er cycle)
-      nb: Lower secondary education
-      nl-BE: Lager secundair onderwijs
-      nl-NL: Lager secundair onderwijs
-    ordering: 0
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '3'
-    title_multiloc:
-      en: Upper secondary education
-      da-DK: Upper secondary education
-      de-DE: Sekundarstufe II
-      en-CA: Upper secondary education
-      en-GB: Upper secondary education
-      fr-BE: Education secondaire (2nd cycle)
-      fr-FR: Education secondaire (2nd cycle)
-      nb: Upper secondary education
-      nl-BE: Hoger secundair onderwijs
-      nl-NL: Hoger secundair onderwijs
-    ordering: 1
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '4'
-    title_multiloc:
-      en: Post-secondary non-tertiary education
-      da-DK: Post-secondary non-tertiary education
-      de-DE: Abschluss an Berufsschule, Abendgymnasium oder Kolleg
-      en-CA: Post-secondary non-tertiary education
-      en-GB: Post-secondary non-tertiary education
-      fr-BE: Education supérieure
-      fr-FR: Education supérieure
-      nb: Post-secondary non-tertiary education
-      nl-BE: Postsecundair niet-hoger onderwijs
-      nl-NL: Postsecundair niet-hoger onderwijs
-    ordering: 2
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '5'
-    title_multiloc:
-      en: Short-cycle tertiary education
-      da-DK: Short-cycle tertiary education
-      de-DE: Kurze tertiäre Bildungsprogramme (ISCED-Stufe 5)
-      en-CA: Short-cycle tertiary education
-      en-GB: Short-cycle tertiary education
-      fr-BE: Education supérieure (cycle court)
-      fr-FR: Education supérieure (cycle court)
-      nb: Short-cycle tertiary education
-      nl-BE: Tertiair onderwijs met korte cyclus
-      nl-NL: Tertiair onderwijs met korte cyclus
-    ordering: 3
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '6'
-    title_multiloc:
-      en: Bachelor or equivalent
-      da-DK: Bachelor or equivalent
-      de-DE: Bachelor oder gleichwertiger Abschluss
-      en-CA: Bachelor or equivalent
-      en-GB: Bachelor or equivalent
-      fr-BE: Licence, Bachelier ou équivalent
-      fr-FR: Licence, Bachelier ou équivalent
-      nb: Bachelor or equivalent
-      nl-BE: Bachelor of gelijkwaardig
-      nl-NL: Bachelor of gelijkwaardig
-    ordering: 4
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '7'
-    title_multiloc:
-      en: Master or equivalent
-      da-DK: Master or equivalent
-      de-DE: Master oder gleichwertiger Abschluss
-      en-CA: Master or equivalent
-      en-GB: Master or equivalent
-      fr-BE: Master ou équivalent
-      fr-FR: Master ou équivalent
-      nb: Master or equivalent
-      nl-BE: Master of gelijkwaardig
-      nl-NL: Master of gelijkwaardig
-    ordering: 5
-    created_at: 2019-01-29 12:36:25 UTC
-    updated_at: 2019-01-29 12:36:25 UTC
-  - custom_field_ref: *3
-    key: '8'
-    title_multiloc:
-      en: Doctoral or equivalent
-      da-DK: Doctoral or equivalent
-      de-DE: Doktortitel oder anderer gleichwertiger Abschluss
-      en-CA: Doctoral or equivalent
-      en-GB: Doctoral or equivalent
-      fr-BE: Doctorat ou équivalent
-      fr-FR: Doctorat ou équivalent
-      nb: Doctoral or equivalent
-      nl-BE: Doctoraat of gelijkwaardig
-      nl-NL: Doctoraat of gelijkwaardig
-    ordering: 6
     created_at: 2019-01-29 12:36:25 UTC
     updated_at: 2019-01-29 12:36:25 UTC
   topic:
@@ -2298,7 +2164,7 @@ models:
         on the platform.</h4> <p> <ul> <li>The personal data we collect from you directly
         may include your:</li> <li>User name (mandatory);</li> <li>E-mail address
         (mandatory);</li> <li>Name (optional);</li> <li>Age (optional);</li> <li>Area
-        of residence (optional);</li> <li>Education level (optional).</li> </ul> </p>
+        of residence (optional);</li> </ul> </p>
         <h4>3.2 Personal data we collect when you use this website.</h4> <p>We (and
         third party service providers acting on our behalf) use cookies to automatically
         collect personal data about you when you use this website. For more information,
@@ -2352,7 +2218,7 @@ models:
         on the platform.</h4> <p> <ul> <li>The personal data we collect from you directly
         may include your:</li> <li>User name (mandatory);</li> <li>E-mail address
         (mandatory);</li> <li>Name (optional);</li> <li>Age (optional);</li> <li>Area
-        of residence (optional);</li> <li>Education level (optional).</li> </ul> </p>
+        of residence (optional);</li> </ul> </p>
         <h4>3.2 Personal data we collect when you use this website.</h4> <p>We (and
         third party service providers acting on our behalf) use cookies to automatically
         collect personal data about you when you use this website. For more information,
@@ -3124,7 +2990,7 @@ models:
         on the platform.</h4> <p> <ul> <li>The personal data we collect from you directly
         may include your:</li> <li>User name (mandatory);</li> <li>E-mail address
         (mandatory);</li> <li>Name (optional);</li> <li>Age (optional);</li> <li>Area
-        of residence (optional);</li> <li>Education level (optional).</li> </ul> </p>
+        of residence (optional);</li> </ul> </p>
         <h4>3.2 Personal data we collect when you use this website.</h4> <p>We (and
         third party service providers acting on our behalf) use cookies to automatically
         collect personal data about you when you use this website. For more information,

@@ -586,7 +586,6 @@
         { "name": "geboorteplaats", "dataType": "string" },
         { "name": "fjeriphjtr", "dataType": "string" },
         { "name": "race", "dataType": "string" },
-        { "name": "education", "dataType": "string" },
         { "name": "do_you_want_car_free_sundays", "dataType": "string" },
         { "name": "leeftijd", "dataType": "string" },
         {

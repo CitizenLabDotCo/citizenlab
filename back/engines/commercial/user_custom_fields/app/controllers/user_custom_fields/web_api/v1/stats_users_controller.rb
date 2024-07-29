@@ -70,7 +70,7 @@ module UserCustomFields
         def custom_field_key_from_path
           key = request
             .path.split('/').last
-            .match(/^users_by_(?<key>age|birthyear|domicile|education|gender)/)&.[](:key)
+            .match(/^users_by_(?<key>age|birthyear|domicile|gender)/)&.[](:key)
 
           key == 'age' ? 'birthyear' : key
         end

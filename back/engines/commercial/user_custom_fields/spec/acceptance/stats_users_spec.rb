@@ -47,7 +47,6 @@ resource 'Stats - Users' do
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
     create(:custom_field_domicile)
-    create(:custom_field_education, :with_options, enabled: true)
 
     travel_to(start_at - 1.day) { create(:user) }
     travel_to(end_at + 1.day) { create(:user) }

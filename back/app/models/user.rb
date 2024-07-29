@@ -159,7 +159,7 @@ class User < ApplicationRecord
   before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
+  store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
   validates :email, presence: true, unless: :allows_empty_email?
@@ -172,8 +172,6 @@ class User < ApplicationRecord
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
-  # Follows ISCED2011 scale
-  validates :education, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8 }, allow_nil: true
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
