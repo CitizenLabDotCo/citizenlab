@@ -28,7 +28,9 @@ module Volunteering
       return false unless user&.active?
       return false unless record.user_id == user.id
 
-      reason = Permissions::ProjectPermissionsService.new.denied_reason_for_action 'volunteering', user, record.cause.phase.project
+      project = record.cause.phase.project
+      service = Permissions::ProjectPermissionsService.new(project, user)
+      reason = service.denied_reason_for_action('volunteering')
       return false if reason
 
       ProjectPolicy.new(user, record.cause.phase.project).show?
