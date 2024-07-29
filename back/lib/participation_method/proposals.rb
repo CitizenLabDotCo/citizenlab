@@ -35,5 +35,9 @@ module ParticipationMethod
     def supports_serializing?(attribute)
       %i[expire_days_limit reacting_threshold].include?(attribute)
     end
+
+    def supports_serializing_input?(attribute)
+      %i[expires_at reactions_needed].include?(attribute)
+    end
   end
 end

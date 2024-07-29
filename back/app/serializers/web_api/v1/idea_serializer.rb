@@ -42,13 +42,13 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :expires_at, if: proc { |input|
-    input.published? && input.participation_method.supports_serializing_input?(:expires_at)
+    input.published? && input.participation_method_on_creation.supports_serializing_input?(:expires_at)
   } do |input|
     input.published_at + input.creation_phase.expire_days_limit.days
   end
 
   attribute :reactions_needed, if: proc { |input|
-    input.participation_method.supports_serializing_input?(:reactions_needed)
+    input.participation_method_on_creation.supports_serializing_input?(:reactions_needed)
   } do |input|
     [input.creation_phase.reacting_threshold - input.likes_count, 0].max
   end
