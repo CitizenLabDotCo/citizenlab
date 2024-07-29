@@ -17,7 +17,6 @@ import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
@@ -26,25 +25,22 @@ import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
 
-import useLocalize from 'hooks/useLocalize';
-
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import CTAMessage from './CTAMessaage';
+import CTAMessage from './CTAMessage';
 import {
   handleCTAOnClick,
   handleProjectCardOnClick,
   handleProjectTitleOnClick,
 } from './Helpers';
 import messages from './messages';
+import ScreenReaderContent from './ScreenReaderContent';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: 100%;
@@ -276,7 +272,6 @@ const SmallProjectCard = memo<InputProps>(
       },
     });
     const { data: project } = useProjectById(projectId);
-    const { data: authUser } = useAuthUser();
     const { data: projectImage } = useProjectImage({
       projectId,
       imageId: project?.data.relationships.project_images?.data[0]?.id,
@@ -284,7 +279,6 @@ const SmallProjectCard = memo<InputProps>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
-    const localize = useLocalize();
     const fetchPhases = project && !currentPhaseId;
     const { data: phases } = usePhases(
       fetchPhases ? project.data.id : undefined
@@ -293,20 +287,6 @@ const SmallProjectCard = memo<InputProps>(
     const [visible, setVisible] = useState(false);
 
     if (project) {
-      const postingPermission = getIdeaPostingRules({
-        project: project?.data,
-        phase: phase?.data,
-        authUser: authUser?.data,
-      });
-      const participationMethod = phase?.data.attributes.participation_method;
-      const votingMethod = phase?.data.attributes.voting_method;
-
-      const canPost = !!postingPermission.enabled;
-      const canReact =
-        project.data.attributes.action_descriptors.reacting_idea.enabled;
-      const canComment =
-        project.data.attributes.action_descriptors.commenting_idea.enabled;
-
       const imageUrl = !projectImage
         ? null
         : projectImage.data.attributes.versions?.large;
@@ -413,20 +393,6 @@ const SmallProjectCard = memo<InputProps>(
         </ContentHeader>
       );
 
-      const screenReaderContent = (
-        <ScreenReaderOnly>
-          <ProjectTitle>
-            <FormattedMessage {...messages.a11y_projectTitle} />
-            <T value={project.data.attributes.title_multiloc} />
-          </ProjectTitle>
-
-          <ProjectDescription>
-            <FormattedMessage {...messages.a11y_projectDescription} />
-            <T value={project.data.attributes.description_preview_multiloc} />
-          </ProjectDescription>
-        </ScreenReaderOnly>
-      );
-
       return (
         <Container
           className={[
@@ -444,7 +410,7 @@ const SmallProjectCard = memo<InputProps>(
             handleProjectCardOnClick(project.data.id);
           }}
         >
-          {screenReaderContent}
+          <ScreenReaderContent project={project} />
           {contentHeader}
 
           <ProjectImageContainer>
