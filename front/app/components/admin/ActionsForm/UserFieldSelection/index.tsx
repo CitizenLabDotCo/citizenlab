@@ -50,6 +50,8 @@ const UserFieldSelection = ({
   phaseId,
   onChange,
 }: UserFieldSelectionProps) => {
+  const { action } = permission.attributes;
+
   const { formatMessage } = useIntl();
   const permissionsFieldsAllowed = useFeatureFlag({
     name: 'permissions_custom_fields',
@@ -61,18 +63,21 @@ const UserFieldSelection = ({
   const { data: globalRegistrationFields } = useUserCustomFields();
   const initialFields = usePermissionsFields({
     phaseId,
-    action: permission.attributes.action,
+    action,
   });
   const { mutate: addPermissionCustomField, isLoading } =
     useAddPermissionsField({
       phaseId,
-      action: permission.attributes.action,
+      action,
     });
   const { mutate: updatePermissionCustomField } = useUpdatePermissionsField({
     phaseId,
-    action: permission.attributes.action,
+    action,
   });
-  const { mutate: deletePermissionsField } = useDeletePermissionsField();
+  const { mutate: deletePermissionsField } = useDeletePermissionsField({
+    phaseId,
+    action,
+  });
 
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -100,8 +105,6 @@ const UserFieldSelection = ({
   const handleDeleteField = (fieldId: string) => {
     deletePermissionsField({
       id: fieldId,
-      phaseId,
-      action: permission.attributes.action,
     });
   };
 

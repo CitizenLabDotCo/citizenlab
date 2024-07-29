@@ -32,7 +32,10 @@ const CustomField = ({ field, phaseId, disabled = false, action }: Props) => {
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { mutate: deletePermissionsField } = useDeletePermissionsField();
+  const { mutate: deletePermissionsField } = useDeletePermissionsField({
+    phaseId,
+    action,
+  });
 
   const fieldName = localize(field.attributes.title_multiloc);
 
@@ -85,8 +88,8 @@ const CustomField = ({ field, phaseId, disabled = false, action }: Props) => {
               e?.preventDefault();
               deletePermissionsField({
                 id: field.id,
-                action,
-                phaseId,
+                permission_id: field.relationships.permission.data.id,
+                custom_field_id: field.relationships.custom_field.data.id,
               });
             }}
           />

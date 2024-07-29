@@ -1,49 +1,33 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { isInitiativeAction } from 'api/initiative_action_descriptors/utils';
-import { Action } from 'api/permissions/types';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsFieldsKeys from './keys';
+import { IListParameters } from './types';
 
 type DeletePermissionsField = {
   id: string;
-  action: Action;
-  phaseId?: string;
 
   // These two should be defined if the
   // field is not persisted yet.
-  // permission_id?: string;
+  permission_id?: string;
+  custom_field_id?: string;
 };
 
-const deletePermissionsField = ({
-  id,
-  action,
-  phaseId,
-  ...body
-}: DeletePermissionsField) => {
-  if (isInitiativeAction(action)) {
-    return fetcher({
-      path: `/permissions_fields/${id}`,
-      action: 'delete',
-      body,
-    });
-  }
-
+const deletePermissionsField = ({ id, ...body }: DeletePermissionsField) => {
   return fetcher({
-    path: `/phases/${phaseId}/permissions/${action}/permissions_fields/${id}`,
+    path: `/permissions_fields/${id}`,
     action: 'delete',
     body,
   });
 };
 
-const useDeletePermissionsField = () => {
+const useDeletePermissionsField = ({ phaseId, action }: IListParameters) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deletePermissionsField,
-    onSuccess: (_, { phaseId, action }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.list({
           phaseId,
