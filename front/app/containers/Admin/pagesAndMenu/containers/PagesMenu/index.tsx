@@ -25,7 +25,8 @@ const PagesMenu = () => {
     return null;
   }
 
-  const disabledAddProjectToNavbarButton = navbarItems.data.length >= MAX_NAVBAR_ITEMS;
+  const disabledAddProjectToNavbarButton =
+    navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
   return (
     <SectionFormWrapper

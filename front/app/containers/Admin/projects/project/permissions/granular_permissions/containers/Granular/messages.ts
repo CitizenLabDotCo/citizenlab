@@ -76,6 +76,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle',
     defaultMessage: 'Who can sign up to attend an event?',
   },
+  permissionAction_volunteering_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle',
+    defaultMessage: 'Who can volunteer?',
+  },
   phase: {
     id: 'app.containers.AdminPage.groups.permissions.phase',
     defaultMessage: 'Phase ',

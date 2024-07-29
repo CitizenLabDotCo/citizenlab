@@ -174,7 +174,8 @@ resource 'Projects' do
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
             voting: { enabled: false, disabled_reason: 'project_inactive' },
-            attending_event: { enabled: false, disabled_reason: 'project_inactive' }
+            attending_event: { enabled: false, disabled_reason: 'project_inactive' },
+            volunteering: { enabled: false, disabled_reason: 'project_inactive' }
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
