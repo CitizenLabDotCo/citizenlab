@@ -97,6 +97,28 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'pmethod' do
+    {
+      'information' => ParticipationMethod::Information,
+      'ideation' => ParticipationMethod::Ideation,
+      'document_annotation' => ParticipationMethod::DocumentAnnotation,
+      'survey' => ParticipationMethod::Survey,
+      'voting' => ParticipationMethod::Voting,
+      'poll' => ParticipationMethod::Poll,
+      'volunteering' => ParticipationMethod::Volunteering,
+      'native_survey' => ParticipationMethod::NativeSurvey,
+      nil => ParticipationMethod::None
+    }.each do |method_name, method_class|
+      context "when the given participation_context's method is #{method_name}" do
+        let(:phase) { build(:phase, participation_method: method_name) }
+
+        it "returns an instance of #{method_class}" do
+          expect(phase.pmethod).to be_an_instance_of(method_class)
+        end
+      end
+    end
+  end
+
   describe 'presentation_mode' do
     it 'can be null for non-ideation phases' do
       p = create(:phase, participation_method: 'information')
