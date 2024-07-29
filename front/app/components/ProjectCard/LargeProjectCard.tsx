@@ -35,13 +35,16 @@ import Image from 'components/UI/Image';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
 
+import {
+  handleCTAOnClick,
+  handleProjectCardOnClick,
+  handleProjectTitleOnClick,
+} from './Helpers';
 import messages from './messages';
-import tracks from './tracks';
 
 const Container = styled(Link)`
   width: 100%;
@@ -281,18 +284,6 @@ const LargeProjectCard = memo<InputProps>(
     );
     const theme = useTheme();
     const [visible, setVisible] = useState(false);
-
-    const handleProjectCardOnClick = (projectId) => {
-      trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
-    };
-
-    const handleCTAOnClick = (projectId) => {
-      trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
-    };
-
-    const handleProjectTitleOnClick = (projectId) => {
-      trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-    };
 
     if (project) {
       const postingPermission = getIdeaPostingRules({
