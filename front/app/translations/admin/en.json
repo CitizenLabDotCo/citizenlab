@@ -2364,6 +2364,7 @@
   "app.containers.AdminPage.projects.project.analysis.removeFilter": "Remove filter",
   "app.containers.AdminPage.projects.project.analysis.removeFilterItem": "Remove filter",
   "app.containers.AdminPage.projects.project.analysis.search": "Search",
+  "app.containers.AdminPage.projects.project.analysis.shapefileUploadDisclaimer": "* Shapefiles are displayed in GeoJSON format below. As such, styling in the original file may not display correctly.",
   "app.containers.AdminPage.projects.project.analysis.start": "Start",
   "app.containers.AdminPage.projects.project.analysis.supportArticle": "Support Article",
   "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "https://support.citizenlab.co/en/articles/8316692-ai-analysis",
