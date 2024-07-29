@@ -23,11 +23,10 @@ import CustomFieldModal from './CustomFieldModal';
 interface Props {
   field: IPermissionsFieldData;
   phaseId: string;
-  disabled?: boolean;
   action: IPhasePermissionAction;
 }
 
-const CustomField = ({ field, phaseId, disabled = false, action }: Props) => {
+const CustomField = ({ field, phaseId, action }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +37,8 @@ const CustomField = ({ field, phaseId, disabled = false, action }: Props) => {
   });
 
   const fieldName = localize(field.attributes.title_multiloc);
+
+  const disabled = field.attributes.lock !== null;
 
   return (
     <>
