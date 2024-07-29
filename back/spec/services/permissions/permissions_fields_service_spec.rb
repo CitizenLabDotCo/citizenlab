@@ -47,10 +47,10 @@ describe Permissions::PermissionsFieldsService do
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_empty' }
           ])
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
           permission.groups << group
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 3
           expect(fields.first.custom_field_id).to eq custom_field.id
           expect(fields.first.lock).to eq 'group'
@@ -62,10 +62,10 @@ describe Permissions::PermissionsFieldsService do
             { ruleType: 'email', predicate: 'ends_on', value: 'test.com' }
           ])
 
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
           permission.groups << group
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
         end
       end
@@ -101,10 +101,10 @@ describe Permissions::PermissionsFieldsService do
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: group_custom_field.id, predicate: 'is_empty' }
           ])
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
           permission.groups << group
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
           expect(fields.first.custom_field_id).to eq group_custom_field.id
           expect(fields.first.persisted?).to be false
@@ -117,7 +117,7 @@ describe Permissions::PermissionsFieldsService do
         it 'reorders moves existing fields to the top of the list if used in a group' do
           permission = create(:permission, permitted_by: 'users')
           service.persist_default_fields(permission)
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           birth_year_field = fields.last
           expect(birth_year_field.custom_field.code).to eq 'birthyear'
 
@@ -125,7 +125,7 @@ describe Permissions::PermissionsFieldsService do
             { ruleType: 'custom_field_select', customFieldId: birth_year_field.custom_field_id, predicate: 'is_empty' }
           ])
           permission.groups << group
-          fields = service.fields_for_permission(permission, return_related: true)
+          fields = service.fields_for_permission(permission)
           expect(fields.first.id).to eq birth_year_field.id
           expect(fields.first.custom_field.code).to eq 'birthyear'
         end

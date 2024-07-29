@@ -10,7 +10,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
     permissions_fields_service = Permissions::PermissionsFieldsService.new
     if permissions_fields_service.verified_actions_enabled?
       # NEW non-paged version for verified actions with hidden locked fields
-      permissions_fields = permissions_fields_service.fields_for_permission(permission, return_related: true)
+      permissions_fields = permissions_fields_service.fields_for_permission(permission, return_hidden: true)
       render json: WebApi::V1::PermissionsFieldSerializer.new(permissions_fields, params: jsonapi_serializer_params).serializable_hash
     else
       # Legacy version

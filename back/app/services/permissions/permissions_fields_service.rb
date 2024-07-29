@@ -2,14 +2,13 @@
 
 module Permissions
   class PermissionsFieldsService
-    def fields_for_permission(permission, return_related: false)
+    def fields_for_permission(permission, return_hidden: false)
       fields = if permission.global_custom_fields
         default_fields(permission)
       else
         permission.permissions_fields.to_a
       end
-      fields = add_related_group_fields(permission, fields) if return_related
-      fields
+      add_related_group_fields(permission, fields)
     end
 
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by

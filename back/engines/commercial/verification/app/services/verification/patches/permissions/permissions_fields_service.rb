@@ -4,10 +4,11 @@ module Verification
   module Patches
     module Permissions
       module PermissionsFieldsService
-        def fields_for_permission(permission, return_related: false)
+        # return_hidden must be true for verification fields to be added - this is because we don't want to show them in the UI
+        def fields_for_permission(permission, return_hidden: false)
           fields = super
 
-          add_verification_fields(permission, fields) if return_related && permission.verification_enabled?
+          add_verification_fields(permission, fields) if return_hidden && permission.verification_enabled?
           fields
         end
 

@@ -25,7 +25,7 @@ describe Permissions::PermissionsFieldsService do
       let(:permission) { create(:permission, permitted_by: 'users') }
 
       it 'returns default fields without those linked to verification' do
-        fields = service.fields_for_permission(permission, return_related: true)
+        fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0]
         expect(fields.pluck(:required)).to eq [false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear]
@@ -37,7 +37,7 @@ describe Permissions::PermissionsFieldsService do
 
       it 'adds additional fields linked to verification method' do
         permission = create(:permission, permitted_by: 'verified')
-        fields = service.fields_for_permission(permission, return_related: true)
+        fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
@@ -48,14 +48,14 @@ describe Permissions::PermissionsFieldsService do
 
         # check initial state
         permission = create(:permission, permitted_by: 'users')
-        fields = service.fields_for_permission(permission, return_related: true)
+        fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [false, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear gender]
 
         # check has changed after enforcing restrictions
         permission.update!(permitted_by: 'verified')
-        fields = service.fields_for_permission(permission, return_related: true)
+        fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
