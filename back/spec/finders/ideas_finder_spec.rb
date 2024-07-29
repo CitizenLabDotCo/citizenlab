@@ -45,14 +45,13 @@ describe IdeasFinder do
   end
 
   describe '#transitive_condition' do
-    let(:expected_record_ids) { Idea.transitive.pluck(:id) }
-
     before do
       params[:transitive] = true
+      create(:proposal)
     end
 
     it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+      expect(result_record_ids).to match_array ideas.map(&:id)
     end
   end
 

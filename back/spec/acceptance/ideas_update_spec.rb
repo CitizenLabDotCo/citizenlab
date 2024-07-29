@@ -9,7 +9,6 @@ def public_input_params(spec)
   spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
   spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
   spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
-  # spec.parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # TODO: Separate engine
 end
 
 resource 'Ideas' do
@@ -168,6 +167,7 @@ resource 'Ideas' do
 
       context 'when admin' do
         parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # Tested in separate engine
 
         before { header_token_for(admin) }
 
@@ -342,6 +342,7 @@ resource 'Ideas' do
 
       context 'when moderator' do
         parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # Tested in separate engine
 
         before { header_token_for create(:project_moderator, projects: [project]) }
 

@@ -14,7 +14,7 @@ resource 'Initiatives' do
     header_token_for @user
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives' do
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -176,7 +176,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/as_markers' do
     before do
       locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
