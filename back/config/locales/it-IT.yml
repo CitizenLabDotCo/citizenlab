@@ -146,8 +146,6 @@ it:
         title: Anno di nascita
       domicile:
         title: Luogo di residenza
-      education:
-        title: Educazione
     ideas:
       title:
         title: Titolo
@@ -212,14 +210,6 @@ it:
       unspecified: Altro
     domicile:
       outside: Da qualche altra parte
-    education:
-      ISCED2: Istruzione secondaria inferiore
-      ISCED3: Istruzione secondaria superiore
-      ISCED4: Istruzione post-secondaria non terziaria
-      ISCED5: Istruzione terziaria a ciclo breve
-      ISCED6: Laurea o equivalente
-      ISCED7: Master o equivalente
-      ISCED8: Dottorato o equivalente
   initiatives:
     default_threshold_reached_message: >
       <p>I promotori sono invitati a presentare la loro proposta alla prossima riunione del consiglio. Forniremo un aggiornamento ufficiale.</p>
