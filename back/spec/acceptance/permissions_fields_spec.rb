@@ -235,19 +235,6 @@ resource 'PermissionsField' do
         expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
       end
     end
-
-    # TODO: JS - only allow if not locked/hidden by verification
-    # context 'Field cannot be reordered' do
-    #   let(:id) { @permissions_fields.first.id }
-    #   let(:ordering) { 3 }
-    #
-    #   example '[Error] Field cannot be reordered' do
-    #     do_request
-    #
-    #     expect(response_status).to eq 422
-    #     expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
-    #   end
-    # end
   end
 
   delete 'web_api/v1/permissions_fields/:id' do
