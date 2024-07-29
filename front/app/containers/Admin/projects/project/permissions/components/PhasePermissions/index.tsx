@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -21,9 +21,7 @@ interface Props {
 }
 
 const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
-  const [openedPhaseId, setOpenedPhaseId] = useState<string>();
-  const { mutate: updatePhasePermission } =
-    useUpdatePhasePermission(openedPhaseId);
+  const { mutate: updatePhasePermission } = useUpdatePhasePermission();
 
   const handlePermissionChange = ({
     phaseId,
@@ -71,9 +69,6 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
       <PhaseAccordion
         phaseNumber={phaseNumber}
         phaseTitle={phase.attributes.title_multiloc}
-        onChange={() => {
-          setOpenedPhaseId(openedPhaseId === phase.id ? undefined : phase.id);
-        }}
       >
         {phaseActionsForm}
       </PhaseAccordion>

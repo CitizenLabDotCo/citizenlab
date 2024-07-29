@@ -8,22 +8,22 @@ import permissionsFieldsKeys from '../permissions_fields/keys';
 import phasePermissionKeys from './keys';
 import { IPCPermission, IUpdatePermissionObject } from './types';
 
-const updatePhasePermission = ({
+const resetPhasePermission = ({
   permissionId,
   phaseId,
   action,
   permission,
 }: IUpdatePermissionObject) =>
   fetcher<IPCPermission>({
-    path: `/phases/${phaseId}/permissions/${action}`,
+    path: `/phases/${phaseId}/permissions/${action}/reset`,
     action: 'patch',
     body: { permissionId, permission },
   });
 
-const useUpdatePhasePermission = () => {
+const useResetPhasePermission = () => {
   const queryClient = useQueryClient();
   return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
-    mutationFn: updatePhasePermission,
+    mutationFn: resetPhasePermission,
     onSuccess: (_, { action, phaseId }) => {
       queryClient.invalidateQueries({
         queryKey: phasePermissionKeys.lists(),
@@ -44,4 +44,4 @@ const useUpdatePhasePermission = () => {
   });
 };
 
-export default useUpdatePhasePermission;
+export default useResetPhasePermission;
