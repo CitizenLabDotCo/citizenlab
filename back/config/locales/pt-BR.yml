@@ -267,6 +267,7 @@ pt:
       submitted_at: 'Enviado em'
       tags: 'Tags'
       title: 'Título'
+      user_data: 'Dados do usuário'
       votes_count: 'Votos'
   form_builder:
     default_select_field:
