@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 import {
   Icon,
@@ -10,10 +10,7 @@ import {
   defaultCardHoverStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty, round } from 'lodash-es';
-import moment from 'moment';
-import { rgba, darken } from 'polished';
-import { useInView } from 'react-intersection-observer';
+import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
@@ -28,18 +25,18 @@ import { getProjectUrl } from 'api/projects/utils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import T from 'components/T';
-import Image from 'components/UI/Image';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import CTAMessage from './CTAMessage';
 import {
-  handleCTAOnClick,
   handleProjectCardOnClick,
   handleProjectTitleOnClick,
+  ProjectImage,
 } from './Helpers';
-import messages from './messages';
+import ProjectHeader, {
+  ContentHeaderBottomMargin,
+  ContentHeaderHeight,
+} from './ProjectHeader';
 import ScreenReaderContent from './ScreenReaderContent';
 
 const Container = styled(Link)`
@@ -78,14 +75,6 @@ const ProjectImageContainer = styled.div`
   `}
 `;
 
-const ProjectImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
 const ProjectContent = styled.div`
   flex-grow: 1;
   display: flex;
@@ -107,9 +96,6 @@ const ProjectContent = styled.div`
     padding-left: 32px;
   `}
 `;
-
-const ContentHeaderHeight = 39;
-const ContentHeaderBottomMargin = 13;
 
 const ContentHeader = styled.div`
   display: flex;
@@ -136,49 +122,6 @@ const ContentHeader = styled.div`
   ${isRtl`
     text-align: right;
   `}
-`;
-
-const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  margin-bottom: 7px;
-`;
-
-const ProgressBar = styled.div`
-  width: 100%;
-  max-width: 130px;
-  height: 5px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: #d6dade;
-`;
-
-const ProgressBarOverlay = styled.div<{ progress: number }>`
-  width: 0px;
-  height: 100%;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.error};
-  transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: width;
-
-  &.visible {
-    width: ${(props) => props.progress}%;
-  }
-`;
-
-const ProjectLabel = styled.div`
-  // darkened to have higher chances of solid color contrast
-  color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
 `;
 
 const ContentBody = styled.div`
@@ -238,16 +181,6 @@ const ContentFooter = styled.div`
   }
 `;
 
-const ContentHeaderLabel = styled.span`
-  height: ${ContentHeaderHeight}px;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 500;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-`;
-
 export interface InputProps {
   projectId: string;
   hideDescriptionPreview?: boolean;
@@ -257,13 +190,6 @@ export interface InputProps {
 
 const LargeProjectCard = memo<InputProps>(
   ({ projectId, hideDescriptionPreview, className, showFollowButton }) => {
-    const { ref: progressBarRef } = useInView({
-      onChange: (inView) => {
-        if (inView) {
-          setVisible(true);
-        }
-      },
-    });
     const { data: project } = useProjectById(projectId);
     const { data: projectImage } = useProjectImage({
       projectId,
@@ -277,14 +203,12 @@ const LargeProjectCard = memo<InputProps>(
       fetchPhases ? project.data.id : undefined
     );
     const theme = useTheme();
-    const [visible, setVisible] = useState(false);
 
     if (project) {
       const imageUrl = !projectImage
         ? null
         : projectImage.data.attributes.versions?.large;
       const projectUrl: RouteType = getProjectUrl(project.data);
-      const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
       const hasAvatars =
@@ -297,94 +221,7 @@ const LargeProjectCard = memo<InputProps>(
         project.data.relationships.avatars.data
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
-      const startAt = phase?.data.attributes.start_at;
-      const endAt = phase?.data.attributes.end_at;
-      const timeRemaining = endAt
-        ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
-        : null;
-      let countdown: JSX.Element | null = null;
       const inputTerm = getInputTerm(phases?.data, phase?.data);
-
-      if (isArchived) {
-        countdown = (
-          <ContentHeaderLabel>
-            <FormattedMessage {...messages.archived} />
-          </ContentHeaderLabel>
-        );
-      } else if (isFinished) {
-        countdown = (
-          <ContentHeaderLabel>
-            <FormattedMessage {...messages.finished} />
-          </ContentHeaderLabel>
-        );
-      } else if (timeRemaining) {
-        const totalDays = moment
-          .duration(moment(endAt).diff(moment(startAt)))
-          .asDays();
-        const pastDays = moment
-          .duration(moment(moment()).diff(moment(startAt)))
-          .asDays();
-        const progress = round((pastDays / totalDays) * 100, 1);
-        countdown = (
-          <Box mt="4px" className="e2e-project-card-time-remaining">
-            <TimeRemaining>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
-            <ProgressBar ref={progressBarRef} aria-hidden>
-              <ProgressBarOverlay
-                progress={progress}
-                className={visible ? 'visible' : ''}
-              />
-            </ProgressBar>
-          </Box>
-        );
-      }
-
-      const ctaMessage = (
-        <CTAMessage phase={phase} inputTerm={inputTerm} project={project} />
-      );
-
-      const contentHeader = (
-        <ContentHeader
-          className={`${
-            !ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'
-          } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
-            !ctaMessage && !countdown ? 'noContent' : ''
-          }`}
-        >
-          {countdown && (
-            <Box
-              minHeight={`${ContentHeaderHeight}px`}
-              display="flex"
-              flexGrow={0}
-              flexShrink={1}
-              flexBasis={140}
-              mr="15px"
-            >
-              {countdown}
-            </Box>
-          )}
-
-          {ctaMessage && !isFinished && !isArchived && (
-            <Box
-              minHeight={`${ContentHeaderHeight}px`}
-              className={`hasProgressBar`}
-            >
-              <ProjectLabel
-                onClick={() => {
-                  handleCTAOnClick(project.data.id);
-                }}
-                className="e2e-project-card-cta"
-              >
-                {ctaMessage}
-              </ProjectLabel>
-            </Box>
-          )}
-        </ContentHeader>
-      );
 
       return (
         <Container
@@ -427,7 +264,12 @@ const LargeProjectCard = memo<InputProps>(
           </ProjectImageContainer>
 
           <ProjectContent>
-            {contentHeader}
+            <ProjectHeader
+              phase={phase}
+              inputTerm={inputTerm}
+              project={project}
+              ContentHeaderComponent={ContentHeader}
+            />
             <ContentBody aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
