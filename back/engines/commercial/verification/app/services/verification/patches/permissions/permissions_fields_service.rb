@@ -4,49 +4,24 @@ module Verification
   module Patches
     module Permissions
       module PermissionsFieldsService
-        def default_fields(permission)
+        def fields_for_permission(permission, return_related: false)
           fields = super
 
-          add_verification_fields(permission, fields) if permission.verification_enabled?
+          add_verification_fields(permission, fields) if return_related && permission.verification_enabled?
           fields
         end
 
+        private
+
         # Add any fields that are locked to verification method
-        # TODO: JS - Add this when we add groups or change permission too
         def add_verification_fields(permission, fields)
-          ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
           method = verification_methods.first
           return fields unless method.respond_to?(:locked_custom_fields)
 
-          method&.locked_custom_fields&.each do |field_code|
-            custom_field = CustomField.find_by(code: field_code.to_s)
-            next if custom_field.nil?
-
-            existing_permission_field = fields.find { |field| field[:custom_field_id] == custom_field.id }
-            if existing_permission_field.nil?
-              # Insert a new one if it's not already there
-              new_field = PermissionsField.new(custom_field: custom_field, required: true, ordering: ordering, permission: permission, lock: 'verification')
-              fields.insert(ordering, new_field)
-            else
-              # Set the existing one to true and move to the top
-              existing_permission_field.ordering = ordering
-              existing_permission_field.required = true
-              existing_permission_field.lock = 'verification' # TODO: JS - abstract this so it can be used for groups too
-              # TODO: Apply to all fields and do not persist the fields separately - fine to return some persisted and some not
-              fields.insert(ordering, fields.delete(existing_permission_field))
-            end
-            ordering += 1
-          end
-          fields.each_with_index { |field, index| field.ordering = index }
+          # Get the IDs of the custom fields that are locked to the verification method
+          custom_field_ids = method&.locked_custom_fields&.map { |field_code| CustomField.find_by(code: field_code.to_s)&.id }&.compact
+          add_and_lock_related_fields(permission, fields, custom_field_ids, 'verification')
         end
-
-        def persist_related_verification_fields(permission)
-          nil if permission.global_custom_fields
-
-          # TODO: JS - persist group fields
-        end
-
-        private
 
         def verification_methods
           @verification_methods ||= VerificationService.new.active_methods(AppConfiguration.instance)
