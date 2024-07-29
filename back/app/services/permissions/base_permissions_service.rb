@@ -82,9 +82,5 @@ module Permissions
     def denied_when_permitted_by_groups?(permission)
       permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
     end
-
-    def user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
-    end
   end
 end
