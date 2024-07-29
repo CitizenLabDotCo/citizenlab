@@ -47,7 +47,7 @@ module Permissions
         existing_permission_field = fields.find { |field| field[:custom_field_id] == custom_field_id }
         if existing_permission_field.nil?
           # Insert a new one if it's not already there
-          new_field = PermissionsField.new(custom_field_id: custom_field_id, required: true, ordering: ordering, permission: permission, lock: lock_type)
+          new_field = PermissionsField.new(id: SecureRandom.uuid, custom_field_id: custom_field_id, required: true, ordering: ordering, permission: permission, lock: lock_type)
           fields.insert(ordering, new_field)
         else
           # Set the existing one to true and move to the top
@@ -65,7 +65,8 @@ module Permissions
       return fields unless permission.groups.any?
 
       custom_field_ids = permission.groups.map { |g| g[:rules].pluck('customFieldId') }.flatten.uniq.compact
-      add_and_lock_related_fields(permission, fields, custom_field_ids, 'group')
+      custom_fields = CustomField.where(id: custom_field_ids) # Additional step to ensure fields exist
+      add_and_lock_related_fields(permission, fields, custom_fields.pluck(:id), 'group')
     end
 
     def user_confirmation_enabled?
