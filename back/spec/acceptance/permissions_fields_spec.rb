@@ -72,7 +72,7 @@ resource 'PermissionsField' do
         create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
 
         # Permissions field associated with one group
-        custom_field = create(:custom_field_text, :for_registration, enabled: true, required: false)
+        custom_field = create(:custom_field_text, :for_registration, title_multiloc: { en: 'TEST FIELD' }, enabled: true, required: false)
         associated_group = create(:smart_group, slug: 'used', rules: [
           { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
         ])
@@ -89,10 +89,10 @@ resource 'PermissionsField' do
         expect(response_data.size).to eq 2
         expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
         expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
-        expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
-        expect(response_data.last.dig(:relationships, :groups, :data).count).to eq 1
-        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
-        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
+        expect(response_data.first.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+        expect(response_data.first.dig(:relationships, :groups, :data).count).to eq 1
+        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
+        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
       end
     end
   end
@@ -235,19 +235,6 @@ resource 'PermissionsField' do
         expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
       end
     end
-
-    # TODO: JS - only allow if not locked/hidden by verification
-    # context 'Field cannot be reordered' do
-    #   let(:id) { @permissions_fields.first.id }
-    #   let(:ordering) { 3 }
-    #
-    #   example '[Error] Field cannot be reordered' do
-    #     do_request
-    #
-    #     expect(response_status).to eq 422
-    #     expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
-    #   end
-    # end
   end
 
   delete 'web_api/v1/permissions_fields/:id' do
