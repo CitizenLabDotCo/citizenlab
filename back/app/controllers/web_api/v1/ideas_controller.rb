@@ -281,12 +281,17 @@ class WebApi::V1::IdeasController < ApplicationController
     params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
     params_for_file_upload_fields.each do |key, params_for_files_field|
       if params_for_files_field['id']
+        puts 'params_for_file_upload_fields (patch):'
+        pp params_for_file_upload_fields
         idea_file = FileUpload.find(params_for_files_field['id'])
         if idea_file
           input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
           file_uploads_exist = true
         end
       elsif params_for_files_field['content']
+        puts 'params_for_file_upload_fields:'
+        pp params_for_file_upload_fields
+
         idea_file = FileUpload.create!(
           idea: input,
           file_by_content: {

@@ -7,7 +7,7 @@ class CustomFieldParamsService
       case field.input_type
       when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
-      when 'file_upload'
+      when 'file_upload', 'shapefile_upload'
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
       when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
         fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES

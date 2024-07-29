@@ -51,7 +51,8 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
-    multiselect multiselect_image number page point line polygon select select_image text text_multiloc topic_ids section
+    multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
+    topic_ids section
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -131,7 +132,7 @@ class CustomField < ApplicationRecord
   end
 
   def file_upload?
-    input_type == 'file_upload'
+    input_type == 'file_upload' || input_type == 'shapefile_upload'
   end
 
   def page?
@@ -212,6 +213,8 @@ class CustomField < ApplicationRecord
       visitor.visit_select self
     when 'select_image'
       visitor.visit_select_image self
+    when 'shapefile_upload'
+      visitor.visit_shapefile_upload self
     when 'text'
       visitor.visit_text self
     when 'text_multiloc'
