@@ -6,23 +6,22 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import permissionsFieldsKeys from '../permissions_fields/keys';
 
 import phasePermissionKeys from './keys';
-import { IPCPermission, IUpdatePermissionObject } from './types';
+import { IPCPermission, ResetPermissionObject } from './types';
 
 const resetPhasePermission = ({
   permissionId,
   phaseId,
   action,
-  permission,
-}: IUpdatePermissionObject) =>
+}: ResetPermissionObject) =>
   fetcher<IPCPermission>({
     path: `/phases/${phaseId}/permissions/${action}/reset`,
     action: 'patch',
-    body: { permissionId, permission },
+    body: { permissionId },
   });
 
 const useResetPhasePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
+  return useMutation<IPCPermission, CLErrors, ResetPermissionObject>({
     mutationFn: resetPhasePermission,
     onSuccess: (_, { action, phaseId }) => {
       queryClient.invalidateQueries({

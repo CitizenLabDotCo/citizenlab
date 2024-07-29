@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
+import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 
 import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
 import GroupSelect from 'components/admin/ActionsForm/GroupSelect';
@@ -43,6 +44,8 @@ const ActionForm = ({
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
     onChange(permittedBy, groupIds);
   };
+
+  const { mutate: resetPermission } = useResetPhasePermission();
 
   const {
     id: permissionId,
@@ -95,6 +98,21 @@ const ActionForm = ({
           />
         </Box>
       )}
+      <Box mt="20px" w="100%" display="flex">
+        <Button
+          width="auto"
+          bgColor={colors.primary}
+          onClick={() => {
+            resetPermission({
+              permissionId,
+              phaseId,
+              action,
+            });
+          }}
+        >
+          <FormattedMessage {...messages.resetExtraQuestionsAndGroups} />
+        </Button>
+      </Box>
       <Box mt="20px">
         <Fields phaseId={phaseId} action={action} />
       </Box>

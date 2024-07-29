@@ -18,6 +18,12 @@ export type IUpdatePermissionObject = {
   permission: Partial<IPermissionUpdate>;
 };
 
+export type ResetPermissionObject = {
+  permissionId: string;
+  phaseId: string;
+  action: IGlobalPermissionAction | IPhasePermissionAction;
+};
+
 export interface IPCPermissions {
   data: IPCPermissionData[];
 }
