@@ -72,10 +72,7 @@ const UserFieldSelection = ({
     phaseId,
     action: permission.attributes.action,
   });
-  const { mutate: deletePermissionsField } = useDeletePermissionsField({
-    phaseId,
-    action: permission.attributes.action,
-  });
+  const { mutate: deletePermissionsField } = useDeletePermissionsField();
 
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -101,7 +98,11 @@ const UserFieldSelection = ({
   };
 
   const handleDeleteField = (fieldId: string) => {
-    deletePermissionsField(fieldId);
+    deletePermissionsField({
+      id: fieldId,
+      phaseId,
+      action: permission.attributes.action,
+    });
   };
 
   const groupIds = permission.relationships.groups.data.map((p) => p.id);
