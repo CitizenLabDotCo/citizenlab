@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Export as GeoJSON',
   },
   exportGeoJSONTooltip: {
-    id: 'app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip',
+    id: 'app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2',
     defaultMessage:
-      "Export the responses to this question as a GeoJSON file. For each GeoJSON Feature, the user's responses to the other survey questions are included as Attributes.",
+      "Export the responses to this question as a GeoJSON file. For each GeoJSON Feature, all of the related respondent's survey responses will be listed in that Feature's 'properties' object.",
   },
 });
