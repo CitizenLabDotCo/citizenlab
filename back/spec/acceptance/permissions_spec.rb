@@ -164,6 +164,30 @@ resource 'Permissions' do
       end
     end
 
+    patch 'web_api/v1/phases/:phase_id/permissions/:action/reset' do
+      ValidationErrorHelper.new.error_fields(self, Permission)
+
+      let(:permission) { @phase.permissions.first }
+      let(:action) { @phase.permissions.first.action }
+
+      example 'Reset a permission to use global custom fields and no groups' do
+        # Create some groups & permission fields
+        permission.update!(global_custom_fields: false)
+        create(:permissions_field, permission: permission, custom_field: create(:custom_field), required: true)
+        permission.groups << create_list(:group, 2, projects: [@phase.project])
+
+        # Check the setup is correct
+        expect(permission.permissions_fields.count).to eq 1
+        expect(permission.groups.count).to eq 2
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :global_custom_fields)).to be true
+        expect(permission.permissions_fields.count).to eq 0
+        expect(permission.permissions_fields.count).to eq 0
+      end
+    end
+
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
