@@ -94,6 +94,10 @@ class TestVisitor < FieldVisitorService
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
+
+  def visit_shapefile_upload(_field)
+    'shapefile_upload from visitor'
+  end
 end
 
 RSpec.describe CustomField do
