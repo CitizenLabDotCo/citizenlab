@@ -976,7 +976,7 @@
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Are you sure you want to delete this analysis? This action cannot be undone.",
   "app.containers.Admin.projects.project.survey.explore": "Explore",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSON": "Export as GeoJSON",
-  "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip": "Export the responses to this question as a GeoJSON file. For each GeoJSON Feature, the user's responses to the other survey questions are included as Attributes.",
+  "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Export the responses to this question as a GeoJSON file. For each GeoJSON Feature, all of the related respondent's survey responses will be listed in that Feature's 'properties' object.",
   "app.containers.Admin.projects.project.survey.heatMap": "Heat map",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLink": "https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLinkText": "Learn more about heat maps generated using Esri Smart Mapping.",
