@@ -140,6 +140,10 @@ class Phase < ApplicationRecord
   end
 
   # TODO: Validate expire_days_limit (present, min 1) and reacting_threshold (present, min 2)
+  with_options if: ->(phase) { phase.pmethod.supports_automated_statuses? } do
+    validates :expire_days_limit, presence: true, numericality: { only_integer: true, greater_than: 0 }
+    validates :reacting_threshold, presence: true, numericality: { only_integer: true, greater_than: 1 }
+  end
 
   validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }

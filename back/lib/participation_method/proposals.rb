@@ -28,6 +28,10 @@ module ParticipationMethod
     #   super # TODO: if no reviewing and no reactions + toggle
     # end
 
+    def supports_automated_statuses?
+      true # TODO: This is temorary, until proposal statuses are implemented
+    end
+
     # def supports_status?
     #   super # TODO: separate proposal statuses
     # end
