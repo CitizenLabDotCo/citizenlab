@@ -52,6 +52,8 @@ import {
   SingleSelectControl,
   singleAttachmentControlTester,
   SingleAttachmentControl,
+  shapefileUploadControlTester,
+  ShapefileUploadControl,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -106,6 +108,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: mapControlTester,
       renderer: MapControl,
+    },
+    {
+      tester: shapefileUploadControlTester,
+      renderer: ShapefileUploadControl,
     },
     ...commonRenderers,
   ];

@@ -25,4 +25,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.viewSelectedQuestions',
     defaultMessage: 'View selected questions',
   },
+  shapefileUploadDisclaimer: {
+    id: 'app.containers.AdminPage.projects.project.analysis.shapefileUploadDisclaimer',
+    defaultMessage:
+      '* Shapefiles are displayed in GeoJSON format below. As such, styling in the original file may not display correctly.',
+  },
 });

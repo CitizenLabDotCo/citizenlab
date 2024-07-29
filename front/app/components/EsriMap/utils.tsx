@@ -647,3 +647,9 @@ export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
     });
   }
 };
+
+// goToLayerExtent
+// Description: Zoom to the extent of an Esri layer
+export const goToLayerExtent = (layer: Layer, mapView: MapView) => {
+  mapView.goTo(layer.fullExtent, { animate: false });
+};

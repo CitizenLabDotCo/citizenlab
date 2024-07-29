@@ -64,6 +64,9 @@ import MapControl, { mapControlTester } from './MapInput/MapControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import ShapefileUploadControl, {
+  shapefileUploadControlTester,
+} from './ShapefileUploadControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
@@ -130,4 +133,6 @@ export {
   linearScaleControlTester,
   SingleAttachmentControl,
   singleAttachmentControlTester,
+  ShapefileUploadControl,
+  shapefileUploadControlTester,
 };

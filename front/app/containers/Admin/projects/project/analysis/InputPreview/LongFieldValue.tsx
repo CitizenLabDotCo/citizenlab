@@ -25,6 +25,8 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import ShapefilePreview from './ShapefilePreview';
+
 type Props = {
   customFieldId: string;
   input: IInputsData;
@@ -288,9 +290,22 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
             </Box>
           );
         }
+        case 'shapefile_upload': {
+          // We don't support file upload fields in an analysis at the moment
+          return <Box>TODO</Box>;
+        }
         case 'file_upload': {
           // We don't support file upload fields in an analysis at the moment
-          return null;
+
+          // TEMP url: http://localhost:4000/uploads/c72c5211-8e03-470b-9…f87e-4710-9b34-b52b855eec03/brussels_boundary.zip
+          return (
+            <Box>
+              <Title variant="h5" m="0px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <ShapefilePreview fileUrl={rawValue} />
+            </Box>
+          );
         }
         default: {
           // Makes TS throw a compile error in case we're not covering for an input_type
