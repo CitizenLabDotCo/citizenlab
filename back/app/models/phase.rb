@@ -43,6 +43,8 @@
 #  campaigns_settings            :jsonb
 #  native_survey_title_multiloc  :jsonb
 #  native_survey_button_multiloc :jsonb
+#  expire_days_limit             :integer
+#  reacting_threshold            :integer
 #
 # Indexes
 #
@@ -136,6 +138,8 @@ class Phase < ApplicationRecord
     validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
   end
+
+  # TODO: Validate expire_days_limit (present, min 1) and reacting_threshold (present, min 2)
 
   validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }

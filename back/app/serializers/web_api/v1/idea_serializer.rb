@@ -41,6 +41,18 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
+  attribute :expires_at, if: proc { |input|
+    input.published? && input.participation_method.supports_serializing_input?(:expires_at)
+  } do |input|
+    input.published_at + input.creation_phase.expire_days_limit.days
+  end
+
+  attribute :reactions_needed, if: proc { |input|
+    input.participation_method.supports_serializing_input?(:reactions_needed)
+  } do |input|
+    [input.creation_phase.reacting_threshold - input.likes_count, 0].max
+  end
+
   has_many :topics
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
