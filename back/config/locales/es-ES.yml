@@ -146,8 +146,6 @@ es:
         title: Año de nacimiento
       domicile:
         title: Lugar de residencia
-      education:
-        title: Educación
     ideas:
       title:
         title: Título
@@ -212,14 +210,6 @@ es:
       unspecified: Otro
     domicile:
       outside: En algun otro lugar
-    education:
-      ISCED2: Educación Básica
-      ISCED3: Eduación Media
-      ISCED4: Educación Media-Técnica
-      ISCED5: Educación técnica profesional
-      ISCED6: Carrera profesional
-      ISCED7: Master
-      ISCED8: Doctorado
   initiatives:
     default_threshold_reached_message: >
       <p>Se invita a los iniciadores a presentar su propuesta en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
