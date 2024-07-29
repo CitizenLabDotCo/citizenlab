@@ -267,6 +267,7 @@ tr:
       submitted_at: 'Şu adrese gönderildi'
       tags: 'Etiketler'
       title: 'Başlık'
+      user_data: 'Kullanıcı verileri'
       votes_count: 'Oylar'
   form_builder:
     default_select_field:
