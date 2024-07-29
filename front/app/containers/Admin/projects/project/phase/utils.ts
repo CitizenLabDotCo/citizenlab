@@ -80,6 +80,8 @@ export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
       return messages.voting;
     case 'annotating_document':
       return messages.annotatingDocument;
+    case 'attending_event':
+      return messages.attendingEvent;
   }
 };
 

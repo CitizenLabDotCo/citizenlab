@@ -11,36 +11,35 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term
 
-  with_options if: proc { |phase|
-    phase.voting?
-  } do
-    attribute :voting_method
-    attribute :voting_max_total
-    attribute :voting_min_total
-    attribute :voting_max_votes_per_idea
-    attribute :baskets_count
-    attribute :voting_term_singular_multiloc do |phase|
-      phase.voting_term_singular_multiloc_with_fallback
-    end
-    attribute :voting_term_plural_multiloc do |phase|
-      phase.voting_term_plural_multiloc_with_fallback
-    end
-  end
-
-  with_options if: proc { |phase|
-    phase.native_survey?
-  } do
-    attribute :native_survey_title_multiloc
-    attribute :native_survey_button_multiloc
+  %i[
+    voting_method voting_max_total voting_min_total
+    voting_max_votes_per_idea baskets_count
+    native_survey_title_multiloc native_survey_button_multiloc
+  ].each do |attribute_name|
+    attribute attribute_name, if: proc { |phase|
+      phase.pmethod.supports_serializing?(attribute_name)
+    }
   end
 
   attribute :votes_count, if: proc { |phase, params|
-    phase.voting? \
+    phase.pmethod.supports_serializing?(:votes_count) \
     && (
       (current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))) \
       || TimelineService.new.phase_is_complete?(phase)
     )
   }
+
+  attribute :voting_term_singular_multiloc, if: proc { |phase|
+    phase.pmethod.supports_serializing?(:voting_term_singular_multiloc)
+  } do |phase|
+    phase.voting_term_singular_multiloc_with_fallback
+  end
+
+  attribute :voting_term_plural_multiloc, if: proc { |phase|
+    phase.pmethod.supports_serializing?(:voting_term_plural_multiloc)
+  } do |phase|
+    phase.voting_term_plural_multiloc_with_fallback
+  end
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object

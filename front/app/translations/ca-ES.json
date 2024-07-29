@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Els assistents",
   "app.containers.EventsShow.attending": "assistint",
   "app.containers.EventsShow.editEvent": "Edita l'esdeveniment",
-  "app.containers.EventsShow.emailSharingBody": "Assistiu a aquest esdeveniment: {eventTitle} a {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Data i hora de l'esdeveniment",
   "app.containers.EventsShow.eventFrom2": "De \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Torna",

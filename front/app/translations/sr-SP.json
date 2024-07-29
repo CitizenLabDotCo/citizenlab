@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Attendees",
   "app.containers.EventsShow.attending": "присуствовање",
   "app.containers.EventsShow.editEvent": "Уредите догађај",
-  "app.containers.EventsShow.emailSharingBody": "Присуствујте овом догађају: {eventTitle} у {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Event date and time",
   "app.containers.EventsShow.eventFrom2": "Објављено у \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Повратак назад",

@@ -100,12 +100,12 @@ export enum projectsRoutes {
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
   projectPhaseIdeas = ':phaseId/ideas',
-  projectPhaseIdeaForm = ':phaseId/ideaform',
+  projectPhaseIdeaForm = ':phaseId/form',
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
   projectPhaseNativeSurvey = ':phaseId/native-survey',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
-  projectPhaseIdeaFormEdit = ':phaseId/ideaform/edit',
+  projectPhaseIdeaFormEdit = ':phaseId/form/edit',
   projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
@@ -142,12 +142,12 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/polls`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/access-rights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideas`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/map`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>

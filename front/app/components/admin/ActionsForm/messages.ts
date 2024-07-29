@@ -33,6 +33,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle',
     defaultMessage: 'Who can vote on proposals?',
   },
+  permissionAction_attending_event_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle',
+    defaultMessage: 'Who can sign up to attend an event?',
+  },
+  phase: {
+    id: 'app.containers.AdminPage.groups.permissions.phase',
+    defaultMessage: 'Phase ',
+  },
   permissionAction_comment_proposals_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle',
     defaultMessage: 'Who can comment on proposals?',

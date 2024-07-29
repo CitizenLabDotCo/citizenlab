@@ -41,7 +41,8 @@ export type IPhasePermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'voting'
-  | 'annotating_document';
+  | 'annotating_document'
+  | 'attending_event';
 
 export type Action = IGlobalPermissionAction | IPhasePermissionAction;
 

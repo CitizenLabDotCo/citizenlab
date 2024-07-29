@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Dalībnieki",
   "app.containers.EventsShow.attending": "apmeklē .",
   "app.containers.EventsShow.editEvent": "Rediģēt notikumu",
-  "app.containers.EventsShow.emailSharingBody": "Apmeklējiet šo pasākumu: {eventTitle} vietnē {eventLocation}.",
   "app.containers.EventsShow.eventDateTimeIcon": "Pasākuma datums un laiks",
   "app.containers.EventsShow.eventFrom2": "No \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Atgriezties",

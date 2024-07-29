@@ -251,11 +251,48 @@ resource 'PermissionsField' do
   end
 
   delete 'web_api/v1/permissions_fields/:id' do
-    let(:permissions_field) { create(:permissions_field) }
-    let(:id) { permissions_field.id }
-    example_request 'Delete a permissions custom field' do
-      assert_status 200
-      expect { PermissionsField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    with_options scope: :permissions_field do
+      parameter :permission_id, 'Required if no fields are yet persisted'
+      parameter :custom_field_id, 'Required if no fields are yet persisted'
+    end
+
+    context 'fields already exist' do
+      let(:permissions_field) { create(:permissions_field) }
+      let(:id) { permissions_field.id }
+
+      example_request 'Delete a permissions custom field' do
+        assert_status 200
+        expect { PermissionsField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'fields are not yet persisted' do
+      let(:permission) { create(:permission, permitted_by: 'users') }
+      let(:permissions_field) { Permissions::PermissionsFieldsService.new.fields_for_permission(permission).last }
+      let(:id) { permissions_field.id }
+      let(:custom_field_id) { permissions_field.custom_field_id }
+      let(:permission_id) { permission.id }
+
+      before do
+        # Create a default custom fields
+        create(:custom_field_gender, enabled: true)
+        create(:custom_field_birthyear, enabled: true)
+        create(:custom_field_domicile, enabled: true) # To delete
+      end
+
+      example 'Persist default fields and then delete one' do
+        # Check the setup
+        expect(CustomField.all.count).to eq 3
+        expect(PermissionsField.all.count).to eq 0
+        expect(Permissions::PermissionsFieldsService.new.fields_for_permission(permission).count).to eq 3
+
+        do_request
+        assert_status 200
+        expect(CustomField.all.count).to eq 3
+        expect(PermissionsField.all.count).to eq 2 # 3 persisted and then 1 deleted
+        expect(Permissions::PermissionsFieldsService.new.fields_for_permission(permission.reload).count).to eq 2
+        expect(PermissionsField.all.map { |field| field.custom_field.code }).not_to include 'domicile'
+      end
     end
   end
 end

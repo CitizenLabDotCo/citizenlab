@@ -40,8 +40,10 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   commenting_enabled: true,
   reacting_enabled: true,
   reacting_like_method: undefined,
+  reacting_like_limited_max: null,
   reacting_dislike_enabled: true,
   reacting_dislike_method: undefined,
+  reacting_dislike_limited_max: null,
   allow_anonymous_participation: false,
   voting_method: null,
   voting_min_total: null,
@@ -103,4 +105,20 @@ export const surveyDefaultConfig: IPhaseParticipationConfig = {
   ...defaultParticipationConfig,
   participation_method: 'survey',
   survey_service: 'typeform',
+};
+
+export const proposalsDefaultConfig: IPhaseParticipationConfig = {
+  ...defaultParticipationConfig,
+  participation_method: 'proposals',
+  posting_enabled: true,
+  commenting_enabled: true,
+  reacting_enabled: true,
+  reacting_like_method: 'unlimited',
+  reacting_dislike_enabled: false,
+  reacting_dislike_method: undefined,
+  allow_anonymous_participation: false,
+  reacting_dislike_limited_max: null,
+  presentation_mode: 'card',
+  // input_term: 'proposal', // TODO: add later
+  ideas_order: 'trending',
 };
