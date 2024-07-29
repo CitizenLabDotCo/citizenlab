@@ -267,6 +267,7 @@ fi:
       submitted_at: 'Lähetetty klo'
       tags: 'Tunnisteet'
       title: 'Otsikko'
+      user_data: 'Käyttäjätiedot'
       votes_count: 'Äänet'
   form_builder:
     default_select_field:
