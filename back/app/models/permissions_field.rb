@@ -24,7 +24,7 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class PermissionsField < ApplicationRecord
-  # This attribute will be calculated but not persisted - TODO: JS - Must be in 'verification' or 'groups'
+  # This attribute will be calculated but not persisted - will be 'verification' or 'groups'
   attribute :lock, :string
 
   acts_as_list column: :ordering, top_of_list: 0, scope: :permission
@@ -37,11 +37,6 @@ class PermissionsField < ApplicationRecord
   validates :permission, presence: true
   validates :custom_field, presence: true
   validates :permission_id, uniqueness: { scope: :custom_field_id }
-
-  def can_be_reordered?
-    # TODO: JS - only allow if not locked/hidden by verification
-    true
-  end
 
   def title_multiloc
     custom_field&.title_multiloc || {}
