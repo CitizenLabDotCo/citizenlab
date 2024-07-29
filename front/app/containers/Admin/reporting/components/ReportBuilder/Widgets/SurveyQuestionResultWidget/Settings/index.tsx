@@ -18,6 +18,7 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import HeatmapTooltipContent from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
+import { MapInputTypeArray } from 'components/Form/Components/Controls/MapInput/utils';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -68,7 +69,7 @@ const Settings = () => {
   const showGroupingSettings =
     questionId &&
     selectedQuestion &&
-    selectedQuestion.attributes.input_type !== 'point';
+    !MapInputTypeArray.includes(selectedQuestion.attributes.input_type);
 
   const showHeatmapSettings =
     questionId &&

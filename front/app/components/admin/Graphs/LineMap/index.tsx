@@ -49,7 +49,7 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
     });
   }, [lines]);
 
-  // Create an Esri feature layer from the responses list so we can use it to create a heat map
+  // Create an Esri feature layer from the responses list
   const responsesLayer = useMemo(() => {
     return new FeatureLayer({
       source: graphics,
