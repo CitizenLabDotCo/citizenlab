@@ -267,6 +267,7 @@ fr-BE:
       submitted_at: 'Soumis le'
       tags: 'Thèmes'
       title: 'Titre'
+      user_data: 'Données de l''utilisateur'
       votes_count: 'Votes'
   form_builder:
     default_select_field:
