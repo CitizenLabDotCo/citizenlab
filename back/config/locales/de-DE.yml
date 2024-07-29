@@ -267,6 +267,7 @@ de:
       submitted_at: 'Eingereicht am'
       tags: 'Themen-Tags'
       title: 'Titel'
+      user_data: 'Benutzerdaten'
       votes_count: 'Stimmen'
   form_builder:
     default_select_field:
