@@ -267,6 +267,7 @@ en-GB:
       submitted_at: 'Submitted at'
       tags: 'Tags'
       title: 'Title'
+      user_data: 'User data'
       votes_count: 'Votes'
   form_builder:
     default_select_field:
