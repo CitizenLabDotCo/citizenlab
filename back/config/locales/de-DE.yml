@@ -267,7 +267,7 @@ de:
       submitted_at: 'Eingereicht am'
       tags: 'Themen-Tags'
       title: 'Titel'
-      user_data: 'Benutzerdaten'
+      user_data: 'Nutzer*innendaten'
       votes_count: 'Stimmen'
   form_builder:
     default_select_field:
@@ -279,8 +279,8 @@ de:
       description: "Antworten übermitteln, indem Sie unten auf \"Einreichen\" klicken."
     pdf_export:
       personal_data: 'Persönliche Daten'
-      personal_data_explanation_public: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName} weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
-      personal_data_explanation_private: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName}weiterleiten. Wenn Sie Aktualisierungen, die für Ihren Beitrag relevant sind, per E-Mail erhalten möchten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir werden ein Konto für Sie anlegen. Ihre Daten sind nicht öffentlich und werden nur von %{organizationName}verwendet. Wenn Sie nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
+      personal_data_explanation_public: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
+      personal_data_explanation_private: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie Aktualisierungen, die für Ihren Beitrag relevant sind, per E-Mail erhalten möchten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir werden ein Konto für Sie anlegen. Ihre Daten sind nicht öffentlich und werden nur von %{organizationName} verwendet. Wenn Sie nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
       first_name: 'Vorname'
       last_name: 'Nachname'
       email_address: 'E-Mail-Adresse'
