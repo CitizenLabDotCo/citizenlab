@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "crwdns211064:0crwdne211064:0",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "crwdns211066:0crwdne211066:0",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "crwdns211068:0crwdne211068:0",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "crwdns2735415:0crwdne2735415:0",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "crwdns211070:0crwdne211070:0",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "crwdns211072:0crwdne211072:0",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "crwdns211074:0crwdne211074:0",
