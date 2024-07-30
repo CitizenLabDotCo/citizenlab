@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Instellingen en resultaten van de peilingen",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Verkeerd maximum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Beheer hier de bijdrages van alle projecten. Geef feedback, voeg tags toe, verander de status of verplaats bijdragen van het ene project naar het andere.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Voorstellen beheren, feedback geven en onderwerpen toewijzen.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Beheer bijdragen",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Exporteer de enquêteresultaten (.xslx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Hier kan je de resultaten van de Typeform-enquête(s) binnen dit project downloaden als een Excel-bestand.",
