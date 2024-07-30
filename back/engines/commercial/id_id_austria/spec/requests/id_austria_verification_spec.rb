@@ -52,7 +52,7 @@ context 'id_austria verification' do
             'name' => 'Bulenga Poulsen',
             'refTextHeader' => 'Log on at IdAustria',
             'refTextBody' => 'local development test (Koen)',
-            'country' => 'DK',
+            'country' => 'AT',
             'iss' => 'https://kobenhavn-test.id_austria.id',
             'aud' => 'urn:my:application:identifier:407793',
             'iat' => 1_692_621_902,

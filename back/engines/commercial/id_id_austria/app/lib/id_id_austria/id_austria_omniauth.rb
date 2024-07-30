@@ -41,12 +41,13 @@ module IdIdAustria
 
       options[:scope] = %i[openid profile]
 
-      # it gets configuration from the default https://eid2.oesterreich.gv.at/.well-known/openid-configuration
+      # it should get configuration from the default https://eid2.oesterreich.gv.at/.well-known/openid-configuration
       options[:discovery] = true
 
       options[:response_type] = :code
       # options[:acr_values] = acr_values # TODO: JS - check if needed
       options[:issuer] = issuer
+      # binding.pry
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
