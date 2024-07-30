@@ -109,7 +109,13 @@ const Actions = ({
 
   if (smallerThanPhone) {
     return (
-      <Box justifyContent="flex-end" mt="10px" mb="10px" mr="10px">
+      <Box
+        justifyContent="flex-end"
+        mt="10px"
+        mb="10px"
+        mr="10px"
+        display="flex"
+      >
         <Box display="flex" flexDirection="column">
           {allowAnonymousParticipation && (
             <Box display="flex" justifyContent="flex-end" w="100%" mb="12px">
@@ -129,6 +135,7 @@ const Actions = ({
       mt="10px"
       mb="10px"
       mr="10px"
+      display="flex"
     >
       {cancelAndSubmit}
       {allowAnonymousParticipation && checkbox}
