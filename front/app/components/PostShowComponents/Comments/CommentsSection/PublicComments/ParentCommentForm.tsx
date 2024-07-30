@@ -106,7 +106,7 @@ const ParentCommentForm = ({
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
-  const [isCommentCancelled, setIsCommentCancelled] = useState(false);
+  const [commentCancelledMessage, setCommentCancelledMessage] = useState('');
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
@@ -133,7 +133,7 @@ const ParentCommentForm = ({
   };
 
   const onFocus = () => {
-    setIsCommentCancelled(false);
+    setCommentCancelledMessage('');
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId: ideaId || initiativeId,
@@ -294,6 +294,9 @@ const ParentCommentForm = ({
 
   return (
     <Box display="flex" className={className || ''} my="12px">
+      <ScreenReaderOnly aria-live="polite" role="status">
+        {commentCancelledMessage}
+      </ScreenReaderOnly>
       <StyledAvatar
         userId={authUser.data.id}
         size={30}
@@ -329,11 +332,6 @@ const ParentCommentForm = ({
             onFocus={onFocus}
             getTextAreaRef={setRef}
           />
-          {isCommentCancelled && (
-            <ScreenReaderOnly aria-live="polite">
-              {formatMessage(messages.a11y_cancelledPostingComment)}
-            </ScreenReaderOnly>
-          )}
           <Actions
             processing={processing}
             focused={focused}
@@ -344,7 +342,9 @@ const ParentCommentForm = ({
             togglePostAnonymously={setPostAnonymously}
             onSubmit={onSubmit}
             onCancel={() => {
-              setIsCommentCancelled(true);
+              setCommentCancelledMessage(
+                formatMessage(messages.a11y_cancelledPostingComment)
+              );
               close();
             }}
           />
