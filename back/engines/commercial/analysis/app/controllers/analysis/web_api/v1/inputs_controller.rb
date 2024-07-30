@@ -23,7 +23,7 @@ module Analysis
               app_configuration: AppConfiguration.instance,
               **jsonapi_serializer_params
             },
-            include: [:author],
+            include: %i[author],
             meta: {
               filtered_count: filtered_count
             }
