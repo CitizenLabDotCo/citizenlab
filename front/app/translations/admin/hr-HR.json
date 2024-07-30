@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Podešavanja i rezultati anketa",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Pogrešan maksimum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Dajte povratne informacije, dodijelite teme ili kopirajte objave za sljedeću fazu projekta.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Upravljajte prijedlozima, dajte povratne informacije i dodijelite teme.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Voditelj unosa",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Izvezite rezultate upitnika (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Ovdje možete preuzeti rezultate Typeform upitnika u sklopu projekta kao Excel dokument.",
