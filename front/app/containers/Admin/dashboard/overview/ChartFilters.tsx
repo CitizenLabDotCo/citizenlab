@@ -27,6 +27,7 @@ interface Props {
   onProjectFilter: (filter: IOption) => void;
   onChangeResolution: (resolution: IResolution) => void;
   showAllTime?: boolean;
+  showProjectFilter?: boolean;
 }
 
 const ChartFilters = ({
@@ -39,6 +40,7 @@ const ChartFilters = ({
   onProjectFilter,
   onChangeResolution,
   showAllTime,
+  showProjectFilter = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
@@ -60,14 +62,16 @@ const ChartFilters = ({
           showAllTime={showAllTime}
           minDate={minDate}
         />
-        <Box ml="12px" maxWidth="350px">
-          <ProjectFilter
-            projectId={projectId}
-            hideLabel
-            placeholder={formatMessage(messages.selectProject)}
-            onProjectFilter={onProjectFilter}
-          />
-        </Box>
+        {showProjectFilter && (
+          <Box ml="12px" maxWidth="350px">
+            <ProjectFilter
+              projectId={projectId}
+              hideLabel
+              placeholder={formatMessage(messages.selectProject)}
+              onProjectFilter={onProjectFilter}
+            />
+          </Box>
+        )}
       </Box>
       <ResolutionControl value={resolution} onChange={onChangeResolution} />
     </Box>

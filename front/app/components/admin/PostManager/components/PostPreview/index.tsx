@@ -75,7 +75,11 @@ const PostPreview = ({
 
   const previewComponent = () => {
     const postType =
-      type === 'AllIdeas' || type === 'ProjectIdeas' ? 'idea' : 'initiative';
+      type === 'AllIdeas' ||
+      type === 'ProjectIdeas' ||
+      type === 'ProjectProposals'
+        ? 'idea'
+        : 'initiative';
 
     if (postId) {
       return {

@@ -115,7 +115,6 @@ interface Props {
 const IdeasContainerOuter = ({ phaseId, projectId, className }: Props) => {
   const { data: phase } = usePhase(phaseId);
   if (!phase) return null;
-
   return (
     <IdeasContainer
       projectId={projectId}
