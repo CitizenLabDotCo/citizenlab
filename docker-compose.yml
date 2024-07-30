@@ -99,7 +99,7 @@ services:
     container_name: cl-fake-sso
     image: node:22-alpine
     ports:
-      - "8081:8081"
+      - 8081:8081
     volumes:
       - ./fake_sso:/app
     working_dir: /app

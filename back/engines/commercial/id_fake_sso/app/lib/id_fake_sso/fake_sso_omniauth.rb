@@ -26,13 +26,11 @@ module IdFakeSso
     end
 
     def host
-      # TODO
-      'localhost'
+      'host.docker.internal'
     end
 
     def issuer
-      # TODO
-      "http://#{host}/"
+      "http://#{host}"
     end
 
     # def updateable_user_attrs
