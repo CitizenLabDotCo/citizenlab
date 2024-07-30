@@ -47,6 +47,7 @@ const FormBuilderToolbox = ({
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
   });
+
   const isLocationAnswerEnabled = useFeatureFlag({
     name: 'input_form_mapping_question',
   });

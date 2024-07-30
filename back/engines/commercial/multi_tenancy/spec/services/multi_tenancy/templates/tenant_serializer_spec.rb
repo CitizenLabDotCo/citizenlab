@@ -117,6 +117,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
     end
 
+    # TODO: move-old-proposals-test
     it 'successfully copies over cosponsors_intiatives' do
       initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
       user = create(:user, email: 'user-1@g.com')

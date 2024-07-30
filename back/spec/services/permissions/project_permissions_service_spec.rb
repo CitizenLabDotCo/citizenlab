@@ -553,6 +553,46 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
+  describe '"attending_event" denied_reason_for_project' do
+    context 'user not signed in' do
+      let(:user) { nil }
+      let(:project) { create(:project_with_current_phase) }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_signed_in'
+      end
+    end
+
+    context 'idea is in the current phase and voting is not permitted' do
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
+
+      it 'returns `user_not_in_group`' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'attending_event')
+        permission.update!(
+          permitted_by: 'groups',
+          group_ids: create_list(:group, 2).map(&:id)
+        )
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_in_group'
+      end
+    end
+
+    context 'when the timeline is over' do
+      let(:project) { create(:project_with_past_phases) }
+
+      it "returns 'project_inactive'" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      end
+    end
+
+    context 'when the project is archived' do
+      let(:project) { create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it "returns 'project_inactive'" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      end
+    end
+  end
+
   describe '"posting_idea" future_enabled_phase' do
     context do
       let(:project) do
@@ -786,6 +826,7 @@ describe Permissions::ProjectPermissionsService do
         create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
         create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'users')
         create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'users')
+        create(:permission, action: 'attending_event', permission_scope: phase, permitted_by: 'users')
       end
 
       # Load project with pre-loading as loaded by the controller

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 describe Permissions::InitiativePermissionsService do
   let(:service) { described_class.new(user) }
 

@@ -81,8 +81,6 @@ export const getIsPostingEnabled = (
   return false;
 };
 
-
-
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }

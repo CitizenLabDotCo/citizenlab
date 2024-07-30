@@ -16,7 +16,7 @@ module MultiTenancy
           topics = offsets.uniq.map { |offset| project.allowed_input_topics.offset(offset).first }
           idea = Idea.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
-            body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            body_multiloc: runner.rand_description_multiloc,
             idea_status: runner.rand_instance(IdeaStatus.all),
             topics: topics,
             author: runner.rand_instance(User.all),
@@ -53,7 +53,7 @@ module MultiTenancy
 
           rand(5).times do
             idea.official_feedbacks.create!(
-              body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+              body_multiloc: runner.rand_description_multiloc,
               author_multiloc: runner.create_for_some_locales { Faker::FunnyName.name },
               user: runner.rand_instance(User.admin)
             )

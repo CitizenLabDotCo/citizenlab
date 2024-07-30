@@ -33,6 +33,7 @@ const IdeasCount = ({ project, queryParameters }: Props) => {
     feedback_needed: queryParameters.feedback_needed,
     idea_status_id: queryParameters.idea_status,
     projects: project ? [project] : undefined,
+    transitive: queryParameters.transitive,
   });
 
   if (!ideasCount) return null;
