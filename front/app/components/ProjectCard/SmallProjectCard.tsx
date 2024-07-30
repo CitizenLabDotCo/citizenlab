@@ -28,17 +28,17 @@ import T from 'components/T';
 
 import Link from 'utils/cl-router/Link';
 
+import ProjectHeader, {
+  ContentHeaderBottomMargin,
+  ContentHeaderHeight,
+} from './ProjectHeader';
+import ScreenReaderContent from './ScreenReaderContent';
 import {
   handleProjectCardOnClick,
   handleProjectTitleOnClick,
   ProjectImage,
   ProjectTitle,
 } from './utils';
-import ProjectHeader, {
-  ContentHeaderBottomMargin,
-  ContentHeaderHeight,
-} from './ProjectHeader';
-import ScreenReaderContent from './ScreenReaderContent';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: 100%;

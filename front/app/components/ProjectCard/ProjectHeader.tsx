@@ -17,8 +17,8 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
-import { handleCTAOnClick } from './utils';
 import messages from './messages';
+import { handleCTAOnClick } from './utils';
 
 export const ContentHeaderHeight = 39;
 export const ContentHeaderBottomMargin = 13;
