@@ -24,7 +24,7 @@ router.post("/oauth2/token", async (_req, res) => {
 // The resource endpoint (receives token, returns user info)
 router.get("/userinfo", (_req, res) => {
   res.json({
-    some: "shit",
+    some: "stuff",
   });
 });
 
