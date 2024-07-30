@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Paramètres et résultats des sondages",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Mauvais maximum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Rédigez des commentaires, filtrez par étiquette ou basculez les contributions dans la phase suivante",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Gérer les propositions, donner un retour d'information et attribuer des sujets.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Gestion des contributions",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Exporter les résultats de l'enquête (.xslx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Ici, vous pouvez télécharger un fichier Excel contenant les résultats des enquêtes présentes dans le projet. Pour l'instant, seules les enquêtes Typeform sont disponibles.",
