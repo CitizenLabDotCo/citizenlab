@@ -124,12 +124,14 @@ describe ProjectCopyService do
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
       end
-      unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      unsupported_field1 = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      unsupported_field2 = create(:custom_field, :for_custom_form, input_type: 'shapefile_upload', resource: custom_form)
       response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,
         supported_fields[1].key => 1,
-        unsupported_field.key => create(:file_upload, idea: response).id,
+        unsupported_field1.key => create(:file_upload, idea: response).id,
+        unsupported_field2.key => create(:file_upload, idea: response).id,
         supported_fields[2].key => false
       }
       response.update! custom_field_values: custom_field_values

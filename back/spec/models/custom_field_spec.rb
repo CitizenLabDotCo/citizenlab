@@ -94,6 +94,10 @@ class TestVisitor < FieldVisitorService
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
+
+  def visit_shapefile_upload(_field)
+    'shapefile_upload from visitor'
+  end
 end
 
 RSpec.describe CustomField do
@@ -123,6 +127,11 @@ RSpec.describe CustomField do
   describe '#file_upload?' do
     it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
+      expect(files_field.file_upload?).to be true
+    end
+
+    it 'returns true when the input_type is "shapefile_upload"' do
+      files_field = described_class.new input_type: 'shapefile_upload'
       expect(files_field.file_upload?).to be true
     end
 

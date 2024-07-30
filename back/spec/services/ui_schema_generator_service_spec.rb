@@ -657,4 +657,25 @@ RSpec.describe UiSchemaGeneratorService do
       })
     end
   end
+
+  describe '#visit_shapefile_upload' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'shapefile_upload',
+        key: field_key,
+        title_multiloc: { 'en' => 'Shapefile upload field title' },
+        description_multiloc: { 'en' => 'Shapefile upload field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_shapefile_upload(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Shapefile upload field title',
+        options: { input_type: field.input_type, description: 'Shapefile upload field description' }
+      })
+    end
+  end
 end
