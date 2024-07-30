@@ -1,4 +1,3 @@
-import { Input } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import ExportMenu from './components/ExportMenu';
@@ -43,15 +42,10 @@ export const MiddleColumn = styled.div`
   transition: 200ms;
 `;
 
-export const StyledInput = styled(Input)`
-  max-width: 260px;
-  display: flex;
-  width: 100%;
-`;
-
 export type ManagerType =
   | 'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
   | 'ProjectIdeas' // should come with projectId
-  | 'Initiatives';
+  | 'Initiatives'
+  | 'ProjectProposals';
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 export type PreviewMode = 'view' | 'edit';

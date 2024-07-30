@@ -18,7 +18,7 @@ export interface Props {
 }
 
 const IdeaValueSelector = ({ value, onChange }: Props) => {
-  const { data: ideas } = useIdeas({ sort: 'random' });
+  const { data: ideas } = useIdeas({ sort: 'random', transitive: true });
   const localize = useLocalize();
 
   const handleOnChange = (option: IOption) => {

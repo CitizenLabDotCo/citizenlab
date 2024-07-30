@@ -75,6 +75,7 @@ export type ParticipationMethodConfig = {
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
   showInputManager: boolean;
+  inputManagerName?: string;
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
@@ -131,6 +132,62 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  inputManagerName: 'ideas',
+  renderCTABar: (props: CTABarProps) => {
+    return <IdeationCTABar project={props.project} phases={props.phases} />;
+  },
+  postSortingOptions: defaultSortingOptions,
+  hideAuthorOnIdeas: false,
+};
+
+const proposalsConfig: ParticipationMethodConfig = {
+  showInputCount: true,
+  showIdeaFilters: true,
+  formEditor: 'simpleFormEditor',
+  inputsPageSize: 24,
+  onFormSubmission: (props: FormSubmissionMethodProps) => {
+    if (props.ideaId && props.idea) {
+      const urlParameters = `?new_idea_id=${props.ideaId}`;
+      if (props.idea) {
+        clHistory.push({
+          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          search: urlParameters.concat(
+            props.phaseId ? `&phase_id=${props.phaseId}` : ''
+          ),
+        });
+      }
+    }
+  },
+  postType: 'defaultInput',
+  getModalContent: (props: ModalContentMethodProps) => {
+    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+      return (
+        <SharingModalContent
+          postType="idea"
+          postId={props.ideaIdForSocialSharing}
+          title={props.title}
+          subtitle={props.subtitle}
+        />
+      );
+    }
+    return null;
+  },
+  getFormTitle: (props: FormTitleMethodProps) => {
+    return (
+      <FormattedMessage
+        {...{
+          idea: messages.ideaFormTitle,
+          option: messages.optionFormTitle,
+          project: messages.projectFormTitle,
+          question: messages.questionFormTitle,
+          issue: messages.issueFormTitle,
+          contribution: messages.contributionFormTitle,
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
+      />
+    );
+  },
+  showInputManager: true,
+  inputManagerName: 'proposals',
   renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
@@ -301,7 +358,7 @@ const methodToConfig: {
   [method in ParticipationMethod]: ParticipationMethodConfig;
 } = {
   ideation: ideationConfig,
-  proposals: ideationConfig, // TODO: fix later
+  proposals: proposalsConfig,
   native_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,

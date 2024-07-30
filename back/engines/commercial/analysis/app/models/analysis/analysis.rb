@@ -51,7 +51,7 @@ module Analysis
       if phase_id
         phase.ideas.native_survey.published
       elsif project_id
-        project.ideas.ideation.published
+        project.ideas.transitive.published
       end
     end
 
