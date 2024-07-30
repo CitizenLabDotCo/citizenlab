@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
-import { colors, Text, Box } from '@citizenlab/cl2-component-library';
+import { Text, Box } from '@citizenlab/cl2-component-library';
 import { FeatureCollection } from 'geojson';
 import shp from 'shpjs';
 
@@ -14,9 +13,6 @@ import useLocalize from 'hooks/useLocalize';
 import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
-  getFillSymbol,
-  getLineSymbol,
-  getShapeSymbol,
   goToLayerExtent,
 } from 'components/EsriMap/utils';
 import { FormData } from 'components/Form/typings';
@@ -24,6 +20,7 @@ import { FormData } from 'components/Form/typings';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import { setLayerRenderer } from './utils';
 
 type Props = {
   inputId: string;
@@ -47,7 +44,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   // Convert the shapefile to GeoJSON
   useEffect(() => {
     async function getGeojson() {
-      if (fileUrl?.url) {
+      if (fileUrl?.url?.endsWith('.zip')) {
         const conversionResult = await shp(fileUrl.url);
         if (Array.isArray(conversionResult)) {
           // User has uploaded multiple shapefiles within the zip file
@@ -79,32 +76,8 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
 
   esriLayers.map((layer) => {
     layer.opacity = 0.8;
-
     layer.on('layerview-create', () => {
-      if (layer.geometryType === 'point') {
-        layer.renderer = new SimpleRenderer({
-          symbol: getShapeSymbol({
-            shape: 'circle',
-            color: colors.primary,
-            sizeInPx: 8,
-          }),
-        });
-      } else if (layer.geometryType === 'polygon') {
-        layer.renderer = new SimpleRenderer({
-          symbol: getFillSymbol({
-            transparency: 0.1,
-            color: colors.primary,
-            outlineStyle: 'solid',
-            outlineColor: colors.primary,
-          }),
-        });
-      } else if (layer.geometryType === 'polyline') {
-        layer.renderer = new SimpleRenderer({
-          symbol: getLineSymbol({
-            color: colors.primary,
-          }),
-        });
-      }
+      setLayerRenderer(layer);
     });
   });
 
@@ -116,11 +89,17 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
     const firstLayer = mapView?.map?.layers?.['items']?.[0];
     if (firstLayer) {
       firstLayer.on('layerview-create', () => {
+        // Zoom the map to the extent of the layer
         goToLayerExtent(firstLayer, mapView, true);
       });
     }
   }, [esriLayers, mapView?.map?.layers, mapView]);
 
+  if (!fileUrl?.url.endsWith('.zip')) {
+    return (
+      <Text fontStyle="italic">{formatMessage(messages.invalidShapefile)}</Text>
+    );
+  }
   return (
     <Box key={inputId}>
       <Text my="4px" color="coolGrey600" fontSize="s" fontStyle="italic">
@@ -130,6 +109,13 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
         initialData={{
           onInit,
           showFullscreenOption: true,
+          center: {
+            type: 'Point',
+            coordinates: [
+              esriLayers?.[0]?.fullExtent?.center.latitude,
+              esriLayers?.[0]?.fullExtent?.center.longitude,
+            ],
+          },
         }}
         layers={esriLayers}
         height="200px"

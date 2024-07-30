@@ -291,13 +291,6 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           );
         }
         case 'shapefile_upload': {
-          // We don't support file upload fields in an analysis at the moment
-          return <Box>TODO</Box>;
-        }
-        case 'file_upload': {
-          // We don't support file upload fields in an analysis at the moment
-
-          // TEMP url: http://localhost:4000/uploads/c72c5211-8e03-470b-9…f87e-4710-9b34-b52b855eec03/brussels_boundary.zip
           return (
             <Box>
               <Title variant="h5" m="0px">
@@ -306,6 +299,10 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <ShapefilePreview inputId={input.id} file={rawValue} />
             </Box>
           );
+        }
+        case 'file_upload': {
+          // We don't support file upload fields in an analysis at the moment
+          return null;
         }
         default: {
           // Makes TS throw a compile error in case we're not covering for an input_type
