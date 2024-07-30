@@ -1470,6 +1470,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Polls settings and results",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Wrong maximum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Give feedback, add tags or copy posts to the next project phase.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Manage proposals, give feedback and assign topics.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Input manager",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Export the survey results (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Here, you can download the results of the Typeform survey(s) within this project as an Excel file.",

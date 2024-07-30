@@ -70,6 +70,7 @@ const IdeaRow = ({
   idea,
   selection,
   locale,
+  type,
 }: Props) => {
   const { formatMessage } = useIntl();
   const ideasPhases = useIdeasPhases(
@@ -219,17 +220,21 @@ const IdeaRow = ({
         );
       },
     },
-    {
-      name: 'down',
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return (
-          <>
-            <Icon name="thumbs down" />
-            {idea.attributes.dislikes_count}
-          </>
-        );
-      },
-    },
+    ...(type !== 'ProjectProposals'
+      ? [
+          {
+            name: 'down',
+            Component: ({ idea }: IdeaCellComponentProps) => {
+              return (
+                <>
+                  <Icon name="thumbs down" />
+                  {idea.attributes.dislikes_count}
+                </>
+              );
+            },
+          },
+        ]
+      : []),
     {
       name: 'published_on',
       Component: ({ idea }) => {
