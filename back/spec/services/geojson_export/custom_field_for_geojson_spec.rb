@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CustomMaps::GeojsonExport::CustomFieldForGeojson do
+describe GeojsonExport::CustomFieldForGeojson do
   context 'when no scope is given' do
     subject(:report_field) do
       described_class.new(custom_field)

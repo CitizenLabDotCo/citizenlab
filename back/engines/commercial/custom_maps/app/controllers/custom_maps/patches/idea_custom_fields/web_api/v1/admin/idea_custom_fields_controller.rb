@@ -7,24 +7,6 @@ module CustomMaps
         module V1
           module Admin
             module IdeaCustomFieldsController
-              def as_geojson
-                set_custom_field
-                raise_error_if_not_geographic_field
-
-                phase = Phase.find(params[:phase_id])
-                geojson = I18n.with_locale(current_user.locale) do
-                  CustomMaps::GeojsonExport::GeojsonGenerator.new(phase, @custom_field).generate_geojson
-                end
-
-                send_data geojson, type: 'application/json', filename: geojson_filename(phase)
-              end
-
-              def raise_error_if_not_geographic_field
-                return if @custom_field.geographic_input?
-
-                raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
-              end
-
               def include_in_index_response
                 %i[options options.image map_config]
               end
@@ -47,11 +29,6 @@ module CustomMaps
                 errors[index.to_s] ||= {}
                 errors[index.to_s][:map_config] ||= {}
                 errors[index.to_s][:map_config] = map_config_errors
-              end
-
-              def geojson_filename(phase)
-                "#{MultilocService.new(app_configuration: @app_configuration).t(phase.title_multiloc).tr(' ', '_')}" \
-                  "_#{Time.now.strftime('%Y-%m-%d')}.geojson"
               end
             end
           end

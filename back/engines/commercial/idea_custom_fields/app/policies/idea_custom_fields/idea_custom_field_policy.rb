@@ -14,6 +14,10 @@ module IdeaCustomFields
       can_configure_custom_fields? record
     end
 
+    def as_geojson?
+      update_all?
+    end
+
     private
 
     def can_configure_custom_fields?(custom_field)
@@ -22,5 +26,3 @@ module IdeaCustomFields
     end
   end
 end
-
-IdeaCustomFields::IdeaCustomFieldPolicy.prepend(CustomMaps::Patches::IdeaCustomFields::IdeaCustomFieldPolicy)

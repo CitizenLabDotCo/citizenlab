@@ -57,7 +57,6 @@ PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
-      idea_custom_fields
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)

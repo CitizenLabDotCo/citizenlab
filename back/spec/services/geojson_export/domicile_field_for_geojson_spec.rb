@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CustomMaps::GeojsonExport::DomicileFieldForGeojson do
+describe GeojsonExport::DomicileFieldForGeojson do
   subject(:report_field) do
     described_class.new(custom_field)
   end
