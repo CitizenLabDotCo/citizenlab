@@ -67,6 +67,7 @@ const GlobalStyle = createGlobalStyle`
   :-ms-input-placeholder,
   ::-webkit-input-placeholder {
     color: ${colors.placeholder};
+    opacity: 1; /* Override Firefox's default opacity to provide the same UI for all browsers, See https://ilikekillnerds.com/2014/10/firefox-placeholder-text-looking-lighter-browsers/ */
   }
 `;
 
