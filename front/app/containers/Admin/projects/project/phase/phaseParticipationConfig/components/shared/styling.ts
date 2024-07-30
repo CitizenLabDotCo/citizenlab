@@ -1,7 +1,6 @@
 import {
   Input,
   Radio,
-  Select,
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -82,10 +81,6 @@ export const LabelText = styled.div`
 
 export const StyledWarning = styled(Warning)<WarningProps>`
   margin-bottom: 20px;
-`;
-
-export const StyledSelect = styled(Select)`
-  max-width: 288px;
 `;
 
 export const LabelWrapper = styled.div`

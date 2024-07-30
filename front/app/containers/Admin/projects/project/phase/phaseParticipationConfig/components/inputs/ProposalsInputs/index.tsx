@@ -121,11 +121,11 @@ const ProposalsInputs = ({
           value={reacting_threshold ? reacting_threshold.toString() : null}
           onChange={handleReactingThresholdChange}
         />
+        <Error
+          text={reactingThresholdError}
+          apiErrors={apiErrors && apiErrors.reacting_threshold}
+        />
       </SectionField>
-      <Error
-        text={reactingThresholdError}
-        apiErrors={apiErrors && apiErrors.reacting_threshold}
-      />
       <UserActions
         posting_enabled={posting_enabled || false}
         commenting_enabled={commenting_enabled || false}
