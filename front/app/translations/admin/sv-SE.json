@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Omröstningar – inställningar och resultat",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Fel max",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Ge återkoppling, lägg till ämnen eller kopiera inlägg till nästa projektfas.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Hantera förslag, ge feedback och tilldela ämnen.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Indatahanteraren",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Exportera undersökningsresultaten (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Här kan du ladda ner resultaten från Typeform-undersökningen/-undersökningarna inom det här projektet som en Excel-fil.",
