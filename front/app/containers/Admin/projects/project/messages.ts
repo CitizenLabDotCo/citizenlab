@@ -50,34 +50,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
-  newProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.newProject',
-    defaultMessage: 'New Project',
-  },
-  newIdea: {
-    id: 'app.containers.AdminPage.ProjectEdit.newIdea',
-    defaultMessage: 'New idea',
-  },
-  addNewInput: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
-    defaultMessage: 'Add an input',
-  },
-  newIssue: {
-    id: 'app.containers.AdminPage.ProjectEdit.newIssue',
-    defaultMessage: 'Add an issue',
-  },
-  newQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.newQuestion',
-    defaultMessage: 'Add a question',
-  },
-  newOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.newOption',
-    defaultMessage: 'Add an option',
-  },
-  newContribution: {
-    id: 'app.containers.AdminPage.ProjectEdit.newContribution',
-    defaultMessage: 'Add a contribution',
-  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -451,6 +423,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  subtitleInputProjectProposals: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
+    defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
   hiddenFieldsTip: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip',

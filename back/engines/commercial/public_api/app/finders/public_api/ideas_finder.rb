@@ -49,7 +49,7 @@ module PublicApi
       if @type == 'survey'
         scope.native_survey
       elsif @type == 'idea'
-        scope.ideation
+        scope.transitive
       else
         scope
       end

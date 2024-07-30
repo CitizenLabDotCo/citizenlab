@@ -44,6 +44,17 @@ describe IdeasFinder do
     end
   end
 
+  describe '#transitive_condition' do
+    before do
+      params[:transitive] = true
+      create(:proposal)
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array ideas.map(&:id)
+    end
+  end
+
   describe '#projects_condition' do
     let(:project_ids) { [Project.first.id] }
     let(:expected_record_ids) { Idea.where(project_id: project_ids).pluck(:id) }
@@ -291,7 +302,8 @@ describe IdeasFinder do
     [
       create(:idea, project: timeline_project, phases: [ideation_phase]).id,
       create(:idea, project: timeline_project, phases: [voting_phase]).id,
-      create(:idea, project: timeline_project).id
+      create(:idea, project: timeline_project).id,
+      create(:proposal).id
     ]
   end
 end
