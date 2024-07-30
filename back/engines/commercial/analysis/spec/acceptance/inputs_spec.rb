@@ -88,14 +88,15 @@ resource 'Inputs' do
         })
       end
 
-      example 'includes data for associated files' do
-        file = Rails.root.join('spec/fixtures/afvalkalender.pdf').open
-        idea_file1 = IdeaFile.create(file: file, name: 'my_file1.pdf', idea: inputs.first)
-        idea_file2 = IdeaFile.create(file: file, name: 'my_file2.pdf', idea: inputs.second)
+      context 'when inputs have associated files' do
+        let(:file) { Rails.root.join('spec/fixtures/afvalkalender.pdf').open }
+        let!(:idea_file1) { IdeaFile.create(file: file, name: 'my_file1.pdf', idea: inputs.first) }
+        let!(:idea_file2) { IdeaFile.create(file: file, name: 'my_file2.pdf', idea: inputs.second) }
 
-        do_request
-        expect(status).to eq(200)
-        expect(json_response_body[:included].pluck(:id)).to include(idea_file1.id, idea_file2.id)
+        example_request 'includes data for associated files' do
+          expect(status).to eq(200)
+          expect(json_response_body[:included].pluck(:id)).to include(idea_file1.id, idea_file2.id)
+        end
       end
 
       # We smoke test a few filters, more extensive coverage is taken care of by the filter service spec
