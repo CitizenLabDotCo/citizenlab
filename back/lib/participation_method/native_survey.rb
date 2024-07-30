@@ -60,7 +60,8 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point line polygon]
+      %w[page number linear_scale text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon]
     end
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form

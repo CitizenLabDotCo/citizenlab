@@ -272,6 +272,10 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_shapefile_upload(field)
+    visit_file_upload(field)
+  end
+
   private
 
   attr_reader :locales, :multiloc_service

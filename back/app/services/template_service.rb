@@ -29,7 +29,7 @@ class TemplateService
     # Templates do not support ID references.
 
     supported_fields = custom_fields.select do |field|
-      %w[file_upload].exclude? field.input_type
+      %w[file_upload shapefile_upload].exclude? field.input_type
     end
     custom_field_values.slice(*supported_fields.map(&:key))
   end
