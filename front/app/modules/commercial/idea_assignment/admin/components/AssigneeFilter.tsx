@@ -44,7 +44,7 @@ const AssigneeFilter = ({
   const { data: authUser } = useAuthUser();
   const { data: prospectAssignees } = useUsers({
     pageSize: 250,
-    ...(type === 'ProjectIdeas' && projectId
+    ...((type === 'ProjectIdeas' || type === 'ProjectProposals') && projectId
       ? {
           can_moderate_project: projectId,
         }

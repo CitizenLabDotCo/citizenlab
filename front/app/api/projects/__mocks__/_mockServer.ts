@@ -76,6 +76,14 @@ export const project1: IProjectData = {
         enabled: false,
         disabled_reason: 'not_document_annotation',
       },
+      attending_event: {
+        enabled: true,
+        disabled_reason: null,
+      },
+      volunteering: {
+        enabled: false,
+        disabled_reason: 'not_volunteering',
+      },
     },
     avatars_count: 8,
     participants_count: 8,
@@ -203,6 +211,14 @@ export const project2: IProjectData = {
         enabled: false,
         disabled_reason: 'not_poll',
       },
+      attending_event: {
+        enabled: true,
+        disabled_reason: null,
+      },
+      volunteering: {
+        enabled: false,
+        disabled_reason: 'not_volunteering',
+      },
     },
     avatars_count: 6,
     participants_count: 6,
@@ -321,6 +337,10 @@ const votingProject: IProject = {
           enabled: true,
           disabled_reason: null,
         },
+        attending_event: {
+          enabled: true,
+          disabled_reason: null,
+        },
         annotating_document: {
           enabled: false,
           disabled_reason: 'not_document_annotation',
@@ -332,6 +352,10 @@ const votingProject: IProject = {
         taking_poll: {
           enabled: false,
           disabled_reason: 'not_poll',
+        },
+        volunteering: {
+          enabled: false,
+          disabled_reason: 'not_volunteering',
         },
       },
       avatars_count: 2,

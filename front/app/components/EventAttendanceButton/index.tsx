@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import {
-  Box,
-  Button,
-  Title,
-  colors,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
@@ -15,19 +9,24 @@ import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
+import useObserveEvent from 'hooks/useObserveEvent';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
-import Modal from 'components/UI/Modal';
-
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
-import { getEventDateString } from 'utils/dateUtils';
 
-import { EventModalConfetti } from './EventModalConfetti';
+import ConfirmationModal from './ConfirmationModal';
 import messages from './messages';
 
 type EventAttendanceButtonProps = {
@@ -59,36 +58,62 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
   const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
+  // Permissions
+  const { data: project } = useProjectById(event.relationships.project.data.id);
+  const { data: phases } = usePhases(project?.data.id);
+  const currentPhase = getCurrentPhase(phases?.data);
+
+  const handleEventAttendanceEvent = useCallback(() => {
+    setConfirmationModalVisible(true);
+  }, []);
+
+  useObserveEvent('eventAttendance', handleEventAttendanceEvent);
+
+  // NOTE: If the project does not have a current phase then users cannot register for events
+  if (!project || !currentPhase) return null;
+
+  const { enabled, disabled_reason } =
+    project.data.attributes.action_descriptors.attending_event;
+
   const handleClick = () => {
     if (event?.attributes.using_url) {
       window.open(event.attributes.using_url);
       return;
-    } else {
-      if (user) {
-        registerAttendance();
-      } else {
-        // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
-        // As such, our only option at this point is to trigger the flow without a success action.
-        triggerAuthenticationFlow({
-          flow: 'signin',
-        });
-      }
+    }
+
+    if (userIsAttending && attendanceId) {
+      deleteEventAttendance({ attendanceId });
+      return;
+    }
+
+    if (user && enabled) {
+      registerAttendance(user.data);
+      return;
+    }
+
+    if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
+      const context = {
+        type: 'phase',
+        action: 'attending_event',
+        id: currentPhase?.id,
+      } as const;
+
+      const successAction: SuccessAction = {
+        name: 'attendEvent',
+        params: { event },
+      };
+
+      triggerAuthenticationFlow({ context, successAction });
     }
   };
 
-  const registerAttendance = () => {
-    if (userIsAttending && attendanceId) {
-      deleteEventAttendance({
-        attendanceId,
-      });
-    } else if (user) {
-      addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
-      addFollower({
-        followableId: event.relationships.project.data.id,
-        followableType: 'projects',
-      });
-      setConfirmationModalVisible(true);
-    }
+  const registerAttendance = (userData: IUserData) => {
+    addEventAttendance({ eventId: event.id, attendeeId: userData.id });
+    addFollower({
+      followableId: event.relationships.project.data.id,
+      followableType: 'projects',
+    });
+    setConfirmationModalVisible(true);
   };
 
   const getButtonText = () => {
@@ -110,70 +135,50 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const isLoading = isAddingAttendance || isRemovingAttendance;
-  const eventDateTime = getEventDateString(event);
+
+  // Permissions disabled reasons
+  const buttonDisabled =
+    !!disabled_reason && !isFixableByAuthentication(disabled_reason);
+  const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
+    'attending_event',
+    disabled_reason
+  );
+  const disabledMessage =
+    permissionDisabledMessageDescriptor &&
+    formatMessage(permissionDisabledMessageDescriptor);
 
   return (
     <>
-      <Button
-        ml="auto"
-        width={'100%'}
-        iconPos={userIsAttending ? 'left' : 'right'}
-        icon={getButtonIcon()}
-        iconSize="20px"
-        bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
-        onClick={(event) => {
-          event.preventDefault();
-          handleClick();
-        }}
-        processing={isLoading}
-        className="e2e-event-attendance-button"
+      <Tooltip
+        disabled={!disabled_reason}
+        placement="bottom"
+        content={disabledMessage}
       >
-        {getButtonText()}
-      </Button>
-      <Modal
+        <Button
+          ml="auto"
+          width={'100%'}
+          iconPos={userIsAttending ? 'left' : 'right'}
+          icon={getButtonIcon()}
+          iconSize="20px"
+          bgColor={
+            userIsAttending ? colors.success : theme.colors.tenantPrimary
+          }
+          disabled={buttonDisabled}
+          onClick={(event) => {
+            event.preventDefault();
+            handleClick();
+          }}
+          processing={isLoading}
+          className="e2e-event-attendance-button"
+        >
+          {getButtonText()}
+        </Button>
+      </Tooltip>
+      <ConfirmationModal
         opened={confirmationModalVisible}
-        close={() => {
-          setConfirmationModalVisible(false);
-        }}
-        header={
-          <Title mt="4px" mb="0px" variant="h3">
-            {user?.data?.attributes?.first_name
-              ? formatMessage(messages.seeYouThereName, {
-                  userFirstName: user?.data?.attributes?.first_name,
-                })
-              : formatMessage(messages.seeYouThere)}
-          </Title>
-        }
-        width={'520px'}
-      >
-        <EventModalConfetti />
-        <Box pt="0px" p="36px">
-          <Title my="12px" variant="h3" style={{ fontWeight: 600 }}>
-            {localize(event?.attributes?.title_multiloc)}
-          </Title>
-          <Text my="4px" color="coolGrey600" fontSize="m">
-            {eventDateTime}
-          </Text>
-          <AddEventToCalendarButton eventId={event.id} />
-          {event && (
-            <Box mt="16px" width="100%" mx="auto">
-              <Text
-                textAlign="center"
-                width="100%"
-                mb="8px"
-                style={{ fontWeight: 600 }}
-              >
-                {formatMessage(messages.forwardToFriend)}
-              </Text>
-              <EventSharingButtons
-                event={event}
-                hideTitle={true}
-                justifyContent="center"
-              />
-            </Box>
-          )}
-        </Box>
-      </Modal>
+        event={event}
+        onClose={() => setConfirmationModalVisible(false)}
+      />
     </>
   );
 };

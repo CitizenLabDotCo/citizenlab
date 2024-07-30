@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  colors,
+  Tooltip,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useBasket from 'api/baskets/useBasket';
@@ -133,29 +138,31 @@ const AssignSingleVoteButton = ({
   const disabledButtonExplanation = getButtonDisabledExplanation();
 
   return (
-    <Tooltip
-      disabled={!disabledButtonExplanation}
-      placement="bottom"
-      content={disabledButtonExplanation}
-    >
-      <div>
-        <Button
-          buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
-          bgColor={ideaInBasket ? colors.success : undefined}
-          borderColor={ideaInBasket ? colors.success : undefined}
-          disabled={!!disabledButtonExplanation}
-          processing={isProcessing}
-          icon={ideaInBasket ? 'check' : 'vote-ballot'}
-          className="e2e-single-vote-button"
-          onClick={vote}
-          text={
-            ideaInBasket
-              ? formatMessage(messages.selected)
-              : formatMessage(messages.select)
-          }
-        />
-      </div>
-    </Tooltip>
+    <Box w="100%">
+      <Tooltip
+        disabled={!disabledButtonExplanation}
+        placement="bottom"
+        content={disabledButtonExplanation}
+      >
+        <div>
+          <Button
+            buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
+            bgColor={ideaInBasket ? colors.success : undefined}
+            borderColor={ideaInBasket ? colors.success : undefined}
+            disabled={!!disabledButtonExplanation}
+            processing={isProcessing}
+            icon={ideaInBasket ? 'check' : 'vote-ballot'}
+            className="e2e-single-vote-button"
+            onClick={vote}
+            text={
+              ideaInBasket
+                ? formatMessage(messages.selected)
+                : formatMessage(messages.select)
+            }
+          />
+        </div>
+      </Tooltip>
+    </Box>
   );
 };
 
