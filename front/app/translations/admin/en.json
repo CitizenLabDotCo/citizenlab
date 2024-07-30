@@ -1715,6 +1715,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Your current changes won't be saved.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Required",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Multiple choice - choose one",
+  "app.containers.AdminPage.ProjectEdit.survey.shapefile_upload": "Esri shapefile upload",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Survey successfully saved",
   "app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2": "https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey",
   "app.containers.AdminPage.ProjectEdit.survey.survey2": "Survey",
