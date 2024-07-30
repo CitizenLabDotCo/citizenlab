@@ -10,7 +10,7 @@ const SiteMapMeta = () => {
   const { formatMessage } = useIntl();
   return (
     <Helmet>
-      <title>{formatMessage(messages.siteMapTitle)}</title>
+      <title>{formatMessage(messages.headSiteMapTitle)}</title>
       <meta
         name="description"
         content={formatMessage(messages.siteMapDescription)}
