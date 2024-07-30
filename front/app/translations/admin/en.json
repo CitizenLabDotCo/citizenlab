@@ -2354,6 +2354,7 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Only show inputs with this value",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Hide responses with no answer",
   "app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags": "Inputs without tags",
+  "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "An invalid shapefile was uploaded and cannot be displayed.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Main question",
   "app.containers.AdminPage.projects.project.analysis.manageIdea": "Manage idea",
