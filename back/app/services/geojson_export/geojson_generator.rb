@@ -26,6 +26,11 @@ module GeojsonExport
       geojson_hash.to_json
     end
 
+    def filename
+      "#{MultilocService.new(app_configuration: @app_configuration).t(@phase.title_multiloc).tr(' ', '_')}" \
+        "_#{Time.now.strftime('%Y-%m-%d')}.geojson"
+    end
+
     private
 
     def generate_properties(input)

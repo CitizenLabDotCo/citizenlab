@@ -51,15 +51,14 @@ module IdeaCustomFields
     end
 
     def as_geojson
-      # set_custom_field
       raise_error_if_not_geographic_field
 
-      phase = Phase.find(params[:phase_id])
+      @phase = Phase.find(params[:phase_id])
       geojson = I18n.with_locale(current_user.locale) do
-        GeojsonExport::GeojsonGenerator.new(phase, @custom_field).generate_geojson
+        geojson_generator.generate_geojson
       end
 
-      send_data geojson, type: 'application/json', filename: geojson_filename(phase)
+      send_data geojson, type: 'application/json', filename: geojson_generator.filename
     end
 
     def update_all
@@ -92,11 +91,6 @@ module IdeaCustomFields
       return if @custom_field.geographic_input?
 
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
-    end
-
-    def geojson_filename(phase)
-      "#{MultilocService.new(app_configuration: @app_configuration).t(phase.title_multiloc).tr(' ', '_')}" \
-        "_#{Time.now.strftime('%Y-%m-%d')}.geojson"
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -345,6 +339,10 @@ module IdeaCustomFields
     def serializer_params(custom_form)
       participation_method = custom_form.participation_context.pmethod
       jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+    end
+
+    def geojson_generator
+      @geojson_generator ||= GeojsonExport::GeojsonGenerator.new(@phase, @custom_field)
     end
   end
 end
