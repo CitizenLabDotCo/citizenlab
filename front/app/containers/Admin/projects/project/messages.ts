@@ -595,4 +595,20 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
     defaultMessage: 'Messaging',
   },
+  expireDaysLimit: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit',
+    defaultMessage: 'Number of days to reach minimum number of votes',
+  },
+  reactingThreshold: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.reactingThreshold',
+    defaultMessage: 'Minimum number of votes to be considered',
+  },
+  expireDateLimitRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired',
+    defaultMessage: 'Number of days is required',
+  },
+  reactingThresholdRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired',
+    defaultMessage: 'Minimum number of votes is required',
+  },
 });

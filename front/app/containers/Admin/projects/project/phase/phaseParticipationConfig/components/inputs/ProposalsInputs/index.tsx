@@ -1,12 +1,17 @@
 import React from 'react';
 
-import { IOption } from '@citizenlab/cl2-component-library';
+import { Input, IOption } from '@citizenlab/cl2-component-library';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { ApiErrors } from '../../..';
+import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SortingPicker from '../_shared/SortingPicker';
@@ -22,6 +27,10 @@ interface Props {
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
   noLikingLimitError: JSX.Element | null;
+  expire_days_limit: number | null | undefined;
+  expireDateLimitError: JSX.Element | null;
+  reacting_threshold: number | null | undefined;
+  reactingThresholdError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
@@ -39,6 +48,8 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (
     ideas_order: IdeaDefaultSortMethod
   ) => void;
+  handleDaysLimitChange: (limit: string) => void;
+  handleReactingThresholdChange: (threshold: string) => void;
 }
 
 const ProposalsInputs = ({
@@ -51,6 +62,10 @@ const ProposalsInputs = ({
   allow_anonymous_participation,
   reacting_like_limited_max,
   noLikingLimitError,
+  expire_days_limit,
+  expireDateLimitError,
+  reacting_threshold,
+  reactingThresholdError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
@@ -62,6 +77,8 @@ const ProposalsInputs = ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
+  handleDaysLimitChange,
+  handleReactingThresholdChange,
 }: Props) => {
   return (
     <>
@@ -76,6 +93,37 @@ const ProposalsInputs = ({
         handleInputTermChange={handleInputTermChange}
       />
 
+      <SubSectionTitle>
+        <FormattedMessage {...messages.expireDaysLimit} />
+      </SubSectionTitle>
+      <Input
+        id="expire_days_limit"
+        type="number"
+        min="1"
+        placeholder=""
+        value={expire_days_limit ? expire_days_limit.toString() : null}
+        onChange={handleDaysLimitChange}
+      />
+      <Error
+        text={expireDateLimitError}
+        apiErrors={apiErrors && apiErrors.expire_days_limit}
+      />
+
+      <SubSectionTitle>
+        <FormattedMessage {...messages.reactingThreshold} />
+      </SubSectionTitle>
+      <Input
+        id="reacting_threshold"
+        type="number"
+        min="1"
+        placeholder=""
+        value={reacting_threshold ? reacting_threshold.toString() : null}
+        onChange={handleReactingThresholdChange}
+      />
+      <Error
+        text={reactingThresholdError}
+        apiErrors={apiErrors && apiErrors.reacting_threshold}
+      />
       <UserActions
         posting_enabled={posting_enabled || false}
         commenting_enabled={commenting_enabled || false}

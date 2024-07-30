@@ -31,7 +31,10 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
     return <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />;
   }
 
-  if (participationMethod === 'ideation') {
+  if (
+    participationMethod === 'ideation' ||
+    participationMethod === 'proposals'
+  ) {
     return (
       <FooterWithReactionControl
         idea={idea}
