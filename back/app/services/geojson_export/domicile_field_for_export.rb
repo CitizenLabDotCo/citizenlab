@@ -1,5 +1,5 @@
 module GeojsonExport
-  class DomicileFieldForGeojson < CustomFieldForGeojson
+  class DomicileFieldForExport < CustomFieldForExport
     private
 
     def option_index

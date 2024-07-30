@@ -47,7 +47,7 @@ module GeojsonExport
 
     def generate_answers_to_questions(input)
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[@field_ids_to_titles[field.id]] = CustomFieldForGeojson.new(field).value_from(input)
+        accu[@field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
       end
     end
 
@@ -68,9 +68,9 @@ module GeojsonExport
     def user_custom_field_values_data(input)
       registration_fields.each_with_object({}) do |field, accu|
         accu[@multiloc_service.t(field.title_multiloc)] = if field.code == 'domicile'
-          DomicileFieldForGeojson.new(field, :author).value_from(input)
+          DomicileFieldForExport.new(field, :author).value_from(input)
         else
-          CustomFieldForGeojson.new(field, :author).value_from(input)
+          CustomFieldForExport.new(field, :author).value_from(input)
         end
       end
     end

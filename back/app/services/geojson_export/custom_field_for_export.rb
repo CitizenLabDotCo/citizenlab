@@ -1,5 +1,5 @@
 module GeojsonExport
-  class CustomFieldForGeojson
+  class CustomFieldForExport
     delegate :key, :input_type, :accept, to: :custom_field
 
     def initialize(custom_field, scope = nil)
@@ -14,7 +14,7 @@ module GeojsonExport
         model = model.public_send(scope)
         return unless model
       end
-      visitor = GeojsonValueVisitor.new(model, option_index, app_configuration: @app_configuration)
+      visitor = ValueVisitor.new(model, option_index, app_configuration: @app_configuration)
       visitor.visit self
     end
 

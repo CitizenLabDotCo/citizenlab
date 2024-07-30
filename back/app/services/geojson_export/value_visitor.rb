@@ -1,5 +1,5 @@
 module GeojsonExport
-  class GeojsonValueVisitor < FieldVisitorService
+  class ValueVisitor < FieldVisitorService
     def initialize(model, option_index, app_configuration: nil)
       super()
       @model = model
