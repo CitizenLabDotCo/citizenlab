@@ -951,6 +951,7 @@
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedback process",
   "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Brussels, Belgium",
+  "app.containers.AccessibilityStatement.headTitle": "Accessibility Statement | {orgName}",
   "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.",
   "app.containers.AccessibilityStatement.mapviewIdeas": "Map view of inputs",
   "app.containers.AccessibilityStatement.mapviewIdeasException": "Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.",
