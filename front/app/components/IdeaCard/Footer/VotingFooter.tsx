@@ -14,7 +14,7 @@ interface Props {
   showCommentCount: boolean;
 }
 
-const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
+const VotingFooter = ({ idea, showCommentCount }: Props) => {
   return (
     <Box as="footer" w="100%" display="flex" mt="16px" justifyContent="center">
       <ReadMoreButton
@@ -30,4 +30,4 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
     </Box>
   );
 };
-export default IdeaCardFooter;
+export default VotingFooter;

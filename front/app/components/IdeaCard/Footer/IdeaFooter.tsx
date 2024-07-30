@@ -41,7 +41,7 @@ interface Props {
   showCommentCount: boolean;
 }
 
-const FooterWithReactionControl = ({
+const IdeaFooter = ({
   idea,
   hideIdeaStatus,
   className,
@@ -67,4 +67,4 @@ const FooterWithReactionControl = ({
   );
 };
 
-export default FooterWithReactionControl;
+export default IdeaFooter;

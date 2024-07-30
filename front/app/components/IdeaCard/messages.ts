@@ -10,4 +10,9 @@ export default defineMessages({
     id: 'app.containers.IdeaCard.readMore',
     defaultMessage: 'Read more',
   },
+  xVotesOfY: {
+    id: 'app.components.InitiativeCard.xVotesOfY',
+    defaultMessage:
+      '{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}',
+  },
 });
