@@ -11,6 +11,15 @@ router.get("/oauth2/authorize", function (_req, res) {
   res.render("index", { title: "Fake SSO" });
 });
 
+// The token route (receives code, returns token)
+router.post("/oauth2/token", function (req, res) {
+  console.log(req);
+
+  res.json({
+    test: "bla",
+  });
+});
+
 // router.post('/submit_sso', async function (req, _res) {
 //   const referer = req.get('referer');
 //   const params = new URLSearchParams(referer);
