@@ -6,6 +6,7 @@ import { colors, Text, Box } from '@citizenlab/cl2-component-library';
 import { FeatureCollection } from 'geojson';
 import shp from 'shpjs';
 
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -18,43 +19,46 @@ import {
   getShapeSymbol,
   goToLayerExtent,
 } from 'components/EsriMap/utils';
+import { FormData } from 'components/Form/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 type Props = {
-  fileUrl: string;
+  inputId: string;
+  file: FormData;
 };
 
-const ShapefilePreview = ({ fileUrl }: Props) => {
-  const { formatMessage } = useIntl();
-  const [mapView, setMapView] = useState<MapView | null>(null);
+const ShapefilePreview = ({ inputId, file }: Props) => {
   const localize = useLocalize();
-
-  // eslint-disable-next-line no-console
-  console.log(fileUrl);
-
+  const { formatMessage } = useIntl();
+  const { data: inputFiles } = useIdeaFiles(inputId);
+  const [mapView, setMapView] = useState<MapView | null>(null);
   const [geojsonCollection, setGeojsonCollection] = useState<
     FeatureCollection[] | null
   >(null);
 
+  // Get File URL
+  const fileUrl = inputFiles?.data.find(
+    (inputFile) => inputFile.id === file?.id
+  )?.attributes.file;
+
   // Convert the shapefile to GeoJSON
   useEffect(() => {
     async function getGeojson() {
-      const conversionResult = await shp(
-        // TODO: Remove hardcoded URL for testing
-        'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/idea_file/file/d9ea69a0-7ea0-4e10-9eea-594cef9c0461/Multiple_shapefiles.zip'
-      );
-      if (Array.isArray(conversionResult)) {
-        // User has uploaded multiple shapefiles within the zip file
-        setGeojsonCollection(conversionResult);
-      } else {
-        setGeojsonCollection([conversionResult]);
+      if (fileUrl?.url) {
+        const conversionResult = await shp(fileUrl.url);
+        if (Array.isArray(conversionResult)) {
+          // User has uploaded multiple shapefiles within the zip file
+          setGeojsonCollection(conversionResult);
+        } else {
+          setGeojsonCollection([conversionResult]);
+        }
       }
     }
     getGeojson();
-  }, []);
+  }, [fileUrl]);
 
   const mapLayers: IMapLayerAttributes[] = [];
 
@@ -83,8 +87,6 @@ const ShapefilePreview = ({ fileUrl }: Props) => {
             shape: 'circle',
             color: colors.primary,
             sizeInPx: 8,
-            outlineWidth: 1.5,
-            outlineColor: colors.white,
           }),
         });
       } else if (layer.geometryType === 'polygon') {
@@ -92,6 +94,8 @@ const ShapefilePreview = ({ fileUrl }: Props) => {
           symbol: getFillSymbol({
             transparency: 0.1,
             color: colors.primary,
+            outlineStyle: 'solid',
+            outlineColor: colors.primary,
           }),
         });
       } else if (layer.geometryType === 'polyline') {
@@ -118,7 +122,7 @@ const ShapefilePreview = ({ fileUrl }: Props) => {
   }, [esriLayers, mapView?.map?.layers, mapView]);
 
   return (
-    <Box key={fileUrl}>
+    <Box key={inputId}>
       <Text my="4px" color="coolGrey600" fontSize="s" fontStyle="italic">
         {formatMessage(messages.shapefileUploadDisclaimer)}
       </Text>

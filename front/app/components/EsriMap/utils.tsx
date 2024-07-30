@@ -289,18 +289,20 @@ type FillSymbolProps = {
   color?: string;
   transparency?: number;
   outlineStyle?: EsriLineStyle;
+  outlineColor?: string;
 };
 
 export const getFillSymbol = ({
   transparency,
   color,
   outlineStyle,
+  outlineColor,
 }: FillSymbolProps) => {
   return new SimpleFillSymbol({
     color: transparentize(transparency || 1.0, color || colors.coolGrey700),
     style: 'diagonal-cross',
     outline: {
-      color: [0, 0, 0, 0.8],
+      color: outlineColor || [0, 0, 0, 0.8],
       width: 2,
       style: outlineStyle || 'dash',
     },
@@ -657,7 +659,7 @@ export const goToLayerExtent = (
 ) => {
   mapView.goTo(layer.fullExtent, { animate: false }).then(() => {
     if (zoomOutFurther) {
-      mapView.zoom = mapView.zoom - 2;
+      mapView.zoom = mapView.zoom - 1;
     }
   });
 };

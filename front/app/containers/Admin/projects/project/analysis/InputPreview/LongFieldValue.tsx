@@ -303,7 +303,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              <ShapefilePreview fileUrl={rawValue} />
+              <ShapefilePreview inputId={input.id} file={rawValue} />
             </Box>
           );
         }
