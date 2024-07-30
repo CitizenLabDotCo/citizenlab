@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Oylama ayarları ve sonuçları",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Yanlış maksimum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Geri bildirim sağlayın, etiket ekleyin veya yayınları bir sonraki proje aşamasına kopyalayın.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Teklifleri yönetin, geri bildirim verin ve konuları atayın.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Girdi yöneticisi",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Anket sonuçlarını dışa aktar (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Burada, bu proje kapsamındaki Typeform anketlerinin sonuçlarını Excel dosyası olarak indirebilirsiniz.",

@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Innstillinger og resultater for avstemning",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Feil maksimum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Gi tilbakemelding, legg til tagger eller kopier innlegg til neste prosjektfase.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Administrer forslag, gi tilbakemeldinger og tildel emner.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Oppføringsbehandling",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Eksporter resultater for spørreundersøkelsen (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Her kan du laste ned resultater fra Typeform-undersøkelsen(e) i dette prosjektet som en Excel-fil.",

@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Äänestysasetukset ja tulokset",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Väärä maksimi",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Anna palautetta, lisää tunnisteita tai kopioi viestejä projektin seuraavaan vaiheeseen.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Hallitse ehdotuksia, anna palautetta ja määritä aiheita.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Syöttöhallinta",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Vie kyselyn tulokset (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Täältä voit ladata tämän projektin Typeform-kyselyn (kyselyjen) tulokset Excel-tiedostona.",

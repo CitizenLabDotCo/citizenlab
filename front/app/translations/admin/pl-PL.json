@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Ustawienia i wyniki badań",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Złe maksimum",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Udzielaj informacji zwrotnych, przypisuj tematy lub kopiuj inicjatywy do następnego etapu projektu.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Zarządzaj propozycjami, udzielaj informacji zwrotnych i przydzielaj tematy.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Zarządzanie inicjatywami",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Eksport wyników ankiety (.xslx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Tutaj możesz pobrać wyniki ankiety (ankiet) Typeform w ramach tego projektu jako plik Excel.",
