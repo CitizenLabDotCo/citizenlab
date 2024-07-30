@@ -1136,6 +1136,18 @@
         }
       },
 
+      "custom_idea_statuses": {
+        "type": "object",
+        "title": "Custom Input Statuses",
+        "description": "Allows admin to define custom input statuses.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "public_api_tokens": {
         "type": "object",
         "title": "Public API tokens",

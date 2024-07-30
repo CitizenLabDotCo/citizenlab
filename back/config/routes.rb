@@ -83,7 +83,7 @@ Rails.application.routes.draw do
 
       resources :background_jobs, only: %i[index]
 
-      resources :idea_statuses, only: %i[index show]
+      resources :idea_statuses
       resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do

@@ -46,14 +46,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/custom_idea_statuses
-  specs:
-    custom_idea_statuses (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
@@ -1265,7 +1257,6 @@ DEPENDENCIES
   content_builder!
   counter_culture (~> 3.5)
   csv (~> 3.3.0)
-  custom_idea_statuses!
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.0.2)
