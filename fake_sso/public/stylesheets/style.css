@@ -1,0 +1,26 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  background-color: beige;
+  height: 100vh;
+}
+
+div.main-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 50px;
+  background-color: white;
+}
+
+main {
+  margin-top: 50px;
+}
+
+button {
+  padding: 8px;
+  font-size: 16px;
+  max-width: 150px;
+}

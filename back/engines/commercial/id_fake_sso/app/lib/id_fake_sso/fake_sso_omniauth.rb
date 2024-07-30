@@ -10,12 +10,14 @@ module IdFakeSso
     end
 
     # @param [AppConfiguration] configuration
-    def omniauth_setup(configuration, _env)
+    def omniauth_setup(configuration, env)
       # TODO
       options = env['omniauth.strategy'].options
 
       options[:issuer] = issuer
       options[:client_options] = {
+        identifier: 'govocal_client',
+        secret: 'abc123',
         port: 8081,
         scheme: 'http',
         host: host,
