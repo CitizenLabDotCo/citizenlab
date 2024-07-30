@@ -1,7 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Cookie policy
+  headTitle: {
+    id: 'app.containers.AccessibilityStatement.headTitle',
+    defaultMessage: 'Accessibility Statement | {orgName}',
+  },
   title: {
     id: 'app.containers.AccessibilityStatement.title',
     defaultMessage: 'Accessibility Statement',
