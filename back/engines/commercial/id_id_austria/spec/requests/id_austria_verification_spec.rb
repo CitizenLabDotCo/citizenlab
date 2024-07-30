@@ -4,6 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'id_austria verification' do
+  # TODO: JS - Get actual request so we can mock it
   let(:auth_hash) do
     {
       'provider' => 'id_austria',
@@ -75,7 +76,9 @@ context 'id_austria verification' do
               house_number: '001',
               floor: '03',
               apartment_code: ' tv'
-            } } }
+            }
+          }
+        }
     }
   end
 
@@ -93,7 +96,7 @@ context 'id_austria verification' do
       enabled: true,
       verification_methods: [{
         name: 'id_austria',
-        identity_source: 'DK MitID',
+        identity_source: 'ID Austria',
         domain: 'some.test.domain.com',
         client_id: '12345',
         client_secret: '78910',
@@ -101,7 +104,7 @@ context 'id_austria verification' do
         birthyear_custom_field_key: 'birthyear',
         municipality_code_custom_field_key: 'municipality_code',
         method_name_multiloc: {
-          en: 'MitID Verification'
+          en: 'ID Austria Verification'
         }
       }]
     }

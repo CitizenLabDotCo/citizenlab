@@ -101,7 +101,7 @@ module IdIdAustria
       "https://#{host}"
     end
 
-    private
+    # private
 
     # def acr_values
     #   case config[:identity_source]

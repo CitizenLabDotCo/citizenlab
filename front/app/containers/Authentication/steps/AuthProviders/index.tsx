@@ -159,7 +159,7 @@ const AuthProviders = memo<Props>(
 
         {idAustriaLoginEnabled && (
           <StyledAuthProviderButton
-            icon="mitid" // TODO: JS - Change icon
+            icon="idaustria"
             flow={flow}
             authProvider="id_austria"
             onContinue={onSelectAuthProvider}
