@@ -43,7 +43,7 @@ const CookiePolicy = () => {
   return (
     <>
       <Helmet>
-        <title>{formatMessage(messages.cookiePolicyTitle)}</title>
+        <title>{formatMessage(messages.headCookiePolicyTitle)}</title>
         <meta
           name="description"
           content={formatMessage(messages.cookiePolicyDescription)}
