@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createJwt } = require("../utils/jwt");
+const { createJwt } = require("../utils/createJwt");
 
 // GET home page
 router.get("/", (_req, res) => {
