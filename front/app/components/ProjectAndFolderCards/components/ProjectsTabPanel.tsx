@@ -17,28 +17,35 @@ import ProjectFolderCard from './ProjectFolderCard';
 import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
 
-const Container = styled.div<{ hide: boolean }>`
+const Container = styled.ul<{ hide: boolean }>`
   display: ${({ hide }) => (hide ? 'none' : 'grid')};
   grid-template-columns: repeat(12, 1fr);
   gap: 20px;
   width: 100%;
-  align-items: start;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 `;
 
-const FullWidthCard = styled.div`
+const FullWidthCard = styled.li`
   grid-column: span 12;
+  display: flex;
+  flex-direction: column;
 `;
 
-const TwoColumnCard = styled.div`
+const TwoColumnCard = styled.li`
   grid-column: span 6;
+  display: flex;
+  flex-direction: column;
 `;
 
-const ThreeColumnCard = styled.div`
+const ThreeColumnCard = styled.li`
   grid-column: span 4;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
-const MockProjectCard = styled.div<{ size: TCardSize }>`
+const MockProjectCard = styled.li<{ size: TCardSize }>`
   height: 1px;
   background: transparent;
   grid-column: ${({ size }) =>
@@ -120,21 +127,23 @@ const ProjectsTabPanel = ({
         const projectOrFolderType = item.relationships.publication.data.type;
         const size = getCardSize(index);
 
-        return (
-          <React.Fragment key={index}>
-            {projectOrFolderType === 'project' &&
-              renderProjectCard(size, projectOrFolderId)}
-            {projectOrFolderType === 'folder' && (
-              <ThreeColumnCard key={projectOrFolderId}>
-                <ProjectFolderCard
-                  folderId={projectOrFolderId}
-                  size={size}
-                  layout={layout}
-                />
-              </ThreeColumnCard>
-            )}
-          </React.Fragment>
-        );
+        if (projectOrFolderType === 'project') {
+          return renderProjectCard(size, projectOrFolderId);
+        }
+
+        if (projectOrFolderType === 'folder') {
+          return (
+            <ThreeColumnCard key={projectOrFolderId}>
+              <ProjectFolderCard
+                folderId={projectOrFolderId}
+                size={size}
+                layout={layout}
+              />
+            </ThreeColumnCard>
+          );
+        }
+
+        return null;
       })}
 
       {!hasMore && layout === 'threecolumns' && list.length % 3 !== 0 && (
