@@ -1,4 +1,4 @@
-const CODE = "code_acb123";
+const CODE = "code_abc123";
 const SCOPE = "some scope stuff";
 
 function onSubmit() {
