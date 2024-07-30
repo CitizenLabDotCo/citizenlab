@@ -188,4 +188,11 @@ describe Verification::VerificationService do
       end
     end
   end
+
+  describe 'first_method_multilocs' do
+    it 'returns the first method' do
+      multilocs = service.first_method_multilocs
+      expect(multilocs[:name]).to eq 'cow'
+    end
+  end
 end

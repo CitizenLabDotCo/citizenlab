@@ -97,6 +97,29 @@ module Verification
       custom_fields.uniq
     end
 
+    # TODO: JS - Finish this - with translations
+    def first_method_multilocs
+      method = active_methods(AppConfiguration.instance).first
+
+      custom_fields = if method.respond_to?(:locked_custom_fields)
+        method&.locked_custom_fields&.map { |field_code| CustomField.find_by(code: field_code.to_s)&.title_multiloc }&.compact
+      else
+        []
+      end
+
+      attributes = if method.respond_to?(:locked_attributes)
+        method&.locked_attributes&.map { |attribute_code| attribute_code }&.compact
+      else
+        []
+      end
+
+      {
+        name: method.name,
+        attributes: attributes,
+        custom_fields: custom_fields
+      }
+    end
+
     def verifications_by_uid(uid, method)
       ::Verification::Verification.where(
         active: true,
