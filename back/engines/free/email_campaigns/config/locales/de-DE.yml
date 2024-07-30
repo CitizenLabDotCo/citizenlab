@@ -77,7 +77,7 @@ de:
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
-      "recipient_statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName}zugesandt, da Sie ein registrierter Nutzer von %{organizationLink}sind."
+      "recipient_statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind."
       "unsubscribe_statement": "Sie können %{unsubscribeLink} wählen, wenn Sie diese E-Mails in Zukunft nicht mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     follow:
