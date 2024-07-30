@@ -9,6 +9,7 @@ module XlsxExport
       @phase = phase
       @include_private_attributes = include_private_attributes
       @participation_method = phase.pmethod
+      @value_visitor = XlsxExport::ValueVisitor
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
       @url_service = Frontend::UrlService.new
@@ -140,8 +141,8 @@ module XlsxExport
             input_fields << latitude_report_field
             input_fields << longitude_report_field
           end
-          input_fields << CustomFieldForReport.new(field)
-          input_fields << CustomFieldForReport.new(field.other_option_text_field) if field.other_option_text_field
+          input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
+          input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
         end
       end
     end
@@ -184,9 +185,9 @@ module XlsxExport
     def user_report_fields
       registration_fields.map do |field|
         if field.code == 'domicile'
-          DomicileFieldForReport.new(field, :author)
+          Export::DomicileFieldForExport.new(field, @value_visitor, :author)
         else
-          CustomFieldForReport.new(field, :author)
+          Export::CustomFieldForExport.new(field, @value_visitor, :author)
         end
       end
     end

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe XlsxExport::CustomFieldForReport do
+describe Export::CustomFieldForExport do
   context 'when no scope is given' do
     subject(:report_field) do
-      described_class.new(custom_field)
+      described_class.new(custom_field, XlsxExport::ValueVisitor)
     end
 
     let(:input_type) { 'text' }
@@ -110,7 +110,7 @@ describe XlsxExport::CustomFieldForReport do
 
   context 'when a scope is given' do
     subject(:report_field) do
-      described_class.new(custom_field, :author)
+      described_class.new(custom_field, GeojsonExport::ValueVisitor, :author)
     end
 
     let(:user) { create(:user, custom_field_values: { 'birthyear' => 1984 }) }

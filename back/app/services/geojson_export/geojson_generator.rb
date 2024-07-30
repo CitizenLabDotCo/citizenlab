@@ -11,6 +11,7 @@ module GeojsonExport
       @inputs = phase.ideas.native_survey.published
       @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
+      @value_visitor = GeojsonExport::ValueVisitor
       @field_ids_to_titles = set_non_colliding_titles
     end
 
@@ -47,7 +48,7 @@ module GeojsonExport
 
     def generate_answers_to_questions(input)
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[@field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
+        accu[@field_ids_to_titles[field.id]] = Export::CustomFieldForExport.new(field, @value_visitor).value_from(input)
       end
     end
 
@@ -68,9 +69,9 @@ module GeojsonExport
     def user_custom_field_values_data(input)
       registration_fields.each_with_object({}) do |field, accu|
         accu[@multiloc_service.t(field.title_multiloc)] = if field.code == 'domicile'
-          DomicileFieldForExport.new(field, :author).value_from(input)
+          Export::DomicileFieldForExport.new(field, @value_visitor, :author).value_from(input)
         else
-          CustomFieldForExport.new(field, :author).value_from(input)
+          Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
         end
       end
     end
