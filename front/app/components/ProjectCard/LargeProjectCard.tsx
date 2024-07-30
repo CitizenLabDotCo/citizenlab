@@ -33,7 +33,7 @@ import {
   handleProjectTitleOnClick,
   ProjectImage,
   ProjectTitle,
-} from './Helpers';
+} from './utils';
 import ProjectHeader, {
   ContentHeaderBottomMargin,
   ContentHeaderHeight,
