@@ -36,16 +36,16 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
     FeatureCollection[] | null
   >(null);
 
-  // Get File URL
+  // Get Shapefile URL
   const fileUrl = inputFiles?.data.find(
     (inputFile) => inputFile.id === file?.id
-  )?.attributes.file;
+  )?.attributes?.file?.url;
 
   // Convert the shapefile to GeoJSON
   useEffect(() => {
     async function getGeojson() {
-      if (fileUrl?.url?.endsWith('.zip')) {
-        const conversionResult = await shp(fileUrl.url);
+      if (fileUrl?.endsWith('.zip')) {
+        const conversionResult = await shp(fileUrl);
         if (Array.isArray(conversionResult)) {
           // User has uploaded multiple shapefiles within the zip file
           setGeojsonCollection(conversionResult);
@@ -73,6 +73,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   }
 
   const esriLayers = createEsriGeoJsonLayers(mapLayers, localize);
+  const initialMapCenter = esriLayers?.[0]?.fullExtent?.center;
 
   esriLayers.map((layer) => {
     layer.opacity = 0.8;
@@ -95,11 +96,13 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
     }
   }, [esriLayers, mapView?.map?.layers, mapView]);
 
-  if (!fileUrl?.url.endsWith('.zip')) {
+  if (!fileUrl?.endsWith('.zip')) {
+    // This is not a valid file for this question type
     return (
       <Text fontStyle="italic">{formatMessage(messages.invalidShapefile)}</Text>
     );
   }
+
   return (
     <Box key={inputId}>
       <Text my="4px" color="coolGrey600" fontSize="s" fontStyle="italic">
@@ -112,8 +115,8 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
           center: {
             type: 'Point',
             coordinates: [
-              esriLayers?.[0]?.fullExtent?.center.latitude,
-              esriLayers?.[0]?.fullExtent?.center.longitude,
+              initialMapCenter?.latitude,
+              initialMapCenter?.longitude,
             ],
           },
         }}
