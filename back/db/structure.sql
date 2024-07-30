@@ -1231,7 +1231,8 @@ CREATE TABLE public.idea_statuses (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ideas_count integer DEFAULT 0
+    ideas_count integer DEFAULT 0,
+    participation_method character varying DEFAULT 'ideation'::character varying NOT NULL
 );
 
 
@@ -7514,6 +7515,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240612134240'),
 ('202407081751'),
 ('20240722090955'),
-('20240729141927');
+('20240729141927'),
+('20240730093933');
 
 

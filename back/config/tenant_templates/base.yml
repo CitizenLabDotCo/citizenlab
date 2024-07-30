@@ -5,40 +5,81 @@ models:
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
-      ordering: 100
+      ordering: 0
       code: proposed
       color: '#687782'
       description_multiloc: idea_statuses.proposed_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.viewed
-      ordering: 150
+      ordering: 1
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.under_consideration
-      ordering: 200
+      ordering: 2
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.accepted
-      ordering: 300
+      ordering: 3
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.rejected
-      ordering: 400
+      ordering: 4
       code: rejected
       color: '#E52516'
       description_multiloc: idea_statuses.rejected_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.implemented
-      ordering: 500
+      ordering: 5
       code: implemented
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
+      participation_method: ideation
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 0
+      code: proposed
+      color: '#BEE7EB'
+      description_multiloc: idea_statuses.proposed_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.threshold_reached
+      ordering: 1
+      code: threshold_reached
+      color: '#40B8C5'
+      description_multiloc: idea_statuses.threshold_reached_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.expired
+      ordering: 2
+      code: expired
+      color: '#FF672F'
+      description_multiloc: idea_statuses.expired_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.answered
+      ordering: 3
+      code: answered
+      color: '#147985'
+      description_multiloc: idea_statuses.answered_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.ineligible
+      ordering: 4
+      code: ineligible
+      color: '#E52516'
+      description_multiloc: idea_statuses.ineligible_description
+      participation_method: proposals
   initiative_status:
     -
       title_multiloc: initiative_statuses.review_pending
