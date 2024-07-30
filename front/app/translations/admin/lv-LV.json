@@ -1472,6 +1472,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Aptauju iestatījumi un rezultāti",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Nepareiza maksimālā vērtība",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Sniegt atsauksmes, pievienot tagus vai iekopēt ierakstus nākamajā projekta posmā.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Pārvaldiet priekšlikumus, sniedziet atsauksmes un piešķiriet tēmas.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Ievades datu pārvaldnieks",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Eksportēt apsekojuma rezultātus (.xlsx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Šeit varat lejupielādēt šajā projektā veiktās(-o) Typeform apsekojuma(-u) rezultātus Excel faila formātā.",
