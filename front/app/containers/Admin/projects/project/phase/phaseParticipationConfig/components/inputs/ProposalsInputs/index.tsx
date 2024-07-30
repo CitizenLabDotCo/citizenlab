@@ -5,7 +5,7 @@ import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { SubSectionTitle } from 'components/admin/Section';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -92,34 +92,36 @@ const ProposalsInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-
-      <SubSectionTitle>
-        <FormattedMessage {...messages.expireDaysLimit} />
-      </SubSectionTitle>
-      <Input
-        id="expire_days_limit"
-        type="number"
-        min="1"
-        placeholder=""
-        value={expire_days_limit ? expire_days_limit.toString() : null}
-        onChange={handleDaysLimitChange}
-      />
-      <Error
-        text={expireDateLimitError}
-        apiErrors={apiErrors && apiErrors.expire_days_limit}
-      />
-
-      <SubSectionTitle>
-        <FormattedMessage {...messages.reactingThreshold} />
-      </SubSectionTitle>
-      <Input
-        id="reacting_threshold"
-        type="number"
-        min="1"
-        placeholder=""
-        value={reacting_threshold ? reacting_threshold.toString() : null}
-        onChange={handleReactingThresholdChange}
-      />
+      <SectionField>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.expireDaysLimit} />
+        </SubSectionTitle>
+        <Input
+          id="expire_days_limit"
+          type="number"
+          min="1"
+          placeholder=""
+          value={expire_days_limit ? expire_days_limit.toString() : null}
+          onChange={handleDaysLimitChange}
+        />
+        <Error
+          text={expireDateLimitError}
+          apiErrors={apiErrors && apiErrors.expire_days_limit}
+        />
+      </SectionField>
+      <SectionField>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.reactingThreshold} />
+        </SubSectionTitle>
+        <Input
+          id="reacting_threshold"
+          type="number"
+          min="1"
+          placeholder=""
+          value={reacting_threshold ? reacting_threshold.toString() : null}
+          onChange={handleReactingThresholdChange}
+        />
+      </SectionField>
       <Error
         text={reactingThresholdError}
         apiErrors={apiErrors && apiErrors.reacting_threshold}
