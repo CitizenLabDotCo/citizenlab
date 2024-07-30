@@ -14,9 +14,12 @@ router.get("/oauth2/authorize", (_req, res) => {
 
 // The token endpoint (receives code, returns token)
 router.post("/oauth2/token", async (_req, res) => {
+  const jwt = await createJwt();
+  console.log({ jwt });
+
   res.json({
     token_type: "Bearer",
-    id_token: await createJwt(),
+    id_token: jwt,
     access_token: "access_token_abc123",
   });
 });

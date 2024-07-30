@@ -15,6 +15,7 @@ module IdFakeSso
       options = env['omniauth.strategy'].options
 
       options[:issuer] = issuer
+      options[:discovery] = true
       options[:client_options] = {
         identifier: 'govocal_client',
         secret: 'abc123',
