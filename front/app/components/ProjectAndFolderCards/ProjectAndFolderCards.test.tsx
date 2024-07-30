@@ -138,7 +138,15 @@ jest.mock('api/topics/useTopics', () =>
 );
 
 // Mock components
-jest.mock('components/ProjectCard', () => ({
+jest.mock('components/ProjectCard/LargeProjectCard', () => ({
+  __esModule: true,
+  default: () => <></>,
+}));
+jest.mock('components/ProjectCard/MediumProjectCard', () => ({
+  __esModule: true,
+  default: () => <></>,
+}));
+jest.mock('components/ProjectCard/SmallProjectCard', () => ({
   __esModule: true,
   default: () => <></>,
 }));
