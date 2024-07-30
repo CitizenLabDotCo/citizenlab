@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'Read more',
   },
   xVotesOfY: {
-    id: 'app.components.InitiativeCard.xVotesOfY',
+    id: 'app.containers.IdeaCard.xVotesOfY',
     defaultMessage:
       '{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}',
   },
