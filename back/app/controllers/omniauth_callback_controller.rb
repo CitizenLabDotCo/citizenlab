@@ -56,6 +56,12 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify:, authver_method:)
     auth = request.env['omniauth.auth']
+
+    puts "============================="
+    puts "auth_callback_123"
+    puts auth.to_s
+    puts "============================="
+
     omniauth_params = request.env['omniauth.params']
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)

@@ -2,8 +2,11 @@
 
 module IdFakeSso
   class FakeSsoOmniauth < OmniauthMethods::Base
-    def profile_to_user_attrs(auth)
+    def profile_to_user_attrs(_auth)
       # TODO
+      {
+        email: 'test@henk.com'
+      }
     end
 
     # @param [AppConfiguration] configuration
@@ -11,9 +14,8 @@ module IdFakeSso
       # TODO
       options = env['omniauth.strategy'].options
 
+      options[:issuer] = issuer
       options[:client_options] = {
-        identifier: feature['client_id'],
-        secret: feature['client_secret'],
         port: 8081,
         scheme: 'http',
         host: host,
@@ -31,16 +33,16 @@ module IdFakeSso
       "http://#{host}/"
     end
 
-    def updateable_user_attrs
-      # TODO
-    end
+    # def updateable_user_attrs
+    # TODO
+    # end
 
     def locked_custom_fields
       # TODO
     end
 
-    def email_confirmed?(auth)
-      # TODO
+    def email_confirmed?(_auth)
+      true
     end
   end
 end

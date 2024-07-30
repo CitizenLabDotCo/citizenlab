@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module FakeSso
+module IdFakeSso
   class Engine < ::Rails::Engine
-    isolate_namespace FakeSso
+    isolate_namespace IdFakeSso
 
     config.to_prepare do
       AuthenticationService.add_method('fake_sso', FakeSsoOmniauth.new)

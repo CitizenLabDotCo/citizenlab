@@ -126,6 +126,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_fake_sso
+  specs:
+    id_fake_sso (0.1.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
@@ -1289,6 +1296,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_criipto!
+  id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
