@@ -17,6 +17,10 @@ const useActiveElement = () => {
     setActive(document.activeElement);
   };
 
+  const handleOutsideClick = () => {
+    setActive(null);
+  };
+
   useEffect(() => {
     document.addEventListener('focusin', handleFocusIn);
     return () => {
@@ -24,8 +28,16 @@ const useActiveElement = () => {
     };
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  });
+
   return active;
 };
+
 const Tooltip = ({ children, theme = 'light', ...rest }: TooltipProps) => {
   const tooltipId = useRef(
     `tooltip-${Math.random().toString(36).substring(7)}`
