@@ -11,6 +11,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import RadioGroup from 'components/HookForm/RadioGroup';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,8 +27,13 @@ type Props = {
 };
 
 const PageLayoutSettings = ({ pageLayoutName }: Props) => {
+  const isPageLayoutSettingsEnabled = useFeatureFlag({ name: 'form_mapping' });
   const { formatMessage } = useIntl();
   const { control, setValue } = useFormContext();
+
+  if (!isPageLayoutSettingsEnabled) {
+    return null;
+  }
 
   return (
     <>

@@ -193,7 +193,9 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
-        ...(field.page_layout && { page_layout: field.page_layout }),
+        ...(field.page_layout || field.input_type === 'page'
+          ? { page_layout: field.page_layout || 'default' }
+          : {}),
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
         }),
