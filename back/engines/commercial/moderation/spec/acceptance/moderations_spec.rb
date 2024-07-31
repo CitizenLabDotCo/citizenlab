@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Moderations' do
   explanation 'Moderations are pieces of user-generated content that need to be moderated'
 

@@ -125,10 +125,9 @@ class CustomFieldService
   def self.remove_not_visible_fields(idea, current_user)
     return idea.custom_field_values if idea.draft?
 
-    custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
-    fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
+    fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
-      fields = IdeaCustomFieldsService.new(custom_form).enabled_fields
+      fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields
     end
     visible_keys = fields.pluck(:key)
     idea.custom_field_values.slice(*visible_keys)

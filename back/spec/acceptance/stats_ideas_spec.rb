@@ -45,13 +45,13 @@ resource 'Stats - Ideas' do
     AppConfiguration.instance.update!(created_at: now - 3.years)
 
     @project1 = create(:single_phase_ideation_project)
-    @project2 = create(:single_phase_ideation_project)
+    @project2 = create(:single_phase_proposals_project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
 
     travel_to(start_at - 1.month) do
-      i = create(:idea, project: @project2, idea_status: @proposed)
+      i = create(:proposal, project: @project2, idea_status: @proposed)
       create(:official_feedback, post: i)
     end
     travel_to(start_at + 2.months) do
@@ -59,7 +59,7 @@ resource 'Stats - Ideas' do
     end
     travel_to(start_at + 5.months) do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
-      create(:idea, project: @project2, idea_status: @proposed)
+      create(:proposal, project: @project2, idea_status: @proposed)
     end
 
     native_survey_project = create(:single_phase_native_survey_project)
@@ -77,7 +77,7 @@ resource 'Stats - Ideas' do
     let(:start_at) { nil }
     let(:end_at) { nil }
 
-    example_request 'Count all ideas' do
+    example_request 'Count all public inputs (default behaviour)' do
       assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :type)).to eq 'ideas_count'
