@@ -26,8 +26,7 @@ module GeojsonExport
     end
 
     def filename
-      "#{MultilocService.new(app_configuration: @app_configuration).t(@phase.title_multiloc).tr(' ', '_')}" \
-        "_#{Time.now.strftime('%Y-%m-%d')}.geojson"
+      "#{@multiloc_service.t(@phase.title_multiloc).tr(' ', '_')}_#{Time.now.strftime('%Y-%m-%d')}.geojson"
     end
 
     private
