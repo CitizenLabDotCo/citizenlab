@@ -53,7 +53,7 @@ resource 'Permissions' do
 
         expect do
           do_request
-        end.not_to exceed_query_limit(1).with(/SELECT.*custom_fields/)
+        end.not_to exceed_query_limit(2).with(/SELECT.*custom_fields/)
 
         assert_status 200
         json_response = json_parse response_body

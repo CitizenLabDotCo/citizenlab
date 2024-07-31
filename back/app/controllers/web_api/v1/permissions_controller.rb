@@ -10,7 +10,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       .filter_enabled_actions(permission_scope)
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
-    @permissions = @permissions.includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
+    @permissions = @permissions.includes(:permission_scope, :custom_fields, :groups, permissions_custom_fields: [custom_field: [:options]])
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
