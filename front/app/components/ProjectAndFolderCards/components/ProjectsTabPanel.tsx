@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -45,55 +44,43 @@ const ThreeColumnCard = styled.li`
   flex-direction: column;
 `;
 
-const MockProjectCard = styled.li<{ size: TCardSize }>`
-  height: 1px;
-  background: transparent;
-  grid-column: ${({ size }) =>
-    size === 'large' ? 'span 12' : size === 'medium' ? 'span 6' : 'span 4'};
-`;
-
 interface Props extends BaseProps {
   tab: PublicationTab;
 }
 
-const ProjectsTabPanel = ({
-  tab,
-  currentTab,
-  list,
-  layout,
-  hasMore,
-}: Props) => {
+const ProjectsTabPanel = ({ tab, currentTab, list, layout }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isLargerThanTablet = !isSmallerThanTablet;
-  const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
-  useEffect(() => {
+  const cardSizes = useMemo(() => {
     if (list.length > 0 && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list.length, isLargerThanTablet);
-
-      if (!isEqual(cardSizes, newCardSizes)) {
-        setCardSizes(newCardSizes);
-      }
+      return getCardSizes(list.length, isLargerThanTablet);
     }
-  }, [list.length, layout, cardSizes, isLargerThanTablet]);
 
-  const renderProjectCard = (size: TCardSize, projectId: string) => {
+    return [];
+  }, [list.length, layout, isLargerThanTablet]);
+
+  const renderProjectCard = (
+    size: TCardSize,
+    projectId: string,
+    key: number
+  ) => {
     switch (size) {
       case 'large':
         return (
-          <FullWidthCard key={projectId}>
+          <FullWidthCard key={key}>
             <LargeProjectCard projectId={projectId} />
           </FullWidthCard>
         );
       case 'medium':
         return (
-          <TwoColumnCard key={projectId}>
+          <TwoColumnCard key={key}>
             <MediumProjectCard projectId={projectId} />
           </TwoColumnCard>
         );
       case 'small':
         return (
-          <ThreeColumnCard key={projectId}>
+          <ThreeColumnCard key={key}>
             <SmallProjectCard projectId={projectId} />
           </ThreeColumnCard>
         );
@@ -128,7 +115,7 @@ const ProjectsTabPanel = ({
         const size = getCardSize(index);
 
         if (projectOrFolderType === 'project') {
-          return renderProjectCard(size, projectOrFolderId);
+          return renderProjectCard(size, projectOrFolderId, index);
         }
 
         if (projectOrFolderType === 'folder') {
@@ -145,18 +132,6 @@ const ProjectsTabPanel = ({
 
         return null;
       })}
-
-      {!hasMore && layout === 'threecolumns' && list.length % 3 !== 0 && (
-        <>
-          {Array.from({ length: 3 - (list.length % 3) }).map((_, i) => (
-            <MockProjectCard key={i} size="small" />
-          ))}
-        </>
-      )}
-
-      {!hasMore && layout !== 'threecolumns' && list.length % 2 !== 0 && (
-        <MockProjectCard size="medium" />
-      )}
     </Container>
   );
 };
