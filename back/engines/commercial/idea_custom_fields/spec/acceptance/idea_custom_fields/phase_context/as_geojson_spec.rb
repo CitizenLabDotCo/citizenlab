@@ -238,8 +238,8 @@ resource 'Idea Custom Fields' do
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
               },
               user_data: { # To be translated - will need to update this key when nl-NL translation is added
-                'auteur-id': idea1.author_id,
-                'e-mail_van_auteur': idea1.author.email,
+                auteur_id: idea1.author_id,
+                e_mail_van_auteur: idea1.author.email,
                 auteur_naam: idea1.author_name,
                 geslacht: 'Vrouw',
                 woonplaats: 'Bruxelles'
