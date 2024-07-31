@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Iwwerpréift Är Identitéit elo.",
   "app.containers.IdeaCard.readMore": "Liest méi",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {keng Kommentaren} one {1 Kommentar} other {# Kommentaren}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {keng Stëmmen} one {1 Stëmmen} other {# Stëmmen}} aus {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Gesamtzuel Virschléi: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Gesamtzuel Bäiträg: {ideasCount}",
   "app.containers.IdeaCards.all": "All",
