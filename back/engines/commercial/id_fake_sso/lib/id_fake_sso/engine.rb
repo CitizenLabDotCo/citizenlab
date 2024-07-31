@@ -6,7 +6,10 @@ module IdFakeSso
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdFakeSso::FeatureSpecification)
-      AuthenticationService.add_method('fake_sso', FakeSsoOmniauth.new)
+
+      fake_sso_method = FakeSsoOmniauth.new
+      AuthenticationService.add_method('fake_sso', fake_sso_method)
+      Verification.add_method(fake_sso_method)
     end
   end
 end

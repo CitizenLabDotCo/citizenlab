@@ -2,6 +2,8 @@
 
 module IdFakeSso
   class FakeSsoOmniauth < OmniauthMethods::Base
+    include FakeSsoVerification
+
     def profile_to_user_attrs(auth)
       {
         first_name: auth.info['first_name'],
@@ -46,8 +48,8 @@ module IdFakeSso
     # TODO
     # end
 
-    def locked_custom_fields
-      # TODO
+    def verification_prioritized?
+      true
     end
 
     def email_confirmed?(auth)
