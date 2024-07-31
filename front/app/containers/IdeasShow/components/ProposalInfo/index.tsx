@@ -32,9 +32,10 @@ const componentMap = {
 interface Props {
   idea: IIdea;
   onScrollToOfficialFeedback: () => void;
+  compact?: boolean;
 }
 
-const Status = ({ idea, onScrollToOfficialFeedback }: Props) => {
+const Status = ({ idea, onScrollToOfficialFeedback, compact }: Props) => {
   const { data: ideaStatus } = useIdeaStatus(
     idea.data.relationships.idea_status?.data?.id || ''
   );
@@ -61,6 +62,7 @@ const Status = ({ idea, onScrollToOfficialFeedback }: Props) => {
       idea={idea.data}
       ideaStatus={ideaStatus.data}
       onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+      compact={compact}
     />
   );
 };
