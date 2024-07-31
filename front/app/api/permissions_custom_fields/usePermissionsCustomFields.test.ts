@@ -2,13 +2,13 @@ import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsFieldsData } from './__mocks__/usePermissionsFields';
+import { permissionsFieldsData } from './__mocks__/usePermissionsCustomFields';
 
-const apiPath = '*/permissions/:action/permissions_fields';
+const apiPath = '*/permissions/:action/permissions_custom_fields';
 
 const server = setupServer(
   http.get(apiPath, () => {
@@ -16,14 +16,14 @@ const server = setupServer(
   })
 );
 
-describe('usePermissionsFields', () => {
+describe('usePermissionsCustomFields', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        usePermissionsFields({
+        usePermissionsCustomFields({
           projectId: 'dummyId',
           action: 'taking_survey',
         }),
@@ -49,7 +49,7 @@ describe('usePermissionsFields', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        usePermissionsFields({
+        usePermissionsCustomFields({
           projectId: 'dummyId',
           action: 'taking_survey',
         }),

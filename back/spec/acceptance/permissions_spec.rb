@@ -47,9 +47,9 @@ resource 'Permissions' do
         field1.move_to_top
         field2.reload
         field3.reload
-        permission.permissions_fields.create!(custom_field: field2, required: true)
-        permission.permissions_fields.create!(custom_field: field1, required: false)
-        permission.permissions_fields.create!(custom_field: field3, required: true)
+        permission.permissions_custom_fields.create!(custom_field: field2, required: true)
+        permission.permissions_custom_fields.create!(custom_field: field1, required: false)
+        permission.permissions_custom_fields.create!(custom_field: field3, required: true)
 
         expect do
           do_request
@@ -58,13 +58,13 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse response_body
         permission_data = json_response[:data].find { |d| d[:id] == permission.id }
-        ordered_permissions_field_ids = permission.permissions_fields.pluck(:id)
+        ordered_permissions_custom_field_ids = permission.permissions_custom_fields.pluck(:id)
 
         expect(permission_data.dig(:relationships, :custom_fields)).to eq(
           { data: [field2, field1, field3].map { |field| { id: field.id, type: 'custom_field' } } }
         )
-        expect(permission_data.dig(:relationships, :permissions_fields)).to eq(
-          { data: ordered_permissions_field_ids.map { |id| { id: id, type: 'permissions_field' } } }
+        expect(permission_data.dig(:relationships, :permissions_custom_fields)).to eq(
+          { data: ordered_permissions_custom_field_ids.map { |id| { id: id, type: 'permissions_custom_field' } } }
         )
         [field1, field2, field3].each do |field|
           included_field = json_response[:included].find { |d| d[:id] == field.id }
@@ -73,10 +73,10 @@ resource 'Permissions' do
             required: field.required
           )
         end
-        permission.permissions_fields.each do |permissions_field|
-          included_permissions_field = json_response[:included].find { |d| d[:id] == permissions_field.id }
-          expect(included_permissions_field[:attributes]).to include(
-            required: permissions_field.required
+        permission.permissions_custom_fields.each do |permissions_custom_field|
+          included_permissions_custom_field = json_response[:included].find { |d| d[:id] == permissions_custom_field.id }
+          expect(included_permissions_custom_field[:attributes]).to include(
+            required: permissions_custom_field.required
           )
         end
       end
@@ -174,18 +174,18 @@ resource 'Permissions' do
       example 'Reset a permission to use global custom fields and no groups' do
         # Create some groups & permission fields
         permission.update!(global_custom_fields: false)
-        create(:permissions_field, permission: permission, custom_field: create(:custom_field), required: true)
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field), required: true)
         permission.groups << create_list(:group, 2, projects: [@phase.project])
 
         # Check the setup is correct
-        expect(permission.permissions_fields.count).to eq 1
+        expect(permission.permissions_custom_fields.count).to eq 1
         expect(permission.groups.count).to eq 2
 
         do_request
         assert_status 200
         expect(response_data.dig(:attributes, :global_custom_fields)).to be true
-        expect(permission.permissions_fields.count).to eq 0
-        expect(permission.permissions_fields.count).to eq 0
+        expect(permission.permissions_custom_fields.count).to eq 0
+        expect(permission.permissions_custom_fields.count).to eq 0
       end
     end
 
@@ -445,8 +445,8 @@ resource 'Permissions' do
         @permission.update!(global_custom_fields: false)
         @field1 = create(:custom_field, required: true)
         @field2 = create(:custom_field, required: false)
-        create(:permissions_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_field, permission: @permission, custom_field: @field2, required: true)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
       end
 
       let(:action) { @permission.action }
@@ -477,8 +477,8 @@ resource 'Permissions' do
         @permission.update!(global_custom_fields: false)
         @field1 = create(:custom_field, required: true)
         @field2 = create(:custom_field, required: false)
-        create(:permissions_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_field, permission: @permission, custom_field: @field2, required: true)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
       end
 
       let(:action) { @permission.action }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Permissions::PermissionsFieldsService do
+describe Permissions::PermissionsCustomFieldsService do
   let(:service) { described_class.new }
 
   before do
@@ -82,7 +82,7 @@ describe Permissions::PermissionsFieldsService do
       end
 
       it 'returns persisted fields for all permitted_by values' do
-        domicile_field = create(:permissions_field, permission: permission, custom_field: create(:custom_field_domicile))
+        domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
         %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
@@ -96,7 +96,7 @@ describe Permissions::PermissionsFieldsService do
         it 'automatically adds any fields used in a group' do
           permission = create(:permission, permitted_by: 'users')
           permission.update!(global_custom_fields: false)
-          create(:permissions_field, permission: permission, custom_field: create(:custom_field_domicile))
+          create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
           group_custom_field = create(:custom_field, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: group_custom_field.id, predicate: 'is_empty' }
@@ -139,7 +139,7 @@ describe Permissions::PermissionsFieldsService do
     context 'permitted_by is "users" and has no persisted permissions fields' do
       it 'creates default fields for the permission in the correct order' do
         service.persist_default_fields(permission)
-        fields = permission.permissions_fields
+        fields = permission.permissions_custom_fields
         expect(fields.count).to eq 2
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [false, true]
@@ -150,17 +150,17 @@ describe Permissions::PermissionsFieldsService do
       it 'does not persist any fields as there are no defaults' do
         permission.update!(permitted_by: 'everyone')
         service.persist_default_fields(permission)
-        expect(permission.permissions_fields).to be_empty
+        expect(permission.permissions_custom_fields).to be_empty
       end
     end
 
     context 'permission already has fields' do
       it 'does not add fields' do
         service.persist_default_fields(permission)
-        num_permissions_fields = permission.permissions_fields.count
+        num_permissions_custom_fields = permission.permissions_custom_fields.count
 
         service.persist_default_fields(permission)
-        expect(permission.permissions_fields.count).to eq num_permissions_fields
+        expect(permission.permissions_custom_fields.count).to eq num_permissions_custom_fields
       end
     end
   end

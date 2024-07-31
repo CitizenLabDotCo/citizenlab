@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Permissions::PermissionsFieldsService do
+describe Permissions::PermissionsCustomFieldsService do
   let(:service) { described_class.new }
 
   before do
@@ -43,7 +43,7 @@ describe Permissions::PermissionsFieldsService do
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
       end
 
-      it 'sets the field to required and reorders if the permission_field is already there but not required' do
+      it 'sets the field to required and reorders if the permissions_custom_field is already there but not required' do
         @gender_field.update!(enabled: true)
 
         # check initial state

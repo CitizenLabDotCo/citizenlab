@@ -1549,7 +1549,7 @@ function apiSetPermissionCustomField(
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_fields`,
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
       body: {
         custom_field_id,
         required: true,

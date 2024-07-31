@@ -39,7 +39,7 @@ describe Permissions::UserRequirementsService do
       end
     end
 
-    context 'when permitted_by is set to "verified" and permission_field is enabled' do
+    context 'when permitted_by is set to "verified" and permissions_custom_field is enabled' do
       let(:custom_permission) { create(:permission, permitted_by: 'verified') }
 
       before do
