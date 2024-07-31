@@ -60,13 +60,10 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    # puts '=================================='
-    # puts 'fwowjfkg'
-    # puts request.env['omniauth.auth']
-    # puts '=================================='
-    # puts 'gbnjgjgj'
-    # puts request.env['omniauth.params']
-    # puts '=================================='
+    puts '============================================='
+    puts 'jfiowgjr'
+    puts omniauth_params
+    puts '============================================='
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
     @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
@@ -210,6 +207,12 @@ class OmniauthCallbackController < ApplicationController
 
     locales = AppConfiguration.instance.settings.dig('core', 'locales')
     selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+
+    puts "============================================="
+    puts "selected_locale: #{selected_locale}"
+    puts "locales: #{locales}"
+    puts "============================================="
+
     return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
   end
 

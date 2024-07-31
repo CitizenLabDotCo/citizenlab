@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createJwt } = require("../utils/createJwt");
+const { createIdToken } = require("../utils/createIdToken");
 
 // GET home page
 router.get("/", (_req, res) => {
@@ -14,8 +14,7 @@ router.get("/oauth2/authorize", (_req, res) => {
 
 // The token endpoint (receives code, returns token)
 router.post("/oauth2/token", async (_req, res) => {
-  const jwt = await createJwt();
-  console.log({ jwt });
+  const idToken = await createIdToken();
 
   res.json({
     token_type: "Bearer",

@@ -7,7 +7,7 @@ const secret = new TextEncoder().encode(
 
 const alg = "HS256";
 
-const createJwt = () => {
+const createIdToken = () => {
   const uid = uuidv4();
 
   return new jose.SignJWT({
@@ -26,4 +26,4 @@ const createJwt = () => {
     .sign(secret);
 };
 
-module.exports = { createJwt };
+module.exports = { createIdToken };
