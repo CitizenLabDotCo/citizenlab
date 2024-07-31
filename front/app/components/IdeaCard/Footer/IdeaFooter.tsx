@@ -60,7 +60,7 @@ const IdeaFooter = ({
       </Left>
       {!hideIdeaStatus && ideaStatusId && (
         <Right>
-          <StyledStatusBadge statusId={ideaStatusId} />
+          <StyledStatusBadge statusId={ideaStatusId} maxLength={20} />
         </Right>
       )}
     </Container>

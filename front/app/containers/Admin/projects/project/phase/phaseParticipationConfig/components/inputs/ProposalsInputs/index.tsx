@@ -116,7 +116,7 @@ const ProposalsInputs = ({
         <Input
           id="reacting_threshold"
           type="number"
-          min="1"
+          min="2"
           placeholder=""
           value={reacting_threshold ? reacting_threshold.toString() : null}
           onChange={handleReactingThresholdChange}

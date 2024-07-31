@@ -16,27 +16,23 @@ import messages from '../messages';
 import CommentCount from './CommentCount';
 
 const ProposalFooter = ({
-  reactionCount,
-  reactionLimit,
   showCommentCount,
   idea,
   hideIdeaStatus,
 }: {
-  reactionCount: number;
-  reactionLimit?: number;
-  showCommentCount: boolean;
+  showCommentCount?: boolean;
   idea: IIdeaData;
   hideIdeaStatus?: boolean;
 }) => {
   const ideaStatusId = idea.relationships.idea_status.data?.id;
   const theme = useTheme();
-  if (!reactionLimit) {
-    return null;
-  }
+  const reactionCount = idea.attributes.likes_count;
+  const reactionLimit = idea.attributes.reactions_needed;
+
   return (
     <>
       <Box display="flex" gap="16px" alignItems="center">
-        <Box flex={'1'}>
+        <Box minWidth="140px" width="40%">
           <Box display="flex" alignItems="center" mb="4px">
             <Icon
               name="vote-up"
@@ -55,7 +51,7 @@ const ProposalFooter = ({
             </Text>
           </Box>
           <ProgressBar
-            progress={reactionCount / reactionLimit}
+            progress={reactionLimit ? reactionCount / reactionLimit : 0}
             color={
               theme.colors.tenantText ||
               'linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)'
@@ -73,15 +69,23 @@ const ProposalFooter = ({
             />
           </ScreenReaderOnly>
         </Box>
-        <Box>
-          {showCommentCount && (
-            <CommentCount commentCount={idea.attributes.comments_count} />
-          )}
-        </Box>
-        <Box maxWidth="50%">
-          {!hideIdeaStatus && ideaStatusId && (
-            <StatusBadge statusId={ideaStatusId} />
-          )}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          width="50%"
+          gap="16px"
+        >
+          <Box>
+            {showCommentCount && (
+              <CommentCount commentCount={idea.attributes.comments_count} />
+            )}
+          </Box>
+          <Box>
+            {!hideIdeaStatus && ideaStatusId && (
+              <StatusBadge statusId={ideaStatusId} maxLength={20} />
+            )}
+          </Box>
         </Box>
       </Box>
     </>

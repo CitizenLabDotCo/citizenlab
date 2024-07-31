@@ -44,8 +44,6 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
   if (participationMethod === 'proposals') {
     return (
       <ProposalFooter
-        reactionCount={idea.attributes.likes_count}
-        reactionLimit={idea.attributes.reactions_needed}
         showCommentCount={showCommentCount}
         idea={idea}
         hideIdeaStatus={hideIdeaStatus}
