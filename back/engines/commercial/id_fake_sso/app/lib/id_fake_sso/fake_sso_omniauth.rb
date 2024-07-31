@@ -46,10 +46,6 @@ module IdFakeSso
       "http://#{host}"
     end
 
-    # def updateable_user_attrs
-    # TODO
-    # end
-
     def verification_prioritized?
       true
     end

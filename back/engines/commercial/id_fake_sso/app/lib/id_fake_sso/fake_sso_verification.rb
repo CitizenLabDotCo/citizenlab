@@ -25,7 +25,7 @@ module IdFakeSso
     end
 
     def locked_custom_fields
-      []
+      %i[gender birthyear]
     end
   end
 end
