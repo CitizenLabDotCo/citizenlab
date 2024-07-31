@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { LineString } from 'geojson';
 
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -14,38 +14,52 @@ import {
   goToLayerExtent,
 } from 'components/EsriMap/utils';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 type Props = {
   rawValue: LineString;
 };
 
 const LineMapPreview = ({ rawValue }: Props) => {
+  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const line = rawValue;
 
   // Create esri graphic from polygon
-  const featureCollection: GeoJSON.FeatureCollection = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: line?.coordinates,
+  const featureCollection: GeoJSON.FeatureCollection = useMemo(
+    () => ({
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: line?.coordinates,
+          },
+          properties: null,
         },
-        properties: null,
-      },
-    ],
-  };
+      ],
+    }),
+    [line?.coordinates]
+  );
 
-  const mapLayer: IMapLayerAttributes = {
-    id: 'polygon',
-    geojson: featureCollection,
-    type: 'CustomMaps::GeojsonLayer',
-    title_multiloc: {},
-    default_enabled: false,
-  };
+  const mapLayer: IMapLayerAttributes = useMemo(
+    () => ({
+      id: 'polygon',
+      geojson: featureCollection,
+      type: 'CustomMaps::GeojsonLayer',
+      title_multiloc: {},
+      default_enabled: false,
+    }),
+    [featureCollection]
+  );
 
-  const layers = createEsriGeoJsonLayers([mapLayer], localize);
+  const layers = useMemo(
+    () => createEsriGeoJsonLayers([mapLayer], localize),
+    [localize, mapLayer]
+  );
 
   const onInit = (mapView: MapView) => {
     layers[0].on('layerview-create', () => {
@@ -55,18 +69,22 @@ const LineMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
-      <EsriMap
-        layers={layers}
-        initialData={{
-          onInit,
-          showFullscreenOption: true,
-          center: {
-            type: 'Point',
-            coordinates: line?.coordinates[0],
-          },
-        }}
-        height="180px"
-      />
+      {line?.coordinates ? (
+        <EsriMap
+          layers={layers}
+          initialData={{
+            onInit,
+            showFullscreenOption: true,
+            center: {
+              type: 'Point',
+              coordinates: line?.coordinates[0],
+            },
+          }}
+          height="180px"
+        />
+      ) : (
+        <Text>{formatMessage(messages.noAnswerProvided)}</Text>
+      )}
     </Box>
   );
 };

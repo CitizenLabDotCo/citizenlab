@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import Polyline from '@arcgis/core/geometry/Polyline';
 import Graphic from '@arcgis/core/Graphic';
@@ -26,7 +26,6 @@ interface Props {
 
 const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
   const localize = useLocalize();
-  const [mapView, setMapView] = useState<MapView | null>(null);
 
   // Get layers from mapConfig
   const mapConfigLayers = useMemo(() => {
@@ -80,7 +79,6 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
   const initialData = useMemo(
     () => ({
       onInit: (mapView: MapView) => {
-        setMapView(mapView);
         onInit?.(mapView);
       },
       showLegend: true,
@@ -90,15 +88,6 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
     }),
     [mapConfig, onInit]
   );
-
-  useEffect(() => {
-    if (!mapView) return;
-  }, [mapView, responsesLayer]);
-
-  useEffect(() => {
-    if (!mapView) return;
-    if (!mapView.ready) return;
-  }, [mapView, responsesLayer]);
 
   return (
     <EsriMap
