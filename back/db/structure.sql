@@ -1618,7 +1618,9 @@ CREATE TABLE public.phases (
     votes_count integer DEFAULT 0 NOT NULL,
     campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
-    native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb
+    native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
+    expire_days_limit integer,
+    reacting_threshold integer
 );
 
 
@@ -7511,6 +7513,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240606112752'),
 ('20240612134240'),
 ('202407081751'),
-('20240722090955');
+('20240722090955'),
+('20240729141927');
 
 

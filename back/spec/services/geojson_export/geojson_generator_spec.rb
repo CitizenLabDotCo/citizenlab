@@ -68,27 +68,27 @@ describe GeojsonExport::GeojsonGenerator do
     it "includes survey responses & selected user data for each input, in each related GeoJSON Feature's properties" do
       expect(parsed_json['features'].pluck('properties')).to match_array([
         {
-          'ID' => idea1.id,
-          'Published at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-          'Field for text question' => 'Text answer 1',
-          'User data' => {
-            'Author ID' => idea1.author.id,
-            'Author email' => idea1.author.email,
-            'Author name' => idea1.author_name,
-            'Field for registration question' => 'Registration q answer'
+          'id' => idea1.id,
+          'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
+          'field_for_text_question' => 'Text answer 1',
+          'user_data' => {
+            'author_id' => idea1.author.id,
+            'author_email' => idea1.author.email,
+            'author_name' => idea1.author_name,
+            'field_for_registration_question' => 'Registration q answer'
           }
         },
         {
-          'ID' => idea2.id,
-          'Published at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
-          'Field for text question' => 'Text answer 2',
-          'User data' => {
-            'Author ID' => idea2.author.id,
-            'Author email' => idea2.author.email,
-            'Author name' => idea2.author_name,
-            'Field for registration question' => nil
+          'id' => idea2.id,
+          'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
+          'field_for_text_question' => 'Text answer 2',
+          'user_data' => {
+            'author_id' => idea2.author.id,
+            'author_email' => idea2.author.email,
+            'author_name' => idea2.author_name,
+            'field_for_registration_question' => nil
           }
         }
       ])
@@ -103,12 +103,19 @@ describe GeojsonExport::GeojsonGenerator do
 
     it 'adds suffixes to avoid collisions' do
       expect(service.send(:set_non_colliding_titles)).to match({
-        custom_field1.id => 'Point field for focus of export [Longitude, Latitude]',
-        custom_field2.id => 'Title 1 (1)',
-        custom_field3.id => 'Title 1 (2)',
-        custom_field4.id => 'Title 1 (3)',
-        custom_field5.id => 'Title 2'
+        custom_field1.id => 'point_field_for_focus_of_export',
+        custom_field2.id => 'title_1_1',
+        custom_field3.id => 'title_1_2',
+        custom_field4.id => 'title_1_3',
+        custom_field5.id => 'title_2'
       })
+    end
+  end
+
+  describe 'sanitize_key' do
+    it 'removes non-alphanumeric characters, replacing hyphens and spaces with underscores' do
+      expect(service.send(:sanitize_key, 'Test-key: With hyphen, commas, and question mark?'))
+        .to eq 'test_key_with_hyphen_commas_and_question_mark'
     end
   end
 end

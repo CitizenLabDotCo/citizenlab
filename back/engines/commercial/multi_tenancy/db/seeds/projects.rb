@@ -6,10 +6,57 @@ module MultiTenancy
   module Seeds
     class Projects < Base
       def run
-        runner.num_projects.times do
+        create_fixed_projects
+        create_random_projects
+      end
+
+      private
+
+      def create_fixed_projects
+        create_mixed_3_methods_project
+      end
+
+      def create_mixed_3_methods_project
+        project = Project.create!(
+          title_multiloc: { 'en' => 'Mixed 3 methods project' },
+          description_multiloc: runner.rand_description_multiloc,
+          slug: 'mixed-3-methods-project',
+          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
+          allowed_input_topics: Topic.all
+        )
+        project.phases.create!(
+          title_multiloc: { 'en' => 'Past proposals phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'proposals',
+          start_at: Time.zone.today - 30.days,
+          end_at: Time.zone.today - 11.days,
+          campaigns_settings: { project_phase_started: true }
+        )
+        project.phases.create!(
+          title_multiloc: { 'en' => 'Current ideation phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'ideation',
+          start_at: Time.zone.today - 10.days,
+          end_at: Time.zone.today + 10.days,
+          campaigns_settings: { project_phase_started: true }
+        )
+        project.phases.create!(
+          title_multiloc: { 'en' => 'Future native survey phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'native_survey',
+          start_at: Time.zone.today + 11.days,
+          end_at: nil,
+          campaigns_settings: { project_phase_started: true },
+          native_survey_title_multiloc: { 'en' => 'Survey' },
+          native_survey_button_multiloc: { 'en' => 'Take the survey' }
+        )
+      end
+
+      def create_random_projects
+        (runner.num_projects - Project.count).times do
           project = Project.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
             visible_to: %w[admins groups public public public][rand(5)],
@@ -32,8 +79,8 @@ module MultiTenancy
             end
           end
 
-          configure_timeline_for(project)
-          configure_events_for(project)
+          configure_random_timeline_for(project)
+          configure_random_events_for(project)
 
           ([User.find_by(email: 'moderator@govocal.com')] + User.where.not(email: %w[admin@govocal.com user@govocal.com]).shuffle.take(rand(5))).each do |some_moderator|
             some_moderator.add_role 'project_moderator', project_id: project.id
@@ -46,15 +93,13 @@ module MultiTenancy
         end
       end
 
-      private
-
-      def configure_timeline_for(project)
+      def configure_random_timeline_for(project)
         start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
         rand(8).times do
           start_at += 1.day
           phase = project.phases.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
             end_at: (start_at += rand(150).days),
             participation_method: %w[ideation voting poll information ideation ideation][rand(6)],
@@ -104,12 +149,12 @@ module MultiTenancy
         end
       end
 
-      def configure_events_for(project)
+      def configure_random_events_for(project)
         rand(5).times do
           start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
           event = project.events.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             location_multiloc: runner.create_for_some_locales { Faker::Address.street_address },
             start_at: start_at,
             end_at: start_at + rand(12).hours
