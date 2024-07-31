@@ -18,7 +18,7 @@ router.post("/oauth2/token", async (_req, res) => {
 
   res.json({
     token_type: "Bearer",
-    id_token: jwt,
+    id_token: idToken,
     access_token: "access_token_abc123",
   });
 });
