@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Verifiqueu ara la vostra identitat.",
   "app.containers.IdeaCard.readMore": "Llegeix més",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {sense comentaris} one {1 comentari} other {# comentaris}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {sense vots} one {1 vot} other {# vots}} de {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Total de propostes: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Total de publicacions: {ideasCount}",
   "app.containers.IdeaCards.all": "Tots",
