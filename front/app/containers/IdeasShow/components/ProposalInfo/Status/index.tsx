@@ -6,6 +6,7 @@ import {
   IconNames,
   colors,
   fontSizes,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled, { keyframes } from 'styled-components';
 
@@ -73,6 +74,7 @@ interface Props extends StatusComponentProps {
   showProgressBar: boolean;
   showVoteButtons: boolean;
   showReadAnswerButton: boolean;
+  compact?: boolean;
 }
 
 const Status = ({
@@ -86,9 +88,14 @@ const Status = ({
   showProgressBar,
   showVoteButtons,
   showReadAnswerButton,
+  compact = false,
 }: Props) => {
   return (
-    <Box display="flex" flexDirection="column">
+    <Box
+      display="flex"
+      flexDirection="column"
+      borderRadius={stylingConsts.borderRadius}
+    >
       {showCountDown && (
         <Box ml="auto" mb="24px">
           <ScreenReaderOnly>
@@ -113,12 +120,12 @@ const Status = ({
           <ReactionCounter idea={idea} barColor={barColor || colors.success} />
         </Box>
       )}
-      {showVoteButtons && (
+      {showVoteButtons && !compact && (
         <Box mb="8px">
           <ReactionControl styleType="shadow" ideaId={idea.id} size="4" />
         </Box>
       )}
-      {showReadAnswerButton && (
+      {showReadAnswerButton && !compact && (
         <Box mb="8px">
           <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
         </Box>
