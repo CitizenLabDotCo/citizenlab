@@ -240,7 +240,7 @@ cy:
       dislikes_count: 'Cas bethau'
       email: 'Ebost'
       first_name: 'Enw(au) cyntaf'
-      image_url: 'Image URL'
+      image_url: 'URL delwedd'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'Enw olaf'
@@ -267,23 +267,23 @@ cy:
       title: 'Diolch am gymryd rhan'
       description: "Cyflwynwch eich atebion trwy ddewis 'Cyflwyno' isod."
     pdf_export:
-      personal_data: 'Personal data'
+      personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."
       personal_data_explanation_private: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os ydych chi eisiau derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich data'n gyhoeddus a dim ond %{organizationName}fydd yn ei ddefnyddio. Os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."
-      first_name: 'First name(s)'
-      last_name: 'Last name'
-      email_address: 'Email address'
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
-      optional: 'optional'
-      permission: 'Permission'
-      choose_as_many: 'Choose as many as you like'
-      this_answer: 'This answer will only be shared with moderators, and not to the public.'
-      page: 'Page'
-      date_published: 'Date Published (dd-mm-yyyy)'
-      instructions: 'Instructions'
-      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
-      write_in_language: 'Write your answers in the same language as this form'
-      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
+      first_name: 'Enw(au) cyntaf'
+      last_name: 'Enw olaf'
+      email_address: 'Cyfeiriad ebost'
+      by_checking_this_box: "Trwy dicio'r blwch hwn rwy'n cydsynio i'm data gael ei ddefnyddio i greu cyfrif ar lwyfan cyfranogiad %{organizationName}."
+      optional: 'dewisol'
+      permission: 'Caniatâd'
+      choose_as_many: 'Dewiswch gymaint ag y dymunwch'
+      this_answer: 'Bydd yr ateb hwn yn cael ei rannu â chymedrolwyr yn unig, ac nid â''r cyhoedd.'
+      page: 'Tudalen'
+      date_published: 'Dyddiad Cyhoeddi (dd-mm-bbbb)'
+      instructions: 'Cyfarwyddiadau'
+      write_as_clearly: 'Ysgrifennwch fel <b>yn glir</b> ag y gallwch – efallai y bydd y ffurflenni hyn yn cael eu sganio'
+      write_in_language: 'Ysgrifennwch eich atebion yn yr un iaith â''r ffurflen hon'
+      linear_scale_print_description: 'Ysgrifennwch rif rhwng %{min_label} a %{max_label} yn unig'
   project_copy:
     title_suffix: 'Copi'
   confirmations_mailer:
