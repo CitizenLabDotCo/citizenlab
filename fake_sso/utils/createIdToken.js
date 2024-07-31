@@ -20,6 +20,8 @@ const createIdToken = () => {
     azp: "govocal_client",
     given_name: "John",
     family_name: "Doe",
+    gender: "male",
+    birthdate: "2000-01-01",
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()

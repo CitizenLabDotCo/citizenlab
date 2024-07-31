@@ -8,7 +8,9 @@ module IdFakeSso
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
-        last_name: auth.info['last_name']
+        last_name: auth.info['last_name'],
+        gender: auth.extra.raw_info['gender'],
+        birthyear: Date.parse(auth.extra.raw_info['birthdate']).year
       }
     end
 
