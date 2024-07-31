@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import moment from 'moment';
 
@@ -16,8 +16,6 @@ import ThresholdReached from './Status/ThresholdReached';
 export interface StatusComponentProps {
   idea: IIdeaData;
   ideaStatus: IIdeaStatusData;
-
-  onScrollToOfficialFeedback: () => void;
 }
 
 /** Maps the idea status and whether the user reacted or not to the right component to render */
@@ -31,14 +29,31 @@ const componentMap = {
 
 interface Props {
   idea: IIdea;
-  onScrollToOfficialFeedback: () => void;
   compact?: boolean;
 }
 
-const Status = ({ idea, onScrollToOfficialFeedback, compact }: Props) => {
+const Status = ({ idea, compact }: Props) => {
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const [
+    a11y_pronounceLatestOfficialFeedbackPost,
+    setA11y_pronounceLatestOfficialFeedbackPost,
+  ] = useState(false);
   const { data: ideaStatus } = useIdeaStatus(
     idea.data.relationships.idea_status?.data?.id || ''
   );
+
+  useEffect(() => {
+    if (a11y_pronounceLatestOfficialFeedbackPost) {
+      timeoutRef.current = setTimeout(
+        () => setA11y_pronounceLatestOfficialFeedbackPost(false),
+        2000
+      );
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [a11y_pronounceLatestOfficialFeedbackPost]);
 
   const { data: appConfiguration } = useAppConfiguration();
   if (!ideaStatus || !appConfiguration) return null;
@@ -56,6 +71,23 @@ const Status = ({ idea, onScrollToOfficialFeedback, compact }: Props) => {
       ? 'expired'
       : ideaStatus.data.attributes.code;
   const StatusComponent = componentMap[statusCode];
+
+  const onScrollToOfficialFeedback = () => {
+    const feedbackElement = document.getElementById('official-feedback-feed');
+    if (feedbackElement) {
+      feedbackElement.setAttribute('tabindex', '-1'); // Make the feedback element focusable
+
+      feedbackElement.focus();
+      feedbackElement.scrollIntoView({ behavior: 'smooth' });
+
+      // Listen for focus out to restore default tabbing behavior
+      feedbackElement.addEventListener('focusout', function () {
+        feedbackElement.removeAttribute('tabindex');
+      });
+
+      setA11y_pronounceLatestOfficialFeedbackPost(true);
+    }
+  };
 
   return (
     <StatusComponent

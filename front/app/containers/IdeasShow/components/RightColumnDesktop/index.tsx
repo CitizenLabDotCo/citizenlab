@@ -100,10 +100,7 @@ const RightColumnDesktop = ({
           >
             {participationMethod === 'proposals' && (
               <Box bg="white" p="12px">
-                <ProposalInfo
-                  idea={idea}
-                  onScrollToOfficialFeedback={() => {}}
-                />
+                <ProposalInfo idea={idea} />
               </Box>
             )}
             {showReactionControl && (

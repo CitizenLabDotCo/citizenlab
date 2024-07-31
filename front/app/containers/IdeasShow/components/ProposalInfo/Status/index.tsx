@@ -75,6 +75,7 @@ interface Props extends StatusComponentProps {
   showVoteButtons: boolean;
   showReadAnswerButton: boolean;
   compact?: boolean;
+  onScrollToOfficialFeedback?: () => void;
 }
 
 const Status = ({
@@ -125,7 +126,7 @@ const Status = ({
           <ReactionControl styleType="shadow" ideaId={idea.id} size="4" />
         </Box>
       )}
-      {showReadAnswerButton && !compact && (
+      {showReadAnswerButton && onScrollToOfficialFeedback && (
         <Box mb="8px">
           <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
         </Box>
