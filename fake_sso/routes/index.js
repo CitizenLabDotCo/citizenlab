@@ -7,12 +7,15 @@ router.get("/", (_req, res) => {
   res.render("index", { title: "Fake SSO" });
 });
 
-// The authorization endpoint (same as homepage)
+// The authorization endpoint, same as homepage
 router.get("/oauth2/authorize", (_req, res) => {
   res.render("index", { title: "Fake SSO" });
 });
 
-// The token endpoint (receives code, returns token)
+// The token endpoint: receives code, returns id token and access token.
+// The id token contains all the verified information about the user.
+// The access token can be used to request extra information using
+// the /userinfo endpoint.
 router.post("/oauth2/token", async (_req, res) => {
   const idToken = await createIdToken();
 
@@ -23,7 +26,8 @@ router.post("/oauth2/token", async (_req, res) => {
   });
 });
 
-// The resource endpoint (receives token, returns user info)
+// The userinfo endpoint. Data returned here is not used
+// for anything at the moment.
 router.get("/userinfo", (_req, res) => {
   res.json({
     some: "stuff",
