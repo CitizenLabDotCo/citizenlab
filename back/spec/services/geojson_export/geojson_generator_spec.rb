@@ -68,27 +68,27 @@ describe GeojsonExport::GeojsonGenerator do
     it "includes survey responses & selected user data for each input, in each related GeoJSON Feature's properties" do
       expect(parsed_json['features'].pluck('properties')).to match_array([
         {
-          'ID' => idea1.id,
-          'Published at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+          'id' => idea1.id,
+          'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
           'field_for_text_question' => 'Text answer 1',
-          'User data' => {
-            'Author ID' => idea1.author.id,
-            'Author email' => idea1.author.email,
-            'Author name' => idea1.author_name,
-            'Field for registration question' => 'Registration q answer'
+          'user_data' => {
+            'author_id' => idea1.author.id,
+            'author_email' => idea1.author.email,
+            'author_name' => idea1.author_name,
+            'field_for_registration_question' => 'Registration q answer'
           }
         },
         {
-          'ID' => idea2.id,
-          'Published at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+          'id' => idea2.id,
+          'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
           'field_for_text_question' => 'Text answer 2',
-          'User data' => {
-            'Author ID' => idea2.author.id,
-            'Author email' => idea2.author.email,
-            'Author name' => idea2.author_name,
-            'Field for registration question' => nil
+          'user_data' => {
+            'author_id' => idea2.author.id,
+            'author_email' => idea2.author.email,
+            'author_name' => idea2.author_name,
+            'field_for_registration_question' => nil
           }
         }
       ])

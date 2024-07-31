@@ -221,8 +221,8 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [1.1, 2.2] },
             properties: {
-              ID: idea1.id,
-              'Gepubliceerd op': idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+              id: idea1.id,
+              gepubliceerd_op: idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
               wat_is_uw_functie: 'Text answer',
               wat_zijn_uw_belangrijkste_verantwoordelijkheden: 'Multiline answer',
               selecteer_uw_favoriete_kleur: 'Optie 1',
@@ -237,12 +237,12 @@ resource 'Idea Custom Fields' do
                 type: 'Polygon',
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
               },
-              'User data': { # To be translated - will need to update this key when nl-NL translation is added
-                'Auteur-ID': idea1.author_id,
-                'E-mail van auteur': idea1.author.email,
-                'Auteur naam': idea1.author_name,
-                Geslacht: 'Vrouw',
-                Woonplaats: 'Bruxelles'
+              user_data: { # To be translated - will need to update this key when nl-NL translation is added
+                auteurid: idea1.author_id,
+                email_van_auteur: idea1.author.email,
+                auteur_naam: idea1.author_name,
+                geslacht: 'Vrouw',
+                woonplaats: 'Bruxelles'
               }
             }
           },
@@ -250,8 +250,8 @@ resource 'Idea Custom Fields' do
             type: 'Feature',
             geometry: { type: 'Point', coordinates: [3.3, 4.4] },
             properties: {
-              ID: idea2.id,
-              'Gepubliceerd op': idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+              id: idea2.id,
+              gepubliceerd_op: idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
               wat_is_uw_functie: nil,
               wat_zijn_uw_belangrijkste_verantwoordelijkheden: nil,
               selecteer_uw_favoriete_kleur: nil,
@@ -263,7 +263,7 @@ resource 'Idea Custom Fields' do
               markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
               teken_de_route_op_de_kaart: nil,
               teken_het_gebied_op_de_kaart: nil,
-              'User data': nil # To be translated - will need to update this key when nl-NL translation is added
+              user_data: nil # To be translated - will need to update this key when nl-NL translation is added
             }
           }
         ])
