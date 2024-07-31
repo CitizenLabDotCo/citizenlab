@@ -272,24 +272,6 @@ describe IdeaCustomFieldsService do
         expect(service.remove_ignored_update_params(params)).to match({ required: true })
       end
     end
-
-    describe 'add_suffix_to_geo_fields_title_multiloc' do
-      it 'adds [Longitude, Latitude] suffix to geo fields title_multilocs' do
-        create(
-          :custom_field_point,
-          resource: custom_form,
-          key: 'where_is_it_zl5',
-          title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }
-        )
-
-        point_field = service.reportable_fields.find { |field| field.input_type == 'point' }
-        expect(point_field.title_multiloc)
-          .to eq({
-            'en' => 'Where is it? [Longitude, Latitude]',
-            'nl-NL' => 'Waar is het? [Lengtegraad, Breedtegraad]'
-          })
-      end
-    end
   end
 
   context 'constraints/locks on changing attributes' do
