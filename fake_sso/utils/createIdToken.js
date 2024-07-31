@@ -10,6 +10,7 @@ const alg = "HS256";
 const createIdToken = () => {
   const uid = uuidv4();
 
+  // https://www.iana.org/assignments/jwt/jwt.xhtml
   return new jose.SignJWT({
     uid,
     sub: uid,
@@ -17,6 +18,8 @@ const createIdToken = () => {
     email_verified: true,
     name: "John Doe",
     azp: "govocal_client",
+    given_name: "John",
+    family_name: "Doe",
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()

@@ -2,10 +2,14 @@
 
 module IdFakeSso
   class FakeSsoOmniauth < OmniauthMethods::Base
-    def profile_to_user_attrs(_auth)
-      # TODO
+    def profile_to_user_attrs(auth)
+      puts "o0oprorrirut"
+      puts auth.info
+
       {
-        email: 'test@henk.com'
+        first_name: auth.info['first_name'],
+        email: auth.info['email'],
+        last_name: auth.info['last_name']
       }
     end
 
@@ -49,8 +53,8 @@ module IdFakeSso
       # TODO
     end
 
-    def email_confirmed?(_auth)
-      true
+    def email_confirmed?(auth)
+      auth.info['email_verified']
     end
 
     def jwt_secret_base64
