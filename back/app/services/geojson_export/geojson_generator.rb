@@ -10,7 +10,7 @@ module GeojsonExport
       @field = field
       @inputs = phase.ideas.native_survey.published
       @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
-      @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
+      @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
     end
 
     def generate_geojson
