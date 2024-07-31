@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Bekreft identiteten din nå.",
   "app.containers.IdeaCard.readMore": "Les mer",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {ingen kommentarer} one {1 kommentar} other {# kommentarer}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ingen stemmer} one {1 stemme} other {# stemmer}} av {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Alle forslag: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Total antall innlegg: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
