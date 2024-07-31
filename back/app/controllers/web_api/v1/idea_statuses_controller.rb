@@ -5,8 +5,9 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    @idea_statuses = policy_scope(IdeaStatus)
-    render json: WebApi::V1::IdeaStatusSerializer.new(@idea_statuses).serializable_hash, status: :ok
+    idea_statuses = policy_scope(IdeaStatus)
+    idea_statuses = idea_statuses.where(participation_method: params[:participation_method]) if params[:participation_method].present?
+    render json: WebApi::V1::IdeaStatusSerializer.new(idea_statuses).serializable_hash, status: :ok
   end
 
   def show

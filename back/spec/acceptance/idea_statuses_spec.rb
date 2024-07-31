@@ -9,10 +9,14 @@ resource 'IdeaStatuses' do
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/idea_statuses' do
-    before { create_list(:idea_status, 3) } # TODO: ideation + proposals + before_all?
+    parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
+
+    before { create_list(:idea_status, 3); create_list(:proposals_status, 2) } # TODO: ideation + proposals + before_all?
 
     context 'when visitor' do
-      example_request 'List all idea statuses' do # TODO: participation_method filter (ideation)
+      let (:participation_method) { 'ideation' }
+
+      example_request 'List all ideation input statuses' do # TODO: participation_method filter (ideation)
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
@@ -22,20 +26,22 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      example_request 'List all idea statuses' do # TODO: participation_method filter (proposals)
+      let (:participation_method) { 'proposals' }
+
+      example_request 'List all proposals input statuses' do # TODO: participation_method filter (proposals)
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 2
       end
     end
 
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'List all idea statuses' do # TODO: no participation_method filter (all?)
+      example_request 'List all input statuses' do # TODO: no participation_method filter (all?)
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 5
       end
     end
   end
