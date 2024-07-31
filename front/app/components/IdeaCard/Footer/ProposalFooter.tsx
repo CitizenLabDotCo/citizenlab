@@ -16,23 +16,19 @@ import messages from '../messages';
 import CommentCount from './CommentCount';
 
 const ProposalFooter = ({
-  reactionCount,
-  reactionLimit,
   showCommentCount,
   idea,
   hideIdeaStatus,
 }: {
-  reactionCount: number;
-  reactionLimit?: number;
-  showCommentCount: boolean;
+  showCommentCount?: boolean;
   idea: IIdeaData;
   hideIdeaStatus?: boolean;
 }) => {
   const ideaStatusId = idea.relationships.idea_status.data?.id;
   const theme = useTheme();
-  if (!reactionLimit) {
-    return null;
-  }
+  const reactionCount = idea.attributes.likes_count;
+  const reactionLimit = idea.attributes.reactions_needed;
+
   return (
     <>
       <Box display="flex" gap="16px" alignItems="center">
@@ -55,7 +51,7 @@ const ProposalFooter = ({
             </Text>
           </Box>
           <ProgressBar
-            progress={reactionCount / reactionLimit}
+            progress={reactionLimit ? reactionCount / reactionLimit : 0}
             color={
               theme.colors.tenantText ||
               'linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)'
