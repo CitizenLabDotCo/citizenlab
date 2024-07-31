@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Pārbaudiet savu identitāti tūlīt.",
   "app.containers.IdeaCard.readMore": "Lasīt vairāk",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nav komentāru} one {1 komentārs} other {# komentāri}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {bez balsīm} one {1 balss} other {# balsis}} ārpus {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Kopējais priekšlikumu skaits: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Kopējais publikāciju skaits: {ideasCount}",
   "app.containers.IdeaCards.all": "Viss",
