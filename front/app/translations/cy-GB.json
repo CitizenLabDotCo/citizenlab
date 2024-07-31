@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Gwiriwch eich hunaniaeth nawr.",
   "app.containers.IdeaCard.readMore": "Darllen mwy",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {dim sylwadau} one {1 sylw} other {# sylw}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {dim pleidleisiau} one {1 bleidlais} other {# pleidlais}} allan o {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Cyfanswm y cynigion: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Cyfanswm postiadau: {ideasCount}",
   "app.containers.IdeaCards.all": "I gyd",
