@@ -10,7 +10,7 @@ module GeojsonExport
       @field = field
       @inputs = phase.ideas.native_survey.published
       @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
-      @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
+      @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
     end
 
     def generate_geojson
@@ -33,12 +33,12 @@ module GeojsonExport
 
     def generate_properties(input)
       properties = {
-        translation_for('input_id') => input.id,
-        translation_for('published_at') => input.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s
+        sanitized_translation_for('input_id') => input.id,
+        sanitized_translation_for('published_at') => input.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s
       }
 
       properties.merge!(generate_answers_to_questions(input))
-      properties[translation_for('user_data')] = generate_user_data(input)
+      properties[sanitized_translation_for('user_data')] = generate_user_data(input)
 
       properties
     end
@@ -59,15 +59,15 @@ module GeojsonExport
 
     def basic_author_data(input)
       {
-        translation_for('author_id') => input&.author&.id,
-        translation_for('author_email') => input&.author&.email,
-        translation_for('author_fullname') => input&.author_name
+        sanitized_translation_for('author_id') => input&.author&.id,
+        sanitized_translation_for('author_email') => input&.author&.email,
+        sanitized_translation_for('author_fullname') => input&.author_name
       }
     end
 
     def user_custom_field_values_data(input)
       registration_fields.each_with_object({}) do |field, accu|
-        accu[@multiloc_service.t(field.title_multiloc)] = if field.code == 'domicile'
+        accu[sanitize_key(@multiloc_service.t(field.title_multiloc))] = if field.code == 'domicile'
           DomicileFieldForExport.new(field, :author).value_from(input)
         else
           CustomFieldForExport.new(field, :author).value_from(input)
@@ -76,7 +76,10 @@ module GeojsonExport
     end
 
     def set_non_colliding_titles
-      field_ids_to_titles = @fields_in_form.to_h { |field| [field.id, @multiloc_service.t(field.title_multiloc)] }
+      field_ids_to_titles = @fields_in_form.to_h do |field|
+        [field.id, sanitize_key(@multiloc_service.t(field.title_multiloc))]
+      end
+
       colliding = field_ids_to_titles.values.group_by(&:itself).select { |_id, title| title.size > 1 }.map(&:first)
 
       colliding.each do |colliding_title|
@@ -85,7 +88,7 @@ module GeojsonExport
         field_ids_to_titles.each do |field_id, field_title|
           next unless colliding_title == field_title
 
-          field_ids_to_titles[field_id] = "#{field_title} (#{n})"
+          field_ids_to_titles[field_id] = "#{field_title}_#{n}"
           n += 1
         end
       end
@@ -93,8 +96,16 @@ module GeojsonExport
       field_ids_to_titles
     end
 
+    def sanitized_translation_for(key)
+      sanitize_key(translation_for(key))
+    end
+
     def translation_for(key)
       I18n.t key, scope: 'xlsx_export.column_headers'
+    end
+
+    def sanitize_key(key)
+      key.gsub(/[^0-9a-z -]/i, '').tr(' -', '_').downcase
     end
 
     def registration_fields
