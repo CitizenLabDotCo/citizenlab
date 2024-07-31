@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash-es';
+
 import {
   attendEvent,
   AttendEventParams,
@@ -26,8 +28,6 @@ import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
 import { volunteer, VolunteerParams } from './volunteer';
 import { vote, VoteParams } from './vote';
-
-import { isEqual } from 'lodash-es';
 
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';

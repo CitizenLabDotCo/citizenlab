@@ -22,6 +22,7 @@ import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import MetaInformation from '../MetaInformation';
+import ProposalInfo from '../ProposalInfo';
 
 interface Props {
   ideaId: string;
@@ -56,6 +57,8 @@ const RightColumnDesktop = ({
     !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
 
   // showReactionControl
+  const participationMethod = phase?.attributes.participation_method;
+
   const reactingActionDescriptor =
     idea.data.attributes.action_descriptors.reacting_idea;
   const reactingFutureEnabled = !!(
@@ -66,7 +69,8 @@ const RightColumnDesktop = ({
   const likesCount = idea.data.attributes.likes_count;
   const dislikesCount = idea.data.attributes.dislikes_count;
   const showReactionControl =
-    phase?.attributes.participation_method !== 'voting' &&
+    participationMethod !== 'voting' &&
+    participationMethod !== 'proposals' &&
     (reactingActionDescriptor.enabled ||
       isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||
@@ -94,6 +98,14 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
+            {participationMethod === 'proposals' && (
+              <Box bg="white" p="12px">
+                <ProposalInfo
+                  idea={idea}
+                  onScrollToOfficialFeedback={() => {}}
+                />
+              </Box>
+            )}
             {showReactionControl && (
               <Box pb="23px" mb="23px">
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
