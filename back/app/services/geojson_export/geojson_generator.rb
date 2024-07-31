@@ -48,7 +48,7 @@ module GeojsonExport
       field_ids_to_titles = set_non_colliding_titles
 
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
+        accu[field_ids_to_titles[field.id]] = Export::CustomFieldForExport.new(field, @value_visitor).value_from(input)
       end
     end
 
