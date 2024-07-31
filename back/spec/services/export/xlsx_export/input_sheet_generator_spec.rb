@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::InputSheetGenerator do
+describe Export::XlsxExport::InputSheetGenerator do
   describe '#generate_sheet' do
     before { create(:idea_status_proposed) }
 
