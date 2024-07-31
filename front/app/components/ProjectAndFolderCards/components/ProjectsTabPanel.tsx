@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -11,9 +11,9 @@ import SmallProjectCard from 'components/ProjectCard/SmallProjectCard';
 
 import { PublicationTab } from '../';
 
-import getCardSizes from './getCardSizes';
+import { getCardSize } from './getCardSize';
 import ProjectFolderCard from './ProjectFolderCard';
-import { BaseProps, TCardSize } from './PublicationStatusTabs';
+import { BaseProps } from './PublicationStatusTabs';
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
 
 const Container = styled.ul<{ hide: boolean }>`
@@ -50,54 +50,6 @@ interface Props extends BaseProps {
 
 const ProjectsTabPanel = ({ tab, currentTab, list, layout }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const isLargerThanTablet = !isSmallerThanTablet;
-
-  const cardSizes = useMemo(() => {
-    if (list.length > 0 && layout === 'dynamic') {
-      return getCardSizes(list.length, isLargerThanTablet);
-    }
-
-    return [];
-  }, [list.length, layout, isLargerThanTablet]);
-
-  const renderProjectCard = (
-    size: TCardSize,
-    projectId: string,
-    key: number
-  ) => {
-    switch (size) {
-      case 'large':
-        return (
-          <FullWidthCard key={key}>
-            <LargeProjectCard projectId={projectId} />
-          </FullWidthCard>
-        );
-      case 'medium':
-        return (
-          <TwoColumnCard key={key}>
-            <MediumProjectCard projectId={projectId} />
-          </TwoColumnCard>
-        );
-      case 'small':
-        return (
-          <ThreeColumnCard key={key}>
-            <SmallProjectCard projectId={projectId} />
-          </ThreeColumnCard>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const getCardSize = (index: number) => {
-    if (layout === 'dynamic') {
-      return cardSizes[index];
-    } else if (layout === 'threecolumns') {
-      return 'small';
-    } else {
-      return 'medium';
-    }
-  };
 
   return (
     <Container
@@ -112,10 +64,39 @@ const ProjectsTabPanel = ({ tab, currentTab, list, layout }: Props) => {
       {list.map((item: IAdminPublicationData, index: number) => {
         const projectOrFolderId = item.relationships.publication.data.id;
         const projectOrFolderType = item.relationships.publication.data.type;
-        const size = getCardSize(index);
+
+        const size = getCardSize({
+          listLength: list.length,
+          index,
+          isSmallerThanTablet,
+          layout,
+        });
 
         if (projectOrFolderType === 'project') {
-          return renderProjectCard(size, projectOrFolderId, index);
+          const projectId = projectOrFolderId;
+
+          switch (size) {
+            case 'large':
+              return (
+                <FullWidthCard key={projectId}>
+                  <LargeProjectCard projectId={projectId} />
+                </FullWidthCard>
+              );
+            case 'medium':
+              return (
+                <TwoColumnCard key={projectId}>
+                  <MediumProjectCard projectId={projectId} />
+                </TwoColumnCard>
+              );
+            case 'small':
+              return (
+                <ThreeColumnCard key={projectId}>
+                  <SmallProjectCard projectId={projectId} />
+                </ThreeColumnCard>
+              );
+            default:
+              return null;
+          }
         }
 
         if (projectOrFolderType === 'folder') {
