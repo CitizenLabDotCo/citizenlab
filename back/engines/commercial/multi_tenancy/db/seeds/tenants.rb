@@ -361,6 +361,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            form_mapping: {
+              enabled: true,
+              allowed: true
+            },
             report_builder: {
               enabled: true,
               allowed: true
