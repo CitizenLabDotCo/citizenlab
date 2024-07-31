@@ -6,6 +6,12 @@ module ParticipationMethod
       false
     end
 
+    def assign_defaults_for_phase
+      super
+      phase.expire_days_limit ||= 90
+      phase.reacting_threshold ||= 300
+    end
+
     # def assign_defaults(_)
     #   super # TODO: default status and publication status
     # end
@@ -22,8 +28,20 @@ module ParticipationMethod
     #   super # TODO: if no reviewing and no reactions + toggle
     # end
 
+    def supports_automated_statuses?
+      true # TODO: This is temorary, until proposal statuses are implemented
+    end
+
     # def supports_status?
     #   super # TODO: separate proposal statuses
     # end
+
+    def supports_serializing?(attribute)
+      %i[expire_days_limit reacting_threshold].include?(attribute)
+    end
+
+    def supports_serializing_input?(attribute)
+      %i[expires_at reactions_needed].include?(attribute)
+    end
   end
 end

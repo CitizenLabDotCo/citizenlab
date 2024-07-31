@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, MouseEvent } from 'react';
+import React, { Suspense, MouseEvent } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -15,9 +15,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { ManagerType, TFilterMenu } from '../../..';
 
-// lazy-loaded components
-const IdeaRow = lazy(() => import('./IdeaRow'));
-const InitiativeRow = lazy(() => import('./InitiativeRow'));
+import IdeaRow from './IdeaRow';
+import InitiativeRow from './InitiativeRow';
 
 export const TitleLink = styled.a`
   display: block;
@@ -85,7 +84,11 @@ const Row = ({
     return null;
   }
 
-  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+  if (
+    type === 'AllIdeas' ||
+    type === 'ProjectIdeas' ||
+    type === 'ProjectProposals'
+  ) {
     return (
       <Suspense fallback={null}>
         <IdeaRow

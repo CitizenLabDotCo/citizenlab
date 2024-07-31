@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,6 +9,7 @@ import useInitiatives from 'api/initiatives/useInitiatives';
 import useTopics from 'api/topics/useTopics';
 
 import Outlet from 'components/Outlet';
+import SearchInput from 'components/UI/SearchInput';
 
 import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
@@ -26,7 +27,6 @@ import {
   PreviewMode,
   Sticky,
   StyledExportMenu,
-  StyledInput,
   ThreeColumns,
   TopActionBar,
 } from '.';
@@ -140,11 +140,11 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber });
   };
 
-  const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSearchTerm = (searchTerm: string) => {
     setQueryParameters({
       ...queryParameters,
       pageNumber: 1,
-      search: event.target.value,
+      search: searchTerm,
     });
   };
 
@@ -183,7 +183,10 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
         </LeftColumn>
         <MiddleColumnTop>
           <InitiativesCount queryParameters={queryParameters} />
-          <StyledInput icon="search" onChange={onChangeSearchTerm} />
+          <SearchInput
+            onChange={onChangeSearchTerm}
+            a11y_numberOfSearchResults={initiatives.data.length}
+          />
         </MiddleColumnTop>
       </ThreeColumns>
       <ThreeColumns>

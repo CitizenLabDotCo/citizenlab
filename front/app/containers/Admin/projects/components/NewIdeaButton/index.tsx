@@ -11,9 +11,8 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
-import tracks from '../tracks';
-
-import messages from './../messages';
+import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   linkTo: RouteType;
