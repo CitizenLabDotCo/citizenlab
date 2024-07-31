@@ -33,6 +33,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     end
   end
 
+  # TODO: Add reordering
+
   def destroy
     if @idea_status.destroy
       head :no_content

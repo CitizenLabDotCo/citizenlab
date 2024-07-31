@@ -11,15 +11,16 @@ resource 'IdeaStatuses' do
   get 'web_api/v1/idea_statuses' do
     parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
 
-    before { create_list(:idea_status, 3); create_list(:proposals_status, 2) } # TODO: ideation + proposals + before_all?
+    before_all { create_list(:idea_status, 3); create_list(:proposals_status, 2) }
 
     context 'when visitor' do
       let (:participation_method) { 'ideation' }
 
-      example_request 'List all ideation input statuses' do # TODO: participation_method filter (ideation)
+      example_request 'List all ideation input statuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'ideation' }).to be true
       end
     end
 
@@ -28,17 +29,18 @@ resource 'IdeaStatuses' do
 
       let (:participation_method) { 'proposals' }
 
-      example_request 'List all proposals input statuses' do # TODO: participation_method filter (proposals)
+      example_request 'List all proposals input statuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'proposals' }).to be true
       end
     end
 
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'List all input statuses' do # TODO: no participation_method filter (all?)
+      example_request 'List all input statuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
@@ -47,14 +49,32 @@ resource 'IdeaStatuses' do
   end
 
   get 'web_api/v1/idea_statuses/:id' do
-    let(:id) { create(:idea_status).id }
+    let(:id) { create(:proposals_status, code: 'custom').id }
 
     context 'when visitor' do
-      example_request 'Get one idea status by id' do
+      example_request 'Get one proposals status by ID' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
-        # TODO: Check attributes (can_reorder + can_transition_manually)
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+        expect(json_response.dig(:data, :attributes, :can_reorder)).to eq true
+        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to eq true
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:id) { create(:idea_status, code: 'proposed').id }
+
+      example 'Get one idea status by ID', document: false do
+        do_request
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq id
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'proposed'
+        expect(json_response.dig(:data, :attributes, :can_reorder)).to eq false
+        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to eq true
       end
     end
   end
@@ -98,7 +118,7 @@ resource 'IdeaStatuses' do
         let(:participation_method) { 'proposals' }
         let(:code) { 'custom' }
 
-        example_request 'Create a proposal status' do
+        example_request 'Create a proposals status' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).not_to be_empty
@@ -122,11 +142,9 @@ resource 'IdeaStatuses' do
       parameter :code, 'A snake_case value to help us identify the lifecycle status of the input'
     end
 
-    # let(:new_idea_status) { build(:idea_status) }
-    # let(:code) { 'custom' }
     let(:title_multiloc) { { 'en' => 'Changed title' } }
-    # let(:description_multiloc) { new_idea_status.description_multiloc }
-    # let(:color) { new_idea_status.color }
+    let(:description_multiloc) { { 'en' => 'Changed description' } }
+    let(:color) { '#AABBCC' }
 
     context 'when resident' do
       before { resident_header_token }
@@ -140,11 +158,13 @@ resource 'IdeaStatuses' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'Update an idea status by id' do
+      example_request 'Update an idea status by ID' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
-        # TODO: Check attributes
+        expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ en: 'Changed title' })
+        expect(json_response.dig(:data, :attributes, :description_multiloc)).to eq({ en: 'Changed description' })
+        expect(json_response.dig(:data, :attributes, :color)).to eq '#AABBCC'
       end
     end
   end
@@ -162,7 +182,9 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      example 'Cannot delete an idea status', document: false do
+      let(:id) { create(:proposals_status).id }
+
+      example 'Cannot delete a proposal status', document: false do
         do_request
         assert_status 401
       end
@@ -171,9 +193,9 @@ resource 'IdeaStatuses' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'Delete a idea status by id' do
+      example_request 'Delete a idea status by ID' do
         assert_status 204
-        # TODO: Check that it's gone
+        expect(IdeaStatus.find_by(id: id)).to be_nil
       end
     end
   end
