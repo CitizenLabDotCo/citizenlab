@@ -105,7 +105,7 @@ module GeojsonExport
     end
 
     def sanitize_key(key)
-      key.gsub(/[^0-9a-z ]/i, '').tr(' ', '_').downcase
+      key.gsub(/[^0-9a-z -]/i, '').tr(' ', '_').downcase
     end
 
     def registration_fields
