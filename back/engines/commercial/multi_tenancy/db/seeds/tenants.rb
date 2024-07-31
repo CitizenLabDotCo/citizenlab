@@ -449,6 +449,10 @@ module MultiTenancy
             remove_vendor_branding: {
               enabled: false,
               allowed: true
+            },
+            fake_sso: {
+              enabled: true,
+              allowed: true
             }
           })
         )

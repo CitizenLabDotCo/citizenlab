@@ -11,7 +11,8 @@ module IdFakeSso
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      # TODO
+      return unless configuration.feature_activated?('fake_sso')
+
       options = env['omniauth.strategy'].options
 
       # No idea why we need to do this but otherwise
