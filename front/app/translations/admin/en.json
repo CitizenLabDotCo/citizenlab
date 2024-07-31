@@ -2365,7 +2365,7 @@
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Main question",
   "app.containers.AdminPage.projects.project.analysis.manageIdea": "Manage idea",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "No answer",
-  "app.containers.AdminPage.projects.project.analysis.noAnswerProvided": "No answer provided",
+  "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "No answer provided.",
   "app.containers.AdminPage.projects.project.analysis.noInputs": "No inputs correspond to your current filters",
   "app.containers.AdminPage.projects.project.analysis.reactions": "Reactions",
   "app.containers.AdminPage.projects.project.analysis.remove": "Remove",
