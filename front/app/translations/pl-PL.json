@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Zweryfikuj swoją tożsamość.",
   "app.containers.IdeaCard.readMore": "Czytaj więcej",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {brak komentarzy} one {1 komentarz} few {# komentarze} many {# komentarzy} other {# komentarze}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {brak głosów} one {1 głos} other {# głosów}} poza {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Wszystkich propozycji: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Razem: {ideasCount}",
   "app.containers.IdeaCards.all": "Wszystkie",
