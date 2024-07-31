@@ -69,6 +69,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${string}`>
   | registrationRouteTypes;
 
 export default () => ({
