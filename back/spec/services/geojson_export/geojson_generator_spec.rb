@@ -70,8 +70,8 @@ describe GeojsonExport::GeojsonGenerator do
         {
           'ID' => idea1.id,
           'Published at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-          'Field for text question' => 'Text answer 1',
+          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
+          'field_for_text_question' => 'Text answer 1',
           'User data' => {
             'Author ID' => idea1.author.id,
             'Author email' => idea1.author.email,
@@ -82,8 +82,8 @@ describe GeojsonExport::GeojsonGenerator do
         {
           'ID' => idea2.id,
           'Published at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'Point field for focus of export [Longitude, Latitude]' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
-          'Field for text question' => 'Text answer 2',
+          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
+          'field_for_text_question' => 'Text answer 2',
           'User data' => {
             'Author ID' => idea2.author.id,
             'Author email' => idea2.author.email,
@@ -103,11 +103,11 @@ describe GeojsonExport::GeojsonGenerator do
 
     it 'adds suffixes to avoid collisions' do
       expect(service.send(:set_non_colliding_titles)).to match({
-        custom_field1.id => 'Point field for focus of export [Longitude, Latitude]',
-        custom_field2.id => 'Title 1 (1)',
-        custom_field3.id => 'Title 1 (2)',
-        custom_field4.id => 'Title 1 (3)',
-        custom_field5.id => 'Title 2'
+        custom_field1.id => 'point_field_for_focus_of_export',
+        custom_field2.id => 'title_1_1',
+        custom_field3.id => 'title_1_2',
+        custom_field4.id => 'title_1_3',
+        custom_field5.id => 'title_2'
       })
     end
   end
