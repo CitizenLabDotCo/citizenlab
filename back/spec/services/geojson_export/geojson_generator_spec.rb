@@ -113,9 +113,9 @@ describe GeojsonExport::GeojsonGenerator do
   end
 
   describe 'sanitize_key' do
-    it 'removes non-alphanumeric characters, except hyphens' do
+    it 'removes non-alphanumeric characters, replacing hyphens and spaces with underscores' do
       expect(service.send(:sanitize_key, 'Test-key: With hyphen, commas, and question mark?'))
-        .to eq 'test-key_with_hyphen_commas_and_question_mark'
+        .to eq 'test_key_with_hyphen_commas_and_question_mark'
     end
   end
 end
