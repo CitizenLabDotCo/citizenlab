@@ -133,7 +133,9 @@ const ActionForm = ({
       {permittedBy !== 'admins_moderators' && (
         <Box mt="20px">
           <Box display="flex" gap="16px" mb="20px">
-            {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
+            {(action === 'taking_survey' ||
+              (projectType === 'nativeSurvey' &&
+                action === 'posting_idea')) && (
               <Tooltip
                 disabled={
                   permittedBy === 'everyone'

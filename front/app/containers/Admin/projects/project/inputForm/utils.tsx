@@ -46,7 +46,6 @@ export const ideationConfig: FormBuilderConfig = {
   },
 };
 
-
 export const proposalsConfig: FormBuilderConfig = {
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
@@ -55,7 +54,7 @@ export const proposalsConfig: FormBuilderConfig = {
 
   toolboxFieldsToExclude: ['page', 'file_upload', 'point'],
   displayBuiltInFields: true,
-  builtInFields:[
+  builtInFields: [
     'title_multiloc',
     'body_multiloc',
     'topic_ids',

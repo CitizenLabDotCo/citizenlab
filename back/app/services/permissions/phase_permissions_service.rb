@@ -40,6 +40,10 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
+    VOLUNTEERING_DENIED_REASONS = {
+      not_volunteering: 'not_volunteering'
+    }.freeze
+
     def initialize(phase, user, user_requirements_service: nil)
       super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
@@ -63,8 +67,10 @@ module Permissions
         taking_survey_denied_reason_for_action
       when 'taking_poll'
         taking_poll_denied_reason_for_action
+      when 'volunteering'
+        volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}"
+        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
       end
       return phase_denied_reason if phase_denied_reason
 
@@ -133,6 +139,12 @@ module Permissions
     def voting_denied_reason_for_action
       unless phase.voting?
         VOTING_DENIED_REASONS[:not_voting]
+      end
+    end
+
+    def volunteering_denied_reason_for_phase
+      unless phase.volunteering?
+        VOLUNTEERING_DENIED_REASONS[:not_volunteering]
       end
     end
 

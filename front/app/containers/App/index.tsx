@@ -18,7 +18,7 @@ import 'moment-timezone';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
@@ -35,6 +35,7 @@ import MainHeader from 'containers/MainHeader';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
@@ -48,12 +49,28 @@ import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
+import messages from './messages';
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
 
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
+
+const SkipLinkStyled = styled.a`
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: ${colors.black};
+  color: ${colors.white};
+  padding: 8px;
+  z-index: 1000;
+  text-align: center;
+  text-decoration: none;
+  &:focus {
+    top: 0;
+  }
+`;
 
 interface Props {
   children: React.ReactNode;
@@ -64,6 +81,7 @@ const locale$ = localeStream().observable;
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
+  const { formatMessage } = useIntl();
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
@@ -303,6 +321,11 @@ const App = ({ children }: Props) => {
 
   return (
     <>
+      {!isAuthenticationPending && (
+        <SkipLinkStyled href="#main-content">
+          {formatMessage(messages.skipLinkText)}
+        </SkipLinkStyled>
+      )}
       {isAuthenticationPending && (
         <Box
           display="flex"
@@ -370,6 +393,7 @@ const App = ({ children }: Props) => {
                 alignItems="stretch"
                 flex="1"
                 overflowY="auto"
+                id="main-content"
                 pt={
                   showFrontOfficeNavbar()
                     ? `${stylingConsts.menuHeight}px`
