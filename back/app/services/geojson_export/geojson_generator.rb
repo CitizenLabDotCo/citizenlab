@@ -76,7 +76,10 @@ module GeojsonExport
     end
 
     def set_non_colliding_titles
-      field_ids_to_titles = @fields_in_form.to_h { |field| [field.id, @multiloc_service.t(field.title_multiloc)] }
+      field_ids_to_titles = @fields_in_form.to_h do |field|
+        [field.id, sanitize_key(@multiloc_service.t(field.title_multiloc))]
+      end
+
       colliding = field_ids_to_titles.values.group_by(&:itself).select { |_id, title| title.size > 1 }.map(&:first)
 
       colliding.each do |colliding_title|
@@ -85,7 +88,7 @@ module GeojsonExport
         field_ids_to_titles.each do |field_id, field_title|
           next unless colliding_title == field_title
 
-          field_ids_to_titles[field_id] = "#{field_title} (#{n})"
+          field_ids_to_titles[field_id] = "#{field_title}_#{n}"
           n += 1
         end
       end
@@ -95,6 +98,10 @@ module GeojsonExport
 
     def translation_for(key)
       I18n.t key, scope: 'xlsx_export.column_headers'
+    end
+
+    def sanitize_key(key)
+      key.gsub(/[^0-9a-z ]/i, '').tr(' ', '_').downcase
     end
 
     def registration_fields

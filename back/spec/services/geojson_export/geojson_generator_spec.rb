@@ -111,4 +111,10 @@ describe GeojsonExport::GeojsonGenerator do
       })
     end
   end
+
+  describe 'sanitize_key' do
+    it 'removes non-alphanumeric characters' do
+      expect(service.send(:sanitize_key, 'Field for text question')).to eq 'field_for_text_question'
+    end
+  end
 end
