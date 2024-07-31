@@ -48,21 +48,21 @@ resource 'IdeaStatuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
+        # TODO: Check attributes (can_reorder + can_transition_manually)
       end
     end
   end
 
-  post 'web_api/v1/idea_statuses' do # TODO: ideation + proposals
-    with_options scope: :idea_status do # TODO: which are required?
-      parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-      parameter :description_multiloc, 'Multi-locale field with the idea status description'
-      parameter :color, 'The hexadecimal color code of this status\'s label.'
-      parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-      # TODO: participation_method
+  post 'web_api/v1/idea_statuses' do
+    with_options scope: :idea_status do
+      parameter :title_multiloc, 'Multi-locale field for the input status title', required: true
+      parameter :description_multiloc, 'Multi-locale field for the input status description', required: true
+      parameter :color, 'The hexadecimal color code of this input status\'s label.', required: true
+      parameter :code, 'A snake_case value to help us identify the lifecycle status of the input', required: true
+      parameter :participation_method, 'Either "ideation" (default) or "proposals"', required: false
     end
 
-    let(:idea_status) { build(:idea_status) }
-    let(:code) { 'rejected' } # TODO: Change, remove or custom?
+    let(:code) { 'rejected' }
     let(:title_multiloc) { { 'en' => 'Inappropriate' } }
     let(:description_multiloc) { { 'en' => 'Custom description' } }
     let(:color) { '#767676' }
@@ -81,14 +81,27 @@ resource 'IdeaStatuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).not_to be_empty
-        # TODO: Check attributes
+        expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'ideation'
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'rejected'
+        expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ en: 'Inappropriate' })
+        expect(json_response.dig(:data, :attributes, :description_multiloc)).to eq({ en: 'Custom description' })
+        expect(json_response.dig(:data, :attributes, :color)).to eq '#767676'
       end
 
-      example_request 'Create a proposal status status' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).not_to be_empty
-        # TODO: Check attributes
+      describe do
+        let(:participation_method) { 'proposals' }
+        let(:code) { 'custom' }
+
+        example_request 'Create a proposal status' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).not_to be_empty
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'proposals'
+          expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+          expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ en: 'Inappropriate' })
+          expect(json_response.dig(:data, :attributes, :description_multiloc)).to eq({ en: 'Custom description' })
+          expect(json_response.dig(:data, :attributes, :color)).to eq '#767676'
+        end
       end
     end
   end
@@ -97,10 +110,10 @@ resource 'IdeaStatuses' do
     let(:id) { create(:idea_status).id }
 
     with_options scope: :idea_status do
-      parameter :title_multiloc, 'Multi-locale field with the idea title'
-      parameter :description_multiloc, 'Multi-locale field with the idea status description'
-      parameter :color, 'The hexadecimal color code of this status\'s label.'
-      parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
+      parameter :title_multiloc, 'Multi-locale field for the input status title'
+      parameter :description_multiloc, 'Multi-locale field for the input status description'
+      parameter :color, 'The hexadecimal color code of this input status\'s label.'
+      parameter :code, 'A snake_case value to help us identify the lifecycle status of the input'
     end
 
     # let(:new_idea_status) { build(:idea_status) }

@@ -49,7 +49,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def idea_status_params
     params.require(:idea_status).permit(
-      :code, :color,
+      :code, :color, :participation_method,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
