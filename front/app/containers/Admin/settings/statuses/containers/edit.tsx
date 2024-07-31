@@ -28,7 +28,7 @@ const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const Edit = () => {
-  const { id: statusId } = useParams() as { id: string };
+  const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
