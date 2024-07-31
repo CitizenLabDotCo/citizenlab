@@ -210,6 +210,44 @@ RSpec.describe Phase do
     end
   end
 
+  context 'for proposals phases' do
+    let(:phase) { create(:proposals_phase) }
+
+    describe 'expire_days_limit' do
+      it 'can be set to a valid value' do
+        phase.expire_days_limit = 1
+        expect(phase).to be_valid
+      end
+
+      it 'is required' do
+        phase.expire_days_limit = nil
+        expect(phase).to be_invalid
+      end
+
+      it 'rejects values that are too small' do
+        phase.expire_days_limit = 0
+        expect(phase).to be_invalid
+      end
+    end
+
+    describe 'reacting_threshold' do
+      it 'can be set to a valid value' do
+        phase.reacting_threshold = 2
+        expect(phase).to be_valid
+      end
+
+      it 'is required' do
+        phase.reacting_threshold = nil
+        expect(phase).to be_invalid
+      end
+
+      it 'rejects values that are too small' do
+        phase.reacting_threshold = 1
+        expect(phase).to be_invalid
+      end
+    end
+  end
+
   describe '#ends_before?' do
     let(:start_date) { Time.zone.today }
     let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
