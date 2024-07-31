@@ -32,7 +32,6 @@ const ThresholdReached = (props: StatusComponentProps) => {
       showProgressBar
       showVoteButtons
       showReadAnswerButton={false}
-      cancelReactionDisabled
     />
   );
 };
