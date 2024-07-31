@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsFieldsKeys from './keys';
+import permissionsCustomFieldsKeys from './keys';
 import {
   IListParameters,
   IPermissionsCustomField,
@@ -41,7 +41,7 @@ const useAddPermissionsCustomField = ({
     mutationFn: addPermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsFieldsKeys.list({
+        queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
           projectId,
           initiativeContext,

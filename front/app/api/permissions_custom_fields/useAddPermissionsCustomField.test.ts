@@ -4,14 +4,14 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsFieldsData } from './__mocks__/usePermissionsCustomFields';
+import { permissionsCustomFieldsData } from './__mocks__/usePermissionsCustomFields';
 import useAddPermissionsCustomField from './useAddPermissionsCustomField';
 
 const apiPath = '*/permissions/:action/permissions_custom_fields';
 const server = setupServer(
   http.post(apiPath, () => {
     return HttpResponse.json(
-      { data: permissionsFieldsData[0] },
+      { data: permissionsCustomFieldsData[0] },
       { status: 200 }
     );
   })
@@ -42,7 +42,7 @@ describe('useAddPermissionsCustomField', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(permissionsFieldsData[0]);
+    expect(result.current.data?.data).toEqual(permissionsCustomFieldsData[0]);
   });
 
   it('returns error correctly', async () => {

@@ -6,13 +6,16 @@ import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermiss
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsFieldsData } from './__mocks__/usePermissionsCustomFields';
+import { permissionsCustomFieldsData } from './__mocks__/usePermissionsCustomFields';
 
 const apiPath = '*/permissions/:action/permissions_custom_fields';
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json({ data: permissionsFieldsData }, { status: 200 });
+    return HttpResponse.json(
+      { data: permissionsCustomFieldsData },
+      { status: 200 }
+    );
   })
 );
 
@@ -37,7 +40,7 @@ describe('usePermissionsCustomFields', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(permissionsFieldsData);
+    expect(result.current.data?.data).toEqual(permissionsCustomFieldsData);
   });
 
   it('returns error correctly', async () => {

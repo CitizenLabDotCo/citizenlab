@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsFieldsKeys from './keys';
+import permissionsCustomFieldsKeys from './keys';
 import { IListParameters } from './types';
 
 const deletePermissionsCustomField = (id: string) =>
@@ -23,7 +23,7 @@ const useDeletePermissionsCustomField = ({
     mutationFn: deletePermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsFieldsKeys.list({
+        queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
           projectId,
           initiativeContext,
