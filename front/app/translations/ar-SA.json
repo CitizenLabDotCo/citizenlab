@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "تحقق من هويتك الآن.",
   "app.containers.IdeaCard.readMore": "اقرأ أكثر",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {لا يوجد تعليقات} one {تعليق واحد} other {# تعليقات}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {لا توجد أصوات} one {صوت واحد} other {# صوت}} من {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "إجمالي المُقترحات: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "جميع العناصر: {ideasCount}",
   "app.containers.IdeaCards.all": "الكل",
