@@ -15,12 +15,13 @@ const Proposed = (props: StatusComponentProps) => {
     ? getPeriodRemainingUntil(props.idea.attributes.expires_at)
     : undefined;
 
+  const userReacted = props.idea?.relationships?.user_reaction?.data?.id;
   return (
     <Status
       {...props}
-      iconName={props.userReacted ? 'check-circle' : 'bullseye'}
+      iconName={userReacted ? 'check-circle' : 'bullseye'}
       statusExplanation={
-        props.userReacted ? (
+        userReacted ? (
           <Text m="0">
             <b>
               <FormattedMessage {...messages.votedTitle} />
