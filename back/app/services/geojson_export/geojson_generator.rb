@@ -12,7 +12,6 @@ module GeojsonExport
       @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
       @value_visitor = GeojsonExport::ValueVisitor
-      @field_ids_to_titles = set_non_colliding_titles
     end
 
     def generate_geojson
@@ -28,8 +27,7 @@ module GeojsonExport
     end
 
     def filename
-      "#{MultilocService.new(app_configuration: @app_configuration).t(@phase.title_multiloc).tr(' ', '_')}" \
-        "_#{Time.now.strftime('%Y-%m-%d')}.geojson"
+      "#{@multiloc_service.t(@phase.title_multiloc).tr(' ', '_')}_#{Time.now.strftime('%Y-%m-%d')}.geojson"
     end
 
     private
@@ -47,8 +45,10 @@ module GeojsonExport
     end
 
     def generate_answers_to_questions(input)
+      field_ids_to_titles = set_non_colliding_titles
+
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[@field_ids_to_titles[field.id]] = Export::CustomFieldForExport.new(field, @value_visitor).value_from(input)
+        accu[field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
       end
     end
 
