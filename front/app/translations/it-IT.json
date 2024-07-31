@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Verifica la tua identità ora.",
   "app.containers.IdeaCard.readMore": "Leggi tutto",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nessun commento} one {1 commento} other {# commenti}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nessun voto} one {1 voto} other {# voti}} fuori da {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Proposte totali: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Messaggi totali: {ideasCount}",
   "app.containers.IdeaCards.all": "Tutti",
