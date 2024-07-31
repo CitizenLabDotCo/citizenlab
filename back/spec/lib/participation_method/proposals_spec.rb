@@ -15,6 +15,16 @@ RSpec.describe ParticipationMethod::Proposals do
       participation_method.assign_defaults_for_phase
       expect(phase.ideas_order).to eq 'trending'
     end
+
+    it 'sets the expire_days_limit to 90' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.expire_days_limit).to eq 90
+    end
+
+    it 'sets the reacting_threshold to 300' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.reacting_threshold).to eq 300
+    end
   end
 
   describe '#generate_slug' do
