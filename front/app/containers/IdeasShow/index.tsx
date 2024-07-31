@@ -145,11 +145,7 @@ export const IdeasShow = ({
           {compact && statusId && (
             <Box my="24px">
               <Divider />
-              <ProposalInfo
-                idea={idea}
-                onScrollToOfficialFeedback={() => {}}
-                compact={compact}
-              />
+              <ProposalInfo idea={idea} compact={compact} />
               <MetaInformation
                 ideaId={ideaId}
                 projectId={project.data.id}
