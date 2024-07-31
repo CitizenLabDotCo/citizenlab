@@ -20,9 +20,13 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    # TODO: Remove this check once verified_actions is fully live
+    # TODO: Remove these checks once verified_actions is fully live
+    return registration_fields if !permissions_custom_fields_service.verified_actions_enabled? && permission.global_custom_fields
+
     permissions_custom_fields = if permissions_custom_fields_service.verified_actions_enabled?
       permissions_custom_fields_service.fields_for_permission(permission)
+    elsif permission.global_custom_fields
+      registration_fields
     else
       permission.permissions_custom_fields
     end
