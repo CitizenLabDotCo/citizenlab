@@ -9,6 +9,7 @@ describe Permissions::PermissionsCustomFieldsService do
     @birthyear_field = create(:custom_field_birthyear, enabled: true, required: false)
     @gender_field = create(:custom_field_gender, enabled: false, required: false)
     SettingsService.new.activate_feature! 'user_confirmation'
+    SettingsService.new.activate_feature! 'verified_actions'
 
     configuration = AppConfiguration.instance
     settings = configuration.settings

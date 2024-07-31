@@ -7,6 +7,7 @@ describe Permissions::UserRequirementsService do
 
   before do
     SettingsService.new.activate_feature! 'user_confirmation'
+    SettingsService.new.activate_feature! 'verified_actions'
   end
 
   describe '#requirements' do

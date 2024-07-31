@@ -20,7 +20,14 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
+    # TODO: Remove this check once verified_actions is fully live
+    permissions_custom_fields = if permissions_custom_fields_service.verified_actions_enabled?
+      permissions_custom_fields_service.fields_for_permission(permission)
+    else
+      permission.permissions_custom_fields
+    end
+
+    permissions_custom_fields.map do |permissions_custom_field|
       permissions_custom_field.custom_field.tap do |field|
         field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
         field.required = permissions_custom_field.required
