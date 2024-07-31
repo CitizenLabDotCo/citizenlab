@@ -15,7 +15,7 @@ module IdeaCustomFields
     end
 
     def as_geojson?
-      update_all?
+      can_configure_custom_fields? record
     end
 
     private
