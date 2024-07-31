@@ -144,8 +144,13 @@ export const IdeasShow = ({
           </Box>
           {compact && statusId && (
             <Box my="24px">
-              <Divider />
-              <ProposalInfo idea={idea} compact={compact} />
+              {participationContext?.attributes.participation_method ===
+                'proposals' && (
+                <>
+                  <Divider />
+                  <ProposalInfo idea={idea} compact={compact} />
+                </>
+              )}
               <MetaInformation
                 ideaId={ideaId}
                 projectId={project.data.id}
