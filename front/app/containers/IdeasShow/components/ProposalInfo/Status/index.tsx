@@ -123,7 +123,12 @@ const Status = ({
       )}
       {showVoteButtons && !compact && (
         <Box mb="8px">
-          <ReactionControl styleType="shadow" ideaId={idea.id} size="4" />
+          <ReactionControl
+            styleType="shadow"
+            ideaId={idea.id}
+            size="4"
+            variant="text"
+          />
         </Box>
       )}
       {showReadAnswerButton && onScrollToOfficialFeedback && (
