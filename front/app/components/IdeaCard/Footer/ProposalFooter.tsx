@@ -32,7 +32,7 @@ const ProposalFooter = ({
   return (
     <>
       <Box display="flex" gap="16px" alignItems="center">
-        <Box flex={'1'}>
+        <Box minWidth="140px" width="40%">
           <Box display="flex" alignItems="center" mb="4px">
             <Icon
               name="vote-up"
@@ -69,15 +69,23 @@ const ProposalFooter = ({
             />
           </ScreenReaderOnly>
         </Box>
-        <Box>
-          {showCommentCount && (
-            <CommentCount commentCount={idea.attributes.comments_count} />
-          )}
-        </Box>
-        <Box maxWidth="50%">
-          {!hideIdeaStatus && ideaStatusId && (
-            <StatusBadge statusId={ideaStatusId} />
-          )}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          width="50%"
+          gap="16px"
+        >
+          <Box>
+            {showCommentCount && (
+              <CommentCount commentCount={idea.attributes.comments_count} />
+            )}
+          </Box>
+          <Box>
+            {!hideIdeaStatus && ideaStatusId && (
+              <StatusBadge statusId={ideaStatusId} maxLength={20} />
+            )}
+          </Box>
         </Box>
       </Box>
     </>
