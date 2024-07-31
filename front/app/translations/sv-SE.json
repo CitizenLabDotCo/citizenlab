@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Verifiera din identitet nu.",
   "app.containers.IdeaCard.readMore": "Läs mer på",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {inga kommentarer} one {1 kommentar} other {# kommentarer}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {inga röster} one {1 röst} other {# röster}} ut från {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Totalt antal förslag: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Totalt antal inlägg: {ideasCount}",
   "app.containers.IdeaCards.all": "Allt",
