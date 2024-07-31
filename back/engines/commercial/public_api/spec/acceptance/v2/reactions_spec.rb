@@ -150,6 +150,7 @@ resource 'Reactions' do
       end
     end
 
+    # TODO: move-old-proposals-test
     context "when reactable_type value is 'initiative-comment'" do
       let(:reactable_type) { 'initiative-comment' }
 
