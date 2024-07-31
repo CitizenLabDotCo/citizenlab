@@ -1492,7 +1492,8 @@ type IPhasePermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'voting'
-  | 'annotating_document';
+  | 'annotating_document'
+  | 'attending_event';
 
 type ApiSetPermissionTypeProps = {
   phaseId: string;
@@ -1548,7 +1549,7 @@ function apiSetPermissionCustomField(
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_fields`,
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
       body: {
         custom_field_id,
         required: true,

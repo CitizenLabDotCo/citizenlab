@@ -9,7 +9,13 @@ RSpec.describe ReportBuilder::Queries::Projects do
     before_all do
       # 2020
       past_project = create(:project)
-      create(:phase, project: past_project, start_at: Date.new(2020, 2, 1), end_at: Date.new(2020, 3, 1))
+      create(
+        :phase,
+        project: past_project,
+        start_at: Date.new(2020, 2, 1),
+        end_at: Date.new(2020, 3, 1),
+        with_permissions: true
+      )
 
       # 2021
       @project1 = create(:project)

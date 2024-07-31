@@ -19,7 +19,7 @@ module MultiTenancy
         return if !project || project.custom_form
 
         custom_form = CustomForm.create!(participation_context: project)
-        participation_context = Factory.instance.participation_method_for(project)
+        participation_context = project.pmethod
         default_fields = participation_context.default_fields(custom_form)
         default_fields.each(&:save!)
 

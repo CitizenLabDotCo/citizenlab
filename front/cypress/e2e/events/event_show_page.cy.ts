@@ -30,6 +30,17 @@ describe('Event show page', () => {
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
+        cy.apiCreatePhase({
+          projectId,
+          title: 'phaseTitle',
+          startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          allow_anonymous_participation: true,
+        });
       })
       .then(() => {
         return cy.apiCreateEvent({

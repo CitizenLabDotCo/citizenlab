@@ -9,14 +9,14 @@ module MultiTenancy
         runner.num_ideas.times do
           created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.zone.now)
           project = runner.rand_instance Project.all
-          phases = project.phases.select(&:can_contain_ideas?).sample([rand(project.phases.size), 1].max)
+          phases = project.phases.select { |phase| phase.pmethod.transitive? }.sample([rand(project.phases.size), 1].max)
           offsets = Array.new(rand(3)) do
             rand(project.allowed_input_topics.count)
           end
           topics = offsets.uniq.map { |offset| project.allowed_input_topics.offset(offset).first }
           idea = Idea.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
-            body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            body_multiloc: runner.rand_description_multiloc,
             idea_status: runner.rand_instance(IdeaStatus.all),
             topics: topics,
             author: runner.rand_instance(User.all),
@@ -53,7 +53,7 @@ module MultiTenancy
 
           rand(5).times do
             idea.official_feedbacks.create!(
-              body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+              body_multiloc: runner.rand_description_multiloc,
               author_multiloc: runner.create_for_some_locales { Faker::FunnyName.name },
               user: runner.rand_instance(User.admin)
             )

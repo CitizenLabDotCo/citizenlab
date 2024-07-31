@@ -42,7 +42,8 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'schema', on: :member
-          resources :permissions_fields, shallow: true do
+          patch 'reset', on: :member
+          resources :permissions_custom_fields, shallow: true do
             patch 'reorder', on: :member
           end
         end

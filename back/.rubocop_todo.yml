@@ -171,7 +171,7 @@ Lint/RescueException:
 # Offense count: 521
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 131
+  Max: 134
 
 # Offense count: 183
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.

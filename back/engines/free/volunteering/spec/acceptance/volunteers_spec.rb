@@ -16,7 +16,17 @@ resource 'Volunteering Volunteers' do
     post 'web_api/v1/causes/:cause_id/volunteers' do
       ValidationErrorHelper.new.error_fields(self, Volunteering::Volunteer)
 
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
 
       example_request 'Create a volunteer with the current user' do
@@ -31,10 +41,52 @@ resource 'Volunteering Volunteers' do
         do_request
         assert_status 422
       end
+
+      context 'when the phase has granular permissions' do
+        let(:group) { create(:group) }
+
+        let(:project) do
+          create(
+            :single_phase_volunteering_project,
+            phase_attrs: { with_permissions: true }
+          )
+        end
+
+        let(:cause) do
+          cause = create(:cause, phase: project.phases.first)
+          permission = cause.phase.permissions.find_by(action: 'volunteering')
+          permission.update!(permitted_by: 'groups', groups: [group])
+
+          cause
+        end
+
+        let(:cause_id) { cause.id }
+
+        example 'Try to volunteer for a cause, not as a group member', document: false do
+          do_request
+          assert_status 401
+        end
+
+        example 'Try to volunteer for a cause, as a group member', document: false do
+          group.add_member(@user).save!
+          do_request
+          assert_status 201
+        end
+      end
     end
 
     delete 'web_api/v1/causes/:cause_id/volunteers' do
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
       let!(:volunteer) { create(:volunteer, user: @user, cause: cause) }
 

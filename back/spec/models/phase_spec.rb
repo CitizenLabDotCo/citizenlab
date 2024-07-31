@@ -97,6 +97,28 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'pmethod' do
+    {
+      'information' => ParticipationMethod::Information,
+      'ideation' => ParticipationMethod::Ideation,
+      'document_annotation' => ParticipationMethod::DocumentAnnotation,
+      'survey' => ParticipationMethod::Survey,
+      'voting' => ParticipationMethod::Voting,
+      'poll' => ParticipationMethod::Poll,
+      'volunteering' => ParticipationMethod::Volunteering,
+      'native_survey' => ParticipationMethod::NativeSurvey,
+      nil => ParticipationMethod::None
+    }.each do |method_name, method_class|
+      context "when the given participation_context's method is #{method_name}" do
+        let(:phase) { build(:phase, participation_method: method_name) }
+
+        it "returns an instance of #{method_class}" do
+          expect(phase.pmethod).to be_an_instance_of(method_class)
+        end
+      end
+    end
+  end
+
   describe 'presentation_mode' do
     it 'can be null for non-ideation phases' do
       p = create(:phase, participation_method: 'information')
@@ -294,30 +316,6 @@ RSpec.describe Phase do
     end
   end
 
-  describe '#can_contain_input?' do
-    expected_results = {
-      'information' => false,
-      'ideation' => true,
-      'survey' => false,
-      'voting' => true,
-      'poll' => false,
-      'volunteering' => false,
-      'native_survey' => true,
-      'document_annotation' => false
-    }
-    # Written this way so that additional participation methods will make this spec fail.
-    Phase::PARTICIPATION_METHODS.each do |participation_method|
-      expected_result = expected_results[participation_method]
-      context "for #{participation_method}" do
-        let(:phase) { build(:phase, participation_method: participation_method) }
-
-        it "returns #{expected_result}" do
-          expect(phase.can_contain_input?).to be expected_result
-        end
-      end
-    end
-  end
-
   describe '#validate_end_at' do
     let(:project) { create(:project_with_phases) }
 
@@ -419,19 +417,6 @@ RSpec.describe Phase do
       phase = create(:phase, start_at: Time.zone.today, end_at: nil)
       phase.start_at += 1.day
       expect(phase).to be_valid
-    end
-  end
-
-  describe '#custom_form_persisted?' do
-    it 'returns true when the custom_form has been saved' do
-      phase = create(:phase)
-      create(:custom_form, participation_context: phase)
-      expect(phase.custom_form_persisted?).to be true
-    end
-
-    it 'returns false when there is no custom_form' do
-      phase = create(:phase)
-      expect(phase.custom_form_persisted?).to be false
     end
   end
 end

@@ -35,6 +35,7 @@ import messages from '../../messages';
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
 import PollInputs from './components/inputs/PollInputs';
+import ProposalsInputs from './components/inputs/ProposalsInputs';
 import SurveyInputs from './components/inputs/SurveyInputs';
 import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
@@ -44,6 +45,7 @@ import {
   ideationDefaultConfig,
   IPhaseParticipationConfig,
   nativeSurveyDefaultConfig,
+  proposalsDefaultConfig,
   surveyDefaultConfig,
   votingDefaultConfig,
 } from './utils/participationMethodConfigs';
@@ -164,6 +166,7 @@ const PhaseParticipationConfig = ({
     const native_survey = participation_method === 'native_survey';
     const voting = participation_method === 'voting';
     const survey = participation_method === 'survey';
+    const proposals = participation_method === 'proposals';
 
     setParticipationConfig(() => ({
       ...defaultParticipationConfig,
@@ -173,6 +176,7 @@ const PhaseParticipationConfig = ({
       ...(voting ? votingDefaultConfig : {}),
       ...(survey ? surveyDefaultConfig : {}),
       ...(native_survey ? nativeSurveyDefaultConfig : {}),
+      ...(proposals ? proposalsDefaultConfig : {}),
     }));
   };
 
@@ -477,6 +481,35 @@ const PhaseParticipationConfig = ({
             handleReactingDislikeEnabledOnChange={
               handleReactingDislikeEnabledOnChange
             }
+            handleAllowAnonymousParticipationOnChange={
+              handleAllowAnonymousParticipationOnChange
+            }
+            presentation_mode={presentation_mode}
+            handleIdeasDisplayChange={handleIdeasDisplayChange}
+            ideas_order={ideas_order}
+            handleIdeaDefaultSortMethodChange={
+              handleIdeaDefaultSortMethodChange
+            }
+          />
+        )}
+
+        {participation_method === 'proposals' && (
+          <ProposalsInputs
+            input_term={input_term}
+            handleInputTermChange={handleInputTermChange}
+            posting_enabled={posting_enabled}
+            commenting_enabled={commenting_enabled}
+            reacting_enabled={reacting_enabled}
+            reacting_like_method={reacting_like_method}
+            reacting_like_limited_max={reacting_like_limited_max}
+            noLikingLimitError={noLikingLimitError}
+            allow_anonymous_participation={allow_anonymous_participation}
+            apiErrors={apiErrors}
+            togglePostingEnabled={togglePostingEnabled}
+            toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleReactingEnabled={toggleReactingEnabled}
+            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+            handleLikingLimitOnChange={handleLikingLimitOnChange}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }

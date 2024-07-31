@@ -1,11 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
-import {
-  Radio,
-  IconTooltip,
-  Toggle,
-  IOption,
-} from '@citizenlab/cl2-component-library';
+import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
@@ -14,19 +9,15 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import {
-  StyledSectionField,
-  ToggleRow,
-  ReactingLimitInput,
-} from '../../shared/styling';
-
-import SortingPicker from './SortingPicker';
+import { ReactingLimitInput } from '../../shared/styling';
+import SortingPicker from '../_shared/SortingPicker';
+import UserActions from '../_shared/UserActions';
 
 interface Props {
   input_term: InputTerm | undefined;
@@ -97,12 +88,6 @@ const IdeationInputs = ({
   ideas_order,
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
-  const { formatMessage } = useIntl();
-  const reactingLimited = useRef(
-    reacting_like_method === 'limited' || reacting_dislike_method === 'limited'
-  );
-  const showReactingLimits = reactingLimited.current;
-
   return (
     <>
       <AnonymousPostingToggle
@@ -115,169 +100,99 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-      <StyledSectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.enabledActionsForUsers} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.enabledActionsTooltip} />}
-          />
-        </SubSectionTitle>
+      <UserActions
+        posting_enabled={posting_enabled || false}
+        commenting_enabled={commenting_enabled || false}
+        reacting_enabled={reacting_enabled || false}
+        togglePostingEnabled={togglePostingEnabled}
+        toggleCommentingEnabled={toggleCommentingEnabled}
+        toggleReactingEnabled={toggleReactingEnabled}
+        apiErrors={apiErrors}
+        reacting_like_method={reacting_like_method}
+        reacting_like_limited_max={reacting_like_limited_max}
+        noLikingLimitError={noLikingLimitError}
+        handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+        handleLikingLimitOnChange={handleLikingLimitOnChange}
+      />
 
-        <ToggleRow>
-          <Toggle
-            checked={posting_enabled || false}
-            onChange={togglePostingEnabled}
-            label={formatMessage(messages.inputPostingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
-        </ToggleRow>
-
-        <ToggleRow>
-          <Toggle
-            checked={commenting_enabled || false}
-            onChange={toggleCommentingEnabled}
-            label={formatMessage(messages.inputCommentingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-        </ToggleRow>
-
-        <ToggleRow className="last">
-          <Toggle
-            checked={reacting_enabled || false}
-            onChange={toggleReactingEnabled}
-            label={formatMessage(messages.inputReactingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
-        </ToggleRow>
-      </StyledSectionField>
       {reacting_enabled && (
-        <>
-          {showReactingLimits && (
+        <FeatureFlag name="disable_disliking">
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.dislikingPosts} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.disableDislikingTooltip} />
+                }
+              />
+            </SubSectionTitle>
+            <Radio
+              onChange={handleReactingDislikeEnabledOnChange}
+              currentValue={reacting_dislike_enabled}
+              value={true}
+              name="enableDisliking"
+              id="enableDisliking-true"
+              label={<FormattedMessage {...messages.dislikingEnabled} />}
+            />
+            <Radio
+              onChange={handleReactingDislikeEnabledOnChange}
+              currentValue={reacting_dislike_enabled}
+              value={false}
+              name="enableDisliking"
+              id="enableDisliking-false"
+              label={<FormattedMessage {...messages.dislikingDisabled} />}
+            />
+            <Error
+              apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
+            />
+          </SectionField>
+          {reacting_dislike_enabled && (
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.likingMethodTitle} />
+                <FormattedMessage {...messages.dislikingMethodTitle} />
               </SubSectionTitle>
               <Radio
-                onChange={handleReactingLikeMethodOnChange}
-                currentValue={reacting_like_method}
+                onChange={handleReactingDislikeMethodOnChange}
+                currentValue={reacting_dislike_method}
                 value="unlimited"
-                name="likingmethod"
-                id="likingmethod-unlimited"
+                name="dislikingmethod"
+                id="dislikingmethod-unlimited"
                 label={<FormattedMessage {...messages.unlimited} />}
               />
               <Radio
-                onChange={handleReactingLikeMethodOnChange}
-                currentValue={reacting_like_method}
+                onChange={handleReactingDislikeMethodOnChange}
+                currentValue={reacting_dislike_method}
                 value="limited"
-                name="likingmethod"
-                id="likingmethod-limited"
+                name="dislikingmethod"
+                id="dislikingmethod-limited"
                 label={<FormattedMessage {...messages.limited} />}
               />
-              <Error apiErrors={apiErrors && apiErrors.reacting_method} />
-
-              {reacting_like_method === 'limited' && (
+              {reacting_dislike_method === 'limited' && (
                 <>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.maxLikes} />
+                    <FormattedMessage {...messages.maxDislikes} />
                   </SubSectionTitle>
                   <ReactingLimitInput
-                    id="liking-limit"
+                    id="disliking-limit"
                     type="number"
                     min="1"
                     placeholder=""
                     value={
-                      reacting_like_limited_max
-                        ? reacting_like_limited_max.toString()
+                      reacting_dislike_limited_max
+                        ? reacting_dislike_limited_max.toString()
                         : null
                     }
-                    onChange={handleLikingLimitOnChange}
+                    onChange={handleDislikingLimitOnChange}
                   />
                   <Error
-                    text={noLikingLimitError}
+                    text={noDislikingLimitError}
                     apiErrors={apiErrors && apiErrors.reacting_limit}
                   />
                 </>
               )}
             </SectionField>
           )}
-          <FeatureFlag name="disable_disliking">
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.dislikingPosts} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.disableDislikingTooltip} />
-                  }
-                />
-              </SubSectionTitle>
-              <Radio
-                onChange={handleReactingDislikeEnabledOnChange}
-                currentValue={reacting_dislike_enabled}
-                value={true}
-                name="enableDisliking"
-                id="enableDisliking-true"
-                label={<FormattedMessage {...messages.dislikingEnabled} />}
-              />
-              <Radio
-                onChange={handleReactingDislikeEnabledOnChange}
-                currentValue={reacting_dislike_enabled}
-                value={false}
-                name="enableDisliking"
-                id="enableDisliking-false"
-                label={<FormattedMessage {...messages.dislikingDisabled} />}
-              />
-              <Error
-                apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
-              />
-            </SectionField>
-            {reacting_dislike_enabled && showReactingLimits && (
-              <SectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.dislikingMethodTitle} />
-                </SubSectionTitle>
-                <Radio
-                  onChange={handleReactingDislikeMethodOnChange}
-                  currentValue={reacting_dislike_method}
-                  value="unlimited"
-                  name="dislikingmethod"
-                  id="dislikingmethod-unlimited"
-                  label={<FormattedMessage {...messages.unlimited} />}
-                />
-                <Radio
-                  onChange={handleReactingDislikeMethodOnChange}
-                  currentValue={reacting_dislike_method}
-                  value="limited"
-                  name="dislikingmethod"
-                  id="dislikingmethod-limited"
-                  label={<FormattedMessage {...messages.limited} />}
-                />
-                {reacting_dislike_method === 'limited' && (
-                  <>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.maxDislikes} />
-                    </SubSectionTitle>
-                    <ReactingLimitInput
-                      id="disliking-limit"
-                      type="number"
-                      min="1"
-                      placeholder=""
-                      value={
-                        reacting_dislike_limited_max
-                          ? reacting_dislike_limited_max.toString()
-                          : null
-                      }
-                      onChange={handleDislikingLimitOnChange}
-                    />
-                    <Error
-                      text={noDislikingLimitError}
-                      apiErrors={apiErrors && apiErrors.reacting_limit}
-                    />
-                  </>
-                )}
-              </SectionField>
-            )}
-          </FeatureFlag>
-        </>
+        </FeatureFlag>
       )}
 
       <DefaultViewPicker

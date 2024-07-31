@@ -28,7 +28,7 @@ resource 'Idea Custom Fields' do
 
     let(:context) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
-    let(:participation_method) { Factory.instance.participation_method_for context }
+    let(:participation_method) { context.pmethod }
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
       IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|

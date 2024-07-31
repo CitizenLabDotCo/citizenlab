@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update requirements schema]
+  before_action :set_permission, only: %i[show update reset requirements schema]
   skip_before_action :authenticate_user
 
   def index
@@ -10,9 +10,9 @@ class WebApi::V1::PermissionsController < ApplicationController
       .filter_enabled_actions(permission_scope)
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
-    @permissions = @permissions.includes(:permission_scope, :custom_fields, permissions_fields: [:custom_field])
+    @permissions = @permissions.includes(:permission_scope, :custom_fields, :groups, permissions_custom_fields: [custom_field: [:options]])
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_fields custom_fields])
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
 
   def show
@@ -23,6 +23,18 @@ class WebApi::V1::PermissionsController < ApplicationController
     @permission.assign_attributes(permission_params)
     authorize @permission
     if @permission.save
+      render json: serialize(@permission), status: :ok
+    else
+      render json: { errors: @permission.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def reset
+    authorize @permission
+    @permission.global_custom_fields = true
+    if @permission.save
+      @permission.permissions_custom_fields.destroy_all
+      @permission.groups_permissions.destroy_all
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
@@ -53,7 +65,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     WebApi::V1::PermissionSerializer.new(
       permission,
       params: jsonapi_serializer_params,
-      include: %i[permissions_fields custom_fields]
+      include: %i[permissions_custom_fields custom_fields]
     ).serializable_hash
   end
 

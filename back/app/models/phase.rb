@@ -58,7 +58,7 @@ class Phase < ApplicationRecord
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
 
-  PARTICIPATION_METHODS = %w[information ideation survey voting poll volunteering native_survey document_annotation].freeze
+  PARTICIPATION_METHODS = %w[information ideation proposals survey voting poll volunteering native_survey document_annotation].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze
@@ -82,9 +82,9 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
-  before_validation :set_participation_method, on: :create
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
+  before_save :reload_participation_method, if: :will_save_change_to_participation_method?
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -102,42 +102,43 @@ class Phase < ApplicationRecord
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-  # ideation? or voting?
-  with_options if: :can_contain_ideas? do
-    validates :presentation_mode,
-      inclusion: { in: PRESENTATION_MODES }, allow_nil: true
+  with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
+    validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
+    validates :presentation_mode, presence: true
+  end
 
+  with_options if: ->(phase) { phase.pmethod.supports_posting_inputs? } do
     validates :posting_enabled, inclusion: { in: [true, false] }
     validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
+    validates :posting_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_commenting? } do
     validates :commenting_enabled, inclusion: { in: [true, false] }
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? } do
     validates :reacting_enabled, inclusion: { in: [true, false] }
     validates :reacting_like_method, presence: true, inclusion: { in: REACTING_METHODS }
     validates :reacting_dislike_enabled, inclusion: { in: [true, false] }
     validates :reacting_dislike_method, presence: true, inclusion: { in: REACTING_METHODS }
-    validates :input_term, inclusion: { in: INPUT_TERMS }
+  end
 
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? && phase.reacting_like_limited? } do
+    validates :reacting_like_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_reacting? && phase.reacting_dislike_limited? } do
+    validates :reacting_dislike_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_input_term? } do
+    validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
   end
-  validates :ideas_order, inclusion: {
-    in: lambda do |pc|
-      Factory.instance.participation_method_for(pc).allowed_ideas_orders
-    end
-  }, allow_nil: true
-  validates :posting_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_input? posting_limited?]
-  validates :reacting_like_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_ideas? reacting_like_limited?]
-  validates :reacting_dislike_limited_max, presence: true,
-    numericality: { only_integer: true, greater_than: 0 },
-    if: %i[can_contain_ideas? reacting_dislike_limited?]
-  validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
-  # ideation?
-  with_options if: :ideation? do
-    validates :presentation_mode, presence: true
-  end
+  validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true
+  validates :allow_anonymous_participation, inclusion: { in: [true, false] }
 
   # voting?
   with_options if: :voting? do
@@ -204,34 +205,6 @@ class Phase < ApplicationRecord
     @previous_phase_end_at_updated || false
   end
 
-  def ideation?
-    participation_method == 'ideation'
-  end
-
-  def information?
-    participation_method == 'information'
-  end
-
-  def voting?
-    participation_method == 'voting'
-  end
-
-  def native_survey?
-    participation_method == 'native_survey'
-  end
-
-  def can_contain_ideas?
-    ideation? || voting?
-  end
-
-  def can_contain_input?
-    can_contain_ideas? || native_survey?
-  end
-
-  def uses_input_form?
-    native_survey?
-  end
-
   def custom_form_persisted?
     custom_form.present?
   end
@@ -262,6 +235,21 @@ class Phase < ApplicationRecord
 
   def started?
     start_at <= Time.zone.now
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def voting?
+    participation_method == 'voting'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def native_survey?
+    participation_method == 'native_survey'
+  end
+
+  def pmethod
+    reload_participation_method if !@pmethod
+    @pmethod
   end
 
   private
@@ -336,12 +324,33 @@ class Phase < ApplicationRecord
     end
   end
 
-  def set_participation_method
-    self.participation_method ||= 'ideation'
+  def set_participation_method_defaults
+    pmethod.assign_defaults_for_phase
   end
 
-  def set_participation_method_defaults
-    Factory.instance.participation_method_for(self).assign_defaults_for_phase
+  def reload_participation_method
+    @pmethod = case participation_method
+    when 'information'
+      ParticipationMethod::Information.new(self)
+    when 'ideation'
+      ParticipationMethod::Ideation.new(self)
+    when 'proposals'
+      ParticipationMethod::Proposals.new(self)
+    when 'native_survey'
+      ParticipationMethod::NativeSurvey.new(self)
+    when 'document_annotation'
+      ParticipationMethod::DocumentAnnotation.new(self)
+    when 'survey'
+      ParticipationMethod::Survey.new(self)
+    when 'voting'
+      ParticipationMethod::Voting.new(self)
+    when 'poll'
+      ParticipationMethod::Poll.new(self)
+    when 'volunteering'
+      ParticipationMethod::Volunteering.new(self)
+    else
+      ParticipationMethod::None.new
+    end
   end
 
   def set_presentation_mode

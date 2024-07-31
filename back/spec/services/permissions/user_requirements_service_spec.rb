@@ -86,7 +86,7 @@ describe Permissions::UserRequirementsService do
 
         before do
           field = CustomField.find_by code: 'birthyear'
-          create(:permissions_field, permission: permission, custom_field: field, required: false)
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
 
         it 'does not permit a visitor' do
@@ -207,7 +207,7 @@ describe Permissions::UserRequirementsService do
 
         before do
           field = CustomField.find_by code: 'birthyear'
-          create(:permissions_field, permission: permission, custom_field: field, required: false)
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
 
         it 'does not permit a visitor' do
@@ -384,7 +384,7 @@ describe Permissions::UserRequirementsService do
           before do
             permission
             field = CustomField.find_by code: 'birthyear'
-            create(:permissions_field, permission: permission, custom_field: field, required: true)
+            create(:permissions_custom_field, permission: permission, custom_field: field, required: true)
           end
 
           it 'does not permit a visitor' do
@@ -586,7 +586,7 @@ describe Permissions::UserRequirementsService do
 
         before do
           field = CustomField.find_by code: 'birthyear'
-          create(:permissions_field, permission: permission, custom_field: field, required: false)
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
 
         it 'permits a fully registered confirmed resident' do
@@ -612,7 +612,7 @@ describe Permissions::UserRequirementsService do
     let(:permission) do
       create(:permission).tap do |permission|
         custom_fields.take(2).each do |field|
-          create(:permissions_field, permission: permission, custom_field: field, required: !field.required)
+          create(:permissions_custom_field, permission: permission, custom_field: field, required: !field.required)
         end
         permission.reload
       end

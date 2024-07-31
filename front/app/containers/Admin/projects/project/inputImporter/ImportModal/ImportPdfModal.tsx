@@ -65,7 +65,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
       ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
-      : `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   const defaultValues: FormValues = {
     locale,

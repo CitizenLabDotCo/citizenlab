@@ -45,8 +45,8 @@ class CustomField < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
-  has_many :permissions_fields, dependent: :destroy
-  has_many :permissions, through: :permissions_fields
+  has_many :permissions_custom_fields, dependent: :destroy
+  has_many :permissions, through: :permissions_custom_fields
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
@@ -222,10 +222,6 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context.project
-      phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
-
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -315,6 +311,15 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def input_term
+    phase = if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
+    phase&.input_term || Phase::DEFAULT_INPUT_TERM
   end
 
   private

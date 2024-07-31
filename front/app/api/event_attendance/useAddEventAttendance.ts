@@ -9,7 +9,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsAttendancesKeys from './keys';
 import { IAddEventAttendanceProperties, IEventAttendance } from './types';
 
-const addEventAttendance = async (
+export const addEventAttendance = async (
   requestBody: IAddEventAttendanceProperties
 ) => {
   return fetcher<IEventAttendance>({

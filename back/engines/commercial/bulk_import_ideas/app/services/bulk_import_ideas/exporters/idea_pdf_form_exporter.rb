@@ -11,7 +11,7 @@ module BulkImportIdeas::Exporters
 
     def initialize(phase, locale, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).printable_fields
+      @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields
       @personal_data_enabled = personal_data_enabled
       @previous_cursor = nil
       @app_configuration = AppConfiguration.instance
@@ -161,8 +161,11 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      participation_method = @phase.participation_method
-      personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
+      personal_data_explanation_key = if @phase.pmethod.supports_public_visibility?
+        'form_builder.pdf_export.personal_data_explanation_public'
+      else
+        'form_builder.pdf_export.personal_data_explanation_private'
+      end
       pdf.text I18n.with_locale(@locale) {
         I18n.t(
           personal_data_explanation_key,
@@ -279,8 +282,7 @@ module BulkImportIdeas::Exporters
 
     def write_instructions_and_disclaimers(pdf, custom_field)
       show_multiselect_instructions = custom_field.input_type == 'multiselect'
-      participation_method = Factory.instance.participation_method_for @phase
-      show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
+      show_visibility_disclaimer = @phase.pmethod.supports_idea_form? && custom_field.answer_visible_to == 'admins'
 
       if show_multiselect_instructions || show_visibility_disclaimer
         pdf.move_down 2.mm

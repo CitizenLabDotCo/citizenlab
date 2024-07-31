@@ -146,7 +146,6 @@ const IdeaButton = memo<Props>(
           projectId={projectId}
           inMap={inMap}
           disabledReason={disabledReason}
-          phase={phase}
         />
       );
     }
@@ -162,7 +161,6 @@ const IdeaButton = memo<Props>(
                 projectId={projectId}
                 inMap={inMap}
                 disabledReason={disabledReason}
-                phase={phase}
               />
             ) : null
           }

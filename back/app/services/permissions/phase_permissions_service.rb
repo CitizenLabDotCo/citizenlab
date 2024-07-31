@@ -40,6 +40,10 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
+    VOLUNTEERING_DENIED_REASONS = {
+      not_volunteering: 'not_volunteering'
+    }.freeze
+
     def initialize(phase, user, user_requirements_service: nil)
       super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
@@ -63,8 +67,10 @@ module Permissions
         taking_survey_denied_reason_for_action
       when 'taking_poll'
         taking_poll_denied_reason_for_action
+      when 'volunteering'
+        volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}"
+        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
       end
       return phase_denied_reason if phase_denied_reason
 
@@ -79,8 +85,8 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_action
-      if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
-        POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
+      if !participation_method.supports_posting_inputs?
+        POSTING_DENIED_REASONS[:posting_not_supported]
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
       elsif user && posting_limit_reached?
@@ -90,14 +96,14 @@ module Permissions
 
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
-        COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
+        COMMENTING_DENIED_REASONS[:commenting_not_supported]
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end
     end
 
     def reacting_denied_reason_for_action(reaction_mode: nil)
-      if !phase.ideation?
+      if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
@@ -136,6 +142,12 @@ module Permissions
       end
     end
 
+    def volunteering_denied_reason_for_phase
+      unless phase.volunteering?
+        VOLUNTEERING_DENIED_REASONS[:not_volunteering]
+      end
+    end
+
     # Helper methods
 
     def posting_limit_reached?
@@ -162,7 +174,7 @@ module Permissions
     end
 
     def participation_method
-      @participation_method ||= Factory.instance.participation_method_for(phase)
+      @participation_method ||= phase.pmethod
     end
   end
 end
