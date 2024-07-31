@@ -28,10 +28,13 @@ module Permissions
     def default_fields(permission)
       return [] unless permission.allow_global_custom_fields?
 
-      custom_fields = CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
-      custom_fields.each_with_index.map do |field, index|
+      platform_custom_fields.each_with_index.map do |field, index|
         PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end
+    end
+
+    def platform_custom_fields
+      @platform_custom_fields ||= CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
     end
 
     def verified_actions_enabled?
