@@ -101,7 +101,9 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
       pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
     const isVotingPhase = participationMethod === 'voting';
     const showIdeas =
-      participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
+      participationMethod === 'ideation' ||
+      participationMethod === 'proposals' ||
+      (isVotingPhase && !isPastPhase);
     const showVotingResults = isVotingPhase && isPastPhase;
 
     const reportId = selectedPhase.relationships.report?.data?.id;

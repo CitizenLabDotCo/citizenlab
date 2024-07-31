@@ -196,6 +196,7 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
+  transitive?: boolean;
 }
 
 export interface IIdeaApprovals {

@@ -122,6 +122,7 @@ resource 'Permissions' do
       end
     end
 
+    # TODO: move-old-proposals-test
     get 'web_api/v1/permissions/:action' do
       let(:action) { 'posting_initiative' }
 
@@ -188,6 +189,7 @@ resource 'Permissions' do
       end
     end
 
+    # TODO: move-old-proposals-test
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false

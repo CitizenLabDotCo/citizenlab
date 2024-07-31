@@ -11,6 +11,7 @@ import {
   ProjectReactingDisabledReason,
   ProjectSurveyDisabledReason,
   ProjectVotingDisabledReason,
+  ProjectVolunteeringDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -99,6 +100,7 @@ export interface IProjectAttributes {
     annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
     voting: ActionDescriptor<ProjectVotingDisabledReason>;
     attending_event: ActionDescriptor<ProjectDisabledReason>;
+    volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
   };
   uses_content_builder: boolean;
 }
