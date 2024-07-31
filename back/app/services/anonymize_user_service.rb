@@ -55,19 +55,10 @@ class AnonymizeUserService
   private
 
   def random_custom_field_values(user: nil)
-    custom_field_values = {}
-    if user
-      properties = %w[gender education birthyear]
-      user[:custom_field_values].each do |property, value|
-        if properties.include? property
-          custom_field_values[property] = value
-        end
-      end
+    user&.custom_field_values.to_h.slice('gender', 'birthyear').tap do |cf_values|
+      cf_values['gender'] ||= User::GENDERS.sample
+      cf_values['birthyear'] ||= random_birthyear
     end
-    custom_field_values['gender'] ||= User::GENDERS.sample
-    custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= rand(2..8).to_s
-    custom_field_values
   end
 
   def mismatch_gender(gender)

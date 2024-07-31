@@ -295,7 +295,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     registration_completed_at: '2018-03-28 13:34:57'
     password: democracy2.0
     remote_avatar_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/sk_avatar.png
@@ -312,7 +311,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password: democracy2.0
     remote_avatar_url:
     created_at: '2018-03-28 13:35:02'
@@ -327,7 +325,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -343,7 +340,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -359,7 +355,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -374,7 +369,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$wSfT0drbbyCYYclUriA76u33HHMunpjkPoOh.dQWhJiJxx60ih/2e"
     remote_avatar_url:
     roles: []
@@ -389,7 +383,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$I1S3K3nNuHuq8WzPCPyf..Xs0N6e8DLJh2QxIV5Ek.jwVvOtvup4K"
     remote_avatar_url:
     roles: []
@@ -404,7 +397,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$CRh2rjLDeraWqqbUvFYg7.jKGhoe.CNBHQpPy2SfZhOKKGIQupx8e"
     remote_avatar_url:
     roles:
@@ -420,7 +412,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$sZwQpPuMiJkkOOoc5ZvDxe48tpnA7EWNmoS7QvoMctD/uZROYrnz."
     remote_avatar_url:
     roles: []
@@ -435,7 +426,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$L4ekuM6mZl7qa4MLRQRHFetMnMMr7JACfWdDzZ2Moj..IZZI.PqDa"
     remote_avatar_url:
     roles: []
@@ -450,7 +440,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$cKr5m15WIbhsR1QJmdWZ8OUCQQ/oz1WDOzrh0TsOf/QnW2.4xFkxG"
     remote_avatar_url:
     roles: []
@@ -465,7 +454,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$W3AKY8LVvXlNrbf28tRLYul25b2oIcU/XBOCOSpgFzup3dgbTTjuS"
     remote_avatar_url:
     roles: []
@@ -480,7 +468,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$NFU2JwunuN3vzp8AOGy76.XhbGVg3FgMLGoriCE4/NBnDdu13FRjC"
     remote_avatar_url:
     roles: []
@@ -495,7 +482,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$u9mkhE/suGQlXcVb6bgf6.f5S/i39hycOOcLkd4qqRrIBbcRMkOLO"
     remote_avatar_url:
     roles: []
@@ -510,7 +496,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$.X258VC6KFXWZ1doF2rIy.2yjOvDYTC1EcW7KCeqjcqUWp8iFg/Fq"
     remote_avatar_url:
     roles:
@@ -526,7 +511,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$zFqLIiT/RRVC.wSQZ065xeTsxPlHxJ2HBYVWxpH2GikSkiUFv7QhC"
     remote_avatar_url:
     roles: []
@@ -541,7 +525,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$uR48yypIVWE6np2hRN4kceeFZeJc8hBOCB8534mK/oKU61fB1pVP."
     remote_avatar_url:
     roles: []
@@ -556,7 +539,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$L91ykn5UGZeZ59j57Ai.gOoLC/wQ3suSQ.Q6c9k.hIErR2TvY8s4a"
     remote_avatar_url:
     roles: []
@@ -571,7 +553,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$VTHFZHun6iy9HXhGPR/xyuz/DWyDeS4QkXrmArhmsKTLvMCNVgzjK"
     remote_avatar_url:
     roles: []
@@ -586,7 +567,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$T9gaXQEjp3wctbZrWlr/U.VezpM31prSfL3P6Nk/Vx0oOmJLY4l7."
     remote_avatar_url:
     roles:
@@ -602,7 +582,6 @@ models:
     gender:
     birthyear:
     domicile:
-    education:
     password_digest: "$2a$10$xfxVN6QSwzMGy9/RsmYSs./iOUfz8tTZFiQEH5a/WsVxjgC4c9vCa"
     remote_avatar_url:
     roles: []
@@ -15858,15 +15837,6 @@ models:
     ordering: 2
     enabled: false
     code: domicile
-  - &6
-    resource_type: User
-    key: education
-    title_multiloc: custom_fields.users.education.title
-    input_type: select
-    required: false
-    ordering: 3
-    enabled: false
-    code: education
   - &custom_idea_number_field
     resource_ref: *custom_idea_fields_custom_form
     key: number_of_benches
@@ -15900,34 +15870,6 @@ models:
     key: unspecified
     title_multiloc: custom_field_options.gender.unspecified
     ordering: 2
-  - custom_field_ref: *6
-    key: '2'
-    title_multiloc: custom_field_options.education.ISCED2
-    ordering: 0
-  - custom_field_ref: *6
-    key: '3'
-    title_multiloc: custom_field_options.education.ISCED3
-    ordering: 1
-  - custom_field_ref: *6
-    key: '4'
-    title_multiloc: custom_field_options.education.ISCED4
-    ordering: 2
-  - custom_field_ref: *6
-    key: '5'
-    title_multiloc: custom_field_options.education.ISCED5
-    ordering: 3
-  - custom_field_ref: *6
-    key: '6'
-    title_multiloc: custom_field_options.education.ISCED6
-    ordering: 4
-  - custom_field_ref: *6
-    key: '7'
-    title_multiloc: custom_field_options.education.ISCED7
-    ordering: 5
-  - custom_field_ref: *6
-    key: '8'
-    title_multiloc: custom_field_options.education.ISCED8
-    ordering: 6
   analytics/dimension_date:
     - date: '2022-09-01'
       year: '2022'

@@ -240,25 +240,5 @@ FactoryBot.define do
       code { 'domicile' }
       input_type { 'select' }
     end
-
-    factory :custom_field_education do
-      key { 'education' }
-      title_multiloc { { 'en' => 'education' } }
-      code { 'education' }
-      input_type { 'select' }
-      enabled { false }
-
-      trait :with_options do
-        after(:create) do |cf|
-          create(:custom_field_option, custom_field: cf, key: '2')
-          create(:custom_field_option, custom_field: cf, key: '3')
-          create(:custom_field_option, custom_field: cf, key: '4')
-          create(:custom_field_option, custom_field: cf, key: '5')
-          create(:custom_field_option, custom_field: cf, key: '6')
-          create(:custom_field_option, custom_field: cf, key: '7')
-          create(:custom_field_option, custom_field: cf, key: '8')
-        end
-      end
-    end
   end
 end

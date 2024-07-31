@@ -406,15 +406,6 @@ models:
       ordering: 2
       enabled: true
       code: domicile
-    - &cfeducation
-      resource_type: User
-      key: education
-      title_multiloc: custom_fields.users.education.title
-      input_type: select
-      required: false
-      ordering: 3
-      enabled: false
-      code: education
   custom_field_option:
     - custom_field_ref: *cfgender
       key: male
@@ -428,31 +419,3 @@ models:
       key: unspecified
       title_multiloc: custom_field_options.gender.unspecified
       ordering: 2
-    - custom_field_ref: *cfeducation
-      key: "2"
-      title_multiloc: custom_field_options.education.ISCED2
-      ordering: 0
-    - custom_field_ref: *cfeducation
-      key: "3"
-      title_multiloc: custom_field_options.education.ISCED3
-      ordering: 1
-    - custom_field_ref: *cfeducation
-      key: "4"
-      title_multiloc: custom_field_options.education.ISCED4
-      ordering: 2
-    - custom_field_ref: *cfeducation
-      key: "5"
-      title_multiloc: custom_field_options.education.ISCED5
-      ordering: 3
-    - custom_field_ref: *cfeducation
-      key: "6"
-      title_multiloc: custom_field_options.education.ISCED6
-      ordering: 4
-    - custom_field_ref: *cfeducation
-      key: "7"
-      title_multiloc: custom_field_options.education.ISCED7
-      ordering: 5
-    - custom_field_ref: *cfeducation
-      key: "8"
-      title_multiloc: custom_field_options.education.ISCED8
-      ordering: 6
