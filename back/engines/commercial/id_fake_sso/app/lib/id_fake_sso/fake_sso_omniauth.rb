@@ -14,6 +14,12 @@ module IdFakeSso
       # TODO
       options = env['omniauth.strategy'].options
 
+      # No idea why we need to do this but otherwise
+      # the omniauth_openid_connect gem
+      # will start complaining that our nonce does not match
+      session = env['rack.session']
+      session['omniauth.nonce'] = nil
+
       options[:issuer] = issuer
       options[:jwt_secret_base64] = jwt_secret_base64
       options[:client_options] = {

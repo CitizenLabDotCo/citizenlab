@@ -16,12 +16,12 @@ const createJwt = () => {
     email: `${uid.slice(0, 6)}@example.com`,
     email_verified: true,
     name: "John Doe",
-    azp: "govocal_platform",
+    azp: "govocal_client",
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()
     .setIssuer("http://host.docker.internal")
-    .setAudience("govocal_platform")
+    .setAudience("govocal_client")
     .setExpirationTime("2h")
     .sign(secret);
 };
