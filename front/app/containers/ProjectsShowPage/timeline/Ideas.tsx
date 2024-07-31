@@ -68,16 +68,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const participationMethod = phase.attributes.participation_method;
   const isVotingContext = participationMethod === 'voting';
 
-  if (
-    !(
-      participationMethod === 'ideation' ||
-      participationMethod === 'voting' ||
-      participationMethod === 'proposals'
-    )
-  ) {
-    return null;
-  }
-
   const inputTerm = phase.attributes.input_term;
 
   return (
