@@ -107,7 +107,7 @@ resource 'IdeaStatuses' do
       before { admin_header_token }
 
       example_request 'Create an idea status' do
-        assert_status 200
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).not_to be_empty
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'ideation'
@@ -122,7 +122,7 @@ resource 'IdeaStatuses' do
         let(:code) { 'custom' }
 
         example_request 'Create a proposals status' do
-          assert_status 200
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).not_to be_empty
           expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'proposals'
@@ -172,6 +172,35 @@ resource 'IdeaStatuses' do
     end
   end
 
+  patch 'web_api/v1/idea_statuses/:id/reorder' do
+    with_options scope: :idea_status do
+      parameter :ordering, 'The position, starting from 0, where the status should be at. Fields after will move down.', required: true
+    end
+
+    before { create_list(:idea_status, 3) }
+
+    let(:id) { create(:idea_status).id }
+    let(:ordering) { 1 }
+
+    context 'when resident' do
+      before { resident_header_token }
+
+      example 'Cannot reorder an idea status', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'Reorder an idea status' do
+        assert_status 200
+        expect(response_data.dig(:attributes, :ordering)).to eq ordering
+      end
+    end
+  end
+
   delete 'web_api/v1/idea_statuses/:id' do
     let(:id) { create(:idea_status).id }
 
@@ -197,7 +226,7 @@ resource 'IdeaStatuses' do
       before { admin_header_token }
 
       example_request 'Delete a idea status by ID' do
-        assert_status 204
+        assert_status 200
         expect(IdeaStatus.find_by(id: id)).to be_nil
       end
     end

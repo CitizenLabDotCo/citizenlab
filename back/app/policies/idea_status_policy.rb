@@ -26,7 +26,15 @@ class IdeaStatusPolicy < ApplicationPolicy
     create?
   end
 
+  def reorder?
+    update?
+  end
+
   def destroy?
     update?
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
   end
 end

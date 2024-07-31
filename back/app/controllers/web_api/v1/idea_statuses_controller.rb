@@ -1,44 +1,48 @@
 # frozen_string_literal: true
 
 class WebApi::V1::IdeaStatusesController < ApplicationController
+  serializer_class WebApi::V1::IdeaStatusSerializer
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
     idea_statuses = policy_scope(IdeaStatus)
-    idea_statuses = idea_statuses.where(participation_method: params[:participation_method]) if params[:participation_method].present?
-    render json: WebApi::V1::IdeaStatusSerializer.new(idea_statuses).serializable_hash, status: :ok
+    idea_statuses = filter_params idea_statuses, :participation_method
+    render_success idea_statuses
   end
 
   def show
-    render json: WebApi::V1::IdeaStatusSerializer.new(idea_status).serializable_hash, status: :ok
+    render_success idea_status
   end
 
   def create
     idea_status = IdeaStatus.new(idea_status_params)
     authorize idea_status
     if idea_status.save
-      render json: ::WebApi::V1::IdeaStatusSerializer.new(idea_status).serializable_hash, status: :ok
+      render_success idea_status
     else
-      render json: { errors: idea_status.errors.details }, status: :unprocessable_entity
+      render_error idea_status
     end
   end
 
   def update
     if idea_status.update(idea_status_params)
-      render json: ::WebApi::V1::IdeaStatusSerializer.new(idea_status).serializable_hash, status: :ok
+      render_success idea_status
     else
-      render json: { errors: idea_status.errors.details }, status: :unprocessable_entity
+      render_error idea_status
     end
   end
 
-  # TODO: Add reordering
+  def reorder
+    if idea_status.insert_at(permitted_attributes(idea_status)[:ordering])
+      render_success idea_status
+    else
+      render_error idea_status
+    end
+  end
 
   def destroy
-    if idea_status.destroy
-      head :no_content
-    else
-      render json: { errors: idea_status.errors.details }, status: :not_allowed
-    end
+    status = idea_status.destroy.destroyed? ? :ok : :internal_server_error
+    head status
   end
 
   private

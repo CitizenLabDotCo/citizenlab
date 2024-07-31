@@ -83,7 +83,9 @@ Rails.application.routes.draw do
 
       resources :background_jobs, only: %i[index]
 
-      resources :idea_statuses
+      resources :idea_statuses do
+        patch 'reorder', on: :member
+      end
       resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
