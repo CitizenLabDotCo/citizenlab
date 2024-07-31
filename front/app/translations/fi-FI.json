@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Vahvista henkilöllisyytesi nyt.",
   "app.containers.IdeaCard.readMore": "Lue lisää",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {ei kommentteja} one {1 kommentti} other {# kommenttia}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ei ääniä} one {1 ääni} other {# ääntä}} / {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Ehdotuksia yhteensä: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Viestejä yhteensä: {ideasCount}",
   "app.containers.IdeaCards.all": "Kaikki",
