@@ -1139,6 +1139,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Potvrdite svoj identitet sad.",
   "app.containers.IdeaCard.readMore": "Čitaj više",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {nema komentara} one {1 komentar} other {# komentara}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {nema glasova} one {1 glas} other {# glasova}} od {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Ukupno prijedloga: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno objava: {ideasCount}",
   "app.containers.IdeaCards.all": "Sve",
