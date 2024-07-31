@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "crwdns2703039:0crwdne2703039:0",
   "app.containers.IdeaCard.readMore": "crwdns2703041:0crwdne2703041:0",
   "app.containers.IdeaCard.xComments": "crwdns2703043:0commentsCount={commentsCount}crwdne2703043:0",
+  "app.containers.IdeaCard.xVotesOfY": "crwdns2735471:0xVotes={xVotes}crwdnd2735471:0votingThreshold={votingThreshold}crwdne2735471:0",
   "app.containers.IdeaCards.a11y_totalInitiatives": "crwdns2703045:0{initiativeCount}crwdne2703045:0",
   "app.containers.IdeaCards.a11y_totalItems": "crwdns2703047:0{ideasCount}crwdne2703047:0",
   "app.containers.IdeaCards.all": "crwdns2703049:0crwdne2703049:0",
