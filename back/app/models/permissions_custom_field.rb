@@ -34,8 +34,7 @@ class PermissionsCustomField < ApplicationRecord
 
   has_many :groups, through: :permission
 
-  validates :permission, presence: true
-  validates :custom_field, presence: true
+  validates :permission, :custom_field, presence: true
   validates :permission_id, uniqueness: { scope: :custom_field_id }
 
   def title_multiloc

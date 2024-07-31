@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-# TODO: JS - add more group tests for all permitted_by values
 describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
