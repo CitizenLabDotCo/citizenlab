@@ -987,9 +987,10 @@ resource 'Projects' do
         example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
           expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
-          allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+          allow(Export::XlsxExport::InputSheetGenerator).to receive(:new)
+            .and_return(Export::XlsxExport::InputSheetGenerator.new(*expected_params))
           do_request
-          expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          expect(Export::XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
           assert_status 200
 
           expect(xlsx_contents(response_body)).to match([

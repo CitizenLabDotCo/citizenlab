@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Export::DomicileFieldForExport do
   subject(:report_field) do
-    described_class.new(custom_field, XlsxExport::ValueVisitor)
+    described_class.new(custom_field, Export::XlsxExport::ValueVisitor)
   end
 
   let(:custom_field) do
