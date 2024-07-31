@@ -30,7 +30,7 @@ class PermissionsCustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: :permission
 
   belongs_to :permission
-  belongs_to :custom_field, optional: true
+  belongs_to :custom_field
 
   has_many :groups, through: :permission
 
