@@ -11,7 +11,7 @@ cy:
       idea_author: '%{authorName} cyflwyno post:'
       initiative_author: '%{authorName} cyflwynodd gynnig:'
       automatically_flagged: >
-        This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.
+        Canfuwyd yn awtomatig bod y postiad hwn yn cynnwys cynnwys amhriodol. Rydym yn anfon yr hysbysiad hwn atoch fel y gallwch adolygu'r post yn unol â'ch canllawiau safoni eich hun.
       how_to_review: >
-        If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.
+        Os nad yw'r post yn cynnwys cynnwys amhriodol, gallwch gael gwared ar y rhybudd trwy'ch platfform yn y tab Gweithgaredd yn y panel gweinyddol.
       cta_review_post: 'Post adolygu'
