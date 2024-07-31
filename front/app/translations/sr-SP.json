@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Потврдите свој идентитет сада.",
   "app.containers.IdeaCard.readMore": "Опширније",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {нема коментара} one {1 коментар} other {# цомментс}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Укупно предлога: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Укупно постова: {ideasCount}",
   "app.containers.IdeaCards.all": "Све",
