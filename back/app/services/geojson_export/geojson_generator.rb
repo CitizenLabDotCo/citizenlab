@@ -11,7 +11,6 @@ module GeojsonExport
       @inputs = phase.ideas.native_survey.published
       @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
-      @field_ids_to_titles = set_non_colliding_titles
     end
 
     def generate_geojson
@@ -46,8 +45,10 @@ module GeojsonExport
     end
 
     def generate_answers_to_questions(input)
+      field_ids_to_titles = set_non_colliding_titles
+
       @fields_in_form.each_with_object({}) do |field, accu|
-        accu[@field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
+        accu[field_ids_to_titles[field.id]] = CustomFieldForExport.new(field).value_from(input)
       end
     end
 
