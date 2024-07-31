@@ -3,9 +3,6 @@
 module IdFakeSso
   class FakeSsoOmniauth < OmniauthMethods::Base
     def profile_to_user_attrs(auth)
-      puts "o0oprorrirut"
-      puts auth.info
-
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
