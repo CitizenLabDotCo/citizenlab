@@ -103,6 +103,7 @@ export default () => {
       search: searchParam ?? undefined,
       idea_status: ideaStatusParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      transitive: true,
     }),
     [sortParam, searchParam, ideaStatusParam, topicsParam]
   );

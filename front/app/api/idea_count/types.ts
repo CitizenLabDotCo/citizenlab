@@ -12,6 +12,7 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   assignee?: string;
   search?: string;
+  transitive?: boolean;
 }
 
 export type IIdeasCount = {

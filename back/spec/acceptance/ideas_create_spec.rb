@@ -1,6 +1,16 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+def public_input_params(spec)
+  spec.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true, extra: 'Maximum 100 characters'
+  spec.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
+  spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
+  spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
+  spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
+  spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
+end
+
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
 
@@ -26,16 +36,10 @@ resource 'Ideas' do
     let(:publication_status) { 'published' }
 
     context 'in an ideation phase' do
+      public_input_params(self)
       with_options scope: :idea do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
-        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-        parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
-        parameter :idea_images_attributes, 'an array of base64 images to create'
-        parameter :idea_files_attributes, 'an array of base64 files to create'
       end
 
       let(:with_permissions) { false }
@@ -51,31 +55,6 @@ resource 'Ideas' do
           example '[error] Create an idea without author', document: false do
             do_request
             assert_status 401
-          end
-        end
-
-        describe "native survey response when permission is 'everyone'" do
-          before { IdeaStatus.create_defaults }
-
-          let(:project) do
-            create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
-              project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
-            end
-          end
-          let(:project_id) { project.id }
-          let(:extra_field_name) { 'custom_field_name1' }
-          let(:form) { create(:custom_form, participation_context: project.phases.first) }
-          let!(:text_field) { create(:custom_field_text, key: extra_field_name, required: true, resource: form) }
-          let(:custom_field_name1) { 'test value' }
-
-          example_request 'Create a native survey response without author' do
-            assert_status 201
-            json_response = json_parse response_body
-            idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.author_id).to be_nil
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
           end
         end
       end
@@ -318,6 +297,7 @@ resource 'Ideas' do
         before { admin_header_token }
 
         parameter :idea_status_id, 'The status of the idea, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'"
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # Tested in separate engine
 
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
 
@@ -397,9 +377,94 @@ resource 'Ideas' do
       end
     end
 
+    context 'in a proposals phase' do
+      public_input_params(self)
+      with_options scope: :idea do
+        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+      end
+
+      let(:with_permissions) { false }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:input) { build(:proposal, project: project) }
+      let(:title_multiloc) { { 'en' => 'My proposal title' } }
+      let(:body_multiloc) { { 'en' => 'My proposal body' } }
+      let(:topic_ids) { [create(:topic, projects: [project]).id] }
+
+      context 'when visitor' do
+        example '[error] Create a proposal', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+
+      context 'when resident' do
+        before { header_token_for(resident) }
+
+        let(:resident) { create(:user) }
+        let(:with_permissions) { true }
+        let(:group) { create(:group) }
+
+        example 'Create a proposal when permitted (group membership)', document: false do
+          group.add_member(resident).save!
+          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'groups', groups: [group])
+          do_request
+
+          assert_status 201
+        end
+
+        example '[error] Create a proposal when not permitted (group membership)', document: false do
+          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'groups', groups: [group])
+          do_request
+
+          assert_status 401
+        end
+      end
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        parameter :idea_status_id, 'The status of the input, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'" # TODO: proposal statuses
+        parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.', scope: :idea # Tested in separate engine
+
+        example_request 'Create a proposal' do
+          assert_status 201
+          json_response = json_parse(response_body)
+
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to eq body_multiloc
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        end
+      end
+    end
+
     context 'in a native survey phase' do
       let(:project) { create(:single_phase_native_survey_project, default_assignee_id: create(:admin).id) }
       let(:idea) { build(:native_survey_response, project: project) }
+
+      context 'when visitor' do
+        describe "native survey response when permission is 'everyone'" do
+          let(:project) do
+            create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+            end
+          end
+          let(:project_id) { project.id }
+          let(:extra_field_name) { 'custom_field_name1' }
+          let(:form) { create(:custom_form, participation_context: project.phases.first) }
+          let!(:text_field) { create(:custom_field_text, key: extra_field_name, required: true, resource: form) }
+          let(:custom_field_name1) { 'test value' }
+
+          example_request 'Create a native survey response without author' do
+            assert_status 201
+            json_response = json_parse response_body
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.author_id).to be_nil
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name => 'test value'
+            })
+          end
+        end
+      end
 
       context 'when resident' do
         before { header_token_for(resident) }

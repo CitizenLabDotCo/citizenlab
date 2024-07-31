@@ -4,48 +4,35 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import InputManager, {
-  TFilterMenu,
-} from 'components/admin/PostManager/InputManager';
-import Button from 'components/UI/Button';
+import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
-import AnalysisBanner from './AnalysisBanner';
-import ownMessages from './messages';
+type TFilterMenu = 'topics' | 'statuses';
 
-const defaultTimelineProjectVisibleFilterMenu = 'phases';
+const defaultTimelineProjectVisibleFilterMenu = 'statuses';
 const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
   defaultTimelineProjectVisibleFilterMenu,
-  'statuses',
   'topics',
 ];
 
-const AdminProjectIdeas = () => {
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
+const AdminProjectProposals = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
   const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
 
   if (!project) return null;
 
   return (
     <>
-      <AnalysisBanner />
       <Box mb="30px">
         <Box
           display="flex"
@@ -57,16 +44,6 @@ const AdminProjectIdeas = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            {inputImporterEnabled && (
-              <Button
-                width="auto"
-                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
-                icon="page"
-                buttonStyle="secondary-outlined"
-              >
-                <FormattedMessage {...ownMessages.importInputs} />
-              </Button>
-            )}
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}
@@ -76,15 +53,14 @@ const AdminProjectIdeas = () => {
           </Box>
         </Box>
         <Text color="textSecondary">
-          <FormattedMessage {...messages.subtitleInputManager} />
+          <FormattedMessage {...messages.subtitleInputProjectProposals} />
         </Text>
       </Box>
 
       {project && (
-        <InputManager
+        <ProjectProposalsManager
           key={phaseId}
           projectId={project.data.id}
-          phases={phases?.data}
           phaseId={phaseId}
           visibleFilterMenus={timelineProjectVisibleFilterMenus}
           defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
@@ -94,4 +70,4 @@ const AdminProjectIdeas = () => {
   );
 };
 
-export default AdminProjectIdeas;
+export default AdminProjectProposals;

@@ -13,6 +13,8 @@ import { Sort as IdeasSort } from 'api/ideas/types';
 
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
+import { ManagerType } from 'components/admin/PostManager';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { roundPercentage } from 'utils/math';
 import { SortDirection } from 'utils/paginationUtils';
@@ -37,9 +39,11 @@ interface Props {
   allSelected: boolean;
   toggleSelectAll: () => void;
   handleSortClick: (newSortAttribute: string) => () => void;
+  type: ManagerType;
 }
 
 const IdeaHeaderRow = ({
+  type,
   selectedPhaseId,
   sortAttribute,
   sortDirection,
@@ -179,11 +183,11 @@ const IdeaHeaderRow = ({
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
-        return (
+        return type !== 'ProjectProposals' ? (
           <SortableHeaderCell {...props} sortAttributeName="dislikes_count">
             <FormattedMessage {...messages.dislikes} />
           </SortableHeaderCell>
-        );
+        ) : null;
       },
     },
     {
