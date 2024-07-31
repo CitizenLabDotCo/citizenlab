@@ -4,261 +4,157 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'IdeaStatuses' do
-  explanation 'Idea statuses reflect the cities attitude towards an idea. Each tenant has its own custom set of idea statuses.'
+  explanation 'Input statuses reflect the cities attitude towards an input. There are two global sets of input statuses that can be customized: one for ideation and one for proposals.'
 
-  before do
-    header 'Content-Type', 'application/json'
-    @statuses = create_list(:idea_status, 3)
-  end
+  before { header 'Content-Type', 'application/json' }
 
-  context 'when not logged in' do
-    get 'web_api/v1/idea_statuses' do
-      example_request 'List all idea statuses' do
-        expect(status).to eq(200)
+  get 'web_api/v1/idea_statuses' do
+    before { create_list(:idea_status, 3) } # TODO: ideation + proposals + before_all?
+
+    context 'when visitor' do
+      example_request 'List all idea statuses' do # TODO: participation_method filter (ideation)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
       end
     end
 
-    get 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
+    context 'when resident' do
+      before { resident_header_token }
 
+      example_request 'List all idea statuses' do # TODO: participation_method filter (proposals)
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'List all idea statuses' do # TODO: no participation_method filter (all?)
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+      end
+    end
+  end
+
+  get 'web_api/v1/idea_statuses/:id' do
+    let(:id) { create(:idea_status).id }
+
+    context 'when visitor' do
       example_request 'Get one idea status by id' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @statuses.first.id
+        expect(json_response.dig(:data, :id)).to eq id
       end
-    end
-
-    post 'web_api/v1/idea_statuses' do
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:idea_status) { build(:idea_status) }
-      let(:code) { 'proposed' }
-      let(:title_multiloc) { idea_status.title_multiloc }
-      let(:description_multiloc) { idea_status.description_multiloc }
-      let(:color) { idea_status.color }
-      let(:ordering) { 2 }
-
-      # rubocop:disable RSpec/RepeatedExample
-      example 'Cannot create an idea status', document: false do
-        do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
-    end
-
-    patch 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
-
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:new_idea_status) { build(:idea_status) }
-      let(:code) { 'custom' }
-      let(:title_multiloc) { new_idea_status.title_multiloc }
-      let(:description_multiloc) { new_idea_status.description_multiloc }
-      let(:color) { new_idea_status.color }
-      let(:ordering) { 1 }
-
-      # rubocop:disable RSpec/RepeatedExample
-      example 'Cannot update an idea status by id', document: false do
-        do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
-    end
-
-    delete 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
-      # rubocop:disable RSpec/RepeatedExample
-      example 'Cannot delete a idea status by id', document: false do
-        do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
     end
   end
 
-  context 'when resident' do
-    before { resident_header_token }
-
-    get 'web_api/v1/idea_statuses' do
-      example 'List all idea statuses', document: false do
-        do_request
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
-      end
+  post 'web_api/v1/idea_statuses' do # TODO: ideation + proposals
+    with_options scope: :idea_status do # TODO: which are required?
+      parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
+      parameter :description_multiloc, 'Multi-locale field with the idea status description'
+      parameter :color, 'The hexadecimal color code of this status\'s label.'
+      parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
+      # TODO: participation_method
     end
 
-    get 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
+    let(:idea_status) { build(:idea_status) }
+    let(:code) { 'rejected' } # TODO: Change, remove or custom?
+    let(:title_multiloc) { { 'en' => 'Inappropriate' } }
+    let(:description_multiloc) { { 'en' => 'Custom description' } }
+    let(:color) { '#767676' }
 
-      example 'Get one idea status by id', document: false do
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @statuses.first.id
-      end
-    end
-
-    post 'web_api/v1/idea_statuses' do
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:idea_status) { build(:idea_status) }
-      let(:code) { 'proposed' }
-      let(:title_multiloc) { idea_status.title_multiloc }
-      let(:description_multiloc) { idea_status.description_multiloc }
-      let(:color) { idea_status.color }
-      let(:ordering) { 2 }
-
-      # rubocop:disable RSpec/RepeatedExample
+    context 'when visitor' do
       example 'Cannot create an idea status', document: false do
         do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
-    end
-
-    patch 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
-
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:new_idea_status) { build(:idea_status) }
-      let(:code) { 'custom' }
-      let(:title_multiloc) { new_idea_status.title_multiloc }
-      let(:description_multiloc) { new_idea_status.description_multiloc }
-      let(:color) { new_idea_status.color }
-      let(:ordering) { 1 }
-
-      # rubocop:disable RSpec/RepeatedExample
-      example 'Cannot update an idea status by id', document: false do
-        do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
-    end
-
-    delete 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
-
-      # rubocop:disable RSpec/RepeatedExample
-      example 'Cannot delete a idea status by id', document: false do
-        do_request
-        expect(status).to eq 401
-      end
-      # rubocop:enable RSpec/RepeatedExample
-    end
-  end
-
-  context 'when signed in as an admin' do
-    before do
-      admin_header_token
-    end
-
-    get 'web_api/v1/idea_statuses' do
-      example 'List all idea statuses', document: false do
-        do_request
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        assert_status 401
       end
     end
 
-    get 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
-
-      example 'Get one idea status by id', document: false do
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @statuses.first.id
-      end
-    end
-
-    post 'web_api/v1/idea_statuses' do
-      let(:id) { @statuses.first.id }
-
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:idea_status) { build(:idea_status) }
-      let(:code) { 'proposed' }
-      let(:title_multiloc) { idea_status.title_multiloc }
-      let(:description_multiloc) { idea_status.description_multiloc }
-      let(:color) { idea_status.color }
-      let(:ordering) { 2 }
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'Create an idea status' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).not_to be_empty
+        # TODO: Check attributes
+      end
+
+      example_request 'Create a proposal status status' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).not_to be_empty
+        # TODO: Check attributes
+      end
+    end
+  end
+
+  patch 'web_api/v1/idea_statuses/:id' do
+    let(:id) { create(:idea_status).id }
+
+    with_options scope: :idea_status do
+      parameter :title_multiloc, 'Multi-locale field with the idea title'
+      parameter :description_multiloc, 'Multi-locale field with the idea status description'
+      parameter :color, 'The hexadecimal color code of this status\'s label.'
+      parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
+    end
+
+    # let(:new_idea_status) { build(:idea_status) }
+    # let(:code) { 'custom' }
+    let(:title_multiloc) { { 'en' => 'Changed title' } }
+    # let(:description_multiloc) { new_idea_status.description_multiloc }
+    # let(:color) { new_idea_status.color }
+
+    context 'when resident' do
+      before { resident_header_token }
+
+      example 'Cannot update an idea status', document: false do
+        do_request
+        assert_status 401
       end
     end
 
-    patch 'web_api/v1/idea_statuses/:id' do
-      let(:idea_status) { create(:idea_status, code: 'proposed') }
-      let(:id) { @statuses.first.id }
-
-      with_options scope: :idea_status do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', required: true
-        parameter :description_multiloc, 'Multi-locale field with the idea status description'
-        parameter :color, 'The hexadecimal color code of this status\'s label.'
-        parameter :code, 'A snake_case value to help us identify the lifecycle status of the idea'
-        parameter :ordering, 'The order value of the idea status.'
-      end
-
-      let(:new_idea_status) { build(:idea_status) }
-      let(:code) { 'custom' }
-      let(:title_multiloc) { new_idea_status.title_multiloc }
-      let(:description_multiloc) { new_idea_status.description_multiloc }
-      let(:color) { new_idea_status.color }
-      let(:ordering) { 1 }
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'Update an idea status by id' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @statuses.first.id
+        expect(json_response.dig(:data, :id)).to eq id
+        # TODO: Check attributes
+      end
+    end
+  end
+
+  delete 'web_api/v1/idea_statuses/:id' do
+    let(:id) { create(:idea_status).id }
+
+    context 'when visitor' do
+      example 'Cannot delete an idea status', document: false do
+        do_request
+        assert_status 401
       end
     end
 
-    delete 'web_api/v1/idea_statuses/:id' do
-      let(:id) { @statuses.first.id }
+    context 'when resident' do
+      before { resident_header_token }
 
-      parameter :ideas_fallback_status, 'The new status of Ideas assigned to the status with :id'
+      example 'Cannot delete an idea status', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'Delete a idea status by id' do
-        expect(status).to eq 204
+        assert_status 204
+        # TODO: Check that it's gone
       end
     end
   end
