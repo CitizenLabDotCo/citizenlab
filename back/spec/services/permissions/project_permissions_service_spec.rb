@@ -818,7 +818,7 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
-  # TODO: JS - Running a load of permissions_fields queries it did not before
+  # TODO: JS - Running a load of permissions_custom_fields queries it did not before
   describe 'action_descriptors' do
     it 'does not run more than 3 queries for 5 ideation projects with default user permissions' do
       user = create(:user)

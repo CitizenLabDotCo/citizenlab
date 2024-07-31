@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 module Permissions
-  class PermissionsFieldsService
+  class PermissionsCustomFieldsService
     def fields_for_permission(permission, return_hidden: false)
       fields = if permission.global_custom_fields
         default_fields(permission)
       else
-        permission.permissions_fields.to_a
+        permission.permissions_custom_fields.to_a
       end
       add_related_group_fields(permission, fields)
     end
 
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
     def persist_default_fields(permission)
-      return unless permission.global_custom_fields && permission.permissions_fields.empty?
+      return unless permission.global_custom_fields && permission.permissions_custom_fields.empty?
 
       # First update global custom fields to false
       permission.update!(global_custom_fields: false)
@@ -29,7 +29,7 @@ module Permissions
       return [] unless permission.allow_global_custom_fields?
 
       platform_custom_fields.each_with_index.map do |field, index|
-        PermissionsField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
+        PermissionsCustomField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end
     end
 
@@ -47,17 +47,17 @@ module Permissions
     def add_and_lock_related_fields(permission, fields, custom_field_ids, lock_type)
       ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
       custom_field_ids&.each do |custom_field_id|
-        existing_permission_field = fields.find { |field| field[:custom_field_id] == custom_field_id }
-        if existing_permission_field.nil?
+        existing_permissions_custom_field = fields.find { |field| field[:custom_field_id] == custom_field_id }
+        if existing_permissions_custom_field.nil?
           # Insert a new one if it's not already there
-          new_field = PermissionsField.new(id: SecureRandom.uuid, custom_field_id: custom_field_id, required: true, ordering: ordering, permission: permission, lock: lock_type)
+          new_field = PermissionsCustomField.new(id: SecureRandom.uuid, custom_field_id: custom_field_id, required: true, ordering: ordering, permission: permission, lock: lock_type)
           fields.insert(ordering, new_field)
         else
           # Set the existing one to true and move to the top
-          existing_permission_field.ordering = ordering
-          existing_permission_field.required = true
-          existing_permission_field.lock = lock_type
-          fields.insert(ordering, fields.delete(existing_permission_field))
+          existing_permissions_custom_field.ordering = ordering
+          existing_permissions_custom_field.required = true
+          existing_permissions_custom_field.lock = lock_type
+          fields.insert(ordering, fields.delete(existing_permissions_custom_field))
         end
         ordering += 1
       end
@@ -78,4 +78,4 @@ module Permissions
   end
 end
 
-Permissions::PermissionsFieldsService.prepend(Verification::Patches::Permissions::PermissionsFieldsService)
+Permissions::PermissionsCustomFieldsService.prepend(Verification::Patches::Permissions::PermissionsCustomFieldsService)

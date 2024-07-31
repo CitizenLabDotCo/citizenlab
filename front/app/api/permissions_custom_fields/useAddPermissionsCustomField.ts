@@ -6,17 +6,19 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import permissionsFieldsKeys from './keys';
 import {
   IListParameters,
-  IPermissionsField,
-  IPermissionsFieldAdd,
+  IPermissionsCustomField,
+  IPermissionsCustomFieldAdd,
 } from './types';
 
-const addPermissionsField = async (parameters: IPermissionsFieldAdd) =>
-  fetcher<IPermissionsField>({
+const addPermissionsCustomField = async (
+  parameters: IPermissionsCustomFieldAdd
+) =>
+  fetcher<IPermissionsCustomField>({
     path: parameters.initiativeContext
-      ? `/permissions/${parameters.action}/permissions_fields`
+      ? `/permissions/${parameters.action}/permissions_custom_fields`
       : parameters.phaseId
-      ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_fields`
-      : `/projects/${parameters.projectId}/permissions/${parameters.action}/permissions_fields`,
+      ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_custom_fields`
+      : `/projects/${parameters.projectId}/permissions/${parameters.action}/permissions_custom_fields`,
     action: 'post',
     body: {
       custom_field_id: parameters.custom_field_id,
@@ -24,15 +26,19 @@ const addPermissionsField = async (parameters: IPermissionsFieldAdd) =>
     },
   });
 
-const useAddPermissionsField = ({
+const useAddPermissionsCustomField = ({
   phaseId,
   projectId,
   initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
-  return useMutation<IPermissionsField, CLErrors, IPermissionsFieldAdd>({
-    mutationFn: addPermissionsField,
+  return useMutation<
+    IPermissionsCustomField,
+    CLErrors,
+    IPermissionsCustomFieldAdd
+  >({
+    mutationFn: addPermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.list({
@@ -46,4 +52,4 @@ const useAddPermissionsField = ({
   });
 };
 
-export default useAddPermissionsField;
+export default useAddPermissionsCustomField;

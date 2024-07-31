@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PermissionsFieldPolicy < ApplicationPolicy
+class PermissionsCustomFieldPolicy < ApplicationPolicy
   def index?
     moderate?
   end

@@ -4,10 +4,10 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { permissionsFieldsData } from './__mocks__/usePermissionsFields';
-import useAddPermissionsField from './useAddPermissionsField';
+import { permissionsFieldsData } from './__mocks__/usePermissionsCustomFields';
+import useAddPermissionsCustomField from './useAddPermissionsCustomField';
 
-const apiPath = '*/permissions/:action/permissions_fields';
+const apiPath = '*/permissions/:action/permissions_custom_fields';
 const server = setupServer(
   http.post(apiPath, () => {
     return HttpResponse.json(
@@ -17,14 +17,14 @@ const server = setupServer(
   })
 );
 
-describe('useAddPermissionsField', () => {
+describe('useAddPermissionsCustomField', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
       () =>
-        useAddPermissionsField({
+        useAddPermissionsCustomField({
           phaseId: 'phaseId1',
           action: 'taking_survey',
         }),
@@ -54,7 +54,7 @@ describe('useAddPermissionsField', () => {
 
     const { result, waitFor } = renderHook(
       () =>
-        useAddPermissionsField({
+        useAddPermissionsCustomField({
           phaseId: 'phaseId1',
           action: 'taking_survey',
         }),

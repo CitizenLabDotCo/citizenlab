@@ -5,13 +5,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import permissionsFieldsKeys from './keys';
 import { IListParameters } from './types';
 
-const deletePermissionsField = (id: string) =>
+const deletePermissionsCustomField = (id: string) =>
   fetcher({
-    path: `/permissions_fields/${id}`,
+    path: `/permissions_custom_fields/${id}`,
     action: 'delete',
   });
 
-const useDeletePermissionsField = ({
+const useDeletePermissionsCustomField = ({
   phaseId,
   projectId,
   initiativeContext,
@@ -20,7 +20,7 @@ const useDeletePermissionsField = ({
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deletePermissionsField,
+    mutationFn: deletePermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.list({
@@ -34,4 +34,4 @@ const useDeletePermissionsField = ({
   });
 };
 
-export default useDeletePermissionsField;
+export default useDeletePermissionsCustomField;

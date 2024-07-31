@@ -3,7 +3,7 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class PermissionsField < Base
+      class PermissionsCustomField < Base
         attributes %i[
           required
           field_type

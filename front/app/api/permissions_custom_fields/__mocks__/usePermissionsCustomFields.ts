@@ -1,9 +1,9 @@
-import { IPermissionsFieldData } from '../types';
+import { IPermissionsCustomFieldData } from '../types';
 
-export const permissionsFieldsData: IPermissionsFieldData[] = [
+export const permissionsFieldsData: IPermissionsCustomFieldData[] = [
   {
     id: 'customFieldId1',
-    type: 'permissions_field',
+    type: 'permissions_custom_field',
     attributes: {
       required: false,
       created_at: 'created-at',
@@ -26,7 +26,7 @@ export const permissionsFieldsData: IPermissionsFieldData[] = [
   },
   {
     id: 'customFieldId2',
-    type: 'permissions_field',
+    type: 'permissions_custom_field',
     attributes: {
       required: false,
       created_at: 'created-at',

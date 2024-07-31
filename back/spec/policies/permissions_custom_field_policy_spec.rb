@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe PermissionsFieldPolicy do
-  subject { described_class.new(user, permissions_field) }
+describe PermissionsCustomFieldPolicy do
+  subject { described_class.new(user, permissions_custom_field) }
 
   let(:project) { create(:single_phase_ideation_project) }
   let(:permission) { create(:permission, permission_scope: project.phases.first) }
-  let(:permissions_field) { create(:permissions_field, permission: permission) }
+  let(:permissions_custom_field) { create(:permissions_custom_field, permission: permission) }
 
   context 'for a visitor' do
     let(:user) { nil }

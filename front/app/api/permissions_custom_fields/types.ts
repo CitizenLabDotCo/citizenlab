@@ -9,8 +9,8 @@ import eventsKeys from './keys';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 
-export interface IPermissionsFields {
-  data: IPermissionsFieldData[];
+export interface IPermissionsCustomFields {
+  data: IPermissionsCustomFieldData[];
 }
 
 export type IItemParameters = {
@@ -24,11 +24,11 @@ export type IListParameters = {
   action: IGlobalPermissionAction | IPhasePermissionAction;
 };
 
-export interface IPermissionsField {
-  data: IPermissionsFieldData;
+export interface IPermissionsCustomField {
+  data: IPermissionsCustomFieldData;
 }
 
-export interface IPermissionsFieldAdd {
+export interface IPermissionsCustomFieldAdd {
   custom_field_id: string;
   required: boolean;
   phaseId?: string | null;
@@ -42,9 +42,9 @@ export interface IPermissionCustomFieldUpdate {
   required: boolean;
 }
 
-export interface IPermissionsFieldData {
+export interface IPermissionsCustomFieldData {
   id: string;
-  type: 'permissions_field';
+  type: 'permissions_custom_field';
   attributes: {
     required: boolean;
     created_at: string;
