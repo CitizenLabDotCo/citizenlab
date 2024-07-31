@@ -213,9 +213,7 @@ const ParticipationMethodPicker = ({
                     <Tooltip
                       maxWidth="250px"
                       placement="bottom"
-                      content={formatMessage(
-                        messages.contactGovSuccessToAccess
-                      )}
+                      content={formatMessage(messages.konveioNudge)}
                       hideOnClick={false}
                     >
                       <Badge color={colors.coolGrey600} className="inverse">
@@ -280,9 +278,14 @@ const ParticipationMethodPicker = ({
                   </ParticipationMethodChoice>
                 )}
 
-                {showSurveys && (
+                <Box position="relative">
                   <ParticipationMethodChoice
-                    onClick={(event) => handleMethodSelect(event, 'survey')}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (showSurveys) {
+                        handleMethodSelect(event, 'survey');
+                      }
+                    }}
                     title={formatMessage(messages2.externalSurvey)}
                     selected={selectedMethod === 'survey'}
                   >
@@ -298,7 +301,33 @@ const ParticipationMethodPicker = ({
                       </LeftAlignedList>
                     </>
                   </ParticipationMethodChoice>
-                )}
+                  {!showSurveys && (
+                    <Box
+                      style={{ transform: 'translateX(-50%)' }}
+                      position="absolute"
+                      top="40%"
+                      left="50%"
+                    >
+                      <Tippy
+                        maxWidth="250px"
+                        placement="bottom"
+                        content={formatMessage(messages.externalSurveysNudge)}
+                        hideOnClick={false}
+                      >
+                        <Badge color={colors.coolGrey600} className="inverse">
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            gap="6px"
+                          >
+                            <Icon name="lock" fill="white" width="13px" />
+                          </Box>
+                        </Badge>
+                      </Tippy>
+                    </Box>
+                  )}
+                </Box>
               </>
             )}
           </Box>
