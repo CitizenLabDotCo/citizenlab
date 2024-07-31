@@ -99,8 +99,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     @permissions_custom_field = authorize PermissionsCustomField.find(params[:id])
   end
 
-  # Try and add default fields, then find the field in the persisted fields
-  # TODO: JS - merge with set_permissions_custom_field as that's only used for show now
+  # Try and add default fields, then find the field specified in the newly persisted fields
   def persist_and_find_permissions_custom_field
     PermissionsCustomField.find(params[:id])
   rescue ActiveRecord::RecordNotFound
