@@ -15,7 +15,7 @@ module IdFakeSso
       options = env['omniauth.strategy'].options
 
       options[:issuer] = issuer
-      options[:discovery] = true
+      options[:jwt_secret_base64] = jwt_secret_base64
       options[:client_options] = {
         identifier: 'govocal_client',
         secret: 'abc123',
@@ -44,6 +44,10 @@ module IdFakeSso
 
     def email_confirmed?(_auth)
       true
+    end
+
+    def jwt_secret_base64
+      Base64.encode64('cc7e0d44fd473002f1c42167459001140ec6389b7353f8088f4d9a95f2f596f2')
     end
   end
 end

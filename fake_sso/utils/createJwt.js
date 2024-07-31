@@ -12,11 +12,15 @@ const createJwt = () => {
 
   return new jose.SignJWT({
     uid,
-    email: `${uid.slice(6)}@example.com`,
+    sub: uid,
+    email: `${uid.slice(0, 6)}@example.com`,
+    email_verified: true,
+    name: "John Doe",
+    azp: "govocal_platform",
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setIssuer("fake_sso")
+    .setIssuer("http://host.docker.internal")
     .setAudience("govocal_platform")
     .setExpirationTime("2h")
     .sign(secret);

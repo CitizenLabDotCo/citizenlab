@@ -60,10 +60,13 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    puts '=================================='
-    puts 'fjeiwfjorw'
-    puts request.env['omniauth.auth']
-    puts '=================================='
+    # puts '=================================='
+    # puts 'fwowjfkg'
+    # puts request.env['omniauth.auth']
+    # puts '=================================='
+    # puts 'gbnjgjgj'
+    # puts request.env['omniauth.params']
+    # puts '=================================='
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
     @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
