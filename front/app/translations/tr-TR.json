@@ -1143,6 +1143,7 @@
   "app.containers.IdeaButton.verificationLinkText": "Kimliğinizi şimdi doğrulayın.",
   "app.containers.IdeaCard.readMore": "Daha fazla bilgi edinin",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {yorum yok} one {1 yorum} other {# yorum}}",
+  "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {oy yok} one {1 oy} other {# oy}} {votingThreshold}dışında",
   "app.containers.IdeaCards.a11y_totalInitiatives": "Toplam öneri sayısı: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Toplam yayın sayısı: {ideasCount}",
   "app.containers.IdeaCards.all": "Tümü",
