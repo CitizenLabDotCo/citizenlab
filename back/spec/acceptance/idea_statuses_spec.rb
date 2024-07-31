@@ -11,10 +11,13 @@ resource 'IdeaStatuses' do
   get 'web_api/v1/idea_statuses' do
     parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
 
-    before_all { create_list(:idea_status, 3); create_list(:proposals_status, 2) }
+    before_all do
+      create_list(:idea_status, 3)
+      create_list(:proposals_status, 2)
+    end
 
     context 'when visitor' do
-      let (:participation_method) { 'ideation' }
+      let(:participation_method) { 'ideation' }
 
       example_request 'List all ideation input statuses' do
         assert_status 200
@@ -27,7 +30,7 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      let (:participation_method) { 'proposals' }
+      let(:participation_method) { 'proposals' }
 
       example_request 'List all proposals input statuses' do
         assert_status 200
@@ -57,8 +60,8 @@ resource 'IdeaStatuses' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
-        expect(json_response.dig(:data, :attributes, :can_reorder)).to eq true
-        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to eq true
+        expect(json_response.dig(:data, :attributes, :can_reorder)).to be true
+        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to be true
       end
     end
 
@@ -73,8 +76,8 @@ resource 'IdeaStatuses' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :attributes, :code)).to eq 'proposed'
-        expect(json_response.dig(:data, :attributes, :can_reorder)).to eq false
-        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to eq true
+        expect(json_response.dig(:data, :attributes, :can_reorder)).to be false
+        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to be true
       end
     end
   end
