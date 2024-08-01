@@ -32,6 +32,7 @@ class ApplicationController < ActionController::API
   rescue_from FeatureRequiredError, with: :feature_required_error
 
   def self.inherited(base)
+    super
     base.extend(RegisterSerializer)
   end
 
@@ -159,7 +160,7 @@ class ApplicationController < ActionController::API
     raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
   end
 
-  def filter_params scope, params_key
+  def filter_params(scope, params_key)
     if params[params_key].present?
       scope.where(params_key => params[params_key])
     else

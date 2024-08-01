@@ -18,6 +18,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     idea_status = IdeaStatus.new(idea_status_params)
     authorize idea_status
     if idea_status.save
+      SideFxIdeaStatusService.new.after_create(idea_status, current_user)
       render_success idea_status
     else
       render_error idea_status
@@ -26,6 +27,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def update
     if idea_status.update(idea_status_params)
+      SideFxIdeaStatusService.new.after_update(idea_status, current_user)
       render_success idea_status
     else
       render_error idea_status
@@ -34,6 +36,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def reorder
     if idea_status.insert_at(permitted_attributes(idea_status)[:ordering])
+      SideFxIdeaStatusService.new.after_update(idea_status, current_user)
       render_success idea_status
     else
       render_error idea_status
@@ -41,8 +44,13 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def destroy
-    status = idea_status.destroy.destroyed? ? :ok : :internal_server_error
-    head status
+    frozen_idea_status = idea_status.destroy
+    if frozen_idea_status.destroyed?
+      SideFxIdeaStatusService.new.after_destroy(frozen_idea_status, current_user)
+      head :ok
+    else
+      head :internal_server_error
+    end
   end
 
   private

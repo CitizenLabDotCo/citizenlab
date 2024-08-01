@@ -276,7 +276,7 @@ RSpec.describe Idea do
   end
 
   context 'creation_phase' do
-    before { IdeaStatus.create_defaults }
+    before { create(:idea_status_proposed) }
 
     it 'is invalid for a phase that does not belong to the input\'s project' do
       project = create(:project_with_active_native_survey_phase)
