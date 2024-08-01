@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { IIdeaStatuses, TIdeaStatusCode } from 'api/idea_statuses/types';
+import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -40,8 +40,6 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-  ideaStatuses: IIdeaStatuses;
-  showCategorySelector?: boolean;
 };
 
 const StyledSection = styled(Section)`
@@ -75,12 +73,7 @@ const StyledLabel = styled(Label)`
   margin-bottom: 32px;
 `;
 
-const IdeaStatusForm = ({
-  defaultValues,
-  onSubmit,
-  ideaStatuses,
-  showCategorySelector,
-}: Props) => {
+const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
     color: string(),
@@ -106,13 +99,6 @@ const IdeaStatusForm = ({
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  const codes: TIdeaStatusCode[] = [
-    ...ideaStatuses.data
-      .filter((ideaStatus) => ideaStatus.attributes.can_reorder) // only show statuses that are not restricted
-      .map((ideaStatus) => ideaStatus.attributes.code),
-    'custom',
-  ];
 
   return (
     <FormProvider {...methods}>
@@ -145,75 +131,61 @@ const IdeaStatusForm = ({
             />
           </SectionField>
         </StyledSection>
-        {showCategorySelector && (
-          <StyledSection>
-            <SectionField>
-              <StyledLabel>
-                <FormattedMessage {...messages.category} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.categoryDescription} />
-                  }
-                />
-              </StyledLabel>
-              <RadioGroup name="code">
-                {codes.map((code, i) => (
-                  <Radio
-                    key={`code-input-${i}`}
-                    label={
-                      <LabelText>
-                        <span className="header">
+
+        <StyledSection>
+          <SectionField>
+            <StyledLabel>
+              <FormattedMessage {...messages.category} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.categoryDescription} />}
+              />
+            </StyledLabel>
+            <RadioGroup name="code">
+              {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
+                <Radio
+                  key={`code-input-${i}`}
+                  label={
+                    <LabelText>
+                      <span className="header">
+                        {formatMessage(
+                          {
+                            proposed: messages.proposedFieldCodeTitle,
+                            viewed: messages.viewedFieldCodeTitle,
+                            under_consideration:
+                              messages.under_considerationFieldCodeTitle,
+                            accepted: messages.acceptedFieldCodeTitle,
+                            implemented: messages.implementedFieldCodeTitle,
+                            rejected: messages.rejectedFieldCodeTitle,
+                            custom: messages.customFieldCodeTitle,
+                          }[code]
+                        )}
+                      </span>
+                      {code !== 'custom' && (
+                        <span className="description">
                           {formatMessage(
                             {
-                              proposed: messages.proposedFieldCodeTitle,
-                              viewed: messages.viewedFieldCodeTitle,
+                              proposed: messages.proposedFieldCodeDescription,
+                              viewed: messages.viewedFieldCodeDescription,
                               under_consideration:
-                                messages.under_considerationFieldCodeTitle,
-                              accepted: messages.acceptedFieldCodeTitle,
-                              implemented: messages.implementedFieldCodeTitle,
-                              rejected: messages.rejectedFieldCodeTitle,
-                              custom: messages.customFieldCodeTitle,
-                              threshold_reached:
-                                messages.thresholdReachedFieldCodeTitle,
-                              expired: messages.expiredFieldCodeTitle,
-                              answered: messages.answeredFieldCodeTitle,
-                              ineligible: messages.ineligibleFieldCodeTitle,
+                                messages.under_considerationFieldCodeDescription,
+                              accepted: messages.acceptedFieldCodeDescription,
+                              implemented:
+                                messages.implementedFieldCodeDescription,
+                              rejected: messages.rejectedFieldCodeDescription,
                             }[code]
                           )}
                         </span>
-                        {code !== 'custom' && (
-                          <span className="description">
-                            {formatMessage(
-                              {
-                                proposed: messages.proposedFieldCodeDescription,
-                                viewed: messages.viewedFieldCodeDescription,
-                                under_consideration:
-                                  messages.under_considerationFieldCodeDescription,
-                                accepted: messages.acceptedFieldCodeDescription,
-                                implemented:
-                                  messages.implementedFieldCodeDescription,
-                                rejected: messages.rejectedFieldCodeDescription,
-                                threshold_reached:
-                                  messages.thresholdReachedFieldCodeDescription,
-                                expired: messages.expiredFieldCodeDescription,
-                                answered: messages.answeredFieldCodeDescription,
-                                ineligible:
-                                  messages.ineligibleFieldCodeDescription,
-                              }[code]
-                            )}
-                          </span>
-                        )}
-                      </LabelText>
-                    }
-                    id={`${code}-input`}
-                    name="code"
-                    value={code}
-                  />
-                ))}
-              </RadioGroup>
-            </SectionField>
-          </StyledSection>
-        )}
+                      )}
+                    </LabelText>
+                  }
+                  id={`${code}-input`}
+                  name="code"
+                  value={code}
+                />
+              ))}
+            </RadioGroup>
+          </SectionField>
+        </StyledSection>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
             {formatMessage(messages.saveStatus)}

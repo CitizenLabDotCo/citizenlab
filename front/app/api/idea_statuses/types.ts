@@ -6,10 +6,6 @@ import ideaStatusesKeys from './keys';
 
 export type IdeaStatusesKeys = Keys<typeof ideaStatusesKeys>;
 
-export type IdeaStatusesQueryParams = {
-  participation_method?: 'ideation' | 'proposals';
-};
-
 export const ideaStatusCodes = [
   'proposed',
   'viewed',
@@ -18,10 +14,6 @@ export const ideaStatusCodes = [
   'implemented',
   'rejected',
   'custom',
-  'threshold_reached',
-  'expired',
-  'answered',
-  'ineligible',
 ] as const;
 
 export type TIdeaStatusCode = (typeof ideaStatusCodes)[number];
@@ -36,8 +28,6 @@ export interface IIdeaStatusData {
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
-    can_reorder: boolean;
-    can_transition_manually: boolean;
   };
 }
 
@@ -47,7 +37,6 @@ export interface IIdeaStatusAdd {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatusUpdate {
@@ -56,7 +45,6 @@ export interface IIdeaStatusUpdate {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatus {

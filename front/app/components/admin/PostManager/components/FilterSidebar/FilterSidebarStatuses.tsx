@@ -65,7 +65,7 @@ const FilterSidebarStatuses = ({
                   buttonStyle="text"
                   icon="edit"
                   pl="12px"
-                  linkTo="/admin/settings/ideation/statuses"
+                  linkTo="/admin/settings/statuses"
                   iconPos="right"
                   iconSize="14px"
                 >

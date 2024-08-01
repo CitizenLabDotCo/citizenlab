@@ -17,7 +17,7 @@ const updateIdeaStatus = ({ id, requestBody }: IUpdateIdeaStatusObject) =>
   fetcher<IIdeaStatus>({
     path: `/idea_statuses/${id}`,
     action: 'patch',
-    body: { idea_status: requestBody },
+    body: requestBody,
   });
 
 const useUpdateIdeaStatus = () => {

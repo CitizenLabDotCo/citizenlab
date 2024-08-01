@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -14,6 +13,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 
@@ -27,10 +27,7 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
-  const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: variant,
-  });
+const Edit = () => {
   const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
@@ -40,20 +37,17 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
     const { ...params } = values;
 
     updateIdeaStatus(
-      {
-        id: statusId,
-        requestBody: { ...params, participation_method: variant },
-      },
+      { id: statusId, requestBody: params },
       { onSuccess: goBack }
     );
   };
 
   const goBack = () => {
-    clHistory.push(`/admin/settings/${variant}/statuses`);
+    clHistory.push('/admin/settings/statuses');
   };
 
-  if (ideaStatuses && ideaStatus && tenantLocales) {
-    const { color, title_multiloc, description_multiloc, code, can_reorder } =
+  if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
+    const { color, title_multiloc, description_multiloc, code } =
       ideaStatus.data.attributes;
     return (
       <>
@@ -70,8 +64,6 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
               code,
             }}
             onSubmit={handleSubmit}
-            ideaStatuses={ideaStatuses}
-            showCategorySelector={can_reorder}
           />
         </Section>
       </>
