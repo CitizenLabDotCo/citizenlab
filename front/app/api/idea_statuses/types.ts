@@ -45,6 +45,7 @@ export interface IIdeaStatusAdd {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
+  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatusUpdate {
@@ -53,6 +54,7 @@ export interface IIdeaStatusUpdate {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
+  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatus {

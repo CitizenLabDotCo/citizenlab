@@ -28,7 +28,10 @@ const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   const { mutate: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
   const handleSubmit = (values: FormValues) => {
-    addIdeaStatus(values, { onSuccess: goBack });
+    addIdeaStatus(
+      { ...values, participation_method: variant },
+      { onSuccess: goBack }
+    );
   };
 
   const goBack = () => {
