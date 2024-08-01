@@ -214,7 +214,7 @@ class User < ApplicationRecord
       sub: id,
       roles: compacted_roles,
       exp: token_lifetime.from_now.to_i,
-      security_level: security_level,
+      level: security_level,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
     }

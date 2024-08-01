@@ -3,6 +3,15 @@
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
 
+  def create
+    # TODO: JS - move this to a concern
+    # cookies[:cl2_jwt] = {
+    #   value: auth_token.token,
+    #   expires: Time.at(TOKEN_LIFETIME.from_now.to_i)
+    # }
+    render json: auth_token, status: :created
+  end
+
   private
 
   def auth_token
