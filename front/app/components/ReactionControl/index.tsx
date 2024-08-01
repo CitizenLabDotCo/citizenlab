@@ -287,7 +287,6 @@ const ReactionControl = ({
           ideaId={idea.data.id}
           variant={variant}
         />
-
         {showDislike && (
           <ReactionButton
             buttonReactionMode="down"
