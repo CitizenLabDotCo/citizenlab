@@ -11,6 +11,12 @@ class UiSchemaGeneratorService < FieldVisitorService
   def generate_for(fields)
     locales.index_with do |locale|
       I18n.with_locale(locale) do
+        puts '=' * 20
+        puts 'ri3094g'
+        puts "locale: #{locale}"
+        puts "number of fields: #{fields.size}"
+        puts '=' * 20
+
         generate_for_current_locale fields
       end
     end
