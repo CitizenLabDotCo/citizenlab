@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe IdeaStatus do
   subject { create(:idea_status) }
 
-  let(:code) { IdeaStatus::MINIMUM_REQUIRED_CODES.sample }
+  let(:code) { 'proposed' }
 
   context 'Default factory' do
     it 'is valid' do

@@ -17,7 +17,6 @@
 #
 class IdeaStatus < ApplicationRecord
   CODES = %w[proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
-  MINIMUM_REQUIRED_CODES = %w[proposed].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -31,7 +30,7 @@ class IdeaStatus < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, presence: true, multiloc: { presence: true }
-  validates :code, presence: true, inclusion: { in: CODES }, minimum_required: { values: MINIMUM_REQUIRED_CODES }
+  validates :code, presence: true, inclusion: { in: CODES }
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
@@ -60,23 +59,22 @@ class IdeaStatus < ApplicationRecord
 
   def self.create_defaults
     locales = AppConfiguration.instance.settings('core', 'locales') || CL2_SUPPORTED_LOCALES
-    (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
-      title_multiloc = locales.to_h do |locale|
-        translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}") }
-        [locale, translation]
-      end
-      description_multiloc = locales.to_h do |locale|
-        translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}_description") }
-        [locale, translation]
-      end
-      IdeaStatus.create(
-        title_multiloc: title_multiloc,
-        ordering: i + 1,
-        code: code,
-        color: Faker::Color.hex_color,
-        description_multiloc: description_multiloc
-      )
+    code = 'proposed'
+    title_multiloc = locales.to_h do |locale|
+      translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}") }
+      [locale, translation]
     end
+    description_multiloc = locales.to_h do |locale|
+      translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}_description") }
+      [locale, translation]
+    end
+    IdeaStatus.create(
+      title_multiloc: title_multiloc,
+      ordering: i + 1,
+      code: code,
+      color: Faker::Color.hex_color,
+      description_multiloc: description_multiloc
+    )
   end
 
   def custom?
@@ -87,12 +85,6 @@ class IdeaStatus < ApplicationRecord
 
   def strip_title
     title_multiloc.each { |key, value| title_multiloc[key] = value.strip }
-  end
-
-  def abort_if_code_required
-    MinimumRequiredValidator.new(attributes: %i[code], values: MINIMUM_REQUIRED_CODES).validate(self)
-
-    throw(:abort) if errors[:code].present?
   end
 
   def remove_notifications
