@@ -6,6 +6,10 @@ import ideaStatusesKeys from './keys';
 
 export type IdeaStatusesKeys = Keys<typeof ideaStatusesKeys>;
 
+export type IdeaStatusesQueryParams = {
+  participation_method?: 'ideation' | 'proposals';
+};
+
 export const ideaStatusCodes = [
   'proposed',
   'viewed',
@@ -14,6 +18,10 @@ export const ideaStatusCodes = [
   'implemented',
   'rejected',
   'custom',
+  'threshold_reached',
+  'expired',
+  'answered',
+  'ineligible',
 ] as const;
 
 export type TIdeaStatusCode = (typeof ideaStatusCodes)[number];

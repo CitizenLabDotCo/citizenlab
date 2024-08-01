@@ -14,7 +14,8 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
+import { TIdeaStatusCode } from 'api/idea_statuses/types';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -74,6 +75,9 @@ const StyledLabel = styled(Label)`
 `;
 
 const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
+  const { data: ideaStatuses } = useIdeaStatuses({
+    participation_method: 'ideation',
+  });
   const { formatMessage } = useIntl();
   const schema = object({
     color: string(),
@@ -141,7 +145,7 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
               />
             </StyledLabel>
             <RadioGroup name="code">
-              {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
+              {ideaStatuses?.data.map((ideaStatus, i) => (
                 <Radio
                   key={`code-input-${i}`}
                   label={
@@ -157,10 +161,15 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
                             implemented: messages.implementedFieldCodeTitle,
                             rejected: messages.rejectedFieldCodeTitle,
                             custom: messages.customFieldCodeTitle,
-                          }[code]
+                            threshold_reached:
+                              messages.thresholdReachedFieldCodeTitle,
+                            expired: messages.expiredFieldCodeTitle,
+                            answered: messages.answeredFieldCodeTitle,
+                            ineligible: messages.ineligibleFieldCodeTitle,
+                          }[ideaStatus.attributes.code]
                         )}
                       </span>
-                      {code !== 'custom' && (
+                      {ideaStatus.attributes.code !== 'custom' && (
                         <span className="description">
                           {formatMessage(
                             {
@@ -172,15 +181,21 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
                               implemented:
                                 messages.implementedFieldCodeDescription,
                               rejected: messages.rejectedFieldCodeDescription,
-                            }[code]
+                              threshold_reached:
+                                messages.thresholdReachedFieldCodeDescription,
+                              expired: messages.expiredFieldCodeDescription,
+                              answered: messages.answeredFieldCodeDescription,
+                              ineligible:
+                                messages.ineligibleFieldCodeDescription,
+                            }[ideaStatus.attributes.code]
                           )}
                         </span>
                       )}
                     </LabelText>
                   }
-                  id={`${code}-input`}
+                  id={`${ideaStatus.attributes.code}-input`}
                   name="code"
-                  value={code}
+                  value={ideaStatus.attributes.code}
                 />
               ))}
             </RadioGroup>

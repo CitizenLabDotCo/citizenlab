@@ -62,7 +62,9 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const IdeaStatuses = () => {
-  const { data: ideaStatuses, isLoading } = useIdeaStatuses();
+  const { data: ideaStatuses, isLoading } = useIdeaStatuses({
+    participation_method: 'ideation',
+  });
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
     name: 'custom_idea_statuses',
