@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Prethodno",
   "app.components.form.ErrorDisplay.save": "сачувати",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Počnite sa kucanjem za pretragu po e-pošti ili imenu korisnika...",
-  "app.components.form.anonymousSurveyMessage": "Сви одговори на ову анкету су анонимни",
   "app.components.form.controls.addressInputAriaLabel": "Address input",
   "app.components.form.controls.addressInputPlaceholder6": "Enter an address...",
   "app.components.form.controls.adminFieldTooltip": "Polje je vidljivo samo administratorima",

@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "السابق",
   "app.components.form.ErrorDisplay.save": "يحفظ",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "جارٍ بدء الكتابة للبحث بحسب البريد الإلكتروني للمستخدم أو اسمه...",
-  "app.components.form.anonymousSurveyMessage": "جميع الردود على هذا الاستطلاع مجهولة المصدر",
   "app.components.form.controls.addressInputAriaLabel": "إدخال العنوان",
   "app.components.form.controls.addressInputPlaceholder6": "أدخل عنوانا...",
   "app.components.form.controls.adminFieldTooltip": "لا يظهر الحقل إلا للمسؤولين فقط",

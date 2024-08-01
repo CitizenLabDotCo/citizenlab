@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Zurück",
   "app.components.form.ErrorDisplay.save": "Speichern",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Beginnen Sie mit der Eingabe, um nach einer E-Mail oder einem Namen des Nutzers / der Nutzerin zu suchen...",
-  "app.components.form.anonymousSurveyMessage": "Alle Antworten auf diese Umfrage sind anonymisiert",
   "app.components.form.controls.addressInputAriaLabel": "Adresseingabe",
   "app.components.form.controls.addressInputPlaceholder6": "Adresse eingeben...",
   "app.components.form.controls.adminFieldTooltip": "Feld nur für Admins sichtbar",

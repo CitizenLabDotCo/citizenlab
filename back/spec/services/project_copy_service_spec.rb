@@ -148,13 +148,15 @@ describe ProjectCopyService do
     it 'successfully copies map_configs associated with phase-level form custom_fields' do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
-      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
-      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+      page_field = create(:custom_field_page, :for_custom_form, resource: form1)
+      map_config1 = create(:map_config, zoom_level: 15, mappable: page_field)
+      point_field = create(:custom_field_point, :for_custom_form, resource: form1)
+      map_config2 = create(:map_config, zoom_level: 17, mappable: point_field)
 
       template = service.export open_ended_project
 
-      expect(template['models']['custom_field'].size).to eq 1
-      expect(template['models']['custom_maps/map_config'].size).to eq 1
+      expect(template['models']['custom_field'].size).to eq 2
+      expect(template['models']['custom_maps/map_config'].size).to eq 2
 
       tenant = create(:tenant)
       tenant.switch do
@@ -162,8 +164,9 @@ describe ProjectCopyService do
 
         service.import template
 
-        expect(CustomMaps::MapConfig.count).to eq 1
-        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+        expect(CustomMaps::MapConfig.count).to eq 2
+        expect(CustomMaps::MapConfig.all.pluck(:zoom_level))
+          .to match_array [map_config1.zoom_level, map_config2.zoom_level]
       end
     end
 

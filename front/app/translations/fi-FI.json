@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Edellinen",
   "app.components.form.ErrorDisplay.save": "Tallentaa",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Aloita kirjoittaminen etsiäksesi käyttäjän sähköpostiosoitteen tai nimen perusteella...",
-  "app.components.form.anonymousSurveyMessage": "Kaikki tämän kyselyn vastaukset ovat anonyymejä",
   "app.components.form.controls.addressInputAriaLabel": "Osoitteen syöttö",
   "app.components.form.controls.addressInputPlaceholder6": "Anna osoite...",
   "app.components.form.controls.adminFieldTooltip": "Kenttä näkyy vain järjestelmänvalvojille",

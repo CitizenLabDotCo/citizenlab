@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Vorige",
   "app.components.form.ErrorDisplay.save": "Bewaar",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begin met typen om te zoeken op email of naam...",
-  "app.components.form.anonymousSurveyMessage": "Je vult deze vragenlijst anoniem in",
   "app.components.form.controls.addressInputAriaLabel": "Adres invoer",
   "app.components.form.controls.addressInputPlaceholder6": "Voer een adres in...",
   "app.components.form.controls.adminFieldTooltip": "Veld enkel zichtbaar voor beheerders",

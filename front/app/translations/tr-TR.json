@@ -634,7 +634,6 @@
   "app.components.form.ErrorDisplay.previous": "Önceki",
   "app.components.form.ErrorDisplay.save": "Kaydet",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Kullanıcı e-posta adresine veya adına göre aramak için yazmaya başlayın...",
-  "app.components.form.anonymousSurveyMessage": "Bu ankete verilen tüm yanıtlar anonimleştirilmiştir",
   "app.components.form.controls.addressInputAriaLabel": "Adres girişi",
   "app.components.form.controls.addressInputPlaceholder6": "Bir adres girin...",
   "app.components.form.controls.adminFieldTooltip": "Alan yalnızca yöneticiler tarafından görülebilir",
