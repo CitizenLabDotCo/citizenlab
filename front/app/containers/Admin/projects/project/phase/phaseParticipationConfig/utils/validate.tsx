@@ -27,6 +27,8 @@ export default (
     voting_max_votes_per_idea,
     voting_term_plural_multiloc,
     voting_term_singular_multiloc,
+    reacting_threshold,
+    expire_days_limit,
     appConfig,
   } = state;
 
@@ -37,6 +39,8 @@ export default (
   let maxTotalVotesError: string | null = null;
   let maxVotesPerOptionError: string | null = null;
   let voteTermError: string | null = null;
+  let expireDateLimitError: JSX.Element | null = null;
+  let reactingThresholdError: JSX.Element | null = null;
 
   const locales = appConfig?.data.attributes.settings.core.locales;
 
@@ -139,6 +143,21 @@ export default (
     }
   }
 
+  if (participation_method === 'proposals') {
+    if (isNaN(expire_days_limit)) {
+      expireDateLimitError = (
+        <FormattedMessage {...messages.expireDateLimitRequired} />
+      );
+      isValidated = false;
+    }
+    if (isNaN(reacting_threshold)) {
+      reactingThresholdError = (
+        <FormattedMessage {...messages.reactingThresholdRequired} />
+      );
+      isValidated = false;
+    }
+  }
+
   return {
     noLikingLimitError,
     noDislikingLimitError,
@@ -147,5 +166,7 @@ export default (
     maxVotesPerOptionError,
     isValidated,
     voteTermError,
+    expireDateLimitError,
+    reactingThresholdError,
   };
 };

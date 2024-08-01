@@ -91,6 +91,7 @@ resource 'Avatars' do
       end
     end
 
+    # TODO: move-old-proposals-test
     describe do
       let(:initiative) { create(:initiative) }
       let(:context_type) { 'initiative' }

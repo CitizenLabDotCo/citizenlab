@@ -12,7 +12,7 @@ module MultiTenancy
             'nl-BE': 'Help mee als vrijwilliger',
             'fr-BE': 'Aider en tant que bénévole'
           },
-          description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+          description_multiloc: runner.rand_description_multiloc,
           description_preview_multiloc: {
             'en' => 'Every bit of help counts',
             'nl-BE' => 'Alle beetjes helpen',
