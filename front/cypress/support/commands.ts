@@ -1669,6 +1669,7 @@ const createBaseCustomField =
     enabled: true,
     id: randomString(),
     key: input_type === 'page' ? 'page_1' : randomString(),
+    page_layout: input_type === 'page' ? 'default' : undefined,
     logic: {},
     required: false,
     input_type,
