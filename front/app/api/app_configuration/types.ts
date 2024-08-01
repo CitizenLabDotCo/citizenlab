@@ -175,6 +175,7 @@ export interface IAppConfigurationSettings {
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
+  form_mapping?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
