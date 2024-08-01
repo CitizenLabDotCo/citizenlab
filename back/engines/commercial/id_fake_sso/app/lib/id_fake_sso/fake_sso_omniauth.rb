@@ -50,6 +50,10 @@ module IdFakeSso
       true
     end
 
+    def email_always_present?
+      false
+    end
+
     def email_confirmed?(auth)
       auth.info['email_verified']
     end
