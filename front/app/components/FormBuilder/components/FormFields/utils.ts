@@ -85,7 +85,7 @@ const getCustomFieldBadgeLabel = (
     case 'line':
       return messages.drawRoute;
     case 'polygon':
-      return messages.drawPolygon;
+      return messages.drawArea;
     default:
       return messages.default;
   }

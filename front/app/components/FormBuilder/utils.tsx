@@ -255,7 +255,7 @@ const getInputTypeStringKey = (
       translatedStringKey = messages.drawRoute;
       break;
     case 'polygon':
-      translatedStringKey = messages.drawPolygon;
+      translatedStringKey = messages.drawArea;
       break;
   }
 

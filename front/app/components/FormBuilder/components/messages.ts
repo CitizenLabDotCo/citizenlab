@@ -82,9 +82,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.drawRoute',
     defaultMessage: 'Draw route',
   },
-  drawPolygon: {
-    id: 'app.components.formBuilder.drawPolygon',
-    defaultMessage: 'Draw polygon',
+  drawArea: {
+    id: 'app.components.formBuilder.drawArea',
+    defaultMessage: 'Draw area',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',

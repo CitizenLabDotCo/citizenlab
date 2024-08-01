@@ -263,7 +263,7 @@ const FormBuilderToolbox = ({
                 />
                 <ToolboxItem
                   icon="drawPolygon"
-                  label={formatMessage(messages.drawPolygon)}
+                  label={formatMessage(messages.drawArea)}
                   onClick={() => addField('polygon')}
                   data-cy="e2e-polygon-field"
                   fieldsToExclude={builderConfig.toolboxFieldsToExclude}
