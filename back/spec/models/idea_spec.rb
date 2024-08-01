@@ -358,9 +358,9 @@ RSpec.describe Idea do
     it 'should select ideas with no official feedback or no idea status change' do
       ideas = [
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status_accepted)),
+        create(:idea, idea_status: create(:idea_status, code: 'accepted')),
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status_viewed))
+        create(:idea, idea_status: create(:idea_status, code: 'viewed'))
       ]
       create(:official_feedback, post: ideas[0])
 

@@ -119,7 +119,7 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status_implemented) }
+      let!(:initial_status) { create(:idea_status) }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build(:idea, idea_status: nil)
@@ -128,7 +128,7 @@ RSpec.describe ParticipationMethod::Ideation do
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
@@ -142,7 +142,7 @@ RSpec.describe ParticipationMethod::Ideation do
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status

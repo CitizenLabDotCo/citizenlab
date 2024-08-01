@@ -13,12 +13,13 @@
 #  updated_at           :datetime         not null
 #  description_multiloc :jsonb
 #  ideas_count          :integer          default(0)
+#  participation_method :string           default("ideation"), not null
 #
 class IdeaStatus < ApplicationRecord
-  CODES = %w[proposed viewed under_consideration accepted implemented rejected custom].freeze
+  CODES = %w[proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
   MINIMUM_REQUIRED_CODES = %w[proposed].freeze
 
-  acts_as_list column: :ordering, top_of_list: 0
+  acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
   default_scope -> { order(ordering: :asc) }
 
@@ -32,6 +33,7 @@ class IdeaStatus < ApplicationRecord
   validates :description_multiloc, presence: true, multiloc: { presence: true }
   validates :code, presence: true, inclusion: { in: CODES }, minimum_required: { values: MINIMUM_REQUIRED_CODES }
   validates :color, presence: true
+  validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
   # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
   before_destroy :abort_if_code_required

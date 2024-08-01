@@ -17,4 +17,24 @@ class IdeaStatusPolicy < ApplicationPolicy
   def show?
     true
   end
+
+  def create?
+    user&.active? && user&.admin?
+  end
+
+  def update?
+    create?
+  end
+
+  def reorder?
+    update?
+  end
+
+  def destroy?
+    update?
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
 end
