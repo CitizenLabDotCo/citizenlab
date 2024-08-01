@@ -714,7 +714,7 @@ class ProjectCopyService < TemplateService
 
     followers.map do |follower|
       {
-        'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
+        'followable_ref' => lookup_ref(follower.followable_id, %i[project idea]),
         'user_ref' => lookup_ref(follower.user_id, :user),
         'created_at' => shift_timestamp(follower.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(follower.updated_at, shift_timestamps)&.iso8601
