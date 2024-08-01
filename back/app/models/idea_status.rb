@@ -34,23 +34,8 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
-  # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
-  before_destroy :abort_if_code_required
-
-  # TODO: move to observer, probably not the best solution as is.
-  after_commit :move_default_to_top, unless: :default?, on: :update
-
   def default?
     self.class.default_status == self
-  end
-
-  def move_default_to_top
-    self.class.default_status.tap do |default_status|
-      break unless default_status
-
-      default_status.move_to_top
-      default_status.save
-    end
   end
 
   def self.default_status
