@@ -29,6 +29,10 @@ npm i
 docker compose --profile fake_sso up
 ```
 
+## Issues
+
+NOTE: If you have `BASE_DEV_URI` set for use with localtunnel in back-secrets.env, this can conflict with this implementation. Best to disable.
+
 ## Other useful resources
 
 - https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc
