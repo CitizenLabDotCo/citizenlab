@@ -42,8 +42,9 @@ export default defineMessages({
     defaultMessage: 'Tap on the map to add your answer.',
   },
   tapOnFullscreenMapToAdd: {
-    id: 'app.components.form.controls.tapOnFullscreenMapToAdd3',
-    defaultMessage: 'Tap on the map to draw.',
+    id: 'app.components.form.controls.tapOnFullscreenMapToAdd4',
+    defaultMessage:
+      'Tap on the map to draw. Then, drag on points to move them.',
   },
   clickOnMapToAddOrType: {
     id: 'app.components.form.controls.clickOnMapToAddOrType',
@@ -51,8 +52,9 @@ export default defineMessages({
       'Click on the map or type an address below to add your answer.',
   },
   clickOnMapMultipleToAdd: {
-    id: 'app.components.form.controls.clickOnMapMultipleToAdd2',
-    defaultMessage: 'Click on the map to draw.',
+    id: 'app.components.form.controls.clickOnMapMultipleToAdd3',
+    defaultMessage:
+      'Click on the map to draw. Then, drag on points to move them.',
   },
   addressInputAriaLabel: {
     id: 'app.components.form.controls.addressInputAriaLabel',
