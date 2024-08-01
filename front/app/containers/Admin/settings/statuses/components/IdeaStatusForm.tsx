@@ -14,8 +14,7 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { TIdeaStatusCode } from 'api/idea_statuses/types';
-import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import { IIdeaStatuses, TIdeaStatusCode } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -41,6 +40,7 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
+  ideaStatuses: IIdeaStatuses;
 };
 
 const StyledSection = styled(Section)`
@@ -74,10 +74,7 @@ const StyledLabel = styled(Label)`
   margin-bottom: 32px;
 `;
 
-const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
-  const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
-  });
+const IdeaStatusForm = ({ defaultValues, onSubmit, ideaStatuses }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
     color: string(),

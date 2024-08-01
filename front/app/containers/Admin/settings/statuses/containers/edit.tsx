@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -13,7 +14,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 
@@ -27,7 +27,10 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const Edit = () => {
+const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+  const { data: ideaStatuses } = useIdeaStatuses({
+    participation_method: variant,
+  });
   const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
@@ -43,10 +46,10 @@ const Edit = () => {
   };
 
   const goBack = () => {
-    clHistory.push('/admin/settings/statuses');
+    clHistory.push(`/admin/settings/${variant}/statuses`);
   };
 
-  if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
+  if (ideaStatuses && ideaStatus && tenantLocales) {
     const { color, title_multiloc, description_multiloc, code } =
       ideaStatus.data.attributes;
     return (
@@ -64,6 +67,7 @@ const Edit = () => {
               code,
             }}
             onSubmit={handleSubmit}
+            ideaStatuses={ideaStatuses}
           />
         </Section>
       </>
