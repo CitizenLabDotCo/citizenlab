@@ -16,7 +16,14 @@ To enable the fake SSO method locally, take the following steps:
 make feature-toggle feature=fake_sso enabled=true
 ```
 
-3. Start the BE with the following command:
+3. Install dependencies for `fake_sso`:
+
+```
+cd fake_sso
+npm i
+```
+
+4. Start the BE with the following command:
 
 ```
 docker compose --profile fake_sso up
