@@ -1640,7 +1640,6 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "inscríbete",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Dejar de participar",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {ningún participante} one {# participante} other {# participantes}}",
-  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": "Advertencia: La encuesta incrustada puede tener problemas de accesibilidad para los usuarios de lectores de pantalla. Si tienes algún problema, ponte en contacto con el administrador de la plataforma para recibir un enlace a la encuesta desde la plataforma original. Alternativamente, puedes solicitar otras formas de rellenar la encuesta.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Consulta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Para saber si puedes participar en esta consulta, por favor {logInLink} a la plataforma primero.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Sólo los usuarios verificados pueden responder esta consulta. Por favor {signUpLink} o {logInLink} primero.",

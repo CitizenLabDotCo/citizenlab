@@ -1640,7 +1640,6 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registrieren Sie sich",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ich ziehe meine Teilnahme zurück",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {keine Teilnehmenden} one {# Teilnehmende:r} other {# Teilnehmende}}",
-  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": ", Warnung: Die eingebettete Umfrage kann Probleme mit der Zugänglichkeit für Screenreader-Nutzer haben. Wenn Sie auf Probleme stoßen, wenden Sie sich bitte an den Administrator der Plattform, um einen Link zur Umfrage von der ursprünglichen Plattform zu erhalten. Alternativ können Sie auch andere Möglichkeiten zum Ausfüllen der Umfrage anfordern.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Umfrage",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Um zu erfahren, ob Sie an dieser Umfrage teilnehmen können, besuchen Sie bitte zuerst {logInLink} die Plattform.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Nur verifizierte Nutzer*innen können an dieser Umfrage teilnehmen. Bitte {signUpLink} oder {logInLink} zuerst.",
