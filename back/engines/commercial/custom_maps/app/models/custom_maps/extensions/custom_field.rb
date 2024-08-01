@@ -15,6 +15,8 @@ module CustomMaps
         GEOGRAPHIC_INPUT_TYPES.include? input_type
       end
 
+      MAP_CONFIG_INPUT_TYPES = %w[point page].freeze
+
       def supports_map_config?
         MAP_CONFIG_INPUT_TYPES.include? input_type
       end
