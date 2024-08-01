@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -14,6 +14,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import CommentCount from './CommentCount';
+
+const StyledProgressBar = styled(ProgressBar)`
+  border-radius: ${(props) => props.theme.borderRadius};
+  border: ${(props) =>
+    props.bgShaded ? 'none' : `1px solid ${props.theme.colors.tenantPrimary}`};
+`;
 
 const ProposalFooter = ({
   showCommentCount,
@@ -50,7 +56,7 @@ const ProposalFooter = ({
               {reactionLimit}
             </Text>
           </Box>
-          <ProgressBar
+          <StyledProgressBar
             progress={reactionLimit ? reactionCount / reactionLimit : 0}
             color={
               theme.colors.tenantText ||
