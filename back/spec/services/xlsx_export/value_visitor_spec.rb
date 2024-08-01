@@ -499,7 +499,7 @@ describe XlsxExport::ValueVisitor do
     end
 
     describe '#visit_page' do
-      let(:input_type) { 'page' }
+      let(:field) { create(:custom_field_page) }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.
 
       it 'returns the empty string, because the field does not capture data' do
