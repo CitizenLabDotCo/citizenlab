@@ -94,6 +94,15 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
       // We don't support file upload fields in an analysis at the moment
       return null;
     }
+    case 'point': {
+      return null;
+    }
+    case 'line': {
+      return null;
+    }
+    case 'polygon': {
+      return null;
+    }
     default: {
       // Makes TS throw a compile error in case we're not covering for an input_type
       const exhaustiveCheck: never = customField.data.attributes.input_type;
