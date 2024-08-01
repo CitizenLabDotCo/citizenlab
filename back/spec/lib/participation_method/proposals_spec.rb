@@ -123,7 +123,7 @@ RSpec.describe ParticipationMethod::Proposals do
       it 'assignes the default "proposed" status if not set' do
         proposal = build(:proposal, idea_status: nil)
         participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq proposed
+        expect(proposal.idea_status).to eq proposed_status
       end
 
       it 'does not change the status if it is already set' do

@@ -166,8 +166,10 @@ resource 'Ideas' do
       end
 
       context 'when admin' do
-        parameter :idea_status_id, 'The status of the idea, only allowed for admins'
-        parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # Tested in separate engine
+        with_options scope: :idea do
+          parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+          parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.' # Tested in separate engine
+        end
 
         before { header_token_for(admin) }
 
@@ -341,8 +343,10 @@ resource 'Ideas' do
       end
 
       context 'when moderator' do
-        parameter :idea_status_id, 'The status of the idea, only allowed for admins'
-        parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.', scope: :idea # Tested in separate engine
+        with_options scope: :idea do
+          parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+          parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.' # Tested in separate engine
+        end
 
         before { header_token_for create(:project_moderator, projects: [project]) }
 
