@@ -52,6 +52,7 @@ const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
           }}
           onSubmit={handleSubmit}
           ideaStatuses={ideaStatuses}
+          showCategorySelector
         />
       </Section>
     );

@@ -41,7 +41,7 @@ export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   ideaStatuses: IIdeaStatuses;
-  canReorder?: boolean;
+  showCategorySelector?: boolean;
 };
 
 const StyledSection = styled(Section)`
@@ -79,7 +79,7 @@ const IdeaStatusForm = ({
   defaultValues,
   onSubmit,
   ideaStatuses,
-  canReorder,
+  showCategorySelector,
 }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
@@ -145,7 +145,7 @@ const IdeaStatusForm = ({
             />
           </SectionField>
         </StyledSection>
-        {canReorder && (
+        {showCategorySelector && (
           <StyledSection>
             <SectionField>
               <StyledLabel>

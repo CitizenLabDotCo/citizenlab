@@ -71,7 +71,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             }}
             onSubmit={handleSubmit}
             ideaStatuses={ideaStatuses}
-            canReorder={can_reorder}
+            showCategorySelector={can_reorder}
           />
         </Section>
       </>
