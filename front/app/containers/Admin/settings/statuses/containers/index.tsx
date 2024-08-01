@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   IconTooltip,
@@ -30,6 +30,7 @@ import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import DeleteStatusButton from '../components/DeleteStatusButton';
 import EditStatusButton from '../components/EditStatusButton';
@@ -60,10 +61,8 @@ const StyledIconTooltip = styled(IconTooltip)`
   padding: 0 16px;
 `;
 
-const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
-  const { data: ideaStatuses, isLoading } = useIdeaStatuses({
-    participation_method: variant,
-  });
+const IdeaStatuses = () => {
+  const { data: ideaStatuses, isLoading } = useIdeaStatuses();
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
     name: 'custom_idea_statuses',
@@ -71,14 +70,11 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   });
 
   const handleReorder = (id: string, ordering: number) => () => {
-    updateIdeaStatus({
-      id,
-      requestBody: { participation_method: variant, ordering },
-    });
+    updateIdeaStatus({ id, requestBody: { ordering } });
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.can_reorder === false;
+    return ideaStatus === defaultStatus;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -89,18 +85,31 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
     );
   };
 
+  const defaultStatus = useMemo(() => {
+    if (ideaStatuses) {
+      return ideaStatuses.data.find(
+        (status) => status.attributes.code === 'proposed'
+      );
+    }
+
+    return null;
+  }, [ideaStatuses]);
+
+  const sortableStatuses = useMemo(() => {
+    if (!isNilOrError(ideaStatuses) && defaultStatus) {
+      return ideaStatuses.data.filter(
+        (status) => status.attributes !== defaultStatus.attributes
+      );
+    }
+
+    return [];
+  }, [defaultStatus, ideaStatuses]);
+
   if (isLoading) {
     return <Spinner />;
   }
 
-  if (ideaStatuses) {
-    const defaultStatuses = ideaStatuses?.data.filter(
-      (ideaStatus) => ideaStatus.attributes.can_reorder === false
-    );
-
-    const sortableStatuses = ideaStatuses?.data.filter(
-      (ideaStatus) => ideaStatus.attributes.can_reorder
-    );
+  if (ideaStatuses && defaultStatus) {
     return (
       <Section>
         {!customIdeaStatusesAllowed && (
@@ -125,51 +134,50 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             <Button
               buttonStyle="admin-dark"
               icon="plus-circle"
-              linkTo={`/admin/settings/${variant}/statuses/new`}
+              linkTo="/admin/settings/statuses/new"
               disabled={!customIdeaStatusesAllowed}
             >
               <FormattedMessage {...messages.addIdeaStatus} />
             </Button>
           </Tooltip>
         </ButtonWrapper>
-        {defaultStatuses.map((defaultStatus) => (
-          <Row key={defaultStatus.id}>
-            <FlexTextCell className="expand">
-              <StyledIconTooltip
-                content={<FormattedMessage {...messages.lockedStatusTooltip} />}
-                iconSize="16px"
-                placement="top"
-                icon="lock"
-              />
-              <ColorLabel color={defaultStatus.attributes.color} />
-              <T value={defaultStatus.attributes.title_multiloc} />
-            </FlexTextCell>
-            <Buttons>
-              {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
+
+        <Row>
+          <FlexTextCell className="expand">
+            <StyledIconTooltip
+              content={<FormattedMessage {...messages.lockedStatusTooltip} />}
+              iconSize="16px"
+              placement="top"
+              icon="lock"
+            />
+            <ColorLabel color={defaultStatus.attributes.color} />
+            <T value={defaultStatus.attributes.title_multiloc} />
+          </FlexTextCell>
+          <Buttons>
+            {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
             so it's always disabled. */}
-              <DeleteStatusButton
-                buttonDisabled
-                tooltipContent={
-                  customIdeaStatusesAllowed ? (
-                    <FormattedMessage
-                      {...messages.defaultStatusDeleteButtonTooltip}
-                    />
-                  ) : (
-                    <FormattedMessage {...messages.pricingPlanUpgrade} />
-                  )
-                }
-                ideaStatusId={defaultStatus.id}
-              />
-              <EditStatusButton
-                buttonDisabled={!customIdeaStatusesAllowed}
-                tooltipContent={
+            <DeleteStatusButton
+              buttonDisabled
+              tooltipContent={
+                customIdeaStatusesAllowed ? (
+                  <FormattedMessage
+                    {...messages.defaultStatusDeleteButtonTooltip}
+                  />
+                ) : (
                   <FormattedMessage {...messages.pricingPlanUpgrade} />
-                }
-                linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
-              />
-            </Buttons>
-          </Row>
-        ))}
+                )
+              }
+              ideaStatusId={defaultStatus.id}
+            />
+            <EditStatusButton
+              buttonDisabled={!customIdeaStatusesAllowed}
+              tooltipContent={
+                <FormattedMessage {...messages.pricingPlanUpgrade} />
+              }
+              linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
+            />
+          </Buttons>
+        </Row>
 
         <SortableList items={sortableStatuses} onReorder={handleReorder}>
           {({ itemsList, handleDragRow, handleDropRow }) => (
@@ -219,7 +227,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
                     />
                   </Buttons>
                 </SortableRow>

@@ -4,8 +4,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import { ITab } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
@@ -21,9 +19,6 @@ import messages from './messages';
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const proposalsParitipationMethdEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
-  });
 
   const tabs: ITab[] = [
     {
@@ -54,17 +49,8 @@ const SettingsPage = () => {
     {
       name: 'statuses',
       label: formatMessage(messages.tabInputStatuses),
-      url: '/admin/settings/ideation/statuses',
+      url: '/admin/settings/statuses',
     },
-    ...(proposalsParitipationMethdEnabled
-      ? ([
-          {
-            name: 'proposal-statuses',
-            label: formatMessage(messages.tabProposalStatuses),
-            url: '/admin/settings/proposals/statuses',
-          },
-        ] as ITab[])
-      : []),
     {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),

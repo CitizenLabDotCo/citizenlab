@@ -4,29 +4,15 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import ideaStatusesKeys from './keys';
-import {
-  IIdeaStatuses,
-  IdeaStatusesKeys,
-  IdeaStatusesQueryParams,
-} from './types';
+import { IIdeaStatuses, IdeaStatusesKeys } from './types';
 
-const fetchIdeaStatuses = ({ participation_method }: IdeaStatusesQueryParams) =>
-  fetcher<IIdeaStatuses>({
-    path: '/idea_statuses',
-    action: 'get',
-    queryParams: { participation_method },
-  });
+const fetchIdeaStatuses = () =>
+  fetcher<IIdeaStatuses>({ path: '/idea_statuses', action: 'get' });
 
-const useIdeaStatuses = ({
-  enabled = true,
-  participation_method,
-}: {
-  enabled?: boolean;
-  participation_method: IdeaStatusesQueryParams['participation_method'];
-}) => {
+const useIdeaStatuses = ({ enabled = true } = {}) => {
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
-    queryKey: ideaStatusesKeys.list({ participation_method }),
-    queryFn: () => fetchIdeaStatuses({ participation_method }),
+    queryKey: ideaStatusesKeys.lists(),
+    queryFn: fetchIdeaStatuses,
     enabled,
   });
 };

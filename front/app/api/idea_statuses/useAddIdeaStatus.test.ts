@@ -30,7 +30,6 @@ describe('useAddIdeaStatus', () => {
           en: 'test',
         },
         color: 'red',
-        participation_method: 'ideation',
       });
     });
 
@@ -55,7 +54,6 @@ describe('useAddIdeaStatus', () => {
           en: 'test',
         },
         color: 'red',
-        participation_method: 'ideation',
       });
     });
 

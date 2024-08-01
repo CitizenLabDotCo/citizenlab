@@ -58,22 +58,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.customFieldCodeTitle',
     defaultMessage: 'Other',
   },
-  thresholdReachedFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.thresholdReachedFieldCodeTitle',
-    defaultMessage: 'Threshold reached',
-  },
-  expiredFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.expiredFieldCodeTitle',
-    defaultMessage: 'Expired',
-  },
-  answeredFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle',
-    defaultMessage: 'Answered',
-  },
-  ineligibleFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle',
-    defaultMessage: 'Ineligible',
-  },
   proposedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription',
     defaultMessage: 'Successfully submitted as a proposal for consideration',
@@ -97,22 +81,6 @@ export default defineMessages({
   rejectedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription',
     defaultMessage: 'Ineligible or not selected to move forward',
-  },
-  thresholdReachedFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.thresholdReachedFieldCodeDescription',
-    defaultMessage: 'Proposal has reached the required support threshold',
-  },
-  expiredFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.expiredFieldCodeDescription',
-    defaultMessage: 'Proposal has expired',
-  },
-  answeredFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription',
-    defaultMessage: 'Official feedback provided',
-  },
-  ineligibleFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription',
-    defaultMessage: 'Proposal is ineligible',
   },
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',

@@ -14,9 +14,7 @@ export interface Props {
 }
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
-  const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
-  });
+  const { data: ideaStatuses } = useIdeaStatuses();
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
     if (ideaStatuses) {

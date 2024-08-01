@@ -19,9 +19,7 @@ const StatusFilterBox = ({
   className,
   selectedIdeaFilters,
 }: Props) => {
-  const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
-  });
+  const { data: ideaStatuses } = useIdeaStatuses();
   const { data: ideasFilterCounts } = useIdeasFilterCounts({
     ...selectedIdeaFilters,
     idea_status: undefined,
