@@ -121,7 +121,9 @@ resource 'IdeaStatuses' do
         let(:participation_method) { 'proposals' }
         let(:code) { 'custom' }
 
-        example_request 'Create a proposals status' do
+        example 'Create a proposals status' do
+          expect { do_request }.to have_enqueued_job(LogActivityJob).with(kind_of(IdeaStatus), 'created', kind_of(User), kind_of(Integer))
+
           assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).not_to be_empty
@@ -136,7 +138,8 @@ resource 'IdeaStatuses' do
   end
 
   patch 'web_api/v1/idea_statuses/:id' do
-    let(:id) { create(:idea_status).id }
+    let(:idea_status) { create(:idea_status) }
+    let(:id) { idea_status.id }
 
     with_options scope: :idea_status do
       parameter :title_multiloc, 'Multi-locale field for the input status title'
@@ -161,7 +164,9 @@ resource 'IdeaStatuses' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'Update an idea status by ID' do
+      example 'Update an idea status by ID' do
+        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
+
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
@@ -179,7 +184,8 @@ resource 'IdeaStatuses' do
 
     before { create_list(:idea_status, 3) }
 
-    let(:id) { create(:idea_status).id }
+    let(:idea_status) { create(:idea_status) }
+    let(:id) { idea_status.id }
     let(:ordering) { 1 }
 
     context 'when resident' do
@@ -194,7 +200,8 @@ resource 'IdeaStatuses' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'Reorder an idea status' do
+      example 'Reorder an idea status' do
+        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to eq ordering
       end
@@ -202,7 +209,8 @@ resource 'IdeaStatuses' do
   end
 
   delete 'web_api/v1/idea_statuses/:id' do
-    let(:id) { create(:idea_status).id }
+    let(:idea_status) { create(:idea_status) }
+    let(:id) { idea_status.id }
 
     context 'when visitor' do
       example 'Cannot delete an idea status', document: false do
@@ -214,7 +222,7 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      let(:id) { create(:proposals_status).id }
+      let(:idea_status) { create(:proposals_status) }
 
       example 'Cannot delete a proposal status', document: false do
         do_request
@@ -225,7 +233,8 @@ resource 'IdeaStatuses' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'Delete a idea status by ID' do
+      example 'Delete a idea status by ID' do
+        expect { do_request }.to have_enqueued_job(LogActivityJob).with(kind_of(String), 'deleted', kind_of(User), kind_of(Integer), payload: anything)
         assert_status 200
         expect(IdeaStatus.find_by(id: id)).to be_nil
       end
