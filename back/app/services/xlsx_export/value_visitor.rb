@@ -104,6 +104,10 @@ module XlsxExport
       idea_file.file.url
     end
 
+    def visit_shapefile_upload(field)
+      visit_file_upload(field)
+    end
+
     def visit_topic_ids(_field)
       return '' if model.topics.empty?
 

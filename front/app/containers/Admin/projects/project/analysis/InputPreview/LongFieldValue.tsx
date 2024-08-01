@@ -28,6 +28,7 @@ import tracks from '../tracks';
 import LineMapPreview from './MapPreview/LineMapPreview';
 import PointMapPreview from './MapPreview/PointMapPreview';
 import PolygonMapPreview from './MapPreview/PolygonMapPreview';
+import ShapefilePreview from './ShapefilePreview';
 
 type Props = {
   customFieldId: string;
@@ -290,6 +291,16 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                   formatMessage(messages.noAnswer)
                 )}
               </Text>
+            </Box>
+          );
+        }
+        case 'shapefile_upload': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <ShapefilePreview inputId={input.id} file={rawValue} />
             </Box>
           );
         }

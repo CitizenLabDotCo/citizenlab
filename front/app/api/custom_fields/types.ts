@@ -25,6 +25,7 @@ export type ICustomFieldInputType =
   | 'section'
   | 'page'
   | 'file_upload'
+  | 'shapefile_upload'
   | 'title_multiloc'
   | 'html_multiloc'
   | 'files'

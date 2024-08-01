@@ -559,6 +559,33 @@ describe XlsxExport::ValueVisitor do
       end
     end
 
+    describe '#visit_shapefile_upload' do
+      let(:input_type) { 'shapefile_upload' }
+
+      context 'when there is no value' do
+        let(:value) { nil }
+
+        it 'returns the empty string' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_shapefile_upload(field)).to eq ''
+          end
+        end
+      end
+
+      context 'when there is a value' do
+        let(:model) { create(:native_survey_response) }
+        let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
+
+        before do
+          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+        end
+
+        it 'returns the value for the report' do
+          expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
+        end
+      end
+    end
+
     describe '#visit_topic_ids' do
       let(:input_type) { 'topic_ids' }
       let(:model) { create(:idea, topics: topics, custom_field_values: { field_key => value }) }

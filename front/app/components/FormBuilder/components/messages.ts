@@ -70,6 +70,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  shapefileUpload: {
+    id: 'app.components.formBuilder.shapefileUpload',
+    defaultMessage: 'Esri shapefile upload',
+  },
   dropPin: {
     id: 'app.components.formBuilder.dropPin',
     defaultMessage: 'Drop pin',

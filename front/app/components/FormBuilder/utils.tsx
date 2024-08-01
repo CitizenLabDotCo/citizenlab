@@ -245,6 +245,9 @@ const getInputTypeStringKey = (
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'shapefile_upload':
+      translatedStringKey = messages.shapefileUpload;
+      break;
     case 'point':
       translatedStringKey = messages.dropPin;
       break;

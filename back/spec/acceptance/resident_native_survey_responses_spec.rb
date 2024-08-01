@@ -163,8 +163,107 @@ resource 'Ideas' do
         end
       end
 
+      # Dev note: TAN-2347-BE-for-new-shapefile-upload
+      # Simple clone of above tests for file_upload fields, but now for shapefile_upload fields
+      # as initial functionality is the same.
+      # Needs to be adjusted if/when shapefile_upload fields get their own specific BE functionality/limitations.
+      context 'with two shapefile upload fields' do
+        # Note the "notwhitelisted" file extension. It is here to validate
+        # that no file extension validation is done.
+        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename2) { 'afvalkalender2023.pdf' }
+        let(:fixture_filename) { 'afvalkalender.pdf' }
+        let(:fixture_mime_type) { 'application/pdf' }
+        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let!(:files_field1) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'shapefile_upload',
+            key: 'custom_field_name1',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload a zipfile containing shapefile(s)' }
+          )
+        end
+        let!(:files_field2) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'shapefile_upload',
+            key: 'custom_field_name2',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload another zipfile containing shapefile(s)' }
+          )
+        end
+        let(:custom_field_name1) do
+          {
+            content: file_contents1,
+            name: filename1
+          }
+        end
+        let(:custom_field_name2) do
+          {
+            content: file_contents2,
+            name: filename2
+          }
+        end
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+
+        context 'published idea' do
+          example_request 'Create a survey response with shapefile upload fields' do
+            assert_status 201
+            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            input = inputs.first
+            expect(input.phase_ids).to eq [project.phases.first.id]
+            expect(input.creation_phase).to eq project.phases.first
+
+            # Verify that the files are saved correctly
+            file1_id = input.custom_field_values['custom_field_name1']['id']
+            file2_id = input.custom_field_values['custom_field_name2']['id']
+            file1 = IdeaFile.find(file1_id)
+            file2 = IdeaFile.find(file2_id)
+            expect(input.idea_files.size).to eq 2
+            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
+            expect(file1.name).to eq filename1
+            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
+            expect(file2.name).to eq filename2
+            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+
+            # Verify that the custom field value is saved correctly.
+            expect(input.custom_field_values).to eq({
+              'custom_field_name1' => { 'id' => file1.id, 'name' => file1.name },
+              'custom_field_name2' => { 'id' => file2.id, 'name' => file2.name }
+            })
+          end
+        end
+
+        context 'draft idea' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'Create a draft survey response with a shapefile upload field' do
+            assert_status 201
+            survey = project.reload.ideas.first
+            expect(survey.publication_status).to eq 'draft'
+            expect(survey.custom_field_values.values).to match_array(
+              IdeaFile.all.map { |file| { 'id' => file.id, 'name' => file.name } }
+            )
+          end
+        end
+      end
+
+      # Dev note: TAN-2347-BE-for-new-shapefile-upload
+      # Simple clone of file_upload content fieldsfor shapefile_upload test content,
+      # as initial functionality is the same.
+      # Needs to be adjusted if/when shapefile_upload fields get their own specific BE functionality/limitations.
       describe 'without custom_field_values_params for geo fields' do
-        file = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+        file1 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+        file2 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_shapefile.pdf')
         [
           { factory: :custom_field_number, value: 42 },
           { factory: :custom_field_linear_scale, value: 3 },
@@ -173,7 +272,8 @@ resource 'Ideas' do
           { factory: :custom_field_select, options: [:with_options], value: 'option1' },
           { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
           { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
-          { factory: :custom_field_file_upload, value: { 'id' => file.id, 'name' => file.name } },
+          { factory: :custom_field_file_upload, value: { 'id' => file1.id, 'name' => file1.name } },
+          { factory: :custom_field_shapefile_upload, value: { 'id' => file2.id, 'name' => file2.name } },
           { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
         ].each do |field_desc|
           describe do

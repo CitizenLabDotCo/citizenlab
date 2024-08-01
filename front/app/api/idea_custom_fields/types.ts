@@ -16,6 +16,7 @@ export type IIdeaCustomFieldInputType =
   | 'date'
   | 'linear_scale'
   | 'file_upload'
+  | 'shapefile_upload'
   | 'point'
   | 'line'
   | 'polygon';

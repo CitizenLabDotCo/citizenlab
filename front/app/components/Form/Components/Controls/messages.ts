@@ -86,4 +86,8 @@ export default defineMessages({
     id: 'app.components.form.controls.minimumCoordinates2',
     defaultMessage: 'A minimum of {numPoints} map points is required.',
   },
+  uploadShapefileInstructions: {
+    id: 'app.components.form.controls.uploadShapefileInstructions',
+    defaultMessage: '* Upload a zip file containing one or more shapefiles.',
+  },
 });

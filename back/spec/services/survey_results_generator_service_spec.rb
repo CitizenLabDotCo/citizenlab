@@ -152,6 +152,17 @@ RSpec.describe SurveyResultsGeneratorService do
       required: false
     )
   end
+  let_it_be(:shapefile_upload_field) do
+    create(
+      :custom_field,
+      input_type: 'shapefile_upload',
+      resource: form,
+      title_multiloc: {
+        'en' => 'Upload a file'
+      },
+      required: false
+    )
+  end
 
   let_it_be(:point_field) do
     create(
@@ -202,7 +213,8 @@ RSpec.describe SurveyResultsGeneratorService do
     male_user = create(:user, custom_field_values: { gender: 'male' })
     female_user = create(:user, custom_field_values: { gender: 'female' })
     no_gender_user = create(:user, custom_field_values: {})
-    idea_file = create(:idea_file)
+    idea_file1 = create(:idea_file)
+    idea_file2 = create(:idea_file)
     create(
       :native_survey_response,
       project: project,
@@ -211,13 +223,14 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        file_upload_field.key => { 'id' => idea_file1.id, 'name' => idea_file1.name },
+        shapefile_upload_field.key => { 'id' => idea_file2.id, 'name' => idea_file2.name },
         point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
         line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
         linear_scale_field.key => 3
       },
-      idea_files: [idea_file],
+      idea_files: [idea_file1, idea_file2],
       author: female_user
     )
     create(
@@ -315,7 +328,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 11
+        expect(generated_results[:results].count).to eq 12
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
@@ -991,6 +1004,27 @@ RSpec.describe SurveyResultsGeneratorService do
       end
     end
 
+    describe 'shapefile upload fields' do
+      let(:expected_result_shapefile_upload) do
+        {
+          customFieldId: shapefile_upload_field.id,
+          inputType: 'shapefile_upload',
+          question: { 'en' => 'Upload a file' },
+          required: false,
+          grouped: false,
+          totalResponseCount: 22,
+          questionResponseCount: 1,
+          files: [
+            { name: end_with('.pdf'), url: end_with('.pdf') }
+          ]
+        }
+      end
+
+      it 'returns the results for file upload field' do
+        expect(generated_results[:results][8]).to match expected_result_shapefile_upload
+      end
+    end
+
     describe 'point fields' do
       let(:expected_result_point) do
         {
@@ -1010,7 +1044,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a point field' do
-        expect(generated_results[:results][8]).to match expected_result_point
+        expect(generated_results[:results][9]).to match expected_result_point
       end
     end
 
@@ -1033,7 +1067,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a line field' do
-        expect(generated_results[:results][9]).to match expected_result_line
+        expect(generated_results[:results][10]).to match expected_result_line
       end
     end
 
@@ -1056,7 +1090,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a polygon field' do
-        expect(generated_results[:results][10]).to match expected_result_polygon
+        expect(generated_results[:results][11]).to match expected_result_polygon
       end
     end
   end

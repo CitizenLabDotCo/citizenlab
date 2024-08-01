@@ -94,6 +94,10 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
       // We don't support file upload fields in an analysis at the moment
       return null;
     }
+    case 'shapefile_upload': {
+      // We don't support shapefile upload fields in an analysis at the moment
+      return null;
+    }
     case 'point': {
       return null;
     }
