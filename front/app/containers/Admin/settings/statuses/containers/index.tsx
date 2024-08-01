@@ -61,9 +61,9 @@ const StyledIconTooltip = styled(IconTooltip)`
   padding: 0 16px;
 `;
 
-const IdeaStatuses = () => {
+const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method: variant,
   });
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
@@ -136,7 +136,7 @@ const IdeaStatuses = () => {
             <Button
               buttonStyle="admin-dark"
               icon="plus-circle"
-              linkTo="/admin/settings/statuses/new"
+              linkTo={`/admin/settings/${variant}/statuses/new`}
               disabled={!customIdeaStatusesAllowed}
             >
               <FormattedMessage {...messages.addIdeaStatus} />
@@ -176,7 +176,7 @@ const IdeaStatuses = () => {
               tooltipContent={
                 <FormattedMessage {...messages.pricingPlanUpgrade} />
               }
-              linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
+              linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
             />
           </Buttons>
         </Row>
@@ -229,7 +229,7 @@ const IdeaStatuses = () => {
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/${variant}/statuses/${ideaStatus.id}`}
                     />
                   </Buttons>
                 </SortableRow>
