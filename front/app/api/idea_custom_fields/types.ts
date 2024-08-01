@@ -16,7 +16,10 @@ export type IIdeaCustomFieldInputType =
   | 'date'
   | 'linear_scale'
   | 'file_upload'
-  | 'shapefile_upload';
+  | 'shapefile_upload'
+  | 'point'
+  | 'line'
+  | 'polygon';
 
 export type TCustomFieldCode =
   | 'gender'
