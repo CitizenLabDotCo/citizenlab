@@ -342,7 +342,7 @@ const ReactionButton = ({
   iconName,
   ideaId,
   userReactionMode,
-  variant,
+  variant = 'icon',
 }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
