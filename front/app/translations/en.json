@@ -726,6 +726,7 @@
   "app.components.formBuilder.logic": "Logic",
   "app.components.formBuilder.logicValidationError": "Logic may not link to prior pages",
   "app.components.formBuilder.longAnswer": "Long answer",
+  "app.components.formBuilder.mapping": "Mapping",
   "app.components.formBuilder.multipleChoice": "Multiple choice",
   "app.components.formBuilder.multipleChoiceImage": "Image choice",
   "app.components.formBuilder.multiselect.maximum": "Maximum",
