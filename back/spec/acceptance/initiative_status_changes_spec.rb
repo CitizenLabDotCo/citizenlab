@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'InitiativeStatusChange' do
   explanation 'Initiative status changes allow admins to apply manual status changes on initiatives.'
 

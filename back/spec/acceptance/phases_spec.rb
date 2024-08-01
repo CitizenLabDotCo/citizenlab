@@ -190,6 +190,23 @@ resource 'Phases' do
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage. Defaults to 90.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage. Defaults to 300.'
+        end
+
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Create a proposals phase' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+        end
+      end
+
       context 'Blank phase end dates' do
         let(:start_at) { @project.phases.last.end_at + 5.days }
         let(:end_at) { nil }
@@ -447,6 +464,24 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
+      end
+
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage.'
+        end
+
+        let(:id) { create(:proposals_phase).id }
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Update a proposals phase' do
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+        end
       end
 
       describe do

@@ -17,11 +17,9 @@ class IdeaCustomFieldsService
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    filtered_fields = all_fields.select do |field|
+    all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
-
-    add_suffix_to_geo_fields_title_multiloc(filtered_fields)
   end
 
   def visible_fields
@@ -169,22 +167,6 @@ class IdeaCustomFieldsService
   end
 
   private
-
-  def add_suffix_to_geo_fields_title_multiloc(fields)
-    fields.map do |field|
-      if CustomField::GEOGRAPHIC_INPUT_TYPES.include? field.input_type
-        field.title_multiloc = field.title_multiloc.to_h do |locale, title|
-          [
-            locale,
-            "#{title} [#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.longitude') }}, " \
-            "#{I18n.with_locale(locale) { I18n.t('xlsx_export.column_headers.latitude') }}]"
-          ]
-        end
-      end
-
-      field
-    end.flatten
-  end
 
   def insert_other_option_text_fields(fields)
     all_fields = []

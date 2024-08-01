@@ -22,6 +22,7 @@ module MultiTenancy
           ordering
           title_multiloc
           random_option_ordering
+          page_layout
         ]
 
         # Enigmatic comment from the previous implementation:

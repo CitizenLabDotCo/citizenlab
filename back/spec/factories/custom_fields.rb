@@ -156,6 +156,7 @@ FactoryBot.define do
         }
       end
       input_type { 'page' }
+      page_layout { 'default' }
     end
 
     factory :custom_field_section do

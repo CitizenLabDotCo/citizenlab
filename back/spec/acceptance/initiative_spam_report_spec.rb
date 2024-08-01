@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Spam Reports' do
   explanation 'Reporting undesired content (i.e. an initiative).'
 
