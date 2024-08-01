@@ -21,6 +21,7 @@ import {
 import { updatePointDataAndDisplay } from './pointUtils';
 
 export type MapInputType = 'point' | 'line' | 'polygon';
+export type EsriGeometryType = 'point' | 'polygon' | 'polyline' | 'multipoint';
 
 // reverseGeocodeAndSave
 // Description: Reverse geocodes a point and saves the address
