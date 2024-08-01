@@ -53,7 +53,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   if (ideaStatuses && ideaStatus && tenantLocales) {
-    const { color, title_multiloc, description_multiloc, code } =
+    const { color, title_multiloc, description_multiloc, code, can_reorder } =
       ideaStatus.data.attributes;
     return (
       <>
@@ -71,6 +71,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             }}
             onSubmit={handleSubmit}
             ideaStatuses={ideaStatuses}
+            canReorder={can_reorder}
           />
         </Section>
       </>

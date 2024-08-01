@@ -36,6 +36,8 @@ export interface IIdeaStatusData {
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
+    can_reorder: boolean;
+    can_transition_manually: boolean;
   };
 }
 

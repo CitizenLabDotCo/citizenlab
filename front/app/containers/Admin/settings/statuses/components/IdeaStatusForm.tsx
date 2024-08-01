@@ -41,6 +41,7 @@ export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   ideaStatuses: IIdeaStatuses;
+  canReorder?: boolean;
 };
 
 const StyledSection = styled(Section)`
@@ -101,6 +102,13 @@ const IdeaStatusForm = ({ defaultValues, onSubmit, ideaStatuses }: Props) => {
     }
   };
 
+  const codes: TIdeaStatusCode[] = [
+    ...ideaStatuses.data
+      .filter((ideaStatus) => ideaStatus.attributes.can_reorder) // only show reorderable statuses
+      .map((ideaStatus) => ideaStatus.attributes.code),
+    'custom',
+  ];
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -142,7 +150,7 @@ const IdeaStatusForm = ({ defaultValues, onSubmit, ideaStatuses }: Props) => {
               />
             </StyledLabel>
             <RadioGroup name="code">
-              {ideaStatuses?.data.map((ideaStatus, i) => (
+              {codes.map((code, i) => (
                 <Radio
                   key={`code-input-${i}`}
                   label={
@@ -163,10 +171,10 @@ const IdeaStatusForm = ({ defaultValues, onSubmit, ideaStatuses }: Props) => {
                             expired: messages.expiredFieldCodeTitle,
                             answered: messages.answeredFieldCodeTitle,
                             ineligible: messages.ineligibleFieldCodeTitle,
-                          }[ideaStatus.attributes.code]
+                          }[code]
                         )}
                       </span>
-                      {ideaStatus.attributes.code !== 'custom' && (
+                      {code !== 'custom' && (
                         <span className="description">
                           {formatMessage(
                             {
@@ -184,15 +192,15 @@ const IdeaStatusForm = ({ defaultValues, onSubmit, ideaStatuses }: Props) => {
                               answered: messages.answeredFieldCodeDescription,
                               ineligible:
                                 messages.ineligibleFieldCodeDescription,
-                            }[ideaStatus.attributes.code]
+                            }[code]
                           )}
                         </span>
                       )}
                     </LabelText>
                   }
-                  id={`${ideaStatus.attributes.code}-input`}
+                  id={`${code}-input`}
                   name="code"
-                  value={ideaStatus.attributes.code}
+                  value={code}
                 />
               ))}
             </RadioGroup>
