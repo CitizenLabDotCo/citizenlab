@@ -51,6 +51,9 @@ const FormBuilderToolbox = ({
   const isLocationAnswerEnabled = useFeatureFlag({
     name: 'input_form_mapping_question',
   });
+  const isFormMappingEnabled = useFeatureFlag({
+    name: 'form_mapping',
+  });
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const isCustomFieldsDisabled =
@@ -224,17 +227,20 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
-        <ToolboxItem
-          icon="upload-file"
-          label={formatMessage(messages.shapefileUpload)}
-          onClick={() => addField('shapefile_upload')}
-          data-cy="e2e-file-shapefile-field"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-          inputType="shapefile_upload"
-          disabled={isCustomFieldsDisabled}
-        />
         {isLocationAnswerEnabled && (
           <>
+            <Title
+              fontWeight="normal"
+              ml="16px"
+              mt="16px"
+              variant="h6"
+              m="0px"
+              as="h3"
+              color="textSecondary"
+              style={{ textTransform: 'uppercase' }}
+            >
+              {formatMessage(messages.mapping)}
+            </Title>
             <ToolboxItem
               icon="dropPin"
               label={formatMessage(messages.dropPin)}
@@ -244,24 +250,37 @@ const FormBuilderToolbox = ({
               inputType="point"
               disabled={isCustomFieldsDisabled}
             />
-            <ToolboxItem
-              icon="drawRoute"
-              label={formatMessage(messages.drawRoute)}
-              onClick={() => addField('line')}
-              data-cy="e2e-line-field"
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="line"
-              disabled={isCustomFieldsDisabled}
-            />
-            <ToolboxItem
-              icon="drawPolygon"
-              label={formatMessage(messages.drawPolygon)}
-              onClick={() => addField('polygon')}
-              data-cy="e2e-polygon-field"
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="polygon"
-              disabled={isCustomFieldsDisabled}
-            />
+            {isFormMappingEnabled && (
+              <>
+                <ToolboxItem
+                  icon="drawRoute"
+                  label={formatMessage(messages.drawRoute)}
+                  onClick={() => addField('line')}
+                  data-cy="e2e-line-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="line"
+                  disabled={isCustomFieldsDisabled}
+                />
+                <ToolboxItem
+                  icon="drawPolygon"
+                  label={formatMessage(messages.drawPolygon)}
+                  onClick={() => addField('polygon')}
+                  data-cy="e2e-polygon-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="polygon"
+                  disabled={isCustomFieldsDisabled}
+                />
+                <ToolboxItem
+                  icon="upload-file"
+                  label={formatMessage(messages.shapefileUpload)}
+                  onClick={() => addField('shapefile_upload')}
+                  data-cy="e2e-file-shapefile-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="shapefile_upload"
+                  disabled={isCustomFieldsDisabled}
+                />
+              </>
+            )}
           </>
         )}
       </Box>

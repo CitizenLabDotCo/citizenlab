@@ -186,6 +186,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
   },
+  mapping: {
+    id: 'app.components.formBuilder.mapping',
+    defaultMessage: 'Mapping',
+  },
   // Logic Settings
   formEnd: {
     id: 'app.components.formBuilder.formEnd',
