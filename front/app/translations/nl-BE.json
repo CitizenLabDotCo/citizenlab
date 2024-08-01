@@ -2158,7 +2158,7 @@
   "containers.SiteMap.allProjects": "Alle projecten",
   "containers.SiteMap.customPageSection": "Aangepaste pagina's",
   "containers.SiteMap.folderInfo": "Meer informatie",
-  "containers.SiteMap.headSiteMapTitle": "Overzichtskaart | {orgName}",
+  "containers.SiteMap.headSiteMapTitle": "Sitemap | {orgName}",
   "containers.SiteMap.homeSection": "Algemeen",
   "containers.SiteMap.initiativesInfo": "Meer informatie over voorstellen",
   "containers.SiteMap.initiativesList": "Alle voorstellen op dit platform",
