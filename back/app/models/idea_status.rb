@@ -42,26 +42,6 @@ class IdeaStatus < ApplicationRecord
     order(created_at: :asc).find_by(code: :proposed)
   end
 
-  def self.create_defaults
-    locales = AppConfiguration.instance.settings('core', 'locales') || CL2_SUPPORTED_LOCALES
-    code = 'proposed'
-    title_multiloc = locales.to_h do |locale|
-      translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}") }
-      [locale, translation]
-    end
-    description_multiloc = locales.to_h do |locale|
-      translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}_description") }
-      [locale, translation]
-    end
-    IdeaStatus.create(
-      title_multiloc: title_multiloc,
-      ordering: i + 1,
-      code: code,
-      color: Faker::Color.hex_color,
-      description_multiloc: description_multiloc
-    )
-  end
-
   def custom?
     code == 'custom'
   end

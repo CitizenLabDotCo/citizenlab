@@ -11,7 +11,7 @@ resource 'Moderations' do
     header 'Content-Type', 'application/json'
 
     @time = Time.now
-    IdeaStatus.create_defaults
+    create(:idea_status_proposed)
     @project = create(:project)
     @m3 = create(
       :idea,
