@@ -72,7 +72,10 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   });
 
   const handleReorder = (id: string, ordering: number) => () => {
-    updateIdeaStatus({ id, requestBody: { ordering } });
+    updateIdeaStatus({
+      id,
+      requestBody: { participation_method: variant, ordering },
+    });
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {

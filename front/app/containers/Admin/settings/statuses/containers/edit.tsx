@@ -40,7 +40,10 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
     const { ...params } = values;
 
     updateIdeaStatus(
-      { id: statusId, requestBody: params },
+      {
+        id: statusId,
+        requestBody: { ...params, participation_method: variant },
+      },
       { onSuccess: goBack }
     );
   };
