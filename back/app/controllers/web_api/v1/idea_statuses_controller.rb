@@ -44,6 +44,10 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def destroy
+    if idea_status.proposed?
+      render_error('Cannot delete the proposed status')
+      return
+    end
     frozen_idea_status = idea_status.destroy
     if frozen_idea_status.destroyed?
       SideFxIdeaStatusService.new.after_destroy(frozen_idea_status, current_user)

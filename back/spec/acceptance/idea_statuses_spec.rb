@@ -97,7 +97,7 @@ resource 'IdeaStatuses' do
     let(:color) { '#767676' }
 
     context 'when visitor' do
-      example 'Cannot create an idea status', document: false do
+      example '[Error] Cannot create an idea status', document: false do
         do_request
         assert_status 401
       end
@@ -155,7 +155,7 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      example 'Cannot update an idea status', document: false do
+      example '[Error] Cannot update an idea status', document: false do
         do_request
         assert_status 401
       end
@@ -191,7 +191,7 @@ resource 'IdeaStatuses' do
     context 'when resident' do
       before { resident_header_token }
 
-      example 'Cannot reorder an idea status', document: false do
+      example '[Error] Cannot reorder an idea status', document: false do
         do_request
         assert_status 401
       end
@@ -213,7 +213,7 @@ resource 'IdeaStatuses' do
     let(:id) { idea_status.id }
 
     context 'when visitor' do
-      example 'Cannot delete an idea status', document: false do
+      example '[Error] Cannot delete an idea status', document: false do
         do_request
         assert_status 401
       end
@@ -224,7 +224,7 @@ resource 'IdeaStatuses' do
 
       let(:idea_status) { create(:proposals_status) }
 
-      example 'Cannot delete a proposal status', document: false do
+      example '[Error] Cannot delete a proposal status', document: false do
         do_request
         assert_status 401
       end
@@ -237,6 +237,15 @@ resource 'IdeaStatuses' do
         expect { do_request }.to have_enqueued_job(LogActivityJob).with(kind_of(String), 'deleted', kind_of(User), kind_of(Integer), payload: anything)
         assert_status 200
         expect(IdeaStatus.find_by(id: id)).to be_nil
+      end
+
+      describe do
+        let(:idea_status) { create(:idea_status_proposed) }
+
+        example_request '[Error] Cannot delete the proposed status' do
+          assert_status 422
+          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot delete the proposed status'
+        end
       end
     end
   end

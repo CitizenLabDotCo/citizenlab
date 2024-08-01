@@ -34,11 +34,11 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
-  def default?
-    self.class.default_status == self
+  def proposed?
+    code == 'proposed'
   end
 
-  def self.default_status
+  def self.default_status # TODO: Delete
     order(created_at: :asc).find_by(code: :proposed)
   end
 

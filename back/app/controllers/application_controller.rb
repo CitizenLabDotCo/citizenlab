@@ -71,8 +71,9 @@ class ApplicationController < ActionController::API
     render json: self.class.serializer.new(record_or_records).serializable_hash, status: status
   end
 
-  def render_error(record, status: :unprocessable_entity)
-    render json: { errors: record.errors.details }, status: status
+  def render_error(record_or_message, status: :unprocessable_entity)
+    json = record_or_message.is_a?(String) ? { errors: { base: record_or_message } } : record_or_message.errors.details
+    render json: json, status: status
   end
 
   # @param [Pundit::NotAuthorized] exception
