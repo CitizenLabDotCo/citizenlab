@@ -39,7 +39,7 @@ const fetchUserCustomFieldsSchema = (
   }
 
   return fetcher<SchemaResponse>({
-    path: `/${type}s/${id}/permissions/${action}/schema`,
+    path: `/phases/${id}/permissions/${action}/schema`,
     action: 'get',
   });
 };
