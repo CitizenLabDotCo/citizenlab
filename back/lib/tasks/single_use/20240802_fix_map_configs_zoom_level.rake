@@ -9,10 +9,12 @@ namespace :mapping do
       config = AppConfiguration.instance
       next unless config.settings.dig('maps', 'tile_provider')&.include?('maptiler')
 
-      map_configs = CustomMaps::MapConfig.where(esri_base_map_id: nil, esri_web_map_id: nil)
+      map_configs = CustomMaps::MapConfig.where(esri_base_map_id: nil, esri_web_map_id: nil).where.not(zoom_level: nil)
+
       map_configs.each do |map_config|
         old_v = map_config.zoom_level
-        new_v = map_config.zoom_level - 1
+        new_v = old_v >= 1.0 ? old_v - 1.0 : 0.0
+
         if map_config.update(zoom_level: new_v)
           reporter.add_change(
             old_v,

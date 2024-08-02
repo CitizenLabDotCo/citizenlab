@@ -1,0 +1,23 @@
+{
+  "changes": [
+    {
+      "old_value": "6.0",
+      "new_value": "5.0",
+      "context": {
+        "tenant": "test.localhost",
+        "map_config": "a49c1206-047b-4bc2-9329-f73d5cfaa65a"
+      }
+    },
+    {
+      "old_value": "19.0",
+      "new_value": "18.0",
+      "context": {
+        "tenant": "localhost",
+        "map_config": "6b29a165-938c-4baa-80af-5b854016bec9"
+      }
+    }
+  ],
+  "errors": [
+
+  ]
+}
