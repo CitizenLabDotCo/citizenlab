@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'mapping:fix_map_configs_zoom_level rake task' do # rubocop:disable RSpec/DescribeClass
+describe 'mapping:fix_map_configs_zoom_level rake task' do
   before { load_rake_tasks_if_not_loaded }
 
   after { Rake::Task['mapping:fix_map_configs_zoom_level'].reenable }
