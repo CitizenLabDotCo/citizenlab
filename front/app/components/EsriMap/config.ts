@@ -10,6 +10,7 @@ import Legend from '@arcgis/core/widgets/Legend';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 import { InitialData } from './types';
+import { convertZoomToScale } from './utils';
 
 export const configureMapView = (
   mapView: MapView,
@@ -21,10 +22,15 @@ export const configureMapView = (
   setMapCenter(mapView, initialData, globalMapSettings);
 
   // Set initial extent
-  mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  const zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  mapView.zoom = zoom;
+  mapView.scale = convertZoomToScale(zoom - 1);
+
   mapView.constraints = {
     maxZoom: initialData?.maxZoom || 22,
     minZoom: 5,
+    maxScale: convertZoomToScale(initialData?.maxZoom || 22),
+    minScale: convertZoomToScale(5),
   };
 
   // Change location of zoom widget if specified

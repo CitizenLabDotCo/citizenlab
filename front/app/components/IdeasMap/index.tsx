@@ -41,6 +41,7 @@ import {
   changeCursorOnHover,
   parseLayers,
   getShapeSymbol,
+  convertScaleToZoom,
 } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
@@ -317,10 +318,11 @@ const IdeasMap = memo<Props>(
                 topElement?.graphic?.attributes?.cluster_count;
               if (clusterCount) {
                 // User clicked a cluster. Zoom in on the cluster.
+                const currentZoom = convertScaleToZoom(mapView.scale);
                 goToMapLocation(
                   esriPointToGeoJson(topElement.mapPoint),
                   mapView,
-                  mapView.zoom + 3
+                  currentZoom + 3
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
@@ -333,7 +335,10 @@ const IdeasMap = memo<Props>(
                 ).length;
 
                 // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
-                if (ideasAtClickCount > 1 && mapView.zoom >= 19) {
+                if (
+                  ideasAtClickCount > 1 &&
+                  convertScaleToZoom(mapView.scale) >= 19
+                ) {
                   goToMapLocation(
                     esriPointToGeoJson(topElement.mapPoint),
                     mapView

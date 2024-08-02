@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
 import Collection from '@arcgis/core/core/Collection';
 import Graphic from '@arcgis/core/Graphic';
 import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
+import WMTSLayer from '@arcgis/core/layers/WMTSLayer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
@@ -20,7 +20,7 @@ import useLocale from 'hooks/useLocale';
 
 import { configureMapView } from './config';
 import { InitialData } from './types';
-import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
+import { handleWebMapReferenceLayers } from './utils';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`
@@ -99,9 +99,18 @@ const EsriMap = ({
       map = new WebMap({ portalItem: { id: webMapId } });
     } else {
       map = new Map();
-      map.basemap = new Basemap({
-        baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
+
+      const layer = new WMTSLayer({
+        url: 'https://api.maptiler.com/maps/basic-v2/WMTSCapabilities.xml?key=R0U21P01bsRLx7I7ZRqp',
+        customParameters: {
+          key: 'R0U21P01bsRLx7I7ZRqp',
+        },
+        activeLayer: {
+          id: 'test_active_layer',
+        },
       });
+
+      map.layers.add(layer);
     }
 
     setMap(map);
@@ -116,6 +125,7 @@ const EsriMap = ({
           breakpoint: false,
         },
       },
+      scale: 4622333.6783341225,
     });
 
     setMapView(mapView);
@@ -177,6 +187,19 @@ const EsriMap = ({
     if (isRegularMap) {
       // Remove all layers
       map.removeAll();
+
+      const layer = new WMTSLayer({
+        url: 'https://api.maptiler.com/maps/basic-v2/WMTSCapabilities.xml?key=R0U21P01bsRLx7I7ZRqp',
+        customParameters: {
+          key: 'R0U21P01bsRLx7I7ZRqp',
+        },
+        activeLayer: {
+          id: 'test_active_layer',
+        },
+      });
+
+      map.layers.add(layer);
+
       // Add layers back if passed in
       layers.forEach((layer) => {
         map.add(layer);

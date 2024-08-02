@@ -46,6 +46,7 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
       },
     });
   }
+
   return new WebTileLayer({
     urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
     copyright: getTileAttribution(tileProvider || ''),
@@ -363,11 +364,17 @@ export const goToMapLocation = async (
   mapView: MapView,
   zoomLevel?: number
 ) => {
+  console.log('mapview zoom: ', mapView.zoom);
+  console.log('new zoom: ', zoomLevel);
+  console.log('current scale: ', mapView.scale);
+  console.log('curren Zoom from scale: ', convertScaleToZoom(mapView.scale));
+
   mapView
     .goTo(
       {
         center: [coordinates.coordinates[0], coordinates.coordinates[1]],
-        zoom: zoomLevel || mapView.zoom,
+        zoom: zoomLevel || convertScaleToZoom(mapView.scale),
+        scale: zoomLevel ? convertZoomToScale(zoomLevel) : mapView.scale,
       },
       {
         duration: 1000,
@@ -660,6 +667,121 @@ export const goToLayerExtent = (
   mapView.goTo(layer.fullExtent, { animate: false }).then(() => {
     if (zoomOutFurther) {
       mapView.zoom = mapView.zoom - 1;
+      mapView.scale = convertZoomToScale(mapView.zoom - 2);
     }
   });
+};
+
+// convertZoomToScale
+// Description: Convert a zoom level to a scale
+export const convertZoomToScale = (zoom: number) => {
+  switch (zoom) {
+    case 0:
+      return 295828763.795777;
+    case 1:
+      return 147914381.897889;
+    case 2:
+      return 73957190.948944;
+    case 3:
+      return 36978595.474472;
+    case 4:
+      return 18489297.737236;
+    case 5:
+      return 9244648.868618;
+    case 6:
+      return 4622324.434309;
+    case 7:
+      return 2311162.217155;
+    case 8:
+      return 1155581.108577;
+    case 9:
+      return 577790.554289;
+    case 10:
+      return 288895.277144;
+    case 11:
+      return 144447.638572;
+    case 12:
+      return 72223.819286;
+    case 13:
+      return 36111.909643;
+    case 14:
+      return 18055.954822;
+    case 15:
+      return 9027.977411;
+    case 16:
+      return 4513.988705;
+    case 17:
+      return 2256.994353;
+    case 18:
+      return 1128.497176;
+    case 19:
+      return 564.248588;
+    case 20:
+      return 282.124294;
+    case 21:
+      return 141.062147;
+    case 22:
+      return 70.5310735;
+    case 23:
+      return 35.26553675;
+    default:
+      return 72223.819286;
+  }
+};
+
+// convertScaleToZoom
+// Description: Convert a scale to a zoom level
+export const convertScaleToZoom = (scale: number) => {
+  switch (scale) {
+    case 295828763.795777:
+      return 0;
+    case 147914381.897889:
+      return 1;
+    case 73957190.948944:
+      return 2;
+    case 36978595.474472:
+      return 3;
+    case 18489297.737236:
+      return 4;
+    case 9244648.868618:
+      return 5;
+    case 4622324.434309:
+      return 6;
+    case 2311162.217155:
+      return 7;
+    case 1155581.108577:
+      return 8;
+    case 577790.554289:
+      return 9;
+    case 288895.277144:
+      return 10;
+    case 144447.638572:
+      return 11;
+    case 72223.819286:
+      return 12;
+    case 36111.909643:
+      return 13;
+    case 18055.954822:
+      return 14;
+    case 9027.977411:
+      return 15;
+    case 4513.988705:
+      return 16;
+    case 2256.994353:
+      return 17;
+    case 1128.497176:
+      return 18;
+    case 564.248588:
+      return 19;
+    case 282.124294:
+      return 20;
+    case 141.062147:
+      return 21;
+    case 70.5310735:
+      return 22;
+    case 35.26553675:
+      return 23;
+    default:
+      return 12;
+  }
 };

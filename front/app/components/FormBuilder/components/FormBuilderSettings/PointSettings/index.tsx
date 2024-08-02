@@ -108,6 +108,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
         // Create a new map config with default application values if there is no project map config
         const defaultLatLng = getCenter(undefined, appConfig?.data, undefined);
         const defaultZoom = getZoomLevel(undefined, appConfig?.data, undefined);
+
         createMapConfig(
           {
             center_geojson: {
