@@ -35,7 +35,7 @@ module Analysis
       'pl-PL' => 'pol_Latn',
       'pt-BR' => 'por_Latn',
       'ro-RO' => 'ron_Latn',
-      'sr-Latn' => nil,   # Serbian (Latin script) is not present
+      'sr-Latn' => nil, # Serbian (Latin script) is not present
       'sr-SP' => 'srp_Cyrl',
       'sv-SE' => 'swe_Latn',
       'tr-TR' => 'tur_Latn'

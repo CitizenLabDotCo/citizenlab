@@ -19,7 +19,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def generate_for(fields)
     uses_pages = fields.any?(&:page?)
-    return super(fields) unless uses_pages
+    return super unless uses_pages
 
     generate_with_pages(fields)
   end
