@@ -99,7 +99,9 @@ const IdeaCard = ({
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
-  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const ideaTitle = localize(idea.data.attributes.title_multiloc, {
+    maxChar: 50,
+  });
   const [searchParams] = useSearchParams();
   const scrollToCardParam = searchParams.get('scroll_to_card');
 

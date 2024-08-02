@@ -9,9 +9,6 @@ import analyticsConfiguration, {
 import bulkIdeaImportConfiguration, {
   bulkIdeaImportRouteTypes,
 } from './commercial/bulk_idea_import';
-import customIdeaStatusesConfiguration, {
-  customIdeaStatusesRouteTypes,
-} from './commercial/custom_idea_statuses';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -51,7 +48,6 @@ export type moduleRouteTypes =
   | projectTemplateRouteTypes
   | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
-  | customIdeaStatusesRouteTypes
   | moderationRouteTypes
   | descriptionBuilderRouteTypes
   | representativenessRouteTypes
@@ -93,9 +89,6 @@ export default loadModules([
   },
   {
     configuration: projectDescriptionBuilderConfiguration,
-  },
-  {
-    configuration: customIdeaStatusesConfiguration,
   },
   {
     configuration: bulkIdeaImportConfiguration,

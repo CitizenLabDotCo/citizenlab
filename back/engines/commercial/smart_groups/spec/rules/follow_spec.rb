@@ -134,6 +134,7 @@ describe SmartGroups::Rules::Follow do
       expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user5.id, @user6.id, @user7.id
     end
 
+    # TODO: move-old-proposals-test
     it "correctly filters on 'is_one_of_initiatives' predicate" do
       rule = described_class.new('is_one_of_initiatives', [@initiative.id])
       expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
@@ -152,6 +153,7 @@ describe SmartGroups::Rules::Follow do
       expect(@ids).to contain_exactly @user5.id
     end
 
+    # TODO: move-old-proposals-test
     it "correctly filters on 'is_not_initiative' predicate" do
       rule = described_class.new('is_not_initiative', @initiative.id)
       expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
@@ -360,11 +362,13 @@ describe SmartGroups::Rules::Follow do
         'fr-FR' => "Ne suit pas l'idée Leurs idée",
         'nl-NL' => 'Volgt dit idee niet Hun idee'
       })
+      # TODO: move-old-proposals-test
       expect(follow_is_one_of_initiatives.description_multiloc).to eq({
         'en' => 'Follows one of the following initiatives My initiative',
         'fr-FR' => 'Suit une des propositions Mon initiatif',
         'nl-NL' => 'Volgt één van deze voorstellen Mijn initiatief'
       })
+      # TODO: move-old-proposals-test
       expect(follow_is_not_initiative.description_multiloc).to eq({
         'en' => 'Does not follow initiative My initiative',
         'fr-FR' => 'Ne suit pas la proposition Mon initiatif',

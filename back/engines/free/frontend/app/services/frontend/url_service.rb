@@ -154,7 +154,7 @@ module Frontend
 
     def admin_project_url(project_id, configuration = app_config_instance)
       project = Project.find(project_id)
-      last_phase_id = project ? TimelineService.new.current_or_last_can_contain_ideas_phase(project)&.id : nil
+      last_phase_id = project ? TimelineService.new.current_or_backup_transitive_phase(project)&.id : nil
       if last_phase_id
         "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
       else

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { IIdeaData } from 'api/ideas/types';
 import { IPhase } from 'api/phases/types';
 
@@ -25,11 +27,13 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
   );
 
   return (
-    <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
-      {`${basketsPercentage}% (${formatMessage(messages.numberOfPicks, {
-        baskets: totalBasketsIdeaIsIn,
-      })})`}
-    </ProgressBarWrapper>
+    <Box w="100%">
+      <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
+        {`${basketsPercentage}% (${formatMessage(messages.numberOfPicks, {
+          baskets: totalBasketsIdeaIsIn,
+        })})`}
+      </ProgressBarWrapper>
+    </Box>
   );
 };
 

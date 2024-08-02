@@ -31,9 +31,8 @@ class SideFxPhaseService
   def before_update(phase, _user)
     phase.description_multiloc = TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase)
 
-    method = Factory.instance.participation_method_for phase
-    if method.allowed_ideas_orders.exclude? phase.ideas_order
-      phase.ideas_order = method.allowed_ideas_orders.first
+    if phase.pmethod.allowed_ideas_orders.exclude? phase.ideas_order
+      phase.ideas_order = phase.pmethod.allowed_ideas_orders.first
     end
   end
 

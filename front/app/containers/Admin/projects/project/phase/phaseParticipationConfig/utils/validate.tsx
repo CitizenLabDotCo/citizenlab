@@ -3,12 +3,18 @@ import React from 'react';
 import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { State } from '..';
 import messages from '../../../messages';
 
-export default (state: State, formatMessage: FormatMessage) => {
+import { IPhaseParticipationConfig } from './participationMethodConfigs';
+
+export default (
+  state: IPhaseParticipationConfig & { appConfig?: IAppConfiguration },
+  formatMessage: FormatMessage
+) => {
   const {
     reacting_like_method,
     reacting_dislike_method,
@@ -21,6 +27,8 @@ export default (state: State, formatMessage: FormatMessage) => {
     voting_max_votes_per_idea,
     voting_term_plural_multiloc,
     voting_term_singular_multiloc,
+    reacting_threshold,
+    expire_days_limit,
     appConfig,
   } = state;
 
@@ -31,6 +39,8 @@ export default (state: State, formatMessage: FormatMessage) => {
   let maxTotalVotesError: string | null = null;
   let maxVotesPerOptionError: string | null = null;
   let voteTermError: string | null = null;
+  let expireDateLimitError: JSX.Element | null = null;
+  let reactingThresholdError: JSX.Element | null = null;
 
   const locales = appConfig?.data.attributes.settings.core.locales;
 
@@ -133,6 +143,21 @@ export default (state: State, formatMessage: FormatMessage) => {
     }
   }
 
+  if (participation_method === 'proposals') {
+    if (isNaN(expire_days_limit)) {
+      expireDateLimitError = (
+        <FormattedMessage {...messages.expireDateLimitRequired} />
+      );
+      isValidated = false;
+    }
+    if (isNaN(reacting_threshold)) {
+      reactingThresholdError = (
+        <FormattedMessage {...messages.reactingThresholdRequired} />
+      );
+      isValidated = false;
+    }
+  }
+
   return {
     noLikingLimitError,
     noDislikingLimitError,
@@ -141,5 +166,7 @@ export default (state: State, formatMessage: FormatMessage) => {
     maxVotesPerOptionError,
     isValidated,
     voteTermError,
+    expireDateLimitError,
+    reactingThresholdError,
   };
 };

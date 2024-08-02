@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import { ICustomPageData } from 'api/custom_pages/types';
 
 import {
   Container,
+  HeaderImageWrapper,
   HeaderImage,
+  TextWrapper,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
@@ -19,13 +19,14 @@ interface Props {
 const TwoColumnLayout = ({ pageData }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
+
   return (
     <Container
       data-testid="two-column-layout"
       data-cy="e2e-two-column-layout-container"
     >
       {imageUrl && (
-        <Box minWidth="50%">
+        <HeaderImageWrapper>
           <HeaderImage
             src={imageUrl}
             cover={true}
@@ -34,15 +35,17 @@ const TwoColumnLayout = ({ pageData }: Props) => {
             placeholderBg="transparent"
             alt=""
           />
-        </Box>
+        </HeaderImageWrapper>
       )}
-      <HeaderContent
-        align="left"
-        fontColors="dark"
-        hasHeaderBannerImage={imageUrl != null}
-        pageAttributes={pageAttributes}
-      />
-      <AdminCustomPageEditButton pageId={pageData.id} />
+      <TextWrapper>
+        <HeaderContent
+          align="left"
+          fontColors="dark"
+          hasHeaderBannerImage={imageUrl != null}
+          pageAttributes={pageAttributes}
+        />
+        <AdminCustomPageEditButton pageId={pageData.id} />
+      </TextWrapper>
     </Container>
   );
 };

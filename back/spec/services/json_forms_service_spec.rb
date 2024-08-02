@@ -244,7 +244,7 @@ describe JsonFormsService do
         end
       end
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
-      let(:participation_method) { Factory.instance.participation_method_for(project) }
+      let(:participation_method) { project.pmethod }
       let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, participation_method, input_term }
 
       context 'when resident' do
@@ -386,7 +386,7 @@ describe JsonFormsService do
           description_multiloc = {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
           }
-          field = create(:custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc)
+          field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
             receive(:render_data_images_multiloc).with(field.description_multiloc, field: :description_multiloc, imageable: field).and_return({ 'en' => 'Description with text images' })
           )

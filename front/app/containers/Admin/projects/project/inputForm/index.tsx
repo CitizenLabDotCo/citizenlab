@@ -64,7 +64,7 @@ export const IdeaForm = () => {
         <Box display="flex" flexDirection="row">
           <Button
             mr="8px"
-            linkTo={`/admin/projects/${projectId}/phases/${phaseId}/ideaform/edit`}
+            linkTo={`/admin/projects/${projectId}/phases/${phaseId}/form/edit`}
             width="auto"
             icon="edit"
             data-cy="e2e-edit-input-form"

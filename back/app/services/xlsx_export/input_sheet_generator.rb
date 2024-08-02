@@ -8,7 +8,7 @@ module XlsxExport
       @inputs = inputs
       @phase = phase
       @include_private_attributes = include_private_attributes
-      @participation_method = Factory.instance.participation_method_for phase
+      @participation_method = phase.pmethod
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
       @url_service = Frontend::UrlService.new
@@ -161,7 +161,7 @@ module XlsxExport
     def meta_report_fields
       [].tap do |meta_fields|
         meta_fields << created_at_report_field
-        meta_fields << published_at_report_field if participation_method.supports_publication?
+        meta_fields << published_at_report_field if participation_method.supports_public_visibility?
         meta_fields << comments_count_report_field if participation_method.supports_commenting?
         if participation_method.supports_reacting?
           meta_fields << likes_count_report_field
@@ -171,7 +171,7 @@ module XlsxExport
         meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
         meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'
         meta_fields << budget_report_field if participation_method.additional_export_columns.include? 'budget'
-        meta_fields << input_url_report_field unless participation_method.never_show?
+        meta_fields << input_url_report_field if participation_method.supports_public_visibility?
         meta_fields << project_report_field
         meta_fields << status_report_field if participation_method.supports_status?
         if participation_method.supports_assignment?

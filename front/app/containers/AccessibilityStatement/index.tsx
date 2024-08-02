@@ -23,7 +23,7 @@ const AccessibilityStatement = () => {
   return (
     <>
       <Helmet>
-        <title>{formatMessage(messages.title)}</title>
+        <title>{formatMessage(messages.headTitle)}</title>
         <meta
           name="description"
           content={formatMessage(messages.pageDescription)}

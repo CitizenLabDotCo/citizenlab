@@ -29,6 +29,7 @@ const IdeaFeedbackToggle = ({
     topics: queryParameters.topics,
     idea_status_id: queryParameters.idea_status,
     search: queryParameters.search,
+    transitive: queryParameters.transitive,
   });
 
   return (

@@ -278,8 +278,8 @@ sr-Cyrl:
       description: "Please submit your answers by selecting 'Submit' below."
     pdf_export:
       personal_data: 'Лични подаци'
-      personal_data_explanation_ideation: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да ваше име буде приказано као аутор овог уноса и да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо креирати налог за вас. Ваша е-пошта неће бити јавна и користиће је само %{organizationName}. Ако желите да останете анонимни, или не пристајете да користимо ваше личне податке на овај начин, можете их оставити празне."
-      personal_data_explanation_native_survey: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо вам отворити налог. Ваши подаци неће бити јавни и користиће их само %{organizationName}. Ако се не слажете да ваше личне податке користимо на овај начин, можете их оставити празне."
+      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
       first_name: 'Име'
       last_name: 'Презиме'
       email_address: 'Адреса Е-поште'

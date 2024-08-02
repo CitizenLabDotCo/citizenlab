@@ -14,4 +14,12 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.containers.createCustomPageButton',
     defaultMessage: 'Create custom page',
   },
+  addProject: {
+    id: 'app.modules.navbar.admin.containers.addProject',
+    defaultMessage: 'Add project to navbar',
+  },
+  navBarMaxItems: {
+    id: 'app.modules.navbar.admin.containers.navBarMaxItemsNumber',
+    defaultMessage: 'You can only add up to 5 items to the navigation bar',
+  },
 });

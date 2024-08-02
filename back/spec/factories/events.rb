@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :event do
-    project
+    association :project, factory: :single_phase_ideation_project
     title_multiloc do
       {
         'en' => 'Info session',

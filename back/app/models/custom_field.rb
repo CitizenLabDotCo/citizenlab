@@ -27,6 +27,7 @@
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
 #  random_option_ordering :boolean          default(FALSE), not null
+#  page_layout            :string
 #
 # Indexes
 #
@@ -59,6 +60,7 @@ class CustomField < ApplicationRecord
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
+  PAGE_LAYOUTS = %w[default map].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -78,6 +80,8 @@ class CustomField < ApplicationRecord
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
+  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
+  validates :page_layout, absence: true, unless: :page?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -222,10 +226,6 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context.project
-      phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
-
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -315,6 +315,15 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def input_term
+    phase = if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
+    phase&.input_term || Phase::DEFAULT_INPUT_TERM
   end
 
   private

@@ -3,6 +3,7 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
+  ProjectDisabledReason,
   ProjectCommentingDisabledReason,
   ProjectDocumentAnnotationDisabledReason,
   ProjectPollDisabledReason,
@@ -10,6 +11,7 @@ import {
   ProjectReactingDisabledReason,
   ProjectSurveyDisabledReason,
   ProjectVotingDisabledReason,
+  ProjectVolunteeringDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -97,6 +99,8 @@ export interface IProjectAttributes {
     taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
     annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
     voting: ActionDescriptor<ProjectVotingDisabledReason>;
+    attending_event: ActionDescriptor<ProjectDisabledReason>;
+    volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
   };
   uses_content_builder: boolean;
 }

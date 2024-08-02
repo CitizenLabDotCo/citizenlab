@@ -179,6 +179,10 @@ module MultiTenancy
         scope.order(Arel.sql('RANDOM()')).first
       end
 
+      def rand_description_multiloc
+        create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join }
+      end
+
       # Creates nested comments for a given post
       def create_comment_tree(post, parent, depth = 0)
         amount = rand(2 / (depth + 1))

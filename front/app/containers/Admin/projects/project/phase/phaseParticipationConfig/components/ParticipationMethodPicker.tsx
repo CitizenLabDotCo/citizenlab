@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   IconTooltip,
@@ -29,6 +29,7 @@ import messages from '../../../messages';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
+import proposalsImage from './assets/proposals.png';
 import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
@@ -62,7 +63,9 @@ const ParticipationMethodPicker = ({
   const [methodToChangeTo, setMethodToChangeTo] =
     useState<ParticipationMethod | null>(null);
   const [showSurveyOptions, setShowSurveyOptions] = useState(
-    selectedMethod === 'native_survey'
+    participation_method === 'native_survey' ||
+      participation_method === 'survey' ||
+      participation_method === 'poll'
   );
   const [showChangeMethodModal, setShowChangeMethodModal] = useState(false);
   const closeModal = () => {
@@ -77,6 +80,10 @@ const ParticipationMethodPicker = ({
   });
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
+  });
+
+  const proposalsParticipationMethodEnabled = useFeatureFlag({
+    name: 'proposals_participation_method',
   });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
@@ -105,11 +112,6 @@ const ParticipationMethodPicker = ({
     }
   };
 
-  useEffect(() => {
-    setSelectedMethod(participation_method);
-    setShowSurveyOptions(participation_method === 'native_survey');
-  }, [participation_method]);
-
   return (
     <>
       <SectionField>
@@ -137,6 +139,17 @@ const ParticipationMethodPicker = ({
               image={ideationImage}
               selected={selectedMethod === 'ideation'}
             />
+
+            {proposalsParticipationMethodEnabled && (
+              <ParticipationMethodChoice
+                key="proposals"
+                title={formatMessage(messages2.proposalsTitle)}
+                subtitle={formatMessage(messages2.proposalsDescription)}
+                onClick={(event) => handleMethodSelect(event, 'proposals')}
+                image={proposalsImage}
+                selected={selectedMethod === 'proposals'}
+              />
+            )}
 
             <ParticipationMethodChoice
               key="survey"

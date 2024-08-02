@@ -1,5 +1,4 @@
 import 'api/verification_methods/types';
-import { Multiloc } from 'typings';
 
 declare module 'api/verification_methods/types' {
   export interface IVerificationMethodNamesMap {
@@ -11,11 +10,11 @@ declare module 'api/verification_methods/types' {
     type: 'verification_method';
     attributes: {
       name: 'id_card_lookup';
-      card_id_multiloc: Multiloc;
+      card_id: string;
       card_id_placeholder: string;
-      card_id_tooltip_multiloc: Multiloc;
+      card_id_tooltip: string;
       explainer_image_url: string;
-      method_name_multiloc: Multiloc;
+      ui_method_name: string;
     };
   };
 

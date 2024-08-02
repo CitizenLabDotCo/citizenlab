@@ -35,12 +35,15 @@ FactoryBot.define do
         end
       end
     end
-  end
 
-  factory :native_survey_response, class: 'Idea' do
-    publication_status { 'published' }
-    association :idea_status, factory: :idea_status_proposed
-    association :project, factory: :single_phase_native_survey_project
-    creation_phase { project.phases.first }
+    factory :proposal, class: 'Idea' do
+      association :project, factory: :single_phase_proposals_project
+      creation_phase { project.phases.first }
+    end
+
+    factory :native_survey_response, class: 'Idea' do
+      association :project, factory: :single_phase_native_survey_project
+      creation_phase { project.phases.first }
+    end
   end
 end

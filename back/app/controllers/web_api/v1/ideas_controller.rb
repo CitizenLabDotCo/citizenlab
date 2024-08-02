@@ -151,11 +151,11 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     send_error and return unless phase
 
-    participation_method = Factory.instance.participation_method_for(phase)
-    extract_custom_field_values_from_params!(participation_method.custom_form)
-    params_for_create = idea_params participation_method.custom_form, is_moderator
+    form = phase.pmethod.custom_form
+    extract_custom_field_values_from_params!(form)
+    params_for_create = idea_params form, is_moderator
     input = Idea.new params_for_create
-    input.creation_phase = (phase if participation_method.creation_phase?)
+    input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
@@ -176,7 +176,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        update_file_upload_fields input, participation_method.custom_form, params_for_create
+        update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,

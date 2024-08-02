@@ -2,7 +2,7 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
   # @param [Array<Hash>] idea_rows - comes from IdeaBaseFileParser#ideas_to_idea_rows
   def initialize(phase, idea_rows)
     @phase = phase
-    @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
+    @form_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
     @idea_rows = idea_rows
   end
 

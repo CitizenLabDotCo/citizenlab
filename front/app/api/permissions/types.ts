@@ -39,7 +39,9 @@ export type IPhasePermissionAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'voting'
-  | 'annotating_document';
+  | 'annotating_document'
+  | 'attending_event'
+  | 'volunteering';
 
 export interface IPhasePermissionData {
   id: string;
