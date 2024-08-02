@@ -5,7 +5,6 @@ module Verification
     module WebApi
       module V1
         module PermissionsController
-
           private
 
           def user_ui_and_json_multiloc_schemas(fields)

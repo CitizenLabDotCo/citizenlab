@@ -21,10 +21,9 @@ resource 'Permissions custom field schema - Locked attributes' do
       assert_status 200
       expect(response_data[:type]).to eq 'schema'
       expect(response_data.dig(:attributes, :ui_schema_multiloc, :en, :elements).find { |e| e[:scope] == '#/properties/gender' }[:options].to_h).to include({
-         readonly: true,
-         verificationLocked: true
-                                                                                                                                                                   })
+        readonly: true,
+        verificationLocked: true
+      })
     end
   end
-
 end
