@@ -81,6 +81,7 @@ const FullscreenMapInput = memo<Props>(
     const bottomSectionRef = useRef<HTMLDivElement>(null);
     const [mapView, setMapView] = useState<MapView | null>(null);
     const modalPortalElement = document.getElementById('modal-portal');
+    const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
     const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
     // Create refs for dragging/editing a user's points on the map
@@ -200,8 +201,8 @@ const FullscreenMapInput = memo<Props>(
                 initialData={{
                   zoom: Number(mapConfig?.data.attributes.zoom_level),
                   center: getInitialMapCenter(inputType, mapConfig, data),
-                  showLegend: layerCount > 0,
-                  showLayerVisibilityControl: layerCount > 0,
+                  showLegend: isWebMap || layerCount > 0,
+                  showLayerVisibilityControl: isWebMap || layerCount > 0,
                   showLegendExpanded: true,
                   showZoomControls: true,
                   onInit: onMapInit,

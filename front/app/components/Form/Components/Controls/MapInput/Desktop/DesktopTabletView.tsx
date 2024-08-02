@@ -71,6 +71,7 @@ const DesktopView = ({
     value: '',
     label: '',
   });
+  const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
   // Create refs for custom UI elements
@@ -177,8 +178,8 @@ const DesktopView = ({
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
               center: getInitialMapCenter(inputType, mapConfig, data),
-              showLegend: layerCount > 0,
-              showLayerVisibilityControl: layerCount > 0,
+              showLegend: isWebMap || layerCount > 0,
+              showLayerVisibilityControl: isWebMap || layerCount > 0,
               onInit: onMapInit,
             }}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
