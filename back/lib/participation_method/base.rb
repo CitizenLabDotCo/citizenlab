@@ -155,6 +155,12 @@ module ParticipationMethod
       []
     end
 
+    # @return [Integer, nil] the maximum number of ideas (in its wide sense, i.e. records
+    # from the ideas table) that a user can post in the phase. If nil, there is no limit.
+    def posting_limit
+      nil
+    end
+
     private
 
     attr_reader :phase

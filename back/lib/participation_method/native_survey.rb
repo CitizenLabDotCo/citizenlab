@@ -2,11 +2,6 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    def assign_defaults_for_phase
-      phase.posting_method = 'limited'
-      phase.posting_limited_max = 1
-    end
-
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)
@@ -119,6 +114,10 @@ module ParticipationMethod
     # we can suppress the heading by returning nil.
     def extra_fields_category_translation_key
       nil
+    end
+
+    def posting_limit
+      1
     end
   end
 end

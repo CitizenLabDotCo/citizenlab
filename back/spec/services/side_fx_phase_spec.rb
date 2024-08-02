@@ -74,8 +74,6 @@ describe SideFxPhaseService do
         voting_max_total: 11,
         voting_min_total: 2,
         posting_enabled: false,
-        posting_method: 'limited',
-        posting_limited_max: 3,
         commenting_enabled: false,
         reacting_enabled: false,
         reacting_like_method: 'limited',
