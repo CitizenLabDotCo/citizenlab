@@ -31,21 +31,6 @@ class ApplicationController < ActionController::API
 
   rescue_from FeatureRequiredError, with: :feature_required_error
 
-  def self.inherited(base)
-    super
-    base.extend(RegisterSerializer)
-  end
-
-  module RegisterSerializer
-    attr_reader :serializer
-
-    private
-
-    def serializer_class(claz)
-      @serializer = claz
-    end
-  end
-
   def send_error(error = nil, status = 400)
     render json: error, status: status
   end
@@ -64,16 +49,6 @@ class ApplicationController < ActionController::API
 
   def transaction_error(exception)
     render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
-  end
-
-  def render_success(record_or_records, status: nil)
-    status ||= action_name == 'create' ? :created : :ok
-    render json: self.class.serializer.new(record_or_records).serializable_hash, status: status
-  end
-
-  def render_error(record_or_message, status: :unprocessable_entity)
-    json = record_or_message.is_a?(String) ? { errors: { base: record_or_message } } : record_or_message.errors.details
-    render json: json, status: status
   end
 
   # @param [Pundit::NotAuthorized] exception
@@ -159,14 +134,6 @@ class ApplicationController < ActionController::API
 
   def require_feature!(feature)
     raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
-  end
-
-  def filter_params(scope, params_key)
-    if params[params_key].present?
-      scope.where(params_key => params[params_key])
-    else
-      scope
-    end
   end
 
   private
