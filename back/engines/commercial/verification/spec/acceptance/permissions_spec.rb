@@ -14,6 +14,7 @@ resource 'Permissions custom field schema - Locked attributes' do
     before do
       # Bogus locks the `gender` custom_field
       create(:custom_field_gender)
+      create(:verification, method_name: 'bogus', user: @user)
       Permissions::PermissionsUpdateService.new.update_all_permissions
     end
 
