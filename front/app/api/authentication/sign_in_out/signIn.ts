@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 
-import { getJwt, setJwt } from 'utils/auth/jwt';
+import { getJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 import getAuthUser from '../auth_user/getAuthUser';
@@ -16,7 +16,7 @@ interface Parameters {
 
 export default async function signIn(parameters: Parameters) {
   try {
-    await getAndSetToken(parameters);
+    await getToken(parameters);
 
     const authUser = await getAuthUserAsync();
 
@@ -29,11 +29,10 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-export async function getAndSetToken({
+export async function getToken({
   email,
   password = '',
   rememberMe = false,
-  tokenLifetime,
 }: Parameters) {
   const bodyData = { auth: { email, password, remember_me: rememberMe } };
 
@@ -46,11 +45,7 @@ export async function getAndSetToken({
       Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify(bodyData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      setJwt(data.jwt, rememberMe, tokenLifetime);
-    });
+  });
 }
 
 async function getAuthUserAsync() {

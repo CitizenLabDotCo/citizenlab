@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ApplicationController
+  include UserAuthCookie
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
 
@@ -138,6 +139,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     if saved
       SideFxUserService.new.after_update(@user, current_user)
+      reset_auth_cookie
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params

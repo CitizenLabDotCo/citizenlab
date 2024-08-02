@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+  include UserAuthCookie
+
   TOKEN_LIFETIME = 1.day
 
   def create
-    # TODO: JS - move this to a concern
-    # cookies[:cl2_jwt] = {
-    #   value: auth_token.token,
-    #   expires: Time.at(TOKEN_LIFETIME.from_now.to_i)
-    # }
-    render json: auth_token, status: :created
+    expires = auth_params[:remember_me] ? 1.month.from_now : TOKEN_LIFETIME.from_now
+    set_auth_cookie(auth_token, expires: expires)
+    head :created
+    # render json: auth_token, status: :created
   end
 
   private
