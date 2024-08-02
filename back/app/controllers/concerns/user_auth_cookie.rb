@@ -8,8 +8,6 @@ module UserAuthCookie
 
   private
 
-  # TODO: JS - Get this working for both SSO and ominauth
-  # TODO: Add expiration time to the token
   def set_auth_cookie(auth_token, expires: 1.month.from_now)
     cookies[COOKIE_NAME] = {
       value: auth_token.token,
