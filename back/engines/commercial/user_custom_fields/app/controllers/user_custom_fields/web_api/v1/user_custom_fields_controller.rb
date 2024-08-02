@@ -113,7 +113,7 @@ module UserCustomFields
         .require(:custom_field)
         .permit(
           UserCustomFieldPolicy.new(current_user, resource)
-            .send("permitted_attributes_for_#{params[:action]}")
+            .send(:"permitted_attributes_for_#{params[:action]}")
         )
     end
 
