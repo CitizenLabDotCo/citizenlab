@@ -416,7 +416,7 @@ const ReactionButton = ({
         disabled={disabledReason === null}
         content={disabledMessage}
         trigger="mouseenter"
-        width="100%"
+        width={variant === 'text' ? '100%' : 'fit-content'}
       >
         <>
           {variant === 'text' && (
