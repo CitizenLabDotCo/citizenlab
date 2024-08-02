@@ -55,6 +55,7 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
       'tileInfo.lods',
       webTileLayer.tileInfo.lods.map((lod) => {
         lod.resolution = lod.resolution / 2;
+        lod.scale = lod.scale / 2;
         return lod;
       })
     );
