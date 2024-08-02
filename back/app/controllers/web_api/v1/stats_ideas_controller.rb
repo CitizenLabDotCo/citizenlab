@@ -35,13 +35,12 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
 
-    res = []
-    serie.each do |topic_id, count|
-      res.push({
+    res = serie.map do |topic_id, count|
+      {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
         'topic_id' => topic_id,
         'ideas' => count
-      })
+      }
     end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'topic'
