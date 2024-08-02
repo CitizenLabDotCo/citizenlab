@@ -203,7 +203,7 @@ export default function useSteps() {
     }
 
     // launch sign in flow, derived from route
-    if (pathname.endsWith('/sign-in')) {
+    if (pathname.endsWith('/sign-in') || pathname.endsWith('/sign-in/admin')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
           flow: 'signin',
@@ -211,8 +211,6 @@ export default function useSteps() {
         };
         transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
       }
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
       return;
     }
 
