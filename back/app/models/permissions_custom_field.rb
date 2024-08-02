@@ -10,7 +10,6 @@
 #  required        :boolean          default(TRUE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  ordering        :integer          default(0)
 #
 # Indexes
 #
