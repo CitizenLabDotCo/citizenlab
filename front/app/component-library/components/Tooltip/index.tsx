@@ -8,13 +8,19 @@ import Box from '../Box';
 export type TooltipProps = Omit<
   React.ComponentProps<typeof Tippy>,
   'interactive' | 'plugins' | 'role'
->;
+> & {
+  width?: string;
+};
 
 const useActiveElement = () => {
   const [active, setActive] = useState(document.activeElement);
 
   const handleFocusIn = () => {
     setActive(document.activeElement);
+  };
+
+  const handleOutsideClick = () => {
+    setActive(null);
   };
 
   useEffect(() => {
@@ -24,9 +30,22 @@ const useActiveElement = () => {
     };
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  });
+
   return active;
 };
-const Tooltip = ({ children, theme = 'light', ...rest }: TooltipProps) => {
+
+const Tooltip = ({
+  children,
+  theme = 'light',
+  width,
+  ...rest
+}: TooltipProps) => {
   const tooltipId = useRef(
     `tooltip-${Math.random().toString(36).substring(7)}`
   );
@@ -85,7 +104,7 @@ const Tooltip = ({ children, theme = 'light', ...rest }: TooltipProps) => {
       theme={theme}
       {...rest}
     >
-      <Box as="span" id={tooltipId.current} w="fit-content">
+      <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
         {children}
       </Box>
     </Tippy>

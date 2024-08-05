@@ -1,7 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Cookie policy
+  headCookiePolicyTitle: {
+    id: 'app.containers.CookiePolicy.headCookiePolicyTitle',
+    defaultMessage: 'Cookie Policy | {orgName}',
+  },
   cookiePolicyTitle: {
     id: 'app.containers.CookiePolicy.cookiePolicyTitle',
     defaultMessage: 'Cookie Policy',
