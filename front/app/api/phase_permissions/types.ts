@@ -1,49 +1,23 @@
 import { IRelationship } from 'typings';
 
-import {
-  IGlobalPermissionAction,
-  IPhasePermissionAction,
-} from 'api/permissions/types';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import phasePermissionKeys from './keys';
 
 export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 
-export type IUpdatePermissionObject = {
-  permissionId: string;
-  phaseId: string;
-  action: IGlobalPermissionAction | IPhasePermissionAction;
-  permission: Partial<IPermissionUpdate>;
-};
+export type IPhasePermissionAction =
+  | 'posting_idea'
+  | 'reacting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'voting'
+  | 'annotating_document'
+  | 'attending_event'
+  | 'volunteering';
 
-export type ResetPermissionObject = {
-  permissionId: string;
-  phaseId: string;
-  action: IGlobalPermissionAction | IPhasePermissionAction;
-};
-
-export interface IPCPermissions {
-  data: IPCPermissionData[];
-}
-
-export interface IPCPermission {
-  data: IPCPermissionData;
-}
-export type PermittedBy =
-  | 'everyone'
-  | 'users'
-  | 'admins_moderators'
-  | 'everyone_confirmed_email'
-  | 'verified';
-
-export interface IPermissionUpdate {
-  group_ids: string[];
-  permitted_by: IPCPermissionData['attributes']['permitted_by'];
-  global_custom_fields: boolean;
-}
-export interface IPCPermissionData {
+export interface IPhasePermissionData {
   id: string;
   type: string;
   attributes: {
@@ -61,4 +35,38 @@ export interface IPCPermissionData {
       data: IRelationship[];
     };
   };
+}
+
+export interface IPhasePermissions {
+  data: IPhasePermissionData[];
+}
+
+export interface IPhasePermission {
+  data: IPhasePermissionData;
+}
+
+export type IUpdatePermissionObject = {
+  permissionId: string;
+  phaseId: string;
+  action: IPhasePermissionAction;
+  permission: Partial<IPermissionUpdate>;
+};
+
+export type ResetPermissionObject = {
+  permissionId: string;
+  phaseId: string;
+  action: IPhasePermissionAction;
+};
+
+export type PermittedBy =
+  | 'everyone'
+  | 'users'
+  | 'admins_moderators'
+  | 'everyone_confirmed_email'
+  | 'verified';
+
+export interface IPermissionUpdate {
+  group_ids: string[];
+  permitted_by: PermittedBy;
+  global_custom_fields: boolean;
 }
