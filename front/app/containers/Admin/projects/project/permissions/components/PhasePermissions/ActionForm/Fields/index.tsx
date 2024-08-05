@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import useAddPermissionsField from 'api/permissions_custom_fields/useAddPermissionsField';
+import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import { FieldSelectionModal } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/ActionForm/FieldSelectionModal';
@@ -24,10 +24,11 @@ const Fields = ({ phaseId, action }: Props) => {
     phaseId,
     action,
   });
-  const { mutate: addPermissionsField, isLoading } = useAddPermissionsField({
-    phaseId,
-    action,
-  });
+  const { mutate: addPermissionsCustomField, isLoading } =
+    useAddPermissionsCustomField({
+      phaseId,
+      action,
+    });
 
   const selectedCustomFields = permissionFields?.data;
 
@@ -56,7 +57,7 @@ const Fields = ({ phaseId, action }: Props) => {
             setShowSelectionModal={setShowSelectionModal}
             selectedFields={selectedCustomFields}
             handleAddField={(customField) => {
-              addPermissionsField({
+              addPermissionsCustomField({
                 custom_field_id: customField.id,
                 required: false,
                 phaseId,

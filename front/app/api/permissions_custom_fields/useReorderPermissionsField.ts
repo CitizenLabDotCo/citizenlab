@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsFieldsKeys from './keys';
+import permissionsCustomFieldsKeys from './keys';
 import { IPermissionsCustomField } from './types';
 
 type ReorderPermissionsCustomField = {
@@ -38,7 +38,7 @@ const useReorderPermissionsCustomField = () => {
     mutationFn: reorderPermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsFieldsKeys.lists(),
+        queryKey: permissionsCustomFieldsKeys.lists(),
       });
     },
   });

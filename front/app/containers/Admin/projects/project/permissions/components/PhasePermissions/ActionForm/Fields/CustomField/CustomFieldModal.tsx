@@ -31,12 +31,13 @@ const CustomFieldModal = ({
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updatePermissionsField } = useUpdatePermissionsCustomField({
-    phaseId,
-    action,
-  });
+  const { mutate: updatePermissionsCustomField } =
+    useUpdatePermissionsCustomField({
+      phaseId,
+      action,
+    });
 
-  const handleUpdatePermissionsField = (option: IOption) => {
+  const handleUpdatePermissionsCustomField = (option: IOption) => {
     // This 'persisted' attribute is used to determine whether
     // this field is 'real' and actually exists in our database.
     // By default, we get back a bunch of 'fake' fields from the API,
@@ -48,12 +49,12 @@ const CustomFieldModal = ({
     // and the custom_field_id, so that the backend can create
     // the 'real' persisted field.
     if (field.attributes.persisted) {
-      updatePermissionsField({
+      updatePermissionsCustomField({
         id: field.id,
         required: option.value === 'required',
       });
     } else {
-      updatePermissionsField({
+      updatePermissionsCustomField({
         id: field.id,
         permission_id: field.relationships.permission.data.id,
         custom_field_id: field.relationships.custom_field.data.id,
@@ -85,7 +86,7 @@ const CustomFieldModal = ({
           value={field.attributes.required ? 'required' : 'optional'}
           label={formatMessage(messages.fieldStatus)}
           options={options}
-          onChange={handleUpdatePermissionsField}
+          onChange={handleUpdatePermissionsCustomField}
         />
       </Box>
     </Modal>

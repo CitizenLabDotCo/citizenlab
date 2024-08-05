@@ -23,15 +23,15 @@ interface Props {
 }
 
 const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
-  const { data: permissionsFields } = usePermissionsCustomFields({
+  const { data: permissionsCustomFields } = usePermissionsCustomFields({
     phaseId,
     action,
   });
 
-  if (!permissionsFields?.data) return null;
+  if (!permissionsCustomFields?.data) return null;
 
   const visualizationSteps = VISUALIZATION_STEPS[permittedBy](
-    permissionsFields?.data
+    permissionsCustomFields?.data
   );
 
   return (

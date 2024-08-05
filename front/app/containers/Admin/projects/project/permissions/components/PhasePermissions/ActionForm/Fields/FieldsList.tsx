@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import useReorderPermissionsField from 'api/permissions_custom_fields/useReorderPermissionsField';
+import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -22,7 +22,8 @@ const FieldsList = ({ phaseId, action }: Props) => {
     action,
   });
 
-  const { mutate: reorderPermissionsField } = useReorderPermissionsField();
+  const { mutate: reorderPermissionsCustomField } =
+    useReorderPermissionsCustomField();
 
   if (permissionFields && permissionFields.data.length === 0) {
     return null;
@@ -34,11 +35,11 @@ const FieldsList = ({ phaseId, action }: Props) => {
         <SortableList
           items={permissionFields.data}
           onReorder={(permissionFieldId, newOrder) => {
-            const permissionsField = permissionFields.data.find(
+            const permissionsCustomField = permissionFields.data.find(
               (field) => field.id === permissionFieldId
             );
 
-            if (!permissionsField) return;
+            if (!permissionsCustomField) return;
 
             // This 'persisted' attribute is used to determine whether
             // this field is 'real' and actually exists in our database.
@@ -50,18 +51,18 @@ const FieldsList = ({ phaseId, action }: Props) => {
             // we also need to send the permission_id
             // and the custom_field_id, so that the backend can create
             // the 'real' persisted field.
-            if (permissionsField.attributes.persisted) {
-              reorderPermissionsField({
+            if (permissionsCustomField.attributes.persisted) {
+              reorderPermissionsCustomField({
                 id: permissionFieldId,
                 ordering: newOrder,
               });
             } else {
-              reorderPermissionsField({
+              reorderPermissionsCustomField({
                 id: permissionFieldId,
                 permission_id:
-                  permissionsField.relationships.permission.data.id,
+                  permissionsCustomField.relationships.permission.data.id,
                 custom_field_id:
-                  permissionsField.relationships.custom_field.data.id,
+                  permissionsCustomField.relationships.custom_field.data.id,
                 ordering: newOrder,
               });
             }

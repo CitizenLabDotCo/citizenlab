@@ -13,16 +13,16 @@ const removeNull = (
 
 // Visualization steps
 const getNoneVisualizationSteps = (
-  _permissionsFields: IPermissionsCustomFieldData[]
+  _permissionsCustomFields: IPermissionsCustomFieldData[]
 ) => {
   return [messages.noActionsAreRequired];
 };
 
 const getConfirmedEmailVisualizationSteps = (
-  permissionsFields: IPermissionsCustomFieldData[]
+  permissionsCustomFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
-    permissionsFields.length > 0
+    permissionsCustomFields.length > 0
       ? messages.completeTheExtraQuestionsBelow
       : null;
 
@@ -34,10 +34,10 @@ const getConfirmedEmailVisualizationSteps = (
 };
 
 const getUsersVisualizationSteps = (
-  permissionsFields: IPermissionsCustomFieldData[]
+  permissionsCustomFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
-    permissionsFields.length > 0
+    permissionsCustomFields.length > 0
       ? messages.completeTheExtraQuestionsBelow
       : null;
 
@@ -49,10 +49,10 @@ const getUsersVisualizationSteps = (
 };
 
 const getVerifiedVisualiationSteps = (
-  permissionsFields: IPermissionsCustomFieldData[]
+  permissionsCustomFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
-    permissionsFields.length > 0
+    permissionsCustomFields.length > 0
       ? messages.completeTheExtraQuestionsBelow
       : null;
 
@@ -64,7 +64,9 @@ const getVerifiedVisualiationSteps = (
 
 export const VISUALIZATION_STEPS: Record<
   SupportedPermittedBy,
-  (permissionsFields: IPermissionsCustomFieldData[]) => MessageDescriptor[]
+  (
+    permissionsCustomFields: IPermissionsCustomFieldData[]
+  ) => MessageDescriptor[]
 > = {
   everyone: getNoneVisualizationSteps,
   users: getUsersVisualizationSteps,
