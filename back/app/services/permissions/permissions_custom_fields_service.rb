@@ -25,6 +25,8 @@ module Permissions
       fields.each(&:save!)
     end
 
+    private
+
     def default_fields(permission)
       return [] unless permission.allow_global_custom_fields?
 
@@ -32,12 +34,6 @@ module Permissions
         PermissionsCustomField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end
     end
-
-    def platform_custom_fields
-      @platform_custom_fields ||= CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
-    end
-
-    private
 
     # Add non-persisted locked fields to the permission
     def add_and_lock_related_fields(permission, fields, custom_field_ids, lock_type)
@@ -66,6 +62,10 @@ module Permissions
       custom_field_ids = permission.groups.map { |g| g[:rules].pluck('customFieldId') }.flatten.uniq.compact
       custom_fields = CustomField.where(id: custom_field_ids) # Additional step to ensure fields exist
       add_and_lock_related_fields(permission, fields, custom_fields.pluck(:id), 'group')
+    end
+
+    def platform_custom_fields
+      @platform_custom_fields ||= CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
     end
 
     def user_confirmation_enabled?
