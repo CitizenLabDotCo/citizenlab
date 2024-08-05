@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Continuer",
   "app.components.AuthProviders.continueWithAzure": "Continuer avec {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Continuer avec Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Continuer avec le faux SSO",
   "app.components.AuthProviders.continueWithGoogle": "Continuer avec Google",
   "app.components.AuthProviders.continueWithHoplr": "Continuer avec Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Continuer avec {loginMechanismName}",
