@@ -19,20 +19,13 @@ import ActionForms from './ActionForms';
 import messages from './messages';
 
 const filterPermissions = (permissions: IGlobalPermissionData[]) => {
-  const initiativePermissions = permissions.filter((permission) =>
+  return permissions.filter((permission) =>
     [
       'posting_initiative',
       'commenting_initiative',
       'reacting_initiative',
     ].includes(permission.attributes.action)
   );
-
-  // TODO remove this later when we actually start using 'visiting' as a permission
-  const notVisitingPermissions = initiativePermissions.filter((permission) => {
-    return (permission.attributes.action as any) !== 'visiting';
-  });
-
-  return notVisitingPermissions;
 };
 
 const PermissionsInitiatives = () => {
