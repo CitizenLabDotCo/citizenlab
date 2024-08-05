@@ -1,7 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import { IPCPermissionData, PermittedBy } from 'api/phase_permissions/types';
+import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -35,7 +35,7 @@ export const getPartipationRequirementMessage = (
 };
 
 export const getParticipantMessage = (
-  permissions: IPCPermissionData[] | undefined,
+  permissions: IPhasePermissionData[] | undefined,
   formatMessage: FormatMessage
 ) => {
   if (!permissions?.length) return null;

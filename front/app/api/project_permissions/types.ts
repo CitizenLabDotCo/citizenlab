@@ -9,7 +9,7 @@ import projectPermissionKeys from './keys';
 export type ProjectPermissionKeys = Keys<typeof projectPermissionKeys>;
 
 export interface IPCPermissions {
-  data: IPCPermissionData[];
+  data: IPhasePermissionData[];
 }
 
 export type IUpdatePermissionObject = {
@@ -20,16 +20,16 @@ export type IUpdatePermissionObject = {
 };
 
 export interface IPCPermission {
-  data: IPCPermissionData;
+  data: IPhasePermissionData;
 }
 
 export interface IPermissionUpdate {
   group_ids: string[];
-  permitted_by?: IPCPermissionData['attributes']['permitted_by'];
-  global_custom_fields?: IPCPermissionData['attributes']['global_custom_fields'];
+  permitted_by?: IPhasePermissionData['attributes']['permitted_by'];
+  global_custom_fields?: IPhasePermissionData['attributes']['global_custom_fields'];
 }
 
-export interface IPCPermissionData {
+export interface IPhasePermissionData {
   id: string;
   type: string;
   attributes: {

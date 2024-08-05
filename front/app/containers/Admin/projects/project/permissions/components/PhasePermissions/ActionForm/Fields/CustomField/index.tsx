@@ -8,9 +8,9 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
-import useDeletePermissionsField from 'api/permissions_custom_fields/useDeletePermissionsField';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -21,7 +21,7 @@ import messages from '../messages';
 import CustomFieldModal from './CustomFieldModal';
 
 interface Props {
-  field: IPermissionsFieldData;
+  field: IPermissionsCustomFieldData;
   phaseId: string;
   action: IPhasePermissionAction;
 }
@@ -31,10 +31,11 @@ const CustomField = ({ field, phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { mutate: deletePermissionsField } = useDeletePermissionsField({
-    phaseId,
-    action,
-  });
+  const { mutate: deletePermissionsCustomField } =
+    useDeletePermissionsCustomField({
+      phaseId,
+      action,
+    });
 
   const fieldName = localize(field.attributes.title_multiloc);
 
@@ -87,7 +88,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
             disabled={disabled}
             onClick={(e) => {
               e?.preventDefault();
-              deletePermissionsField({
+              deletePermissionsCustomField({
                 id: field.id,
                 permission_id: field.relationships.permission.data.id,
                 custom_field_id: field.relationships.custom_field.data.id,

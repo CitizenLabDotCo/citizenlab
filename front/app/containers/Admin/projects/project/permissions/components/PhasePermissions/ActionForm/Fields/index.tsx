@@ -4,7 +4,7 @@ import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import useAddPermissionsField from 'api/permissions_custom_fields/useAddPermissionsField';
-import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import { FieldSelectionModal } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/ActionForm/FieldSelectionModal';
 
@@ -20,7 +20,7 @@ interface Props {
 
 const Fields = ({ phaseId, action }: Props) => {
   const [showSelectionModal, setShowSelectionModal] = useState(false);
-  const { data: permissionFields } = usePermissionsFields({
+  const { data: permissionFields } = usePermissionsCustomFields({
     phaseId,
     action,
   });

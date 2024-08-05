@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
-  const { data: permissionsFields } = usePermissionsFields({
+  const { data: permissionsFields } = usePermissionsCustomFields({
     phaseId,
     action,
   });

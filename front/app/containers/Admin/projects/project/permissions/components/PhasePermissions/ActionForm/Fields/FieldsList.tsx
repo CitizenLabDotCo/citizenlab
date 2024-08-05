@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
-import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useReorderPermissionsField from 'api/permissions_custom_fields/useReorderPermissionsField';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const FieldsList = ({ phaseId, action }: Props) => {
-  const { data: permissionFields } = usePermissionsFields({
+  const { data: permissionFields } = usePermissionsCustomFields({
     phaseId,
     action,
   });
@@ -69,28 +69,30 @@ const FieldsList = ({ phaseId, action }: Props) => {
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
             <>
-              {itemsList.map((field: IPermissionsFieldData, index: number) => {
-                return (
-                  <SortableRow
-                    key={field.id}
-                    id={field.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    isLastItem={index === itemsList.length - 1}
-                    disableNestedStyles
-                  >
-                    <Box ml="20px" w="100%">
-                      <CustomField
-                        key={field.id}
-                        field={field}
-                        phaseId={phaseId}
-                        action={action}
-                      />
-                    </Box>
-                  </SortableRow>
-                );
-              })}
+              {itemsList.map(
+                (field: IPermissionsCustomFieldData, index: number) => {
+                  return (
+                    <SortableRow
+                      key={field.id}
+                      id={field.id}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      isLastItem={index === itemsList.length - 1}
+                      disableNestedStyles
+                    >
+                      <Box ml="20px" w="100%">
+                        <CustomField
+                          key={field.id}
+                          field={field}
+                          phaseId={phaseId}
+                          action={action}
+                        />
+                      </Box>
+                    </SortableRow>
+                  );
+                }
+              )}
             </>
           )}
         </SortableList>

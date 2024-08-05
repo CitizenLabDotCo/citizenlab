@@ -46,6 +46,10 @@ export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
+export interface IGlobalPermission {
+  data: IGlobalPermissionData;
+}
+
 export interface IPermissionUpdate {
   id: string;
   action: string;

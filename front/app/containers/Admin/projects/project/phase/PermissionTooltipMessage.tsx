@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useGroups from 'api/groups/useGroups';
-import { IPCPermissionData } from 'api/phase_permissions/types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -14,7 +14,7 @@ import {
 } from './utils';
 
 type PermissionTooltipMessageProps = {
-  permissions?: IPCPermissionData[];
+  permissions?: IPhasePermissionData[];
 };
 
 const PermissionTooltipMessage = ({
@@ -26,7 +26,7 @@ const PermissionTooltipMessage = ({
     return null;
   }
 
-  const getParticipantsInPermission = (permission: IPCPermissionData) => {
+  const getParticipantsInPermission = (permission: IPhasePermissionData) => {
     return getPartipationRequirementMessage(
       permission.attributes.permitted_by,
       formatMessage

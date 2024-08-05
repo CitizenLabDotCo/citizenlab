@@ -3,9 +3,9 @@ import React from 'react';
 import { Box, Select, Title } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
-import useUpdatePermissionsField from 'api/permissions_custom_fields/useUpdatePermissionsField';
 
 import Modal from 'components/UI/Modal';
 
@@ -14,7 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  field: IPermissionsFieldData;
+  field: IPermissionsCustomFieldData;
   fieldName: string;
   phaseId: string;
   action: IPhasePermissionAction;
@@ -31,7 +31,7 @@ const CustomFieldModal = ({
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updatePermissionsField } = useUpdatePermissionsField({
+  const { mutate: updatePermissionsField } = useUpdatePermissionsCustomField({
     phaseId,
     action,
   });

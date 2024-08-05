@@ -1,4 +1,4 @@
-import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -13,13 +13,13 @@ const removeNull = (
 
 // Visualization steps
 const getNoneVisualizationSteps = (
-  _permissionsFields: IPermissionsFieldData[]
+  _permissionsFields: IPermissionsCustomFieldData[]
 ) => {
   return [messages.noActionsAreRequired];
 };
 
 const getConfirmedEmailVisualizationSteps = (
-  permissionsFields: IPermissionsFieldData[]
+  permissionsFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
     permissionsFields.length > 0
@@ -34,7 +34,7 @@ const getConfirmedEmailVisualizationSteps = (
 };
 
 const getUsersVisualizationSteps = (
-  permissionsFields: IPermissionsFieldData[]
+  permissionsFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
     permissionsFields.length > 0
@@ -49,7 +49,7 @@ const getUsersVisualizationSteps = (
 };
 
 const getVerifiedVisualiationSteps = (
-  permissionsFields: IPermissionsFieldData[]
+  permissionsFields: IPermissionsCustomFieldData[]
 ) => {
   const customFieldsStep =
     permissionsFields.length > 0
@@ -64,7 +64,7 @@ const getVerifiedVisualiationSteps = (
 
 export const VISUALIZATION_STEPS: Record<
   SupportedPermittedBy,
-  (permissionsFields: IPermissionsFieldData[]) => MessageDescriptor[]
+  (permissionsFields: IPermissionsCustomFieldData[]) => MessageDescriptor[]
 > = {
   everyone: getNoneVisualizationSteps,
   users: getUsersVisualizationSteps,
