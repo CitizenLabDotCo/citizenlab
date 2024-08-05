@@ -473,33 +473,49 @@ describe XlsxExport::ValueVisitor do
 
     describe '#visit_point' do
       let(:input_type) { 'point' }
-      let(:point_value) do
+      let(:value) do
         {
           'type' => 'Point',
           'coordinates' => [11.11, 22.22]
         }
       end
-      let(:model) { create(:idea, custom_field_values: { 'title_of_question_j97' => point_value }) }
 
-      context "when field key includes '_longitude'" do
-        let(:field_key) { 'title_of_question_j97_longitude' }
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_point(field)).to eq '{"type":"Point","coordinates":[11.11,22.22]}'
+      end
+    end
 
-        it 'returns the longitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '11.11'
-        end
+    describe '#visit_line' do
+      let(:input_type) { 'line' }
+      let(:value) do
+        {
+          'type' => 'LineString',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44]]
+        }
       end
 
-      context "when field key includes '_latitude'" do
-        let(:field_key) { 'title_of_question_j97_latitude' }
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_line(field)).to eq '{"type":"LineString","coordinates":[[11.11,22.22],[11.33,22.44]]}'
+      end
+    end
 
-        it 'returns the latitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '22.22'
-        end
+    describe '#visit_polygon' do
+      let(:input_type) { 'polygon' }
+      let(:value) do
+        {
+          'type' => 'Polygon',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44], [11.11, 22.22]]
+        }
+      end
+
+      it 'returns the GeoJSON value as a string' do
+        expect(visitor.visit_polygon(field))
+          .to eq '{"type":"Polygon","coordinates":[[11.11,22.22],[11.33,22.44],[12.33,23.44],[11.11,22.22]]}'
       end
     end
 
     describe '#visit_page' do
-      let(:input_type) { 'page' }
+      let(:field) { create(:custom_field_page) }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.
 
       it 'returns the empty string, because the field does not capture data' do
@@ -539,6 +555,33 @@ describe XlsxExport::ValueVisitor do
 
         it 'returns the value for the report' do
           expect(visitor.visit_file_upload(field)).to eq file.file.url
+        end
+      end
+    end
+
+    describe '#visit_shapefile_upload' do
+      let(:input_type) { 'shapefile_upload' }
+
+      context 'when there is no value' do
+        let(:value) { nil }
+
+        it 'returns the empty string' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_shapefile_upload(field)).to eq ''
+          end
+        end
+      end
+
+      context 'when there is a value' do
+        let(:model) { create(:native_survey_response) }
+        let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
+
+        before do
+          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+        end
+
+        it 'returns the value for the report' do
+          expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end
     end

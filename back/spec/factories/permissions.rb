@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :permission do
     action { 'posting_idea' }
-    permitted_by { 'groups' }
+    permitted_by { 'users' }
     global_custom_fields { false }
     permission_scope { create(:single_phase_ideation_project).phases.first }
     groups { [] }

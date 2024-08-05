@@ -117,6 +117,10 @@ const PhaseParticipationConfig = ({
     string | null
   >(null);
   const [voteTermError, setVoteTermError] = useState<string | null>(null);
+  const [expireDateLimitError, setExpireDateLimitError] =
+    useState<JSX.Element | null>(null);
+  const [reactingThresholdError, setReactingThresholdError] =
+    useState<JSX.Element | null>(null);
 
   useEffect(() => {
     onChange(participationConfig);
@@ -131,6 +135,8 @@ const PhaseParticipationConfig = ({
         maxTotalVotesError,
         maxVotesPerOptionError,
         voteTermError,
+        expireDateLimitError,
+        reactingThresholdError,
         isValidated,
       } = validatePhaseConfig(
         {
@@ -146,6 +152,8 @@ const PhaseParticipationConfig = ({
       setMaxTotalVotesError(maxTotalVotesError);
       setMaxVotesPerOptionError(maxVotesPerOptionError);
       setVoteTermError(voteTermError);
+      setExpireDateLimitError(expireDateLimitError);
+      setReactingThresholdError(reactingThresholdError);
 
       return isValidated;
     };
@@ -375,6 +383,20 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleDaysLimitChange = (limit: string) => {
+    setParticipationConfig((state) => ({
+      ...state,
+      expire_days_limit: parseInt(limit, 10),
+    }));
+  };
+
+  const handleReactingThresholdChange = (threshold: string) => {
+    setParticipationConfig((state) => ({
+      ...state,
+      reacting_threshold: parseInt(threshold, 10),
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -411,6 +433,8 @@ const PhaseParticipationConfig = ({
     ideas_order,
     input_term,
     document_annotation_embed_url,
+    expire_days_limit,
+    reacting_threshold,
   } = participationConfig;
 
   const showSurveys =
@@ -519,6 +543,12 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
+            expire_days_limit={expire_days_limit}
+            handleDaysLimitChange={handleDaysLimitChange}
+            reacting_threshold={reacting_threshold}
+            expireDateLimitError={expireDateLimitError}
+            handleReactingThresholdChange={handleReactingThresholdChange}
+            reactingThresholdError={reactingThresholdError}
           />
         )}
 

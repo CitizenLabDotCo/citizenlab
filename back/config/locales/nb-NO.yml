@@ -267,6 +267,7 @@
       submitted_at: 'Innlevert kl'
       tags: 'Tagger'
       title: 'Tittel'
+      user_data: 'Brukerdata'
       votes_count: 'Stemmer'
   form_builder:
     default_select_field:

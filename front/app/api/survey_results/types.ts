@@ -55,9 +55,11 @@ export type ResultUngrouped = BaseResult & {
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
 
-  // Defined point (map) questions
+  // Defined map questions
   mapConfigId?: string;
   pointResponses?: { response: GeoJSON.Point }[];
+  lineResponses?: { response: GeoJSON.LineString }[];
+  polygonResponses?: { response: GeoJSON.Polygon }[];
 
   // Defined for file upload questions
   files?: { name: string; url: string }[];

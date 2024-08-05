@@ -66,6 +66,8 @@ const AdminCustomMapConfigComponent = React.lazy(
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
+const AdminProjectProposals = lazy(() => import('./project/proposals'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -100,6 +102,7 @@ export enum projectsRoutes {
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
   projectPhaseIdeas = ':phaseId/ideas',
+  projectPhaseProposals = ':phaseId/proposals',
   projectPhaseIdeaForm = ':phaseId/form',
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
@@ -447,6 +450,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <AdminProjectIdeaForm />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseProposals,
+                element: (
+                  <PageLoading>
+                    <AdminProjectProposals />
                   </PageLoading>
                 ),
               },

@@ -19,7 +19,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def generate_for(fields)
     uses_pages = fields.any?(&:page?)
-    return super(fields) unless uses_pages
+    return super unless uses_pages
 
     generate_with_pages(fields)
   end
@@ -35,7 +35,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         input_type: field.input_type,
         id: field.id,
         title: multiloc_service.t(field.title_multiloc),
-        description: description_option(field)
+        description: description_option(field),
+        page_layout: field.page_layout,
+        map_config_id: field&.map_config&.id
       },
       elements: [
         # No elements yet. They will be added after invoking this method.

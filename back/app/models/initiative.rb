@@ -40,6 +40,7 @@
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
 #
+# TODO: cleanup-after-proposals-migration
 class Initiative < ApplicationRecord
   include Post
   include AnonymousParticipation

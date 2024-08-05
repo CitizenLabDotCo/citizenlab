@@ -20,10 +20,10 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    permissions_fields_service.fields_for_permission(permission).map do |permissions_field|
-      permissions_field.custom_field.tap do |field|
+    permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
+      permissions_custom_field.custom_field.tap do |field|
         field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
-        field.required = permissions_field.required
+        field.required = permissions_custom_field.required
       end
     end
   end
@@ -131,8 +131,8 @@ class Permissions::UserRequirementsService
     @registration_fields ||= CustomField.registration.enabled.order(:ordering)
   end
 
-  def permissions_fields_service
-    @permissions_fields_service ||= Permissions::PermissionsFieldsService.new
+  def permissions_custom_fields_service
+    @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
   end
 end
 

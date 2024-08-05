@@ -267,6 +267,7 @@ lv:
       submitted_at: 'Iesniegts vietnē'
       tags: 'Tags'
       title: 'Nosaukums'
+      user_data: 'Lietotāja dati'
       votes_count: 'Balsis'
   form_builder:
     default_select_field:

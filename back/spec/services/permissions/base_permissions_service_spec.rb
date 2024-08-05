@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-# TODO: JS - add more group tests for all permitted_by values
 describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
@@ -215,47 +214,47 @@ describe Permissions::BasePermissionsService do
 
         it { expect(denied_reason).to eq 'user_not_active' }
       end
-    end
 
-    context 'when permitted by groups' do
-      let(:groups) { create_list(:group, 2) }
-      let(:permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+      context 'group membership' do
+        let(:groups) { create_list(:group, 2) }
+        let(:permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
-      context 'when not signed in' do
-        let(:user) { nil }
+        context 'when not signed in' do
+          let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'user_not_signed_in' }
-      end
-
-      context 'when light unconfirmed resident who is group member' do
-        before do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
+          it { expect(denied_reason).to eq 'user_not_signed_in' }
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
+        context 'when light unconfirmed resident who is group member' do
+          before do
+            user.reset_confirmation_and_counts
+            user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
+          end
 
-      context 'when light unconfirmed resident who is not a group member' do
-        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
+        context 'when light unconfirmed resident who is not a group member' do
+          before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-      context 'when fully registered resident who is not a group member' do
-        it { expect(denied_reason).to eq 'user_not_in_group' }
-      end
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
 
-      context 'when admin' do
-        before { user.update!(roles: [{ type: 'admin' }]) }
+        context 'when fully registered resident who is not a group member' do
+          it { expect(denied_reason).to eq 'user_not_in_group' }
+        end
 
-        it { expect(denied_reason).to be_nil }
-      end
+        context 'when admin' do
+          before { user.update!(roles: [{ type: 'admin' }]) }
 
-      context 'when confirmed inactive admin' do
-        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+          it { expect(denied_reason).to be_nil }
+        end
 
-        it { expect(denied_reason).to eq 'user_not_active' }
+        context 'when confirmed inactive admin' do
+          before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_not_active' }
+        end
       end
     end
 
