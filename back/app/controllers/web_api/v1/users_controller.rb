@@ -115,12 +115,14 @@ class WebApi::V1::UsersController < ApplicationController
       authorize @user
     end
     if saved
+      set_auth_cookie(user: @user)
       SideFxUserService.new.after_create(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
     elsif reset_confirm_on_existing_no_password_user?
+      reset_auth_cookie
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -138,8 +140,8 @@ class WebApi::V1::UsersController < ApplicationController
     end
 
     if saved
-      SideFxUserService.new.after_update(@user, current_user)
       reset_auth_cookie
+      SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params
