@@ -17,11 +17,9 @@ class IdeaCustomFieldsService
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    filtered_fields = all_fields.select do |field|
+    all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
-
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
   def visible_fields
@@ -39,19 +37,14 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload topic_ids]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload]
-    filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
-
-    # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
-    # included in the importable fields list. This is because this list is used to generate the example template
-    # XLSX file, where we want to show the latitude and longitude fields as separate columns.
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon]
+    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
   def enabled_fields
@@ -174,19 +167,6 @@ class IdeaCustomFieldsService
   end
 
   private
-
-  # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::IdeaXlsxFormExporter#export
-  # can produce separate columns for latitude and longitude.
-  def replace_point_fields_with_lat_and_lon_point_fields(fields)
-    fields.map do |field|
-      if field.input_type == 'point'
-        [field.point_latitude_field, field.point_longitude_field]
-      else
-        field
-      end
-    end.flatten
-  end
 
   def insert_other_option_text_fields(fields)
     all_fields = []

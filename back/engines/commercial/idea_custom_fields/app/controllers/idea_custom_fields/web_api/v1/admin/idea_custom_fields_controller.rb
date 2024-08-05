@@ -23,7 +23,7 @@ module IdeaCustomFields
       }
     }
 
-    before_action :set_custom_field, only: %i[show]
+    before_action :set_custom_field, only: %i[show as_geojson]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
@@ -50,6 +50,17 @@ module IdeaCustomFields
       ).serializable_hash
     end
 
+    def as_geojson
+      raise_error_if_not_geographic_field
+
+      @phase = Phase.find(params[:phase_id])
+      geojson = I18n.with_locale(current_user.locale) do
+        geojson_generator.generate_geojson
+      end
+
+      send_data geojson, type: 'application/json', filename: geojson_generator.filename
+    end
+
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       @participation_method = @custom_form.participation_context.pmethod
@@ -74,6 +85,12 @@ module IdeaCustomFields
     # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
       %i[options options.image]
+    end
+
+    def raise_error_if_not_geographic_field
+      return if @custom_field.geographic_input?
+
+      raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -323,6 +340,10 @@ module IdeaCustomFields
     def serializer_params(custom_form)
       participation_method = custom_form.participation_context.pmethod
       jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+    end
+
+    def geojson_generator
+      @geojson_generator ||= GeojsonExport::GeojsonGenerator.new(@phase, @custom_field)
     end
   end
 end
