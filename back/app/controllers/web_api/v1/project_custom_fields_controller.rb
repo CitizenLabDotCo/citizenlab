@@ -7,7 +7,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def json_forms_schema
     if project && phase
-      render json: raw_json(JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, participation_method, input_term))
+      render json: raw_json(JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, phase.pmethod, phase.input_term))
     else
       send_not_found
     end
@@ -20,18 +20,10 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def phase
-    @phase ||= TimelineService.new.current_or_last_can_contain_ideas_phase(project)
-  end
-
-  def input_term
-    phase.input_term
-  end
-
-  def participation_method
-    @participation_method ||= Factory.instance.participation_method_for(phase)
+    @phase ||= TimelineService.new.current_or_backup_transitive_phase(project)
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(participation_method.custom_form).enabled_fields
+    IdeaCustomFieldsService.new(phase.pmethod.custom_form).enabled_fields
   end
 end

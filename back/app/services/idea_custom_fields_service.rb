@@ -3,7 +3,7 @@
 class IdeaCustomFieldsService
   def initialize(custom_form)
     @custom_form = custom_form
-    @participation_method = Factory.instance.participation_method_for custom_form.participation_context
+    @participation_method = custom_form.participation_context.pmethod
   end
 
   def all_fields

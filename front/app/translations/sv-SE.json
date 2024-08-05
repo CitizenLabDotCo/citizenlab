@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Deltagare",
   "app.containers.EventsShow.attending": "deltagande",
   "app.containers.EventsShow.editEvent": "Redigera händelse",
-  "app.containers.EventsShow.emailSharingBody": "Delta i detta evenemang: {eventTitle} på {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Datum och tid för händelsen",
   "app.containers.EventsShow.eventFrom2": "Från \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Gå tillbaka",

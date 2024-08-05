@@ -72,7 +72,7 @@ resource 'PermissionsField' do
         create(:permissions_field, permission: permission, custom_field: create(:custom_field_gender))
 
         # Permissions field associated with one group
-        custom_field = create(:custom_field_text, :for_registration, enabled: true, required: false)
+        custom_field = create(:custom_field_text, :for_registration, title_multiloc: { en: 'TEST FIELD' }, enabled: true, required: false)
         associated_group = create(:smart_group, slug: 'used', rules: [
           { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
         ])
@@ -89,10 +89,10 @@ resource 'PermissionsField' do
         expect(response_data.size).to eq 2
         expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
         expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
-        expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
-        expect(response_data.last.dig(:relationships, :groups, :data).count).to eq 1
-        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
-        expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
+        expect(response_data.first.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+        expect(response_data.first.dig(:relationships, :groups, :data).count).to eq 1
+        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
+        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
       end
     end
   end
@@ -235,27 +235,51 @@ resource 'PermissionsField' do
         expect(PermissionsField.order(:ordering).pluck(:ordering)).to eq (0..2).to_a
       end
     end
-
-    # TODO: JS - only allow if not locked/hidden by verification
-    # context 'Field cannot be reordered' do
-    #   let(:id) { @permissions_fields.first.id }
-    #   let(:ordering) { 3 }
-    #
-    #   example '[Error] Field cannot be reordered' do
-    #     do_request
-    #
-    #     expect(response_status).to eq 422
-    #     expect(json_response_body.dig(:errors, :permissions_field)).to eq [{ :error => 'only field types of custom_field can be reordered' }]
-    #   end
-    # end
   end
 
   delete 'web_api/v1/permissions_fields/:id' do
-    let(:permissions_field) { create(:permissions_field) }
-    let(:id) { permissions_field.id }
-    example_request 'Delete a permissions custom field' do
-      assert_status 200
-      expect { PermissionsField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    with_options scope: :permissions_field do
+      parameter :permission_id, 'Required if no fields are yet persisted'
+      parameter :custom_field_id, 'Required if no fields are yet persisted'
+    end
+
+    context 'fields already exist' do
+      let(:permissions_field) { create(:permissions_field) }
+      let(:id) { permissions_field.id }
+
+      example_request 'Delete a permissions custom field' do
+        assert_status 200
+        expect { PermissionsField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'fields are not yet persisted' do
+      let(:permission) { create(:permission, permitted_by: 'users') }
+      let(:permissions_field) { Permissions::PermissionsFieldsService.new.fields_for_permission(permission).last }
+      let(:id) { permissions_field.id }
+      let(:custom_field_id) { permissions_field.custom_field_id }
+      let(:permission_id) { permission.id }
+
+      before do
+        # Create a default custom fields
+        create(:custom_field_gender, enabled: true)
+        create(:custom_field_birthyear, enabled: true)
+        create(:custom_field_domicile, enabled: true) # To delete
+      end
+
+      example 'Persist default fields and then delete one' do
+        # Check the setup
+        expect(CustomField.all.count).to eq 3
+        expect(PermissionsField.all.count).to eq 0
+        expect(Permissions::PermissionsFieldsService.new.fields_for_permission(permission).count).to eq 3
+
+        do_request
+        assert_status 200
+        expect(CustomField.all.count).to eq 3
+        expect(PermissionsField.all.count).to eq 2 # 3 persisted and then 1 deleted
+        expect(Permissions::PermissionsFieldsService.new.fields_for_permission(permission.reload).count).to eq 2
+        expect(PermissionsField.all.map { |field| field.custom_field.code }).not_to include 'domicile'
+      end
     end
   end
 end

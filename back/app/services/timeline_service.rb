@@ -33,17 +33,17 @@ class TimelineService
     phase.end_at.present? && phase.end_at <= date
   end
 
-  def current_or_last_can_contain_ideas_phase(project, time = Time.now)
-    date = tenant_timezone.at(time).to_date
+  def current_or_backup_transitive_phase(project, time = Time.now)
+    # This method is used to determine which project phase is the most relevant with
+    # respect to the input form. For example, to select the input term from the right
+    # phase.
+    return if project.phases.blank?
 
-    phases = project.phases
-    return if phases.blank?
+    current = current_phase(project, time)
+    current_method = current&.pmethod
+    return current if current_method&.transitive? || (current_method&.supports_posting_inputs? && current_method&.supports_public_visibility?) # ideation, voting, proposals, but not native surveys
 
-    ideation_phases = phases.select(&:can_contain_ideas?)
-    return if ideation_phases.blank?
-
-    current_phase = ideation_phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || date <= phase.end_at) }
-    current_phase || ideation_phases.last
+    project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
   def current_and_future_phases(project, time = Time.now)

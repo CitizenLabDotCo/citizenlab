@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Participanten",
   "app.containers.EventsShow.attending": "matmaachen",
   "app.containers.EventsShow.editEvent": "Event änneren",
-  "app.containers.EventsShow.emailSharingBody": "Bei dësem Event deelhuelen: {eventTitle} um {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Event Datum an Zäit",
   "app.containers.EventsShow.eventFrom2": "Vun \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Géi zréck",

@@ -20,11 +20,11 @@ const updatePhasePermission = ({
     body: { permissionId, permission },
   });
 
-const useUpdatePhasePermission = (phaseId?: string) => {
+const useUpdatePhasePermission = () => {
   const queryClient = useQueryClient();
   return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
     mutationFn: updatePhasePermission,
-    onSuccess: (_, { action }) => {
+    onSuccess: (_, { action, phaseId }) => {
       queryClient.invalidateQueries({
         queryKey: phasePermissionKeys.lists(),
       });

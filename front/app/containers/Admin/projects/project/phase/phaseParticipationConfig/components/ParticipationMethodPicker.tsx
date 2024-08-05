@@ -29,6 +29,7 @@ import messages from '../../../messages';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
+import proposalsImage from './assets/proposals.png';
 import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
@@ -79,6 +80,10 @@ const ParticipationMethodPicker = ({
   });
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
+  });
+
+  const proposalsParticipationMethodEnabled = useFeatureFlag({
+    name: 'proposals_participation_method',
   });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
@@ -134,6 +139,17 @@ const ParticipationMethodPicker = ({
               image={ideationImage}
               selected={selectedMethod === 'ideation'}
             />
+
+            {proposalsParticipationMethodEnabled && (
+              <ParticipationMethodChoice
+                key="proposals"
+                title={formatMessage(messages2.proposalsTitle)}
+                subtitle={formatMessage(messages2.proposalsDescription)}
+                onClick={(event) => handleMethodSelect(event, 'proposals')}
+                image={proposalsImage}
+                selected={selectedMethod === 'proposals'}
+              />
+            )}
 
             <ParticipationMethodChoice
               key="survey"

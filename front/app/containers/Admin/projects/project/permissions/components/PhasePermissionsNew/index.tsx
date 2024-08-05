@@ -22,7 +22,7 @@ interface Props {
 }
 
 const PhasePermissionsNew = ({ project, phase, phaseNumber }: Props) => {
-  const { mutate: updatePhasePermission } = useUpdatePhasePermission(phase.id);
+  const { mutate: updatePhasePermission } = useUpdatePhasePermission();
 
   const handlePermissionChange = ({
     permission,

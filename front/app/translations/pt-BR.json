@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Participantes",
   "app.containers.EventsShow.attending": "participando",
   "app.containers.EventsShow.editEvent": "Editar evento",
-  "app.containers.EventsShow.emailSharingBody": "Participe deste evento: {eventTitle} em {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Data e hora do evento",
   "app.containers.EventsShow.eventFrom2": "De \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Voltar atrás",

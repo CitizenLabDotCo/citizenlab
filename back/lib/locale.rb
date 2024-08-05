@@ -1,6 +1,8 @@
 class Locale
   attr_reader :locale_sym
 
+  delegate :to_s, to: :locale_sym
+
   def self.default(config: nil)
     config ||= AppConfiguration.instance
     monolingual(config: config) || new(config.settings('core', 'locales').first)

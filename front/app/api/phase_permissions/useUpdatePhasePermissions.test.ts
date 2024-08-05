@@ -42,12 +42,9 @@ describe('useUpdatePhasePermission', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useUpdatePhasePermission('fc251de04cb7'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdatePhasePermission(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -72,12 +69,9 @@ describe('useUpdatePhasePermission', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useUpdatePhasePermission('fc251de04cb7'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdatePhasePermission(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         permissionId: '5d14ece5feb0',

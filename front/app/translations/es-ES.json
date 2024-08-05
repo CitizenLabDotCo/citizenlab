@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Asistentes",
   "app.containers.EventsShow.attending": "asistente",
   "app.containers.EventsShow.editEvent": "Editar evento",
-  "app.containers.EventsShow.emailSharingBody": "Asiste a este acto: {eventTitle} en {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Fecha y hora del evento",
   "app.containers.EventsShow.eventFrom2": "Desde \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Volver",

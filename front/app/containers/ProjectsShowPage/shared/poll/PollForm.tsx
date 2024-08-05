@@ -91,7 +91,6 @@ const PollForm = ({
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const changeAnswerMultiple = (questionId: string, optionId: string) => () => {
     const oldAnswer = answers[questionId] || [];
@@ -113,12 +112,11 @@ const PollForm = ({
           type: 'phase',
         },
         successAction: {
-          name: 'submit_poll',
+          name: 'submitPoll',
           params: {
             phaseId,
             answers: Object.values(answers).flat(),
             projectId,
-            setIsSubmitting,
           },
         },
       });
@@ -199,7 +197,6 @@ const PollForm = ({
               fullWidth={true}
               disabled={!isValid || actionDisabledAndNotFixable}
               className="e2e-send-poll"
-              processing={isSubmitting}
             >
               <FormattedMessage {...messages.sendAnswer} />
             </Button>

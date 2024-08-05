@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "الحاضرين",
   "app.containers.EventsShow.attending": "حضور",
   "app.containers.EventsShow.editEvent": "تحرير الحدث",
-  "app.containers.EventsShow.emailSharingBody": "احضر هذا الحدث: {eventTitle} الساعة {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "تاريخ ووقت الحدث",
   "app.containers.EventsShow.eventFrom2": "من \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "عُد",

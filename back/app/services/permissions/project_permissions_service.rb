@@ -34,6 +34,7 @@ module Permissions
       taking_survey_disabled_reason = denied_reason_for_action 'taking_survey'
       taking_poll_disabled_reason = denied_reason_for_action 'taking_poll'
       voting_disabled_reason = denied_reason_for_action 'voting'
+      attending_event_disabled_reason = denied_reason_for_action 'attending_event'
       {
         posting_idea: {
           enabled: !posting_disabled_reason,
@@ -76,6 +77,10 @@ module Permissions
         voting: {
           enabled: !voting_disabled_reason,
           disabled_reason: voting_disabled_reason
+        },
+        attending_event: {
+          enabled: !attending_event_disabled_reason,
+          disabled_reason: attending_event_disabled_reason
         }
       }
     end

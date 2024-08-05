@@ -2,15 +2,15 @@
 
 class WebApi::V1::PermissionsFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
-  before_action :set_permissions_field, only: %i[show destroy]
+  before_action :set_permissions_field, only: %i[show]
 
   def index
     authorize PermissionsField.new(permission: permission)
 
     permissions_fields_service = Permissions::PermissionsFieldsService.new
     if permissions_fields_service.verified_actions_enabled?
-      # NEW non-paged version for verified actions
-      permissions_fields = permissions_fields_service.fields_for_permission(permission)
+      # NEW non-paged version for verified actions with hidden locked fields
+      permissions_fields = permissions_fields_service.fields_for_permission(permission, return_hidden: true)
       render json: WebApi::V1::PermissionsFieldSerializer.new(permissions_fields, params: jsonapi_serializer_params).serializable_hash
     else
       # Legacy version
@@ -69,9 +69,8 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   def reorder
     @permissions_field = persist_and_find_permission_field
     authorize @permissions_field
-    @permissions_field.errors.add(:permissions_field, 'only field types of custom_field can be reordered') unless @permissions_field.can_be_reordered?
 
-    if @permissions_field.can_be_reordered? && @permissions_field.insert_at(permission_params_for_update[:ordering])
+    if @permissions_field.insert_at(permission_params_for_update[:ordering])
       render json: WebApi::V1::PermissionsFieldSerializer.new(
         @permissions_field,
         params: jsonapi_serializer_params
@@ -82,6 +81,8 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   def destroy
+    @permissions_field = persist_and_find_permission_field
+    authorize @permissions_field
     sidefx.before_destroy @permissions_field, current_user
     permissions_field = @permissions_field.destroy
     if permissions_field.destroyed?
@@ -99,6 +100,7 @@ class WebApi::V1::PermissionsFieldsController < ApplicationController
   end
 
   # Try and add default fields, then find the field in the persisted fields
+  # TODO: JS - merge with set_permission_field as that's only used for show now
   def persist_and_find_permission_field
     PermissionsField.find(params[:id])
   rescue ActiveRecord::RecordNotFound

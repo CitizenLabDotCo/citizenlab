@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Osallistujat",
   "app.containers.EventsShow.attending": "osallistumassa",
   "app.containers.EventsShow.editEvent": "Muokkaa tapahtumaa",
-  "app.containers.EventsShow.emailSharingBody": "Osallistu tähän tapahtumaan: {eventTitle} klo {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Tapahtuman päivämäärä ja aika",
   "app.containers.EventsShow.eventFrom2": "Lähettäjä \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Mene takaisin",

@@ -23,14 +23,15 @@ class Permission < ApplicationRecord
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
-    'information' => [],
-    'ideation' => %w[posting_idea commenting_idea reacting_idea],
-    'native_survey' => %w[posting_idea],
-    'survey' => %w[taking_survey],
-    'poll' => %w[taking_poll],
-    'voting' => %w[voting commenting_idea],
-    'volunteering' => [],
-    'document_annotation' => %w[annotating_document]
+    'information' => %w[attending_event],
+    'ideation' => %w[posting_idea commenting_idea reacting_idea attending_event],
+    'proposals' => %w[posting_idea commenting_idea reacting_idea attending_event],
+    'native_survey' => %w[posting_idea attending_event],
+    'survey' => %w[taking_survey attending_event],
+    'poll' => %w[taking_poll attending_event],
+    'voting' => %w[voting commenting_idea attending_event],
+    'volunteering' => %w[attending_event],
+    'document_annotation' => %w[annotating_document attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
 
@@ -50,8 +51,8 @@ class Permission < ApplicationRecord
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
-  before_validation :update_global_custom_fields, on: :update
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -61,8 +62,7 @@ class Permission < ApplicationRecord
 
   # Remove any actions that are not enabled on the project
   def self.enabled_actions(permission_scope)
-    participation_method = Factory.instance.participation_method_for(permission_scope)
-    return available_actions(permission_scope) if participation_method&.return_disabled_actions?
+    return available_actions(permission_scope) if permission_scope&.pmethod&.return_disabled_actions?
 
     available_actions(permission_scope).filter_map do |action|
       next if
@@ -92,7 +92,7 @@ class Permission < ApplicationRecord
     false
   end
 
-  # TEMP: Whilst verified actions are in beta
+  # TODO: Remove when verified actions are out of beta
   def permitted_by
     return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
 
@@ -110,7 +110,10 @@ class Permission < ApplicationRecord
     self.global_custom_fields ||= allow_global_custom_fields?
   end
 
+  # TODO: Method not needed once verified actions are out of beta
   def update_global_custom_fields
+    return if verified_actions_enabled?
+
     self.global_custom_fields = false unless allow_global_custom_fields?
   end
 

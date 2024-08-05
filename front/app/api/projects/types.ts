@@ -3,6 +3,7 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
+  ProjectDisabledReason,
   ProjectCommentingDisabledReason,
   ProjectDocumentAnnotationDisabledReason,
   ProjectPollDisabledReason,
@@ -97,6 +98,7 @@ export interface IProjectAttributes {
     taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
     annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
     voting: ActionDescriptor<ProjectVotingDisabledReason>;
+    attending_event: ActionDescriptor<ProjectDisabledReason>;
   };
   uses_content_builder: boolean;
 }

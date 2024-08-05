@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication',
     defaultMessage: 'Authentication',
   },
+  resetExtraQuestionsAndGroups: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetExtraQuestionsAndGroups',
+    defaultMessage: 'Reset extra questions and groups',
+  },
 });

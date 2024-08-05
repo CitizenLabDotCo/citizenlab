@@ -1103,7 +1103,6 @@
   "app.containers.EventsShow.attendeesIconAltText": "Polaznici",
   "app.containers.EventsShow.attending": "pohađanje",
   "app.containers.EventsShow.editEvent": "Uredi događaj",
-  "app.containers.EventsShow.emailSharingBody": "Prisustvujte ovom događaju: {eventTitle} u {eventLocation}",
   "app.containers.EventsShow.eventDateTimeIcon": "Datum i vrijeme događaja",
   "app.containers.EventsShow.eventFrom2": "Od \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Idi natrag",

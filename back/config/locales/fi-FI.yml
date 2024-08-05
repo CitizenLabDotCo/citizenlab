@@ -278,8 +278,8 @@ fi:
       description: "Lähetä vastauksesi valitsemalla alta \"Lähetä\"."
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
-      personal_data_explanation_ideation: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
-      personal_data_explanation_native_survey: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat saada palautettasi koskevia päivityksiä sähköpostitse, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Tietosi eivät ole julkisia, ja vain %{organizationName}käyttää niitä. Jos et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      personal_data_explanation_private: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat saada palautettasi koskevia päivityksiä sähköpostitse, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Tietosi eivät ole julkisia, ja vain %{organizationName}käyttää niitä. Jos et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
       first_name: 'Etunimet)'
       last_name: 'Sukunimi'
       email_address: 'Sähköpostiosoite'

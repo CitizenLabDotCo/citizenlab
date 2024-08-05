@@ -163,7 +163,7 @@ module Analysis
 
     def classification_fields
       fields = analysis.associated_custom_fields
-      if fields.map(&:code).include?('topic_ids') || analysis.participation_method != 'ideation'
+      if fields.map(&:code).include?('topic_ids') || analysis.participation_method != 'ideation' # TODO: move-participation-method-logic
         fields
       else
         # Include topics in the prompt when classifying (in ideation) to improve the quality of the results
