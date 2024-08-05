@@ -129,10 +129,9 @@ module EmailCampaigns
     end
 
     def zero_statistics?(statistics)
-      ((statistics[:new_ideas_increase] == 0) &&
-         (statistics[:new_comments_increase] == 0) &&
-         (statistics[:new_participants_increase] == 0)
-      )
+      (statistics[:new_ideas_increase] == 0) &&
+        (statistics[:new_comments_increase] == 0) &&
+        (statistics[:new_participants_increase] == 0)
     end
 
     def days_ago

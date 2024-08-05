@@ -97,7 +97,7 @@ export const IdeasShow = ({
       handleContainerRef={handleContainerRef}
     >
       <Box display="flex" id="e2e-idea-show-page-content">
-        <Box flex="1 1 100%">
+        <Box flex="1 1 100%" w="100%">
           {wasImported && (
             <Box display="flex">
               <Tooltip

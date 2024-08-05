@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner, Toggle } from '@citizenlab/cl2-component-library';
@@ -12,14 +12,15 @@ import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../messages';
+import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 
 import HeatmapTooltipContent from './HeatmapTooltipContent';
 
 type Props = {
   pointResponses: { response: GeoJSON.Point }[];
   mapConfigId?: string;
-  customFieldId?: string;
+  customFieldId: string;
 };
 
 const PointLocationQuestion = ({
@@ -28,15 +29,22 @@ const PointLocationQuestion = ({
   customFieldId,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // Get project from URL
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
   const [showHeatMap, setShowHeatMap] = useState<boolean>(false);
+
+  // Add reset button to the map
+  useEffect(() => {
+    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+  }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
   const { data: customMapConfig, isLoading: isLoadingCustomMapConfig } =
@@ -54,13 +62,19 @@ const PointLocationQuestion = ({
   return (
     <Box>
       <Box mt="-32px" display="flex" justifyContent="flex-end" mb="8px">
-        <Toggle
-          checked={showHeatMap}
-          onChange={() => {
-            setShowHeatMap((showHeatMap) => !showHeatMap);
-          }}
-          label={<HeatmapTooltipContent />}
-        />
+        <Box display="flex" gap="24px">
+          <ExportGeoJSONButton
+            customFieldId={customFieldId}
+            phaseId={phaseId}
+          />
+          <Toggle
+            checked={showHeatMap}
+            onChange={() => {
+              setShowHeatMap((showHeatMap) => !showHeatMap);
+            }}
+            label={<HeatmapTooltipContent />}
+          />
+        </Box>
       </Box>
 
       {isLoading ? (
@@ -75,7 +89,11 @@ const PointLocationQuestion = ({
             heatmap={showHeatMap}
             onInit={setMapView}
           />
-          <ResetMapViewButton mapView={mapView} mapConfig={mapConfig} />
+          <ResetMapViewButton
+            mapView={mapView}
+            mapConfig={mapConfig}
+            resetButtonRef={resetButtonRef}
+          />
         </>
       )}
     </Box>
