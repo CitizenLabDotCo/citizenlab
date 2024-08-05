@@ -163,10 +163,6 @@ resource 'Ideas' do
         end
       end
 
-      # Dev note: TAN-2347-BE-for-new-shapefile-upload
-      # Simple clone of above tests for file_upload fields, but now for shapefile_upload fields
-      # as initial functionality is the same.
-      # Needs to be adjusted if/when shapefile_upload fields get their own specific BE functionality/limitations.
       context 'with two shapefile upload fields' do
         # Note the "notwhitelisted" file extension. It is here to validate
         # that no file extension validation is done.
@@ -257,10 +253,6 @@ resource 'Ideas' do
         end
       end
 
-      # Dev note: TAN-2347-BE-for-new-shapefile-upload
-      # Simple clone of file_upload content fieldsfor shapefile_upload test content,
-      # as initial functionality is the same.
-      # Needs to be adjusted if/when shapefile_upload fields get their own specific BE functionality/limitations.
       describe 'without custom_field_values_params for geo fields' do
         file1 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
         file2 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_shapefile.pdf')
