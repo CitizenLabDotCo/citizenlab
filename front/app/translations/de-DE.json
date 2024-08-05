@@ -1324,7 +1324,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.answeredStatusExplanationBold": "{orgName} hat den Vorschlag erhalten und eine offizielle Antwort gegeben.",
   "app.containers.IdeasShow.proposals.VoteControl.cancelVote": "Abstimmung abbrechen",
   "app.containers.IdeasShow.proposals.VoteControl.days": "Tage",
-  "app.containers.IdeasShow.proposals.VoteControl.expiredStatusExplanation": "Dieser Vorschlag ist abgelaufen, da sie {expiredStatusExplanationBold}.",
+  "app.containers.IdeasShow.proposals.VoteControl.expiredStatusExplanation": "Dieser Vorschlag ist abgelaufen, da er {expiredStatusExplanationBold}.",
   "app.containers.IdeasShow.proposals.VoteControl.expiredStatusExplanationBold": "hat {votingThreshold} Stimmen nicht rechtzeitig erreicht",
   "app.containers.IdeasShow.proposals.VoteControl.guidelinesLinkText": "unsere Richtlinien",
   "app.containers.IdeasShow.proposals.VoteControl.hours": "Stunden",
