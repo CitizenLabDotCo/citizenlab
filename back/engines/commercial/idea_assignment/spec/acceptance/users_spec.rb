@@ -156,7 +156,7 @@ resource 'Users' do
         end
       end
 
-      describe 'when folder moderator becomes project moderator', if: (defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine)) do
+      describe 'when folder moderator becomes project moderator', if: defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine) do
         let(:folder) { create(:project_folder) }
         let(:project1) { create(:project, folder: folder) }
         let(:project2) { create(:project, folder: folder) }

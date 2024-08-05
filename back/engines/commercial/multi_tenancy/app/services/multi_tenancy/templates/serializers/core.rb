@@ -37,7 +37,7 @@ module MultiTenancy
           attr_accessor :value_attributes, :reference_attributes
 
           def inherited(subclass)
-            super(subclass)
+            super
 
             # Allows serializer subclasses to inherit attributes from their ancestors.
             subclass.value_attributes = value_attributes.dup if value_attributes.present?

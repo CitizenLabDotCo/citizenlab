@@ -92,7 +92,7 @@ namespace :fix_existing_tenants do
         clazzes.each do |claz, instances|
           instances.each do |id, attributes|
             object = claz.constantize.find id
-            attributes.each do |attribute, _|
+            attributes.each_key do |attribute|
               multiloc = object.send attribute
               multiloc.each_key do |k|
                 text = multiloc[k]
@@ -126,15 +126,14 @@ namespace :fix_existing_tenants do
           claz.all.map do |instance|
             attributes.each do |attribute|
               multiloc = instance.send attribute
-              multiloc&.keys&.each do |k|
+              multiloc&.each_key do |k|
                 text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
                 allowed_images = doc.css('img').select do |img|
-                  (img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
+                  img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
                     img.attr('src').exclude?("#{tenant.host}/uploads/") &&
                     img.attr('src').exclude?('s3.amazonaws.com') &&
                     img.attr('src').exclude?('res.cloudinary.com')
-                  )
                 end
                 allowed_images.each do |img|
                   results[tenant.host] ||= {}
