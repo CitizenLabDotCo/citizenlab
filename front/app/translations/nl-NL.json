@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Ga verder",
   "app.components.AuthProviders.continueWithAzure": "Doorgaan met {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Doorgaan met Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Doorgaan met valse SSO",
   "app.components.AuthProviders.continueWithGoogle": "Doorgaan met Google",
   "app.components.AuthProviders.continueWithHoplr": "Doorgaan met Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Ga verder met {loginMechanismName}",
