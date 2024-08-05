@@ -17,6 +17,7 @@
 #
 class IdeaStatus < ApplicationRecord
   CODES = %w[proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
+  AUTOMATIC_STATUS_CODES = %w[proposed threshold_reached expired].freeze
   PROPOSED_CODE = 'proposed'
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
@@ -37,6 +38,10 @@ class IdeaStatus < ApplicationRecord
 
   def proposed?
     code == PROPOSED_CODE
+  end
+
+  def automatic?
+    AUTOMATIC_STATUS_CODES.include? code
   end
 
   private

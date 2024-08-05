@@ -27,14 +27,10 @@ class IdeaStatusPolicy < ApplicationPolicy
   end
 
   def reorder?
-    update?
+    update? && InputStatusService.new(record).can_reorder?
   end
 
   def destroy?
     update?
-  end
-
-  def permitted_attributes_for_reorder
-    [:ordering]
   end
 end

@@ -9,7 +9,6 @@ FactoryBot.define do
         'nl-BE' => 'Bij de burgemeester'
       }
     end
-    ordering { 2 }
     code { 'custom' }
     color { '#AABBCC' }
     description_multiloc do

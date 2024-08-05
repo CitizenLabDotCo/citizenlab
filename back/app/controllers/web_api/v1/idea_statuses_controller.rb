@@ -15,7 +15,6 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def create
-    # Code cannot be proposed
     @idea_status = IdeaStatus.new(idea_status_params_for_create)
     authorize @idea_status
     if @idea_status.save
@@ -36,7 +35,12 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def reorder
-    if @idea_status.insert_at(permitted_attributes(@idea_status)[:ordering])
+    ordering = params.require(:idea_status).permit(:ordering)[:ordering]
+    if ordering <= max_ordering
+      render json: { errors: { base: 'Cannot reorder into the automatic statuses section' } }, status: :unprocessable_entity
+      return
+    end
+    if @idea_status.insert_at(ordering)
       SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
       render json: serialize(@idea_status), status: :ok
     else
@@ -77,17 +81,23 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def idea_status_params_for_create
     params_attrs = [:participation_method, *shared_params]
-    params_attrs << :code if params.dig(:idea_status, :code) != IdeaStatus::PROPOSED_CODE
+    params_attrs << :code if IdeaStatus::AUTOMATIC_STATUS_CODES.exclude?(params.dig(:idea_status, :code))
     params.require(:idea_status).permit(params_attrs)
   end
 
   def idea_status_params_for_update
     params_attrs = shared_params
-    params_attrs << :code if @idea_status.code != IdeaStatus::PROPOSED_CODE && params.dig(:idea_status, :code) != IdeaStatus::PROPOSED_CODE
+    if !@idea_status.automatic? && IdeaStatus::AUTOMATIC_STATUS_CODES.exclude?(params.dig(:idea_status, :code))
+      params_attrs << :code
+    end
     params.require(:idea_status).permit(params_attrs)
   end
 
   def shared_params
     [:color, title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES]
+  end
+
+  def max_ordering
+    IdeaStatus.where(code: IdeaStatus::AUTOMATIC_STATUS_CODES).maximum(:ordering) || -1
   end
 end

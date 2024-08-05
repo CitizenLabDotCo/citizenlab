@@ -197,11 +197,11 @@ resource 'IdeaStatuses' do
 
       describe do
         let(:idea_status) { create(:proposals_status) }
-        let(:code) { 'proposed' }
+        let(:code) { 'expired' }
 
-        example '[Error] Cannot change the code to proposed', document: false do
+        example '[Error] Cannot change the code to an automatic status code', document: false do
           do_request
-          expect(idea_status.reload.code).not_to eq 'proposed'
+          expect(idea_status.reload.code).not_to eq 'expired'
         end
       end
     end
@@ -234,6 +234,48 @@ resource 'IdeaStatuses' do
         expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to eq ordering
+      end
+
+      describe do
+        let(:idea_status) { create(:idea_status_proposed) }
+
+        example '[Error] Cannot reorder the proposed status', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+
+      describe do
+        let(:idea_status) { create(:proposals_status, code: 'answered') }
+
+        example 'Reorder a manual default proposals status', document: false do
+          do_request
+          assert_status 200
+          expect(response_data.dig(:attributes, :ordering)).to eq ordering
+        end
+      end
+
+      describe do
+        let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
+
+        example '[Error] Cannot reorder an automated status status', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+
+      describe do
+        before do
+          IdeaStatus.all.zip(['proposed', 'threshold_reached', 'expired']).each { |status, code| status.update!(code: code) }
+        end
+
+        let(:idea_status) { create(:proposals_status) }
+
+        example '[Error] Cannot reorder a proposals status into the automated status section', document: false do
+          do_request
+          assert_status 422
+          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the automatic statuses section'
+        end
       end
     end
   end
