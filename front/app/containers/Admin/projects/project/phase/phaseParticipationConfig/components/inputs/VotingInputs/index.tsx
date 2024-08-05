@@ -165,7 +165,7 @@ export default ({
         {voting_method === 'multiple_voting' && (
           <MultipleVotingInputs
             voting_max_total={voting_max_total}
-            apiErrors={undefined}
+            apiErrors={apiErrors}
             voteTermError={voteTermError}
             maxTotalVotesError={maxTotalVotesError}
             maxVotesPerOptionError={maxVotesPerOptionError}
@@ -183,7 +183,7 @@ export default ({
         {voting_method === 'single_voting' && (
           <SingleVotingInputs
             voting_max_total={voting_max_total}
-            apiErrors={undefined}
+            apiErrors={apiErrors}
             maxTotalVotesError={maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
           />

@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { IPermissionsFieldData } from 'api/permissions_fields/types';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 
@@ -21,7 +21,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import messages from './messages';
 
 type SelectionScreenProps = {
-  selectedFields: Array<IPermissionsFieldData> | undefined;
+  selectedFields: Array<IPermissionsCustomFieldData> | undefined;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   handleAddField: (fields: IUserCustomFieldData) => void;
   setShowAddFieldPage: (show: boolean) => void;

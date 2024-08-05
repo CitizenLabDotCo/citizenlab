@@ -78,6 +78,44 @@ describe WebApi::V1::IdeaSerializer do
     end
   end
 
+  context 'for a proposal' do
+    let(:user) { nil }
+    let(:proposal) { create(:proposal) }
+    let(:result) { described_class.new(proposal, params: { current_user: user }).serializable_hash }
+
+    describe 'expires_at' do
+      let(:expire_days_limit) { 5 }
+
+      before { proposal.creation_phase.update!(expire_days_limit: expire_days_limit) }
+
+      it 'returns the sum of expire_days_limit and published_at when published' do
+        proposal.update!(publication_status: 'published', published_at: '2024-07-20 20:00')
+        expect(result.dig(:data, :attributes, :expires_at)).to eq '2024-07-25 20:00'
+      end
+
+      it 'returns nil for draft proposals' do
+        proposal.update!(publication_status: 'draft')
+        expect(result.dig(:data, :attributes, :expires_at)).to be_nil
+      end
+    end
+
+    describe 'reactions_needed' do
+      let(:reacting_threshold) { 5 }
+
+      before { proposal.creation_phase.update!(reacting_threshold: reacting_threshold) }
+
+      it 'returns the difference between reacting_threshold and likes_count' do
+        proposal.update!(likes_count: 2)
+        expect(result.dig(:data, :attributes, :reactions_needed)).to eq 3
+      end
+
+      it 'returns 0 if the difference is negative' do
+        proposal.update!(likes_count: 10)
+        expect(result.dig(:data, :attributes, :reactions_needed)).to eq 0
+      end
+    end
+  end
+
   def internal_comments_count_for_current_user(idea, current_user)
     described_class
       .new(idea, params: { current_user: current_user })

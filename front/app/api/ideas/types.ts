@@ -91,6 +91,8 @@ export interface IIdeaData {
     anonymous: boolean;
     author_hash: string;
     followers_count: number;
+    reactions_needed?: number;
+    expires_at?: string;
   };
   relationships: {
     assignee?: {
@@ -196,6 +198,7 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
+  transitive?: boolean;
 }
 
 export interface IIdeaApprovals {

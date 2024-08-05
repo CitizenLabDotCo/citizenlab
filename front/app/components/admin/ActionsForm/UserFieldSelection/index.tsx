@@ -13,11 +13,11 @@ import {
 import { SupportedLocale } from 'typings';
 
 import { IPermissionData } from 'api/permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_fields/types';
-import useAddPermissionsField from 'api/permissions_fields/useAddPermissionsField';
-import useDeletePermissionsField from 'api/permissions_fields/useDeletePermissionsField';
-import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
-import useUpdatePermissionsField from 'api/permissions_fields/useUpdatePermissionsField';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
+import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -53,7 +53,7 @@ const UserFieldSelection = ({
   const { action } = permission.attributes;
 
   const { formatMessage } = useIntl();
-  const permissionsFieldsAllowed = useFeatureFlag({
+  const permissionsCustomFieldsAllowed = useFeatureFlag({
     name: 'permissions_custom_fields',
     onlyCheckAllowed: true,
   });
@@ -61,30 +61,32 @@ const UserFieldSelection = ({
     name: 'granular_permissions',
   });
   const { data: globalRegistrationFields } = useUserCustomFields();
-  const initialFields = usePermissionsFields({
+  const initialFields = usePermissionsCustomFields({
     phaseId,
     action,
   });
   const { mutate: addPermissionCustomField, isLoading } =
-    useAddPermissionsField({
+    useAddPermissionsCustomField({
       phaseId,
       action,
     });
-  const { mutate: updatePermissionCustomField } = useUpdatePermissionsField({
-    phaseId,
-    action,
-  });
-  const { mutate: deletePermissionsField } = useDeletePermissionsField({
-    phaseId,
-    action,
-  });
+  const { mutate: updatePermissionCustomField } =
+    useUpdatePermissionsCustomField({
+      phaseId,
+      action,
+    });
+  const { mutate: deletePermissionsCustomField } =
+    useDeletePermissionsCustomField({
+      phaseId,
+      action,
+    });
 
   const locale = useLocale();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const initialFieldArray = initialFields?.data?.data;
 
   const getTitleFromGlobalFieldId = (
-    field: IPermissionsFieldData,
+    field: IPermissionsCustomFieldData,
     locale: SupportedLocale
   ) => {
     return globalRegistrationFields?.data.find(
@@ -103,7 +105,7 @@ const UserFieldSelection = ({
   };
 
   const handleDeleteField = (fieldId: string) => {
-    deletePermissionsField({
+    deletePermissionsCustomField({
       id: fieldId,
     });
   };
@@ -121,7 +123,7 @@ const UserFieldSelection = ({
   return (
     <Tooltip
       placement={'bottom'}
-      disabled={permissionsFieldsAllowed}
+      disabled={permissionsCustomFieldsAllowed}
       theme={'dark'}
       content={
         <Box style={{ cursor: 'default' }}>
@@ -160,7 +162,7 @@ const UserFieldSelection = ({
                   checked={permission.attributes.global_custom_fields}
                   disabled={
                     isGranularPermissionsEnabled
-                      ? !permissionsFieldsAllowed
+                      ? !permissionsCustomFieldsAllowed
                       : true
                   }
                   onChange={() => {
@@ -178,7 +180,7 @@ const UserFieldSelection = ({
                     <Box display="flex">
                       <span
                         style={{
-                          color: permissionsFieldsAllowed
+                          color: permissionsCustomFieldsAllowed
                             ? colors.primary
                             : colors.disabled,
                         }}
@@ -187,7 +189,7 @@ const UserFieldSelection = ({
                           {...messages.useExistingRegistrationQuestions}
                         />
                       </span>
-                      {permissionsFieldsAllowed && (
+                      {permissionsCustomFieldsAllowed && (
                         <IconTooltip
                           ml="4px"
                           icon="info-solid"
@@ -217,7 +219,7 @@ const UserFieldSelection = ({
                   >
                     <Text
                       style={{
-                        color: permissionsFieldsAllowed
+                        color: permissionsCustomFieldsAllowed
                           ? colors.primary
                           : colors.disabled,
                       }}
@@ -227,7 +229,7 @@ const UserFieldSelection = ({
                     <Box display="flex">
                       <Toggle
                         checked={field.attributes.required}
-                        disabled={!permissionsFieldsAllowed}
+                        disabled={!permissionsCustomFieldsAllowed}
                         onChange={() => {
                           updatePermissionCustomField({
                             id: field.id,
@@ -238,7 +240,9 @@ const UserFieldSelection = ({
                           <Text
                             fontSize="s"
                             color={
-                              permissionsFieldsAllowed ? 'primary' : 'disabled'
+                              permissionsCustomFieldsAllowed
+                                ? 'primary'
+                                : 'disabled'
                             }
                           >
                             <FormattedMessage {...messages.required} />
@@ -248,7 +252,7 @@ const UserFieldSelection = ({
                       <Button
                         buttonStyle="text"
                         icon="delete"
-                        disabled={!permissionsFieldsAllowed}
+                        disabled={!permissionsCustomFieldsAllowed}
                         onClick={() => {
                           handleDeleteField(field.id);
                         }}
@@ -263,7 +267,7 @@ const UserFieldSelection = ({
                 <Button
                   icon="plus-circle"
                   bgColor={colors.primary}
-                  disabled={!permissionsFieldsAllowed}
+                  disabled={!permissionsCustomFieldsAllowed}
                   onClick={() => {
                     setShowSelectionModal(true);
                   }}

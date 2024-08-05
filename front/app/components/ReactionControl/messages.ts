@@ -47,4 +47,12 @@ export default defineMessages({
     id: 'app.containers.ReactionControl.cancelDislikeSuccess',
     defaultMessage: 'You cancelled your dislike for this input successfully.',
   },
+  vote: {
+    id: 'app.containers.ReactionControl.vote',
+    defaultMessage: 'Vote',
+  },
+  voted: {
+    id: 'app.containers.ReactionControl.voted',
+    defaultMessage: 'Voted',
+  },
 });

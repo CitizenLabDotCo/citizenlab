@@ -175,6 +175,7 @@ export interface IAppConfigurationSettings {
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
+  form_mapping?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -234,6 +235,7 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   verified_actions?: AppConfigurationFeature;
   proposals_participation_method?: AppConfigurationFeature;
+  fake_sso?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

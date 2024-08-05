@@ -338,6 +338,9 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
+                },
+                {
+                  name: 'fake_sso'
                 }
               ]
             },
@@ -358,6 +361,10 @@ module MultiTenancy
               allowed: true
             },
             input_form_mapping_question: {
+              enabled: true,
+              allowed: true
+            },
+            form_mapping: {
               enabled: true,
               allowed: true
             },
@@ -450,7 +457,7 @@ module MultiTenancy
               enabled: false,
               allowed: true
             },
-            verified_actions: {
+            fake_sso: {
               enabled: true,
               allowed: true
             }

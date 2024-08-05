@@ -7,7 +7,7 @@ describe Permissions::BasePermissionsService do
 
   describe 'user_denied_reason' do
     let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
-    let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+    let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
     context 'when not signed in' do
       let(:user) { nil }
