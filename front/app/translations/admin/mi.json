@@ -905,7 +905,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Participation platform of {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add tags and move input from one project to another",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "You can remove this content flag by selecting this item and clicking the remove button at the top. It will then reappear in the Seen or Not seen tabs",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Inappropriate content auto-detected.",
