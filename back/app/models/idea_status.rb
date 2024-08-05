@@ -38,14 +38,6 @@ class IdeaStatus < ApplicationRecord
     code == 'proposed'
   end
 
-  def self.default_status # TODO: Delete
-    order(created_at: :asc).find_by(code: :proposed)
-  end
-
-  def custom?
-    code == 'custom'
-  end
-
   private
 
   def strip_title
