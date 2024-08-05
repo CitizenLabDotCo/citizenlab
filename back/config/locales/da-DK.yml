@@ -267,6 +267,7 @@ da:
       submitted_at: 'Indsendt på'
       tags: 'Emner'
       title: 'Titel'
+      user_data: 'Brugerdata'
       votes_count: 'Afstemninger'
   form_builder:
     default_select_field:
