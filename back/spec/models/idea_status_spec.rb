@@ -16,19 +16,6 @@ RSpec.describe IdeaStatus do
   context 'when its code is required' do
     subject { create(:idea_status, code: code) }
 
-    # TODO: Move logic to controller
-    # describe 'if it is the only existing with this code' do
-    #   it 'cannot be destroyed' do
-    #     subject.destroy
-    #     expect(subject.destroyed?).to be false
-    #   end
-
-    #   it 'it\'s code cannot be updated' do
-    #     subject.update(code: :custom)
-    #     expect(subject.errors[:code]).not_to be_empty
-    #   end
-    # end
-
     describe 'if others exist with this code' do
       before do
         create_list(:idea_status, 3, code: code)

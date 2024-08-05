@@ -15,7 +15,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def create
-    @idea_status = IdeaStatus.new(idea_status_params)
+    # Code cannot be proposed
+    @idea_status = IdeaStatus.new(idea_status_params_for_create)
     authorize @idea_status
     if @idea_status.save
       SideFxIdeaStatusService.new.after_create(@idea_status, current_user)
@@ -26,7 +27,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def update
-    if @idea_status.update(idea_status_params)
+    if @idea_status.update(idea_status_params_for_update)
       SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
       render json: serialize(@idea_status), status: :ok
     else
@@ -74,11 +75,19 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
   end
 
-  def idea_status_params
-    params.require(:idea_status).permit(
-      :code, :color, :participation_method,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
-    )
+  def idea_status_params_for_create
+    params_attrs = [:participation_method, *shared_params]
+    params_attrs << :code if params.dig(:idea_status, :code) != IdeaStatus::PROPOSED_CODE
+    params.require(:idea_status).permit(params_attrs)
+  end
+
+  def idea_status_params_for_update
+    params_attrs = shared_params
+    params_attrs << :code if @idea_status.code != IdeaStatus::PROPOSED_CODE && params.dig(:idea_status, :code) != IdeaStatus::PROPOSED_CODE
+    params.require(:idea_status).permit(params_attrs)
+  end
+
+  def shared_params
+    [:color, title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES]
   end
 end

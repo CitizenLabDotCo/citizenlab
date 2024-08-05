@@ -133,6 +133,16 @@ resource 'IdeaStatuses' do
           expect(json_response.dig(:data, :attributes, :description_multiloc)).to eq({ en: 'Custom description' })
           expect(json_response.dig(:data, :attributes, :color)).to eq '#767676'
         end
+
+        describe do
+          let(:code) { 'proposed' }
+
+          example '[Error] Cannot create a proposed status', document: false do
+            expect { do_request }.not_to change { IdeaStatus.count }
+            assert_status 422
+            expect(json_parse(response_body).dig(:errors, :code)).to eq [{ error: 'blank' }, { error: 'inclusion', value: nil }]
+          end
+        end
       end
     end
   end
@@ -151,6 +161,7 @@ resource 'IdeaStatuses' do
     let(:title_multiloc) { { 'en' => 'Changed title' } }
     let(:description_multiloc) { { 'en' => 'Changed description' } }
     let(:color) { '#AABBCC' }
+    let(:code) { 'rejected' }
 
     context 'when resident' do
       before { resident_header_token }
@@ -166,13 +177,32 @@ resource 'IdeaStatuses' do
 
       example 'Update an idea status by ID' do
         expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
-
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ en: 'Changed title' })
         expect(json_response.dig(:data, :attributes, :description_multiloc)).to eq({ en: 'Changed description' })
         expect(json_response.dig(:data, :attributes, :color)).to eq '#AABBCC'
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'rejected'
+      end
+
+      describe do
+        let(:idea_status) { create(:idea_status_proposed) }
+
+        example '[Error] Cannot update the code of a proposed status', document: false do
+          do_request
+          expect(idea_status.reload.code).to eq 'proposed'
+        end
+      end
+
+      describe do
+        let(:idea_status) { create(:proposals_status) }
+        let(:code) { 'proposed' }
+
+        example '[Error] Cannot change the code to proposed', document: false do
+          do_request
+          expect(idea_status.reload.code).not_to eq 'proposed'
+        end
       end
     end
   end

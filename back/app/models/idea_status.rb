@@ -17,6 +17,7 @@
 #
 class IdeaStatus < ApplicationRecord
   CODES = %w[proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
+  PROPOSED_CODE = 'proposed'
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -35,7 +36,7 @@ class IdeaStatus < ApplicationRecord
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
   def proposed?
-    code == 'proposed'
+    code == PROPOSED_CODE
   end
 
   private
