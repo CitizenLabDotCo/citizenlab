@@ -28,7 +28,7 @@ export const configureMapView = (
   };
 
   // Change location of zoom widget if specified
-  if (initialData?.showZoomControls === false) {
+  if (initialData?.showZoomControls === false || isMobileOrSmaller) {
     const zoom = mapView.ui.find('zoom');
     mapView.ui.remove(zoom);
   } else if (initialData?.zoomWidgetLocation === 'right') {

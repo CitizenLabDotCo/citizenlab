@@ -132,7 +132,7 @@ module Frontend
 
     def unfollow_url(follower)
       locale = follower.user ? Locale.new(follower.user.locale) : nil
-      url = model_to_url(follower.followable, locale: (follower.user.presence && locale))
+      url = model_to_url(follower.followable, locale: follower.user.presence && locale)
       url || "#{home_url(locale: locale)}/profile/#{follower.user.slug}/following"
     end
 

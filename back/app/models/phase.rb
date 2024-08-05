@@ -43,6 +43,8 @@
 #  campaigns_settings            :jsonb
 #  native_survey_title_multiloc  :jsonb
 #  native_survey_button_multiloc :jsonb
+#  expire_days_limit             :integer
+#  reacting_threshold            :integer
 #
 # Indexes
 #
@@ -135,6 +137,11 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_input_term? } do
     validates :input_term, inclusion: { in: INPUT_TERMS }
     before_validation :set_input_term
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_automated_statuses? } do
+    validates :expire_days_limit, presence: true, numericality: { only_integer: true, greater_than: 0 }
+    validates :reacting_threshold, presence: true, numericality: { only_integer: true, greater_than: 1 }
   end
 
   validates :ideas_order, inclusion: { in: ->(phase) { phase.pmethod.allowed_ideas_orders } }, allow_nil: true

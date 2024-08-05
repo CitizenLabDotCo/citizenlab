@@ -124,12 +124,14 @@ describe ProjectCopyService do
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
       end
-      unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      unsupported_field1 = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      unsupported_field2 = create(:custom_field, :for_custom_form, input_type: 'shapefile_upload', resource: custom_form)
       response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,
         supported_fields[1].key => 1,
-        unsupported_field.key => create(:file_upload, idea: response).id,
+        unsupported_field1.key => create(:file_upload, idea: response).id,
+        unsupported_field2.key => create(:file_upload, idea: response).id,
         supported_fields[2].key => false
       }
       response.update! custom_field_values: custom_field_values
@@ -148,13 +150,15 @@ describe ProjectCopyService do
     it 'successfully copies map_configs associated with phase-level form custom_fields' do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
-      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
-      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+      page_field = create(:custom_field_page, :for_custom_form, resource: form1)
+      map_config1 = create(:map_config, zoom_level: 15, mappable: page_field)
+      point_field = create(:custom_field_point, :for_custom_form, resource: form1)
+      map_config2 = create(:map_config, zoom_level: 17, mappable: point_field)
 
       template = service.export open_ended_project
 
-      expect(template['models']['custom_field'].size).to eq 1
-      expect(template['models']['custom_maps/map_config'].size).to eq 1
+      expect(template['models']['custom_field'].size).to eq 2
+      expect(template['models']['custom_maps/map_config'].size).to eq 2
 
       tenant = create(:tenant)
       tenant.switch do
@@ -162,8 +166,9 @@ describe ProjectCopyService do
 
         service.import template
 
-        expect(CustomMaps::MapConfig.count).to eq 1
-        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+        expect(CustomMaps::MapConfig.count).to eq 2
+        expect(CustomMaps::MapConfig.all.pluck(:zoom_level))
+          .to match_array [map_config1.zoom_level, map_config2.zoom_level]
       end
     end
 

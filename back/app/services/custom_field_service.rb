@@ -35,7 +35,7 @@ class CustomFieldService
           elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
+            send(:"#{field.input_type}_to_json_schema_field", field, locale)
           end
       end
     }.tap do |output|
@@ -68,7 +68,7 @@ class CustomFieldService
         if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
-          send("#{field.input_type}_to_ui_schema_field", field, locale)
+          send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
@@ -349,6 +349,38 @@ class CustomFieldService
   end
 
   def point_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** line ***
+
+  def line_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def line_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** polygon ***
+
+  def polygon_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def polygon_to_json_schema_field(field, locale)
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
