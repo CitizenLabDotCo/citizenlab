@@ -15,7 +15,7 @@ describe Permissions::ProjectPermissionsService do
       it 'returns nil when a permitted group requires verification' do
         permission = project.phases.first.permissions.find_by(action: 'posting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
-        permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
+        permission.update!(permitted_by: 'users', groups: [create(:group), verified_members])
         expect(service.denied_reason_for_action('posting_idea')).to be_nil
       end
 
@@ -29,7 +29,7 @@ describe Permissions::ProjectPermissionsService do
             { value: 2002, ruleType: 'custom_field_number', predicate: 'is_smaller_than_or_equal', customFieldId: birthyear.id }
           ]
         )
-        permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
+        permission.update!(permitted_by: 'users', groups: [create(:group), verified_members])
         expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_in_group'
       end
     end
