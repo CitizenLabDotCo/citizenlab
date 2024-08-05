@@ -6,15 +6,14 @@ import { IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 
-import AdminCollaboratorToggle from 'components/admin/ActionsForm/AdminCollaboratorToggle';
-import GroupSelect from 'components/admin/ActionsForm/GroupSelect';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AdminCollaboratorToggle from './AdminCollaboratorToggle';
 import CardButtons from './CardButtons';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
 import { isSupportedPermittedBy } from './FlowVisualization/utils';
+import GroupSelect from './GroupSelect';
 import messages from './messages';
 
 interface Props {

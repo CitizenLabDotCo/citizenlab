@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import messages from 'components/admin/ActionsForm/messages';
+import messages from 'containers/Admin/projects/project/permissions/components/PhasePermissions/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

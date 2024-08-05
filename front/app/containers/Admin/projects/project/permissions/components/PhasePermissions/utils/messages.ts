@@ -104,10 +104,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
     defaultMessage: 'Select user groups',
   },
-  selectGroups: {
-    id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
-    defaultMessage: 'Select group(s)',
-  },
   permissionEveryoneEmailWarning: {
     id: 'app.containers.admin.project.permissions.permissionEveryoneEmailWarning',
     defaultMessage:
@@ -121,19 +117,5 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription',
     defaultMessage:
       'Anyone can participate after submitting and confirming their email address.',
-  },
-  permissionsAdminsAndCollaborators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
-    defaultMessage: 'Admins and collaborators only',
-  },
-  permissionsAdminsAndCollaboratorsTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
-    defaultMessage:
-      'Only platform admins, folder managers and project managers can take the action',
-  },
-  granularPermissionsOffText: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffText',
-    defaultMessage:
-      'Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.',
   },
 });

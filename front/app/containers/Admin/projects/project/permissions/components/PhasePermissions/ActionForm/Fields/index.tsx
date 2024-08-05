@@ -6,7 +6,7 @@ import { IPhasePermissionAction } from 'api/permissions/types';
 import useAddPermissionsField from 'api/permissions_fields/useAddPermissionsField';
 import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
 
-import { FieldSelectionModal } from 'components/admin/ActionsForm/UserFieldSelection/FieldSelectionModal';
+import { FieldSelectionModal } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/ActionForm/FieldSelectionModal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

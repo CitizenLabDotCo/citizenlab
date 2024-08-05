@@ -57,4 +57,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetExtraQuestionsAndGroups',
     defaultMessage: 'Reset extra questions and groups',
   },
+  permissionsAdminsAndCollaborators: {
+    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
+    defaultMessage: 'Admins and collaborators only',
+  },
+  permissionsAdminsAndCollaboratorsTooltip: {
+    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
+    defaultMessage:
+      'Only platform admins, folder managers and project managers can take the action',
+  },
+  granularPermissionsOffText: {
+    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffText',
+    defaultMessage:
+      'Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.',
+  },
+  selectGroups: {
+    id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
+    defaultMessage: 'Select group(s)',
+  },
 });

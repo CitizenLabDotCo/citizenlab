@@ -7,12 +7,11 @@ import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermis
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
-
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import ActionForms from './ActionForms';
 import PhaseAccordion from './PhaseAccordion';
+import { HandlePermissionChangeProps } from './typings';
 
 interface Props {
   project: IProjectData;

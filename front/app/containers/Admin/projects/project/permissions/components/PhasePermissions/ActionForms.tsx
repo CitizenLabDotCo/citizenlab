@@ -5,13 +5,12 @@ import { Title, Box } from '@citizenlab/cl2-component-library';
 import { IPermissionData, IPhasePermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
-import messages from 'components/admin/ActionsForm/messages';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
-import { getPermissionActionSectionSubtitle } from 'components/admin/ActionsForm/utils';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import ActionForm from './ActionForm';
+import messages from './messages';
+import { HandlePermissionChangeProps } from './typings';
+import { getPermissionActionSectionSubtitle } from './utils';
 
 type PostTypeProps =
   | {

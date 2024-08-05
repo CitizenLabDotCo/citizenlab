@@ -31,8 +31,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 
-import messages from './messages';
-import { getLabelForInputType } from '../utils';
+import messages from '../../../../../../../../../components/admin/ActionsForm/UserFieldSelection/messages';
+import { getLabelForInputType } from '../../../../../../../../../components/admin/ActionsForm/utils';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
