@@ -13,6 +13,7 @@ import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUs
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import { getLabelForInputType } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/utils';
 import {
   FieldType,
   fieldTypes,
@@ -31,8 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 
-import messages from '../../../../../../../../../components/admin/ActionsForm/UserFieldSelection/messages';
-import { getLabelForInputType } from '../../../../../../../../../components/admin/ActionsForm/utils';
+import messages from './messages';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;

@@ -1,16 +1,14 @@
 import { MessageDescriptor } from 'react-intl';
 
-import {
-  IGlobalPermissionAction,
-  IPhasePermissionAction,
-} from 'api/permissions/types';
+import { Action, IGlobalPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 
 import messages from './messages';
 
 type GetPermissionActionMessageProps = {
-  permissionAction: IPhasePermissionAction | IGlobalPermissionAction;
+  permissionAction: Action;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
 };
 
