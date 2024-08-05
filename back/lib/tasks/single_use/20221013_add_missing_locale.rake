@@ -21,7 +21,7 @@ class MissingLocaleFixer
     template = MultiTenancy::Templates::Utils.parse_yml(yaml_template)
     template['models'].each do |model_name, fields|
       fields.each do |attributes|
-        attributes.each do |field_name, _field_value|
+        attributes.each_key do |field_name|
           next unless /_multiloc$/.match?(field_name)
 
           model_class = model_name.classify.constantize

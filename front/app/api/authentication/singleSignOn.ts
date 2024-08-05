@@ -18,6 +18,7 @@ export interface SSOProviderMap {
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
   criipto: 'criipto';
+  fake_sso: 'fake_sso';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

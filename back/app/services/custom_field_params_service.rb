@@ -7,10 +7,8 @@ class CustomFieldParamsService
       case field.input_type
       when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
-      when 'file_upload'
+      when 'file_upload', 'shapefile_upload'
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
-      when 'point'
-        fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
       when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
         fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
       else
@@ -58,7 +56,7 @@ class CustomFieldParamsService
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)
-    extra_field_values.each do |key, _value|
+    extra_field_values.each_key do |key|
       if key.end_with? '_other'
         parent_field_key = key.delete_suffix '_other'
         parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]

@@ -77,6 +77,7 @@ const AuthProviders = memo<Props>(
     const criiptoLoginEnabled = useFeatureFlag({
       name: 'criipto_login',
     });
+    const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -109,6 +110,7 @@ const AuthProviders = memo<Props>(
 
     const showMainAuthMethods =
       isPasswordSigninOrSignupAllowed ||
+      fakeSsoEnabled ||
       facebookLoginEnabled ||
       azureAdLoginEnabled ||
       azureAdB2cLoginEnabled ||
@@ -134,6 +136,17 @@ const AuthProviders = memo<Props>(
         )}
 
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
+
+        {fakeSsoEnabled && (
+          <StyledAuthProviderButton
+            icon="bullseye"
+            flow={flow}
+            authProvider="fake_sso"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithFakeSSO} />
+          </StyledAuthProviderButton>
+        )}
 
         {claveUnicaLoginEnabled && (
           <StyledClaveUnicaExpandedAuthProviderButton

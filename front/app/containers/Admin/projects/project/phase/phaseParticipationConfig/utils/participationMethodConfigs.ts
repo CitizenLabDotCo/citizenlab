@@ -32,6 +32,8 @@ export interface IPhaseParticipationConfig {
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   document_annotation_embed_url?: string | null;
+  expire_days_limit?: number | null;
+  reacting_threshold?: number | null;
 }
 
 export const defaultParticipationConfig: IPhaseParticipationConfig = {
@@ -58,6 +60,8 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   document_annotation_embed_url: null,
   survey_service: null,
   survey_embed_url: null,
+  expire_days_limit: undefined,
+  reacting_threshold: undefined,
 };
 
 export const ideationDefaultConfig: IPhaseParticipationConfig = {
@@ -121,4 +125,6 @@ export const proposalsDefaultConfig: IPhaseParticipationConfig = {
   presentation_mode: 'card',
   // input_term: 'proposal', // TODO: add later
   ideas_order: 'trending',
+  expire_days_limit: 90,
+  reacting_threshold: 300,
 };

@@ -267,6 +267,7 @@ hr:
       submitted_at: 'Predano u'
       tags: 'Oznake'
       title: 'Titula'
+      user_data: 'Korisnički podaci'
       votes_count: 'Glasovi'
   form_builder:
     default_select_field:
