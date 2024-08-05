@@ -35,5 +35,9 @@ module IdBosaFas
     def locked_custom_fields
       []
     end
+
+    def allowed_on_action?
+      false
+    end
   end
 end

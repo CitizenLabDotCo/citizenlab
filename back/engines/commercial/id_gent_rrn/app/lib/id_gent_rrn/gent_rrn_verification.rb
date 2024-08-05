@@ -48,6 +48,10 @@ module IdGentRrn
       [config[:custom_field_key]]
     end
 
+    def allowed_on_action?
+      false
+    end
+
     def verification_parameters
       [:rrn]
     end

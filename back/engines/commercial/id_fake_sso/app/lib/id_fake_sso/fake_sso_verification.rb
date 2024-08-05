@@ -27,5 +27,13 @@ module IdFakeSso
     def locked_custom_fields
       %i[gender birthyear]
     end
+
+    def allowed_on_action?
+      true
+    end
+
+    def ui_method_name
+      "Fake SSO"
+    end
   end
 end

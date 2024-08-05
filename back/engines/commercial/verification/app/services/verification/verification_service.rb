@@ -37,6 +37,13 @@ module Verification
       active_methods(configuration).include? method_by_name(method_name)
     end
 
+    # Not all verification methods are allowed at a permission/action level
+    def first_method_allowed_on_action
+      active_methods(AppConfiguration.instance).find do |method|
+        method.respond_to?(:allowed_on_action?) && method.allowed_on_action?
+      end
+    end
+
     class NoMatchError < StandardError; end
 
     class NotEntitledError < StandardError
@@ -97,26 +104,35 @@ module Verification
       custom_fields.uniq
     end
 
-    # TODO: JS - Finish this - with translations
-    def first_method_multilocs
-      method = active_methods(AppConfiguration.instance).first
+    # Return meta data for use in permission actions
+    def action_metadata
+      method = first_method_allowed_on_action
+      return { allowed: false } unless method
+
+      name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
 
       custom_fields = if method.respond_to?(:locked_custom_fields)
-        method&.locked_custom_fields&.map { |field_code| CustomField.find_by(code: field_code.to_s)&.title_multiloc }&.compact
+        method.locked_custom_fields.filter_map { |field_code| CustomField.find_by(code: field_code.to_s)&.title_multiloc }
       else
         []
       end
 
+      multiloc_service = MultilocService.new
+      locales = AppConfiguration.instance.settings('core', 'locales')
       attributes = if method.respond_to?(:locked_attributes)
-        method&.locked_attributes&.map { |attribute_code| attribute_code }&.compact
+        method.locked_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code.to_s}", locales: locales)
+        end
       else
         []
       end
 
       {
-        name: method.name,
+        allowed: true,
+        name: name,
         attributes: attributes,
-        custom_fields: custom_fields
+        locked_custom_fields: custom_fields,
+        other_custom_fields: custom_fields
       }
     end
 

@@ -124,8 +124,22 @@ module IdCriipto
       ].compact
     end
 
+    def other_custom_fields
+      [
+        config[:municipality_code_custom_field_key].presence
+      ].compact
+    end
+
     def updateable_user_attrs
       super + %i[custom_field_values birthyear]
+    end
+
+    def allowed_on_action?
+      false
+    end
+
+    def ui_method_name
+      config[:ui_method_name]
     end
   end
 end

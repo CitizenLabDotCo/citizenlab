@@ -44,6 +44,10 @@ module IdCow
       cow_valid_citizen!(run, id_serial)
     end
 
+    def allowed_on_action?
+      false
+    end
+
     private
 
     def cow_valid_citizen!(run, id_serial)

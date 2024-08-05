@@ -12,7 +12,9 @@ describe Verification::VerificationService do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
+      verification_methods: [
+        { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+      ]
     }
     configuration.save!
   end
@@ -189,10 +191,33 @@ describe Verification::VerificationService do
     end
   end
 
-  describe 'first_method_multilocs' do
-    it 'returns the first method' do
-      multilocs = service.first_method_multilocs
-      expect(multilocs[:name]).to eq 'cow'
+  describe 'action_metadata' do
+    it 'returns an empty hash if no methods are allowed on action' do
+      expect(service.action_metadata).to eq({ allowed: false })
     end
+
+    it 'returns information about the first enabled method enabled for actions' do
+      create(:custom_field_gender)
+      create(:custom_field_birthyear)
+
+      configuration = AppConfiguration.instance
+      settings = configuration.settings
+      settings['verification']['verification_methods'] << { name: 'fake_sso' }
+      configuration.save!
+
+      metadata = service.action_metadata
+      expect(metadata[:name]).to eq 'Fake SSO'
+      expect(metadata[:attributes]).to match_array [
+        {"en"=>"First name(s)", "fr-FR"=>"Prénom(s)", "nl-NL"=>"Voornamen"},
+        {"en"=>"Last name", "fr-FR"=>"Nom de famille", "nl-NL"=>"Achternaam"}
+      ]
+      expect(metadata[:locked_custom_fields]).to match_array [
+        {"en"=>"gender"}, {"en"=>"birthyear"}
+      ]
+      expect(metadata[:other_custom_fields]).to match_array [
+        {"en"=>"gender"}, {"en"=>"birthyear"}
+      ]
+    end
+
   end
 end
