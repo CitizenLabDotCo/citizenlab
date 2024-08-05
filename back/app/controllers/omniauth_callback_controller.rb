@@ -204,8 +204,6 @@ class OmniauthCallbackController < ApplicationController
     selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
 
     return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
-
-    return locales.first
   end
 
   def get_verification_method(_provider)
