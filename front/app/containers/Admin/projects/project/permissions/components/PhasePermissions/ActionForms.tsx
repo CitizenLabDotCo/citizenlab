@@ -24,12 +24,7 @@ type Props = {
   }: HandlePermissionChangeProps) => void;
 };
 
-const ActionsFormNew = ({
-  permissions,
-  postType,
-  onChange,
-  phaseId,
-}: Props) => {
+const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
   const handlePermissionChange =
     (permission: IPhasePermissionData) =>
     (permittedBy: PermittedBy, groupIds: string[]) => {
@@ -80,4 +75,4 @@ const ActionsFormNew = ({
   );
 };
 
-export default ActionsFormNew;
+export default ActionForms;

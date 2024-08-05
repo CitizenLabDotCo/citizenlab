@@ -52,7 +52,7 @@ export interface IGlobalPermission {
 
 export interface IPermissionUpdate {
   id: string;
-  action: string;
+  action: IGlobalPermissionAction;
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;

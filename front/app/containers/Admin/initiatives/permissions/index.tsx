@@ -5,15 +5,17 @@ import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { IGlobalPermissionData } from 'api/permissions/types';
 import usePermissions from 'api/permissions/usePermissions';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
+import { isGlobalPermissionAction } from 'api/permissions/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ActionsForm from 'components/admin/ActionsForm';
-import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
+import { HandlePermissionChangeProps } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/typings';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import ActionForms from './ActionForms';
 import messages from './messages';
 
 const filterPermissions = (permissions: IGlobalPermissionData[]) => {
@@ -48,6 +50,11 @@ const PermissionsInitiatives = () => {
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => {
+    if (!isGlobalPermissionAction(permission.attributes.action)) {
+      // Should not be possible
+      return;
+    }
+
     updateGlobalPermission({
       id: permission.id,
       action: permission.attributes.action,
@@ -67,10 +74,9 @@ const PermissionsInitiatives = () => {
           <SectionTitle>
             <FormattedMessage {...messages.granularPermissionsTitle} />
           </SectionTitle>
-          <ActionsForm
+          <ActionForms
             permissions={permissions}
             onChange={handlePermissionChange}
-            postType="initiative"
           />
         </Section>
       </Box>
