@@ -683,7 +683,7 @@
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dieser wurde bereits in das Formular eingefügt. Der Standardinhalt darf nur einmal verwendet werden.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Das Hinzufügen von benutzerdefinierten Inhalten ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.components.formBuilder.done": "Fertig",
-  "app.components.formBuilder.drawArea": "Bereich zeichnen",
+  "app.components.formBuilder.drawArea": "Fläche zeichnen",
   "app.components.formBuilder.drawRoute": "Route zeichnen",
   "app.components.formBuilder.dropPin": "Pin anlegen",
   "app.components.formBuilder.editButtonLabel": "Bearbeiten",
