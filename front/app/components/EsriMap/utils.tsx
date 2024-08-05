@@ -46,10 +46,24 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
       },
     });
   }
-  return new WebTileLayer({
+  const webTileLayer = new WebTileLayer({
     urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
     copyright: getTileAttribution(tileProvider || ''),
   });
+
+  if (tileProvider?.includes('maptiler')) {
+    webTileLayer.set('tileInfo.size', 512);
+    webTileLayer.set(
+      'tileInfo.lods',
+      webTileLayer.tileInfo.lods.map((lod) => {
+        lod.resolution = lod.resolution / 2;
+        lod.scale = lod.scale / 2;
+        return lod;
+      })
+    );
+  }
+
+  return webTileLayer;
 };
 
 // getTileAttribution
