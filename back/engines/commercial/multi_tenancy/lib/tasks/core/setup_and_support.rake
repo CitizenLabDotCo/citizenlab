@@ -128,7 +128,7 @@ namespace :setup_and_support do
       locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
       cf = CustomField.find args[:id]
       options.each do |option|
-        cfo = cf.options.create!(title_multiloc: { locale => option })
+        cfo = cf.options.find_or_create_by!(title_multiloc: { locale => option })
         cfo.move_to_bottom
       end
     end

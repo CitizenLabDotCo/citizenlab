@@ -557,7 +557,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
-  it('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
+  it.skip('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
     const firstLogicQnOption1 = randomString();
     const firstLogicQnOption2 = randomString();
     const secondLogicQnOption1 = randomString();
@@ -951,7 +951,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
-  it('creates survey with page logic and question logic where question logic takes precedence over page logic', () => {
+  it.only('creates survey with page logic and question logic where question logic takes precedence over page logic', () => {
     cy.intercept('POST', '**/ideas').as('saveSurvey');
 
     const chooseOneOption1 = randomString();

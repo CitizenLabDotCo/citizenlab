@@ -13,6 +13,8 @@ import IdeasList from './IdeasList';
 
 interface Props {
   view: 'card' | 'map';
+  // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
+  hasMoreThanOneView?: boolean;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
@@ -40,6 +42,7 @@ const IdeasView = ({
   loadingMore,
   ideaMarkers,
   onLoadMore,
+  hasMoreThanOneView = true,
 }: Props) => {
   const { data: mapConfig, isLoading } = useProjectMapConfig(
     projectId || undefined
@@ -53,7 +56,7 @@ const IdeasView = ({
     <>
       {view === 'card' && list && (
         <IdeasList
-          ariaLabelledBy={'view-tab-1'}
+          ariaLabelledBy={hasMoreThanOneView ? 'view-tab-1' : undefined}
           id={'view-panel-1'}
           querying={querying}
           onLoadMore={onLoadMore}

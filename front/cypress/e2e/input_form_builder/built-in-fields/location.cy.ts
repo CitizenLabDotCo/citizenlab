@@ -48,7 +48,7 @@ describe('Input form builder', () => {
 
     cy.get('.e2e-idea-form-location-input-field input').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // The location tool box item should be disabled as it is already on the canvas

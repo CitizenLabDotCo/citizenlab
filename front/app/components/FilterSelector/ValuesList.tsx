@@ -143,6 +143,7 @@ interface Props extends DefaultProps {
   opened: boolean;
   baseID: string;
   name: string;
+  selectorId: string;
 }
 
 const ValuesList = ({
@@ -163,6 +164,7 @@ const ValuesList = ({
   name,
   onChange,
   onClickOutside,
+  selectorId,
 }: Props) => {
   const tabsRef = useRef({});
   const invisibleRef = useRef<HTMLButtonElement | null>(null);
@@ -226,7 +228,7 @@ const ValuesList = ({
         // The id is used for aria-labelledby on the group which defines
         // the accessible name for the group. The role group identifies the
         // group container for the list items.
-        <Box role="group" aria-labelledby={`id-${name}`}>
+        <Box role="group" aria-labelledby={selectorId}>
           {/* When a user opens the dropdown, we move focus to this  invisible button.
             This is needed to make sure that the keyboard navigation using the up
             and down arrow keys works without interfering with the behavior if the

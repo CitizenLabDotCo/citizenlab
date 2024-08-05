@@ -159,7 +159,3 @@ export const INPUT_TERMS = [
 ];
 
 export const ideaDefaultSortMethodFallback = 'trending';
-
-export const getDefaultSortMethodFallback = (isIdeation: boolean) => {
-  return isIdeation ? 'trending' : 'random';
-};

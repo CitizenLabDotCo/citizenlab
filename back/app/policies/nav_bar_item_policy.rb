@@ -44,7 +44,7 @@ class NavBarItemPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    [:code, :static_page_id, { title_multiloc: CL2_SUPPORTED_LOCALES }]
+    [:code, :static_page_id, :project_id, { title_multiloc: CL2_SUPPORTED_LOCALES }]
   end
 
   def permitted_attributes_for_update

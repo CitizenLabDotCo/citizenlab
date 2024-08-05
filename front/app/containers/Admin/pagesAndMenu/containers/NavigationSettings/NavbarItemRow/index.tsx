@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -135,17 +135,22 @@ const NavbarItemRow = ({
         )}
 
         {showAddButton && (
-          <Button
-            // no icon on add and remove buttons, so specify height to match the others
-            height="44px"
-            buttonStyle="secondary-outlined"
-            onClick={handleOnClickAddButton}
-            disabled={addButtonDisabled}
-            ml="10px"
-            className="intercom-admin-pages-menu-add-to-navbar-button"
+          <Tooltip
+            content={<FormattedMessage {...messages.navBarMaxItems} />}
+            disabled={!addButtonDisabled}
           >
-            <FormattedMessage {...messages.addButton} />
-          </Button>
+            <Button
+              // no icon on add and remove buttons, so specify height to match the others
+              height="44px"
+              buttonStyle="secondary-outlined"
+              onClick={handleOnClickAddButton}
+              disabled={addButtonDisabled}
+              ml="10px"
+              className="intercom-admin-pages-menu-add-to-navbar-button"
+            >
+              <FormattedMessage {...messages.addButton} />
+            </Button>
+          </Tooltip>
         )}
 
         {showRemoveButton && (

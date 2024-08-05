@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase',
     defaultMessage: 'Ideation phase',
   },
+  proposalsPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.proposalsPhase',
+    defaultMessage: 'Proposals phase',
+  },
   informationPhase: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase',
     defaultMessage: 'Information phase',
@@ -118,6 +122,14 @@ export default defineMessages({
   annotatingDocument: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument',
     defaultMessage: '<b>Annotating document:</b>  {participants}',
+  },
+  attendingEvent: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent',
+    defaultMessage: '<b>Attending event:</b>  {participants}',
+  },
+  volunteering: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',
+    defaultMessage: '<b>Volunteering:</b>  {participants}',
   },
   and: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',

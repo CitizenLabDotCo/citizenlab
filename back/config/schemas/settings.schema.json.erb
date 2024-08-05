@@ -1088,6 +1088,18 @@
         }
       },
 
+      "form_mapping": {
+        "type": "object",
+        "title": "Mapping features used in in-platform surveys",
+        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "input_form_custom_fields": {
         "type": "object",
         "title": "Input form builder custom fields",
@@ -1260,6 +1272,18 @@
         "type": "object",
         "title": "Customisable homepage banner",
         "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "proposals_participation_method": {
+        "type": "object",
+        "title": "Proposals participation method",
+        "description": "Enables the ability to choose proposals as a participation method for a project.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

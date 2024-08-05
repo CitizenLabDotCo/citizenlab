@@ -159,6 +159,12 @@ const AdminPublicationsNavbarItem = ({
 
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const secondUrlSegment = urlSegments[1];
+  const thirdUrlSegment = urlSegments[2];
+
+  const isActive =
+    (secondUrlSegment === 'projects' || secondUrlSegment === 'folders') &&
+    !thirdUrlSegment;
+
   const totalProjectsListLength = !isNilOrError(adminPublications)
     ? adminPublications.length
     : 0;
@@ -182,9 +188,7 @@ const AdminPublicationsNavbarItem = ({
           className={[
             'e2e-projects-dropdown-link',
             projectsDropdownOpened ? 'opened' : 'closed',
-            secondUrlSegment === 'projects' || secondUrlSegment === 'folders'
-              ? 'active'
-              : '',
+            isActive ? 'active' : '',
           ].join(' ')}
           aria-expanded={projectsDropdownOpened}
           onMouseDown={removeFocusAfterMouseClick}

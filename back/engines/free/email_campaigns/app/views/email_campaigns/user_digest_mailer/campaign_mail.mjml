@@ -132,7 +132,7 @@
           <% @diff_days = ((Time.now - Time.parse(new_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= new_initiative.images.first&.versions&.small %>">
               </span>
@@ -192,7 +192,7 @@
           <% @diff_days = ((Time.now - Time.parse(succesful_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= succesful_initiative.images.first&.versions&.small %>">
               </span>

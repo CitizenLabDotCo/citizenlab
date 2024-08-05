@@ -137,7 +137,8 @@ export type ParticipationMethod =
   | 'voting'
   | 'poll'
   | 'volunteering'
-  | 'document_annotation';
+  | 'document_annotation'
+  | 'proposals';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 

@@ -6,7 +6,7 @@ module BulkImportIdeas::Exporters
       @phase = phase
       @project = phase.project
       @locale = locale
-      @participation_method = Factory.instance.participation_method_for(phase)
+      @participation_method = phase.pmethod
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
     end
 

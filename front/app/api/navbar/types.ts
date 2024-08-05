@@ -34,6 +34,9 @@ export interface INavbarItem {
     static_page: {
       data: IRelationship | null;
     };
+    project: {
+      data: IRelationship | null;
+    };
   };
 }
 
@@ -49,6 +52,7 @@ export interface INavbarItemAdd {
   code: TNavbarItemCode;
   static_page_id?: string;
   title_multiloc?: Multiloc;
+  project_id?: string;
 }
 
 export interface INavbarItemUpdate {

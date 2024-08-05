@@ -97,7 +97,7 @@ def migrate_homepagebanner
         'banner_signed_out_header_multiloc' => homepage.banner_signed_out_header_multiloc,
         'banner_cta_signed_in_text_multiloc' => homepage.banner_cta_signed_in_text_multiloc,
         'banner_cta_signed_out_text_multiloc' => homepage.banner_cta_signed_out_text_multiloc,
-        'banner_signed_in_header_overlay_color' => (config.style['signedInHeaderOverlayColor'] || config.settings.dig('core', 'color_main')),
+        'banner_signed_in_header_overlay_color' => config.style['signedInHeaderOverlayColor'] || config.settings.dig('core', 'color_main'),
         'banner_signed_out_header_overlay_color' => homepage.banner_signed_out_header_overlay_color,
         'banner_signed_in_header_overlay_opacity' => (homepage.banner_layout == 'fixed_ratio_layout' ? 100 : config.style['signedInHeaderOverlayOpacity']),
         'banner_signed_out_header_overlay_opacity' => homepage.banner_signed_out_header_overlay_opacity,
@@ -313,7 +313,7 @@ def extract_iframe_element(iframe_node)
     'nodes' => [],
     'props' => {
       'url' => iframe_node.attr(:src),
-      'height' => (iframe_node.attr(:height)&.to_f || 500),
+      'height' => iframe_node.attr(:height)&.to_f || 500,
       'hasError' => false,
       'errorType' => 'invalidUrl',
       'selectedLocale' => 'en' # TODO: Something?

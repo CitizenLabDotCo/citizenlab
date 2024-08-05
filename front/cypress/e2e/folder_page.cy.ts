@@ -52,12 +52,6 @@ describe('Project selection page', () => {
     cy.get('#e2e-folder-page');
   });
 
-  it('shows where you are', () => {
-    cy.get('.e2e-projects-dropdown-link')
-      .should('have.class', 'active')
-      .should('be.visible');
-  });
-
   it('shows the folder title', () => {
     cy.get('#e2e-folder-title').contains(folderTitle);
   });

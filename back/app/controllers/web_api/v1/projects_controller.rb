@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      permission_service: Permissions::ProjectPermissionsService.new
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
     }
 
     render json: linked_json(

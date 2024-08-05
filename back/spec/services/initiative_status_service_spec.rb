@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 describe InitiativeStatusService do
   let(:service) { described_class.new }
 

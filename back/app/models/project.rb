@@ -70,6 +70,8 @@ class Project < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
+  has_one :nav_bar_item, dependent: :destroy
+
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
@@ -187,11 +189,12 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
-  def uses_input_form?
-    phases.each do |phase|
-      return true if phase.can_contain_ideas?
-    end
-    false
+  def pmethod
+    # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
+    # as it was never set and defaulted to this when the participation_method was available on the project
+    # The following mimics the same behaviour now that participation method is not available on the project
+    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
+    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
   end
 
   private
