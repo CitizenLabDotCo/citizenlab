@@ -87,7 +87,7 @@ describe Permissions::UserRequirementsService do
 
     context 'when permitted_by group is NOT set to a verification group' do
       let(:groups) { [create(:group), create(:smart_group)] }
-      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+      let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
       it 'verification is not required' do
         requirements = service.requirements(group_permission, nil)
