@@ -32,7 +32,7 @@ export const getCardSize = ({
   index,
   isSmallerThanTablet,
   layout,
-}: Params) => {
+}: Params): TCardSize => {
   // If we have a three column layout,
   // or if we are on a screen smaller than a tablet,
   // we always return 'small' size.
