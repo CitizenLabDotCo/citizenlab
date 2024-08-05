@@ -5,8 +5,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'components/admin/ActionsForm/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,9 +19,6 @@ interface Props {
 const Timeline = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
-  const isCustomPermittedByEnabled = useFeatureFlag({
-    name: 'verified_actions',
-  });
 
   if (!phases || !project) {
     return null;

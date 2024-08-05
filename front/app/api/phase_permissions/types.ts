@@ -34,10 +34,9 @@ export interface IPCPermission {
 export type PermittedBy =
   | 'everyone'
   | 'users'
-  | 'groups' // soon to be deprecated, not used if `verified_actions` feature flag active
   | 'admins_moderators'
   | 'everyone_confirmed_email'
-  | 'verified'; // new permitted_by type, only used if `verified_actions` feature flag active
+  | 'verified';
 
 export interface IPermissionUpdate {
   group_ids: string[];

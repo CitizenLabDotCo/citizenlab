@@ -22,9 +22,6 @@ const Phase = () => {
   const isGranularPermissionsEnabled = useFeatureFlag({
     name: 'granular_permissions',
   });
-  const isCustomPermittedByEnabled = useFeatureFlag({
-    name: 'verified_actions',
-  });
 
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
