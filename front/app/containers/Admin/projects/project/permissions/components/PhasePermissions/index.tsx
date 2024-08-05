@@ -7,11 +7,11 @@ import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermis
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import ActionsForm from 'components/admin/ActionsForm';
 import { HandlePermissionChangeProps } from 'components/admin/ActionsForm/typings';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import ActionForms from './ActionForms';
 import PhaseAccordion from './PhaseAccordion';
 
 interface Props {
@@ -24,37 +24,32 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
   const { mutate: updatePhasePermission } = useUpdatePhasePermission();
 
   const handlePermissionChange = ({
-    phaseId,
     permission,
     permittedBy,
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => {
-    if (phaseId) {
-      updatePhasePermission({
-        permissionId: permission.id,
-        phaseId,
-        action: permission.attributes.action,
-        permission: {
-          permitted_by: permittedBy,
-          group_ids: groupIds,
-          global_custom_fields: globalCustomFields,
-        },
-      });
-    }
+    updatePhasePermission({
+      permissionId: permission.id,
+      phaseId: phase.id,
+      action: permission.attributes.action,
+      permission: {
+        permitted_by: permittedBy,
+        group_ids: groupIds,
+        global_custom_fields: globalCustomFields,
+      },
+    });
   };
 
-  const isSinglePhase = !phaseNumber;
-
-  const phaseActionsForm = (
+  const phaseMarkup = (
     <Box
+      minHeight="100px"
       display="flex"
       flex={'1'}
       flexDirection="column"
       background={colors.white}
-      minHeight="100px"
     >
-      <ActionsFormWrapper
+      <PhasePermissionsInner
         phase={phase}
         onChange={handlePermissionChange}
         projectId={project.id}
@@ -62,21 +57,23 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
     </Box>
   );
 
-  if (isSinglePhase) {
-    return phaseActionsForm;
-  } else {
+  const showAccordion = phaseNumber !== undefined;
+
+  if (showAccordion) {
     return (
       <PhaseAccordion
-        phaseNumber={phaseNumber}
         phaseTitle={phase.attributes.title_multiloc}
+        phaseNumber={phaseNumber}
       >
-        {phaseActionsForm}
+        {phaseMarkup}
       </PhaseAccordion>
     );
   }
+
+  return phaseMarkup;
 };
 
-type ActionsFormWrapperProps = {
+type PhasePermissionsInnerProps = {
   phase: IPhaseData;
   onChange: ({
     permission,
@@ -87,7 +84,11 @@ type ActionsFormWrapperProps = {
   projectId: string;
 };
 
-const ActionsFormWrapper = ({ phase, onChange }: ActionsFormWrapperProps) => {
+const PhasePermissionsInner = ({
+  phase,
+  onChange,
+  projectId,
+}: PhasePermissionsInnerProps) => {
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
 
   if (!permissions) {
@@ -98,10 +99,11 @@ const ActionsFormWrapper = ({ phase, onChange }: ActionsFormWrapperProps) => {
 
   return (
     <Box mb="40px">
-      <ActionsForm
+      <ActionForms
         permissions={permissions.data}
         onChange={onChange}
         postType={config.postType}
+        projectId={projectId}
         phaseId={phase.id}
       />
     </Box>

@@ -19,7 +19,7 @@ export interface IGlobalPermissionData {
   type: 'permission';
   attributes: {
     action: IGlobalPermissionAction;
-    permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
+    permitted_by: 'everyone' | 'users' | 'admins_moderators';
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;

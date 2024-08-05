@@ -8,13 +8,12 @@ import { Localize } from 'hooks/useLocalize';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import newMessages from '../permissions/components/PhasePermissionsNew/ActionForm/messages';
+import newMessages from '../permissions/components/PhasePermissions/ActionForm/messages';
 
 import messages from './messages';
 
 export const getPartipationRequirementMessage = (
   permittedBy: PermittedBy,
-  noOfGroups: number,
   formatMessage: FormatMessage
 ) => {
   let participantMessage: MessageDescriptor;
@@ -28,10 +27,6 @@ export const getPartipationRequirementMessage = (
     case 'everyone_confirmed_email':
       participantMessage = messages.usersWithConfirmedEmail;
       break;
-    case 'groups':
-      return formatMessage(messages.groups, {
-        noOfGroups,
-      });
     case 'everyone':
       participantMessage = messages.everyone;
       break;
@@ -50,15 +45,10 @@ export const getParticipantMessage = (
 
   const {
     attributes: { permitted_by },
-    relationships,
   } = permissions[0];
 
   if (permissions.length === 1) {
-    return getPartipationRequirementMessage(
-      permitted_by,
-      relationships.groups.data.length,
-      formatMessage
-    );
+    return getPartipationRequirementMessage(permitted_by, formatMessage);
   }
 
   return formatMessage(messages.mixedRights);

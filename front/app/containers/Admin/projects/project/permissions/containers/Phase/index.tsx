@@ -6,12 +6,9 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import PhasePermissions from '../../components/PhasePermissions';
-import PhasePermissionsNew from '../../components/PhasePermissionsNew';
 import messages from '../../messages';
 
 const Phase = () => {
@@ -19,9 +16,6 @@ const Phase = () => {
     projectId: string;
     phaseId?: string;
   };
-  const isGranularPermissionsEnabled = useFeatureFlag({
-    name: 'granular_permissions',
-  });
 
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
@@ -36,11 +30,7 @@ const Phase = () => {
       <Text color="coolGrey600" pb="8px">
         <FormattedMessage {...messages.participationRequirementsSubtitle} />
       </Text>
-      {isGranularPermissionsEnabled && isCustomPermittedByEnabled ? (
-        <PhasePermissionsNew project={project.data} phase={phase.data} />
-      ) : (
-        <PhasePermissions project={project.data} phase={phase.data} />
-      )}
+      <PhasePermissions project={project.data} phase={phase.data} />
     </Box>
   );
 };

@@ -37,9 +37,9 @@ export interface IPCPermissionData {
     permitted_by:
       | 'everyone'
       | 'users'
-      | 'groups'
       | 'admins_moderators'
-      | 'everyone_confirmed_email';
+      | 'everyone_confirmed_email'
+      | 'verified';
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;
