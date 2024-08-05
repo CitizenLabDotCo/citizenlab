@@ -59,7 +59,7 @@ module IdFakeSso
     end
 
     def jwt_secret_base64
-      Base64.encode64('cc7e0d44fd473002f1c42167459001140ec6389b7353f8088f4d9a95f2f596f2')
+      Base64.encode(ENV.fetch('FAKE_SSO_JWT_SECRET'))
     end
   end
 end
