@@ -42,6 +42,7 @@ import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
+import { convertGeojsonToWKT } from './utils';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -193,8 +194,10 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
+    const requestBodyConvertedData = convertGeojsonToWKT(data);
+
     const requestBody = {
-      ...data,
+      ...requestBodyConvertedData,
       project_id: project.data.id,
       ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }

@@ -81,6 +81,10 @@ const AccessibilityStatement = () => {
                     <p>{formatMessage(messages.surveyToolsException)}</p>
                     <h3>{formatMessage(messages.mapviewIdeas)}</h3>
                     <p>{formatMessage(messages.mapviewIdeasException)}</p>
+                    <h3>{formatMessage(messages.mapLinePolygonInputs)}</h3>
+                    <p>
+                      {formatMessage(messages.mapLinePolygonInputsException)}
+                    </p>
                     <h3>{formatMessage(messages.userGeneratedContent)}</h3>
                     <p>{formatMessage(messages.exception_1)}</p>
                     <h3>{formatMessage(messages.workshops)}</h3>

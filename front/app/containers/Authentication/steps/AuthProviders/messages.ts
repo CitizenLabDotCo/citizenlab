@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
   },
+  continueWithFakeSSO: {
+    id: 'app.components.AuthProviders.continueWithFakeSSO',
+    defaultMessage: 'Continue with Fake SSO',
+  },
   goToLogIn: {
     id: 'app.components.AuthProviders.goToLogIn',
     defaultMessage: 'Already have an account? {goToOtherFlowLink}',
