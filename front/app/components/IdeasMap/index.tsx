@@ -519,7 +519,7 @@ const IdeasMap = memo<Props>(
               )}
               mapView={esriMapView}
             />
-            {isTabletOrSmaller && (
+            {isMobileOrSmaller && (
               <CSSTransition
                 classNames="animation"
                 in={!!selectedIdea}
@@ -549,7 +549,7 @@ const IdeasMap = memo<Props>(
                 </Box>
               </CSSTransition>
             )}
-            {!isTabletOrSmaller && (
+            {!isMobileOrSmaller && (
               <Box
                 width="390px"
                 height={`calc(${mapHeightDesktop} - 80px)`}
@@ -557,7 +557,7 @@ const IdeasMap = memo<Props>(
                 top="25px"
                 left="25px"
                 zIndex="900"
-                display={isTabletOrSmaller ? 'none' : 'flex'}
+                display="flex"
               >
                 <IdeaMapOverlay
                   projectId={projectId}
@@ -570,7 +570,7 @@ const IdeasMap = memo<Props>(
             <InstructionMessage projectId={projectId} />
           </InnerContainer>
         </StyledMapContainer>
-        {isTabletOrSmaller && (
+        {isMobileOrSmaller && (
           <Box width="100%" mt="8px">
             <IdeaMapOverlay
               projectId={projectId}

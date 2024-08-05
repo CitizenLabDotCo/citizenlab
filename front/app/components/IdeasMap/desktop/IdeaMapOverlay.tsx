@@ -102,7 +102,7 @@ const IdeaMapOverlay = memo<Props>(
     const { windowWidth } = useWindowSize();
     const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
-    const isTabletOrSmaller = useBreakpoint('tablet');
+    const isMobileOrSmaller = useBreakpoint('phone');
 
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);
@@ -143,7 +143,7 @@ const IdeaMapOverlay = memo<Props>(
         }
       }, 0);
     };
-    const showList = isTabletOrSmaller ? true : !selectedIdea;
+    const showList = isMobileOrSmaller ? true : !selectedIdea;
 
     if (project) {
       return (
@@ -155,7 +155,7 @@ const IdeaMapOverlay = memo<Props>(
               onSelectIdea={handleSelectIdea}
             />
           )}
-          {!isTabletOrSmaller && (
+          {!isMobileOrSmaller && (
             <CSSTransition
               classNames="animation"
               in={!!selectedIdea}

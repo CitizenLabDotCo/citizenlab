@@ -127,7 +127,7 @@ const IdeaMapCard = memo<Props>(
     const { data: appConfig } = useAppConfiguration();
     const { data: phase } = usePhase(phaseId || null);
     const { data: project } = useProjectById(projectId);
-    const isTabletOrSmaller = useBreakpoint('tablet');
+    const isMobileOrSmaller = useBreakpoint('phone');
     const phaseData = phase?.data;
 
     const votingMethodConfig = getVotingMethodConfig(
@@ -187,7 +187,7 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
           id="e2e-idea-map-card"
         >
-          {isTabletOrSmaller && onClose && (
+          {isMobileOrSmaller && onClose && (
             <StyledCloseIconButton
               iconWidth={'12px'}
               iconHeight={'12px'}
