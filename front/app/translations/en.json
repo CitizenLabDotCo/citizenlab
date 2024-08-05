@@ -652,6 +652,7 @@
   "app.components.form.controls.selectExactly2": "*Select exactly {selectExactly, plural, one {# option} other {# options}}",
   "app.components.form.controls.selectMany": "*Choose as many as you like",
   "app.components.form.controls.tapOnFullscreenMapToAdd4": "Tap on the map to draw. Then, drag on points to move them.",
+  "app.components.form.controls.tapOnFullscreenMapToAddPoint": "Tap on the map to draw.",
   "app.components.form.controls.tapOnMapMultipleToAdd3": "Tap on the map to add your answer.",
   "app.components.form.controls.tapOnMapToAddOrType": "Tap on the map or type an address below to add your answer.",
   "app.components.form.controls.tapToAddALine": "Tap to add a line",
