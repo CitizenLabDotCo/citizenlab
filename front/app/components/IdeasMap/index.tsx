@@ -44,6 +44,7 @@ import {
 } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
@@ -86,6 +87,7 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 
 // Custom styling for Esri map
 const StyledMapContainer = styled(Box)`
+  position: relative;
   calcite-action-bar {
     display: none;
   }
@@ -530,7 +532,15 @@ const IdeasMap = memo<Props>(
                       onClose={() => {
                         setSelectedIdea(null);
                       }}
-                      onSelectIdea={setSelectedIdea}
+                      onSelectIdea={(ideaId: string) => {
+                        clHistory.push(
+                          `/ideas/${ideaData.attributes.slug}?go_back=true`,
+                          {
+                            scrollToTop: true,
+                          }
+                        );
+                        setSelectedIdea(ideaId);
+                      }}
                       isClickable={true}
                       projectId={projectId}
                       phaseId={phaseId}
@@ -539,25 +549,38 @@ const IdeasMap = memo<Props>(
                 </Box>
               </CSSTransition>
             )}
-            <Box
-              width="390px"
-              height={`calc(${mapHeightDesktop} - 80px)`}
-              position="absolute"
-              top="25px"
-              left="25px"
-              zIndex="900"
-              display={isTabletOrSmaller ? 'none' : 'flex'}
-            >
-              <IdeaMapOverlay
-                projectId={projectId}
-                phaseId={phaseId}
-                onSelectIdea={onSelectIdeaFromList}
-                selectedIdea={selectedIdea}
-              />
-            </Box>
+            {!isTabletOrSmaller && (
+              <Box
+                width="390px"
+                height={`calc(${mapHeightDesktop} - 80px)`}
+                position="absolute"
+                top="25px"
+                left="25px"
+                zIndex="900"
+                display={isTabletOrSmaller ? 'none' : 'flex'}
+              >
+                <IdeaMapOverlay
+                  projectId={projectId}
+                  phaseId={phaseId}
+                  onSelectIdea={onSelectIdeaFromList}
+                  selectedIdea={selectedIdea}
+                />
+              </Box>
+            )}
             <InstructionMessage projectId={projectId} />
           </InnerContainer>
         </StyledMapContainer>
+        {isTabletOrSmaller && (
+          <Box width="100%" mt="8px">
+            <IdeaMapOverlay
+              projectId={projectId}
+              phaseId={phaseId}
+              onSelectIdea={onSelectIdeaFromList}
+              selectedIdea={selectedIdea}
+              hideListOnSelection={false}
+            />
+          </Box>
+        )}
       </>
     );
   }
