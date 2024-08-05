@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle',
     defaultMessage: 'Who can annotate the document?',
   },
-  permissionAction_vote_proposals_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle',
-    defaultMessage: 'Who can vote on proposals?',
-  },
   permissionAction_attending_event_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle',
     defaultMessage: 'Who can sign up to attend an event?',
@@ -41,9 +37,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle',
     defaultMessage: 'Who can volunteer?',
   },
-  phase: {
-    id: 'app.containers.AdminPage.groups.permissions.phase',
-    defaultMessage: 'Phase ',
+  permissionAction_vote_proposals_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle',
+    defaultMessage: 'Who can vote on proposals?',
   },
   permissionAction_comment_proposals_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle',
@@ -80,42 +76,5 @@ export default defineMessages({
   fieldType_date: {
     id: 'app.containers.AdminPage.groups.permissions.fieldType_date',
     defaultMessage: 'Date',
-  },
-  noActionsCanBeTakenInThisProject: {
-    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
-    defaultMessage:
-      'Nothing is shown, because there are no actions the user can take in this project.',
-  },
-  userConfirmationRequiredTooltip: {
-    id: 'app.containers.AdminPage.groups.permissions.userConfirmationRequiredTooltip',
-    defaultMessage:
-      'This option requires the user confirmation feature to be enabled. Contact your GovSuccess manager to enable user confirmation first.',
-  },
-  permissionsUsersLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsUsersLabel',
-    defaultMessage: 'All users',
-  },
-  permissionsUsersLabelDescription: {
-    id: 'app.containers.admin.project.permissions.permissionsUsersLabelDescription',
-    defaultMessage:
-      'Users that have created their accounts with passwords can participate.',
-  },
-  selectUserGroups: {
-    id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
-    defaultMessage: 'Select user groups',
-  },
-  permissionEveryoneEmailWarning: {
-    id: 'app.containers.admin.project.permissions.permissionEveryoneEmailWarning',
-    defaultMessage:
-      'In addition to registered users, unregistered users who provide an email and confirm it will be able to take the action. Select this option to lower the barrier for participation.',
-  },
-  permissionsEmailConfirmLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabel',
-    defaultMessage: 'Users with confirmed email',
-  },
-  permissionsEmailConfirmLabelDescription: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription',
-    defaultMessage:
-      'Anyone can participate after submitting and confirming their email address.',
   },
 });
