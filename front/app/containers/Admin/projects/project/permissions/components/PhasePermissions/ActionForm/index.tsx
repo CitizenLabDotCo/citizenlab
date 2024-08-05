@@ -2,8 +2,7 @@ import React from 'react';
 
 import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData } from 'api/permissions/types';
-import { PermittedBy } from 'api/phase_permissions/types';
+import { PermittedBy, IPhasePermissionData } from 'api/phase_permissions/types';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 
 import { FormattedMessage } from 'utils/cl-intl';

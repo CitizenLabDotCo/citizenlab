@@ -2,8 +2,7 @@ import React from 'react';
 
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
-import { IPermissionData, IPhasePermissionData } from 'api/permissions/types';
-import { PermittedBy } from 'api/phase_permissions/types';
+import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -12,17 +11,9 @@ import messages from './messages';
 import { HandlePermissionChangeProps } from './typings';
 import { getPermissionActionSectionSubtitle } from './utils';
 
-type PostTypeProps =
-  | {
-      postType: 'defaultInput';
-      projectId: string;
-    }
-  | {
-      postType: 'nativeSurvey';
-      projectId: string;
-    };
-
-type SharedProps = {
+type Props = {
+  postType: 'defaultInput' | 'nativeSurvey';
+  projectId: string;
   permissions: IPhasePermissionData[];
   phaseId?: string | null;
   onChange: ({
@@ -33,8 +24,6 @@ type SharedProps = {
   }: HandlePermissionChangeProps) => void;
 };
 
-type Props = PostTypeProps & SharedProps;
-
 const ActionsFormNew = ({
   permissions,
   postType,
@@ -42,7 +31,7 @@ const ActionsFormNew = ({
   phaseId,
 }: Props) => {
   const handlePermissionChange =
-    (permission: IPermissionData) =>
+    (permission: IPhasePermissionData) =>
     (permittedBy: PermittedBy, groupIds: string[]) => {
       onChange({
         permission,
