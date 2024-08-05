@@ -17,7 +17,7 @@ module Verification
             locked_custom_fields = verification_service.locked_custom_fields(current_user).map(&:to_s)
 
             # Mark fields as locked & read only
-            schemas[:ui_schema_multiloc].each do |_locale, ui_schema|
+            schemas[:ui_schema_multiloc].each_value do |ui_schema|
               ui_schema[:elements]
                 .select { |e| locked_custom_fields.any? { |field| e[:scope].end_with?(field) } }
                 .each_with_index do |element, index|
@@ -26,7 +26,7 @@ module Verification
             end
 
             # Mark fields as required (if not already required)
-            schemas[:json_schema_multiloc].each do |_locale, json_schema|
+            schemas[:json_schema_multiloc].each_value do |json_schema|
               json_schema[:required] = [] if json_schema[:required].nil?
               locked_custom_fields.each do |locked_field|
                 json_schema[:required] << locked_field if json_schema[:required].exclude?(locked_field)
