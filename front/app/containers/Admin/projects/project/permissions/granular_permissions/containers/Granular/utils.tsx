@@ -43,6 +43,7 @@ export const getPermissionActionSectionSubtitle = ({
       annotating_document:
         messages.permissionAction_annotating_document_subtitle,
       attending_event: messages.permissionAction_attending_event_subtitle,
+      volunteering: messages.permissionAction_volunteering_subtitle,
     };
     return participationContextPermissionActionMessages[permissionAction];
   }

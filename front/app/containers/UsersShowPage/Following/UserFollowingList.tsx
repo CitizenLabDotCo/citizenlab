@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -18,7 +18,8 @@ import ProjectFolderCard from 'components/ProjectAndFolderCards/components/Proje
 import ProjectCard from 'components/ProjectCard';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
@@ -37,19 +38,31 @@ const UserFollowingList = ({ value }: Props) => {
     followableObject: value,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
 
   const theme = useTheme();
 
   const flatFollowers = followers?.pages.flatMap((page) => page.data) || [];
 
+  const [emptyText, setEmptyText] = useState('');
+
+  useEffect(() => {
+    if (!isLoading && flatFollowers.length === 0) {
+      setEmptyText(formatMessage(messages.emptyInfoText));
+    } else {
+      setEmptyText('');
+    }
+  }, [isLoading, flatFollowers.length, formatMessage]);
+
   return (
     <Box display="flex" w="100%" flexDirection="column">
+      <ScreenReaderOnly aria-live="polite" role="status">
+        {emptyText}
+      </ScreenReaderOnly>
       {isLoading && <Spinner />}
       {!isLoading && flatFollowers.length === 0 ? (
-        <Box background={colors.white} p="36px" aria-live="polite">
-          <Text variant="bodyL">
-            <FormattedMessage {...messages.emptyInfoText} />
-          </Text>
+        <Box background={colors.white} p="36px" aria-live="assertive">
+          <Text variant="bodyL">{emptyText}</Text>
         </Box>
       ) : (
         <Box display="flex" flexWrap="wrap" gap="20px" w="100%">

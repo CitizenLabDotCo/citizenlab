@@ -15,7 +15,14 @@ export const ideationConfig: FormBuilderConfig = {
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.customToolboxTitle,
 
-  toolboxFieldsToExclude: ['page', 'file_upload', 'point'],
+  toolboxFieldsToExclude: [
+    'page',
+    'file_upload',
+    'shapefile_upload',
+    'point',
+    'line',
+    'polygon',
+  ],
   displayBuiltInFields: true,
   builtInFields: [
     'title_multiloc',
@@ -46,7 +53,6 @@ export const ideationConfig: FormBuilderConfig = {
   },
 };
 
-
 export const proposalsConfig: FormBuilderConfig = {
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
@@ -55,7 +61,7 @@ export const proposalsConfig: FormBuilderConfig = {
 
   toolboxFieldsToExclude: ['page', 'file_upload', 'point'],
   displayBuiltInFields: true,
-  builtInFields:[
+  builtInFields: [
     'title_multiloc',
     'body_multiloc',
     'topic_ids',

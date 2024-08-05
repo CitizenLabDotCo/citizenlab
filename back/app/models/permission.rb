@@ -19,7 +19,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators verified].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative],
@@ -30,7 +30,7 @@ class Permission < ApplicationRecord
     'survey' => %w[taking_survey attending_event],
     'poll' => %w[taking_poll attending_event],
     'voting' => %w[voting commenting_idea attending_event],
-    'volunteering' => %w[attending_event],
+    'volunteering' => %w[volunteering attending_event],
     'document_annotation' => %w[annotating_document attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
@@ -43,8 +43,8 @@ class Permission < ApplicationRecord
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
-  has_many :permissions_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
-  has_many :custom_fields, -> { order(:ordering) }, through: :permissions_fields
+  has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
+  has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
@@ -64,13 +64,10 @@ class Permission < ApplicationRecord
   def self.enabled_actions(permission_scope)
     return available_actions(permission_scope) if permission_scope&.pmethod&.return_disabled_actions?
 
-    available_actions(permission_scope).filter_map do |action|
-      next if
-        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+    available_actions(permission_scope).reject do |action|
+      (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
         (action == 'reacting_idea' && !permission_scope&.reacting_enabled?) ||
         (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
-
-      action
     end
   end
 
@@ -87,16 +84,9 @@ class Permission < ApplicationRecord
   end
 
   def allow_global_custom_fields?
-    return true if %w[users verified groups].include? permitted_by
+    return true if %w[users verified].include? permitted_by
 
     false
-  end
-
-  # TODO: Remove when verified actions are out of beta
-  def permitted_by
-    return 'users' if self[:permitted_by] == 'groups' && verified_actions_enabled?
-
-    super
   end
 
   private
@@ -112,13 +102,7 @@ class Permission < ApplicationRecord
 
   # TODO: Method not needed once verified actions are out of beta
   def update_global_custom_fields
-    return if verified_actions_enabled?
-
     self.global_custom_fields = false unless allow_global_custom_fields?
-  end
-
-  def verified_actions_enabled?
-    @verified_actions_enabled = AppConfiguration.instance.feature_activated?('verified_actions')
   end
 end
 

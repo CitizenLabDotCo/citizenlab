@@ -28,12 +28,10 @@ module Polls
     end
 
     def create?
-      (
-        active? &&
+      active? &&
         (record.user_id == user.id) &&
         ProjectPolicy.new(user, record.phase.project).show? &&
         check_responding_allowed(record, user)
-      )
     end
 
     private

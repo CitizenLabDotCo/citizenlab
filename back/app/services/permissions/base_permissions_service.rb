@@ -12,6 +12,7 @@ module Permissions
       taking_survey
       taking_poll
       attending_event
+      volunteering
     ].freeze
 
     USER_DENIED_REASONS = {

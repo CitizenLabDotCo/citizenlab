@@ -18,6 +18,7 @@ import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/Con
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 import messages from './components/messages';
@@ -80,8 +81,6 @@ export const getIsPostingEnabled = (
   return false;
 };
 
-
-
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
@@ -137,6 +136,20 @@ export function getAdditionalSettings(
         </>
       );
     case 'page':
+      return (
+        <>
+          <PageLayoutSettings
+            field={field}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+          />
+          <FieldGroupSettings locale={platformLocale} field={field} />
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+            field={field}
+          />
+        </>
+      );
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
@@ -150,6 +163,8 @@ export function getAdditionalSettings(
         />
       );
     case 'point':
+    case 'line':
+    case 'polygon':
       return (
         <PointSettings
           mapConfigIdName={`customFields.${field.index}.map_config_id`}
@@ -230,8 +245,17 @@ const getInputTypeStringKey = (
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'shapefile_upload':
+      translatedStringKey = messages.shapefileUpload;
+      break;
     case 'point':
-      translatedStringKey = messages.locationAnswer;
+      translatedStringKey = messages.dropPin;
+      break;
+    case 'line':
+      translatedStringKey = messages.drawRoute;
+      break;
+    case 'polygon':
+      translatedStringKey = messages.drawArea;
       break;
   }
 

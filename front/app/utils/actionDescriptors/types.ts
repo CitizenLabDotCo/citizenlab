@@ -54,6 +54,10 @@ export type ProjectDocumentAnnotationDisabledReason =
 
 export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
 
+export type ProjectVolunteeringDisabledReason =
+  | 'not_volunteering'
+  | ProjectDisabledReason;
+
 export type IdeaReactingDisabledReason =
   | 'idea_not_in_current_phase'
   | ProjectReactingDisabledReason;
@@ -99,7 +103,8 @@ export type ActionDescriptorAction =
   | 'annotating_document'
   | 'taking_survey'
   | 'taking_poll'
-  | 'attending_event';
+  | 'attending_event'
+  | 'volunteering';
 
 // All disabled reasons
 export type DisabledReason =
@@ -111,6 +116,7 @@ export type DisabledReason =
   | ProjectPollDisabledReason
   | ProjectDocumentAnnotationDisabledReason
   | ProjectVotingDisabledReason
+  | ProjectVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
   | IdeaVotingDisabledReason;

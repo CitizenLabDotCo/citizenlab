@@ -256,4 +256,30 @@ export default defineMessages({
     id: 'app.utils.actionDescriptors.attendingEventMissingRequirements',
     defaultMessage: 'You must complete your profile to attend this event.',
   },
+
+  // volunteering
+  volunteeringNotSignedIn: {
+    id: 'app.utils.actionDescriptors.volunteeringNotSignedIn',
+    defaultMessage: 'You must log in or register to volunteer.',
+  },
+  volunteeringNotActiveUser: {
+    id: 'app.utils.actionDescriptors.volunteeringdNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to volunteer.',
+  },
+  volunteeringNotVerified: {
+    id: 'app.utils.actionDescriptors.volunteeringNotVerified',
+    defaultMessage: 'You must verify your account before you can volunteer.',
+  },
+  volunteeringMissingRequirements: {
+    id: 'app.utils.actionDescriptors.volunteeringMissingRequirements',
+    defaultMessage: 'You must complete your profile to volunteer.',
+  },
+  volunteeringNotPermitted: {
+    id: 'app.utils.actionDescriptors.volunteeringNotPermitted',
+    defaultMessage: 'You are not permitted to volunteer.',
+  },
+  volunteeringNotInGroup: {
+    id: 'app.utils.actionDescriptors.volunteeringNotInGroup',
+    defaultMessage: 'You do not meet the requirements to volunteer.',
+  },
 });

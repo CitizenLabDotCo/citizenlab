@@ -826,7 +826,7 @@ resource 'Users' do
             ])
 
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'users', groups: [old_timers])
           end
 
           context 'on a resident' do
@@ -1354,6 +1354,7 @@ resource 'Users' do
         end
       end
 
+      # TODO: move-old-proposals-test
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1397,6 +1398,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
+        # TODO: move-old-proposals-test
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))

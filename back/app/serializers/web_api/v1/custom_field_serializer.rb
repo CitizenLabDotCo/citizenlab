@@ -16,6 +16,10 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.resource_type == 'User'
   }
 
+  attribute :page_layout, if: proc { |object, _params|
+    object.input_type == 'page'
+  }
+
   attribute :constraints do |object, params|
     if params[:constraints]
       params[:constraints][object.code&.to_sym] || {}
