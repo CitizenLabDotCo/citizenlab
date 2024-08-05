@@ -449,10 +449,6 @@ module MultiTenancy
             remove_vendor_branding: {
               enabled: false,
               allowed: true
-            },
-            verified_actions: {
-              enabled: true,
-              allowed: true
             }
           })
         )

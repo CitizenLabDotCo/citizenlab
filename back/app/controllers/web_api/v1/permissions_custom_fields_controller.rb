@@ -8,23 +8,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     authorize PermissionsCustomField.new(permission: permission)
 
     permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
-    if permissions_custom_fields_service.verified_actions_enabled?
-      # NEW non-paged version for verified actions with hidden locked fields
-      permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission, return_hidden: true)
-      render json: WebApi::V1::PermissionsCustomFieldSerializer.new(permissions_custom_fields, params: jsonapi_serializer_params).serializable_hash
-    else
-      # Legacy version
-      permissions_custom_fields = permission.permissions_custom_fields.order('custom_fields.ordering')
-      permissions_custom_fields = paginate permissions_custom_fields
-      permissions_custom_fields = permissions_custom_fields.includes(:custom_field)
-
-      render json: linked_json(
-        permissions_custom_fields,
-        WebApi::V1::PermissionsCustomFieldSerializer,
-        params: jsonapi_serializer_params,
-        include: %i[custom_field]
-      )
-    end
+    permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission, return_hidden: true)
+    render json: WebApi::V1::PermissionsCustomFieldSerializer.new(permissions_custom_fields, params: jsonapi_serializer_params).serializable_hash
   end
 
   def show

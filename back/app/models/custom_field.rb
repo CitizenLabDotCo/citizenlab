@@ -27,6 +27,7 @@
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
 #  random_option_ordering :boolean          default(FALSE), not null
+#  page_layout            :string
 #
 # Indexes
 #

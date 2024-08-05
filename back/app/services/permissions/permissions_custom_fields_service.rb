@@ -37,10 +37,6 @@ module Permissions
       @platform_custom_fields ||= CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
     end
 
-    def verified_actions_enabled?
-      @verified_actions_enabled ||= AppConfiguration.instance.feature_activated?('verified_actions')
-    end
-
     private
 
     # Add non-persisted locked fields to the permission

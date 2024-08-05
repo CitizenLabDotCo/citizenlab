@@ -43,6 +43,8 @@
 #  campaigns_settings            :jsonb
 #  native_survey_title_multiloc  :jsonb
 #  native_survey_button_multiloc :jsonb
+#  expire_days_limit             :integer
+#  reacting_threshold            :integer
 #
 # Indexes
 #

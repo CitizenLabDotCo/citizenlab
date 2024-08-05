@@ -8,7 +8,7 @@ describe Permissions::UserRequirementsService do
   describe '#requirements' do
     context 'when permitted_by is set "groups" and permission has a verification group' do
       let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
-      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+      let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
       context 'there is no user' do
         it 'requires verification' do
@@ -43,8 +43,6 @@ describe Permissions::UserRequirementsService do
       let(:custom_permission) { create(:permission, permitted_by: 'verified') }
 
       before do
-        SettingsService.new.activate_feature! 'verified_actions'
-
         configuration = AppConfiguration.instance
         settings = configuration.settings
         settings['verification'] = {
