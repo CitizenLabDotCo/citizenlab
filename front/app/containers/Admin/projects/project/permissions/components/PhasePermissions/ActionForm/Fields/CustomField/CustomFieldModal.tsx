@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Select, Title } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
 import useUpdatePermissionsField from 'api/permissions_custom_fields/useUpdatePermissionsField';
 

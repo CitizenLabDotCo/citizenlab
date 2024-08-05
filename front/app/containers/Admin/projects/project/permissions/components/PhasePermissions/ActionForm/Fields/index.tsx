@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import useAddPermissionsField from 'api/permissions_custom_fields/useAddPermissionsField';
 import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
 import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
 import useReorderPermissionsField from 'api/permissions_custom_fields/useReorderPermissionsField';

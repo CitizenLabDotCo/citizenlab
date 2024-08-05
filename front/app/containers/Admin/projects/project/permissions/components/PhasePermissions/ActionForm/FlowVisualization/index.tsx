@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
