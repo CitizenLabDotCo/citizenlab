@@ -36,8 +36,7 @@ export const getCardSize = ({
   // If we have a three column layout,
   // or if we are on a screen smaller than a tablet,
   // we always return 'small' size.
-  if (layout === 'threecolumns') return 'small';
-  if (isSmallerThanTablet) return 'small';
+  if (layout === 'threecolumns' || isSmallerThanTablet) return 'small';
 
   // Otherwise, it depends on how many cards we have in the list.
   // If we have 1-6 cards, the cards will have the sizes as
