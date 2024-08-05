@@ -26,7 +26,7 @@ resource 'ActionDescriptors' do
       before do
         Permissions::PermissionsUpdateService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
-          .update!(permitted_by: 'groups', groups: create_list(:group, 2))
+          .update!(permitted_by: 'users', groups: create_list(:group, 2))
       end
 
       # TODO: move-old-proposals-test
