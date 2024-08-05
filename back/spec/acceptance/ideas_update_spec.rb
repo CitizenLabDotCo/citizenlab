@@ -231,6 +231,8 @@ resource 'Ideas' do
 
         describe do
           let(:idea_status_id) { create(:idea_status).id }
+          let(:input) { create(:idea, project: project, phases: project.phases, idea_status: create(:idea_status_proposed)) }
+          let(:idea_status_id) { IdeaStatus.find_by(code: 'proposed').id }
 
           example_request 'Change the idea status' do
             assert_status 200
@@ -387,7 +389,35 @@ resource 'Ideas' do
 
         # TODO: Do not allow changing the project or phases
         # TODO: Update the cosponsors
-        # TODO: Update the input status
+      end
+
+      context 'when admin' do
+        with_options scope: :idea do
+          parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+          parameter :assignee_id, 'The user id of the admin that takes ownership. Only allowed for admins.' # Tested in separate engine
+        end
+
+        before { admin_header_token }
+
+        describe do
+          let(:idea_status_id) { create(:proposals_status).id }
+
+          example_request 'Change the idea status' do
+            assert_status 200
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
+          end
+        end
+
+        describe do
+          let(:input) { create(:proposal, idea_status: create(:proposals_status)) }
+          let(:idea_status_id) { create(:proposals_status, code: 'threshold_reached').id }
+
+          example '[Error] Manually change the idea status to an automated status', document: false do
+            do_request
+            expect(input.reload.idea_status.code).not_to eq 'threshold_reached'
+          end
+        end
       end
     end
 

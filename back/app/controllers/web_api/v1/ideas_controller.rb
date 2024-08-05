@@ -319,7 +319,8 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
+      attributes << :idea_status_id if allow_idea_status_id_param?
+      attributes.concat %i[author_id budget] + [phase_ids: []]
     end
     attributes
   end
@@ -360,6 +361,15 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     complex_attributes
+  end
+
+  def allow_idea_status_id_param?
+    return false if params.dig(:idea, :idea_status_id).blank?
+
+    status = IdeaStatus.find(params.dig(:idea, :idea_status_id))
+    return false if !status
+
+    InputStatusService.new(status).can_transition_manually?
   end
 
   def submittable_custom_fields(custom_form)
