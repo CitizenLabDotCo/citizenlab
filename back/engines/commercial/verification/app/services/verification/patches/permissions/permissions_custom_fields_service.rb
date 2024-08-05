@@ -20,7 +20,7 @@ module Verification
           return fields unless method.respond_to?(:locked_custom_fields)
 
           # Get the IDs of the custom fields that are locked to the verification method
-          custom_field_ids = method&.locked_custom_fields&.map { |field_code| CustomField.find_by(code: field_code.to_s)&.id }&.compact
+          custom_field_ids = method&.locked_custom_fields&.filter_map { |field_code| CustomField.find_by(code: field_code.to_s)&.id }
           add_and_lock_related_fields(permission, fields, custom_field_ids, 'verification')
         end
 
