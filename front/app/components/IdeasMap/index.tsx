@@ -577,7 +577,6 @@ const IdeasMap = memo<Props>(
               phaseId={phaseId}
               onSelectIdea={onSelectIdeaFromList}
               selectedIdea={selectedIdea}
-              hideListOnSelection={false}
             />
           </Box>
         )}
