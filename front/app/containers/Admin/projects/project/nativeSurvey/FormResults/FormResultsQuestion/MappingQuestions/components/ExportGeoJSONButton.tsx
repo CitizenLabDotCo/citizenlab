@@ -3,6 +3,10 @@ import React from 'react';
 import { Button, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
 
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { API_PATH } from 'containers/App/constants';
 
 import { trackEventByName } from 'utils/analytics';
@@ -19,6 +23,11 @@ type Props = {
 
 const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: phase } = usePhase(phaseId);
+  const phaseTitle = localize(
+    phase?.data?.attributes?.title_multiloc
+  )?.replaceAll(' ', '_');
 
   const handleExportInputs = async () => {
     try {
@@ -26,7 +35,7 @@ const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
         `${API_PATH}/admin/phases/${phaseId}/custom_fields/${customFieldId}/as_geojson`,
         'application/geo+json'
       );
-      saveAs(blob, `${customFieldId}.geojson`);
+      saveAs(blob, `${phaseTitle}_geojson.geojson`);
     } catch (error) {
       // Error
     }
