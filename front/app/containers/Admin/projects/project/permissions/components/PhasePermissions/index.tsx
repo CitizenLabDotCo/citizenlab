@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import { isGlobalPermissionAction } from 'api/permissions/utils';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import { IPhaseData } from 'api/phases/types';
@@ -28,6 +29,11 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => {
+    if (isGlobalPermissionAction(permission.attributes.action)) {
+      // Should not be possible
+      return;
+    }
+
     updatePhasePermission({
       permissionId: permission.id,
       phaseId: phase.id,

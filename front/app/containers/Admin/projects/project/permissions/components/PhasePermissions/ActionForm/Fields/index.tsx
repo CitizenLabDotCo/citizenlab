@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-
-import { FieldSelectionModal } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/ActionForm/FieldSelectionModal';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
 import messages from './messages';
 

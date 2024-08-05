@@ -25,7 +25,7 @@ type FieldSelectionModalProps = {
   isLoading: boolean;
 };
 
-export const FieldSelectionModal = ({
+const FieldSelectionModal = ({
   showSelectionModal,
   setShowSelectionModal,
   selectedFields,
@@ -87,3 +87,5 @@ export const FieldSelectionModal = ({
     </Modal>
   );
 };
+
+export default FieldSelectionModal;
