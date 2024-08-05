@@ -15,22 +15,6 @@ module UserCustomFields
       render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params, include: %i[projects])
     end
 
-    def schema
-      authorize :custom_field, policy_class: UserCustomFieldPolicy
-      fields = CustomField.registration
-      json_schema_multiloc = custom_field_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
-      ui_schema_multiloc = get_ui_schema_multiloc(fields)
-
-      render json: raw_json({ json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc })
-    end
-
-    def json_forms_schema
-      authorize :custom_field, policy_class: UserCustomFieldPolicy
-      fields = CustomField.registration
-
-      render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
-    end
-
     def show
       render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params, include: %i[projects])
     end
@@ -132,5 +116,3 @@ module UserCustomFields
     end
   end
 end
-
-UserCustomFields::WebApi::V1::UserCustomFieldsController.prepend(Verification::Patches::WebApi::V1::UserCustomFieldsController)
