@@ -230,9 +230,8 @@ resource 'Ideas' do
         end
 
         describe do
-          let(:idea_status_id) { create(:idea_status).id }
-          let(:input) { create(:idea, project: project, phases: project.phases, idea_status: create(:idea_status_proposed)) }
-          let(:idea_status_id) { IdeaStatus.find_by(code: 'proposed').id }
+          let(:input) { create(:idea, project: project, phases: project.phases, idea_status: create(:idea_status)) }
+          let!(:idea_status_id) { create(:idea_status_proposed).id }
 
           example_request 'Change the idea status' do
             assert_status 200

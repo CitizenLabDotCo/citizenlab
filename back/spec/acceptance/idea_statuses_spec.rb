@@ -138,7 +138,7 @@ resource 'IdeaStatuses' do
           let(:code) { 'proposed' }
 
           example '[Error] Cannot create a proposed status', document: false do
-            expect { do_request }.not_to change { IdeaStatus.count }
+            expect { do_request }.not_to change(IdeaStatus, :count)
             assert_status 422
             expect(json_parse(response_body).dig(:errors, :code)).to eq [{ error: 'blank' }, { error: 'inclusion', value: nil }]
           end
@@ -266,7 +266,7 @@ resource 'IdeaStatuses' do
 
       describe do
         before do
-          IdeaStatus.all.zip(['proposed', 'threshold_reached', 'expired']).each { |status, code| status.update!(code: code) }
+          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code) }
         end
 
         let(:idea_status) { create(:proposals_status) }

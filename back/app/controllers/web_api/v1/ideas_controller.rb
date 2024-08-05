@@ -369,7 +369,7 @@ class WebApi::V1::IdeasController < ApplicationController
     status = IdeaStatus.find(params.dig(:idea, :idea_status_id))
     return false if !status
 
-    InputStatusService.new(status).can_transition_manually?
+    ::InputStatusService.new(status).can_transition_manually?
   end
 
   def submittable_custom_fields(custom_form)

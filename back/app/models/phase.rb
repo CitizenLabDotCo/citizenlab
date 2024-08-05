@@ -61,7 +61,6 @@ class Phase < ApplicationRecord
   include DocumentAnnotation::DocumentAnnotationPhase
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
-  # PARTICIPATION_METHODS = %w[information ideation proposals survey voting poll volunteering native_survey document_annotation].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   POSTING_METHODS       = %w[unlimited limited].freeze

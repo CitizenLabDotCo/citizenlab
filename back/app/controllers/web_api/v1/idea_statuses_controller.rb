@@ -94,7 +94,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def shared_params
-    [:color, title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES]
+    [:color, { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }]
   end
 
   def max_ordering
