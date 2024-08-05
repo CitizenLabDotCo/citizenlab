@@ -9,8 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_fields/types';
-import useDeletePermissionsField from 'api/permissions_fields/useDeletePermissionsField';
+import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
+import useDeletePermissionsField from 'api/permissions_custom_fields/useDeletePermissionsField';
 
 import useLocalize from 'hooks/useLocalize';
 

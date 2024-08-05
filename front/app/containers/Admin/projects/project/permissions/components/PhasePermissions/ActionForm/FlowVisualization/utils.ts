@@ -1,4 +1,4 @@
-import { IPermissionsFieldData } from 'api/permissions_fields/types';
+import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 

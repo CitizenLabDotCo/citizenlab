@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import useAddPermissionsField from 'api/permissions_fields/useAddPermissionsField';
-import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+import useAddPermissionsField from 'api/permissions_custom_fields/useAddPermissionsField';
+import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
 
 import { FieldSelectionModal } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/ActionForm/FieldSelectionModal';
 

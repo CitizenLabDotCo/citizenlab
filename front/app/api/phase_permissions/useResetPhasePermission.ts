@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import permissionsFieldsKeys from '../permissions_fields/keys';
+import permissionsFieldsKeys from '../permissions_custom_fields/keys';
 
 import phasePermissionKeys from './keys';
 import { IPCPermission, ResetPermissionObject } from './types';

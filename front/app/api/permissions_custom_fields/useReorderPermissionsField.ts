@@ -4,9 +4,9 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsFieldsKeys from './keys';
-import { IPermissionsField } from './types';
+import { IPermissionsCustomField } from './types';
 
-type ReorderPermissionsField = {
+type ReorderPermissionsCustomField = {
   id: string;
 
   // These two should be defined if the
@@ -18,17 +18,24 @@ type ReorderPermissionsField = {
   ordering: number;
 };
 
-const reorderPermissionsField = ({ id, ...body }: ReorderPermissionsField) =>
-  fetcher<IPermissionsField>({
-    path: `/permissions_fields/${id}/reorder`,
+const reorderPermissionsCustomField = ({
+  id,
+  ...body
+}: ReorderPermissionsCustomField) =>
+  fetcher<IPermissionsCustomField>({
+    path: `/permissions_custom_fields/${id}/reorder`,
     action: 'patch',
     body,
   });
 
-const useReorderPermissionsField = () => {
+const useReorderPermissionsCustomField = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPermissionsField, CLErrors, ReorderPermissionsField>({
-    mutationFn: reorderPermissionsField,
+  return useMutation<
+    IPermissionsCustomField,
+    CLErrors,
+    ReorderPermissionsCustomField
+  >({
+    mutationFn: reorderPermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: permissionsFieldsKeys.lists(),
@@ -37,4 +44,4 @@ const useReorderPermissionsField = () => {
   });
 };
 
-export default useReorderPermissionsField;
+export default useReorderPermissionsCustomField;

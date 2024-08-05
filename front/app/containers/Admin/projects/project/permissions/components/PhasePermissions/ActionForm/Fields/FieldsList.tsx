@@ -3,9 +3,9 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import { IPermissionsFieldData } from 'api/permissions_fields/types';
-import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
-import useReorderPermissionsField from 'api/permissions_fields/useReorderPermissionsField';
+import { IPermissionsFieldData } from 'api/permissions_custom_fields/types';
+import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
+import useReorderPermissionsField from 'api/permissions_custom_fields/useReorderPermissionsField';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 

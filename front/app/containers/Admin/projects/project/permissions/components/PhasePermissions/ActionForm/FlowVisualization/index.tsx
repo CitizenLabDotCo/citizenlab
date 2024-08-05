@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
-import usePermissionsFields from 'api/permissions_fields/usePermissionsFields';
+import usePermissionsFields from 'api/permissions_custom_fields/usePermissionsFields';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

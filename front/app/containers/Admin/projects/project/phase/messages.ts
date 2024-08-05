@@ -126,16 +126,4 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',
     defaultMessage: '<b>Volunteering:</b>  {participants}',
   },
-  and: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
-    defaultMessage: 'and',
-  },
-  only: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.only',
-    defaultMessage: 'Only',
-  },
-  noGroups: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noGroups',
-    defaultMessage: 'No groups',
-  },
 });
