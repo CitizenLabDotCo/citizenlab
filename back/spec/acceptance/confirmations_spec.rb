@@ -35,6 +35,7 @@ resource 'Confirmations' do
         do_request(confirmation: { code: user.email_confirmation_code })
         assert_status 200
         expect(response_headers['Set-Cookie']).to start_with('cl2_jwt=')
+        expect(response_jwt_cookie['level']).to eq 1
       end
 
       example 'returns an unprocessable entity status passing no code' do
@@ -46,8 +47,7 @@ resource 'Confirmations' do
         do_request(confirmation: { code: nil })
 
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:code, 'blank')
+        expect(json_response_body).to include_response_error(:code, 'blank')
       end
 
       example 'returns an unprocessable entity status when the code is invalid' do
@@ -59,8 +59,7 @@ resource 'Confirmations' do
         do_request(confirmation: { code: 'badcode' })
 
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:code, 'invalid')
+        expect(json_response_body).to include_response_error(:code, 'invalid')
       end
     end
   end
