@@ -56,7 +56,7 @@ class CustomFieldParamsService
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)
-    extra_field_values.each do |key, _value|
+    extra_field_values.each_key do |key|
       if key.end_with? '_other'
         parent_field_key = key.delete_suffix '_other'
         parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]

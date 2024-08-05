@@ -267,6 +267,7 @@ sv:
       submitted_at: 'Inlämnad på'
       tags: 'Etiketter'
       title: 'Titel'
+      user_data: 'Användardata'
       votes_count: 'Röster'
   form_builder:
     default_select_field:

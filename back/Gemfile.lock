@@ -126,6 +126,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_fake_sso
+  specs:
+    id_fake_sso (0.1.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
@@ -1006,7 +1013,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.3)
+    rexml (3.3.4)
       strscan
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
@@ -1067,15 +1074,15 @@ GEM
       rspec (~> 3.0)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (1.57.2)
+    rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 3.2.2.4)
+      parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8, < 3.0)
+      regexp_parser (>= 2.4, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.31.3)
@@ -1289,6 +1296,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_criipto!
+  id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
