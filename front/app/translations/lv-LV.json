@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Turpināt",
   "app.components.AuthProviders.continueWithAzure": "Turpināt ar {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Turpināt ar Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Turpināt ar viltotu SSO",
   "app.components.AuthProviders.continueWithGoogle": "Turpināt ar Google",
   "app.components.AuthProviders.continueWithHoplr": "Turpināt ar Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Turpināt ar {loginMechanismName}",
