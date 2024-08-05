@@ -8,6 +8,12 @@ RSpec.describe ParticipationMethod::Poll do
   let(:input) { create(:idea) }
   let(:phase) { create(:poll_phase) }
 
+  describe '#method_str' do
+    it 'returns poll' do
+      expect(described_class.method_str).to eq 'poll'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:poll_phase) }
 

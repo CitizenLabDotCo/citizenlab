@@ -70,6 +70,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def apply_index_filters
     return if params[:participation_method].blank?
+
     @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
   end
 

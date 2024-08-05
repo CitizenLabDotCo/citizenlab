@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def self.method_str
+      'ideation'
+    end
+
     def transitive?
       true
     end
@@ -16,7 +20,7 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: idea_status_method)
     end
 
     def default_fields(custom_form)

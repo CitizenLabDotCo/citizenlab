@@ -8,6 +8,12 @@ RSpec.describe ParticipationMethod::Volunteering do
   let(:input) { create(:idea) }
   let(:phase) { create(:volunteering_phase) }
 
+  describe '#method_str' do
+    it 'returns volunteering' do
+      expect(described_class.method_str).to eq 'volunteering'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:volunteering_phase) }
 

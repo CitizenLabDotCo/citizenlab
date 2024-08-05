@@ -7,6 +7,12 @@ RSpec.describe ParticipationMethod::Voting do
 
   let(:phase) { create(:budgeting_phase) }
 
+  describe '#method_str' do
+    it 'returns voting' do
+      expect(described_class.method_str).to eq 'voting'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     context 'budgeting' do
       it 'sets the posting method to unlimited and ideas order to random' do
