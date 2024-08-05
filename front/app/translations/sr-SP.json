@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Настави",
   "app.components.AuthProviders.continueWithAzure": "Наставите са {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Наставите са Фејсбуком",
+  "app.components.AuthProviders.continueWithFakeSSO": "Continue with Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Наставите са Гоогле-ом",
   "app.components.AuthProviders.continueWithHoplr": "Наставите са Хоплр",
   "app.components.AuthProviders.continueWithLoginMechanism": "Наставите са {loginMechanismName}",
