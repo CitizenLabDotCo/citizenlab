@@ -6,29 +6,16 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventsKeys from './keys';
 import { IPermissionsCustomFields, EventsKeys, IListParameters } from './types';
+import { getPath } from './utils';
 
-const fetchEvents = ({
-  phaseId,
-  initiativeContext,
-  projectId,
-  action,
-}: IListParameters) => {
+const fetchEvents = ({ phaseId, action }: IListParameters) => {
   return fetcher<IPermissionsCustomFields>({
-    path: initiativeContext
-      ? `/permissions/${action}/permissions_custom_fields`
-      : phaseId
-      ? `/phases/${phaseId}/permissions/${action}/permissions_custom_fields`
-      : `/projects/${projectId}/permissions/${action}/permissions_custom_fields`,
+    path: getPath({ phaseId, action }),
     action: 'get',
   });
 };
 
-const usePermissionsCustomFields = ({
-  phaseId,
-  initiativeContext,
-  projectId,
-  action,
-}: IListParameters) => {
+const usePermissionsCustomFields = ({ phaseId, action }: IListParameters) => {
   return useQuery<
     IPermissionsCustomFields,
     CLErrors,
@@ -37,12 +24,9 @@ const usePermissionsCustomFields = ({
   >({
     queryKey: eventsKeys.list({
       phaseId,
-      initiativeContext,
-      projectId,
       action,
     }),
-    queryFn: () =>
-      fetchEvents({ phaseId, initiativeContext, projectId, action }),
+    queryFn: () => fetchEvents({ phaseId, action }),
   });
 };
 
