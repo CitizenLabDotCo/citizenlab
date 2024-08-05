@@ -12,7 +12,7 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import CustomField from './CustomField';
 
 interface Props {
-  phaseId: string;
+  phaseId?: string;
   action: IPhasePermissionAction;
 }
 

@@ -4,9 +4,10 @@ import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
+import ActionForm from 'components/admin/ActionForm';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ActionForm from './ActionForm';
 import messages from './messages';
 import { HandlePermissionChangeProps } from './typings';
 import { getPermissionActionSectionSubtitle } from './utils';

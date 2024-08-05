@@ -14,9 +14,9 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
+  phaseId?: string;
   field: IPermissionsCustomFieldData;
   fieldName: string;
-  phaseId: string;
   action: IPhasePermissionAction;
   opened: boolean;
   onClose: () => void;

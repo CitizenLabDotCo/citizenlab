@@ -5,7 +5,7 @@ import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import newMessages from '../permissions/components/PhasePermissions/ActionForm/messages';
+import newMessages from '../../../../../components/admin/ActionForm/messages';
 
 import messages from './messages';
 

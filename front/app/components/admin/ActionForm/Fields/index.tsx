@@ -13,7 +13,7 @@ import FieldsList from './FieldsList';
 import messages from './messages';
 
 interface Props {
-  phaseId: string;
+  phaseId?: string;
   action: IPhasePermissionAction;
 }
 

@@ -16,16 +16,11 @@ import GroupSelect from './GroupSelect';
 import messages from './messages';
 
 interface Props {
-  phaseId: string;
-  permissionData: IPhasePermissionData;
+  phaseId?: string;
   groupIds?: string[];
+  permissionData: IPhasePermissionData;
   phaseType: 'defaultInput' | 'nativeSurvey';
-  onChange: (
-    permittedBy:
-      | IPhasePermissionData['attributes']['permitted_by']
-      | IPhasePermissionData['attributes']['global_custom_fields'],
-    groupIds: Props['groupIds']
-  ) => void;
+  onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
 }
 
 const showGroupSelect = (permittedBy: PermittedBy) => {

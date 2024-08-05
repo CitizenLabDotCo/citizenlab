@@ -21,8 +21,8 @@ import messages from '../messages';
 import CustomFieldModal from './CustomFieldModal';
 
 interface Props {
+  phaseId?: string;
   field: IPermissionsCustomFieldData;
-  phaseId: string;
   action: IPhasePermissionAction;
 }
 
