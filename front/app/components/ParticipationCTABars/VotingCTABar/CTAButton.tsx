@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
@@ -48,7 +53,12 @@ const StyledButton = styled(Button)`
       box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
     }
   }
+
+  &.disabled {
+    border: solid 1px ${colors.white};
+  }
 `;
+
 interface Props {
   phase: IPhaseData;
   project: IProjectData;
@@ -155,6 +165,8 @@ const CTAButton = ({ phase, project }: Props) => {
             processing={processing}
             className={disabledExplanation ? '' : 'pulse'}
             ariaDescribedby="explanation"
+            opacityDisabled="0.6"
+            textDisabledColor={colors.black}
           >
             <FormattedMessage {...messages.submit} />
           </StyledButton>
