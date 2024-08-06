@@ -52,6 +52,10 @@ module Export
         idea_file.file.url
       end
 
+      def visit_shapefile_upload(field)
+        visit_file_upload(field)
+      end
+
       def visit_point(field)
         value_for(field)
       end
