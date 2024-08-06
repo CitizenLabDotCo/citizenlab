@@ -66,19 +66,10 @@ describe('Native survey permissions', () => {
                           action: 'posting_idea',
                           permissionBody: {
                             permission: {
-                              // Don't ask global custom fields
-                              global_custom_fields: false,
-                              permitted_by: 'groups',
+                              permitted_by: 'users',
                               group_ids: [smartGroupId],
                             },
                           },
-                        }).then(() => {
-                          // Only ask this custom field
-                          cy.apiSetPermissionCustomField(
-                            phaseId,
-                            'posting_idea',
-                            customFieldId
-                          );
                         });
                       });
                     });
