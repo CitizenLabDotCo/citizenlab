@@ -581,7 +581,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when the timeline is over' do
       let(:project) { create(:project_with_past_phases) }
 
-      it "returns nil - attending is allowed even though the phase is over" do
+      it 'returns nil - attending is allowed even though the phase is over' do
         expect(service.denied_reason_for_action('attending_event')).to be_nil
       end
     end
