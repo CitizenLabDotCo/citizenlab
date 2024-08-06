@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import eventsKeys from './keys';
+import permissionsCustomFieldsKeys from './keys';
 import { IPermissionsCustomFields, EventsKeys, IListParameters } from './types';
 import { getPath } from './utils';
 
@@ -22,7 +22,7 @@ const usePermissionsCustomFields = ({ phaseId, action }: IListParameters) => {
     IPermissionsCustomFields,
     EventsKeys
   >({
-    queryKey: eventsKeys.list({
+    queryKey: permissionsCustomFieldsKeys.list({
       phaseId,
       action,
     }),

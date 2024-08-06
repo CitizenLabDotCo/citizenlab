@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import permissionsCustomFieldsKeys from '../permissions_custom_fields/keys';
 
 import phasePermissionKeys from './keys';
-import { IPhasePermission, ResetPermissionObject } from './types';
+import { IPhasePermission, ResetPermissionParams } from './types';
 
 const resetPhasePermission = ({
   permissionId,
   phaseId,
   action,
-}: ResetPermissionObject) =>
+}: ResetPermissionParams) =>
   fetcher<IPhasePermission>({
     path: `/phases/${phaseId}/permissions/${action}/reset`,
     action: 'patch',
@@ -21,7 +21,7 @@ const resetPhasePermission = ({
 
 const useResetPhasePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhasePermission, CLErrors, ResetPermissionObject>({
+  return useMutation<IPhasePermission, CLErrors, ResetPermissionParams>({
     mutationFn: resetPhasePermission,
     onSuccess: (_, { action, phaseId }) => {
       queryClient.invalidateQueries({

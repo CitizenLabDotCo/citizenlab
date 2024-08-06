@@ -45,14 +45,14 @@ export interface IPhasePermission {
   data: IPhasePermissionData;
 }
 
-export type IUpdatePermissionObject = {
+export type UpdatePermissionParams = {
   permissionId: string;
   phaseId: string;
   action: IPhasePermissionAction;
   permission: Partial<IPermissionUpdate>;
 };
 
-export type ResetPermissionObject = {
+export type ResetPermissionParams = {
   permissionId: string;
   phaseId: string;
   action: IPhasePermissionAction;

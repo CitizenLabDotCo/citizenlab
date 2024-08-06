@@ -50,10 +50,15 @@ export interface IGlobalPermission {
   data: IGlobalPermissionData;
 }
 
-export interface IPermissionUpdate {
+export interface PermissionUpdateParams {
   id: string;
   action: IGlobalPermissionAction;
   group_ids: string[];
-  permitted_by: IPermissionData['attributes']['permitted_by'];
+  permitted_by: PermittedBy;
   global_custom_fields: boolean;
 }
+
+export type ResetPermissionParams = {
+  permissionId: string;
+  action: IGlobalPermissionAction;
+};
