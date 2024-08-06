@@ -22,7 +22,7 @@ class IdeaStatus < ApplicationRecord
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
-  default_scope -> { order(ordering: :asc) }
+  default_scope -> { order(:participation_method, :ordering) }
 
   has_many :ideas
 
