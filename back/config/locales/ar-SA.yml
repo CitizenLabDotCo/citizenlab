@@ -48,6 +48,14 @@ ar:
     implemented_description: تم تنفيذ هذه الفكرة من قِبل المدينة
     rejected: تم رفضها
     rejected_description: تم رفض هذه الفكرة
+    expired: منتهي الصلاحية
+    expired_description: منتهي الصلاحية
+    threshold_reached: وصلت العتبة
+    threshold_reached_description: وصلت العتبة
+    answered: أجاب
+    answered_description: أجاب
+    ineligible: غير مؤهل
+    ineligible_description: غير مؤهل
   initiative_statuses:
     review_pending: المراجعة معلقة
     review_pending_description: المراجعة معلقة
