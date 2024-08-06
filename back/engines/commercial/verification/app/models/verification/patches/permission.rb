@@ -5,7 +5,7 @@ module Verification
     module Permission
       def self.included(base)
         base.class_eval do
-          validate :allow_verified_permitted_by
+          validate :validate_verified_permitted_by
 
           def verification_enabled?
             return true if permitted_by == 'verified'
@@ -14,7 +14,9 @@ module Verification
             false
           end
 
-          def allow_verified_permitted_by
+          private
+
+          def validate_verified_permitted_by
             return unless permitted_by == 'verified' && VerificationService.new.first_method_allowed_on_action.nil?
 
             errors.add(

@@ -12,7 +12,6 @@ resource 'Permissions' do
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
     SettingsService.new.activate_feature!'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
-
   end
 
   let(:project_id) { @project.id }

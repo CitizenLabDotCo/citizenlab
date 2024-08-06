@@ -7,16 +7,14 @@ describe Verification::VerificationService do
   let(:service) { described_class.new sfxv_service }
 
   before do
-    configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings['verification'] = {
-      allowed: true,
-      enabled: true,
-      verification_methods: [
-        { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
-      ]
-    }
-    configuration.save!
+    SettingsService.new.activate_feature!(
+      'verification',
+      settings: {
+        verification_methods: [
+          { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+        ]
+      }
+    )
   end
 
   describe 'verify_sync' do
