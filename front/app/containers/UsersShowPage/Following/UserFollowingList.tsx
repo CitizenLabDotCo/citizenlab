@@ -61,7 +61,7 @@ const UserFollowingList = ({ value }: Props) => {
       </ScreenReaderOnly>
       {isLoading && <Spinner />}
       {!isLoading && flatFollowers.length === 0 ? (
-        <Box background={colors.white} p="36px" aria-live="assertive">
+        <Box background={colors.white} p="36px">
           <Text variant="bodyL">{emptyText}</Text>
         </Box>
       ) : (
