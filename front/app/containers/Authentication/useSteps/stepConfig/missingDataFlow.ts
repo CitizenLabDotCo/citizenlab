@@ -1,5 +1,4 @@
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import signOut from 'api/authentication/sign_in_out/signOut';
@@ -8,6 +7,7 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
+import { OnboardingType } from 'containers/Authentication/steps/Onboarding/TopicsAndAreas';
 import { GetRequirements } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -17,6 +17,7 @@ import {
   requiredCustomFields,
   requiredBuiltInFields,
   showOnboarding,
+  doesNotMeetGroupCriteria,
 } from './utils';
 
 export const missingDataFlow = (
@@ -45,22 +46,22 @@ export const missingDataFlow = (
           return;
         }
 
-        if (requirements.special.verification === 'require') {
+        if (requirements.verification) {
           setCurrentStep('missing-data:verification');
           return;
         }
 
-        if (requiredCustomFields(requirements.custom_fields)) {
+        if (requiredCustomFields(requirements)) {
           setCurrentStep('missing-data:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -91,22 +92,22 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (requirements.special.verification === 'require') {
+        if (requirements.verification) {
           setCurrentStep('missing-data:verification');
           return;
         }
 
-        if (requiredCustomFields(requirements.custom_fields)) {
+        if (requiredCustomFields(requirements)) {
           setCurrentStep('missing-data:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -118,17 +119,17 @@ export const missingDataFlow = (
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
 
-        if (requiredCustomFields(requirements.custom_fields)) {
+        if (requiredCustomFields(requirements)) {
           setCurrentStep('missing-data:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -145,12 +146,12 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -160,7 +161,7 @@ export const missingDataFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
@@ -177,7 +178,7 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }

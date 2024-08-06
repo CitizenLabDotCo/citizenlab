@@ -101,11 +101,13 @@ const BuiltInFields = ({
     }
   };
 
-  const builtIn = authenticationRequirements.requirements.built_in;
-  const askFirstName = builtIn.first_name === 'require';
-  const askLastName = builtIn.last_name === 'require';
-  const askPassword =
-    authenticationRequirements.requirements.special.password === 'require';
+  const missingAttributes = new Set(
+    authenticationRequirements.requirements.authentication.missing_user_attributes
+  );
+
+  const askFirstName = missingAttributes.has('first_name');
+  const askLastName = missingAttributes.has('last_name');
+  const askPassword = missingAttributes.has('password');
 
   return (
     <Box id="e2e-built-in-fields-container">
@@ -179,7 +181,7 @@ const BuiltInFieldsWrapper = ({
     <BuiltInFields
       {...otherProps}
       authenticationRequirements={
-        authenticationRequirementsResponse.data.attributes.requirements
+        authenticationRequirementsResponse.data.attributes
       }
     />
   );

@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useTopics from 'api/topics/useTopics';
 
@@ -14,6 +13,12 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+
+type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
+
+export type OnboardingType = {
+  topics_and_areas?: RequirementStatus;
+};
 
 interface Props {
   onSubmit: (id: string, onboarding: OnboardingType) => void;
