@@ -78,7 +78,7 @@ module XlsxExport
       value = value_for(field)
       return '' if value.blank?
 
-      JSON.generate(value_for(field))
+      JSON.generate(value)
     end
 
     def visit_line(field)
