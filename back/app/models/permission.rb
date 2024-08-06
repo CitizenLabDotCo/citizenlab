@@ -52,7 +52,6 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
-  before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -97,12 +96,7 @@ class Permission < ApplicationRecord
     else
       'users'
     end
-    self.global_custom_fields ||= allow_global_custom_fields?
-  end
-
-  # TODO: Method not needed once verified actions are out of beta
-  def update_global_custom_fields
-    self.global_custom_fields = false unless allow_global_custom_fields?
+    self.global_custom_fields ||= true
   end
 end
 
