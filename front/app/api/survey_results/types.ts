@@ -42,6 +42,7 @@ type BaseResult = {
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
+  numberResponses?: { answer: number }[];
 
   // Defined for text questions,
   // and for select questions with "other" option
