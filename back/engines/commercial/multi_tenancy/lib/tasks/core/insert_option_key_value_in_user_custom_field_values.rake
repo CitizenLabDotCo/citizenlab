@@ -1,14 +1,13 @@
 # This rake task is designed specifically to insert custom_field key: custom_field_option key value pairs
-# into the user.custom_field_values, if given a value for the user that matches (after sanitization) the
-# existing respective custom_field_option multiloc value.
+# into the user.custom_field_values, if given a value for the user matches (after sanitization) an
+# existing related custom_field_option multiloc value.
 # The task is designed only for single-locale tenants.
 #
 # The planned usage is for re-inserting values after a custom_field of a text registration question has been removed
-# and replaced with a single-select option question.
+# and replaced with a single-select option question. Typically, this would be used for postcode-like values.
 #
 # The task assumes that the values have been exported from the database, probably before the related custom_field was
 # deleted, which would result in the loss of the respective data from the user.custom_field_values.
-# This commonly happens when a postcode text-input field is replaced with a postcode single-select field.
 #
 # The task always uses the first locale in the core locales list as the locale for the custom_field_option titles.
 # This will probably work even on multi-locale tenants when the options are postcode-like values, but care should
