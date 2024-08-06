@@ -33,7 +33,7 @@ module IdFakeSso
     end
 
     def ui_method_name
-      "Fake SSO"
+      'Fake SSO'
     end
   end
 end

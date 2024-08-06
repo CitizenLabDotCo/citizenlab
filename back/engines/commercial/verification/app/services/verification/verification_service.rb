@@ -121,7 +121,7 @@ module Verification
       locales = AppConfiguration.instance.settings('core', 'locales')
       attributes = if method.respond_to?(:locked_attributes)
         method.locked_attributes.filter_map do |code|
-          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code.to_s}", locales: locales)
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
         end
       else
         []

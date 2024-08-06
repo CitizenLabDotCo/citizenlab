@@ -208,16 +208,15 @@ describe Verification::VerificationService do
       metadata = service.action_metadata
       expect(metadata[:name]).to eq 'Fake SSO'
       expect(metadata[:attributes]).to match_array [
-        {"en"=>"First name(s)", "fr-FR"=>"Prénom(s)", "nl-NL"=>"Voornamen"},
-        {"en"=>"Last name", "fr-FR"=>"Nom de famille", "nl-NL"=>"Achternaam"}
+        { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
+        { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
       ]
       expect(metadata[:locked_custom_fields]).to match_array [
-        {"en"=>"gender"}, {"en"=>"birthyear"}
+        { 'en' => 'gender' }, { 'en' => 'birthyear' }
       ]
       expect(metadata[:other_custom_fields]).to match_array [
-        {"en"=>"gender"}, {"en"=>"birthyear"}
+        { 'en' => 'gender' }, { 'en' => 'birthyear' }
       ]
     end
-
   end
 end
