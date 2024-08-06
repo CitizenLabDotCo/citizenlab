@@ -6,18 +6,10 @@ describe Permissions::PermissionsCustomFieldsService do
   let(:service) { described_class.new }
 
   before do
-    @birthyear_field = create(:custom_field_birthyear, enabled: true, required: false)
+    @domicile_field = create(:custom_field_domicile, enabled: true, required: false)
     @gender_field = create(:custom_field_gender, enabled: false, required: false)
     SettingsService.new.activate_feature! 'user_confirmation'
-
-    configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings['verification'] = {
-      allowed: true,
-      enabled: true,
-      verification_methods: [{ name: 'bogus' }]
-    }
-    configuration.save!
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
   end
 
   describe '#fields_for_permission' do
@@ -28,7 +20,7 @@ describe Permissions::PermissionsCustomFieldsService do
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0]
         expect(fields.pluck(:required)).to eq [false]
-        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile]
       end
     end
 
@@ -40,7 +32,7 @@ describe Permissions::PermissionsCustomFieldsService do
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [true, false]
-        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
       end
 
       it 'sets the field to required and reorders if the permissions_custom_field is already there but not required' do
@@ -51,14 +43,14 @@ describe Permissions::PermissionsCustomFieldsService do
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [false, false]
-        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[birthyear gender]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
 
         # check has changed after enforcing restrictions
         permission.update!(permitted_by: 'verified')
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
         expect(fields.pluck(:required)).to eq [true, false]
-        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender birthyear]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
       end
     end
   end
