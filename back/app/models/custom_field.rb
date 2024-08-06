@@ -27,6 +27,7 @@
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
 #  random_option_ordering :boolean          default(FALSE), not null
+#  page_layout            :string
 #
 # Indexes
 #
@@ -51,7 +52,8 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
-    multiselect multiselect_image number page point line polygon select select_image text text_multiloc topic_ids section
+    multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
+    topic_ids section
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -59,6 +61,7 @@ class CustomField < ApplicationRecord
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
+  PAGE_LAYOUTS = %w[default map].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -78,6 +81,8 @@ class CustomField < ApplicationRecord
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
+  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
+  validates :page_layout, absence: true, unless: :page?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -131,7 +136,7 @@ class CustomField < ApplicationRecord
   end
 
   def file_upload?
-    input_type == 'file_upload'
+    input_type == 'file_upload' || input_type == 'shapefile_upload'
   end
 
   def page?
@@ -212,6 +217,8 @@ class CustomField < ApplicationRecord
       visitor.visit_select self
     when 'select_image'
       visitor.visit_select_image self
+    when 'shapefile_upload'
+      visitor.visit_shapefile_upload self
     when 'text'
       visitor.visit_text self
     when 'text_multiloc'

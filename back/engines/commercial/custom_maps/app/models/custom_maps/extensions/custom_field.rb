@@ -9,7 +9,7 @@ module CustomMaps
         base.has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable, dependent: :destroy
       end
       GEOGRAPHIC_INPUT_TYPES = %w[point line polygon].freeze
-      MAP_CONFIG_INPUT_TYPES = GEOGRAPHIC_INPUT_TYPES # This will soon also include input_type: 'page'
+      MAP_CONFIG_INPUT_TYPES = GEOGRAPHIC_INPUT_TYPES + ['page']
 
       def geographic_input?
         GEOGRAPHIC_INPUT_TYPES.include? input_type

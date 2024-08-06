@@ -25,6 +25,7 @@ export type ICustomFieldInputType =
   | 'section'
   | 'page'
   | 'file_upload'
+  | 'shapefile_upload'
   | 'title_multiloc'
   | 'html_multiloc'
   | 'files'
@@ -59,6 +60,7 @@ export interface IAttributes {
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
   map_config_id?: string | null;
+  page_layout?: 'default' | 'map' | null;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;

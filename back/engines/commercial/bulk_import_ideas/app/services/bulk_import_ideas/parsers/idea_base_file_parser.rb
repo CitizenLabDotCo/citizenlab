@@ -86,7 +86,7 @@ module BulkImportIdeas::Parsers
     end
 
     def idea_blank?(idea)
-      idea.each do |_field, value|
+      idea.each_value do |value|
         return false if value.present?
       end
       true

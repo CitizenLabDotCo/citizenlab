@@ -68,6 +68,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
   end
 
+  def visit_shapefile_upload(field)
+    visit_file_upload(field)
+  end
+
   def visit_point(field)
     responses_to_geographic_input_type(field)
   end

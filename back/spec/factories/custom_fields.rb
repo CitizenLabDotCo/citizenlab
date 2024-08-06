@@ -156,6 +156,7 @@ FactoryBot.define do
         }
       end
       input_type { 'page' }
+      page_layout { 'default' }
     end
 
     factory :custom_field_section do
@@ -211,6 +212,15 @@ FactoryBot.define do
         }
       end
       input_type { 'file_upload' }
+    end
+
+    factory :custom_field_shapefile_upload do
+      title_multiloc do
+        {
+          'en' => 'Upload a zipfile containing your shapefiles'
+        }
+      end
+      input_type { 'shapefile_upload' }
     end
 
     factory :custom_field_checkbox do

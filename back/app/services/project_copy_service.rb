@@ -165,6 +165,7 @@ class ProjectCopyService < TemplateService
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
         'random_option_ordering' => field.random_option_ordering,
+        'page_layout' => field.page_layout,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -289,8 +290,6 @@ class ProjectCopyService < TemplateService
         'presentation_mode' => phase.presentation_mode,
         'participation_method' => phase.participation_method,
         'posting_enabled' => phase.posting_enabled,
-        'posting_method' => phase.posting_method,
-        'posting_limited_max' => phase.posting_limited_max,
         'commenting_enabled' => phase.commenting_enabled,
         'reacting_enabled' => phase.reacting_enabled,
         'reacting_like_method' => phase.reacting_like_method,
@@ -713,7 +712,7 @@ class ProjectCopyService < TemplateService
 
     followers.map do |follower|
       {
-        'followable_ref' => lookup_ref(follower.followable_id, %i[project]),
+        'followable_ref' => lookup_ref(follower.followable_id, %i[project idea]),
         'user_ref' => lookup_ref(follower.user_id, :user),
         'created_at' => shift_timestamp(follower.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(follower.updated_at, shift_timestamps)&.iso8601

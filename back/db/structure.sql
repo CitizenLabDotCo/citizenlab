@@ -1606,8 +1606,6 @@ CREATE TABLE public.phases (
     voting_min_total integer DEFAULT 0,
     reacting_dislike_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
     reacting_dislike_limited_max integer DEFAULT 10,
-    posting_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    posting_limited_max integer DEFAULT 1,
     allow_anonymous_participation boolean DEFAULT false NOT NULL,
     document_annotation_embed_url character varying,
     voting_method character varying,
@@ -2226,7 +2224,8 @@ CREATE TABLE public.custom_fields (
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
+    random_option_ordering boolean DEFAULT false NOT NULL,
+    page_layout character varying
 );
 
 
@@ -7514,6 +7513,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240612134240'),
 ('202407081751'),
 ('20240722090955'),
-('20240729141927');
+('20240729141927'),
+('20240731181623'),
+('20240731223530');
 
 

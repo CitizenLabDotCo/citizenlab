@@ -18,6 +18,7 @@ import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/Con
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 import messages from './components/messages';
@@ -135,6 +136,20 @@ export function getAdditionalSettings(
         </>
       );
     case 'page':
+      return (
+        <>
+          <PageLayoutSettings
+            field={field}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+          />
+          <FieldGroupSettings locale={platformLocale} field={field} />
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+            field={field}
+          />
+        </>
+      );
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
@@ -230,6 +245,9 @@ const getInputTypeStringKey = (
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'shapefile_upload':
+      translatedStringKey = messages.shapefileUpload;
+      break;
     case 'point':
       translatedStringKey = messages.dropPin;
       break;
@@ -237,7 +255,7 @@ const getInputTypeStringKey = (
       translatedStringKey = messages.drawRoute;
       break;
     case 'polygon':
-      translatedStringKey = messages.drawPolygon;
+      translatedStringKey = messages.drawArea;
       break;
   }
 

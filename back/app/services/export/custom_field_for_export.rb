@@ -26,7 +26,7 @@ module Export
     end
 
     def hyperlink?
-      custom_field.input_type == 'file_upload'
+      custom_field.file_upload?
     end
 
     private

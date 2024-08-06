@@ -46,10 +46,24 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
       },
     });
   }
-  return new WebTileLayer({
+  const webTileLayer = new WebTileLayer({
     urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
     copyright: getTileAttribution(tileProvider || ''),
   });
+
+  if (tileProvider?.includes('maptiler')) {
+    webTileLayer.set('tileInfo.size', 512);
+    webTileLayer.set(
+      'tileInfo.lods',
+      webTileLayer.tileInfo.lods.map((lod) => {
+        lod.resolution = lod.resolution / 2;
+        lod.scale = lod.scale / 2;
+        return lod;
+      })
+    );
+  }
+
+  return webTileLayer;
 };
 
 // getTileAttribution
@@ -289,18 +303,20 @@ type FillSymbolProps = {
   color?: string;
   transparency?: number;
   outlineStyle?: EsriLineStyle;
+  outlineColor?: string;
 };
 
 export const getFillSymbol = ({
   transparency,
   color,
   outlineStyle,
+  outlineColor,
 }: FillSymbolProps) => {
   return new SimpleFillSymbol({
     color: transparentize(transparency || 1.0, color || colors.coolGrey700),
     style: 'diagonal-cross',
     outline: {
-      color: [0, 0, 0, 0.8],
+      color: outlineColor || [0, 0, 0, 0.8],
       width: 2,
       style: outlineStyle || 'dash',
     },
@@ -646,4 +662,18 @@ export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
       layer.renderer = response.renderer;
     });
   }
+};
+
+// goToLayerExtent
+// Description: Zoom to the extent of an Esri layer
+export const goToLayerExtent = (
+  layer: Layer,
+  mapView: MapView,
+  zoomOutFurther?: boolean
+) => {
+  mapView.goTo(layer.fullExtent, { animate: false }).then(() => {
+    if (zoomOutFurther) {
+      mapView.zoom = mapView.zoom - 1;
+    }
+  });
 };

@@ -2,11 +2,6 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    def assign_defaults_for_phase
-      phase.posting_method = 'limited'
-      phase.posting_limited_max = 1
-    end
-
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)
@@ -32,7 +27,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           key: 'page1',
           resource: custom_form,
-          input_type: 'page'
+          input_type: 'page',
+          page_layout: 'default'
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -60,7 +56,8 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point line polygon]
+      %w[page number linear_scale text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon]
     end
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
@@ -119,6 +116,10 @@ module ParticipationMethod
     # we can suppress the heading by returning nil.
     def extra_fields_category_translation_key
       nil
+    end
+
+    def posting_limit
+      1
     end
   end
 end

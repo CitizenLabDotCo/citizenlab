@@ -10,6 +10,7 @@ describe CustomFieldParamsService do
       create(:custom_field_line, key: 'line_field'),
       create(:custom_field_polygon, key: 'polygon_field'),
       create(:custom_field_file_upload, key: 'file_upload_field'),
+      create(:custom_field_shapefile_upload, key: 'shapefile_upload_field'),
       create(:custom_field_html_multiloc, key: 'html_multiloc_field'),
       create(:custom_field_linear_scale, key: 'linear_scale_field')
     ]
@@ -27,6 +28,7 @@ describe CustomFieldParamsService do
         {
           multiselect_field: [],
           file_upload_field: %i[id content name],
+          shapefile_upload_field: %i[id content name],
           html_multiloc_field: CL2_SUPPORTED_LOCALES
         }
       ]

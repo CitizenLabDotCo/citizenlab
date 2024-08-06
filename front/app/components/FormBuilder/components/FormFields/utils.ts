@@ -76,6 +76,8 @@ const getCustomFieldBadgeLabel = (
       return messages.number;
     case 'linear_scale':
       return messages.linearScale;
+    case 'shapefile_upload':
+      return messages.shapefileUpload;
     case 'file_upload':
       return messages.fileUpload;
     case 'point':
@@ -83,7 +85,7 @@ const getCustomFieldBadgeLabel = (
     case 'line':
       return messages.drawRoute;
     case 'polygon':
-      return messages.drawPolygon;
+      return messages.drawArea;
     default:
       return messages.default;
   }

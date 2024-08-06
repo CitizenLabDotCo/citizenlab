@@ -163,6 +163,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.file_upload',
     defaultMessage: 'File upload',
   },
+  shapefile_upload: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.shapefile_upload',
+    defaultMessage: 'Esri shapefile upload',
+  },
   downloadExcelTemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
     defaultMessage: 'Download an excel template',

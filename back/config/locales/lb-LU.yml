@@ -267,6 +267,7 @@ lb:
       submitted_at: 'Erlaabt am'
       tags: 'Tags'
       title: 'Titel'
+      user_data: 'Benotzer Daten'
       votes_count: 'Stëmmen'
   form_builder:
     default_select_field:

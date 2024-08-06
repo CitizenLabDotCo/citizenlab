@@ -25,7 +25,7 @@ class SettingsService
 
   def add_missing_settings(settings, schema)
     res = settings.deep_dup
-    settings.each do |feature, _feature_settings|
+    settings.each_key do |feature|
       required_settings = schema.dig('properties', feature, 'required-settings') || []
       required_settings.each do |setting|
         if settings.dig(feature, setting).nil?
