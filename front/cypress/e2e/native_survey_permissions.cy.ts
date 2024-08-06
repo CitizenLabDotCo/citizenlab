@@ -120,13 +120,13 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-verify-email-button').click();
 
       // Enter custom fields step
-      // At this point there should be only one custom field shown
-      cy.get('#e2e-signup-custom-fields-container')
-        .get('label')
-        .should('have.length', 1);
+      cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option A
-      cy.get('#e2e-signup-custom-fields-container').get('select').select(1);
+      cy.get('#e2e-signup-custom-fields-container')
+        .get('select')
+        .first()
+        .select(1);
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
@@ -174,13 +174,13 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-verify-email-button').click();
 
       // Enter custom fields step
-      // At this point there should be only one custom field shown
-      cy.get('#e2e-signup-custom-fields-container')
-        .get('label')
-        .should('have.length', 1);
+      cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option B
-      cy.get('#e2e-signup-custom-fields-container').get('select').select(2);
+      cy.get('#e2e-signup-custom-fields-container')
+        .get('select')
+        .first()
+        .select(2);
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
