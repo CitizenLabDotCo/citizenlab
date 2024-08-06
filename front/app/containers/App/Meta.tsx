@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet';
+import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -26,6 +27,7 @@ const Meta = () => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { pathname } = useLocation();
 
   if (
     !isNilOrError(locale) &&
@@ -63,32 +65,46 @@ const Meta = () => {
     const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
+    // Show default tags only on the homepage and backoffice.
+    // All other front office pages have their own title and description meta tags.
+    // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
+    // This is necessary because on initial load, Helmet is not overriding them in child pages.
+    const showDefaultTags =
+      pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
+
     return (
       <Helmet>
         <html lang={locale} />
         {blockIndexing && <meta name="robots" content="noindex" />}
-        <title>
-          {`${
-            authUser && authUser.data.attributes.unread_notifications
-              ? `(${authUser.data.attributes.unread_notifications}) `
-              : ''
-          }
-            ${metaTitle}`}
-        </title>
         {/* https://github.com/nfl/react-helmet/issues/279 href comes first! */}
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
-        <meta name="title" content={metaTitle} />
-        <meta name="description" content={metaDescription} />
+
+        {showDefaultTags && (
+          <title>
+            {`${
+              authUser && authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
+                : ''
+            } ${metaTitle}`}
+          </title>
+        )}
+        {showDefaultTags && <meta name="title" content={metaTitle} />}
+        {showDefaultTags && <meta property="og:title" content={metaTitle} />}
+        {showDefaultTags && (
+          <meta name="description" content={metaDescription} />
+        )}
+        {showDefaultTags && (
+          <meta property="og:description" content={metaDescription} />
+        )}
+
         {googleSearchConsoleMetaAttribute && (
           <meta
             name="google-site-verification"
             content={googleSearchConsoleMetaAttribute}
           />
         )}
-        <meta property="og:title" content={metaTitle} />
         <meta property="og:type" content="website" />
-        <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={headerBg} />
         <meta
           property="og:image:width"
