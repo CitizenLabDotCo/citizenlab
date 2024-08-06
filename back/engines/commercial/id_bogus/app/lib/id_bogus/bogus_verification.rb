@@ -59,9 +59,5 @@ module IdBogus
     def locked_custom_fields
       [:gender]
     end
-
-    def allowed_on_action?
-      false
-    end
   end
 end

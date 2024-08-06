@@ -66,13 +66,5 @@ module IdIdCardLookup
         uid: IdCardService.new.normalize(card_id)
       }
     end
-
-    def allowed_on_action?
-      false
-    end
-
-    def ui_method_name
-      config[:ui_method_name]
-    end
   end
 end

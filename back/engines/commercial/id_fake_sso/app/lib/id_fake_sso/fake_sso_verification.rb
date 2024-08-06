@@ -24,11 +24,19 @@ module IdFakeSso
       %i[first_name last_name]
     end
 
+    def other_attributes
+      %i[email]
+    end
+
     def locked_custom_fields
       %i[gender birthyear]
     end
 
-    def allowed_on_action?
+    def other_custom_fields
+      []
+    end
+
+    def enabled_on_action?
       true
     end
 

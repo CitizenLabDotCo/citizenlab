@@ -133,13 +133,5 @@ module IdCriipto
     def updateable_user_attrs
       super + %i[custom_field_values birthyear]
     end
-
-    def allowed_on_action?
-      false
-    end
-
-    def ui_method_name
-      config[:ui_method_name]
-    end
   end
 end

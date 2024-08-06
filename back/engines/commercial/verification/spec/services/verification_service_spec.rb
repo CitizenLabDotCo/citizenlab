@@ -199,22 +199,22 @@ describe Verification::VerificationService do
       create(:custom_field_birthyear)
 
       configuration = AppConfiguration.instance
-      settings = configuration.settings
-      settings['verification']['verification_methods'] << { name: 'fake_sso' }
+      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso' }
       configuration.save!
 
       metadata = service.action_metadata
       expect(metadata[:name]).to eq 'Fake SSO'
-      expect(metadata[:attributes]).to match_array [
+      expect(metadata[:locked_attributes]).to match_array [
         { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
         { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
+      ]
+      expect(metadata[:other_attributes]).to match_array [
+        { 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' }
       ]
       expect(metadata[:locked_custom_fields]).to match_array [
         { 'en' => 'gender' }, { 'en' => 'birthyear' }
       ]
-      expect(metadata[:other_custom_fields]).to match_array [
-        { 'en' => 'gender' }, { 'en' => 'birthyear' }
-      ]
+      expect(metadata[:other_custom_fields]).to be_empty
     end
   end
 end

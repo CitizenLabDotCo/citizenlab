@@ -38,9 +38,9 @@ module Verification
     end
 
     # Not all verification methods are allowed at a permission/action level
-    def first_method_allowed_on_action
+    def first_method_enabled_on_action
       active_methods(AppConfiguration.instance).find do |method|
-        method.respond_to?(:allowed_on_action?) && method.allowed_on_action?
+        method.respond_to?(:enabled_on_action?) && method.enabled_on_action?
       end
     end
 
@@ -105,21 +105,17 @@ module Verification
     end
 
     # Return meta data for use in permission actions
-    def action_metadata
-      method = first_method_allowed_on_action
-      return { allowed: false } unless method
+    def action_metadata(method: nil)
+      method ||= first_method_enabled_on_action
+      return { allowed: false } unless method&.enabled_on_action?
 
       name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
 
-      custom_fields = if method.respond_to?(:locked_custom_fields)
-        method.locked_custom_fields.filter_map { |field_code| CustomField.find_by(code: field_code.to_s)&.title_multiloc }
-      else
-        []
-      end
-
+      # Attributes
       multiloc_service = MultilocService.new
       locales = AppConfiguration.instance.settings('core', 'locales')
-      attributes = if method.respond_to?(:locked_attributes)
+
+      locked_attributes = if method.respond_to?(:locked_attributes)
         method.locked_attributes.filter_map do |code|
           multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
         end
@@ -127,12 +123,35 @@ module Verification
         []
       end
 
+      other_attributes = if method.respond_to?(:other_attributes)
+        method.other_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
+        end
+      else
+        []
+      end
+
+      # Custom fields
+      custom_fields = CustomField.registration
+      locked_custom_fields = if method.respond_to?(:locked_custom_fields)
+        method.locked_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
+      other_custom_fields = if method.respond_to?(:other_custom_fields)
+        method.other_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
       {
         allowed: true,
         name: name,
-        attributes: attributes,
-        locked_custom_fields: custom_fields,
-        other_custom_fields: custom_fields
+        locked_attributes: locked_attributes,
+        other_attributes: other_attributes,
+        locked_custom_fields: locked_custom_fields,
+        other_custom_fields: other_custom_fields
       }
     end
 

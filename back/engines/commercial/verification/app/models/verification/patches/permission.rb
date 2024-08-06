@@ -17,7 +17,7 @@ module Verification
           private
 
           def validate_verified_permitted_by
-            return unless permitted_by == 'verified' && VerificationService.new.first_method_allowed_on_action.nil?
+            return unless permitted_by == 'verified' && VerificationService.new.first_method_enabled_on_action.nil?
 
             errors.add(
               :permitted_by,
