@@ -2,44 +2,30 @@ import React from 'react';
 
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
+import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 
 import ActionForm from 'components/admin/ActionForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-import { HandlePermissionChangeProps } from './typings';
 import { getPermissionActionSectionSubtitle } from './utils';
 
 type Props = {
   postType: 'defaultInput' | 'nativeSurvey';
-  projectId: string;
-  permissions: IPhasePermissionData[];
-  phaseId: string | null;
-  onChange: ({
-    permission,
-    permittedBy,
-    groupIds,
-    globalCustomFields,
-  }: HandlePermissionChangeProps) => void;
+  phaseId: string;
 };
 
-const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
-  const handlePermissionChange =
-    (permission: IPhasePermissionData) =>
-    (permittedBy: PermittedBy, groupIds: string[]) => {
-      onChange({
-        permission,
-        permittedBy,
-        groupIds,
-      });
-    };
-
+const ActionForms = ({ postType, phaseId }: Props) => {
+  const { data: permissions } = usePhasePermissions({ phaseId });
+  const { mutate: updatePhasePermission } = useUpdatePhasePermission();
   const { mutate: resetPhasePermission } = useResetPhasePermission();
 
-  if (permissions.length === 0) {
+  if (!permissions) return null;
+
+  if (permissions.data.length === 0) {
     return (
       <p>
         <FormattedMessage {...messages.noActionsCanBeTakenInThisProject} />
@@ -47,13 +33,11 @@ const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
     );
   }
 
-  if (!phaseId) return null;
-
   return (
     <>
-      {permissions.map((permission, index) => {
+      {permissions.data.map((permission, index) => {
         const permissionAction = permission.attributes.action;
-        const last = index === permissions.length - 1;
+        const last = index === permissions.data.length - 1;
 
         return (
           <Box key={permission.id} mb={last ? '0px' : '60px'}>
@@ -70,7 +54,17 @@ const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
-              onChange={handlePermissionChange(permission)}
+              onChange={(permittedBy, groupIds) =>
+                updatePhasePermission({
+                  permissionId: permission.id,
+                  phaseId,
+                  action: permissionAction,
+                  permission: {
+                    permitted_by: permittedBy,
+                    group_ids: groupIds,
+                  },
+                })
+              }
               onReset={() =>
                 resetPhasePermission({
                   permissionId: permission.id,

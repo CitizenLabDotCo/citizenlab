@@ -4,8 +4,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IGlobalPermissionData } from 'api/permissions/types';
 import useResetPermission from 'api/permissions/useResetPermission';
-
-import { HandlePermissionChangeProps } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/typings';
+import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
 import ActionForm from 'components/admin/ActionForm';
 
@@ -13,15 +12,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   permissions: IGlobalPermissionData[];
-  onChange: ({
-    permission,
-    permittedBy,
-    groupIds,
-    globalCustomFields,
-  }: HandlePermissionChangeProps) => void;
 }
 
-const ActionForms = ({ permissions, onChange }: Props) => {
+const ActionForms = ({ permissions }: Props) => {
+  const { mutate: updatePermission } = useUpdatePermission();
   const { mutate: resetPermission } = useResetPermission();
 
   return (
@@ -33,18 +27,26 @@ const ActionForms = ({ permissions, onChange }: Props) => {
         return (
           <Box key={permission.id} mb={last ? '0px' : '60px'}>
             <Title variant="h3" color="primary">
+              {/* TODO!!! */}
               <FormattedMessage
-                {...getPermissionActionSectionSubtitle({
-                  permissionAction,
-                  postType,
-                })}
+              // {...getPermissionActionSectionSubtitle({
+              //   permissionAction,
+              //   postType,
+              // })}
               />
             </Title>
             <ActionForm
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
-              onChange={onChange}
+              onChange={(permittedBy, groupIds) =>
+                updatePermission({
+                  id: permission.id,
+                  action: permission.attributes.action,
+                  permitted_by: permittedBy,
+                  group_ids: groupIds,
+                })
+              }
               onReset={() =>
                 resetPermission({
                   action: permissionAction,

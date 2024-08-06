@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from 'containers/Admin/projects/project/permissions/components/PhasePermissions/messages';
 
@@ -17,9 +16,8 @@ interface Props {
 
 const Timeline = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
-  const { data: project } = useProjectById(projectId);
 
-  if (!phases || !project) {
+  if (!phases) {
     return null;
   }
 
@@ -28,12 +26,7 @@ const Timeline = ({ projectId }: Props) => {
       {phases.data &&
         phases.data.length > 0 &&
         phases.data.map((phase, i) => (
-          <PhasePermissions
-            project={project.data}
-            phase={phase}
-            key={phase.id}
-            phaseNumber={i + 1}
-          />
+          <PhasePermissions phase={phase} key={phase.id} phaseNumber={i + 1} />
         ))}
       {!phases.data ||
         (phases.data.length < 1 && (
