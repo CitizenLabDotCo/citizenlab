@@ -4,6 +4,8 @@ require 'csv'
 describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
 
+  after { Rake::Task['cl2_back:insert_option_key_in_user_custom_field_values'].reenable }
+
   let(:task) { Rake::Task['cl2_back:insert_option_key_in_user_custom_field_values'] }
 
   let(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_custom_field_values.csv') }
@@ -35,7 +37,7 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
     expect(csv_data[1]['value']).to eq('1234ab')
     expect(csv_data[2]['value']).to eq('1234 a  B')
 
-    task.invoke(csv, 'example.org', custom_field.id, 'execute')
+    task.invoke('execute', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[0]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option1.key)
     expect(User.find(csv_data[1]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option1.key)
@@ -43,7 +45,7 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
   end
 
   it 'merges inserted key-value pairs into existing custom_field_values hash' do
-    task.invoke(csv, 'example.org', custom_field.id, 'execute')
+    task.invoke('execute', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[0]['id']).custom_field_values['unrelated_key']).to eq('some_value')
   end
@@ -51,7 +53,7 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
   it 'does not insert anything when sanitized given value does not match an option' do
     expect(csv_data[3]['value']).to eq('not a match')
 
-    task.invoke(csv, 'example.org', custom_field.id, 'execute')
+    task.invoke('execute', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[3]['id']).custom_field_values[custom_field.key]).to be_nil
   end
@@ -60,7 +62,7 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
     expect(csv_data[4]['value']).to be_nil
     expect(User.find(csv_data[4]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option1.key)
 
-    task.invoke(csv, 'example.org', custom_field.id, 'execute')
+    task.invoke('execute', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[4]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option1.key)
   end
@@ -69,26 +71,13 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
     expect(csv_data[5]['value']).to eq('1234AB')
     expect(User.find(csv_data[5]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option2.key)
 
-    task.invoke(csv, 'example.org', custom_field.id, 'execute')
+    task.invoke('execute', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[5]['id']).custom_field_values[custom_field.key]).to eq(custom_field_option2.key)
   end
 
-  it "does nothing if the 4th argument is not 'execute'" do
-    task.invoke(csv, 'example.org', custom_field.id, 'dry_run')
-
-    expect(User.find(csv_data[0]['id']).custom_field_values).to eq({ 'unrelated_key' => 'some_value' })
-    expect(User.find(csv_data[1]['id']).custom_field_values).to eq({})
-    expect(User.find(csv_data[2]['id']).custom_field_values).to eq({})
-    expect(User.find(csv_data[3]['id']).custom_field_values).to eq({})
-    expect(User.find(csv_data[4]['id']).custom_field_values)
-      .to eq({ custom_field.key.to_s => custom_field_option1.key })
-    expect(User.find(csv_data[5]['id']).custom_field_values)
-      .to eq({ custom_field.key.to_s => custom_field_option2.key })
-  end
-
-  it 'does nothing if there is no 4th argument' do
-    task.invoke(csv, 'example.org', custom_field.id)
+  it "does nothing if the 1st argument is not 'execute'" do
+    task.invoke('dry_run', csv, 'example.org', custom_field.id)
 
     expect(User.find(csv_data[0]['id']).custom_field_values).to eq({ 'unrelated_key' => 'some_value' })
     expect(User.find(csv_data[1]['id']).custom_field_values).to eq({})
@@ -101,7 +90,7 @@ describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubo
   end
 
   it 'does nothing if the custom_field does not exist' do
-    task.invoke(csv, 'example.org', 'not_a_custom_field_id', 'execute')
+    task.invoke('execute', csv, 'example.org', 'not_a_custom_field_id')
 
     expect(User.find(csv_data[0]['id']).custom_field_values).to eq({ 'unrelated_key' => 'some_value' })
     expect(User.find(csv_data[1]['id']).custom_field_values).to eq({})
