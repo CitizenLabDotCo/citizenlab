@@ -23,7 +23,8 @@ namespace :cl2_back do
 
     if custom_field.nil?
       puts "ERROR: Couldn't find custom_field with id #{args[:custom_field_id]}"
-      return
+      next
+
     end
 
     options = custom_field.options
@@ -50,6 +51,8 @@ namespace :cl2_back do
             user.update!(custom_field_values: cfv)
             count += 1
           end
+        else
+          puts "No option matched to value '#{d['value']}' for user.id #{user.id}."
         end
       end
     end
