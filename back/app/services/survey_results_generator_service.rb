@@ -31,7 +31,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
       .map do |response|
-        { response: response.value }
+        { answer: response.value }
       end
     response_count = responses.size
 
