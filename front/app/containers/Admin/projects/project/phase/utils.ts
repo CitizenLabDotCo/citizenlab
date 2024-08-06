@@ -1,7 +1,10 @@
 import { FormatMessage } from 'typings';
 
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
-import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
+import {
+  IPhasePermissionAction,
+  IPhasePermissionData,
+  PermittedBy,
+} from 'api/phase_permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
