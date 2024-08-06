@@ -23,7 +23,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
   });
 
   const { mutate: reorderPermissionsCustomField } =
-    useReorderPermissionsCustomField();
+    useReorderPermissionsCustomField({ phaseId, action });
 
   if (permissionFields && permissionFields.data.length === 0) {
     return null;
