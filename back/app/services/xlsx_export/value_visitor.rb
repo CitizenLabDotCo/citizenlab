@@ -75,15 +75,18 @@ module XlsxExport
     end
 
     def visit_point(field)
+      value = value_for(field)
+      return '' if value.blank?
+
       JSON.generate(value_for(field))
     end
 
     def visit_line(field)
-      JSON.generate(value_for(field))
+      visit_point(field)
     end
 
     def visit_polygon(field)
-      JSON.generate(value_for(field))
+      visit_point(field)
     end
 
     def visit_page(_field)
