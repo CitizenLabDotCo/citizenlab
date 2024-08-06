@@ -13,7 +13,7 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil)
-      project_visible_disabled_reason || super
+      project_visible_disabled_reason || project_archived_disabled_reason || super
     end
 
     # Future enabled phases
@@ -104,6 +104,12 @@ module Permissions
          (project&.visible_to == 'groups' && project.groups && !user&.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
+    end
+
+    def project_archived_disabled_reason
+      return unless project.admin_publication.archived?
+
+      PHASE_DENIED_REASONS[:project_inactive]
     end
   end
 end

@@ -581,13 +581,13 @@ describe Permissions::ProjectPermissionsService do
     context 'when the timeline is over' do
       let(:project) { create(:project_with_past_phases) }
 
-      it "returns 'project_inactive'" do
-        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      it "returns nil - attending is allowed even though the phase is over" do
+        expect(service.denied_reason_for_action('attending_event')).to be_nil
       end
     end
 
     context 'when the project is archived' do
-      let(:project) { create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
 
       it "returns 'project_inactive'" do
         expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
