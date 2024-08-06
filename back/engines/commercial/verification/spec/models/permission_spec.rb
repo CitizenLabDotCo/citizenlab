@@ -19,6 +19,24 @@ RSpec.describe Permission do
         expect(permission.global_custom_fields).to be_truthy
       end
     end
+
+    describe 'verification_expiry' do
+      it 'can set the verification_expiry when permitted_by is "verified"' do
+        permission = create(:permission, :by_verified, verification_expiry: 1.day)
+        expect(permission.verification_expiry).to eq(1.day)
+      end
+
+      it 'cannot set the verification_expiry when permitted_by is not "verified"' do
+        expect { create(:permission, :by_users, verification_expiry: 1.day) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not cause a problem if set and permitted_by is changed' do
+        permission = create(:permission, :by_verified, verification_expiry: 1.day)
+        permission.update!(permitted_by: 'users')
+        expect(permission.verification_expiry).to eq(1.day)
+      end
+    end
+
   end
 
   context 'verification not enabled for any actions' do
