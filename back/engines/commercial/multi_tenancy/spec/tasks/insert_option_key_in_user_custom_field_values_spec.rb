@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'csv'
 
-describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do
+describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
 
   let(:task) { Rake::Task['cl2_back:insert_option_key_in_user_custom_field_values'] }
