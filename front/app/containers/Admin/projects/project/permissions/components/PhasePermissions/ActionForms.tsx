@@ -3,6 +3,7 @@ import React from 'react';
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
+import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 
 import ActionForm from 'components/admin/ActionForm';
 
@@ -16,7 +17,7 @@ type Props = {
   postType: 'defaultInput' | 'nativeSurvey';
   projectId: string;
   permissions: IPhasePermissionData[];
-  phaseId?: string | null;
+  phaseId: string | null;
   onChange: ({
     permission,
     permittedBy,
@@ -35,6 +36,8 @@ const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
         groupIds,
       });
     };
+
+  const { mutate: resetPhasePermission } = useResetPhasePermission();
 
   if (permissions.length === 0) {
     return (
@@ -68,6 +71,13 @@ const ActionForms = ({ permissions, postType, onChange, phaseId }: Props) => {
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
               onChange={handlePermissionChange(permission)}
+              onReset={() =>
+                resetPhasePermission({
+                  permissionId: permission.id,
+                  phaseId,
+                  action: permission.attributes.action,
+                })
+              }
             />
           </Box>
         );

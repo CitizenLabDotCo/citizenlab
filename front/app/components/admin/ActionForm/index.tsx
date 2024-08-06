@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy, IPhasePermissionData } from 'api/phase_permissions/types';
-import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -21,6 +20,7 @@ interface Props {
   permissionData: IPhasePermissionData;
   phaseType: 'defaultInput' | 'nativeSurvey';
   onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
+  onReset: () => void;
 }
 
 const showGroupSelect = (permittedBy: PermittedBy) => {
@@ -33,12 +33,11 @@ const ActionForm = ({
   groupIds,
   phaseType,
   onChange,
+  onReset,
 }: Props) => {
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
     onChange(permittedBy, groupIds);
   };
-
-  const { mutate: resetPermission } = useResetPhasePermission();
 
   const {
     id: permissionId,
@@ -92,17 +91,7 @@ const ActionForm = ({
         </Box>
       )}
       <Box mt="20px" w="100%" display="flex">
-        <Button
-          width="auto"
-          bgColor={colors.primary}
-          onClick={() => {
-            resetPermission({
-              permissionId,
-              phaseId,
-              action,
-            });
-          }}
-        >
+        <Button width="auto" bgColor={colors.primary} onClick={onReset}>
           <FormattedMessage {...messages.resetExtraQuestionsAndGroups} />
         </Button>
       </Box>

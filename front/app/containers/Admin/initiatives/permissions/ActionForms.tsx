@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IGlobalPermissionData } from 'api/permissions/types';
+import useResetPermission from 'api/permissions/useResetPermission';
 
 import { HandlePermissionChangeProps } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/typings';
 
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const ActionForms = ({ permissions, onChange }: Props) => {
+  const { mutate: resetPermission } = useResetPermission();
+
   return (
     <>
       {permissions.map((permission, index) => {
@@ -42,6 +45,12 @@ const ActionForms = ({ permissions, onChange }: Props) => {
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
               phaseType={postType}
               onChange={onChange}
+              onReset={() =>
+                resetPermission({
+                  action: permissionAction,
+                  permissionId: permission.id,
+                })
+              }
             />
           </Box>
         );
