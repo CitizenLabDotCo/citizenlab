@@ -19,7 +19,7 @@ const deletePermissionsCustomField = ({
   ...body
 }: DeletePermissionsCustomField) => {
   return fetcher({
-    path: `/permissions_fields/${id}`,
+    path: `/permissions_custom_fields/${id}`,
     action: 'delete',
     body,
   });

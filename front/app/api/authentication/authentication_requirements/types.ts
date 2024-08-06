@@ -1,5 +1,5 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 

@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
