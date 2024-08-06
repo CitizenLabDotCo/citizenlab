@@ -12,6 +12,7 @@ import {
   colors,
   TooltipContentWrapper,
   Tooltip,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
@@ -284,6 +285,12 @@ const Forms = () => {
                                 <Text my="0px">
                                   {formatMessage(messages.downloadSurvey)}
                                 </Text>
+                                <IconTooltip
+                                  ml="4px"
+                                  content={formatMessage(
+                                    messages.downloadSurveyAsPdfTooltip
+                                  )}
+                                />
                               </Box>
                             </DropdownListItem>
                             <DropdownListItem onClick={downloadExampleFile}>
@@ -297,6 +304,12 @@ const Forms = () => {
                                     messages.downloadExcelTemplate
                                   )}
                                 </Text>
+                                <IconTooltip
+                                  ml="4px"
+                                  content={formatMessage(
+                                    messages.downloadExcelTemplateTooltip
+                                  )}
+                                />
                               </Box>
                             </DropdownListItem>
                           </>

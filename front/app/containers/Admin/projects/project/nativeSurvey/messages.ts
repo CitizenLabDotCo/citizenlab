@@ -33,6 +33,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
     defaultMessage: 'Download survey as pdf',
   },
+  downloadSurveyAsPdfTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurveyAsPdfTooltip',
+    defaultMessage:
+      'Survey PDFs will not include any mapping input questions as these are not supported at this time.',
+  },
+  downloadExcelTemplateTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip',
+    defaultMessage:
+      'Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.',
+  },
   informationText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText3',
     defaultMessage:
