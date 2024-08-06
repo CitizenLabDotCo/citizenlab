@@ -7,8 +7,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { Action } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -19,7 +19,7 @@ import { VISUALIZATION_STEPS } from './utils';
 interface Props {
   permittedBy: SupportedPermittedBy;
   phaseId?: string;
-  action: IPhasePermissionAction;
+  action: Action;
 }
 
 const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {

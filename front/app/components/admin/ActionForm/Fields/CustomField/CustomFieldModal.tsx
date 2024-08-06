@@ -3,9 +3,9 @@ import React from 'react';
 import { Box, Select, Title } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import Modal from 'components/UI/Modal';
 
@@ -17,7 +17,7 @@ interface Props {
   phaseId?: string;
   field: IPermissionsCustomFieldData;
   fieldName: string;
-  action: IPhasePermissionAction;
+  action: Action;
   opened: boolean;
   onClose: () => void;
 }

@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
-import { PermittedBy, IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
+import { PermittedBy } from 'api/phase_permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -17,7 +18,7 @@ import messages from './messages';
 interface Props {
   phaseId?: string;
   groupIds?: string[];
-  permissionData: IPhasePermissionData;
+  permissionData: IPermissionData;
   phaseType: 'defaultInput' | 'nativeSurvey';
   onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
   onReset: () => void;

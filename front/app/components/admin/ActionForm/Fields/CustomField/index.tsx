@@ -8,9 +8,9 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
+import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -23,7 +23,7 @@ import CustomFieldModal from './CustomFieldModal';
 interface Props {
   phaseId?: string;
   field: IPermissionsCustomFieldData;
-  action: IPhasePermissionAction;
+  action: Action;
 }
 
 const CustomField = ({ field, phaseId, action }: Props) => {

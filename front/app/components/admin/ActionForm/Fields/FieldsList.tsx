@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
@@ -13,7 +13,7 @@ import CustomField from './CustomField';
 
 interface Props {
   phaseId?: string;
-  action: IPhasePermissionAction;
+  action: Action;
 }
 
 const FieldsList = ({ phaseId, action }: Props) => {

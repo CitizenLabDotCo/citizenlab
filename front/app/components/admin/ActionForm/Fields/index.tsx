@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { Title, Box, Button } from '@citizenlab/cl2-component-library';
 
+import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -14,7 +14,7 @@ import messages from './messages';
 
 interface Props {
   phaseId?: string;
-  action: IPhasePermissionAction;
+  action: Action;
 }
 
 const Fields = ({ phaseId, action }: Props) => {
