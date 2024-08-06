@@ -12,12 +12,12 @@ import {
 
 const updatePermissionsCustomField = ({
   id,
-  required,
+  ...body
 }: IPermissionCustomFieldUpdate) =>
   fetcher<IPermissionsCustomField>({
     path: `/permissions_custom_fields/${id}`,
     action: 'patch',
-    body: { required },
+    body,
   });
 
 const useUpdatePermissionsCustomField = ({
