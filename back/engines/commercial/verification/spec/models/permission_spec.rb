@@ -4,12 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Permission do
   context 'verification enabled for an action' do
-    before do
-      configuration = AppConfiguration.instance
-      settings = configuration.settings
-      settings['verification'] = { allowed: true, enabled: true, verification_methods: [{ name: 'fake_sso' }] }
-      configuration.save!
-    end
+    before { SettingsService.new.activate_feature!('verification', additional_settings: { verification_methods: [{ name: 'fake_sso' }] }) }
 
     describe 'permitted_by' do
       it 'can set the verified permitted_by' do
