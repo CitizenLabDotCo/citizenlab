@@ -5,12 +5,11 @@ import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
-
-import { OnboardingType } from 'containers/Authentication/steps/Onboarding/TopicsAndAreas';
 
 import { trackEventByName } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';

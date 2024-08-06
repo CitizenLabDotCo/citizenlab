@@ -2,12 +2,12 @@ import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import signOut from 'api/authentication/sign_in_out/signOut';
+import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { OnboardingType } from 'containers/Authentication/steps/Onboarding/TopicsAndAreas';
 import { GetRequirements } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
