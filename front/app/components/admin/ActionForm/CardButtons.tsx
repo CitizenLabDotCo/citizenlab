@@ -16,12 +16,12 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  isSurveyAction: boolean;
+  showAnyone: boolean;
   permittedBy: PermittedBy;
   onUpdate: (permittedBy: PermittedBy) => void;
 }
 
-const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
+const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
@@ -32,7 +32,7 @@ const CardButtons = ({ isSurveyAction, permittedBy, onUpdate }: Props) => {
 
   return (
     <>
-      {isSurveyAction && (
+      {showAnyone && (
         <Box>
           <CardButton
             id="e2e-permission-anyone"

@@ -78,7 +78,7 @@ const ActionForm = ({
       {permittedBy !== 'admins_moderators' && (
         <Box display="flex" gap="16px">
           <CardButtons
-            isSurveyAction={isSurveyAction}
+            showAnyone={isSurveyAction}
             permittedBy={permittedBy}
             onUpdate={handlePermittedByUpdate}
           />
