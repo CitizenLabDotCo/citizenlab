@@ -69,7 +69,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   useObserveEvent('eventAttendance', handleEventAttendanceEvent);
 
-  // NOTE: If the project does not have a current phase then users cannot register for events
   if (!project) return null;
 
   const { enabled, disabled_reason } =
