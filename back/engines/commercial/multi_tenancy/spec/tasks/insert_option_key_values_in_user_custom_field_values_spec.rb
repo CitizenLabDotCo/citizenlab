@@ -1,12 +1,12 @@
 require 'rails_helper'
 require 'csv'
 
-describe 'rake cl2_back:insert_option_key_in_user_custom_field_values' do # rubocop:disable RSpec/DescribeClass
+describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
 
-  after { Rake::Task['cl2_back:insert_option_key_in_user_custom_field_values'].reenable }
+  after { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'].reenable }
 
-  let(:task) { Rake::Task['cl2_back:insert_option_key_in_user_custom_field_values'] }
+  let(:task) { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'] }
 
   let(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_custom_field_values.csv') }
   let(:csv_data) { CSV.parse(open(csv).read, headers: true, col_sep: ',', converters: []) }

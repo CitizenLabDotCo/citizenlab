@@ -20,10 +20,10 @@
 # Given a CSV file with the following headers: 'id,value', where id is the User ID and value is the value
 # to be checked against existing custom_field_option values.
 #
-# $ rake cl2_back:insert_option_key_in_user_custom_field_values['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute']
+# $ rake cl2_back:insert_option_key_values_in_user_custom_field_values['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute']
 namespace :cl2_back do
   desc 'Insert option key-value pairs to user custom_field_values hashes.'
-  task :insert_option_key_in_user_custom_field_values, %i[url host custom_field_id execute] => [:environment] do |_t, args|
+  task :insert_option_key_values_in_user_custom_field_values, %i[url host custom_field_id execute] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     custom_field = CustomField.find_by(id: args[:custom_field_id])
 
