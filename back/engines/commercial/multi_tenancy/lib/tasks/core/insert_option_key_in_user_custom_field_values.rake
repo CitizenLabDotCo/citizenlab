@@ -5,16 +5,22 @@
 #
 # The planned usage is for re-inserting values after a custom_field of a text registration question has been removed
 # and replaced with a single-select option question.
+#
 # The task assumes that the values have been exported from the database, probably before the related custom_field was
 # deleted, which would result in the loss of the respective data from the user.custom_field_values.
 # This commonly happens when a postcode text-input field is replaced with a postcode single-select field.
 #
+# The task always uses the first locale in the core locales list as the locale for the custom_field_option titles.
+# This will probably work even on multi-locale tenants when the options are postcode-like values, but care should
+# be taken when using this task on multi-locale tenants, and local testing is recommended.
+#
+# A dry run can be performed by passing anything other than 'execute' as the last argument, or by omitting it.
+#
 # Example:
 # Given a CSV file with the following headers: 'id,value', where id is the User ID and value is the value
 # to be checked against existing custom_field_option values.
-
-# $ rake cl2_back:insert_option_key_in_user_custom_field_values['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute]
-
+#
+# $ rake cl2_back:insert_option_key_in_user_custom_field_values['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute']
 namespace :cl2_back do
   desc 'Insert option key-value pairs to user custom_field_values hashes.'
   task :insert_option_key_in_user_custom_field_values, %i[url host custom_field_id execute] => [:environment] do |_t, args|
