@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Location::Service
+  OK_STATUSES = %w[OK ZERO_RESULTS]
+
   def autocomplete(input, language)
     response = http_get("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=#{CGI.escape(input)}&key=#{api_key}&language=#{language}")
     { results: response['predictions'].pluck('description') }
@@ -28,7 +30,7 @@ class Location::Service
 
   def http_get(url)
     HTTParty.get(url).tap do |response|
-      if !response.success? || response['status'] != 'OK'
+      if !response.success? || OK_STATUSES.exclude?(response['status'])
         ErrorReporter.report(GoogleMapsApiError.new, extra: { url: url, response: response })
       end
     end
