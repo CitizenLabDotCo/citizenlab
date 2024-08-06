@@ -69,7 +69,7 @@ const Meta = () => {
     // All other front office pages have their own title and description meta tags.
     // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
     // This is necessary because on initial load, Helmet is not overriding them in child pages.
-    const showDefaultTags =
+    const showDefaultTitleAndDescTags =
       pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
 
     return (
@@ -80,7 +80,7 @@ const Meta = () => {
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
 
-        {showDefaultTags && (
+        {showDefaultTitleAndDescTags && (
           <title>
             {`${
               authUser && authUser.data.attributes.unread_notifications
@@ -89,12 +89,16 @@ const Meta = () => {
             } ${metaTitle}`}
           </title>
         )}
-        {showDefaultTags && <meta name="title" content={metaTitle} />}
-        {showDefaultTags && <meta property="og:title" content={metaTitle} />}
-        {showDefaultTags && (
+        {showDefaultTitleAndDescTags && (
+          <meta name="title" content={metaTitle} />
+        )}
+        {showDefaultTitleAndDescTags && (
+          <meta property="og:title" content={metaTitle} />
+        )}
+        {showDefaultTitleAndDescTags && (
           <meta name="description" content={metaDescription} />
         )}
-        {showDefaultTags && (
+        {showDefaultTitleAndDescTags && (
           <meta property="og:description" content={metaDescription} />
         )}
 
