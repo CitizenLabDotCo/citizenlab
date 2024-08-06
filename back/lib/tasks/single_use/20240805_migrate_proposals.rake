@@ -30,7 +30,7 @@ def rake_20240805_proposals_statuses_attrs
   multiloc_service = MultilocService.new
   [
     {
-      title_multiloc: multiloc_service.i18n_to_multiloc('idea_statuses.proposed', locales: CL2_SUPPORTED_LOCALES) ,
+      title_multiloc: multiloc_service.i18n_to_multiloc('idea_statuses.proposed', locales: CL2_SUPPORTED_LOCALES),
       ordering: 0,
       code: 'proposed',
       color: '#BEE7EB',
