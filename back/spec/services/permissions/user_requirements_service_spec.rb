@@ -82,9 +82,10 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'when permitted_by is set to everyone_confirmed_email' do
-        let(:permission) { create(:permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: false) }
+        let(:permission) { create(:permission, permitted_by: 'everyone_confirmed_email') }
 
         before do
+          permission.update!(global_custom_fields: false)
           field = CustomField.find_by code: 'birthyear'
           create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
