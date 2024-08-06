@@ -54,8 +54,8 @@ de:
     threshold_reached_description: Schwelle erreicht
     answered: beantwortet
     answered_description: beantwortet
-    ineligible: abgelehnt
-    ineligible_description: abgelehnt
+    ineligible: unzulässig
+    ineligible_description: unzulässig
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
