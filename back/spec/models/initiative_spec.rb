@@ -125,6 +125,7 @@ RSpec.describe Initiative do
     end
   end
 
+  # TODO: clean-up-old-proposals-test
   describe '#expires_at' do
     before do
       allow(Time).to receive(:now).and_return(Time.now)

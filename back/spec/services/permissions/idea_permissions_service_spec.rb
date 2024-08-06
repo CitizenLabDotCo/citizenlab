@@ -79,7 +79,7 @@ describe Permissions::IdeaPermissionsService do
       end
 
       it 'returns `user_not_in_group` commenting is not permitted for the user' do
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        permission.update!(permitted_by: 'users', groups: create_list(:group, 2))
         expect(service.denied_reason_for_action('commenting_idea')).to eq 'user_not_in_group'
       end
 
@@ -164,7 +164,7 @@ describe Permissions::IdeaPermissionsService do
         it "returns 'user_not_in_group' if reacting is not permitted" do
           permission = project.phases.first.permissions.find_by(action: 'reacting_idea')
           permission.update!(
-            permitted_by: 'groups',
+            permitted_by: 'users',
             group_ids: create_list(:group, 2).map(&:id)
           )
           expect(service.denied_reason_for_action('reacting_idea')).to eq 'user_not_in_group'
@@ -304,7 +304,7 @@ describe Permissions::IdeaPermissionsService do
       end
 
       it "returns 'user_not_in_group' if it's in the current phase and reacting is not permitted" do
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        permission.update!(permitted_by: 'users', groups: create_list(:group, 2))
         expect(service.denied_reason_for_reaction_mode('up')).to eq 'user_not_in_group'
         expect(service.denied_reason_for_reaction_mode('down')).to eq 'user_not_in_group'
       end
@@ -349,7 +349,7 @@ describe Permissions::IdeaPermissionsService do
     it 'returns `user_not_in_group` when the idea is in the current phase and voting is not permitted' do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
       permission.update!(
-        permitted_by: 'groups',
+        permitted_by: 'users',
         group_ids: create_list(:group, 2).map(&:id)
       )
       expect(service.denied_reason_for_action('voting')).to eq 'user_not_in_group'
@@ -374,7 +374,6 @@ describe Permissions::IdeaPermissionsService do
   end
 
   describe 'action_descriptors' do
-    # TODO: JS - running an additional query for permissions_custom_fields
     it 'does not run more than 3 queries for 5 ideas in a project with default user permissions' do
       user = create(:user)
       phase = TimelineService.new.current_phase(create(:project_with_current_phase))

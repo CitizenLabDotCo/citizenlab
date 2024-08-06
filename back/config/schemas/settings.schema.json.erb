@@ -1088,6 +1088,18 @@
         }
       },
 
+      "form_mapping": {
+        "type": "object",
+        "title": "Mapping features used in in-platform surveys",
+        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "input_form_custom_fields": {
         "type": "object",
         "title": "Input form builder custom fields",
@@ -1284,18 +1296,6 @@
         "type": "object",
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "verified_actions": {
-        "type": "object",
-        "title": "Verified Actions",
-        "description": "In beta: Allows admins to use the new more flexible verified actions permissions system.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

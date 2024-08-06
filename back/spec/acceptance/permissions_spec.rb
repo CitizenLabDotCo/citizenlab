@@ -112,11 +112,11 @@ resource 'Permissions' do
       end
 
       example 'Get one group permission', document: false do
-        @phase.permissions.first.update!(permitted_by: 'groups')
+        @phase.permissions.first.update!(permitted_by: 'users')
 
         do_request
         expect(status).to eq 200
-        expect(response_data.dig(:attributes, :permitted_by)).to eq 'groups'
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
         expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
         expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
       end
@@ -144,10 +144,10 @@ resource 'Permissions' do
       let(:action) { @phase.permissions.first.action }
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
 
-      context 'permitted_by: groups' do
-        let(:permitted_by) { 'groups' }
+      context 'permitted_by: verified' do
+        let(:permitted_by) { 'verified' }
 
-        example_request 'Update a permission with groups permitted_by' do
+        example_request 'Update a permission with verified permitted_by' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
@@ -199,7 +199,7 @@ resource 'Permissions' do
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { 'reacting_initiative' }
-      let(:permitted_by) { 'groups' }
+      let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
       example_request 'Update a global permission' do

@@ -32,7 +32,7 @@ module MultiTenancy
         end
 
         def self.filter_custom_field_values(custom_field_values, custom_fields)
-          supported_fields = custom_fields.reject { |field| field.input_type == 'file_upload' }
+          supported_fields = custom_fields.reject(&:file_upload?)
           custom_field_values.slice(*supported_fields.map(&:key))
         end
       end

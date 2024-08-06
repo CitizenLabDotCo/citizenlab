@@ -27,73 +27,51 @@ resource 'PermissionsCustomField' do
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: project).id }
 
-    context 'feature flag "verified_actions" is NOT enabled' do
-      example 'List all permissions fields of a permission' do
-        field1, field2 = create_list(:custom_field, 2)
-        [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
-          create(:permissions_custom_field, attributes.merge(permission: permission))
-        end
-
-        do_request
-
-        assert_status 200
-        expect(response_data.size).to eq 2
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, false]
-        expect(response_data.map { |d| d.dig(:relationships, :custom_field) }).to eq([
-          { data: { id: field1.id, type: 'custom_field' } },
-          { data: { id: field2.id, type: 'custom_field' } }
-        ])
-      end
+    before do
+      permission # Create permission
     end
 
-    context 'feature flag "verified_actions" is enabled' do
-      before do
-        SettingsService.new.activate_feature! 'verified_actions'
-        permission # Create permission
-      end
+    example 'List all default permissions fields of a "user" permission' do
+      permission.update!(global_custom_fields: true)
+      custom_field = create(:custom_field_gender, required: false, enabled: true)
 
-      example 'List all default permissions fields of a "user" permission' do
-        permission.update!(global_custom_fields: true)
-        custom_field = create(:custom_field_gender, required: false, enabled: true)
+      do_request
 
-        do_request
+      assert_status 200
+      expect(response_data.size).to eq 1
+      expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [false]
+      expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id]
+      expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+    end
 
-        assert_status 200
-        expect(response_data.size).to eq 1
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [false]
-        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id]
-        expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
-      end
+    example 'List all persisted permissions fields and associated groups of a "user" permission' do
+      permission.update!(global_custom_fields: false)
 
-      example 'List all persisted permissions fields and associated groups of a "user" permission' do
-        permission.update!(global_custom_fields: false)
+      # Permissions field not associated with any group
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_gender))
 
-        # Permissions field not associated with any group
-        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_gender))
+      # Permissions field associated with one group
+      custom_field = create(:custom_field_text, :for_registration, title_multiloc: { en: 'TEST FIELD' }, enabled: true, required: false)
+      associated_group = create(:smart_group, slug: 'used', rules: [
+        { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
+      ])
+      not_used_group = create(:smart_group, slug: 'not-used', rules: [
+        { ruleType: 'custom_field_text', customFieldId: SecureRandom.uuid, predicate: 'is', value: 'xyz' }
+      ])
+      permission.groups << associated_group
+      permission.groups << not_used_group
+      create(:permissions_custom_field, permission: permission, custom_field: custom_field)
 
-        # Permissions field associated with one group
-        custom_field = create(:custom_field_text, :for_registration, title_multiloc: { en: 'TEST FIELD' }, enabled: true, required: false)
-        associated_group = create(:smart_group, slug: 'used', rules: [
-          { ruleType: 'custom_field_text', customFieldId: custom_field.id, predicate: 'is', value: 'abc' }
-        ])
-        not_used_group = create(:smart_group, slug: 'not-used', rules: [
-          { ruleType: 'custom_field_text', customFieldId: SecureRandom.uuid, predicate: 'is', value: 'xyz' }
-        ])
-        permission.groups << associated_group
-        permission.groups << not_used_group
-        create(:permissions_custom_field, permission: permission, custom_field: custom_field)
+      do_request
 
-        do_request
-
-        assert_status 200
-        expect(response_data.size).to eq 2
-        expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
-        expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
-        expect(response_data.first.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
-        expect(response_data.first.dig(:relationships, :groups, :data).count).to eq 1
-        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
-        expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
-      end
+      assert_status 200
+      expect(response_data.size).to eq 2
+      expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
+      expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
+      expect(response_data.first.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+      expect(response_data.first.dig(:relationships, :groups, :data).count).to eq 1
+      expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
+      expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
     end
   end
 
