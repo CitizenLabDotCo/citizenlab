@@ -73,16 +73,3 @@ export const VISUALIZATION_STEPS: Record<
   everyone_confirmed_email: getConfirmedEmailVisualizationSteps,
   verified: getVerifiedVisualiationSteps,
 };
-
-const SUPPORTED_PERMITTED_BY: Set<SupportedPermittedBy> = new Set([
-  'everyone',
-  'users',
-  'everyone_confirmed_email',
-  'verified',
-]);
-
-export const isSupportedPermittedBy = (
-  permittedBy: string
-): permittedBy is SupportedPermittedBy => {
-  return SUPPORTED_PERMITTED_BY.has(permittedBy as any);
-};

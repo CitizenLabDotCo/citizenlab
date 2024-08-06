@@ -5,6 +5,7 @@ import { Title, Box } from '@citizenlab/cl2-component-library';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
+import usePhase from 'api/phases/usePhase';
 
 import ActionForm from 'components/admin/ActionForm';
 
@@ -14,16 +15,21 @@ import messages from './messages';
 import { getPermissionActionSectionSubtitle } from './utils';
 
 type Props = {
-  postType: 'defaultInput' | 'nativeSurvey';
   phaseId: string;
 };
 
-const ActionForms = ({ postType, phaseId }: Props) => {
+const ActionForms = ({ phaseId }: Props) => {
+  const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutate: updatePhasePermission } = useUpdatePhasePermission();
   const { mutate: resetPhasePermission } = useResetPhasePermission();
 
-  if (!permissions) return null;
+  if (!permissions || !phase) return null;
+
+  const postType =
+    phase.data.attributes.participation_method === 'native_survey'
+      ? 'nativeSurvey'
+      : 'defaultInput';
 
   if (permissions.data.length === 0) {
     return (
@@ -53,7 +59,6 @@ const ActionForms = ({ postType, phaseId }: Props) => {
               phaseId={phaseId}
               permissionData={permission}
               groupIds={permission.relationships.groups.data.map((p) => p.id)}
-              phaseType={postType}
               onChange={(permittedBy, groupIds) =>
                 updatePhasePermission({
                   permissionId: permission.id,

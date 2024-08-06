@@ -4,6 +4,7 @@ import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
 import { PermittedBy } from 'api/phase_permissions/types';
+import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -11,7 +12,6 @@ import AdminCollaboratorToggle from './AdminCollaboratorToggle';
 import CardButtons from './CardButtons';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
-import { isSupportedPermittedBy } from './FlowVisualization/utils';
 import GroupSelect from './GroupSelect';
 import messages from './messages';
 
@@ -19,7 +19,6 @@ interface Props {
   phaseId?: string;
   groupIds?: string[];
   permissionData: IPermissionData;
-  phaseType: 'defaultInput' | 'nativeSurvey';
   onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
   onReset: () => void;
 }
@@ -32,10 +31,11 @@ const ActionForm = ({
   phaseId,
   permissionData,
   groupIds,
-  phaseType,
   onChange,
   onReset,
 }: Props) => {
+  const { data: phase } = usePhase(phaseId);
+
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
     onChange(permittedBy, groupIds);
   };
@@ -45,8 +45,10 @@ const ActionForm = ({
     attributes: { permitted_by: permittedBy, action },
   } = permissionData;
 
+  const participation_method = phase?.data.attributes.participation_method;
+
   const isSurveyAction =
-    phaseType === 'nativeSurvey' && action === 'posting_idea';
+    participation_method === 'native_survey' && action === 'posting_idea';
 
   return (
     <form>
@@ -82,7 +84,7 @@ const ActionForm = ({
           />
         </Box>
       )}
-      {isSupportedPermittedBy(permittedBy) && (
+      {permittedBy !== 'admins_moderators' && (
         <Box mt="20px">
           <FlowVisualization
             permittedBy={permittedBy}
