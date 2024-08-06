@@ -1,18 +1,15 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import messages from 'components/admin/ActionsForm/messages';
+import messages from 'containers/Admin/projects/project/permissions/components/ActionForms/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import PhasePermissions from '../../../components/PhasePermissions';
-import PhasePermissionsNew from '../../../components/PhasePermissionsNew';
+import ActionForms from '../../../components/ActionForms';
+import PhaseAccordion from '../../../components/PhaseAccordion';
 
 interface Props {
   projectId: string;
@@ -20,12 +17,8 @@ interface Props {
 
 const Timeline = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
-  const { data: project } = useProjectById(projectId);
-  const isCustomPermittedByEnabled = useFeatureFlag({
-    name: 'verified_actions',
-  });
 
-  if (!phases || !project) {
+  if (!phases) {
     return null;
   }
 
@@ -33,27 +26,25 @@ const Timeline = ({ projectId }: Props) => {
     <Box mb="20px">
       {phases.data &&
         phases.data.length > 0 &&
-        phases.data.map((phase, i) => {
-          if (isCustomPermittedByEnabled) {
-            return (
-              <PhasePermissionsNew
-                project={project.data}
-                phase={phase}
-                key={phase.id}
-                phaseNumber={i + 1}
-              />
-            );
-          }
-
-          return (
-            <PhasePermissions
-              project={project.data}
-              phase={phase}
-              key={phase.id}
-              phaseNumber={i + 1}
-            />
-          );
-        })}
+        phases.data.map((phase, i) => (
+          <PhaseAccordion
+            phaseTitle={phase.attributes.title_multiloc}
+            phaseNumber={i + 1}
+            key={phase.id}
+          >
+            <Box
+              minHeight="100px"
+              display="flex"
+              flex={'1'}
+              flexDirection="column"
+              background={colors.white}
+            >
+              <Box mb="40px">
+                <ActionForms phaseId={phase.id} />
+              </Box>
+            </Box>
+          </PhaseAccordion>
+        ))}
       {!phases.data ||
         (phases.data.length < 1 && (
           <p>

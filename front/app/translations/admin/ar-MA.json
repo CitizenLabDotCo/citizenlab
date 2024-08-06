@@ -1293,7 +1293,6 @@
   "app.containers.admin.import.importInputs": "استيراد مدخلات",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "أي شخص",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "مجموعات مستخدمين محددة",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "جميع المستخدمين",
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "معدل المشاركة",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "إجمالي المشاركين",

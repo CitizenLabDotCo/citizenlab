@@ -1,20 +1,16 @@
 import { FormatMessage } from 'typings';
 
-import { IGroupData } from 'api/groups/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
-import { IPCPermissionData, PermittedBy } from 'api/phase_permissions/types';
-
-import { Localize } from 'hooks/useLocalize';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
+import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import newMessages from '../permissions/components/PhasePermissionsNew/ActionForm/messages';
+import newMessages from '../../../../../components/admin/ActionForm/messages';
 
 import messages from './messages';
 
 export const getPartipationRequirementMessage = (
   permittedBy: PermittedBy,
-  noOfGroups: number,
   formatMessage: FormatMessage
 ) => {
   let participantMessage: MessageDescriptor;
@@ -28,10 +24,6 @@ export const getPartipationRequirementMessage = (
     case 'everyone_confirmed_email':
       participantMessage = messages.usersWithConfirmedEmail;
       break;
-    case 'groups':
-      return formatMessage(messages.groups, {
-        noOfGroups,
-      });
     case 'everyone':
       participantMessage = messages.everyone;
       break;
@@ -43,22 +35,17 @@ export const getPartipationRequirementMessage = (
 };
 
 export const getParticipantMessage = (
-  permissions: IPCPermissionData[] | undefined,
+  permissions: IPhasePermissionData[] | undefined,
   formatMessage: FormatMessage
 ) => {
   if (!permissions?.length) return null;
 
   const {
     attributes: { permitted_by },
-    relationships,
   } = permissions[0];
 
   if (permissions.length === 1) {
-    return getPartipationRequirementMessage(
-      permitted_by,
-      relationships.groups.data.length,
-      formatMessage
-    );
+    return getPartipationRequirementMessage(permitted_by, formatMessage);
   }
 
   return formatMessage(messages.mixedRights);
@@ -85,26 +72,4 @@ export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
     case 'volunteering':
       return messages.volunteering;
   }
-};
-
-export const getGroupMessage = (
-  permission: IPCPermissionData,
-  groups: IGroupData[],
-  localize: Localize,
-  formatMessage: FormatMessage
-) => {
-  if (permission.relationships.groups.data.length === 0) {
-    return formatMessage(messages.noGroups);
-  }
-  const groupIds = permission.relationships.groups.data.map(
-    (group) => group.id
-  );
-  const groupNames = groups
-    ?.filter((group) => groupIds.includes(group.id))
-    .map((group) => localize(group.attributes.title_multiloc));
-  return groupNames.length > 1
-    ? `${groupNames.slice(0, -1).join(', ')} ${formatMessage(
-        messages.and
-      )} ${groupNames.slice(-1)}`
-    : `${formatMessage(messages.only)} ${groupNames[0]}`;
 };

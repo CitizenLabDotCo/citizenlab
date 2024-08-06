@@ -1,8 +1,3 @@
-/* PATCH web_api/v1/permissions_custom_fields/:id
-  {
-    required: boolean
-  } */
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -27,8 +22,6 @@ const updatePermissionsCustomField = ({
 
 const useUpdatePermissionsCustomField = ({
   phaseId,
-  projectId,
-  initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
@@ -42,8 +35,6 @@ const useUpdatePermissionsCustomField = ({
       queryClient.invalidateQueries({
         queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
-          projectId,
-          initiativeContext,
           action,
         }),
       });

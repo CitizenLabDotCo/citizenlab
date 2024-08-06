@@ -1280,7 +1280,6 @@
   "app.containers.admin.import.importInputs": "Import inputs",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Rata de participare",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Total participants",
