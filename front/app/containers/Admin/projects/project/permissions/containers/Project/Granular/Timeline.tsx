@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 
-import messages from 'containers/Admin/projects/project/permissions/components/PhasePermissions/messages';
+import messages from 'containers/Admin/projects/project/permissions/components/ActionForms/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import PhasePermissions from '../../../components/PhasePermissions';
+import ActionForms from '../../../components/ActionForms';
+import PhaseAccordion from '../../../components/PhaseAccordion';
 
 interface Props {
   projectId: string;
@@ -26,7 +27,23 @@ const Timeline = ({ projectId }: Props) => {
       {phases.data &&
         phases.data.length > 0 &&
         phases.data.map((phase, i) => (
-          <PhasePermissions phase={phase} key={phase.id} phaseNumber={i + 1} />
+          <PhaseAccordion
+            phaseTitle={phase.attributes.title_multiloc}
+            phaseNumber={i + 1}
+            key={phase.id}
+          >
+            <Box
+              minHeight="100px"
+              display="flex"
+              flex={'1'}
+              flexDirection="column"
+              background={colors.white}
+            >
+              <Box mb="40px">
+                <ActionForms phaseId={phase.id} />
+              </Box>
+            </Box>
+          </PhaseAccordion>
         ))}
       {!phases.data ||
         (phases.data.length < 1 && (

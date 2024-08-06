@@ -6,7 +6,7 @@ import { IGlobalPermissionData } from 'api/permissions/types';
 import useResetPermission from 'api/permissions/useResetPermission';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
-import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/components/PhasePermissions/utils';
+import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/components/ActionForms/utils';
 
 import ActionForm from 'components/admin/ActionForm';
 

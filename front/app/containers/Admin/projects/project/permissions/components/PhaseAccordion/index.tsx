@@ -7,7 +7,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../containers/Project/Granular/messages';
+import messages from './messages';
 
 interface Props {
   phaseNumber: number;
