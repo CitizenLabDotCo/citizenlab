@@ -1343,7 +1343,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vote",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Voté",
   "app.containers.IdeasShow.proposals.VoteControl.votedText": "Vous serez notifié lorsque cette proposition passera à l'étape suivante. {x, plural, =0 {Il ne reste plus de {xDays}.} one {Il reste {xDays} jour.} other {Il reste {xDays} jours.}}",
-  "app.containers.IdeasShow.proposals.VoteControl.votedTitle": "Votre vote a été soumis !",
+  "app.containers.IdeasShow.proposals.VoteControl.votedTitle": "Votre vote a été enregistré !",
   "app.containers.IdeasShow.proposals.VoteControl.votingNotPermitted1": "Malheureusement, vous ne pouvez pas voter pour cette proposition. Consultez {link} pour en savoir plus à ce sujet.",
   "app.containers.IdeasShow.proposals.VoteControl.xDays": "{x, plural, =0 {jours} one {un jour} other {# jours}}",
   "app.containers.IdeasShow.proposals.VoteControl.xVotes": "{count, plural, =0 {pas de votes} one {1 vote} other {# votes}}",
