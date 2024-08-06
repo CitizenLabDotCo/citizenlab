@@ -92,7 +92,7 @@ export default function useSteps() {
       const response = await getAuthenticationRequirements(
         authenticationContext
       );
-      return response.data.attributes.requirements;
+      return response.data.attributes;
     } catch (e) {
       setError('requirements_fetching_failed');
       throw e;

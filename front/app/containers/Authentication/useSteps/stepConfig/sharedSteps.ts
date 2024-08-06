@@ -19,6 +19,7 @@ import {
 
 import { Step } from './typings';
 import {
+  confirmationRequired,
   requiredCustomFields,
   requiredBuiltInFields,
   askCustomFields,
@@ -72,17 +73,17 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('sign-up:verification');
             return;
           }
 
-          if (askCustomFields(requirements.custom_fields)) {
+          if (askCustomFields(requirements)) {
             setCurrentStep('sign-up:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('sign-up:onboarding');
             return;
           }
@@ -91,17 +92,17 @@ export const sharedSteps = (
         }
 
         if (flow === 'signin') {
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
           }
 
-          if (requiredCustomFields(requirements.custom_fields)) {
+          if (requiredCustomFields(requirements)) {
             setCurrentStep('missing-data:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
@@ -122,10 +123,13 @@ export const sharedSteps = (
           prefilledBuiltInFields: null,
         });
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
 
-        const isLightFlow = requirements.special.password === 'dont_ask';
-        const signedIn = requirements.built_in.email === 'satisfied';
+        const isLightFlow =
+          requirements.authentication.permitted_by ===
+          'everyone_confirmed_email';
+        const signedIn =
+          disabled_reason && disabled_reason !== 'user_not_signed_in';
 
         if (isLightFlow) {
           if (!signedIn) {
@@ -133,14 +137,14 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
         }
 
         if (signedIn) {
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('missing-data:email-confirmation');
             return;
           }
@@ -150,17 +154,17 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
           }
 
-          if (requiredCustomFields(requirements.custom_fields)) {
+          if (requiredCustomFields(requirements)) {
             setCurrentStep('missing-data:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
