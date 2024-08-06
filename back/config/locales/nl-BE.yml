@@ -48,6 +48,14 @@ nl-BE:
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
+    expired: verstreken
+    expired_description: verstreken
+    threshold_reached: drempel bereikt
+    threshold_reached_description: drempel bereikt
+    answered: beantwoord
+    answered_description: beantwoord
+    ineligible: niet in aanmerking
+    ineligible_description: niet in aanmerking
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
