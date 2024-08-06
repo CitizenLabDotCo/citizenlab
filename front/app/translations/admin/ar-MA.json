@@ -1172,7 +1172,6 @@
   "app.containers.AdminPage.groups.permissions.add": "إضافة",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "حذف",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "حذف",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "من يمكنه المساهمة (لكل مرحلة من مراحل المشروع)؟",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "هل تريد حذف هذه المجموعة من المشروع بالتأكيد؟",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "تحديد مجموعة واحدة أو أكثر",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {لا يوجد أعضاء} one {عضو واحد} other {{count} من الأعضاء}}",
