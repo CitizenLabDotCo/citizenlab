@@ -26,6 +26,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_number(field)
+    responses = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { response: response.value }
+      end
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      numberResponses: responses
+    })
+  end
+
   def visit_select(field)
     visit_select_base(field)
   end
