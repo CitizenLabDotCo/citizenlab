@@ -107,7 +107,7 @@ module Verification
     # Return meta data for use in permission actions
     def action_metadata(method: nil)
       method ||= first_method_enabled_on_action
-      return { allowed: false } unless method&.enabled_on_action?
+      return { allowed: false } unless method&.respond_to?(:enabled_on_action?) && method&.enabled_on_action?
 
       name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
 
