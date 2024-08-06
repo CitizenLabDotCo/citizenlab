@@ -22,7 +22,7 @@ import {
   UpdateState,
 } from '../../typings';
 
-import { Step } from './typings';
+import { Step, BuiltInFieldsUpdate } from './typings';
 import {
   askCustomFields,
   confirmationRequired,
@@ -112,6 +112,46 @@ export const signUpFlow = (
           trackEventByName(tracks.signInEmailPasswordFailed);
           throw e;
         }
+      },
+    },
+
+    'sign-up:built-in': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (
+        userId: string,
+        builtInFieldUpdate: BuiltInFieldsUpdate
+      ) => {
+        await updateUser({ userId, ...builtInFieldUpdate });
+        invalidateCacheAfterUpdateUser(queryClient);
+
+        const { requirements } = await getRequirements();
+
+        if (confirmationRequired(requirements)) {
+          setCurrentStep('sign-up:email-confirmation');
+          return;
+        }
+
+        if (requirements.verification) {
+          setCurrentStep('sign-up:verification');
+          return;
+        }
+
+        if (askCustomFields(requirements)) {
+          setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        if (showOnboarding(requirements)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
       },
     },
 

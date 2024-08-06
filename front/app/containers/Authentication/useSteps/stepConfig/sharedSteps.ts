@@ -68,6 +68,11 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('sign-up:built-in');
+            return;
+          }
+
           if (requirements.verification) {
             setCurrentStep('sign-up:verification');
             return;
@@ -87,6 +92,11 @@ export const sharedSteps = (
         }
 
         if (flow === 'signin') {
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('missing-data:built-in');
+            return;
+          }
+
           if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;

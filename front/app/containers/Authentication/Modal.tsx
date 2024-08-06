@@ -58,6 +58,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // old sign up flow
   'sign-up:auth-providers': messages.signUp,
   'sign-up:email-password': messages.signUp,
+  'sign-up:built-in': messages.signUp,
   'sign-up:email-confirmation': messages.signUp,
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
@@ -355,7 +356,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {/* missing data flow / shared */}
-        {currentStep === 'missing-data:built-in' && (
+        {(currentStep === 'missing-data:built-in' ||
+          currentStep === 'sign-up:built-in') && (
           <BuiltInFields
             loading={loading}
             authenticationData={authenticationData}

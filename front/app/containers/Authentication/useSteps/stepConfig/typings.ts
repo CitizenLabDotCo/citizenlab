@@ -10,6 +10,7 @@ export type Step =
   // old sign up flow
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'
+  | 'sign-up:built-in'
   | 'sign-up:email-confirmation'
   | 'sign-up:change-email'
   | 'sign-up:verification'
@@ -51,5 +52,6 @@ export type Step =
 export interface BuiltInFieldsUpdate {
   first_name?: string;
   last_name?: string;
+  email?: string;
   password?: string;
 }
