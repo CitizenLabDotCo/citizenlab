@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -34,6 +34,12 @@ import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
+
+const StyledButton = styled(Button)`
+  // &.disabled {
+  //   border: solid 1px ${colors.primary};
+  // }
+`;
 
 interface Props {
   ideaId: string;
@@ -267,7 +273,7 @@ const AssignMultipleVotesInput = ({
       content={plusButtonDisabledExplanation}
     >
       <div>
-        <Button
+        <StyledButton
           buttonStyle="primary-outlined"
           disabled={!!plusButtonDisabledExplanation}
           processing={isProcessing}
@@ -275,9 +281,12 @@ const AssignMultipleVotesInput = ({
           icon="vote-ballot"
           width="100%"
           onClick={onAdd}
+          opacityDisabled="0.8"
+          textDisabledColor={colors.coolGrey700}
+          borderDisabledColor={colors.coolGrey700}
         >
           {formatMessage(messages.select)}
-        </Button>
+        </StyledButton>
       </div>
     </Tooltip>
   );
