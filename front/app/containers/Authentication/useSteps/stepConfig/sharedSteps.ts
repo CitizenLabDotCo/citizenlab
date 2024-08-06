@@ -63,12 +63,7 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
-        if (enterSsoNoEmailEmail) {
-          setCurrentStep('emailless-sso:email');
-          return;
-        }
-
+      RESUME_FLOW_AFTER_SSO: async () => {
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
@@ -191,10 +186,6 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
-      },
-
-      REOPEN_EMAILLESS_SSO: () => {
-        setCurrentStep('emailless-sso:email');
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {

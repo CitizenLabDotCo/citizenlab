@@ -15,8 +15,6 @@ export type Step =
   | 'sign-up:verification'
   | 'sign-up:custom-fields'
   | 'sign-up:invite'
-  | 'emailless-sso:email'
-  | 'emailless-sso:email-confirmation'
 
   // onboarding sign up flow
   | 'sign-up:onboarding'

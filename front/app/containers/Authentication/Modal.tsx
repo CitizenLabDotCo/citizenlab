@@ -26,7 +26,6 @@ import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
-import EmaillessSsoEmail from './steps/EmaillessSsoEmail';
 import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
@@ -65,8 +64,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
-  'emailless-sso:email': messages.signUp,
-  'emailless-sso:email-confirmation': messages.confirmYourEmail,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -169,10 +166,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable =
-    currentStep !== 'closed' &&
-    currentStep !== 'success' &&
-    currentStep !== 'emailless-sso:email';
+  const closable = currentStep !== 'closed' && currentStep !== 'success';
 
   const {
     context: { action },
@@ -307,13 +301,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {currentStep === 'emailless-sso:email' && (
-          <EmaillessSsoEmail
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-          />
-        )}
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -378,8 +365,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
         {(currentStep === 'sign-up:email-confirmation' ||
           currentStep === 'light-flow:email-confirmation' ||
-          currentStep === 'missing-data:email-confirmation' ||
-          currentStep === 'emailless-sso:email-confirmation') && (
+          currentStep === 'missing-data:email-confirmation') && (
           <EmailConfirmation
             state={state}
             loading={loading}

@@ -6,7 +6,6 @@ import {
   SetError,
 } from '../../typings';
 
-import { emaillessSsoFlow } from './emaillessSsoFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
@@ -56,8 +55,6 @@ export const getStepConfig = (
       updateState,
       anySSOEnabled
     ),
-
-    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
 
     ...ssoVerificationFlow(setCurrentStep),
 
