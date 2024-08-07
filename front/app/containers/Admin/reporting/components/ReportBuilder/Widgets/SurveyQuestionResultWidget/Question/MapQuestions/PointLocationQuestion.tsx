@@ -12,7 +12,7 @@ import PointMap from 'components/admin/Graphs/PointMap';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  pointResponses: { response: GeoJSON.Point }[];
+  pointResponses: { answer: GeoJSON.Point }[];
   mapConfigId?: string;
   customFieldId: string;
   projectId: string;
@@ -29,7 +29,7 @@ const PointLocationQuestion = ({
   const { formatMessage } = useIntl();
 
   const points = useMemo(() => {
-    return pointResponses.map(({ response }) => response);
+    return pointResponses.map(({ answer }) => answer);
   }, [pointResponses]);
 
   const { data: customMapConfig, isLoading: isLoadingCustomMapConfig } =
