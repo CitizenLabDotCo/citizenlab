@@ -1722,7 +1722,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Tes modifications actuelles ne seront pas sauvegardées.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Requis",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Choix multiple - choisissez-en un",
-  "app.containers.AdminPage.ProjectEdit.survey.shapefile_upload": "Téléchargement d'un fichier de forme Esri",
+  "app.containers.AdminPage.ProjectEdit.survey.shapefile_upload": "Téléchargement de fichier de formes Esri",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Enquête sauvegardée avec succès",
   "app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2": "https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey",
   "app.containers.AdminPage.ProjectEdit.survey.survey2": "Enquête",
