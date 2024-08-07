@@ -28,6 +28,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
         <AuthProviderButton
           icon="bullseye"
           flow="signup"
+          showConsentOnFlow="signin"
           authProvider="fake_sso"
           onContinue={onClickSSO}
         >
