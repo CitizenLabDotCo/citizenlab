@@ -261,6 +261,7 @@ const ValuesList = ({
                       onChange(entry.value);
                     }}
                     ref={(el) => el && (tabsRef.current[index] = el)}
+                    tabIndex={0}
                   >
                     <ListItemText id={`e2e-item-${entry.value}`}>
                       {entry.text}
