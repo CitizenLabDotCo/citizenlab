@@ -141,6 +141,10 @@ const IdeaMapCard = memo<Props>(
       event?.preventDefault();
       updateSearchParams({ idea_map_id: idea.id });
       onSelectIdea(idea.id);
+      const mapElement = document.getElementById('e2e-ideas-map');
+      if (mapElement) {
+        mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     };
 
     const handleOnKeyPress = (event: React.KeyboardEvent) => {
