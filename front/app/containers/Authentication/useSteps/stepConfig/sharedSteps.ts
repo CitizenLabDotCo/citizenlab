@@ -130,9 +130,9 @@ export const sharedSteps = (
 
         const { requirements, disabled_reason } = await getRequirements();
 
-        const isLightFlow =
-          requirements.authentication.permitted_by ===
-          'everyone_confirmed_email';
+        const { permitted_by } = requirements.authentication;
+        const isLightFlow = permitted_by === 'everyone_confirmed_email';
+
         const signedIn =
           disabled_reason && disabled_reason !== 'user_not_signed_in';
 
@@ -146,6 +146,13 @@ export const sharedSteps = (
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
+        }
+
+        const isVerifiedActionFlow = permitted_by === 'verified';
+
+        if (isVerifiedActionFlow) {
+          setCurrentStep('sso-verification:sso-providers');
+          return;
         }
 
         if (signedIn) {
