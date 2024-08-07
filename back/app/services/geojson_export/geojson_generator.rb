@@ -52,7 +52,7 @@ module GeojsonExport
     end
 
     def generate_user_data(input)
-      return nil if input&.author.nil?
+      return {} if input&.author.nil?
 
       user_data_key = sanitized_translation_for('user_data')
       basic_author_data(input, user_data_key).merge(user_custom_field_values_data(input, user_data_key))

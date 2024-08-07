@@ -237,13 +237,11 @@ resource 'Idea Custom Fields' do
                 type: 'Polygon',
                 coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
               },
-              gebruikersgegevens: { # To be translated - will need to update this key when nl-NL translation is added
-                auteur_id: idea1.author_id,
-                e_mail_van_auteur: idea1.author.email,
-                auteur_naam: idea1.author_name,
-                geslacht: 'Vrouw',
-                woonplaats: 'Bruxelles'
-              }
+              gebruikersgegevens__auteur_id: idea1.author_id,
+              gebruikersgegevens__e_mail_van_auteur: idea1.author.email,
+              gebruikersgegevens__auteur_naam: idea1.author_name,
+              gebruikersgegevens__geslacht: 'Vrouw',
+              gebruikersgegevens__woonplaats: 'Bruxelles'
             }
           },
           {
@@ -262,8 +260,7 @@ resource 'Idea Custom Fields' do
               upload_de_foto: nil,
               markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
               teken_de_route_op_de_kaart: nil,
-              teken_het_gebied_op_de_kaart: nil,
-              gebruikersgegevens: nil # To be translated - will need to update this key when nl-NL translation is added
+              teken_het_gebied_op_de_kaart: nil
             }
           }
         ])
