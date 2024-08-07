@@ -111,9 +111,10 @@ const IdeaStatusForm = ({
     }
   };
 
-  const allowedCodes = inputStatusCodes[variant].filter(function (x) {
-    return automatedInputStatusCodes.indexOf(x) < 0;
-  });
+  const codes = inputStatusCodes[variant];
+  const allowedCodes = codes.filter((code) =>
+    automatedInputStatusCodes.has(code)
+  );
 
   return (
     <FormProvider {...methods}>
