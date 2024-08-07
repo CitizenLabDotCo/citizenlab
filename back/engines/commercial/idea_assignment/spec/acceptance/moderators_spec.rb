@@ -48,7 +48,7 @@ resource 'Moderators' do
       end
     end
 
-    delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id', if: defined?(ProjectFolders::Engine) do
+    delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields self, User
 
       let(:project1) { create(:project) }

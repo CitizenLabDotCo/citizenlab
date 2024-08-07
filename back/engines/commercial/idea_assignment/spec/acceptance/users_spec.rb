@@ -69,7 +69,7 @@ resource 'Users' do
         end
       end
 
-      describe 'when removing folder moderator rights', if: defined?(ProjectFolders::Engine) do
+      describe 'when removing folder moderator rights' do
         let(:folder) { create(:project_folder) }
         let(:assignee) { create(:project_folder_moderator, project_folders: [folder]) }
 
@@ -124,7 +124,7 @@ resource 'Users' do
         end
       end
 
-      describe 'when admin becomes folder moderator', if: defined?(ProjectFolders::Engine) do
+      describe 'when admin becomes folder moderator' do
         let(:folder1) { create(:project_folder) }
         let(:folder2) { create(:project_folder) }
         let(:assignee) { create(:admin) }
@@ -156,7 +156,7 @@ resource 'Users' do
         end
       end
 
-      describe 'when folder moderator becomes project moderator', if: defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine) do
+      describe 'when folder moderator becomes project moderator', if: defined?(ProjectManagement::Engine) do
         let(:folder) { create(:project_folder) }
         let(:project1) { create(:project, folder: folder) }
         let(:project2) { create(:project, folder: folder) }
