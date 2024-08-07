@@ -654,7 +654,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd4": "Appuyez sur la carte pour commencer à dessiner. Ensuite, faites glisser les points pour les déplacer.",
   "app.components.form.controls.tapOnMapMultipleToAdd3": "Appuyez sur la carte pour ajouter votre réponse.",
   "app.components.form.controls.tapOnMapToAddOrType": "Appuyez sur la carte ou entrez une adresse ci-dessous pour ajouter votre réponse.",
-  "app.components.form.controls.tapToAddALine": "Pointez pour ajouter une ligne",
+  "app.components.form.controls.tapToAddALine": "Appuyez pour ajouter une ligne",
   "app.components.form.controls.tapToAddAPoint": "Cliquez pour ajouter un point",
   "app.components.form.controls.tapToAddAnArea": "Appuyez pour délimiter une zone",
   "app.components.form.controls.uploadShapefileInstructions": "* Téléchargez un fichier zip contenant un ou plusieurs fichiers de formes.",
