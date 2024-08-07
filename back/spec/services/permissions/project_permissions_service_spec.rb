@@ -72,8 +72,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the posting limit was reached' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 } }
+      let(:project) { create(:single_phase_native_survey_project) }
 
       it 'returns `posting_limited_max_reached`' do
         create(:idea, project: project, author: user, phases: project.phases)
@@ -83,8 +82,12 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the author posted a survey anonymously and the limit was reached' do
-      let(:project) { create(:single_phase_native_survey_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1, allow_anonymous_participation: true } }
+      let(:project) do
+        create(:single_phase_native_survey_project, phase_attrs: {
+          posting_enabled: true,
+          allow_anonymous_participation: true
+        })
+      end
 
       it 'returns `posting_limited_max_reached`' do
         create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
@@ -94,8 +97,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the posting limit was not reached' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 } }
+      let(:project) { create(:single_phase_native_survey_project) }
 
       it 'returns nil' do
         create(:idea, project: project)

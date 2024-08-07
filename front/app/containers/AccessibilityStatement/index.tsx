@@ -28,6 +28,12 @@ const AccessibilityStatement = () => {
           name="description"
           content={formatMessage(messages.pageDescription)}
         />
+        <meta property="og:title" content={formatMessage(messages.headTitle)} />
+        <meta name="title" content={formatMessage(messages.headTitle)} />
+        <meta
+          property="og:description"
+          content={formatMessage(messages.pageDescription)}
+        />
       </Helmet>
       <main className="e2e-page-accessibility-statement">
         <Container>
