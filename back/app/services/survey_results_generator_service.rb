@@ -171,11 +171,11 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def responses_to_geographic_input_type(field)
-    answers = base_responses(field)
-    response_count = answers.size
+    responses = base_responses(field)
+    response_count = responses.size
 
     core_field_attributes(field, response_count).merge({
-      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": answers
+      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
     })
   end
 
