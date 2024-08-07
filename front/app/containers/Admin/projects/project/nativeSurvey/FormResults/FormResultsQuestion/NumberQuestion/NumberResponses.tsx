@@ -6,6 +6,10 @@ import styled from 'styled-components';
 
 import Divider from 'components/admin/Divider';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
 const Item = styled.div<{ start: number }>`
   position: absolute;
   top: 0;
@@ -21,6 +25,7 @@ type NumberResponsesProps = {
 };
 
 const NumberResponses = ({ numberResponses }: NumberResponsesProps) => {
+  const { formatMessage } = useIntl();
   const parentRef = React.useRef(null);
 
   // The virtualizer
@@ -31,10 +36,12 @@ const NumberResponses = ({ numberResponses }: NumberResponsesProps) => {
   });
 
   return (
-    <Box bg={colors.background} height="460px">
+    <Box bg={colors.background} height="460px" width="100%" maxWidth="524px">
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
+          {formatMessage(messages.allResponses)} {'('}
           {numberResponses.length}
+          {')'}
         </Text>
       </Box>
 
