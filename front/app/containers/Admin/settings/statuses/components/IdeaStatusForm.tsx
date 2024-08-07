@@ -14,7 +14,11 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { IIdeaStatuses, TIdeaStatusCode } from 'api/idea_statuses/types';
+import {
+  automatedInputStatusCodes,
+  inputStatusCodes,
+  TIdeaStatusCode,
+} from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -40,8 +44,8 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-  ideaStatuses: IIdeaStatuses;
   showCategorySelector?: boolean;
+  variant: 'ideation' | 'proposals';
 };
 
 const StyledSection = styled(Section)`
@@ -78,8 +82,8 @@ const StyledLabel = styled(Label)`
 const IdeaStatusForm = ({
   defaultValues,
   onSubmit,
-  ideaStatuses,
   showCategorySelector,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
@@ -107,12 +111,9 @@ const IdeaStatusForm = ({
     }
   };
 
-  const codes: TIdeaStatusCode[] = [
-    ...ideaStatuses.data
-      .filter((ideaStatus) => ideaStatus.attributes.can_reorder) // only show statuses that are not restricted
-      .map((ideaStatus) => ideaStatus.attributes.code),
-    'custom',
-  ];
+  const allowedCodes = inputStatusCodes[variant].filter(function (x) {
+    return automatedInputStatusCodes.indexOf(x) < 0;
+  });
 
   return (
     <FormProvider {...methods}>
@@ -157,7 +158,7 @@ const IdeaStatusForm = ({
                 />
               </StyledLabel>
               <RadioGroup name="code">
-                {codes.map((code, i) => (
+                {allowedCodes.map((code, i) => (
                   <Radio
                     key={`code-input-${i}`}
                     label={
