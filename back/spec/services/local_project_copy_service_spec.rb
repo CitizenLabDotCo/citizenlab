@@ -23,8 +23,6 @@ describe LocalProjectCopyService do
           with_permissions: with_permissions,
           participation_method: 'ideation',
           posting_enabled: true,
-          posting_method: 'unlimited',
-          posting_limited_max: 1,
           commenting_enabled: true,
           reacting_enabled: true,
           reacting_like_method: 'unlimited',

@@ -11,12 +11,6 @@ RSpec.describe ParticipationMethod::Volunteering do
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:volunteering_phase) }
 
-    it 'does not change the posting_method' do
-      expect do
-        participation_method.assign_defaults_for_phase
-      end.not_to change(phase, :posting_method)
-    end
-
     it 'does not change the ideas_order' do
       expect do
         participation_method.assign_defaults_for_phase

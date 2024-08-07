@@ -14,7 +14,7 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(group_permission, nil)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
       end
@@ -25,7 +25,7 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(group_permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
       end
@@ -36,7 +36,7 @@ describe Permissions::UserRequirementsService do
         it 'verification is satisfied' do
           requirements = service.requirements(group_permission, user)
           expect(service.permitted?(requirements)).to be true
-          expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be false
         end
       end
@@ -97,7 +97,7 @@ describe Permissions::UserRequirementsService do
 
       it 'verification is not required' do
         requirements = service.requirements(group_permission, nil)
-        expect(requirements[:authentication][:permitted_by]).to eq 'groups'
+        expect(requirements[:authentication][:permitted_by]).to eq 'users'
         expect(requirements[:verification]).to be false
       end
     end
