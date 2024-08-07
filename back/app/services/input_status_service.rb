@@ -67,6 +67,7 @@ class InputStatusService
   private_class_method def self.filter_threshold_reached(inputs_from)
     inputs_to = inputs_from.none
     ConsultationContext.grouped_inputs(inputs_from).each do |consultation_context, inputs|
+      # TODO: Filter out inputs in inactive contexts?
       next if !consultation_context.supports_automated_statuses?
 
       inputs_to = inputs_to.or(inputs.where('likes_count >= ?', consultation_context.reacting_threshold))
