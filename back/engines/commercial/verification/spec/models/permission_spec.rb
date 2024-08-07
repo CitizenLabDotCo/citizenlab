@@ -36,7 +36,6 @@ RSpec.describe Permission do
         expect(permission.verification_expiry).to eq(1.day)
       end
     end
-
   end
 
   context 'verification not enabled for any actions' do

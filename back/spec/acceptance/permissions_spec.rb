@@ -139,7 +139,7 @@ resource 'Permissions' do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
-        parameter :verification_expiry, "number of days before reverification required - nil means never reverify", required: false
+        parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
