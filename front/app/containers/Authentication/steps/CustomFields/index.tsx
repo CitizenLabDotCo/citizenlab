@@ -75,8 +75,6 @@ const CustomFields = ({
     }
   };
 
-  console.log({ userCustomFieldsSchema });
-
   const formHasRequiredFields = hasRequiredFields(
     userCustomFieldsSchema,
     locale
