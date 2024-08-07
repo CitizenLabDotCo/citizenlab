@@ -22,7 +22,7 @@ class InputStatusService
 
   def self.automated_transitions!
     AUTOMATED_TRANSITIONS.each do |code_from, transitions|
-      inputs_from = Idea.where(idea_status: { code: code_from }) # Only published inputs?
+      inputs_from = Idea.published.includes(:idea_status).where(idea_status: { code: code_from })
       transitions.each do |code_to|
         inputs_to = case code_to
         when 'threshold_reached'
@@ -66,10 +66,10 @@ class InputStatusService
 
   private_class_method def self.filter_threshold_reached(inputs_from)
     inputs_to = inputs_from.none
-    group_by_consultation_context_todo(inputs_from) do |inputs, consultation_context|
-      next if !consultation_context.pmethod.supports_input_status_todo?(code_to)
+    ConsultationContext.grouped_inputs(inputs_from).each do |consultation_context, inputs|
+      next if !consultation_context.supports_automated_statuses?
 
-      inputs_to = inputs_to.or(inputs.where('likes_count >= ?', consultation_context.reacting_threshold_todo))
+      inputs_to = inputs_to.or(inputs.where('likes_count >= ?', consultation_context.reacting_threshold))
     end
     inputs_to
   end
