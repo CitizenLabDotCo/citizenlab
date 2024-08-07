@@ -83,11 +83,69 @@ describe Permissions::UserRequirementsService do
       context 'a user is verified' do
         let(:user) { create(:user, verified: true) }
 
-        it 'verification is satisfied' do
-          requirements = service.requirements(verified_permission, user)
-          expect(service.permitted?(requirements)).to be true
-          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
-          expect(requirements[:verification]).to be false
+        before { create(:verification, user: user, method_name: 'fake_sso') }
+
+        context 'when verification_expiry is nil' do
+          it 'verification is satisfied' do
+            requirements = service.requirements(verified_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+            expect(requirements[:verification]).to be false
+          end
+        end
+
+        context 'when verification_expiry is set to 0' do
+          before { verified_permission.update!(verification_expiry: 0) }
+
+          it 'does not require verification after less than 30 minutes' do
+            travel_to Time.now + 15.minutes do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 minutes' do
+            travel_to Time.now + 30.minutes + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+        end
+
+        context 'when verification_expiry is set greater than 0' do
+          it 'requires verification again after more than a day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 1.day + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+
+          it 'does not requires verification before 1 day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 23.hours do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 days' do
+            verified_permission.update!(verification_expiry: 30)
+            travel_to Time.now + 30.days + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
         end
       end
     end

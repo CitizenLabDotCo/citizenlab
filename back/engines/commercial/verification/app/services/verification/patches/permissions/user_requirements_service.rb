@@ -4,12 +4,22 @@ module Verification
   module Patches
     module Permissions
       module UserRequirementsService
+        MIN_VERIFICATION_EXPIRY = 30.minutes
+
         # Verification requirement can now come from either a group or the permitted_by value
         def requires_verification?(permission, user)
           return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
           return false unless verification_service.find_verification_group(permission.groups) || permission.permitted_by == 'verified'
 
-          !user.verified?
+          if !permission.verification_expiry.nil? && user.verifications
+            # Check requirements for when we require verification again
+            expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
+            last_verification_time = user.verifications.last.updated_at
+            next_verification_time = last_verification_time + expiry_offset
+            next_verification_time < Time.now
+          else
+            !user.verified?
+          end
         end
 
         private
@@ -28,10 +38,7 @@ module Verification
           super
           return unless requirements[:verification]
 
-          # TODO: JS - does the front-end care about the difference between dont_ask and satisfied that we had before?
-          if user.verified? || user_allowed_through_other_groups?(permission, user)
-            requirements[:verification] = false
-          end
+          requirements[:verification] = requires_verification?(permission, user)
         end
 
         # User can be in other groups that are not verification groups and therefore not need to be verified
