@@ -75,7 +75,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -95,7 +96,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -165,7 +167,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -270,7 +273,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -574,7 +578,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -884,7 +889,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -909,7 +915,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -930,7 +937,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -951,7 +959,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -1026,7 +1035,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: { next_page_id: page4.id },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -1047,7 +1057,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1068,7 +1079,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -1089,7 +1101,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page4.id,
           type: 'custom_field',
@@ -1114,7 +1127,8 @@ resource 'Idea Custom Fields' do
               enabled: true,
               logic: { next_page_id: 'TEMP-ID-1' },
               constraints: {},
-              random_option_ordering: false
+              random_option_ordering: false,
+              dropdown_layout: false
             },
             {
               id: page2.id,
@@ -1165,7 +1179,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: { next_page_id: json_response[:data][3][:id] },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -1186,7 +1201,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1207,7 +1223,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -1228,7 +1245,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1290,7 +1308,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: { next_page_id: json_response[:data][2][:id] },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1311,7 +1330,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: existing_page.id,
           type: 'custom_field',
@@ -1332,7 +1352,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1397,7 +1418,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -1418,7 +1440,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1439,7 +1462,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -1495,7 +1519,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -1516,7 +1541,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1601,7 +1627,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -1626,7 +1653,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1647,7 +1675,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1668,7 +1697,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1754,7 +1784,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -1779,7 +1810,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 1, goto_page_id: page2.id }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1800,7 +1832,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -1821,7 +1854,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -1895,7 +1929,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -1918,7 +1953,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1939,7 +1975,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -2005,7 +2042,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2028,7 +2066,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -2083,7 +2122,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2174,7 +2214,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2199,7 +2240,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -2220,7 +2262,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -2241,7 +2284,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -2313,7 +2357,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2338,7 +2383,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -2359,7 +2405,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2471,7 +2518,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2493,7 +2541,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: added_option1.id, goto_page_id: json_response[:data][3][:id] }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field1_to_update.id,
           type: 'custom_field',
@@ -2522,7 +2571,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: added_option2.id, goto_page_id: json_response[:data][4][:id] }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field2_to_update.id,
           type: 'custom_field',
@@ -2550,7 +2600,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2571,7 +2622,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2638,7 +2690,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2663,7 +2716,8 @@ resource 'Idea Custom Fields' do
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2684,7 +2738,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2775,7 +2830,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page1.id,
           type: 'custom_field',
@@ -2803,7 +2859,8 @@ resource 'Idea Custom Fields' do
               ]
             },
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -2824,7 +2881,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page2.id,
           type: 'custom_field',
@@ -2845,7 +2903,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: page3.id,
           type: 'custom_field',
@@ -2903,7 +2962,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',

@@ -50,7 +50,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def default_options(field)
     defaults = {
       isAdminField: admin_field?(field),
-      hasRule: field.logic?
+      hasRule: field.logic?,
+      dropdown_layout: field.dropdown_layout,
     }
     if @supports_answer_visible_to
       defaults[:answer_visible_to] = field.answer_visible_to
