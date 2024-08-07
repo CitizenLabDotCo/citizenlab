@@ -2,10 +2,11 @@ import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { permissionsCustomFieldsData } from './__mocks__/usePermissionsCustomFields';
-import usePermissionsCustomFields from './usePermissionsCustomFields';
 
 const apiPath = '*/permissions/:action/permissions_custom_fields';
 

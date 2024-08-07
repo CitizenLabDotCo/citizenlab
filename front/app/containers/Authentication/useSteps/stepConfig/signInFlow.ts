@@ -13,7 +13,12 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { requiredCustomFields, showOnboarding } from './utils';
+import {
+  confirmationRequired,
+  requiredCustomFields,
+  showOnboarding,
+  doesNotMeetGroupCriteria,
+} from './utils';
 
 export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -35,13 +40,11 @@ export const signInFlow = (
         }
 
         const { requirements } = await getRequirements();
-        const verificationRequired =
-          requirements.special.verification === 'require';
 
         handleOnSSOClick(
           authProvider,
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -72,29 +75,29 @@ export const signInFlow = (
 
           const { requirements } = await getRequirements();
 
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('missing-data:email-confirmation');
             return;
           }
 
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
           }
 
-          if (requiredCustomFields(requirements.custom_fields)) {
+          if (requiredCustomFields(requirements)) {
             setCurrentStep('missing-data:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
 
           setCurrentStep('closed');
 
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             return;
           }
 
