@@ -4,8 +4,9 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isPrimitiveArrayControl,
-  RankedTester,
-  rankWith,
+  JsonSchema,
+  Tester,
+  UISchemaElement,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
@@ -86,7 +87,21 @@ const MultiSelectControl = ({
 
 export default withJsonFormsControlProps(MultiSelectControl);
 
-export const multiSelectControlTester: RankedTester = rankWith(
-  4,
-  isPrimitiveArrayControl
-);
+const dropdownLayoutTester: Tester = (uischema) => {
+  return uischema?.options?.dropdown_layout || false;
+};
+
+export const multiSelectControlTester = (
+  uiSchema: UISchemaElement,
+  jsonSchema: JsonSchema
+) => {
+  if (
+    uiSchema?.options?.input_type === 'multiselect' &&
+    dropdownLayoutTester(uiSchema, jsonSchema)
+  ) {
+    return 1000;
+  } else if (isPrimitiveArrayControl(uiSchema, jsonSchema)) {
+    return 4;
+  }
+  return -1;
+};
