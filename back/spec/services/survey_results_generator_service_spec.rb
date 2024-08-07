@@ -1049,8 +1049,8 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: point_field.id,
           mapConfigId: map_config_for_point.id,
           pointResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
           )
         }
       end
@@ -1072,8 +1072,8 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: line_field.id,
           mapConfigId: map_config_for_line.id,
           lineResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
-            { response: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
           )
         }
       end
@@ -1095,8 +1095,8 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: polygon_field.id,
           mapConfigId: map_config_for_polygon.id,
           polygonResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
-            { response: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
+            { answer: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
+            { answer: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
           )
         }
       end

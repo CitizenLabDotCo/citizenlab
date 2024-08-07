@@ -167,16 +167,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def responses_to_geographic_input_type(field)
-    responses = inputs
+    answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |response|
-        { response: response.value }
+      .map do |answer|
+        { answer: answer.value }
       end
-    response_count = responses.size
+    response_count = answers.size
 
     core_field_attributes(field, response_count).merge({
-      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": answers
     })
   end
 

@@ -16,7 +16,7 @@ import messages from '../../../messages';
 import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 
 type Props = {
-  lineResponses: { response: GeoJSON.LineString }[];
+  lineResponses: { answer: GeoJSON.LineString }[];
   mapConfigId?: string;
   customFieldId: string;
 };
@@ -53,7 +53,7 @@ const LineLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const lines = useMemo(() => {
-    return lineResponses?.map(({ response }) => response);
+    return lineResponses?.map(({ answer }) => answer);
   }, [lineResponses]);
 
   return (

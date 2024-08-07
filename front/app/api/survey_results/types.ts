@@ -58,9 +58,9 @@ export type ResultUngrouped = BaseResult & {
 
   // Defined map questions
   mapConfigId?: string;
-  pointResponses?: { response: GeoJSON.Point }[];
-  lineResponses?: { response: GeoJSON.LineString }[];
-  polygonResponses?: { response: GeoJSON.Polygon }[];
+  pointResponses?: { answer: GeoJSON.Point }[];
+  lineResponses?: { answer: GeoJSON.LineString }[];
+  polygonResponses?: { answer: GeoJSON.Polygon }[];
 
   // Defined for file upload questions
   files?: { name: string; url: string }[];
