@@ -313,6 +313,7 @@ const votingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  inputManagerName: 'ideas',
   renderCTABar: (props: CTABarProps) => {
     return <VotingCTABar project={props.project} phases={props.phases} />;
   },
