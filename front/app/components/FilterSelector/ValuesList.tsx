@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useEffect,
-  KeyboardEvent,
-  FormEvent,
-  useState,
-} from 'react';
+import React, { useRef, KeyboardEvent, FormEvent, useState } from 'react';
 
 import {
   Dropdown,
@@ -167,19 +161,12 @@ const ValuesList = ({
   selectorId,
 }: Props) => {
   const tabsRef = useRef({});
-  const invisibleRef = useRef<HTMLButtonElement | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const handleOnToggleCheckbox =
     (entry: Value) => (_event: React.ChangeEvent) => {
       onChange(entry.value);
     };
-
-  useEffect(() => {
-    if (opened && invisibleRef.current) {
-      invisibleRef.current.focus();
-    }
-  }, [opened]);
 
   const handleOnSelectSingleValue =
     (entry: Value) => (event: KeyboardEvent<HTMLLIElement>) => {
@@ -229,29 +216,6 @@ const ValuesList = ({
         // the accessible name for the group. The role group identifies the
         // group container for the list items.
         <Box role="group" aria-labelledby={selectorId}>
-          {/* When a user opens the dropdown, we move focus to this  invisible button.
-            This is needed to make sure that the keyboard navigation using the up
-            and down arrow keys works without interfering with the behavior if the
-            user opens the dropdown using a mouse click.
-          */}
-          <button
-            ref={invisibleRef}
-            tabIndex={0}
-            style={{
-              position: 'absolute',
-              width: 0,
-              height: 0,
-              overflow: 'hidden',
-              opacity: 0,
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                setFocusedIndex(0);
-                tabsRef.current[0].focus();
-              }
-            }}
-          />
           <List
             className="e2e-sort-items"
             aria-multiselectable={multipleSelectionAllowed}
