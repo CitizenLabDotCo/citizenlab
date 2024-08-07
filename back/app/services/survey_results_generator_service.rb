@@ -27,12 +27,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_number(field)
-    responses = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |response|
-        { answer: response.value }
-      end
+    responses = base_responses(field)
     response_count = responses.size
 
     core_field_attributes(field, response_count).merge({
@@ -114,6 +109,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
+  def base_responses(field)
+    inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { answer: response.value }
+      end
+  end
+
   def visit_select_base(field)
     query = inputs
     if group_field_id
@@ -167,12 +171,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def responses_to_geographic_input_type(field)
-    answers = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |answer|
-        { answer: answer.value }
-      end
+    answers = base_responses(field)
     response_count = answers.size
 
     core_field_attributes(field, response_count).merge({
