@@ -216,10 +216,7 @@ const ValuesList = ({
         // the accessible name for the group. The role group identifies the
         // group container for the list items.
         <Box role="group" aria-labelledby={selectorId}>
-          <List
-            className="e2e-sort-items"
-            aria-multiselectable={multipleSelectionAllowed}
-          >
+          <List className="e2e-sort-items">
             {values &&
               values.map((entry, index) => {
                 const checked = includes(selected, entry.value);
@@ -237,14 +234,10 @@ const ValuesList = ({
                 return multipleSelectionAllowed ? (
                   <CheckboxListItem
                     id={`${baseID}-${index}`}
-                    role="option"
-                    aria-posinset={index + 1}
-                    aria-selected={checked}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
                     onKeyDown={handleOnSelectSingleValue(entry)}
                     className={classNames}
-                    tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <Checkbox
@@ -252,16 +245,12 @@ const ValuesList = ({
                       onChange={handleOnToggleCheckbox(entry)}
                       label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
                       name={name}
-                      checkBoxTabIndex={-1}
                       selectedBorderColor={colors.white}
                     />
                   </CheckboxListItem>
                 ) : (
                   <ListItem
                     id={`${baseID}-${index}`}
-                    role="option"
-                    aria-posinset={index + 1}
-                    aria-selected={checked}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
                     onKeyDown={handleOnSelectSingleValue(entry)}
@@ -271,7 +260,6 @@ const ValuesList = ({
 
                       onChange(entry.value);
                     }}
-                    tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <ListItemText id={`e2e-item-${entry.value}`}>
