@@ -153,6 +153,7 @@ const Dropdown: React.FC<Props> = ({
   className,
 }) => {
   const dropdownElement = useRef<HTMLDivElement | null>(null);
+  const triggerElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const scrolling = (event: WheelEvent) => {
@@ -168,9 +169,24 @@ const Dropdown: React.FC<Props> = ({
       currentElement.addEventListener('wheel', scrolling);
     }
 
+    if (opened && currentElement) {
+      // Move focus to the dropdown
+      const focusableElements = currentElement.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length > 0) {
+        focusableElements[0].focus();
+      }
+    }
+
     return () => {
       if (currentElement) {
         currentElement.removeEventListener('wheel', scrolling);
+      }
+
+      if (!opened && triggerElement.current) {
+        // Move focus back to the trigger element
+        triggerElement.current.focus();
       }
     };
   }, [opened]);
@@ -190,6 +206,11 @@ const Dropdown: React.FC<Props> = ({
       unmountOnExit
       exit={false}
       classNames={`${className} dropdown`}
+      onEntering={() => {
+        if (document.activeElement instanceof HTMLElement) {
+          triggerElement.current = document.activeElement;
+        }
+      }}
     >
       <Container
         id={id}
