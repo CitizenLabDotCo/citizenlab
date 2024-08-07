@@ -1,11 +1,28 @@
+import signIn from 'api/authentication/sign_in_out/signIn';
 import { handleOnSSOClick, SSOProvider } from 'api/authentication/singleSignOn';
 
-import { AuthenticationData, UpdateState } from '../../typings';
+import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
+
+import { trackEventByName } from 'utils/analytics';
+
+import tracks from '../../tracks';
+import {
+  AuthenticationData,
+  UpdateState,
+  GetRequirements,
+} from '../../typings';
 
 import { Step } from './typings';
+import {
+  confirmationRequired,
+  requiredCustomFields,
+  showOnboarding,
+  doesNotMeetGroupCriteria,
+} from './utils';
 
 export const ssoVerificationFlow = (
   getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState
 ) => {
@@ -17,7 +34,7 @@ export const ssoVerificationFlow = (
         setCurrentStep('sso-verification:sso-providers-policies');
       },
       GO_TO_LOGIN: () => {
-        setCurrentStep('sign-in:email-password');
+        setCurrentStep('sso-verification:email-password');
       },
     },
 
@@ -29,6 +46,67 @@ export const ssoVerificationFlow = (
           { ...getAuthenticationData(), flow: 'signup' },
           true
         );
+      },
+    },
+
+    'sso-verification:email-password': {
+      CLOSE: () => setCurrentStep('closed'),
+      GO_BACK: () => {
+        setCurrentStep('sso-verification:sso-providers');
+      },
+      SIGN_IN: async (
+        email: string,
+        password: string,
+        rememberMe: boolean,
+        tokenLifetime: number
+      ) => {
+        try {
+          await signIn({
+            email,
+            password,
+            rememberMe,
+            tokenLifetime,
+          });
+
+          const { requirements } = await getRequirements();
+
+          if (confirmationRequired(requirements)) {
+            setCurrentStep('missing-data:email-confirmation');
+            return;
+          }
+
+          if (requirements.verification) {
+            setCurrentStep('missing-data:verification');
+            return;
+          }
+
+          if (requiredCustomFields(requirements)) {
+            setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements)) {
+            setCurrentStep('missing-data:onboarding');
+            return;
+          }
+
+          setCurrentStep('closed');
+
+          if (doesNotMeetGroupCriteria(requirements)) {
+            return;
+          }
+
+          const { successAction } = getAuthenticationData();
+
+          if (successAction) {
+            triggerSuccessAction(successAction);
+          }
+
+          trackEventByName(tracks.signInEmailPasswordCompleted);
+        } catch (e) {
+          trackEventByName(tracks.signInEmailPasswordFailed);
+          throw e;
+        }
       },
     },
   };
