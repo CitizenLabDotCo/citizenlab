@@ -25,6 +25,7 @@ import ChangeEmail from './steps/ChangeEmail';
 import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
@@ -92,6 +93,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // sso verification flow
   'sso-verification:sso-providers': messages.verificationRequired,
   'sso-verification:sso-providers-policies': messages.verificationRequired,
+  'sso-verification:email-password': messages.logIn,
 };
 
 const getHeaderMessage = (
@@ -433,6 +435,16 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT')}
+          />
+        )}
+
+        {currentStep === 'sso-verification:email-password' && (
+          <EmailAndPasswordVerifiedActions
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SIGN_IN')}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
       </Box>

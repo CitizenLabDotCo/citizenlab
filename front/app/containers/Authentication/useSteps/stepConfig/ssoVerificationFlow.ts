@@ -51,7 +51,7 @@ export const ssoVerificationFlow = (
 
     'sso-verification:email-password': {
       CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
+      SWITCH_FLOW: () => {
         setCurrentStep('sso-verification:sso-providers');
       },
       SIGN_IN: async (
