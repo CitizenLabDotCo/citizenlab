@@ -11,7 +11,7 @@ resource 'Moderators' do
   context 'when admin' do
     before { admin_header_token }
 
-    delete 'web_api/v1/projects/:project_id/moderators/:user_id', if: defined?(ProjectManagement::Engine) do
+    delete 'web_api/v1/projects/:project_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields self, User
 
       let(:project1) { create(:project) }
