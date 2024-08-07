@@ -178,13 +178,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project
-    ActiveRecord::Base.transaction do
-      set_folder
-      authorize @project
-      saved = @project.save
-      check_publication_inconsistencies! if saved
-      saved
-    end
+    set_folder
+    authorize @project
+    @project.save
   end
 
   def set_folder
@@ -196,12 +192,5 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
-  end
-
-  def check_publication_inconsistencies!
-    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    if Project.all.any? { |project| !project.valid? }
-      raise 'Project change would lead to inconsistencies!'
-    end
   end
 end
