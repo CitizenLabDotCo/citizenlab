@@ -11,8 +11,17 @@ const SiteMapMeta = () => {
   return (
     <Helmet>
       <title>{formatMessage(messages.headSiteMapTitle)}</title>
+      <meta name="title" content={formatMessage(messages.headSiteMapTitle)} />
+      <meta
+        property="og:title"
+        content={formatMessage(messages.headSiteMapTitle)}
+      />
       <meta
         name="description"
+        content={formatMessage(messages.siteMapDescription)}
+      />
+      <meta
+        property="og:description"
         content={formatMessage(messages.siteMapDescription)}
       />
     </Helmet>
