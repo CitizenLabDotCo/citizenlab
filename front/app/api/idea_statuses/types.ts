@@ -11,7 +11,23 @@ export type IdeaStatusesQueryParams = {
   participation_method?: 'ideation' | 'proposals';
 };
 
-export const inputStatusCodes = {
+type InputStatusCode =
+  | 'proposed'
+  | 'viewed'
+  | 'under_consideration'
+  | 'accepted'
+  | 'rejected'
+  | 'implemented'
+  | 'custom'
+  | 'threshold_reached'
+  | 'expired'
+  | 'answered'
+  | 'ineligible';
+
+export const inputStatusCodes: Record<
+  'ideation' | 'proposals',
+  InputStatusCode[]
+> = {
   ideation: [
     'proposed',
     'viewed',
@@ -29,13 +45,13 @@ export const inputStatusCodes = {
     'ineligible',
     'custom',
   ],
-} as const;
+};
 
-export const automatedInputStatusCodes = [
+export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'proposed',
   'threshold_reached',
   'expired',
-];
+]);
 
 const allMergedInputStatusCodes = uniq(
   Object.keys(inputStatusCodes)
