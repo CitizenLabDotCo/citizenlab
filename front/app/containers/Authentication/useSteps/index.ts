@@ -68,6 +68,7 @@ export default function useSteps() {
     /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,
+    ssoProvider: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);

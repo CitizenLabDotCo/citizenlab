@@ -56,7 +56,7 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...ssoVerificationFlow(setCurrentStep),
+    ...ssoVerificationFlow(getAuthenticationData, setCurrentStep, updateState),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

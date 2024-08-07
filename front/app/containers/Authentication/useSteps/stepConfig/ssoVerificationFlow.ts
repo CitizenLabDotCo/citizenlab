@@ -1,19 +1,19 @@
-// import {
-//   GetRequirements,
-//   AuthenticationData,
-// } from '../../typings';
+import { handleOnSSOClick, SSOProvider } from 'api/authentication/singleSignOn';
+
+import { AuthenticationData, UpdateState } from '../../typings';
 
 import { Step } from './typings';
 
 export const ssoVerificationFlow = (
-  // _getAuthenticationData: () => AuthenticationData,
-  // _getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void
+  getAuthenticationData: () => AuthenticationData,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
 ) => {
   return {
     'sso-verification:sso-providers': {
       CLOSE: () => setCurrentStep('closed'),
-      CONTINUE_WITH_SSO: () => {
+      CONTINUE_WITH_SSO: (ssoProvider: SSOProvider) => {
+        updateState({ ssoProvider });
         setCurrentStep('sso-verification:sso-providers-policies');
       },
       GO_TO_LOGIN: () => {
@@ -23,8 +23,12 @@ export const ssoVerificationFlow = (
 
     'sso-verification:sso-providers-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT: () => {
-        setCurrentStep('closed'); // TODO
+      ACCEPT: (ssoProvider: SSOProvider) => {
+        handleOnSSOClick(
+          ssoProvider,
+          { ...getAuthenticationData(), flow: 'signup' },
+          true
+        );
       },
     },
   };

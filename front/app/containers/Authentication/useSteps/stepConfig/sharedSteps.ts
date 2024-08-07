@@ -126,6 +126,7 @@ export const sharedSteps = (
           email: null,
           token: null,
           prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
         const { requirements, disabled_reason } = await getRequirements();

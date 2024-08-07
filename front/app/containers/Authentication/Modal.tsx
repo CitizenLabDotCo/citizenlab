@@ -430,6 +430,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
 
         {currentStep === 'sso-verification:sso-providers-policies' && (
           <SSOVerificationPolicies
+            state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT')}
           />

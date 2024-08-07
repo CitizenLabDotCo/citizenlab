@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +15,7 @@ import authProviderMessages from '../AuthProviders/messages';
 import messages from './messages';
 
 interface Props {
-  onClickSSO: () => void;
+  onClickSSO: (ssoProvider: SSOProvider) => void;
   onClickLogin: () => void;
 }
 
