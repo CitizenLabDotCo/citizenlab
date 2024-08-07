@@ -48,6 +48,22 @@ const CookiePolicy = () => {
           name="description"
           content={formatMessage(messages.cookiePolicyDescription)}
         />
+        <meta
+          name="title"
+          content={formatMessage(messages.headCookiePolicyTitle)}
+        />
+        <meta
+          property="og:title"
+          content={formatMessage(messages.headCookiePolicyTitle)}
+        />
+        <meta
+          name="description"
+          content={formatMessage(messages.cookiePolicyDescription)}
+        />
+        <meta
+          property="og:description"
+          content={formatMessage(messages.cookiePolicyDescription)}
+        />
       </Helmet>
       <main className="e2e-page-cookie-policy" data-testid="cookiePolicy">
         <Container>
