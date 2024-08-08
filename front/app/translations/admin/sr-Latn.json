@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Избори одговора",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Формат одговора",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Мора се обезбедити најмање један избор",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "This user moderates the folder containing this project. To remove their moderator rights for this project, you can either revoke their folder rights or move the project to a different folder.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Направите ново питање",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Направите питање",
   "app.containers.AdminPage.groups.permissions.defaultField": "Подразумевано поље",
