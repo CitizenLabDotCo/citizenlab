@@ -1692,7 +1692,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registreren",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "{tenantName, select, Almere {Ik wil me uitschrijven} other {Ik wil mijn aanmelding intrekken}}",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {nog geen aanmeldingen} one {# aanmelding} other {# aanmeldingen}}",
-  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": "Waarschuwing: De ingesloten enquête kan toegankelijkheidsproblemen hebben voor gebruikers van screenreaders. Als je problemen ondervindt, neem dan contact op met de platformbeheerder om een koppeling naar de enquête van het oorspronkelijke platform te ontvangen. Je kunt ook andere manieren aanvragen om de enquête in te vullen.",
+  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Waarschuwing: De ingesloten enquête kan toegankelijkheidsproblemen veroorzaken voor gebruikers van screenreaders. Als je problemen ondervindt, neem dan contact op met de platformbeheerder om een link naar de enquête op het oorspronkelijke platform te ontvangen. Je kunt ook andere manieren aanvragen om de enquête in te vullen.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Vragenlijst",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Om te weten of je kunt deelnemen aan deze vragenlijst, moet je eerst even {logInLink} op het platform.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Alleen geverifieerde gebruikers kunnen deelnemen aan deze vragenlijst. Gelieve eerst te {signUpLink} of te {logInLink}.",
