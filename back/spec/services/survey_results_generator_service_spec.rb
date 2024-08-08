@@ -203,6 +203,17 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let_it_be(:map_config_for_polygon) { create(:map_config, mappable: polygon_field) }
 
+  let_it_be(:number_field) do
+    create(
+      :custom_field_number,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How many cats would you like?'
+      },
+      description_multiloc: {}
+    )
+  end
+
   let_it_be(:user_custom_field) do
     create(:custom_field_gender, :with_options)
   end
@@ -228,7 +239,8 @@ RSpec.describe SurveyResultsGeneratorService do
         point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
         line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
-        linear_scale_field.key => 3
+        linear_scale_field.key => 3,
+        number_field.key => 42
       },
       idea_files: [idea_file1, idea_file2],
       author: female_user
@@ -328,7 +340,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 12
+        expect(generated_results[:results].count).to eq 13
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
@@ -1037,8 +1049,8 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: point_field.id,
           mapConfigId: map_config_for_point.id,
           pointResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
           )
         }
       end
@@ -1060,8 +1072,8 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: line_field.id,
           mapConfigId: map_config_for_line.id,
           lineResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
-            { response: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
           )
         }
       end
@@ -1083,14 +1095,35 @@ RSpec.describe SurveyResultsGeneratorService do
           customFieldId: polygon_field.id,
           mapConfigId: map_config_for_polygon.id,
           polygonResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
-            { response: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
+            { answer: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
+            { answer: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
           )
         }
       end
 
       it 'returns the results for a polygon field' do
         expect(generated_results[:results][11]).to match expected_result_polygon
+      end
+    end
+
+    describe 'number fields' do
+      let(:expected_result_number) do
+        {
+          inputType: 'number',
+          question: { 'en' => 'How many cats would you like?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 1,
+          totalResponseCount: 22,
+          customFieldId: number_field.id,
+          numberResponses: a_collection_containing_exactly(
+            { answer: 42 }
+          )
+        }
+      end
+
+      it 'returns the results for a number field' do
+        expect(generated_results[:results][12]).to match expected_result_number
       end
     end
   end

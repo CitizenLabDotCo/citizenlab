@@ -16,6 +16,7 @@ import InputType from './InputType';
 import LineLocationQuestion from './MappingQuestions/LineLocationQuestion';
 import PointLocationQuestion from './MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from './MappingQuestions/PolygonLocationQuestion';
+import NumberQuestion from './NumberQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {
@@ -39,6 +40,7 @@ const FormResultsQuestion = ({
     pointResponses,
     lineResponses,
     polygonResponses,
+    numberResponses,
     inputType,
     question,
     required,
@@ -50,6 +52,7 @@ const FormResultsQuestion = ({
 
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
+  const hasNumberResponses = numberResponses && numberResponses.length > 0;
   const isPointAndHasAnswers =
     inputType === 'point' && pointResponses && pointResponses?.length > 0;
   const isLineAndHasAnswers =
@@ -78,6 +81,9 @@ const FormResultsQuestion = ({
             customFieldId={customFieldId}
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
           />
+        )}
+        {hasNumberResponses && (
+          <NumberQuestion numberResponses={numberResponses} />
         )}
         {isPointAndHasAnswers && (
           <PointLocationQuestion
