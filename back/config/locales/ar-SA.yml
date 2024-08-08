@@ -267,6 +267,7 @@ ar:
       submitted_at: 'قدمت في'
       tags: 'العلامات'
       title: 'عنوان'
+      user_data: 'بيانات المستخدم'
       votes_count: 'الأصوات'
   form_builder:
     default_select_field:

@@ -267,6 +267,7 @@ ca:
       submitted_at: 'Presentat a'
       tags: 'Etiquetes'
       title: 'Títol'
+      user_data: 'Dades d''usuari'
       votes_count: 'Vots'
   form_builder:
     default_select_field:

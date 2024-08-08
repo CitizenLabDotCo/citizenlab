@@ -267,6 +267,7 @@ nl-BE:
       submitted_at: 'Ingediend op'
       tags: 'Tags'
       title: 'Naam'
+      user_data: 'Gebruikersgegevens'
       votes_count: 'Stemmen'
   form_builder:
     default_select_field:
