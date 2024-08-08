@@ -24,23 +24,25 @@ namespace :cl2_back do
   desc 'Insert option key-value pairs to user custom_field_values hashes.'
   task :insert_option_key_values_in_user_custom_field_values, %i[url host custom_field_id execute] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
-    custom_field = CustomField.find_by(id: args[:custom_field_id])
 
-    if custom_field.nil?
-      puts "ERROR: Couldn't find custom_field with id #{args[:custom_field_id]}"
-      next
-
-    end
-
-    options = custom_field.options
     execute = args[:execute] == 'execute'
-    locale = AppConfiguration.instance.settings.dig('core', 'locales').first
     count = 0
     errors = []
 
     puts 'DRY RUN' unless execute
 
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+      custom_field = CustomField.find_by(id: args[:custom_field_id])
+
+      if custom_field.nil?
+        puts "ERROR: Couldn't find custom_field with id #{args[:custom_field_id]}"
+        next
+
+      end
+
+      options = custom_field.options
+
       data.each do |d|
         next if d['value'].nil?
 
