@@ -32,7 +32,7 @@ module IdFakeSso
         identifier: 'govocal_client',
         secret: 'abc123',
         port: port,
-        scheme: 'http',
+        scheme: scheme,
         host: host,
         redirect_uri: "#{configuration.base_backend_uri}/auth/fake_sso/callback"
       }
@@ -52,6 +52,12 @@ module IdFakeSso
       return 443 if issuer_in_settings.present?
 
       8081
+    end
+
+    def scheme
+      return 'https' if issuer_in_settings.present?
+
+      'http'
     end
 
     def verification_prioritized?
