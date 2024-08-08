@@ -1692,7 +1692,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "m'inscris",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Je ne souhaite plus participer",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {pas de volontaires} one {# volontaire} other {# volontaires}}",
-  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": ", Attention : Les enquêtes intégrées peuvent poser des problèmes d'accessibilité pour les utilisateurs de lecteurs d'écran. Si vous rencontrez des difficultés, veuillez contacter l'administrateur de la plateforme pour obtenir un lien vers l'enquête sur la plateforme d'origine. Vous pouvez également demander d'autres moyens pour répondre à l'enquête.",
+  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Attention : Les enquêtes intégrées peuvent poser des problèmes d'accessibilité pour les utilisateurs de lecteurs d'écran. Si vous rencontrez des difficultés, veuillez contacter l'administrateur de la plateforme pour obtenir un lien vers l'enquête sur la plateforme d'origine. Vous pouvez également demander d'autres moyens pour répondre à l'enquête.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Enquête",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Pour savoir si vous pouvez participer à cette enquête, {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Seuls les utilisateurs vérifiés peuvent répondre à cette enquête. Veuillez commencer par {signUpLink} ou {logInLink}.",
