@@ -12,7 +12,7 @@ import LineMap from 'components/admin/Graphs/LineMap';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  lineResponses: { response: GeoJSON.LineString }[];
+  lineResponses: { answer: GeoJSON.LineString }[];
   mapConfigId?: string;
   customFieldId: string;
   projectId: string;
@@ -27,7 +27,7 @@ const LineLocationQuestion = ({
   const { formatMessage } = useIntl();
 
   const lines = useMemo(() => {
-    return lineResponses.map(({ response }) => response);
+    return lineResponses.map(({ answer }) => answer);
   }, [lineResponses]);
 
   const { data: customMapConfig, isLoading: isLoadingCustomMapConfig } =

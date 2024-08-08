@@ -16,7 +16,7 @@ import messages from '../../../messages';
 import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 
 type Props = {
-  polygonResponses: { response: GeoJSON.Polygon }[];
+  polygonResponses: { answer: GeoJSON.Polygon }[];
   mapConfigId?: string;
   customFieldId: string;
 };
@@ -53,7 +53,7 @@ const PolygonLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const polygons = useMemo(() => {
-    return polygonResponses?.map(({ response }) => response);
+    return polygonResponses?.map(({ answer }) => answer);
   }, [polygonResponses]);
 
   return (

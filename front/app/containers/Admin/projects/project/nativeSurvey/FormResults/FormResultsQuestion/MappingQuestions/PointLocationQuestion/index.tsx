@@ -18,7 +18,7 @@ import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
 import HeatmapTooltipContent from './HeatmapTooltipContent';
 
 type Props = {
-  pointResponses: { response: GeoJSON.Point }[];
+  pointResponses: { answer: GeoJSON.Point }[];
   mapConfigId?: string;
   customFieldId: string;
 };
@@ -56,7 +56,7 @@ const PointLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const points = useMemo(() => {
-    return pointResponses?.map(({ response }) => response);
+    return pointResponses?.map(({ answer }) => answer);
   }, [pointResponses]);
 
   return (
