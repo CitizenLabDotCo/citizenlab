@@ -54,8 +54,8 @@ fr-BE:
     threshold_reached_description: seuil atteint
     answered: répondue
     answered_description: répondue
-    ineligible: non-éligible
-    ineligible_description: non-éligible
+    ineligible: inéligible
+    ineligible_description: inéligible
   initiative_statuses:
     review_pending: examen en cours
     review_pending_description: examen en cours
