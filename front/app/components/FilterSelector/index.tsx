@@ -20,6 +20,7 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
+import ComboBox from './ComboBox';
 import Title from './Title';
 import ValuesList from './ValuesList';
 
@@ -229,6 +230,13 @@ const FilterSelector = ({
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
             aria-controls={baseID}
+            // Needed to track aria-labelledby
+            id={`${baseID}-label`}
+            /* We use a combobox for single selection hence the need for these
+             * See https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
+             */
+            role={!multipleSelectionAllowed ? 'combobox' : undefined}
+            aria-haspopup={!multipleSelectionAllowed ? 'listbox' : undefined}
           >
             <Box display="flex" gap="8px">
               {currentTitle}
@@ -247,30 +255,42 @@ const FilterSelector = ({
             baseID={baseID}
             textColor={textColor}
             handleKeyDown={handleKeyDown}
+            multipleSelectionAllowed={multipleSelectionAllowed}
           />
         )}
       </Box>
-      <ValuesList
-        title={currentTitle}
-        opened={opened}
-        values={values}
-        selected={selected}
-        onChange={selectionChange}
-        onClickOutside={handleClickOutside}
-        multipleSelectionAllowed={multipleSelectionAllowed}
-        baseID={baseID}
-        width={width}
-        mobileWidth={mobileWidth}
-        maxHeight={maxHeight}
-        mobileMaxHeight={mobileMaxHeight}
-        top={top}
-        left={left}
-        mobileLeft={mobileLeft}
-        right={right}
-        mobileRight={mobileRight}
-        name={name}
-        selectorId={selectorId}
-      />
+      {multipleSelectionAllowed ? (
+        <ValuesList
+          opened={opened}
+          values={values}
+          selected={selected}
+          onChange={selectionChange}
+          onClickOutside={handleClickOutside}
+          multipleSelectionAllowed={multipleSelectionAllowed}
+          baseID={baseID}
+          width={width}
+          mobileWidth={mobileWidth}
+          maxHeight={maxHeight}
+          mobileMaxHeight={mobileMaxHeight}
+          top={top}
+          left={left}
+          mobileLeft={mobileLeft}
+          right={right}
+          mobileRight={mobileRight}
+          name={name}
+          selectorId={selectorId}
+        />
+      ) : (
+        <ComboBox
+          options={values}
+          width={width}
+          onChange={selectionChange}
+          opened={opened}
+          onClickOutside={handleClickOutside}
+          selected={selected}
+          baseID={baseID}
+        />
+      )}
     </Container>
   );
 };
