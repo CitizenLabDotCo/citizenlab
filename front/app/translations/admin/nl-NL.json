@@ -2124,7 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Antwoordmogelijkheden",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Antwoordformaat",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Er moet ten minste één keuze worden gemaakt",
-  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Deze gebruiker modereert de map met dit project. Om hun moderatorrechten voor dit project te verwijderen, kun je hun maprechten intrekken of het project naar een andere map verplaatsen.",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Deze gebruiker modereert de map met dit project. Om hun moderatorrechten voor dit project te verwijderen, kun je hun mapbeheerrechten intrekken of het project naar een andere map verplaatsen.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Maak een nieuwe vraag",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Maak een vraag",
   "app.containers.AdminPage.groups.permissions.defaultField": "Standaard veld",
