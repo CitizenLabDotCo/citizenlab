@@ -146,8 +146,6 @@ hr:
         title: Godina rođenja
       domicile:
         title: Mjesto prebivališta
-      education:
-        title: Obrazovanje
     ideas:
       title:
         title: Naslov
@@ -212,14 +210,6 @@ hr:
       unspecified: Ostalo
     domicile:
       outside: Negdje drugdje
-    education:
-      ISCED2: Osnovna škola
-      ISCED3: Gimnazija
-      ISCED4: Strukovna škola
-      ISCED5: Viša škola
-      ISCED6: Prvostupnik ili ekvivalentno
-      ISCED7: Magistar ili ekvivalentno
-      ISCED8: Doktor znanosti ili ekvivalentno
   initiatives:
     default_threshold_reached_message: >
       <p>Pozivaju se inicijatori da svoj prijedlog iznesu na sljedećem sastanku vijeća. Osigurat ćemo službeno ažuriranje.</p>

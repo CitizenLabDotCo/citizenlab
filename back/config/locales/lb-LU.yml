@@ -146,8 +146,6 @@ lb:
         title: Gebuertsjoer
       domicile:
         title: Wunnuert
-      education:
-        title: Formatioun
     ideas:
       title:
         title: Titel
@@ -212,14 +210,6 @@ lb:
       unspecified: Aner
     domicile:
       outside: Anzwousch anescht
-    education:
-      ISCED2: Formation secondaire 1. Zyklus
-      ISCED3: Formation secondaire 2. Zyklus
-      ISCED4: Net-tertiär Formatioun no der Formatioun secondaire
-      ISCED5: Tertäir Formatioun kuerzen Zyklus
-      ISCED6: Bachelor oder entspriechend
-      ISCED7: Master oder entspriechend
-      ISCED8: Doktorgrad oder entspriechend
   initiatives:
     default_threshold_reached_message: >
       <p>D'Initiateuren sinn invitéiert, hir Propositioun bei der nächster Conseilssëtzung virzestellen. Mir stellen en offizellen Update zu Verfügung.</p>

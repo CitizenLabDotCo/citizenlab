@@ -146,8 +146,6 @@ fi:
         title: Ikä
       domicile:
         title: Asuinpaikka
-      education:
-        title: koulutus
     ideas:
       title:
         title: Otsikko
@@ -212,14 +210,6 @@ fi:
       unspecified: Muu
     domicile:
       outside: Jossain muualla
-    education:
-      ISCED2: Alemman keskiasteen koulutus
-      ISCED3: Toisen asteen koulutus
-      ISCED4: Toisen asteen jälkeinen ei korkea-asteen koulutus
-      ISCED5: Lyhytjaksoinen korkea-asteen koulutus
-      ISCED6: Kandidaatin tai vastaava
-      ISCED7: Mestari tai vastaava
-      ISCED8: Tohtori tai vastaava
   initiatives:
     default_threshold_reached_message: >
       <p>Aloitteentekijöitä pyydetään esittelemään ehdotuksensa seuraavassa valtuuston kokouksessa. Lähetämme virallisen päivityksen.</p>

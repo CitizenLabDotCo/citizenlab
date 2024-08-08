@@ -146,8 +146,6 @@ sr-Latn:
         title: Godina rođenja
       domicile:
         title: Mesto prebivališta
-      education:
-        title: Obrazovanje
     ideas:
       title:
         title: Naslov
@@ -212,14 +210,6 @@ sr-Latn:
       unspecified: Ostalo
     domicile:
       outside: Negde drugo
-    education:
-      ISCED2: Osnovna škola
-      ISCED3: Gimnazija
-      ISCED4: Srednja škola stručnog usmerenja
-      ISCED5: Viša škola
-      ISCED6: Visoka stručna sprema
-      ISCED7: Master
-      ISCED8: Doktor nauka
   initiatives:
     default_threshold_reached_message: >
       <p>Inicijatori su pozvani da predstave svoj predlog na sledećem sastanku nadležnih organa. Uskoro ćemo objaviti zvanično obaveštenje.</p>

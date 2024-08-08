@@ -146,8 +146,6 @@ nl:
         title: Geboortejaar
       domicile:
         title: Woonplaats
-      education:
-        title: Opleiding
     ideas:
       title:
         title: Titel
@@ -212,14 +210,6 @@ nl:
       unspecified: Onbepaald
     domicile:
       outside: Ergens anders
-    education:
-      ISCED2: Lager secundair onderwijs
-      ISCED3: Hoger secundair onderwijs
-      ISCED4: Postsecundair niet-hoger onderwijs
-      ISCED5: Tertiair onderwijs met korte cyclus
-      ISCED6: Bachelor of gelijkwaardig
-      ISCED7: Master of gelijkwaardig
-      ISCED8: Doctoraat of gelijkwaardig
   initiatives:
     default_threshold_reached_message: >
       <p>De initiatiefnemers worden uitgenodigd om hun voorstel te komen presenteren op de volgende gemeenteraad, waarop een officiële reactie volgt.</p>

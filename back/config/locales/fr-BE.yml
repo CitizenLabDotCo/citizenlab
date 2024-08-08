@@ -146,8 +146,6 @@ fr-BE:
         title: Année de naissance
       domicile:
         title: Localité
-      education:
-        title: Éducation
     ideas:
       title:
         title: Titre
@@ -212,14 +210,6 @@ fr-BE:
       unspecified: Autre
     domicile:
       outside: Autre lieu
-    education:
-      ISCED2: Education secondaire (1er cycle)
-      ISCED3: Education secondaire (2nd cycle)
-      ISCED4: Education supérieure
-      ISCED5: Education supérieure (cycle court)
-      ISCED6: Licence, Bachelier ou équivalent
-      ISCED7: Master ou équivalent
-      ISCED8: Doctorat ou équivalent
   initiatives:
     default_threshold_reached_message: >
       <p>Les porteurs de projets sont invités à présenter leur proposition à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
