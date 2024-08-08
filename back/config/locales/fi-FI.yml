@@ -48,6 +48,14 @@ fi:
     implemented_description: Tämä idea on kaupungin toimesta toteutettu
     rejected: hylätty
     rejected_description: Tämä ajatus on hylätty
+    expired: vanhentunut
+    expired_description: vanhentunut
+    threshold_reached: kynnys saavutettu
+    threshold_reached_description: kynnys saavutettu
+    answered: vastasi
+    answered_description: vastasi
+    ineligible: kelpaamattomia
+    ineligible_description: kelpaamattomia
   initiative_statuses:
     review_pending: tarkistus odottaa
     review_pending_description: tarkistus odottaa
