@@ -80,7 +80,7 @@ interface Props {
   baseID: string;
 }
 
-const ComboBox = ({
+const Combobox = ({
   options,
   width,
   opened,
@@ -195,4 +195,4 @@ const ComboBox = ({
   );
 };
 
-export default ComboBox;
+export default Combobox;
