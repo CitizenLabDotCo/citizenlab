@@ -48,6 +48,14 @@ it:
     implemented_description: Questa idea è stata proposta alla città
     rejected: rifiutato
     rejected_description: Questa idea è stata respinta
+    expired: scaduto
+    expired_description: scaduto
+    threshold_reached: soglia raggiunta
+    threshold_reached_description: soglia raggiunta
+    answered: ha risposto
+    answered_description: ha risposto
+    ineligible: non ammissibile
+    ineligible_description: non ammissibile
   initiative_statuses:
     review_pending: in attesa di revisione
     review_pending_description: in attesa di revisione

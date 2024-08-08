@@ -48,6 +48,14 @@ lv:
     implemented_description: Šo ideju ir īstenojusi pilsēta
     rejected: noraidīts
     rejected_description: Šī ideja ir noraidīta
+    expired: beidzās
+    expired_description: beidzās
+    threshold_reached: sasniegts slieksnis
+    threshold_reached_description: sasniegts slieksnis
+    answered: atbildēja
+    answered_description: atbildēja
+    ineligible: neatbilstoši
+    ineligible_description: neatbilstoši
   initiative_statuses:
     review_pending: pārskatīšana vēl nav pabeigta
     review_pending_description: pārskatīšana vēl nav pabeigta

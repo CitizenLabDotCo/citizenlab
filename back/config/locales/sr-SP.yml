@@ -48,6 +48,14 @@ sr-Cyrl:
     implemented_description: Ову идеју је спровео град
     rejected: одбијен
     rejected_description: Ова идеја је одбијена
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: преглед на чекању
     review_pending_description: преглед на чекању

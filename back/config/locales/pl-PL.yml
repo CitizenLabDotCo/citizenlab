@@ -48,6 +48,14 @@ pl:
     implemented_description: Ten pomysł ten został zrealizowany przez miasto
     rejected: odrzucony
     rejected_description: Ten pomysł został odrzucony
+    expired: wygasł
+    expired_description: wygasł
+    threshold_reached: osiągnięty próg
+    threshold_reached_description: osiągnięty próg
+    answered: odpowiedział
+    answered_description: odpowiedział
+    ineligible: niekwalifikujący się
+    ineligible_description: niekwalifikujący się
   initiative_statuses:
     review_pending: przegląd w toku
     review_pending_description: przegląd w toku
