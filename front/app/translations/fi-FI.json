@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Jatka",
   "app.components.AuthProviders.continueWithAzure": "Jatka {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Jatka Facebookissa",
+  "app.components.AuthProviders.continueWithFakeSSO": "Jatka Fake SSO:lla",
   "app.components.AuthProviders.continueWithGoogle": "Jatka Googlella",
   "app.components.AuthProviders.continueWithHoplr": "Jatka Hoplr:lla",
   "app.components.AuthProviders.continueWithLoginMechanism": "Jatka {loginMechanismName}",
