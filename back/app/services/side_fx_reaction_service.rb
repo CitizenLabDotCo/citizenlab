@@ -4,7 +4,7 @@ class SideFxReactionService
   include SideFxHelper
 
   def after_create(reaction, current_user)
-    InputStatusService.automated_transitions!
+    InputStatusService.auto_transition_input!(reaction.reactable.reload) if reaction.reactable_type == 'Idea'
 
     if reaction.reactable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
