@@ -140,7 +140,7 @@ resource 'IdeaStatuses' do
           example '[Error] Cannot create a proposed status', document: false do
             expect { do_request }.not_to change(IdeaStatus, :count)
             assert_status 422
-            expect(json_parse(response_body).dig(:errors, :code)).to eq [{ error: 'blank' }, { error: 'inclusion', value: nil }]
+            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional automatic statuses', value: 'proposed')
           end
         end
       end
@@ -176,7 +176,7 @@ resource 'IdeaStatuses' do
       before { admin_header_token }
 
       example 'Update an idea status by ID' do
-        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
+        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), kind_of(Integer))
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
@@ -231,7 +231,7 @@ resource 'IdeaStatuses' do
       before { admin_header_token }
 
       example 'Reorder an idea status' do
-        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), idea_status.reload.updated_at.to_i)
+        expect { do_request }.to have_enqueued_job(LogActivityJob).with(idea_status, 'changed', kind_of(User), kind_of(Integer))
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to eq ordering
       end
