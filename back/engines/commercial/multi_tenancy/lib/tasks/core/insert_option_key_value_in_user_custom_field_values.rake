@@ -36,6 +36,7 @@ namespace :cl2_back do
     execute = args[:execute] == 'execute'
     locale = AppConfiguration.instance.settings.dig('core', 'locales').first
     count = 0
+    errors = []
 
     puts 'DRY RUN' unless execute
 
@@ -54,14 +55,28 @@ namespace :cl2_back do
           cfv = user.custom_field_values
           cfv[custom_field.key] = option.key
 
-          if execute
-            user.update!(custom_field_values: cfv)
+          next unless execute
+
+          if user.update(custom_field_values: cfv)
             count += 1
+            puts "  success!\n"
+          else
+            puts "Couldn't update user.id #{user.id}."
+            errors << { user_id: user.id, errors: user.errors.details }
           end
         else
           puts "No option matched to value '#{d['value']}' for user.id #{user.id}."
         end
       end
+    end
+
+    puts "Updated #{count} user.custom_field_values."
+
+    if errors.any?
+      puts 'Errors:'
+      puts errors
+    else
+      puts 'No errors.'
     end
   end
 end
