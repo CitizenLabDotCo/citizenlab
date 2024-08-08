@@ -6,11 +6,6 @@ module ParticipationMethod
       'native_survey'
     end
 
-    def assign_defaults_for_phase
-      phase.posting_method = 'limited'
-      phase.posting_limited_max = 1
-    end
-
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)

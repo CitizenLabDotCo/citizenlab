@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'rake initiatives_to_proposals' do  # rubocop:disable RSpec/DescribeClass
+describe 'rake initiatives_to_proposals' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
   after { Rake::Task['initiatives_to_proposals:add_proposals_statuses'].reenable }
 
