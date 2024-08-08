@@ -112,8 +112,8 @@ const IdeaStatusForm = ({
   };
 
   const codes = inputStatusCodes[variant];
-  const allowedCodes = codes.filter((code) =>
-    automatedInputStatusCodes.has(code)
+  const allowedCodes = codes.filter(
+    (code) => !automatedInputStatusCodes.has(code)
   );
 
   return (
