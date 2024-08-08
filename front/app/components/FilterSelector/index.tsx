@@ -12,7 +12,7 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Combobox from './ComboBox';
+import Combobox from './Combobox';
 import ValuesList from './ValuesList';
 
 const Container = styled(Box)`
