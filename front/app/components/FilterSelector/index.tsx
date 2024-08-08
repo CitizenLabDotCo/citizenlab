@@ -266,7 +266,6 @@ const FilterSelector = ({
           selected={selected}
           onChange={selectionChange}
           onClickOutside={handleClickOutside}
-          multipleSelectionAllowed={multipleSelectionAllowed}
           baseID={baseID}
           width={width}
           mobileWidth={mobileWidth}

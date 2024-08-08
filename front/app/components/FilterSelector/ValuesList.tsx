@@ -37,34 +37,6 @@ const ListItemText = styled.span`
   `}
 `;
 
-const ListItem = styled.li`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 0px;
-  margin-bottom: 4px;
-  padding: 10px;
-  list-style: none;
-  background: #fff;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-  transition: all 80ms ease-out;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-
-  &:hover,
-  &:focus,
-  &.selected {
-    background: ${(props) => props.theme.colors.tenantSecondary};
-
-    ${ListItemText} {
-      color: ${colors.white};
-    }
-  }
-`;
-
 const CheckboxLabel = styled.span`
   flex: 1;
   color: ${colors.textSecondary};
@@ -132,7 +104,6 @@ interface Props extends DefaultProps {
   selected: any[];
   right?: string;
   mobileRight?: string;
-  multipleSelectionAllowed?: boolean;
   opened: boolean;
   baseID: string;
   name: string;
@@ -142,7 +113,6 @@ interface Props extends DefaultProps {
 const ValuesList = ({
   values,
   selected,
-  multipleSelectionAllowed,
   opened,
   baseID,
   width,
@@ -224,13 +194,13 @@ const ValuesList = ({
                   `e2e-sort-item-${
                     entry.value !== '-new' ? entry.value : 'old'
                   }`,
-                  !multipleSelectionAllowed && checked ? 'selected' : '',
+                  checked ? 'selected' : '',
                   last ? 'last' : '',
                 ]
                   .filter((item) => !isNil(item))
                   .join(' ');
 
-                return multipleSelectionAllowed ? (
+                return (
                   <CheckboxListItem
                     id={`${baseID}-${index}`}
                     key={entry.value}
@@ -247,25 +217,6 @@ const ValuesList = ({
                       selectedBorderColor={colors.white}
                     />
                   </CheckboxListItem>
-                ) : (
-                  <ListItem
-                    id={`${baseID}-${index}`}
-                    key={entry.value}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onKeyDown={handleOnSelectSingleValue(entry)}
-                    className={classNames}
-                    onClick={(event) => {
-                      event.preventDefault();
-
-                      onChange(entry.value);
-                    }}
-                    ref={(el) => el && (tabsRef.current[index] = el)}
-                    tabIndex={0}
-                  >
-                    <ListItemText id={`e2e-item-${entry.value}`}>
-                      {entry.text}
-                    </ListItemText>
-                  </ListItem>
                 );
               })}
           </List>
