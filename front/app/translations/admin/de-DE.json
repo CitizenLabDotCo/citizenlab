@@ -292,7 +292,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Wie soll ein Beitrag genannt werden?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Vorhaben",
-  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Geben Sie hier den Link zu Ihrem Konveio-Dokument an. Weitere Informationen zum Einrichten von Konveio finden Sie in unserer {supportArticleLink}.",
+  "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Geben Sie hier den Link zu Ihrem Konveio-Dokument an. Weitere Informationen zum Einrichten von Konveio finden Sie in unserem {supportArticleLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "Support-Artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL": "https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback",
   "app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
