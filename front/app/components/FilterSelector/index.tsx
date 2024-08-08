@@ -20,7 +20,7 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import ComboBox from './ComboBox';
+import Combobox from './ComboBox';
 import Title from './Title';
 import ValuesList from './ValuesList';
 
@@ -280,7 +280,7 @@ const FilterSelector = ({
           selectorId={selectorId}
         />
       ) : (
-        <ComboBox
+        <Combobox
           options={values}
           width={width}
           onChange={selectionChange}
@@ -288,6 +288,14 @@ const FilterSelector = ({
           onClickOutside={handleClickOutside}
           selected={selected}
           baseID={baseID}
+          mobileWidth={mobileWidth}
+          maxHeight={maxHeight}
+          mobileMaxHeight={mobileMaxHeight}
+          top={top}
+          left={left}
+          mobileLeft={mobileLeft}
+          right={right}
+          mobileRight={mobileRight}
         />
       )}
     </Container>
