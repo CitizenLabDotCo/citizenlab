@@ -39,10 +39,19 @@ module IdFakeSso
     end
 
     def host
+      issuer = ENV.fetch('FAKE_SSO_ISSUER')
+
+      if issuer&.start_with?('https://')
+        return URI.parse(issuer).host
+      end
+
       'host.docker.internal'
     end
 
     def issuer
+      issuer = ENV.fetch('FAKE_SSO_ISSUER')
+      return issuer if issuer
+
       "http://#{host}"
     end
 
