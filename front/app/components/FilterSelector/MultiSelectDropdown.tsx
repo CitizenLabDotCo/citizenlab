@@ -19,6 +19,8 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import Title from './Title';
 
+import { IFilterSelectorValue } from '.';
+
 const List = styled.ul`
   margin: 0;
   padding: 0;
@@ -85,11 +87,6 @@ const CheckboxListItem = styled.li`
   }
 `;
 
-interface Value {
-  text: string | JSX.Element;
-  value: any;
-}
-
 export interface SelectorProps {
   width?: string;
   mobileWidth?: string;
@@ -115,11 +112,11 @@ export interface SelectorProps {
 }
 
 interface Props extends SelectorProps {
-  values: Value[];
+  values: IFilterSelectorValue[];
   name: string;
 }
 
-const ValuesList = ({
+const MultiSelectDropdown = ({
   values,
   selected,
   opened,
@@ -149,12 +146,12 @@ const ValuesList = ({
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   const handleOnToggleCheckbox =
-    (entry: Value) => (_event: React.ChangeEvent) => {
+    (entry: IFilterSelectorValue) => (_event: React.ChangeEvent) => {
       onChange(entry.value);
     };
 
   const handleOnSelectSingleValue =
-    (entry: Value) => (event: KeyboardEvent<HTMLLIElement>) => {
+    (entry: IFilterSelectorValue) => (event: KeyboardEvent<HTMLLIElement>) => {
       if (
         event.type === 'keydown' &&
         (event.key === 'ArrowUp' || event.key === 'ArrowDown')
@@ -280,6 +277,6 @@ const ValuesList = ({
   );
 };
 
-export default ValuesList;
+export default MultiSelectDropdown;
 
 // TODO: page jump on landing page (doesn't happen on projects page)

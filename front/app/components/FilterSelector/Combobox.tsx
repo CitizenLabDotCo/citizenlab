@@ -12,8 +12,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { SelectorProps } from './MultiSelectDropdown';
 import Title from './Title';
-import { SelectorProps } from './ValuesList';
 
 import { IFilterSelectorValue } from '.';
 

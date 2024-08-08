@@ -13,7 +13,7 @@ import {
 import styled from 'styled-components';
 
 import Combobox from './Combobox';
-import ValuesList from './ValuesList';
+import MultiSelectDropdown from './MultiSelectDropdown';
 
 const Container = styled(Box)`
   display: inline-block;
@@ -209,7 +209,7 @@ const FilterSelector = ({
       }`}
     >
       {multipleSelectionAllowed ? (
-        <ValuesList
+        <MultiSelectDropdown
           opened={opened}
           values={values}
           selected={selected}
