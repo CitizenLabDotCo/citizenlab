@@ -2,7 +2,7 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :dropdown_layout
+    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering
 
   attribute :description_multiloc do |field|
     TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
@@ -18,6 +18,10 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
 
   attribute :page_layout, if: proc { |object, _params|
     object.input_type == 'page'
+  }
+
+  attribute :dropdown_layout, if: proc { |object, _params|
+    object.input_type == 'multiselect' || object.input_type == 'select'
   }
 
   attribute :constraints do |object, params|
