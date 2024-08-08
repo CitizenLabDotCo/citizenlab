@@ -6,8 +6,14 @@ import {
   fontSizes,
   isRtl,
   Box,
+  Button,
+  Icon,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import Title from './Title';
+import { SelectorProps } from './ValuesList';
 
 import { IFilterSelectorValue } from '.';
 
@@ -62,22 +68,8 @@ const ListItem = styled.li`
   }
 `;
 
-interface Props {
+interface Props extends SelectorProps {
   options: IFilterSelectorValue[];
-  width?: string;
-  mobileWidth?: string;
-  maxHeight?: string;
-  mobileMaxHeight?: string;
-  top?: string;
-  left?: string;
-  mobileLeft?: string;
-  right?: string;
-  mobileRight?: string;
-  onChange: (arg: string) => void;
-  opened: boolean;
-  onClickOutside?: (event: React.FormEvent) => void;
-  selected: any[];
-  baseID: string;
 }
 
 const Combobox = ({
@@ -96,9 +88,17 @@ const Combobox = ({
   mobileLeft,
   right,
   mobileRight,
+  filterSelectorStyle,
+  minWidth,
+  toggleValuesList,
+  textColor,
+  currentTitle,
+  handleKeyDown,
+  selectorId,
 }: Props) => {
   const listboxRef = useRef<HTMLUListElement>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
@@ -109,7 +109,7 @@ const Combobox = ({
     }
   }, [focusedIndex]);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const onKeyDown = (event: KeyboardEvent) => {
     if (listboxRef.current) {
       const items = listboxRef.current.querySelectorAll('li');
       switch (event.key) {
@@ -147,6 +147,46 @@ const Combobox = ({
 
   return (
     <Box>
+      <Box id={selectorId}>
+        {/* The id is used for aria-labelledby on the group
+         which defines the accessible name for the group */}
+        {filterSelectorStyle === 'button' ? (
+          <Button
+            height={isPhoneOrSmaller ? '32px' : '36px'}
+            borderRadius="24px"
+            onClick={toggleValuesList}
+            minWidth={minWidth ? minWidth : undefined}
+            onKeyDown={handleKeyDown}
+            ariaExpanded={opened}
+            aria-controls={baseID}
+            // Needed to track aria-labelledby
+            id={`${baseID}-label`}
+            /* We use a combobox for single selection hence the need for these
+             * See https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
+             */
+            role="combobox"
+            aria-haspopup="listbox"
+          >
+            <Box display="flex" gap="8px">
+              {currentTitle}
+              <Icon
+                fill={colors.white}
+                name={opened ? 'chevron-up' : 'chevron-down'}
+              />
+            </Box>
+          </Button>
+        ) : (
+          <Title
+            key={baseID}
+            title={currentTitle}
+            opened={opened}
+            onClick={toggleValuesList}
+            baseID={baseID}
+            textColor={textColor}
+            handleKeyDown={handleKeyDown}
+          />
+        )}
+      </Box>
       <Dropdown
         id={baseID}
         width={width}
@@ -168,7 +208,7 @@ const Combobox = ({
             aria-activedescendant={
               focusedIndex !== null ? `option-${focusedIndex}` : undefined
             }
-            onKeyDown={handleKeyDown}
+            onKeyDown={onKeyDown}
             tabIndex={0}
           >
             {options.map((option, index) => (
