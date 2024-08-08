@@ -4,7 +4,7 @@ class InputStatusService
   AUTOMATED_TRANSITIONS = {
     'proposed' => {
       :threshold_reached => 'threshold_reached',
-      :expired => 'expired',
+      :expired => 'expired'
     }
   }
   attr_reader :input_status
@@ -14,10 +14,7 @@ class InputStatusService
   end
 
   AUTOMATED_TRANSITIONS = {
-    'proposed' => [
-      'threshold_reached',
-      'expired'
-    ]
+    'proposed' => %w[threshold_reached expired]
   }
 
   def self.automated_transitions!
