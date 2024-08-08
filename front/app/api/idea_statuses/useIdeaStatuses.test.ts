@@ -17,9 +17,15 @@ describe('useIdeaStatuses', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -36,9 +42,15 @@ describe('useIdeaStatuses', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

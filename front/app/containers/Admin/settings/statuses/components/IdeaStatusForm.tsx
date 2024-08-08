@@ -14,7 +14,11 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
-import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
+import {
+  automatedInputStatusCodes,
+  inputStatusCodes,
+  TIdeaStatusCode,
+} from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
@@ -40,6 +44,8 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
+  showCategorySelector?: boolean;
+  variant: 'ideation' | 'proposals';
 };
 
 const StyledSection = styled(Section)`
@@ -73,7 +79,12 @@ const StyledLabel = styled(Label)`
   margin-bottom: 32px;
 `;
 
-const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
+const IdeaStatusForm = ({
+  defaultValues,
+  onSubmit,
+  showCategorySelector,
+  variant,
+}: Props) => {
   const { formatMessage } = useIntl();
   const schema = object({
     color: string(),
@@ -99,6 +110,11 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  const codes = inputStatusCodes[variant];
+  const allowedCodes = codes.filter((code) =>
+    automatedInputStatusCodes.has(code)
+  );
 
   return (
     <FormProvider {...methods}>
@@ -131,61 +147,75 @@ const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
             />
           </SectionField>
         </StyledSection>
-
-        <StyledSection>
-          <SectionField>
-            <StyledLabel>
-              <FormattedMessage {...messages.category} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.categoryDescription} />}
-              />
-            </StyledLabel>
-            <RadioGroup name="code">
-              {ideaStatusCodes.map((code: TIdeaStatusCode, i) => (
-                <Radio
-                  key={`code-input-${i}`}
-                  label={
-                    <LabelText>
-                      <span className="header">
-                        {formatMessage(
-                          {
-                            proposed: messages.proposedFieldCodeTitle,
-                            viewed: messages.viewedFieldCodeTitle,
-                            under_consideration:
-                              messages.under_considerationFieldCodeTitle,
-                            accepted: messages.acceptedFieldCodeTitle,
-                            implemented: messages.implementedFieldCodeTitle,
-                            rejected: messages.rejectedFieldCodeTitle,
-                            custom: messages.customFieldCodeTitle,
-                          }[code]
-                        )}
-                      </span>
-                      {code !== 'custom' && (
-                        <span className="description">
+        {showCategorySelector && (
+          <StyledSection>
+            <SectionField>
+              <StyledLabel>
+                <FormattedMessage {...messages.category} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.categoryDescription} />
+                  }
+                />
+              </StyledLabel>
+              <RadioGroup name="code">
+                {allowedCodes.map((code, i) => (
+                  <Radio
+                    key={`code-input-${i}`}
+                    label={
+                      <LabelText>
+                        <span className="header">
                           {formatMessage(
                             {
-                              proposed: messages.proposedFieldCodeDescription,
-                              viewed: messages.viewedFieldCodeDescription,
+                              proposed: messages.proposedFieldCodeTitle,
+                              viewed: messages.viewedFieldCodeTitle,
                               under_consideration:
-                                messages.under_considerationFieldCodeDescription,
-                              accepted: messages.acceptedFieldCodeDescription,
-                              implemented:
-                                messages.implementedFieldCodeDescription,
-                              rejected: messages.rejectedFieldCodeDescription,
+                                messages.under_considerationFieldCodeTitle,
+                              accepted: messages.acceptedFieldCodeTitle,
+                              implemented: messages.implementedFieldCodeTitle,
+                              rejected: messages.rejectedFieldCodeTitle,
+                              custom: messages.customFieldCodeTitle,
+                              threshold_reached:
+                                messages.thresholdReachedFieldCodeTitle,
+                              expired: messages.expiredFieldCodeTitle,
+                              answered: messages.answeredFieldCodeTitle,
+                              ineligible: messages.ineligibleFieldCodeTitle,
                             }[code]
                           )}
                         </span>
-                      )}
-                    </LabelText>
-                  }
-                  id={`${code}-input`}
-                  name="code"
-                  value={code}
-                />
-              ))}
-            </RadioGroup>
-          </SectionField>
-        </StyledSection>
+                        {code !== 'custom' && (
+                          <span className="description">
+                            {formatMessage(
+                              {
+                                proposed: messages.proposedFieldCodeDescription,
+                                viewed: messages.viewedFieldCodeDescription,
+                                under_consideration:
+                                  messages.under_considerationFieldCodeDescription,
+                                accepted: messages.acceptedFieldCodeDescription,
+                                implemented:
+                                  messages.implementedFieldCodeDescription,
+                                rejected: messages.rejectedFieldCodeDescription,
+                                threshold_reached:
+                                  messages.thresholdReachedFieldCodeDescription,
+                                expired: messages.expiredFieldCodeDescription,
+                                answered: messages.answeredFieldCodeDescription,
+                                ineligible:
+                                  messages.ineligibleFieldCodeDescription,
+                              }[code]
+                            )}
+                          </span>
+                        )}
+                      </LabelText>
+                    }
+                    id={`${code}-input`}
+                    name="code"
+                    value={code}
+                  />
+                ))}
+              </RadioGroup>
+            </SectionField>
+          </StyledSection>
+        )}
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
             {formatMessage(messages.saveStatus)}

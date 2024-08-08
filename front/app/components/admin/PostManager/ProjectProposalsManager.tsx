@@ -3,9 +3,9 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
-import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
 import useTopics from 'api/topics/useTopics';
 
 import Outlet from 'components/Outlet';
@@ -54,7 +54,9 @@ const ProjectProposalsManager = ({
     useState<TFilterMenu>(defaultFilterMenu);
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
-  const { data: initiativeStatuses } = useInitiativeStatuses();
+  const { data: ideaStatuses } = useIdeaStatuses({
+    participation_method: 'proposals',
+  });
   const { data: proposalTopics } = useTopics();
   const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
     sort: 'new',
@@ -209,13 +211,12 @@ const ProjectProposalsManager = ({
               activeFilterMenu={activeFilterMenu}
               visibleFilterMenus={visibleFilterMenus}
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
-              // To do: change to new statuses
-              statuses={initiativeStatuses?.data ?? []}
               topics={proposalTopics.data}
               selectedTopics={queryParameters.topics}
-              // selectedStatus={queryParameters.initiative_status}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
+              statuses={ideaStatuses?.data ?? []}
+              selectedStatus={queryParameters.idea_status}
             />
           </Sticky>
         </LeftColumn>
@@ -231,7 +232,7 @@ const ProjectProposalsManager = ({
             }
             onChangeSort={onChangeSorting}
             posts={proposals.data}
-            statuses={initiativeStatuses?.data ?? []}
+            statuses={ideaStatuses?.data ?? []}
             selection={selection}
             onChangeSelection={setSelection}
             currentPageNumber={

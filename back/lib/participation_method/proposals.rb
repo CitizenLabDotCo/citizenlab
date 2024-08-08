@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Proposals < Ideation
+    def self.method_str
+      'proposals'
+    end
+
     def transitive?
       false
     end
