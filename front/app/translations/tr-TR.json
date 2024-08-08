@@ -1692,7 +1692,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "kaydolun",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Gönüllülük teklifimi geri alıyorum",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {gönüllü yok} one {# gönüllü} other {# gönüllü}}",
-  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": ", Uyarı: Gömülü anket, ekran okuyucu kullanıcıları için erişilebilirlik sorunları içerebilir. Herhangi bir sorunla karşılaşırsanız, orijinal platformdan ankete bir bağlantı almak için lütfen platform yöneticisine ulaşın. Alternatif olarak, anketi doldurmak için başka yollar da talep edebilirsiniz.",
+  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Uyarı: Yerleştirilmiş anket, ekran okuyucu kullanıcıları için erişilebilirlik sorunları içerebilir. Herhangi bir sorunla karşılaşırsanız, orijinal platformdan ankete bir bağlantı almak için lütfen platform yöneticisine ulaşın. Alternatif olarak, anketi doldurmak için başka yollar da talep edebilirsiniz.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Anket",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Bu ankete katılıp katılamayacağınızı öğrenmek için lütfen önce platformda {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Bu ankete yalnızca doğrulanmış kullanıcılar katılabilir. Lütfen önce {signUpLink} veya {logInLink}.",
