@@ -75,12 +75,14 @@ const MultiSelectControl = ({
 
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay
-        inputId={sanitizeForClassname(id)}
-        ajvErrors={errors}
-        fieldPath={path}
-        didBlur={didBlur}
-      />
+      <Box mt="4px">
+        <ErrorDisplay
+          inputId={sanitizeForClassname(id)}
+          ajvErrors={errors}
+          fieldPath={path}
+          didBlur={didBlur}
+        />
+      </Box>
     </>
   );
 };
