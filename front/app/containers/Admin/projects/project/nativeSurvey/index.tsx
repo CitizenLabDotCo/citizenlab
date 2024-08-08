@@ -285,12 +285,6 @@ const Forms = () => {
                                 <Text my="0px">
                                   {formatMessage(messages.downloadSurvey)}
                                 </Text>
-                                <IconTooltip
-                                  ml="4px"
-                                  content={formatMessage(
-                                    messages.downloadSurveyAsPdfTooltip
-                                  )}
-                                />
                               </Box>
                             </DropdownListItem>
                             <DropdownListItem onClick={downloadExampleFile}>
