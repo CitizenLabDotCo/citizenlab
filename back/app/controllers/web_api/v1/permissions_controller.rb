@@ -38,7 +38,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def schema
     authorize @permission
     fields = user_requirements_service.requirements_fields @permission
-    render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
+    render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
   end
 
   private
@@ -49,6 +49,11 @@ class WebApi::V1::PermissionsController < ApplicationController
       params: jsonapi_serializer_params,
       include: %i[permissions_custom_fields custom_fields]
     ).serializable_hash
+  end
+
+  # NOTE: Extended by verification
+  def user_ui_and_json_multiloc_schemas(fields)
+    JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
   end
 
   def permissions_update_service
@@ -75,3 +80,5 @@ class WebApi::V1::PermissionsController < ApplicationController
     params.require(:permission).permit(:permitted_by, :global_custom_fields, group_ids: [])
   end
 end
+
+WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)

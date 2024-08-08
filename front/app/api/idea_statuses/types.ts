@@ -1,3 +1,4 @@
+import { uniq } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -10,21 +11,56 @@ export type IdeaStatusesQueryParams = {
   participation_method?: 'ideation' | 'proposals';
 };
 
-export const ideaStatusCodes = [
+type InputStatusCode =
+  | 'proposed'
+  | 'viewed'
+  | 'under_consideration'
+  | 'accepted'
+  | 'rejected'
+  | 'implemented'
+  | 'custom'
+  | 'threshold_reached'
+  | 'expired'
+  | 'answered'
+  | 'ineligible';
+
+export const inputStatusCodes: Record<
+  'ideation' | 'proposals',
+  InputStatusCode[]
+> = {
+  ideation: [
+    'proposed',
+    'viewed',
+    'under_consideration',
+    'accepted',
+    'rejected',
+    'implemented',
+    'custom',
+  ],
+  proposals: [
+    'proposed',
+    'threshold_reached',
+    'expired',
+    'answered',
+    'ineligible',
+    'custom',
+  ],
+};
+
+export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'proposed',
-  'viewed',
-  'under_consideration',
-  'accepted',
-  'implemented',
-  'rejected',
-  'custom',
   'threshold_reached',
   'expired',
-  'answered',
-  'ineligible',
-] as const;
+]);
 
-export type TIdeaStatusCode = (typeof ideaStatusCodes)[number];
+const allMergedInputStatusCodes = uniq(
+  Object.keys(inputStatusCodes)
+    .map(function (v) {
+      return inputStatusCodes[v];
+    })
+    .flat()
+);
+export type TIdeaStatusCode = (typeof allMergedInputStatusCodes)[number];
 
 export interface IIdeaStatusData {
   id: string;

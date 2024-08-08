@@ -130,7 +130,7 @@ const IdeaMeta = ({ ideaId }: Props) => {
         {getAlternateLinks(appConfigurationLocales)}
         <meta name="title" content={localizedTitle} />
         <meta name="description" content={ideaDescription} />
-
+        <meta property="og:description" content={ideaDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={localizedTitle} />
         <meta property="ideaOgDescription" content={ideaDescription} />

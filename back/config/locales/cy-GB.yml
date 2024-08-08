@@ -267,6 +267,7 @@ cy:
       submitted_at: 'Cyflwynwyd yn'
       tags: 'Tagiau'
       title: 'Teitl'
+      user_data: 'Data defnyddwyr'
       votes_count: 'Pleidleisiau'
   form_builder:
     default_select_field:

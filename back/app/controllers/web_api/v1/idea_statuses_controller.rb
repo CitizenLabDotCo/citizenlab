@@ -17,6 +17,10 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   def create
     @idea_status = IdeaStatus.new(idea_status_params_for_create)
     authorize @idea_status
+    if IdeaStatus::AUTOMATIC_STATUS_CODES.include?(@idea_status.code)
+      render json: { errors: { code: [{ error: 'Cannot create additional automatic statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
+      return
+    end
     if @idea_status.save
       SideFxIdeaStatusService.new.after_create(@idea_status, current_user)
       render json: serialize(@idea_status), status: :created
@@ -26,7 +30,17 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def update
-    if @idea_status.update(idea_status_params_for_update)
+    code_change = params.dig(:idea_status, :code) != @idea_status.code
+    if code_change && @idea_status.automatic?
+      render json: { errors: { code: [{ error: 'Cannot change the code of automatic statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
+      return
+    end
+    @idea_status.assign_attributes(idea_status_params_for_update)
+    if code_change && @idea_status.automatic?
+      render json: { errors: { code: [{ error: 'Cannot set the code to an automatic status code', value: @idea_status.code }] } }, status: :unprocessable_entity
+      return
+    end
+    if @idea_status.save
       SideFxIdeaStatusService.new.after_update(@idea_status, current_user)
       render json: serialize(@idea_status), status: :ok
     else
@@ -81,20 +95,15 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def idea_status_params_for_create
     params_attrs = [:participation_method, *shared_params]
-    params_attrs << :code if IdeaStatus::AUTOMATIC_STATUS_CODES.exclude?(params.dig(:idea_status, :code))
     params.require(:idea_status).permit(params_attrs)
   end
 
   def idea_status_params_for_update
-    params_attrs = shared_params
-    if !@idea_status.automatic? && IdeaStatus::AUTOMATIC_STATUS_CODES.exclude?(params.dig(:idea_status, :code))
-      params_attrs << :code
-    end
-    params.require(:idea_status).permit(params_attrs)
+    params.require(:idea_status).permit(shared_params)
   end
 
   def shared_params
-    [:color, { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }]
+    [:code, :color, { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }]
   end
 
   def max_ordering

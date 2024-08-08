@@ -30,8 +30,6 @@
 #  voting_min_total              :integer          default(0)
 #  reacting_dislike_method       :string           default("unlimited"), not null
 #  reacting_dislike_limited_max  :integer          default(10)
-#  posting_method                :string           default("unlimited"), not null
-#  posting_limited_max           :integer          default(1)
 #  allow_anonymous_participation :boolean          default(FALSE), not null
 #  document_annotation_embed_url :string
 #  voting_method                 :string
@@ -63,7 +61,6 @@ class Phase < ApplicationRecord
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
-  POSTING_METHODS       = %w[unlimited limited].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
@@ -109,11 +106,9 @@ class Phase < ApplicationRecord
     validates :presentation_mode, presence: true
   end
 
-  with_options if: ->(phase) { phase.pmethod.supports_posting_inputs? } do
-    validates :posting_enabled, inclusion: { in: [true, false] }
-    validates :posting_method, presence: true, inclusion: { in: POSTING_METHODS }
-    validates :posting_limited_max, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  end
+  validates :posting_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
+    phase.pmethod.supports_posting_inputs?
+  }
 
   with_options if: ->(phase) { phase.pmethod.supports_commenting? } do
     validates :commenting_enabled, inclusion: { in: [true, false] }
@@ -214,10 +209,6 @@ class Phase < ApplicationRecord
 
   def custom_form_persisted?
     custom_form.present?
-  end
-
-  def posting_limited?
-    posting_method == 'limited'
   end
 
   def reacting_like_limited?

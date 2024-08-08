@@ -152,6 +152,17 @@ RSpec.describe SurveyResultsGeneratorService do
       required: false
     )
   end
+  let_it_be(:shapefile_upload_field) do
+    create(
+      :custom_field,
+      input_type: 'shapefile_upload',
+      resource: form,
+      title_multiloc: {
+        'en' => 'Upload a file'
+      },
+      required: false
+    )
+  end
 
   let_it_be(:point_field) do
     create(
@@ -164,7 +175,44 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  let_it_be(:map_config) { create(:map_config, mappable: point_field) }
+  let_it_be(:map_config_for_point) { create(:map_config, mappable: point_field) }
+
+  let_it_be(:line_field) do
+    create(
+      :custom_field_line,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Where should we build the new bicycle path?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config_for_line) { create(:map_config, mappable: line_field) }
+
+  let_it_be(:polygon_field) do
+    create(
+      :custom_field_polygon,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Where should we build the new housing?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config_for_polygon) { create(:map_config, mappable: polygon_field) }
+
+  let_it_be(:number_field) do
+    create(
+      :custom_field_number,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How many cats would you like?'
+      },
+      description_multiloc: {}
+    )
+  end
 
   let_it_be(:user_custom_field) do
     create(:custom_field_gender, :with_options)
@@ -176,7 +224,8 @@ RSpec.describe SurveyResultsGeneratorService do
     male_user = create(:user, custom_field_values: { gender: 'male' })
     female_user = create(:user, custom_field_values: { gender: 'female' })
     no_gender_user = create(:user, custom_field_values: {})
-    idea_file = create(:idea_file)
+    idea_file1 = create(:idea_file)
+    idea_file2 = create(:idea_file)
     create(
       :native_survey_response,
       project: project,
@@ -185,11 +234,15 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        file_upload_field.key => { 'id' => idea_file1.id, 'name' => idea_file1.name },
+        shapefile_upload_field.key => { 'id' => idea_file2.id, 'name' => idea_file2.name },
         point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
-        linear_scale_field.key => 3
+        line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
+        polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
+        linear_scale_field.key => 3,
+        number_field.key => 42
       },
-      idea_files: [idea_file],
+      idea_files: [idea_file1, idea_file2],
       author: female_user
     )
     create(
@@ -201,6 +254,8 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cow pig cat],
         select_field.key => 'la',
         point_field.key => { type: 'Point', coordinates: [11.22, 33.44] },
+        line_field.key => { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] },
+        polygon_field.key => { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] },
         linear_scale_field.key => 4
       },
       author: male_user
@@ -285,7 +340,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 9
+        expect(generated_results[:results].count).to eq 13
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
@@ -961,6 +1016,27 @@ RSpec.describe SurveyResultsGeneratorService do
       end
     end
 
+    describe 'shapefile upload fields' do
+      let(:expected_result_shapefile_upload) do
+        {
+          customFieldId: shapefile_upload_field.id,
+          inputType: 'shapefile_upload',
+          question: { 'en' => 'Upload a file' },
+          required: false,
+          grouped: false,
+          totalResponseCount: 22,
+          questionResponseCount: 1,
+          files: [
+            { name: end_with('.pdf'), url: end_with('.pdf') }
+          ]
+        }
+      end
+
+      it 'returns the results for file upload field' do
+        expect(generated_results[:results][8]).to match expected_result_shapefile_upload
+      end
+    end
+
     describe 'point fields' do
       let(:expected_result_point) do
         {
@@ -971,16 +1047,83 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 2,
           totalResponseCount: 22,
           customFieldId: point_field.id,
-          mapConfigId: map_config.id,
+          mapConfigId: map_config_for_point.id,
           pointResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
           )
         }
       end
 
       it 'returns the results for a point field' do
-        expect(generated_results[:results][8]).to match expected_result_point
+        expect(generated_results[:results][9]).to match expected_result_point
+      end
+    end
+
+    describe 'line fields' do
+      let(:expected_result_line) do
+        {
+          inputType: 'line',
+          question: { 'en' => 'Where should we build the new bicycle path?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 22,
+          customFieldId: line_field.id,
+          mapConfigId: map_config_for_line.id,
+          lineResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
+          )
+        }
+      end
+
+      it 'returns the results for a line field' do
+        expect(generated_results[:results][10]).to match expected_result_line
+      end
+    end
+
+    describe 'polygon fields' do
+      let(:expected_result_polygon) do
+        {
+          inputType: 'polygon',
+          question: { 'en' => 'Where should we build the new housing?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 22,
+          customFieldId: polygon_field.id,
+          mapConfigId: map_config_for_polygon.id,
+          polygonResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
+            { answer: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
+          )
+        }
+      end
+
+      it 'returns the results for a polygon field' do
+        expect(generated_results[:results][11]).to match expected_result_polygon
+      end
+    end
+
+    describe 'number fields' do
+      let(:expected_result_number) do
+        {
+          inputType: 'number',
+          question: { 'en' => 'How many cats would you like?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 1,
+          totalResponseCount: 22,
+          customFieldId: number_field.id,
+          numberResponses: a_collection_containing_exactly(
+            { answer: 42 }
+          )
+        }
+      end
+
+      it 'returns the results for a number field' do
+        expect(generated_results[:results][12]).to match expected_result_number
       end
     end
   end

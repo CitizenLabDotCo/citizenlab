@@ -25,13 +25,16 @@ export type ICustomFieldInputType =
   | 'section'
   | 'page'
   | 'file_upload'
+  | 'shapefile_upload'
   | 'title_multiloc'
   | 'html_multiloc'
   | 'files'
   | 'image_files'
   | 'topic_ids'
   | 'multiselect_image'
-  | 'point';
+  | 'point'
+  | 'line'
+  | 'polygon';
 
 export type IOptionsType = {
   id?: string;

@@ -21,7 +21,7 @@ module Verification
 
           def mark_locked_fields(ui_schema_multiloc)
             locked_custom_fields = verification_service.locked_custom_fields(current_user).map(&:to_s)
-            ui_schema_multiloc.each do |_locale, ui_schema|
+            ui_schema_multiloc.each_value do |ui_schema|
               ui_schema.keys
                 .select { |key| locked_custom_fields.include?(key) }
                 .each do |key|
@@ -33,7 +33,7 @@ module Verification
 
           def mark_locked_json_forms_fields(schemas_multiloc)
             locked_custom_fields = verification_service.locked_custom_fields(current_user).map(&:to_s)
-            schemas_multiloc[:ui_schema_multiloc].each do |_locale, ui_schema|
+            schemas_multiloc[:ui_schema_multiloc].each_value do |ui_schema|
               ui_schema[:elements]
                 .select { |e| locked_custom_fields.any? { |field| e[:scope].end_with?(field) } }
                 .each_with_index do |element, index|

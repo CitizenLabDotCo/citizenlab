@@ -170,6 +170,10 @@ class WebApi::V1::IdeasController < ApplicationController
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
+    if idea_status_not_allowed?(input)
+      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity input
 
     save_options = {}
@@ -213,6 +217,10 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     if anonymous_not_allowed?(phase)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
+    if idea_status_not_allowed?(input)
+      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity input
@@ -314,13 +322,12 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = submittable_custom_fields(custom_form).map(&:key).map(&:to_sym)
+    submittable_field_keys = submittable_custom_fields(custom_form).map { |x| x.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes << :idea_status_id if allow_idea_status_id_param?
-      attributes.concat %i[author_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
     end
     attributes
   end
@@ -363,15 +370,6 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes
   end
 
-  def allow_idea_status_id_param?
-    return false if params.dig(:idea, :idea_status_id).blank?
-
-    status = IdeaStatus.find(params.dig(:idea, :idea_status_id))
-    return false if !status
-
-    InputStatusService.new(status).can_transition_manually?
-  end
-
   def submittable_custom_fields(custom_form)
     IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
   end
@@ -386,6 +384,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def anonymous_not_allowed?(phase)
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def idea_status_not_allowed?(input)
+    return false if params.dig(:idea, :idea_status_id).blank?
+
+    !InputStatusService.new(input.idea_status).can_transition_manually?
   end
 
   def serialization_options_for(ideas)
