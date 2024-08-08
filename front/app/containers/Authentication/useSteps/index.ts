@@ -35,6 +35,7 @@ let initialized = false;
 
 export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
+  console.log({ anySSOEnabled });
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
 

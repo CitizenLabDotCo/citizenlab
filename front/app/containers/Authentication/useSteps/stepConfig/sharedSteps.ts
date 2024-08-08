@@ -170,6 +170,9 @@ export const sharedSteps = (
 
         const { flow } = getAuthenticationData();
 
+        console.log('INSIDE SHARED STEPS:');
+        console.log({ anySSOEnabled, flow });
+
         if (flow === 'signin') {
           anySSOEnabled
             ? setCurrentStep('sign-in:auth-providers')
