@@ -972,7 +972,6 @@
   "app.containers.AccessibilityStatement.headTitle": "Paziņojums par pieejamību | {orgName}",
   "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} ir apņēmies nodrošināt platformu, kas ir pieejama visiem lietotājiem neatkarīgi no tehnoloģijas vai spējām. Aktuālie pieejamības standarti atbilst mūsu pašreizējiem centieniem maksimāli uzlabot mūsu platformu pieejamību visiem lietotājiem.",
   "app.containers.AccessibilityStatement.mapLinePolygonInputs": "Karšu līniju un poligonu zīmēšana apsekojumos",
-  "app.containers.AccessibilityStatement.mapLinePolygonInputsException2": "Līniju un daudzstūru zīmēšana apsekojumos neatbilst pieejamības standartiem, jo figūras kartē nevar zīmēt, izmantojot tastatūru. Alternatīva ievades iespēja pašlaik nav paredzēta tehniskās sarežģītības dēļ. Turklāt karte nav pieejama ekrānlasītāju lietotājiem, jo kartes apjoms un slāņi netiek attēloti dzirdami, lai nodrošinātu kontekstu. Ja izmantojat šīs metodes, iesakām aptaujā iekļaut arī iespēju sazināties ar projekta īpašnieku, lai saņemtu alternatīvu metodi aptaujas aizpildīšanai.",
   "app.containers.AccessibilityStatement.mapviewIdeas": "Ieguldījumu kartes skats",
   "app.containers.AccessibilityStatement.mapviewIdeasException": "Projektiem ir iespēja attēlot savus ievaddatus kartes skatā, kas nav pieejams. Tomēr vienmēr ir pieejams alternatīvs sarakstu skats, kas ir pieejams.",
   "app.containers.AccessibilityStatement.onlineWorkshopsException": "Mūsu tiešsaistes semināros ir tiešraides video straumēšanas komponents, kas šobrīd neatbalsta subtitrus.",
