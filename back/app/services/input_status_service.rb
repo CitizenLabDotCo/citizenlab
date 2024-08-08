@@ -19,7 +19,7 @@ class InputStatusService
       else
         false
       end
-        
+
       apply_transition!(input, code_to) if can_transition
     end
   end
