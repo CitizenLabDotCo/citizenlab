@@ -1,14 +1,6 @@
 import React, { useState, KeyboardEvent, useMemo } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  colors,
-  useBreakpoint,
-  media,
-  isRtl,
-} from '@citizenlab/cl2-component-library';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
   isArray,
   find,
@@ -21,7 +13,6 @@ import {
 import styled from 'styled-components';
 
 import Combobox from './ComboBox';
-import Title from './Title';
 import ValuesList from './ValuesList';
 
 const Container = styled(Box)`
@@ -124,7 +115,6 @@ const FilterSelector = ({
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
-  const isPhoneOrSmaller = useBreakpoint('phone');
 
   const getTitle = (
     selection: string[],
@@ -218,47 +208,6 @@ const FilterSelector = ({
         last ? 'last' : ''
       }`}
     >
-      <Box id={selectorId}>
-        {/* The id is used for aria-labelledby on the group
-         which defines the accessible name for the group */}
-        {filterSelectorStyle === 'button' ? (
-          <Button
-            height={isPhoneOrSmaller ? '32px' : '36px'}
-            borderRadius="24px"
-            onClick={toggleValuesList}
-            minWidth={minWidth ? minWidth : undefined}
-            onKeyDown={handleKeyDown}
-            ariaExpanded={opened}
-            aria-controls={baseID}
-            // Needed to track aria-labelledby
-            id={`${baseID}-label`}
-            /* We use a combobox for single selection hence the need for these
-             * See https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-             */
-            role={!multipleSelectionAllowed ? 'combobox' : undefined}
-            aria-haspopup={!multipleSelectionAllowed ? 'listbox' : undefined}
-          >
-            <Box display="flex" gap="8px">
-              {currentTitle}
-              <Icon
-                fill={colors.white}
-                name={opened ? 'chevron-up' : 'chevron-down'}
-              />
-            </Box>
-          </Button>
-        ) : (
-          <Title
-            key={baseID}
-            title={currentTitle}
-            opened={opened}
-            onClick={toggleValuesList}
-            baseID={baseID}
-            textColor={textColor}
-            handleKeyDown={handleKeyDown}
-            multipleSelectionAllowed={multipleSelectionAllowed}
-          />
-        )}
-      </Box>
       {multipleSelectionAllowed ? (
         <ValuesList
           opened={opened}
@@ -278,6 +227,12 @@ const FilterSelector = ({
           mobileRight={mobileRight}
           name={name}
           selectorId={selectorId}
+          filterSelectorStyle={filterSelectorStyle}
+          minWidth={minWidth}
+          toggleValuesList={toggleValuesList}
+          textColor={textColor}
+          currentTitle={currentTitle}
+          handleKeyDown={handleKeyDown}
         />
       ) : (
         <Combobox
@@ -296,6 +251,13 @@ const FilterSelector = ({
           mobileLeft={mobileLeft}
           right={right}
           mobileRight={mobileRight}
+          filterSelectorStyle={filterSelectorStyle}
+          minWidth={minWidth}
+          toggleValuesList={toggleValuesList}
+          textColor={textColor}
+          currentTitle={currentTitle}
+          handleKeyDown={handleKeyDown}
+          selectorId={selectorId}
         />
       )}
     </Container>
