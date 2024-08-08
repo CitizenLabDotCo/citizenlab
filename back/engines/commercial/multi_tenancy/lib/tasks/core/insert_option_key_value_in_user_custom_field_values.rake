@@ -46,7 +46,7 @@ namespace :cl2_back do
         user = User.find_by(id: d['id'])
         next if user.nil? || user.custom_field_values[custom_field.key].present?
 
-        value = d['value'].delete(' ').downcase
+        value = d['value'].delete(' ').strip.downcase
         option = options.find { |o| o.title_multiloc[locale].downcase == value }
 
         if option
