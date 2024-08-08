@@ -59,6 +59,7 @@ interface Props {
   className?: string;
   textColor?: string;
   handleKeyDown?: (event: KeyboardEvent) => void;
+  multipleSelectionAllowed?: boolean;
 }
 
 const Title = ({
@@ -69,6 +70,7 @@ const Title = ({
   className,
   textColor,
   handleKeyDown,
+  multipleSelectionAllowed,
 }: Props) => {
   const adminPage = isPage('admin', location.pathname);
 
@@ -85,6 +87,11 @@ const Title = ({
         opened ? 'opened' : ''
       } ${className} ${adminPage ? 'adminpage' : ''}`}
       textColor={textColor}
+      /* We use a combobox for single selection hence the need for these
+       * See https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
+       */
+      role={!multipleSelectionAllowed ? 'combobox' : undefined}
+      aria-haspopup={!multipleSelectionAllowed ? 'listbox' : undefined}
     >
       <Text className="FilterSelectorTitleText" textColor={textColor}>
         {title}
