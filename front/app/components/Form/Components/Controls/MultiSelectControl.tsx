@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isPrimitiveArrayControl,
@@ -14,12 +14,15 @@ import styled from 'styled-components';
 import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
 import { getOptions, getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -36,6 +39,7 @@ const MultiSelectControl = ({
   id,
   visible,
 }: ControlProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'multi');
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -43,6 +47,29 @@ const MultiSelectControl = ({
   if (!visible) {
     return null;
   }
+
+  const maxItems = schema.maxItems;
+  const minItems = schema.minItems;
+
+  const getInstructionMessage = () => {
+    if (!isNilOrError(minItems) && !isNilOrError(maxItems)) {
+      if (minItems < 1 && maxItems === options?.length) {
+        return formatMessage(messages.selectAsManyAsYouLike);
+      }
+      if (maxItems === minItems) {
+        return formatMessage(messages.selectExactly, {
+          selectExactly: maxItems,
+        });
+      }
+      if (minItems !== maxItems) {
+        return formatMessage(messages.selectBetween, {
+          minItems,
+          maxItems,
+        });
+      }
+    }
+    return null;
+  };
 
   return (
     <>
@@ -53,6 +80,9 @@ const MultiSelectControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      <Text mt="4px" mb={'4px'} fontSize="s">
+        {getInstructionMessage()}
+      </Text>
       <Box display="flex" flexDirection="row" overflow="visible">
         <Box flexGrow={1}>
           <StyledMultipleSelect
@@ -60,10 +90,14 @@ const MultiSelectControl = ({
             options={options}
             onChange={(vals) => {
               setDidBlur(true);
-              handleChange(
-                path,
-                vals.map((val) => val.value)
-              );
+              if (vals?.length === 0) {
+                handleChange(path, undefined);
+              } else {
+                handleChange(
+                  path,
+                  vals.map((val) => val.value)
+                );
+              }
             }}
             inputId={sanitizeForClassname(id)}
             disabled={uischema?.options?.readonly}
