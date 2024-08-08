@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Izbori odgovora",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Format odgovora",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Mora se dati barem jedan izbor",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Ovaj korisnik moderira mapu koja sadrži ovaj projekt. Da biste uklonili njihova prava moderatora za ovaj projekt, možete opozvati njihova prava mape ili premjestiti projekt u drugu mapu.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Napravi novo pitanje",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Napravite pitanje",
   "app.containers.AdminPage.groups.permissions.defaultField": "Zadano polje",
