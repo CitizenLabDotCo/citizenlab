@@ -859,7 +859,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Velg en idéfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Spør personlige data",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Spørsmål som for øyeblikket ikke støttes: Bilder, etiketter og filopplasting.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey": "Spørsmål som ikke støttes for øyeblikket: Plassering og filopplasting.",
   "app.containers.Admin.projects.all.components.archived": "Arkivert",
   "app.containers.Admin.projects.all.components.draft": "Utkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediger",
