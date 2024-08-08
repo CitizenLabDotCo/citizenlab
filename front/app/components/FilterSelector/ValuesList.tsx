@@ -126,7 +126,6 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
-  title: string | JSX.Element;
   values: Value[];
   onChange: (arg: string) => void;
   onClickOutside?: (event: React.FormEvent) => void;
