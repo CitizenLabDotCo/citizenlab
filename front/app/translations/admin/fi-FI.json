@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Vastausvaihtoehdot",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Vastauksen muoto",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Vähintään yksi vaihtoehto on annettava",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Tämä käyttäjä valvoo tämän projektin sisältävää kansiota. Jos haluat poistaa heidän moderaattorin oikeutensa tälle projektille, voit joko peruuttaa heidän kansiooikeudet tai siirtää projektin toiseen kansioon.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Luo uusi kysymys",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Luo kysymys",
   "app.containers.AdminPage.groups.permissions.defaultField": "Oletuskenttä",
