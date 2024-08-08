@@ -220,7 +220,7 @@ RSpec.describe ParticipationMethod::Ideation do
     end
 
     it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each do |_key, value|
+      participation_method.constraints.each_value do |value|
         expect(value.key?(:locks)).to be true
         valid_locks = %i[enabled required title_multiloc]
         expect(valid_locks).to include(*value[:locks].keys)

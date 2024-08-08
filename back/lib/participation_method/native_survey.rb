@@ -65,7 +65,8 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point]
+      %w[page number linear_scale text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon]
     end
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
@@ -124,6 +125,10 @@ module ParticipationMethod
     # we can suppress the heading by returning nil.
     def extra_fields_category_translation_key
       nil
+    end
+
+    def posting_limit
+      1
     end
   end
 end

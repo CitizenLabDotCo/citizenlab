@@ -64,13 +64,10 @@ class Permission < ApplicationRecord
   def self.enabled_actions(permission_scope)
     return available_actions(permission_scope) if permission_scope&.pmethod&.return_disabled_actions?
 
-    available_actions(permission_scope).filter_map do |action|
-      next if
-        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+    available_actions(permission_scope).reject do |action|
+      (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
         (action == 'reacting_idea' && !permission_scope&.reacting_enabled?) ||
         (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
-
-      action
     end
   end
 
