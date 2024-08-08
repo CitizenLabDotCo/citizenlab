@@ -45,5 +45,7 @@ describe Permissions::BasePermissionsService do
 
       it { expect(service.send(:user_denied_reason, group_permission)).to be_nil }
     end
+
+    # TODO: JS - Add tests for verification expiry & verified permitted_by - inc when there are other groups
   end
 end
