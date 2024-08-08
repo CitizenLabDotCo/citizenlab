@@ -16,7 +16,7 @@ module Verification
       end
     end
 
-    def first_method_enabled_for_verified_actions?
+    def first_enabled_for_verified_actions?
       true
     end
   end

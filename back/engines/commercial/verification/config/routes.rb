@@ -4,7 +4,7 @@ Verification::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       resources :verification_methods, only: [:index] do
-        get :first_method_enabled_for_verified_actions, on: :collection
+        get :first_enabled_for_verified_actions, on: :collection
       end
       Verification::VerificationService.new
         .all_methods

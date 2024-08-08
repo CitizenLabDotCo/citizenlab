@@ -19,16 +19,18 @@ module Verification
           )
         end
 
-        def first_method_enabled_for_verified_actions
+        def first_enabled_for_verified_actions
           method = VerificationService.new.first_method_enabled_for_verified_actions
-          :send_not_found if method.nil?
-
-          authorize method, policy_class: VerificationMethodPolicy
-          render json: WebApi::V1::VerificationMethodSerializer
-            .new(
-              method,
-              params: jsonapi_serializer_params
-            ).serializable_hash
+          if method.nil?
+            head :not_found
+          else
+            authorize method, policy_class: VerificationMethodPolicy
+            render json: WebApi::V1::VerificationMethodSerializer
+              .new(
+                method,
+                params: jsonapi_serializer_params
+              ).serializable_hash
+          end
         end
       end
     end

@@ -97,7 +97,7 @@ resource 'Verification methods' do
     end
   end
 
-  get 'web_api/v1/verification_methods/first_method_enabled_for_verified_actions' do
+  get 'web_api/v1/verification_methods/first_enabled_for_verified_actions' do
     example_request 'Returns the first verification method enabled for verified actions' do
       expect(status).to eq(200)
       expect(response_data).to eq(
