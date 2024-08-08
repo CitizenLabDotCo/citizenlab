@@ -245,7 +245,9 @@ const FullscreenMapInput = memo<Props>(
                         mr="4px"
                       />
                       <Box my="auto">
-                        {formatMessage(messages.tapOnFullscreenMapToAdd)}
+                        {inputType === 'point'
+                          ? formatMessage(messages.tapOnFullscreenMapToAddPoint)
+                          : formatMessage(messages.tapOnFullscreenMapToAdd)}
                       </Box>
                     </Box>
                   </Label>
