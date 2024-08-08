@@ -94,7 +94,6 @@ const Combobox = ({
   textColor,
   currentTitle,
   handleKeyDown,
-  selectorId,
 }: Props) => {
   const listboxRef = useRef<HTMLUListElement>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -147,7 +146,7 @@ const Combobox = ({
 
   return (
     <Box>
-      <Box id={selectorId}>
+      <Box>
         {/* The id is used for aria-labelledby on the group
          which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
@@ -161,9 +160,6 @@ const Combobox = ({
             aria-controls={baseID}
             // Needed to track aria-labelledby
             id={`${baseID}-label`}
-            /* We use a combobox for single selection hence the need for these
-             * See https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-             */
             role="combobox"
             aria-haspopup="listbox"
           >
@@ -184,6 +180,8 @@ const Combobox = ({
             baseID={baseID}
             textColor={textColor}
             handleKeyDown={handleKeyDown}
+            role="combobox"
+            aria-haspopup="listbox"
           />
         )}
       </Box>

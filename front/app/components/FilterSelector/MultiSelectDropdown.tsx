@@ -108,12 +108,12 @@ export interface SelectorProps {
   textColor?: string;
   currentTitle: string | JSX.Element;
   handleKeyDown?: (event: KeyboardEvent) => void;
-  selectorId: string;
 }
 
 interface Props extends SelectorProps {
   values: IFilterSelectorValue[];
   name: string;
+  selectorId: string;
 }
 
 const MultiSelectDropdown = ({
@@ -209,7 +209,6 @@ const MultiSelectDropdown = ({
             baseID={baseID}
             textColor={textColor}
             handleKeyDown={handleKeyDown}
-            multipleSelectionAllowed={true}
           />
         )}
       </Box>

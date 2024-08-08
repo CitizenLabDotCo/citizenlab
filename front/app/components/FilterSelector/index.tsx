@@ -257,7 +257,6 @@ const FilterSelector = ({
           textColor={textColor}
           currentTitle={currentTitle}
           handleKeyDown={handleKeyDown}
-          selectorId={selectorId}
         />
       )}
     </Container>
