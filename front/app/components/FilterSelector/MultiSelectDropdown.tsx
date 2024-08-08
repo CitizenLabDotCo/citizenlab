@@ -141,7 +141,7 @@ const MultiSelectDropdown = ({
   currentTitle,
   handleKeyDown,
 }: Props) => {
-  const tabsRef = useRef({});
+  const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const isPhoneOrSmaller = useBreakpoint('phone');
 
@@ -165,7 +165,7 @@ const MultiSelectDropdown = ({
           nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
         }
         setFocusedIndex(nextIndex);
-        tabsRef.current[nextIndex].focus();
+        // tabsRef.current[nextIndex]?.focus();
       } else if (
         event.type === 'click' ||
         (event.type === 'keydown' && event.code === 'Space')
@@ -182,8 +182,6 @@ const MultiSelectDropdown = ({
   return (
     <Box>
       <Box id={selectorId}>
-        {/* The id is used for aria-labelledby on the group
-         which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}
@@ -193,8 +191,6 @@ const MultiSelectDropdown = ({
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
             aria-controls={baseID}
-            // Needed to track aria-labelledby
-            id={`${baseID}-label`}
           >
             <Box display="flex" gap="8px">
               {currentTitle}
@@ -218,7 +214,7 @@ const MultiSelectDropdown = ({
         )}
       </Box>
       <Dropdown
-        id={baseID} // Used for aria expanded and aria controls
+        id={baseID}
         width={width}
         mobileWidth={mobileWidth}
         maxHeight={maxHeight}
@@ -231,9 +227,6 @@ const MultiSelectDropdown = ({
         opened={opened}
         onClickOutside={handleOnClickOutside}
         content={
-          // The id is used for aria-labelledby on the group which defines
-          // the accessible name for the group. The role group identifies the
-          // group container for the list items.
           <Box role="group" aria-labelledby={selectorId}>
             <List className="e2e-sort-items">
               {values &&
@@ -244,7 +237,6 @@ const MultiSelectDropdown = ({
                     `e2e-sort-item-${
                       entry.value !== '-new' ? entry.value : 'old'
                     }`,
-                    checked ? 'selected' : '',
                     last ? 'last' : '',
                   ]
                     .filter((item) => !isNil(item))
@@ -257,7 +249,10 @@ const MultiSelectDropdown = ({
                       onMouseDown={removeFocusAfterMouseClick}
                       onKeyDown={handleOnSelectSingleValue(entry)}
                       className={classNames}
-                      ref={(el) => el && (tabsRef.current[index] = el)}
+                      ref={(el) => (tabsRef.current[index] = el)}
+                      role="checkbox"
+                      aria-checked={checked}
+                      tabIndex={0}
                     >
                       <Checkbox
                         checked={checked}
@@ -265,6 +260,7 @@ const MultiSelectDropdown = ({
                         label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
                         name={name}
                         selectedBorderColor={colors.white}
+                        checkBoxTabIndex={-1}
                       />
                     </CheckboxListItem>
                   );
