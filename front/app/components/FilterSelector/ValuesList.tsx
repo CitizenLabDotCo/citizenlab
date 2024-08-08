@@ -6,6 +6,9 @@ import {
   fontSizes,
   isRtl,
   Box,
+  Button,
+  useBreakpoint,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
@@ -13,6 +16,8 @@ import styled from 'styled-components';
 import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import Title from './Title';
 
 const List = styled.ul`
   margin: 0;
@@ -85,7 +90,7 @@ interface Value {
   value: any;
 }
 
-interface DefaultProps {
+export interface SelectorProps {
   width?: string;
   mobileWidth?: string;
   maxHeight?: string;
@@ -95,19 +100,23 @@ interface DefaultProps {
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
-}
-
-interface Props extends DefaultProps {
-  values: Value[];
   onChange: (arg: string) => void;
+  opened: boolean;
   onClickOutside?: (event: React.FormEvent) => void;
   selected: any[];
-  right?: string;
-  mobileRight?: string;
-  opened: boolean;
   baseID: string;
-  name: string;
+  filterSelectorStyle?: 'button' | 'text';
+  minWidth?: string;
+  toggleValuesList: () => void;
+  textColor?: string;
+  currentTitle: string | JSX.Element;
+  handleKeyDown?: (event: KeyboardEvent) => void;
   selectorId: string;
+}
+
+interface Props extends SelectorProps {
+  values: Value[];
+  name: string;
 }
 
 const ValuesList = ({
@@ -128,9 +137,16 @@ const ValuesList = ({
   onChange,
   onClickOutside,
   selectorId,
+  filterSelectorStyle,
+  minWidth,
+  toggleValuesList,
+  textColor,
+  currentTitle,
+  handleKeyDown,
 }: Props) => {
   const tabsRef = useRef({});
   const [focusedIndex, setFocusedIndex] = useState(-1);
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   const handleOnToggleCheckbox =
     (entry: Value) => (_event: React.ChangeEvent) => {
@@ -167,62 +183,100 @@ const ValuesList = ({
   };
 
   return (
-    <Dropdown
-      id={baseID} // Used for aria expanded and aria controls
-      width={width}
-      mobileWidth={mobileWidth}
-      maxHeight={maxHeight}
-      mobileMaxHeight={mobileMaxHeight}
-      top={top}
-      left={left}
-      mobileLeft={mobileLeft}
-      right={right}
-      mobileRight={mobileRight}
-      opened={opened}
-      onClickOutside={handleOnClickOutside}
-      content={
-        // The id is used for aria-labelledby on the group which defines
-        // the accessible name for the group. The role group identifies the
-        // group container for the list items.
-        <Box role="group" aria-labelledby={selectorId}>
-          <List className="e2e-sort-items">
-            {values &&
-              values.map((entry, index) => {
-                const checked = includes(selected, entry.value);
-                const last = index === values.length - 1;
-                const classNames = [
-                  `e2e-sort-item-${
-                    entry.value !== '-new' ? entry.value : 'old'
-                  }`,
-                  checked ? 'selected' : '',
-                  last ? 'last' : '',
-                ]
-                  .filter((item) => !isNil(item))
-                  .join(' ');
+    <Box>
+      <Box id={selectorId}>
+        {/* The id is used for aria-labelledby on the group
+         which defines the accessible name for the group */}
+        {filterSelectorStyle === 'button' ? (
+          <Button
+            height={isPhoneOrSmaller ? '32px' : '36px'}
+            borderRadius="24px"
+            onClick={toggleValuesList}
+            minWidth={minWidth}
+            onKeyDown={handleKeyDown}
+            ariaExpanded={opened}
+            aria-controls={baseID}
+            // Needed to track aria-labelledby
+            id={`${baseID}-label`}
+          >
+            <Box display="flex" gap="8px">
+              {currentTitle}
+              <Icon
+                fill={colors.white}
+                name={opened ? 'chevron-up' : 'chevron-down'}
+              />
+            </Box>
+          </Button>
+        ) : (
+          <Title
+            key={baseID}
+            title={currentTitle}
+            opened={opened}
+            onClick={toggleValuesList}
+            baseID={baseID}
+            textColor={textColor}
+            handleKeyDown={handleKeyDown}
+            multipleSelectionAllowed={true}
+          />
+        )}
+      </Box>
+      <Dropdown
+        id={baseID} // Used for aria expanded and aria controls
+        width={width}
+        mobileWidth={mobileWidth}
+        maxHeight={maxHeight}
+        mobileMaxHeight={mobileMaxHeight}
+        top={top}
+        left={left}
+        mobileLeft={mobileLeft}
+        right={right}
+        mobileRight={mobileRight}
+        opened={opened}
+        onClickOutside={handleOnClickOutside}
+        content={
+          // The id is used for aria-labelledby on the group which defines
+          // the accessible name for the group. The role group identifies the
+          // group container for the list items.
+          <Box role="group" aria-labelledby={selectorId}>
+            <List className="e2e-sort-items">
+              {values &&
+                values.map((entry, index) => {
+                  const checked = includes(selected, entry.value);
+                  const last = index === values.length - 1;
+                  const classNames = [
+                    `e2e-sort-item-${
+                      entry.value !== '-new' ? entry.value : 'old'
+                    }`,
+                    checked ? 'selected' : '',
+                    last ? 'last' : '',
+                  ]
+                    .filter((item) => !isNil(item))
+                    .join(' ');
 
-                return (
-                  <CheckboxListItem
-                    id={`${baseID}-${index}`}
-                    key={entry.value}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onKeyDown={handleOnSelectSingleValue(entry)}
-                    className={classNames}
-                    ref={(el) => el && (tabsRef.current[index] = el)}
-                  >
-                    <Checkbox
-                      checked={checked}
-                      onChange={handleOnToggleCheckbox(entry)}
-                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
-                      name={name}
-                      selectedBorderColor={colors.white}
-                    />
-                  </CheckboxListItem>
-                );
-              })}
-          </List>
-        </Box>
-      }
-    />
+                  return (
+                    <CheckboxListItem
+                      id={`${baseID}-${index}`}
+                      key={entry.value}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onKeyDown={handleOnSelectSingleValue(entry)}
+                      className={classNames}
+                      ref={(el) => el && (tabsRef.current[index] = el)}
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onChange={handleOnToggleCheckbox(entry)}
+                        label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
+                        name={name}
+                        selectedBorderColor={colors.white}
+                      />
+                    </CheckboxListItem>
+                  );
+                })}
+            </List>
+          </Box>
+        }
+      />
+    </Box>
   );
 };
 
