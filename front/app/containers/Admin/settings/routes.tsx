@@ -52,6 +52,8 @@ export enum settingsRoutes {
   topics = 'topics',
   edit = 'edit',
   topicEdit = ':topicId/edit',
+  ideation = 'ideation',
+  proposals = 'proposals',
   statuses = 'statuses',
   statusId = ':statusId',
 }
@@ -67,9 +69,12 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${string}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -168,14 +173,14 @@ export default () => ({
       ],
     },
     {
-      path: settingsRoutes.statuses,
+      path: `${settingsRoutes.ideation}/${settingsRoutes.statuses}`,
 
       children: [
         {
           index: true,
           element: (
             <PageLoading>
-              <StatusesComponent />
+              <StatusesComponent variant="ideation" />
             </PageLoading>
           ),
         },
@@ -183,7 +188,7 @@ export default () => ({
           path: settingsRoutes.new,
           element: (
             <PageLoading>
-              <NewStatusComponent />
+              <NewStatusComponent variant="ideation" />
             </PageLoading>
           ),
         },
@@ -191,13 +196,42 @@ export default () => ({
           path: settingsRoutes.statusId,
           element: (
             <PageLoading>
-              <StatusShowComponent />
+              <StatusShowComponent variant="ideation" />
             </PageLoading>
           ),
         },
       ],
     },
+    {
+      path: `${settingsRoutes.proposals}/${settingsRoutes.statuses}`,
 
+      children: [
+        {
+          index: true,
+          element: (
+            <PageLoading>
+              <StatusesComponent variant="proposals" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.new,
+          element: (
+            <PageLoading>
+              <NewStatusComponent variant="proposals" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.statusId,
+          element: (
+            <PageLoading>
+              <StatusShowComponent variant="proposals" />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
     ...moduleConfiguration.routes['admin.settings'],
   ],
 });
