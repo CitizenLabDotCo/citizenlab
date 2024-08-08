@@ -61,4 +61,8 @@ export default defineMessages({
     defaultMessage:
       'You must be the specified minimum age or above to be verified.',
   },
+  verificationRequired: {
+    id: 'app.components.AuthProviders.verificationRequired',
+    defaultMessage: 'Verification required',
+  },
 });

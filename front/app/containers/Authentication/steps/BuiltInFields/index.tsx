@@ -83,12 +83,14 @@ const BuiltInFields = ({
   const handleSubmit = async ({
     first_name,
     last_name,
+    email,
     password,
   }: BuiltInFieldsUpdate) => {
     try {
       await onSubmit(authUser.data.id, {
         first_name,
         last_name,
+        email,
         password,
       });
     } catch (e) {
@@ -107,6 +109,7 @@ const BuiltInFields = ({
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
+  const askEmail = missingAttributes.has('email');
   const askPassword = missingAttributes.has('password');
 
   return (
@@ -135,6 +138,17 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+              />
+            </Box>
+          )}
+          {askEmail && (
+            <Box id="e2e-email-container" mt="16px">
+              <Input
+                name="email"
+                id="email"
+                type="email"
+                autocomplete="email"
+                label={formatMessage(sharedMessages.email)}
               />
             </Box>
           )}

@@ -15,8 +15,8 @@ import { useIntl } from 'utils/cl-intl';
 import FranceConnectImage from './franceconnect.png';
 import messages from './messages';
 
-const Container = styled.div`
-  margin-top: 12px;
+const Container = styled.div<{ marginTop: string }>`
+  margin-top: ${({ marginTop }) => marginTop};
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -33,6 +33,7 @@ const Container = styled.div`
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
+  marginTop?: string;
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
@@ -54,7 +55,7 @@ const MESSAGE_MAP = {
   google: oldMessages.continueWithGoogle,
 } as const;
 
-const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
+const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -64,7 +65,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
 
   if (ssoProvider === 'franceconnect') {
     return (
-      <Container>
+      <Container marginTop={marginTop}>
         <Button
           buttonStyle="white"
           iconSize="22px"
@@ -105,7 +106,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
   };
 
   return (
-    <Container>
+    <Container marginTop={marginTop}>
       <Button
         icon={ICON_MAP[ssoProvider]}
         iconColor={COLOR_MAP[ssoProvider]}

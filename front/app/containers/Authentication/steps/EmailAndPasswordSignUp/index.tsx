@@ -35,8 +35,6 @@ import PoliciesMarkup from '../Policies/PoliciesMarkup';
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import messages from './messages';
 
-// errors
-
 interface Props {
   state: State;
   loading: boolean;

@@ -26,9 +26,10 @@ module Verification
 
         def mark_satisfied_requirements!(requirements, permission, user)
           super
+
+          requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified' && user.verified?
           return unless requirements[:verification]
 
-          # TODO: JS - does the front-end care about the difference between dont_ask and satisfied that we had before?
           if user.verified? || user_allowed_through_other_groups?(permission, user)
             requirements[:verification] = false
           end

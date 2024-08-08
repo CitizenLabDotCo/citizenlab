@@ -44,9 +44,10 @@ export const requiredBuiltInFields = (
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
+  const askEmail = missingAttributes.has('email');
   const askPassword = missingAttributes.has('password');
 
-  return askFirstName || askLastName || askPassword;
+  return askFirstName || askLastName || askEmail || askPassword;
 };
 
 export const doesNotMeetGroupCriteria = (

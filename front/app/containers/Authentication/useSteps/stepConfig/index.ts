@@ -6,12 +6,12 @@ import {
   SetError,
 } from '../../typings';
 
-import { emaillessSsoFlow } from './emaillessSsoFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
+import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 
 export const getStepConfig = (
@@ -56,7 +56,12 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
+    ...ssoVerificationFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
+    ),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

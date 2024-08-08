@@ -10,13 +10,12 @@ export type Step =
   // old sign up flow
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'
+  | 'sign-up:built-in'
   | 'sign-up:email-confirmation'
   | 'sign-up:change-email'
   | 'sign-up:verification'
   | 'sign-up:custom-fields'
   | 'sign-up:invite'
-  | 'emailless-sso:email'
-  | 'emailless-sso:email-confirmation'
 
   // onboarding sign up flow
   | 'sign-up:onboarding'
@@ -44,10 +43,16 @@ export type Step =
 
   // verification only (for onboarding and re-verification)
   | 'verification-only'
-  | 'verification-success';
+  | 'verification-success'
+
+  // sso verification flow
+  | 'sso-verification:sso-providers'
+  | 'sso-verification:sso-providers-policies'
+  | 'sso-verification:email-password';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;
   last_name?: string;
+  email?: string;
   password?: string;
 }

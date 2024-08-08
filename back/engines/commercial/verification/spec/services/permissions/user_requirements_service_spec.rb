@@ -111,5 +111,21 @@ describe Permissions::UserRequirementsService do
         expect(requirements[:verification]).to be false
       end
     end
+
+    context 'when permitted_by is set to "verified"' do
+      let(:permission) { create(:permission, permitted_by: 'verified') }
+
+      it 'does not remove missing authentication requirements if not verified' do
+        user = create(:user, unique_code: '1234abcd', email: nil, password: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+      end
+
+      it 'removes all missing authentication requirements if verified' do
+        user = create(:user, unique_code: '1234abcd', email: nil, password: nil, verified: true)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+      end
+    end
   end
 end

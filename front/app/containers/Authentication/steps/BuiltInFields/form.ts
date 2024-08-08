@@ -3,13 +3,16 @@ import { string, object } from 'yup';
 
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
-
+import {
+  getEmailSchema,
+  getPasswordSchema,
+} from '../EmailAndPasswordSignUp/form';
 import sharedMessages from '../messages';
 
 export const DEFAULT_VALUES = {
   first_name: undefined,
   last_name: undefined,
+  email: undefined,
   password: undefined,
 } as const;
 
@@ -40,17 +43,15 @@ export const getSchema = (
     ),
 
     ..._if(
+      missingAttributes.has('email'),
+      'email',
+      getEmailSchema(formatMessage)
+    ),
+
+    ..._if(
       missingAttributes.has('password'),
       'password',
-      string()
-        .required(formatMessage(sharedMessages.noPasswordError))
-        .test(
-          '',
-          formatMessage(passwordInputMessages.minimumPasswordLengthError, {
-            minimumPasswordLength,
-          }),
-          (value) => !!(value && value.length >= minimumPasswordLength)
-        )
+      getPasswordSchema(minimumPasswordLength, formatMessage)
     ),
   });
 

@@ -14,7 +14,7 @@ import { invalidateAllActionDescriptors } from 'containers/Authentication/useSte
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   triggerAuthenticationFlow$,
@@ -68,6 +68,7 @@ export default function useSteps() {
     /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,
+    ssoProvider: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
@@ -299,21 +300,9 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      const enterEmaillessSsoEmail =
-        !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
-
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterEmaillessSsoEmail);
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
-
-  // always show EmaillessSso modal to user
-  useEffect(() => {
-    if (isNilOrError(authUser)) return;
-    if (currentStep !== 'closed') return;
-    if (isNil(authUser.data.attributes.email)) {
-      transition(currentStep, 'REOPEN_EMAILLESS_SSO')();
-    }
-  }, [authUser, currentStep, transition]);
 
   return {
     currentStep,
