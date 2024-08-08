@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "اختيارات الإجابة",
   "app.containers.AdminPage.groups.permissions.answerFormat": "تنسيق الإجابة",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "يجب توفير خيار واحد على الأقل",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "يشرف هذا المستخدم على المجلد الذي يحتوي على هذا المشروع. لإزالة حقوق المشرف الخاصة بهم لهذا المشروع، يمكنك إما إلغاء حقوق المجلد الخاصة بهم أو نقل المشروع إلى مجلد مختلف.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "قم بإنشاء سؤال جديد",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "قم بإنشاء سؤال",
   "app.containers.AdminPage.groups.permissions.defaultField": "الحقل الافتراضي",
