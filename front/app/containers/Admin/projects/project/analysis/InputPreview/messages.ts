@@ -35,4 +35,8 @@ export default defineMessages({
     defaultMessage:
       'An invalid shapefile was uploaded and cannot be displayed.',
   },
+  noFileUploaded: {
+    id: 'app.containers.AdminPage.projects.project.analysis.noFileUploaded',
+    defaultMessage: 'No shapefile uploaded.',
+  },
 });

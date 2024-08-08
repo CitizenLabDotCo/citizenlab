@@ -859,7 +859,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Dewiswch gyfnod syniadaeth.",
   "app.containers.Admin.projects.all.askPersonalData": "Gofynnwch am ddata personol",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Cwestiynau nad ydynt yn cael eu cefnogi ar hyn o bryd: Delweddau, Tagiau a Lanlwytho Ffeil.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey": "Cwestiynau na chefnogir ar hyn o bryd: Lleoliad a Llwytho Ffeil i fyny.",
   "app.containers.Admin.projects.all.components.archived": "Wedi'i archifo",
   "app.containers.Admin.projects.all.components.draft": "Drafft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Golygu",

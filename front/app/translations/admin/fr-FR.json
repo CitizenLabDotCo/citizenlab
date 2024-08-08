@@ -859,7 +859,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Veuillez sélectionner une phase d'idéation.",
   "app.containers.Admin.projects.all.askPersonalData": "Demander les données personnelles",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Types de questions non pris en charge actuellement : Images, Étiquettes et Téléchargement de fichiers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey": "Types de questions non pris en charge actuellement : Localisation et Téléchargement de fichiers.",
   "app.containers.Admin.projects.all.components.archived": "Archivé",
   "app.containers.Admin.projects.all.components.draft": "Brouillon",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gérer",
