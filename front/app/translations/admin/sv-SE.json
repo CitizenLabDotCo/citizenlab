@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Svarsalternativ",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Svarsformat",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Minst ett val måste anges.",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Den här användaren är moderator för mappen som innehåller det här projektet. Om du vill ta bort moderatorrättigheterna för det här projektet kan du antingen återkalla mapprättigheterna eller flytta projektet till en annan mapp.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Skapa en ny fråga",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Skapa en fråga",
   "app.containers.AdminPage.groups.permissions.defaultField": "Standardfält",
