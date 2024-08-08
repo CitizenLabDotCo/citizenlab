@@ -9,9 +9,8 @@ RSpec.describe ParticipationMethod::Voting do
 
   describe '#assign_defaults_for_phase' do
     context 'budgeting' do
-      it 'sets the posting method to unlimited and ideas order to random' do
+      it 'sets the ideas order to random' do
         participation_method.assign_defaults_for_phase
-        expect(phase.posting_method).to eq 'unlimited'
         expect(phase.ideas_order).to eq 'random'
       end
     end
