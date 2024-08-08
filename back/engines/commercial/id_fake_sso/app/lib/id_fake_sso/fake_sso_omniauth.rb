@@ -39,20 +39,13 @@ module IdFakeSso
     end
 
     def host
-      issuer = ENV.fetch('FAKE_SSO_ISSUER')
-
-      if issuer&.start_with?('https://')
-        return URI.parse(issuer).host
-      end
-
-      'host.docker.internal'
+      URI.parse(issuer).host
     end
 
     def issuer
-      issuer = ENV.fetch('FAKE_SSO_ISSUER')
-      return issuer if issuer
+      return issuer_in_settings if issuer_in_settings.present?
 
-      "http://#{host}"
+      'http://host.docker.internal'
     end
 
     def verification_prioritized?
@@ -69,6 +62,10 @@ module IdFakeSso
 
     def jwt_secret_base64
       Base64.encode64(ENV.fetch('FAKE_SSO_JWT_SECRET'))
+    end
+
+    def issuer_in_settings
+      @issuer_in_settings ||= AppConfiguration.instance.settings('fake_sso', 'issuer')
     end
   end
 end
