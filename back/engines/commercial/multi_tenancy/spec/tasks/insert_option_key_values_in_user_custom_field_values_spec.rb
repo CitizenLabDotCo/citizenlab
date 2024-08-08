@@ -7,10 +7,7 @@ describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do
   after { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'].reenable }
 
   let(:task) { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'] }
-
-  let(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_custom_field_values.csv') }
   let(:csv_data) { CSV.parse(open(csv).read, headers: true, col_sep: ',', converters: []) }
-
   let(:custom_field) { create(:custom_field, input_type: 'select', resource_type: 'User', key: 'postcode_ex6') }
   let!(:custom_field_option1) do
     create(:custom_field_option, custom_field: custom_field, key: '1234ab_zs9', title_multiloc: { en: '1234AB' })
@@ -18,7 +15,6 @@ describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do
   let!(:custom_field_option2) do
     create(:custom_field_option, custom_field: custom_field, key: '9876zy_ak7', title_multiloc: { en: '9876ZY' })
   end
-
   let!(:user1) do
     create(:user, id: csv_data[0]['id'], custom_field_values: { 'unrelated_key' => 'some_value' })
   end
@@ -31,6 +27,8 @@ describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do
   let!(:user6) do
     create(:user, id: csv_data[5]['id'], custom_field_values: { "#{custom_field.key}": custom_field_option2.key })
   end
+
+  let_it_be(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_custom_field_values.csv') }
 
   it 'inserts key-value pairs when sanitized given value matches an option' do
     expect(csv_data[0]['value']).to eq('1234  AB')
