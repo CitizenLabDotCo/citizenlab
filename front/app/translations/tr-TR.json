@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Devam",
   "app.components.AuthProviders.continueWithAzure": "{azureProviderName} ile devam edin",
   "app.components.AuthProviders.continueWithFacebook": "Facebook ile devam edin",
+  "app.components.AuthProviders.continueWithFakeSSO": "Sahte SSO ile devam edin",
   "app.components.AuthProviders.continueWithGoogle": "Google ile devam edin",
   "app.components.AuthProviders.continueWithHoplr": "Hoplr ile devam edin",
   "app.components.AuthProviders.continueWithLoginMechanism": "{loginMechanismName}ile devam edin",

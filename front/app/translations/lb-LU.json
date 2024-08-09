@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Weiderfueren",
   "app.components.AuthProviders.continueWithAzure": "Weider mat {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Weiderfuere mat Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Fuert weider mat Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Weiderfuere mat Google",
   "app.components.AuthProviders.continueWithHoplr": "Weider mat Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Fuert weider mat {loginMechanismName}",

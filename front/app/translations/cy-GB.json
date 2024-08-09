@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Parhau",
   "app.components.AuthProviders.continueWithAzure": "Parhewch gyda {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Parhewch gyda Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Parhewch gyda Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Parhau gyda Google",
   "app.components.AuthProviders.continueWithHoplr": "Parhewch gyda Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Parhewch gyda {loginMechanismName}",

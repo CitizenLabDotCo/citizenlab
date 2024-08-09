@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Συνέχεια",
   "app.components.AuthProviders.continueWithAzure": "Συνεχίστε με το {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Συνεχίστε με το Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Συνεχίστε με το Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Συνεχίστε με το Google",
   "app.components.AuthProviders.continueWithHoplr": "Συνεχίστε με το Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Συνεχίστε με το {loginMechanismName}",

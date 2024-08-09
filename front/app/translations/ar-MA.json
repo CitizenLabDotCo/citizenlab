@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "متابعة",
   "app.components.AuthProviders.continueWithAzure": "تابع باستخدام {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "تابع باستخدام الفيسبوك",
+  "app.components.AuthProviders.continueWithFakeSSO": "تابع مع تسجيل الدخول الموحّد (SSO) المزيف",
   "app.components.AuthProviders.continueWithGoogle": "تابع باستخدام جوجل",
   "app.components.AuthProviders.continueWithHoplr": "تواصل مع Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "تواصل مع {loginMechanismName}",

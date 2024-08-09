@@ -2124,6 +2124,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Atbildes variantu izvēle",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Atbildes formāts",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Jānorāda vismaz viena izvēle",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Šis lietotājs pārvalda mapi, kurā ir šis projekts. Lai atņemtu šī lietotāja moderatora tiesības šim projektam, varat vai nu atsaukt viņa mapes tiesības, vai pārvietot projektu uz citu mapi.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Izveidot jaunu jautājumu",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Izveidot jautājumu",
   "app.containers.AdminPage.groups.permissions.defaultField": "Noklusējuma lauks",

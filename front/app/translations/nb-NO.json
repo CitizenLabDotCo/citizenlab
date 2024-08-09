@@ -36,6 +36,7 @@
   "app.components.AuthProviders.continue": "Fortsett",
   "app.components.AuthProviders.continueWithAzure": "Fortsett med {azureProviderName}",
   "app.components.AuthProviders.continueWithFacebook": "Fortsett med Facebook",
+  "app.components.AuthProviders.continueWithFakeSSO": "Fortsett med falsk SSO",
   "app.components.AuthProviders.continueWithGoogle": "Fortsett med Google",
   "app.components.AuthProviders.continueWithHoplr": "Fortsett med Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Fortsett med {loginMechanismName}",
