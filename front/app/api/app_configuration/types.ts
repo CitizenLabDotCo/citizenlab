@@ -103,6 +103,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
+    admin_only?: boolean;
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
