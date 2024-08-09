@@ -153,6 +153,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
+            dropdown_layout: false,
             enabled: true,
             input_type: 'multiselect',
             key: Regexp.new('inserted_field'),
@@ -165,8 +166,7 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false,
-            dropdown_layout: false
+            random_option_ordering: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
