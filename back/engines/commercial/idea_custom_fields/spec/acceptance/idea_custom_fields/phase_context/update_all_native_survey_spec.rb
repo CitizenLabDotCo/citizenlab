@@ -165,7 +165,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            dropdown_layout: false
           },
           id: an_instance_of(String),
           type: 'custom_field',
