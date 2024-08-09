@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
+import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -24,11 +25,14 @@ interface Props {
 const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
+  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
 
   const handleUpdate = (permittedBy: PermittedBy) => (e) => {
     e.preventDefault();
     onUpdate(permittedBy);
   };
+
+  console.log(verificationMethod);
 
   return (
     <>
@@ -98,7 +102,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       </Box>
       <Box>
         <CardButton
-          id="e2e-permission-custom"
+          id="e2e-permission-verified-actions"
           icon={
             <Box display="flex" flexDirection="row">
               <Icon
@@ -111,7 +115,10 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
             </Box>
           }
           title={formatMessage(messages.ssoVerification)}
-          subtitle={formatMessage(messages.ssoVerificationSubtitle)}
+          subtitle={formatMessage(messages.ssoVerificationSubtitle, {
+            verificationMethod:
+              verificationMethod?.data.attributes.action_metadata?.name,
+          })}
           onClick={handleUpdate('verified')}
           selected={permittedBy === 'verified'}
           height="100%"
