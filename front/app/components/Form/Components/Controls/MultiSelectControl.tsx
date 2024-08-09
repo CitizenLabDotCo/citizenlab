@@ -15,14 +15,13 @@ import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
 import { getOptions, getSubtextElement } from './controlUtils';
-import messages from './messages';
+import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -51,26 +50,6 @@ const MultiSelectControl = ({
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
 
-  const getInstructionMessage = () => {
-    if (!isNilOrError(minItems) && !isNilOrError(maxItems)) {
-      if (minItems < 1 && maxItems === options?.length) {
-        return formatMessage(messages.selectAsManyAsYouLike);
-      }
-      if (maxItems === minItems) {
-        return formatMessage(messages.selectExactly, {
-          selectExactly: maxItems,
-        });
-      }
-      if (minItems !== maxItems) {
-        return formatMessage(messages.selectBetween, {
-          minItems,
-          maxItems,
-        });
-      }
-    }
-    return null;
-  };
-
   return (
     <>
       <FormLabel
@@ -81,7 +60,7 @@ const MultiSelectControl = ({
         subtextSupportsHtml
       />
       <Text mt="4px" mb={'4px'} fontSize="s">
-        {getInstructionMessage()}
+        {getInstructionMessage({ minItems, maxItems, formatMessage, options })}
       </Text>
       <Box display="flex" flexDirection="row" overflow="visible">
         <Box flexGrow={1}>
