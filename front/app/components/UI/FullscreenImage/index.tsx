@@ -112,7 +112,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
               iconRef={fullscreenButtonRef}
               buttonType="button"
               iconName="layout-white-space"
-              a11y_buttonActionMessage={formatMessage(messages.a11yViewImage)}
+              a11y_buttonActionMessage={formatMessage(messages.expandImage)}
               onClick={toggleFullscreen}
               iconColor={colors.textSecondary}
               iconColorOnHover={colors.primary}
