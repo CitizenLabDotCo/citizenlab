@@ -684,6 +684,8 @@
   "app.components.formBuilder.description": "Opis",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Zostało to już dodane w formularzu. Treść domyślna może być użyta tylko raz.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Dodawanie niestandardowych treści jest częścią licencji premium. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
+  "app.components.formBuilder.displayAsDropdown": "Wyświetlaj jako listę rozwijaną",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Wyświetl opcje w formie listy rozwijanej. Jeśli masz wiele opcji, jest to zalecane.",
   "app.components.formBuilder.done": "Gotowe",
   "app.components.formBuilder.drawArea": "Obszar rysowania",
   "app.components.formBuilder.drawRoute": "Narysuj trasę",
