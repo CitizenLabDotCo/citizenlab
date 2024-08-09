@@ -1,14 +1,19 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
 import Block from './Block';
 import Edge from './Edge';
 import messages from './messages';
+import { getReturnedFieldsPreview } from './utils';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -18,6 +23,7 @@ interface Props {
 const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const showCustomFields = permissionsCustomFields.length > 0;
 
@@ -41,12 +47,14 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
         <Block number={1} text={formatMessage(messages.enterYourEmail)} />
         <Edge />
         <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-        <Edge />
         {showCustomFields && (
-          <Block
-            number={3}
-            text={formatMessage(messages.completeTheExtraQuestionsBelow)}
-          />
+          <>
+            <Edge />
+            <Block
+              number={3}
+              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
+            />
+          </>
         )}
       </>
     );
@@ -61,32 +69,57 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
         />
         <Edge />
         <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-        <Edge />
         {showCustomFields && (
-          <Block
-            number={3}
-            text={formatMessage(messages.completeTheExtraQuestionsBelow)}
-          />
+          <>
+            <Edge />
+            <Block
+              number={3}
+              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
+            />
+          </>
         )}
       </>
     );
   }
 
   if (permittedBy === 'verified') {
+    const authenticateMessage = formatMessage(
+      messages.authenticateWithVerificationProvider,
+      {
+        verificationMethod: verificationMethodName ?? '',
+      }
+    );
+
+    const verifiedFieldsMessage = formatMessage(messages.verifiedFields);
+    const returnedFieldsPreview = getReturnedFieldsPreview(
+      verificationMethodMetadata,
+      localize
+    );
+
     return (
       <>
         <Block
           number={1}
-          text={formatMessage(messages.authenticateWithVerificationProvider, {
-            verificationMethod: verificationMethodName ?? '',
-          })}
+          text={
+            <>
+              {authenticateMessage}
+              <br />
+              <Box mt="12px">
+                {verifiedFieldsMessage}
+                <br />
+                <b>{returnedFieldsPreview}</b>
+              </Box>
+            </>
+          }
         />
-        <Edge />
         {showCustomFields && (
-          <Block
-            number={2}
-            text={formatMessage(messages.completeTheExtraQuestionsBelow)}
-          />
+          <>
+            <Edge />
+            <Block
+              number={2}
+              text={formatMessage(messages.completeTheExtraQuestionsBelow)}
+            />
+          </>
         )}
       </>
     );

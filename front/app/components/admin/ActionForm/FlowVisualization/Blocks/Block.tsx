@@ -4,7 +4,7 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 interface Props {
   number?: number;
-  text: string;
+  text: React.ReactNode;
 }
 
 const Block = ({ number, text }: Props) => {

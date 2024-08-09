@@ -7,6 +7,7 @@ import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermiss
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import Blocks from './Blocks';
+import Edge from './Blocks/Edge';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -20,7 +21,7 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
     action,
   });
 
-  if (!permissionsCustomFields) return;
+  if (!permissionsCustomFields) return null;
 
   return (
     <Box display="flex" flexDirection="row">
@@ -28,6 +29,7 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
         permittedBy={permittedBy}
         permissionsCustomFields={permissionsCustomFields.data}
       />
+      <Edge />
       <Box display="flex" alignItems="center">
         <Box
           bgColor={colors.green100}

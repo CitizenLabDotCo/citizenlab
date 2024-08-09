@@ -36,7 +36,7 @@ export interface IVerificationMethod {
   data: TVerificationMethod;
 }
 
-type ActionMetadata = {
+export type ActionMetadata = {
   allowed: boolean;
   name: string; // Readable name to be shown to end user
   locked_attributes: Multiloc[];

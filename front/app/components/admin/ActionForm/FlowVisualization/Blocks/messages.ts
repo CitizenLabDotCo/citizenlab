@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2',
     defaultMessage: 'Authenticate with {verificationMethod}',
   },
+  verifiedFields: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedFields',
+    defaultMessage: 'Verified fields: ',
+  },
 });
