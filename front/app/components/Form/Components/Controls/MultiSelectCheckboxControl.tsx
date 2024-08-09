@@ -17,7 +17,6 @@ import styled, { useTheme } from 'styled-components';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
@@ -25,6 +24,7 @@ import VerificationIcon from '../VerificationIcon';
 
 import { getOptions, getSubtextElement } from './controlUtils';
 import messages from './messages';
+import { getInstructionMessage } from './utils';
 
 const StyledBox = styled(Box)<{ hoverColor?: string }>`
   cursor: pointer;
@@ -58,26 +58,6 @@ const MultiSelectCheckboxControl = ({
     return null;
   }
 
-  const getInstructionMessage = () => {
-    if (!isNilOrError(minItems) && !isNilOrError(maxItems)) {
-      if (minItems < 1 && maxItems === options?.length) {
-        return formatMessage(messages.selectAsManyAsYouLike);
-      }
-      if (maxItems === minItems) {
-        return formatMessage(messages.selectExactly, {
-          selectExactly: maxItems,
-        });
-      }
-      if (minItems !== maxItems) {
-        return formatMessage(messages.selectBetween, {
-          minItems,
-          maxItems,
-        });
-      }
-    }
-    return null;
-  };
-
   return (
     <>
       <FormLabel
@@ -89,7 +69,12 @@ const MultiSelectCheckboxControl = ({
       />
       <Box display="block" id="e2e-multiselect-control">
         <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
-          {getInstructionMessage()}
+          {getInstructionMessage({
+            minItems,
+            maxItems,
+            formatMessage,
+            options,
+          })}
         </Text>
         {answerNotPublic && (
           <Text mt="0px" fontSize="s">

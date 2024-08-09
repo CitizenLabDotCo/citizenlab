@@ -94,6 +94,7 @@ describe ProjectCopyService do
         'title_multiloc' => field.title_multiloc,
         'description_multiloc' => field.description_multiloc,
         'random_option_ordering' => field.random_option_ordering,
+        'dropdown_layout' => field.dropdown_layout,
         'text_images_attributes' => [
           hash_including(
             'imageable_field' => 'description_multiloc',

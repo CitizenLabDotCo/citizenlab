@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isPrimitiveArrayControl,
-  RankedTester,
-  rankWith,
+  JsonSchema,
+  Tester,
+  UISchemaElement,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
@@ -13,12 +14,14 @@ import styled from 'styled-components';
 import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
 import { getOptions, getSubtextElement } from './controlUtils';
+import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -35,6 +38,7 @@ const MultiSelectControl = ({
   id,
   visible,
 }: ControlProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'multi');
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -42,6 +46,9 @@ const MultiSelectControl = ({
   if (!visible) {
     return null;
   }
+
+  const maxItems = schema.maxItems;
+  const minItems = schema.minItems;
 
   return (
     <>
@@ -52,6 +59,9 @@ const MultiSelectControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      <Text mt="4px" mb={'4px'} fontSize="s">
+        {getInstructionMessage({ minItems, maxItems, formatMessage, options })}
+      </Text>
       <Box display="flex" flexDirection="row" overflow="visible">
         <Box flexGrow={1}>
           <StyledMultipleSelect
@@ -59,10 +69,14 @@ const MultiSelectControl = ({
             options={options}
             onChange={(vals) => {
               setDidBlur(true);
-              handleChange(
-                path,
-                vals.map((val) => val.value)
-              );
+              if (vals?.length === 0) {
+                handleChange(path, undefined);
+              } else {
+                handleChange(
+                  path,
+                  vals.map((val) => val.value)
+                );
+              }
             }}
             inputId={sanitizeForClassname(id)}
             disabled={uischema?.options?.readonly}
@@ -74,19 +88,35 @@ const MultiSelectControl = ({
 
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay
-        inputId={sanitizeForClassname(id)}
-        ajvErrors={errors}
-        fieldPath={path}
-        didBlur={didBlur}
-      />
+      <Box mt="4px">
+        <ErrorDisplay
+          inputId={sanitizeForClassname(id)}
+          ajvErrors={errors}
+          fieldPath={path}
+          didBlur={didBlur}
+        />
+      </Box>
     </>
   );
 };
 
 export default withJsonFormsControlProps(MultiSelectControl);
 
-export const multiSelectControlTester: RankedTester = rankWith(
-  4,
-  isPrimitiveArrayControl
-);
+const dropdownLayoutTester: Tester = (uischema) => {
+  return uischema?.options?.dropdown_layout || false;
+};
+
+export const multiSelectControlTester = (
+  uiSchema: UISchemaElement,
+  jsonSchema: JsonSchema
+) => {
+  if (
+    uiSchema?.options?.input_type === 'multiselect' &&
+    dropdownLayoutTester(uiSchema, jsonSchema)
+  ) {
+    return 1000;
+  } else if (isPrimitiveArrayControl(uiSchema, jsonSchema)) {
+    return 4;
+  }
+  return -1;
+};

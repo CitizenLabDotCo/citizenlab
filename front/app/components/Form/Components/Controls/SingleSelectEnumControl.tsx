@@ -4,12 +4,13 @@ import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isEnumControl,
-  RankedTester,
-  rankWith,
+  JsonSchema,
+  UISchemaElement,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
+import { dropdownLayoutTester } from 'components/Form/utils';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -78,7 +79,17 @@ const SingleSelectEnumControl = ({
 
 export default withJsonFormsControlProps(SingleSelectEnumControl);
 
-export const SingleSelectEnumControlTester: RankedTester = rankWith(
-  4,
-  isEnumControl
-);
+export const SingleSelectEnumControlTester = (
+  uiSchema: UISchemaElement,
+  jsonSchema: JsonSchema
+) => {
+  if (
+    uiSchema?.options?.input_type === 'select' &&
+    dropdownLayoutTester(uiSchema, jsonSchema)
+  ) {
+    return 1000;
+  } else if (isEnumControl(uiSchema, jsonSchema)) {
+    return 4;
+  }
+  return -1;
+};

@@ -213,6 +213,7 @@ const FormEdit = ({
             : null,
           select_count_enabled: field.select_count_enabled,
           random_option_ordering: field.random_option_ordering,
+          dropdown_layout: field.dropdown_layout,
         }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},

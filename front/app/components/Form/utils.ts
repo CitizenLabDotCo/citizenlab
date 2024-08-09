@@ -1,4 +1,4 @@
-import { Layout, JsonSchema7, createAjv } from '@jsonforms/core';
+import { Layout, JsonSchema7, createAjv, Tester } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
 
@@ -130,3 +130,7 @@ export const customAjv = createAjv({
 });
 // The image key word is used for the image choice option
 customAjv.addKeyword('image');
+
+export const dropdownLayoutTester: Tester = (uischema) => {
+  return uischema?.options?.dropdown_layout || false;
+};
