@@ -28,7 +28,7 @@ module Permissions
     def initialize(user, user_requirements_service: nil)
       @user = user
       @user_requirements_service = user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
+      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     end
 
     def denied_reason_for_action(action, scope: nil)

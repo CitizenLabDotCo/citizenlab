@@ -12,6 +12,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  global_custom_fields  :boolean          default(FALSE), not null
+#  verification_expiry   :integer
 #
 # Indexes
 #

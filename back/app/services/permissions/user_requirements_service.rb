@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Permissions::UserRequirementsService
-  def initialize(check_groups: true)
+  def initialize(check_groups_and_verification: true)
     # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
-    @check_groups = check_groups
+    @check_groups_and_verification = check_groups_and_verification
   end
 
   def requirements(permission, user)
@@ -52,7 +52,7 @@ class Permissions::UserRequirementsService
       verification: false,
       custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
       onboarding: onboarding_possible?,
-      group_membership: @check_groups && permission.groups.any?
+      group_membership: @check_groups_and_verification && permission.groups.any?
     }
 
     everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|

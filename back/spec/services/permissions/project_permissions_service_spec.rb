@@ -843,7 +843,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
@@ -875,7 +875,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors

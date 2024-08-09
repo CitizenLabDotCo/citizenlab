@@ -2877,7 +2877,8 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL
+    global_custom_fields boolean DEFAULT false NOT NULL,
+    verification_expiry integer
 );
 
 
@@ -7518,6 +7519,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240729141927'),
 ('20240731181623'),
 ('20240731223530'),
-('20240805121645');
+('20240805121645'),
+('20240806161121');
+
 
 
