@@ -2463,7 +2463,6 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            dropdown_layout: false,
             enabled: true,
             input_type: 'page',
             key: page1.key,
