@@ -44,13 +44,16 @@ module Permissions
       not_volunteering: 'not_volunteering'
     }.freeze
 
+    # Actions not to block if the project is inactive - ie no current phase
+    IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
+
     def initialize(phase, user, user_requirements_service: nil)
       super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
     end
 
     def denied_reason_for_action(action, reaction_mode: nil)
-      return PHASE_DENIED_REASONS[:project_inactive] unless phase
+      return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
 
       phase_denied_reason = case action
       when 'posting_idea'
