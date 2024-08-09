@@ -48,6 +48,14 @@ lv:
     implemented_description: Šo ideju ir īstenojusi pilsēta
     rejected: noraidīts
     rejected_description: Šī ideja ir noraidīta
+    expired: beidzās
+    expired_description: beidzās
+    threshold_reached: sasniegts slieksnis
+    threshold_reached_description: sasniegts slieksnis
+    answered: atbildēja
+    answered_description: atbildēja
+    ineligible: neatbilstoši
+    ineligible_description: neatbilstoši
   initiative_statuses:
     review_pending: pārskatīšana vēl nav pabeigta
     review_pending_description: pārskatīšana vēl nav pabeigta
@@ -267,6 +275,7 @@ lv:
       submitted_at: 'Iesniegts vietnē'
       tags: 'Tags'
       title: 'Nosaukums'
+      user_data: 'Lietotāja dati'
       votes_count: 'Balsis'
   form_builder:
     default_select_field:

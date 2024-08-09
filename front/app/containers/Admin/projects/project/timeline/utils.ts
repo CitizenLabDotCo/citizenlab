@@ -81,6 +81,7 @@ export function getTimelineTab(
 ):
   | 'setup'
   | 'ideas'
+  | 'proposals'
   | 'native-survey'
   | 'polls'
   | 'survey-results'
@@ -89,6 +90,8 @@ export function getTimelineTab(
 
   if (participationMethod === 'ideation' || participationMethod === 'voting') {
     return 'ideas';
+  } else if (participationMethod === 'proposals') {
+    return 'proposals';
   } else if (participationMethod === 'native_survey') {
     return 'native-survey';
   } else if (participationMethod === 'poll') {

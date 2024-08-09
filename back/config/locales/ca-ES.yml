@@ -48,6 +48,14 @@ ca:
     implemented_description: Aquesta idea ha estat implementada per l'Ajuntament
     rejected: rebutjada
     rejected_description: Aquesta idea ha estat rebutjada
+    expired: caducat
+    expired_description: caducat
+    threshold_reached: llindar assolit
+    threshold_reached_description: llindar assolit
+    answered: va respondre
+    answered_description: va respondre
+    ineligible: inelegible
+    ineligible_description: inelegible
   initiative_statuses:
     review_pending: revisió pendent
     review_pending_description: revisió pendent
@@ -267,6 +275,7 @@ ca:
       submitted_at: 'Presentat a'
       tags: 'Etiquetes'
       title: 'Títol'
+      user_data: 'Dades d''usuari'
       votes_count: 'Vots'
   form_builder:
     default_select_field:

@@ -8,14 +8,14 @@ RSpec.describe ParticipationMethod::Volunteering do
   let(:input) { create(:idea) }
   let(:phase) { create(:volunteering_phase) }
 
+  describe '#method_str' do
+    it 'returns volunteering' do
+      expect(described_class.method_str).to eq 'volunteering'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:volunteering_phase) }
-
-    it 'does not change the posting_method' do
-      expect do
-        participation_method.assign_defaults_for_phase
-      end.not_to change(phase, :posting_method)
-    end
 
     it 'does not change the ideas_order' do
       expect do

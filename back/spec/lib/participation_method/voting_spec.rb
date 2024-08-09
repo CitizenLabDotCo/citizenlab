@@ -7,11 +7,16 @@ RSpec.describe ParticipationMethod::Voting do
 
   let(:phase) { create(:budgeting_phase) }
 
+  describe '#method_str' do
+    it 'returns voting' do
+      expect(described_class.method_str).to eq 'voting'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     context 'budgeting' do
-      it 'sets the posting method to unlimited and ideas order to random' do
+      it 'sets the ideas order to random' do
         participation_method.assign_defaults_for_phase
-        expect(phase.posting_method).to eq 'unlimited'
         expect(phase.ideas_order).to eq 'random'
       end
     end
@@ -92,7 +97,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
       let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status_implemented) }
+      let!(:initial_status) { create(:idea_status) }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build(:idea, idea_status: nil)
@@ -101,7 +106,7 @@ RSpec.describe ParticipationMethod::Voting do
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
@@ -115,7 +120,7 @@ RSpec.describe ParticipationMethod::Voting do
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status

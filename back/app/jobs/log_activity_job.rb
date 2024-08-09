@@ -30,7 +30,7 @@ class LogActivityJob < ApplicationJob
     item, action, user, acted_at, options = args
 
     if options.to_h.key?(:project_id) || (project_id = item.try(:project_id)).nil?
-      super(*args)
+      super
     else
       new_options = options.to_h.merge(project_id: project_id)
       super(item, action, user, acted_at, new_options)

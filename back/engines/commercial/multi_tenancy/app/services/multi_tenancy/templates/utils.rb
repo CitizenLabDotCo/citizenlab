@@ -173,7 +173,7 @@ module MultiTenancy
 
       class << self
         def change_locales(serialized_models, locale_from, locale_to)
-          serialized_models['models'].each do |_, instances|
+          serialized_models['models'].each_value do |instances|
             instances.each do |attributes|
               attributes.each do |field_name, multiloc|
                 next unless multiloc?(field_name) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
@@ -213,7 +213,7 @@ module MultiTenancy
           translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
           # Change multiloc fields, applying translation and removing
           # unsupported locales.
-          serialized_models['models'].each do |_model_name, fields|
+          serialized_models['models'].each_value do |fields|
             fields.each do |attributes|
               attributes.each do |field_name, field_value|
                 if multiloc?(field_name) && field_value.is_a?(Hash)
@@ -257,11 +257,10 @@ module MultiTenancy
           serialized_models = serialized_models.with_indifferent_access
 
           # Support both formats of serialized models.
-          users = (
+          users =
             serialized_models.dig('models', 'user').presence ||
             serialized_models.dig('models', User)&.values ||
             []
-          )
 
           users.pluck('locale').uniq.sort
         end
@@ -292,7 +291,7 @@ module MultiTenancy
         def template_locales(serialized_models)
           locales = Set.new
 
-          serialized_models['models'].each do |_, instances|
+          serialized_models['models'].each_value do |instances|
             instances.each do |attributes|
               attributes.each do |name, value|
                 next unless multiloc?(name) && value.is_a?(Hash)

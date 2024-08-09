@@ -7,6 +7,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   let(:phase) { create(:native_survey_phase) }
 
+  describe '#method_str' do
+    it 'returns native_survey' do
+      expect(described_class.method_str).to eq 'native_survey'
+    end
+  end
+
   describe '#generate_slug' do
     let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
 
@@ -23,12 +29,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:native_survey_phase) }
-
-    it 'sets the limits posting to max one' do
-      participation_method.assign_defaults_for_phase
-      expect(phase.posting_method).to eq 'limited'
-      expect(phase.posting_limited_max).to eq 1
-    end
 
     it 'does not change the ideas_order' do
       expect do

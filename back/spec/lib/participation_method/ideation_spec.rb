@@ -7,6 +7,12 @@ RSpec.describe ParticipationMethod::Ideation do
 
   let(:phase) { create(:phase) }
 
+  describe '#method_str' do
+    it 'returns ideation' do
+      expect(described_class.method_str).to eq 'ideation'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 
@@ -118,17 +124,18 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status_implemented) }
+      let!(:ideation_proposed) { create(:idea_status_proposed) }
+      let!(:proposals_proposed) { create(:proposals_status, code: 'proposed') }
+      let!(:initial_status) { create(:idea_status) }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build(:idea, idea_status: nil)
         participation_method.assign_defaults input
-        expect(input.idea_status).to eq proposed
+        expect(input.idea_status).to eq ideation_proposed
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
@@ -142,7 +149,8 @@ RSpec.describe ParticipationMethod::Ideation do
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
+        create(:idea_status_proposed)
+        initial_status = create(:idea_status)
         input = build(:idea, idea_status: initial_status)
         participation_method.assign_defaults input
         expect(input.idea_status).to eq initial_status
@@ -212,7 +220,7 @@ RSpec.describe ParticipationMethod::Ideation do
     end
 
     it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each do |_key, value|
+      participation_method.constraints.each_value do |value|
         expect(value.key?(:locks)).to be true
         valid_locks = %i[enabled required title_multiloc]
         expect(valid_locks).to include(*value[:locks].keys)

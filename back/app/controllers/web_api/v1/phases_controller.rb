@@ -70,7 +70,7 @@ class WebApi::V1::PhasesController < ApplicationController
     count = if @phase.native_survey?
       @phase.ideas.native_survey.published.count
     else
-      @phase.ideas.ideation.published.count
+      @phase.ideas.transitive.published.count
     end
 
     render json: raw_json({ totalSubmissions: count })
@@ -110,8 +110,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :end_at,
       :participation_method,
       :posting_enabled,
-      :posting_method,
-      :posting_limited_max,
       :commenting_enabled,
       :reacting_enabled,
       :reacting_like_method,
@@ -128,6 +126,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
+      :reacting_threshold,
+      :expire_days_limit,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

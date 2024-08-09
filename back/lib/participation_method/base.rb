@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Base
+    def self.all_methods
+      [DocumentAnnotation, Ideation, Information, NativeSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+    end
+
     def initialize(phase)
       @phase = phase
     end
@@ -12,6 +16,11 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       # Default is to do nothing.
+    end
+
+    # Remove after unified status implementation
+    def idea_status_method
+      self.class.method_str
     end
 
     def generate_slug(input)
@@ -98,6 +107,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_automated_statuses?
+      false # TODO: This is temorary, until proposal statuses are implemented
+    end
+
     def supports_status?
       false
     end
@@ -138,6 +151,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_serializing_input?(_attribute)
+      false
+    end
+
     # Should an admin be able to set permissions for disabled actions?
     def return_disabled_actions?
       false
@@ -145,6 +162,12 @@ module ParticipationMethod
 
     def additional_export_columns
       []
+    end
+
+    # @return [Integer, nil] the maximum number of ideas (in its wide sense, i.e. records
+    # from the ideas table) that a user can post in the phase. If nil, there is no limit.
+    def posting_limit
+      nil
     end
 
     private

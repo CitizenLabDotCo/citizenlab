@@ -11,9 +11,7 @@ describe IdeasFinder do
   let(:timeline_project) { create(:project_with_phases) }
   let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
-  before_all do
-    IdeaStatus.create_defaults
-  end
+  before_all { create(:idea_status_proposed) }
 
   context 'default scope' do
     it 'filters out non-ideation inputs' do
@@ -41,6 +39,17 @@ describe IdeasFinder do
   context 'when no params or options are received' do
     it 'returns all' do
       expect(finder.find_records.count).to eq Idea.count
+    end
+  end
+
+  describe '#transitive_condition' do
+    before do
+      params[:transitive] = true
+      create(:proposal)
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array ideas.map(&:id)
     end
   end
 
@@ -291,7 +300,8 @@ describe IdeasFinder do
     [
       create(:idea, project: timeline_project, phases: [ideation_phase]).id,
       create(:idea, project: timeline_project, phases: [voting_phase]).id,
-      create(:idea, project: timeline_project).id
+      create(:idea, project: timeline_project).id,
+      create(:proposal).id
     ]
   end
 end

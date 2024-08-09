@@ -48,6 +48,14 @@ tr:
     implemented_description: Bu fikir kent yönetimi tarafından uygulandı
     rejected: reddedildi
     rejected_description: Bu fikir reddedildi
+    expired: süresi doldu
+    expired_description: süresi doldu
+    threshold_reached: eşiğe ulaşıldı
+    threshold_reached_description: eşiğe ulaşıldı
+    answered: cevap verdi
+    answered_description: cevap verdi
+    ineligible: uygun değil
+    ineligible_description: uygun değil
   initiative_statuses:
     review_pending: inceleme beklemede
     review_pending_description: inceleme beklemede
@@ -267,6 +275,7 @@ tr:
       submitted_at: 'Şu adrese gönderildi'
       tags: 'Etiketler'
       title: 'Başlık'
+      user_data: 'Kullanıcı verileri'
       votes_count: 'Oylar'
   form_builder:
     default_select_field:

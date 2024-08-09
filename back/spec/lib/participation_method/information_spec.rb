@@ -8,14 +8,14 @@ RSpec.describe ParticipationMethod::Information do
   let(:input) { create(:idea) }
   let(:phase) { create(:phase) }
 
+  describe '#method_str' do
+    it 'returns information' do
+      expect(described_class.method_str).to eq 'information'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
-
-    it 'does not change the posting_method' do
-      expect do
-        participation_method.assign_defaults_for_phase
-      end.not_to change(phase, :posting_method)
-    end
 
     it 'does not change the ideas_order' do
       expect do

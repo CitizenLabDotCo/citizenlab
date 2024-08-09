@@ -6,7 +6,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
   attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings,
-    :participation_method, :posting_enabled, :posting_method, :posting_limited_max, :commenting_enabled,
+    :participation_method, :posting_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term
@@ -15,6 +15,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     voting_method voting_max_total voting_min_total
     voting_max_votes_per_idea baskets_count
     native_survey_title_multiloc native_survey_button_multiloc
+    expire_days_limit reacting_threshold
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)

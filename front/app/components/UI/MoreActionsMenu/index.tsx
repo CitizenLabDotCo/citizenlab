@@ -132,6 +132,11 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
     } = props;
     const [visible, setVisible] = useState(false);
 
+    // Generate a unique ID for aria-labelledby
+    const labelId = `more-options-label-${Math.random()
+      .toString(36)
+      .slice(2, 11)}`;
+
     const hide = () => {
       setVisible(false);
     };
@@ -206,14 +211,12 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
             data-cy={props['data-cy']}
             className="e2e-more-actions"
             data-testid="moreOptionsButton"
+            aria-labelledby={labelId}
           >
-            <MoreOptionsIcon
-              title={labelAndTitle}
-              name="dots-horizontal"
-              color={color}
-              ariaHidden={!showLabel}
-            />
-            {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
+            <MoreOptionsIcon name="dots-horizontal" color={color} />
+            {showLabel && (
+              <MoreOptionsLabel id={labelId}>{labelAndTitle}</MoreOptionsLabel>
+            )}
           </MoreOptionsButton>
         </Tooltip>
       </Container>

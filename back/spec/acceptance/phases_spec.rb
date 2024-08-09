@@ -125,8 +125,6 @@ resource 'Phases' do
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
-        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
-        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
         parameter :reacting_like_method, "How does reacting work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -188,6 +186,23 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage. Defaults to 90.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage. Defaults to 300.'
+        end
+
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Create a proposals phase' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+        end
       end
 
       context 'Blank phase end dates' do
@@ -392,8 +407,6 @@ resource 'Phases' do
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
-        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
-        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
         parameter :reacting_like_method, "How does liking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
@@ -425,8 +438,6 @@ resource 'Phases' do
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
       let(:posting_enabled) { false }
-      let(:posting_method) { 'limited' }
-      let(:posting_limited_max) { 5 }
       let(:commenting_enabled) { false }
       let(:reacting_enabled) { true }
       let(:reacting_like_method) { 'limited' }
@@ -439,14 +450,30 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
         expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
-        expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
-        expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
+      end
+
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage.'
+        end
+
+        let(:id) { create(:proposals_phase).id }
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Update a proposals phase' do
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+        end
       end
 
       describe do

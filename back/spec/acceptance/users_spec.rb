@@ -1341,7 +1341,7 @@ resource 'Users' do
         let(:id) { @user.id }
 
         example 'Get the number of ideas published by one user' do
-          IdeaStatus.create_defaults
+          create(:idea_status_proposed)
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')
@@ -1354,6 +1354,7 @@ resource 'Users' do
         end
       end
 
+      # TODO: move-old-proposals-test
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1397,6 +1398,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
+        # TODO: move-old-proposals-test
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))
