@@ -23,15 +23,18 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   def create
     permissions_custom_field = PermissionsCustomField.new({ permission: permission }.merge(permission_params_for_create))
     authorize permissions_custom_field
-    sidefx.before_create permissions_custom_field, current_user
-    if permissions_custom_field.save
-      sidefx.after_create permissions_custom_field, current_user
-      render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-        permissions_custom_field,
-        params: jsonapi_serializer_params
-      ).serializable_hash, status: :created
-    else
-      render json: { errors: permissions_custom_field.errors.details }, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      sidefx.before_create permissions_custom_field, current_user
+      Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
+      if permissions_custom_field.save
+        sidefx.after_create permissions_custom_field, current_user
+        render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
+          permissions_custom_field,
+          params: jsonapi_serializer_params
+        ).serializable_hash, status: :created
+      else
+        render json: { errors: permissions_custom_field.errors.details }, status: :unprocessable_entity
+      end
     end
   end
 
@@ -84,16 +87,17 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     @permissions_custom_field = authorize PermissionsCustomField.find(params[:id])
   end
 
-  # Try and add default fields, then find the field specified in the newly persisted fields
+  # Find existing field or persist and return the newly created field
   def persist_and_find_permissions_custom_field
-    PermissionsCustomField.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
+    # Does the field already exist?
+    field = PermissionsCustomField.find_by(id: params[:id])
+    return field if field
+
+    # We need permission_id and custom_field_id to create and find the field
     raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
 
+    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
     permission = Permission.find(permission_params_for_update[:permission_id])
-    raise ActiveRecord::RecordNotFound unless permission
-
     Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
     field = permission.permissions_custom_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
     raise ActiveRecord::RecordNotFound unless field
