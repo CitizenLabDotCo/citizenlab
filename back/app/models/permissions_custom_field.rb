@@ -38,6 +38,6 @@ class PermissionsCustomField < ApplicationRecord
   validates :permission_id, uniqueness: { scope: :custom_field_id }
 
   def title_multiloc
-    custom_field&.title_multiloc || {}
+    custom_field.title_multiloc || {}
   end
 end

@@ -154,7 +154,23 @@ resource 'PermissionsCustomField' do
       end
 
       context 'permission and custom field IDs are NOT provided' do
-        example_request '[ERROR] permission not found' do
+        example_request '[ERROR] permission custom field not found' do
+          assert_status 404
+        end
+      end
+
+      context 'permission ID is provided but custom field ID does NOT exist' do
+        let(:custom_field_id) { 'NOTHING_TO_SEE_HERE' }
+        let(:permission_id) { permission.id }
+        example_request '[ERROR] permission custom field not found' do
+          assert_status 404
+        end
+      end
+
+      context 'custom field ID is provided but permission ID does NOT exist' do
+        let(:custom_field_id) { permissions_custom_field.custom_field_id }
+        let(:permission_id) { 'NOTHING_TO_SEE_HERE' }
+        example_request '[ERROR] permission custom field not found' do
           assert_status 404
         end
       end
