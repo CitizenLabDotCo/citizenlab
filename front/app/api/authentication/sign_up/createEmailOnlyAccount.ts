@@ -5,7 +5,7 @@ import { IUser } from 'api/users/types';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-import { getAndSetToken } from '../sign_in_out/signIn';
+import { getToken } from '../sign_in_out/signIn';
 
 import { CreateEmailOnlyAccountProperties } from './types';
 
@@ -40,7 +40,7 @@ export default async function createEmailOnlyAccount({
   const response = await triggerCreateEmailOnlyAccount(bodyData);
 
   if (response.data) {
-    await getAndSetToken({ email });
+    await getToken({ email });
     invalidateQueryCache();
     return 'account_created_successfully';
   }

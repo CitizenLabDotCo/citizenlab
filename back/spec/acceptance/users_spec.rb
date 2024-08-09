@@ -150,6 +150,8 @@ resource 'Users' do
 
         example_request 'Create a user' do
           assert_status 201
+          expect(response_headers['Set-Cookie']).to start_with('cl2_jwt=')
+          expect(response_jwt_cookie['level']).to eq 1
         end
 
         context 'when the user_confirmation module is active' do
