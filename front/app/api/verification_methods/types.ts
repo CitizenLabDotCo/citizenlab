@@ -54,7 +54,7 @@ type TGenericMethod = {
   };
 };
 
-type IDLookupMethod = {
+export type IDLookupMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
@@ -78,4 +78,17 @@ type IDCriiptoMethod = {
   };
 };
 
-type TVerificationMethod = TGenericMethod | IDLookupMethod | IDCriiptoMethod;
+type IDAuth0Method = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'auth0';
+    method_name_multiloc: Multiloc;
+  };
+};
+
+type TVerificationMethod =
+  | TGenericMethod
+  | IDLookupMethod
+  | IDCriiptoMethod
+  | IDAuth0Method;
