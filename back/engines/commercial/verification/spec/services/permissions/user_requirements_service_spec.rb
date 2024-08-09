@@ -53,7 +53,8 @@ describe Permissions::UserRequirementsService do
           enabled: true,
           verification_methods: [
             { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' },
-            { name: 'id_card_lookup', method_name_multiloc: { en: 'By social security number' }, card_id_multiloc: { en: 'Social security number' }, card_id_placeholder: 'xx-xxxxx-xx', card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' }, explainer_image_url: 'https://some.fake/image.png' }
+            { name: 'id_card_lookup', method_name_multiloc: { en: 'By social security number' }, card_id_multiloc: { en: 'Social security number' }, card_id_placeholder: 'xx-xxxxx-xx', card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' }, explainer_image_url: 'https://some.fake/image.png' },
+            { name: 'fake_sso' } # This is the only one currently enabled for verified 'permitted_by'
           ]
         }
         configuration.save!
@@ -109,6 +110,22 @@ describe Permissions::UserRequirementsService do
         requirements = service.requirements(permission, nil)
         expect(requirements[:authentication][:permitted_by]).to eq 'users'
         expect(requirements[:verification]).to be false
+      end
+    end
+
+    context 'when permitted_by is set to "verified"' do
+      let(:permission) { create(:permission, permitted_by: 'verified') }
+
+      it 'does not remove missing authentication requirements if not verified' do
+        user = create(:user, unique_code: '1234abcd', email: nil, password: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+      end
+
+      it 'removes all missing authentication requirements if verified' do
+        user = create(:user, unique_code: '1234abcd', email: nil, password: nil, verified: true)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).to be_empty
       end
     end
   end
