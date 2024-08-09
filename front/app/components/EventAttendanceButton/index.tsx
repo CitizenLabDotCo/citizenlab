@@ -91,7 +91,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     }
 
     if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
-      // If no current phase, we still allow event registration through the default flow
+      // If no current phase, we cannot use the phase context and get specific requirements for the phase
+      // BUT we still allow event registration by using the global context and triggering the default flow
       const context = currentPhase
         ? ({
             type: 'phase',
