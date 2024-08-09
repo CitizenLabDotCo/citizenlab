@@ -5,7 +5,8 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 export interface ToggleProps {
   name: string;
@@ -52,7 +53,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
           );
         }}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -68,6 +69,12 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

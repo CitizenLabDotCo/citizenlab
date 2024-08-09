@@ -4,7 +4,8 @@ import { Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
@@ -55,7 +56,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
           />
         )}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -71,6 +72,12 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

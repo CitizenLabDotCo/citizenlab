@@ -19,7 +19,8 @@ import { IOptionsType } from 'api/custom_fields/types';
 import { List, SortableRow } from 'components/admin/ResourceList';
 import { SectionField } from 'components/admin/Section';
 import { generateTempId } from 'components/FormBuilder/utils';
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -243,7 +244,7 @@ const OptionList = ({
                     onClick={() => handleAddOption(options, name)}
                     text={addButtonLabel}
                   />
-                  {validationError && (
+                  {/* {validationError && (
                     <Error
                       marginTop="8px"
                       marginBottom="8px"
@@ -258,6 +259,20 @@ const OptionList = ({
                       marginTop="8px"
                       marginBottom="8px"
                       scrollIntoView={false}
+                    />
+                  )} */}
+                  {validationError && (
+                    <ErrorPOC
+                      marginTop="8px"
+                      marginBottom="8px"
+                      text={validationError}
+                    />
+                  )}
+                  {apiError && (
+                    <ErrorPOC
+                      errors={apiError}
+                      marginTop="8px"
+                      marginBottom="8px"
                     />
                   )}
                 </SectionField>

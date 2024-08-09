@@ -4,7 +4,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { MentionItem } from 'react-mentions';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import MentionsTextAreaComponent, {
   Props as MentionsTextAreaComponentProps,
 } from 'components/UI/MentionsTextArea';
@@ -56,7 +58,7 @@ const MentionsTextArea = ({
           );
         }}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -72,6 +74,12 @@ const MentionsTextArea = ({
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

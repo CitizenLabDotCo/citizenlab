@@ -86,4 +86,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage',
     defaultMessage: 'Add a description',
   },
+  blankVolunteeringTitleError: {
+    id: 'app.containers.AdminPage.ProjectEdit.tittleMultiloc.errors.blankVolunteeringTitleError',
+    defaultMessage: 'Volunteering title cannot be blank.',
+  },
+  genericErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.tittleMultiloc.errors.genericErrorMessage',
+    defaultMessage: 'An error occurred on this field.',
+  },
 });
