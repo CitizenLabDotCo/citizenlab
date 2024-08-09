@@ -1022,6 +1022,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   options: {
                     input_type: field_in_page2.input_type,
                     description: '',
+                    dropdown_layout: false,
                     isAdminField: false,
                     hasRule: true,
                     enumNames: ['Every day', 'Never', 'Other'],
