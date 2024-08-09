@@ -1,6 +1,23 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
+const EDGE_WIDTH = 20;
+
+const Edge = () => {
+  return (
+    <Box
+      w={`${EDGE_WIDTH}px`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+    >
+      <Arrow width={EDGE_WIDTH} />
+    </Box>
+  );
+};
+
+export default Edge;
 
 const Arrow = ({ width }: { width: number }) => {
   return (
@@ -18,5 +35,3 @@ const Arrow = ({ width }: { width: number }) => {
     </svg>
   );
 };
-
-export default Arrow;

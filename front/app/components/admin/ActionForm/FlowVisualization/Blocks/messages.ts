@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  noActionsAreRequired: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired',
+    defaultMessage: 'No actions are required to participate',
+  },
   enterYourEmail: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail',
     defaultMessage: 'Enter your email',
@@ -18,11 +22,15 @@ export default defineMessages({
     defaultMessage: 'Enter name, last name, email and password',
   },
   authenticateWithVerificationProvider: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider',
-    defaultMessage: 'Authenticate with {verificationProvider}',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2',
+    defaultMessage: 'Authenticate with {verificationMethod}',
   },
-  noActionsAreRequired: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired',
-    defaultMessage: 'No actions are required to participate',
+  verifiedFields: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedFields',
+    defaultMessage: 'Verified fields: ',
+  },
+  xVerification: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification',
+    defaultMessage: '{verificationMethod} verification',
   },
 });

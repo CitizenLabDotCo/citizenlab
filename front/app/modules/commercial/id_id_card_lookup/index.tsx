@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {
-  IDLookupMethod,
   TVerificationMethodName,
+  IDLookupMethod,
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
