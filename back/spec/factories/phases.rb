@@ -65,6 +65,8 @@ FactoryBot.define do
 
     factory :proposals_phase do
       participation_method { 'proposals' }
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 7.days }
     end
 
     factory :poll_phase do

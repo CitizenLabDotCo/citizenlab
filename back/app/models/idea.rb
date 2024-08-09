@@ -183,9 +183,12 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def consultation_context
+    creation_phase || project
+  end
+
   def custom_form
-    participation_context = creation_phase || project
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    consultation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
 
   def input_term
@@ -197,7 +200,7 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    (creation_phase || project).pmethod
+    consultation_context.pmethod
   end
 
   private
