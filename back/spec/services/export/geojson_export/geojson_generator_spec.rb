@@ -72,24 +72,20 @@ describe Export::GeojsonExport::GeojsonGenerator do
           'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
           'field_for_text_question' => 'Text answer 1',
-          'user_data' => {
-            'author_id' => idea1.author.id,
-            'author_email' => idea1.author.email,
-            'author_name' => idea1.author_name,
-            'field_for_registration_question' => 'Registration q answer'
-          }
+          'user_data__author_id' => idea1.author.id,
+          'user_data__author_email' => idea1.author.email,
+          'user_data__author_name' => idea1.author_name,
+          'user_data__field_for_registration_question' => 'Registration q answer'
         },
         {
           'id' => idea2.id,
           'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
           'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
           'field_for_text_question' => 'Text answer 2',
-          'user_data' => {
-            'author_id' => idea2.author.id,
-            'author_email' => idea2.author.email,
-            'author_name' => idea2.author_name,
-            'field_for_registration_question' => nil
-          }
+          'user_data__author_id' => idea2.author.id,
+          'user_data__author_email' => idea2.author.email,
+          'user_data__author_name' => idea2.author_name,
+          'user_data__field_for_registration_question' => nil
         }
       ])
     end

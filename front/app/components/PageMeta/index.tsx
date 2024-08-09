@@ -43,8 +43,8 @@ const PageMeta = React.memo<Props & WrappedComponentProps>(
         {getAlternateLinks(tenantLocales)}
         {getCanonicalLink()}
         <meta name="title" content={ideasIndexTitle} />
-        <meta name="description" content={ideasIndexDescription} />
         <meta property="og:title" content={ideasIndexTitle} />
+        <meta name="description" content={ideasIndexDescription} />
         <meta property="og:description" content={ideasIndexDescription} />
         <meta property="og:url" content={location.href} />
       </Helmet>

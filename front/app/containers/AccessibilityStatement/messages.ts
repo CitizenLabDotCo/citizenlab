@@ -154,9 +154,9 @@ export default defineMessages({
     defaultMessage: 'Map line and polygon drawing in surveys',
   },
   mapLinePolygonInputsException: {
-    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputsException2',
+    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputsException3',
     defaultMessage:
-      'Line and polygon drawing in surveys does not meet accessibility standards as shapes cannot be drawn on the map using a keyboard. An alternative input is not provided at this time due to technical complexity. Additionally, the map is not accessible to screen reader users as map extent and layers are not audibly presented to provide context. If using these methods, we recommend also including a way in the survey to contact the project owner for an alternative method to complete the survey.',
+      'Line and polygon drawing on maps in surveys does not meet the Accessibility WCAG 2.1 AA standard as shapes cannot be drawn on the map using a keyboard. An alternative input is not provided at this time due to technical complexity. Maps are not fully accessible for screen reader users as map extent and layer information are not audibly presented to provide context. Fully accessible maps would need to audibly present the map layers and describe any trends in the data. Text-based "drawing" would also need to be made available, which is technically complex and difficult to make user-friendly. To make these methods more accessible we recommend explaining in the question description or page description what the map is showing and providing an alternative short or long answer text question where residents can describe their answer in plain terms (rather than clicking on the map). Lastly, we recommend including contact information for the project manager so residents who cannot fill in a map question can contact the manager and set up an alternative method to answer the question (E.g. Video meeting).',
   },
   screenReaderSearchResults: {
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',

@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
+    def self.method_str
+      'native_survey'
+    end
+
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)

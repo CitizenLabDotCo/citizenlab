@@ -6,6 +6,12 @@ export const hasRequiredFields = (
   schemaResponse: SchemaResponse,
   locale: SupportedLocale
 ) => {
-  return !!schemaResponse.data.attributes?.json_schema_multiloc[locale]
-    ?.required;
+  const requiredFields =
+    schemaResponse.data.attributes.json_schema_multiloc[locale]?.required;
+
+  if (!requiredFields) {
+    return false;
+  }
+
+  return requiredFields.length > 0;
 };
