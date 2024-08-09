@@ -8,18 +8,21 @@ module Verification
 
         # Verification requirement can now come from either a group or the "verified" permitted_by value
         def requires_verification?(permission, user)
-          return false if permission.permitted_by != 'verified' && user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
-          return false unless permission.permitted_by == 'verified' || verification_service.find_verification_group(permission.groups)
-
-          if permission.permitted_by == 'verified' && !permission.verification_expiry.nil? && user.verifications.present?
-            # Check requirements for when we require verification again
-            expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
-            last_verification_time = user.verifications.last&.updated_at
-            next_verification_time = last_verification_time + expiry_offset
-            next_verification_time < Time.now
+          if permission.permitted_by == 'verified'
+            # Only check requirements for when we require verification again if permitted_by is 'verified'
+            if !permission.verification_expiry.nil? && user.verifications.present?
+              expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
+              last_verification_time = user.verifications.last&.updated_at
+              next_verification_time = last_verification_time + expiry_offset
+              return next_verification_time < Time.now
+            end
           else
-            !user.verified?
+            # Verification via groups
+            return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
+            return false unless verification_service.find_verification_group(permission.groups)
           end
+
+          !user.verified?
         end
 
         private
