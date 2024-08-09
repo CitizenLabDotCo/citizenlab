@@ -12,7 +12,6 @@ export interface BaseProps {
   currentTab: PublicationTab;
   list: IAdminPublicationData[];
   layout: TLayout;
-  hasMore: boolean;
 }
 
 interface Props extends BaseProps {
@@ -24,7 +23,6 @@ const PublicationStatusTabs = ({
   availableTabs,
   list,
   layout,
-  hasMore,
 }: Props) => {
   return (
     <>
@@ -41,7 +39,6 @@ const PublicationStatusTabs = ({
           tab={tab}
           list={list}
           layout={layout}
-          hasMore={hasMore}
         />
       ))}
     </>

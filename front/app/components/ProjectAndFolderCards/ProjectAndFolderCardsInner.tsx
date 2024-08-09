@@ -166,7 +166,6 @@ const ProjectAndFolderCardsInner = ({
           availableTabs={availableTabs}
           list={adminPublications}
           layout={layout}
-          hasMore={!!hasMore}
         />
       )}
 

@@ -1,60 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
-import ProjectCard from 'components/ProjectCard';
+import LargeProjectCard from 'components/ProjectCard/LargeProjectCard';
+import MediumProjectCard from 'components/ProjectCard/MediumProjectCard';
+import SmallProjectCard from 'components/ProjectCard/SmallProjectCard';
 
 import { PublicationTab } from '../';
 
-import getCardSizes from './getCardSizes';
+import { getCardSize } from './getCardSize';
 import ProjectFolderCard from './ProjectFolderCard';
-import { BaseProps, TCardSize } from './PublicationStatusTabs';
+import { BaseProps } from './PublicationStatusTabs';
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
 
-const Container = styled.div<{ hide: boolean }>`
-  display: ${({ hide }) => (hide ? 'none' : 'flex')};
-  flex-wrap: wrap;
-  justify-content: space-between;
+const Container = styled.ul<{ hide: boolean }>`
+  display: ${({ hide }) => (hide ? 'none' : 'grid')};
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 `;
 
-const MockProjectCard = styled.div`
-  height: 1px;
-  background: transparent;
-  width: calc(33% - 12px);
+const FullWidthCard = styled.li`
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TwoColumnCard = styled.li`
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ThreeColumnCard = styled.li`
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
 `;
 
 interface Props extends BaseProps {
   tab: PublicationTab;
 }
 
-const ProjectsTabPanel = ({
-  tab,
-  currentTab,
-  list,
-  layout,
-  hasMore,
-}: Props) => {
+const ProjectsTabPanel = ({ tab, currentTab, list, layout }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const isLargerThanTablet = !isSmallerThanTablet;
-  const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
-  useEffect(() => {
-    if (list.length > 0 && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list.length, isLargerThanTablet);
-
-      if (!isEqual(cardSizes, newCardSizes)) {
-        setCardSizes(newCardSizes);
-      }
-    }
-  }, [list.length, layout, cardSizes, isLargerThanTablet]);
   return (
-    // The id, aria-labelledby, hidden and hide are necessary
-    // for the tab system to work well with screen readers.
-    // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
     <Container
       id={getTabPanelId(tab)}
       role="tabpanel"
@@ -67,55 +64,55 @@ const ProjectsTabPanel = ({
       {list.map((item: IAdminPublicationData, index: number) => {
         const projectOrFolderId = item.relationships.publication.data.id;
         const projectOrFolderType = item.relationships.publication.data.type;
-        const getCardSize = (index: number) => {
-          if (layout === 'dynamic') {
-            return cardSizes[index];
-          } else if (layout === 'threecolumns') {
-            return 'small';
-          } else {
-            return 'medium';
-          }
-        };
-        const size = getCardSize(index);
 
-        return (
-          <React.Fragment key={index}>
-            {projectOrFolderType === 'project' && (
-              <ProjectCard
-                projectId={projectOrFolderId}
-                size={size}
-                layout={layout}
-              />
-            )}
-            {projectOrFolderType === 'folder' && (
+        const size = getCardSize({
+          listLength: list.length,
+          index,
+          isSmallerThanTablet,
+          layout,
+        });
+
+        if (projectOrFolderType === 'project') {
+          const projectId = projectOrFolderId;
+
+          switch (size) {
+            case 'large':
+              return (
+                <FullWidthCard key={projectId}>
+                  <LargeProjectCard projectId={projectId} />
+                </FullWidthCard>
+              );
+            case 'medium':
+              return (
+                <TwoColumnCard key={projectId}>
+                  <MediumProjectCard projectId={projectId} />
+                </TwoColumnCard>
+              );
+            case 'small':
+              return (
+                <ThreeColumnCard key={projectId}>
+                  <SmallProjectCard projectId={projectId} />
+                </ThreeColumnCard>
+              );
+            default:
+              return null;
+          }
+        }
+
+        if (projectOrFolderType === 'folder') {
+          return (
+            <ThreeColumnCard key={projectOrFolderId}>
               <ProjectFolderCard
                 folderId={projectOrFolderId}
                 size={size}
                 layout={layout}
               />
-            )}
-          </React.Fragment>
-        );
+            </ThreeColumnCard>
+          );
+        }
+
+        return null;
       })}
-
-      {/*
-          A bit of a hack (but the most elegant one I could think of) to
-          make the 3-column layout work for the last row of project cards when
-          the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
-          Ideally would have been solved with CSS grid, but... IE11
-        */}
-      {!hasMore &&
-        (layout === 'threecolumns' || list.length > 6) &&
-        (list.length + 1) % 3 === 0 && <MockProjectCard className={layout} />}
-
-      {!hasMore &&
-        (layout === 'threecolumns' || list.length > 6) &&
-        (list.length - 1) % 3 === 0 && (
-          <>
-            <MockProjectCard className={layout} />
-            <MockProjectCard className={layout} />
-          </>
-        )}
     </Container>
   );
 };

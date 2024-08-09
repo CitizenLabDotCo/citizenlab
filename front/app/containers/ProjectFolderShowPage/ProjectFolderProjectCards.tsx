@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { PublicationStatus } from 'api/projects/types';
 
-import ProjectCard from 'components/ProjectCard';
+import ProjectCard from 'components/ProjectCard/SmallProjectCard';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -37,11 +37,6 @@ const ListItem = styled.li<{ isEven: boolean }>`
     margin: 0;
     margin-bottom: 20px;
   `};
-`;
-
-const StyledProjectCard = styled(ProjectCard)`
-  flex-grow: 1;
-  width: 100%;
 `;
 
 interface Props {
@@ -74,9 +69,8 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
               isEven={index % 2 !== 1}
               className={adminPublications.length === 1 ? 'oneCardPerRow' : ''}
             >
-              <StyledProjectCard
+              <ProjectCard
                 projectId={item.relationships.publication.data.id}
-                size="small"
                 hideDescriptionPreview={hideDescriptionPreview}
               />
             </ListItem>
