@@ -343,7 +343,7 @@ module IdeaCustomFields
     end
 
     def geojson_generator
-      @geojson_generator ||= GeojsonExport::GeojsonGenerator.new(@phase, @custom_field)
+      @geojson_generator ||= Export::GeojsonExport::GeojsonGenerator.new(@phase, @custom_field)
     end
   end
 end

@@ -138,7 +138,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = Export::XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -146,7 +146,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def votes_by_user_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
-        xlsx = XlsxExport::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
+        xlsx = Export::XlsxExport::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_user.xlsx'
       end
@@ -160,7 +160,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def votes_by_input_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
-        xlsx = XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
+        xlsx = Export::XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_input.xlsx'
       end
