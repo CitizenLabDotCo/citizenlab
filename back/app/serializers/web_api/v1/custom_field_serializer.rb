@@ -21,7 +21,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|
-    object.input_type == 'multiselect' || object.input_type == 'select'
+    ['multiselect', 'select'].include?(object.input_type)
   }
 
   attribute :constraints do |object, params|
