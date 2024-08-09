@@ -684,6 +684,8 @@
   "app.components.formBuilder.description": "Descripción",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Esto ya se ha añadido en el formulario. El contenido por defecto solo puede utilizarse una vez.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Añadir contenido personalizado forma parte de la licencia Premium. Póngase en contacto con su gerente de GovSuccess para obtener más información al respecto.",
+  "app.components.formBuilder.displayAsDropdown": "Mostrar como desplegable",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Muestra las opciones en un desplegable. Si tienes muchas opciones, esto es lo recomendable.",
   "app.components.formBuilder.done": "Hecho",
   "app.components.formBuilder.drawArea": "Área de dibujo",
   "app.components.formBuilder.drawRoute": "Trazar ruta",

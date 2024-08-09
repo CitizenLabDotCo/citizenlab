@@ -684,6 +684,8 @@
   "app.components.formBuilder.description": "Beschreiwung",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dëst gouf schonn an de Formulaire agedroen. Standardinhalter kënnen nëmmen eng Kéier benotzt ginn.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Moossgeschneidert Inhalter gehéieren zur Premiumlizenz. Wennt Iech un Äre GovSuccess-Manager fir méi doriwwer gewuer ze ginn.",
+  "app.components.formBuilder.displayAsDropdown": "Weist als Dropdown",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Weist d'Optiounen an engem Dropdown-Menü. Wann Dir vill Méiglechkeeten hutt, ass dëst recommandéiert.",
   "app.components.formBuilder.done": "Erleedegt",
   "app.components.formBuilder.drawArea": "Zeechnen Beräich",
   "app.components.formBuilder.drawRoute": "Streck zeechnen",

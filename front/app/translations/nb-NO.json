@@ -684,6 +684,8 @@
   "app.components.formBuilder.description": "Beskrivelse",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dette er allerede lagt til i skjemaet. Standardinnhold kan bare brukes én gang.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Registrering av egendefinert innhold er en del av premiumlisensen. Ta kontakt med din GovSuccess-leder for å få mer informasjon.",
+  "app.components.formBuilder.displayAsDropdown": "Vis som rullegardin",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Vis alternativene i en rullegardin. Hvis du har mange alternativer, anbefales dette.",
   "app.components.formBuilder.done": "Ferdig",
   "app.components.formBuilder.drawArea": "Tegn område",
   "app.components.formBuilder.drawRoute": "Tegn rute",
