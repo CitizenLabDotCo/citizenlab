@@ -64,16 +64,15 @@ describe('Budgeting project', () => {
                 userId = (response as any).body.data.id;
               }
             );
-            cy.setLoginCookie(email, password);
-            cy.visit(`/en/projects/${projectSlug}`);
-            cy.acceptCookies();
-            cy.wait(1000);
           });
       });
   });
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.wait(1000);
   });
 
   after(() => {
@@ -82,19 +81,11 @@ describe('Budgeting project', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
-    cy.get('.e2e-timeline-project-idea-cards');
-  });
+  it('can allocate and submit the budget', () => {
+    cy.get('.e2e-timeline-project-idea-cards'); // shows the idea cards
+    cy.get('.e2e-filter-selector-button').should('not.exist'); // hides the idea sorting options
+    cy.get('#e2e-project-see-events-button').should('exist'); // shows the event CTA when applicable
 
-  it('hides the idea sorting options', () => {
-    cy.get('.e2e-filter-selector-button').should('not.exist');
-  });
-
-  it('shows the event CTA when applicable', () => {
-    cy.get('#e2e-project-see-events-button').should('exist');
-  });
-
-  it('can allocate the budget to ideas and show how much budget is left', () => {
     cy.contains('Submit your budget');
     cy.contains('How to participate');
     cy.contains('500 / 500');
@@ -103,6 +94,7 @@ describe('Budgeting project', () => {
       .should('exist')
       .should('have.class', 'disabled');
 
+    // can allocate the budget to ideas
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'not-in-basket')
@@ -114,10 +106,9 @@ describe('Budgeting project', () => {
       .should('exist')
       .should('not.have.class', 'disabled');
 
-    cy.contains('400 / 500');
-  });
+    cy.contains('400 / 500'); // show how much budget is left
 
-  it('can submit the budget', () => {
+    // can submit the budget
     cy.get('#e2e-voting-submit-button').find('button').click();
     cy.wait(2000);
 

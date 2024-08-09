@@ -60,6 +60,7 @@ describe('Project with single voting phase', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
   });
 
   after(() => {
@@ -68,15 +69,10 @@ describe('Project with single voting phase', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
-    cy.get('#e2e-ideas-list');
-  });
-
-  it('hides the idea sorting options', () => {
-    cy.get('.e2e-filter-selector-button').should('not.exist');
-  });
-
   it('can allocate votes to ideas and show how many votes are left', () => {
+    cy.get('#e2e-ideas-list'); // shows the idea cards
+    cy.get('.e2e-filter-selector-button').should('not.exist'); // hides the idea sorting options
+
     cy.contains('Cast your vote');
     cy.contains('How to vote');
     cy.contains('5 / 5');
