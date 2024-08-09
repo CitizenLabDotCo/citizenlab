@@ -54,6 +54,15 @@ type TGenericMethod = {
   };
 };
 
+type FakeSSOMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'fake_sso';
+    action_metadata?: ActionMetadata;
+  };
+};
+
 export type IDLookupMethod = {
   id: string;
   type: 'verification_method';
@@ -68,7 +77,7 @@ export type IDLookupMethod = {
   };
 };
 
-type IDCriiptoMethod = {
+export type IDCriiptoMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
@@ -78,17 +87,19 @@ type IDCriiptoMethod = {
   };
 };
 
-type IDAuth0Method = {
+export type IDAuth0Method = {
   id: string;
   type: 'verification_method';
   attributes: {
     name: 'auth0';
+    action_metadata?: ActionMetadata;
     method_name_multiloc: Multiloc;
   };
 };
 
-type TVerificationMethod =
+export type TVerificationMethod =
   | TGenericMethod
+  | FakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
   | IDAuth0Method;
