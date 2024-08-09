@@ -46,3 +46,7 @@ export type TVerificationMethod =
 export interface IVerificationMethods {
   data: TVerificationMethod[];
 }
+
+export interface IVerificationMethod {
+  data: TVerificationMethod;
+}
