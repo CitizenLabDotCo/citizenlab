@@ -40,7 +40,7 @@ module Export
         }
 
         properties.merge!(generate_answers_to_questions(input))
-        properties[sanitized_translation_for('user_data')] = generate_user_data(input)
+        properties.merge!(generate_user_data(input))
 
         properties
       end
@@ -54,22 +54,25 @@ module Export
       end
 
       def generate_user_data(input)
-        return nil if input&.author.nil?
+        return {} if input&.author.nil?
 
-        basic_author_data(input).merge(user_custom_field_values_data(input))
+        user_data_key = sanitized_translation_for('user_data')
+        basic_author_data(input, user_data_key).merge(user_custom_field_values_data(input, user_data_key))
       end
 
-      def basic_author_data(input)
+      def basic_author_data(input, user_data_key)
         {
-          sanitized_translation_for('author_id') => input&.author&.id,
-          sanitized_translation_for('author_email') => input&.author&.email,
-          sanitized_translation_for('author_fullname') => input&.author_name
+          "#{user_data_key}__#{sanitized_translation_for('author_id')}" => input&.author&.id,
+          "#{user_data_key}__#{sanitized_translation_for('author_email')}" => input&.author&.email,
+          "#{user_data_key}__#{sanitized_translation_for('author_fullname')}" => input&.author_name
         }
       end
 
-      def user_custom_field_values_data(input)
+      def user_custom_field_values_data(input, user_data_key)
         registration_fields.each_with_object({}) do |field, accu|
-          accu[sanitize_key(@multiloc_service.t(field.title_multiloc))] = if field.code == 'domicile'
+          key = "#{user_data_key}__#{sanitize_key(@multiloc_service.t(field.title_multiloc))}"
+
+          accu[key] = if field.code == 'domicile'
             Export::DomicileFieldForExport.new(field, @value_visitor, :author).value_from(input)
           else
             Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
