@@ -33,7 +33,12 @@ const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
-const AdminProjectPermissions = lazy(() => import('./project/permissions'));
+const AdminProjectPermissions = lazy(
+  () => import('./project/permissions/containers/Project')
+);
+const AdminPhasePermissions = lazy(
+  () => import('./project/permissions/containers/Phase')
+);
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
@@ -428,7 +433,7 @@ const createAdminProjectsRoutes = () => {
                 path: projectsRoutes.projectPhaseAccessRights,
                 element: (
                   <PageLoading>
-                    <AdminProjectPermissions />
+                    <AdminPhasePermissions />
                   </PageLoading>
                 ),
               },

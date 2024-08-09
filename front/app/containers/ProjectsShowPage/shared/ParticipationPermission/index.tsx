@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 

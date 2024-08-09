@@ -4,14 +4,14 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import phasePermissionKeys from './keys';
-import { IPCPermissions, PhasePermissionKeys } from './types';
+import { IPhasePermissions, PhasePermissionKeys } from './types';
 
 export type PhasePermissionsProps = {
   phaseId: string | undefined;
 };
 
 export const fetchPhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
-  return fetcher<IPCPermissions>({
+  return fetcher<IPhasePermissions>({
     path: `/phases/${phaseId}/permissions`,
     action: 'get',
   });
@@ -19,9 +19,9 @@ export const fetchPhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
 
 const usePhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
   return useQuery<
-    IPCPermissions,
+    IPhasePermissions,
     CLErrors,
-    IPCPermissions,
+    IPhasePermissions,
     PhasePermissionKeys
   >({
     queryKey: phasePermissionKeys.list({ phaseId }),

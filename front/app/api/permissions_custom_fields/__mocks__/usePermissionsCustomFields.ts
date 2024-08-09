@@ -5,8 +5,11 @@ export const permissionsCustomFieldsData: IPermissionsCustomFieldData[] = [
     id: 'customFieldId1',
     type: 'permissions_custom_field',
     attributes: {
-      required: false,
       created_at: 'created-at',
+      lock: null,
+      ordering: 0,
+      persisted: true,
+      required: false,
       updated_at: 'updated-at',
     },
     relationships: {
@@ -28,8 +31,11 @@ export const permissionsCustomFieldsData: IPermissionsCustomFieldData[] = [
     id: 'customFieldId2',
     type: 'permissions_custom_field',
     attributes: {
-      required: false,
       created_at: 'created-at',
+      lock: null,
+      ordering: 0,
+      persisted: true,
+      required: false,
       updated_at: 'updated-at',
     },
     relationships: {

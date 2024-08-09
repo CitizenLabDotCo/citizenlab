@@ -1,6 +1,6 @@
-import { IPCPermissionData } from '../types';
+import { IPhasePermissionData } from '../types';
 
-export const projectPermissionsData: IPCPermissionData = {
+export const projectPermissionsData: IPhasePermissionData = {
   id: '80419431-f691-4dc5-8aeb-5d14ece5feb0',
   type: 'permission',
   attributes: {

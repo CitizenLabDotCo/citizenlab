@@ -82,11 +82,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.mixedRights',
     defaultMessage: 'Mixed rights',
   },
-  groups: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.groups',
-    defaultMessage:
-      '{noOfGroups, plural, one {1 group} other {{noOfGroups} groups}}',
-  },
   canParticipateTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip',
     defaultMessage: '{participants} can participate in this phase.',
@@ -130,17 +125,5 @@ export default defineMessages({
   volunteering: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',
     defaultMessage: '<b>Volunteering:</b>  {participants}',
-  },
-  and: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
-    defaultMessage: 'and',
-  },
-  only: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.only',
-    defaultMessage: 'Only',
-  },
-  noGroups: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noGroups',
-    defaultMessage: 'No groups',
   },
 });

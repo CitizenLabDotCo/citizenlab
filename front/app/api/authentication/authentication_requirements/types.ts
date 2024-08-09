@@ -1,6 +1,8 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
-import { permittedBy } from 'api/phase_permissions/types';
+import {
+  IPhasePermissionAction,
+  PermittedBy,
+} from 'api/phase_permissions/types';
 
 import { DisabledReason } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
@@ -54,7 +56,7 @@ export interface AuthenticationRequirementsResponse {
       disabled_reason: DisabledReason | null;
       requirements: {
         authentication: {
-          permitted_by: permittedBy;
+          permitted_by: PermittedBy;
           missing_user_attributes: UserAttribute[];
         };
         verification: boolean;

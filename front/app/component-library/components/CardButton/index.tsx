@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { lighten } from 'polished';
-
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon, { IconNames } from '../Icon';
@@ -16,9 +14,6 @@ type CardButtonProps = {
   subtitle?: string;
   disabled?: boolean;
 };
-
-// TODO: Temporary colour until new tealLight variations added to component library
-export const backgroundColor = lighten(0.1, colors.tealLight);
 
 const CardButton = ({
   selected = false,
@@ -37,7 +32,7 @@ const CardButton = ({
     <Box
       width="240px"
       minHeight="210px"
-      background={selected || isHover ? backgroundColor : colors.white}
+      background={selected || isHover ? colors.teal50 : colors.white}
       onMouseEnter={(e) => {
         setIsHover(true);
         onMouseEnter?.(e);

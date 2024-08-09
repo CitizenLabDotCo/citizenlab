@@ -46,7 +46,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -72,7 +72,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
