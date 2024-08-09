@@ -684,6 +684,8 @@
   "app.components.formBuilder.description": "الوصف",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "تمت إضافة هذا المحتوى في النموذج من قبل. لا يجوز استخدام محتوى افتراضي أكثر من مرة واحدة.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "تشكِّل إضافة محتوى مخصص جزءًا من الترخيص المتميز. تواصل مع مدير GovSuccess لمعرفة مزيد من المعلومات عنه.",
+  "app.components.formBuilder.displayAsDropdown": "عرض كقائمة منسدلة",
+  "app.components.formBuilder.displayAsDropdownTooltip": "عرض الخيارات في قائمة منسدلة. إذا كان لديك العديد من الخيارات، فمن المستحسن القيام بذلك.",
   "app.components.formBuilder.done": "تم",
   "app.components.formBuilder.drawArea": "منطقة الرسم",
   "app.components.formBuilder.drawRoute": "ارسم الطريق",
