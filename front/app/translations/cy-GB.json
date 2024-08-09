@@ -487,6 +487,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Addaswch eich {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Efallai y bydd eich pleidlais yn cael ei chyflwyno tan",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {sero tagiau} one {un tag} other {# tagiau}}. {selectedTopicNames}",
+  "app.components.UI.FullscreenImage.expandImage": "Ehangu delwedd",
   "app.components.UI.MoreActionsMenu.moreOptions": "Mwy o opsiynau",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Dangos mwy o gamau gweithredu",
   "app.components.UI.NewLabel.newBadge": "NEWYDD",
