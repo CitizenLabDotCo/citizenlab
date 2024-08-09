@@ -82,6 +82,7 @@ describe Permissions::BasePermissionsService do
 
       context 'when group membership required' do
         let(:group) { create(:group) }
+
         before { verified_permission.update!(groups: [group]) }
 
         context 'when unverified resident not in group' do
