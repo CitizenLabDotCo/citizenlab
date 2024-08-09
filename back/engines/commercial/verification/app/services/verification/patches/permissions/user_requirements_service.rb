@@ -9,12 +9,12 @@ module Verification
         # Verification requirement can now come from either a group or the permitted_by value
         def requires_verification?(permission, user)
           return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
-          return false unless verification_service.find_verification_group(permission.groups) || permission.permitted_by == 'verified'
+          return false unless permission.permitted_by == 'verified' || verification_service.find_verification_group(permission.groups)
 
-          if !permission.verification_expiry.nil? && user.verifications
+          if !permission.verification_expiry.nil? && user.verifications.present?
             # Check requirements for when we require verification again
             expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
-            last_verification_time = user.verifications.last.updated_at
+            last_verification_time = user.verifications.last&.updated_at
             next_verification_time = last_verification_time + expiry_offset
             next_verification_time < Time.now
           else
@@ -27,8 +27,7 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
-          # TODO: JS - does check groups need to only work with group based verification?
-          if @check_groups && permission.verification_enabled?
+          if @check_groups_and_verification && permission.verification_enabled?
             requirements[:verification] = true
           end
           requirements
@@ -43,7 +42,7 @@ module Verification
 
         # User can be in other groups that are not verification groups and therefore not need to be verified
         def user_allowed_through_other_groups?(permission, user)
-          (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
+          (permission.groups.any? && user.in_any_groups?(permission.groups)) && permission.permitted_by != 'verified'
         end
 
         def verification_service

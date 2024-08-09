@@ -9,6 +9,7 @@ module Verification
           validate :validate_verification_expiry
 
           def verification_enabled?
+            # Verification can be enabled by permitted_by OR by a verification group
             return true if permitted_by == 'verified'
             return true if groups.any? && VerificationService.new.find_verification_group(groups)
 
