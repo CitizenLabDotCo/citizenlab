@@ -36,7 +36,7 @@ module IdFakeSso
       []
     end
 
-    def enabled_on_action?
+    def enabled_for_verified_actions?
       true
     end
 

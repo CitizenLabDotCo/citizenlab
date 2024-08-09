@@ -38,9 +38,9 @@ module Verification
     end
 
     # Not all verification methods are allowed at a permission/action level
-    def first_method_enabled_on_action
+    def first_method_enabled_for_verified_actions
       active_methods(AppConfiguration.instance).find do |method|
-        method.respond_to?(:enabled_on_action?) && method.enabled_on_action?
+        method.respond_to?(:enabled_for_verified_actions?) && method.enabled_for_verified_actions?
       end
     end
 
@@ -106,8 +106,8 @@ module Verification
 
     # Return meta data for use in permission actions
     def action_metadata(method: nil)
-      method ||= first_method_enabled_on_action
-      return { allowed: false } unless method.respond_to?(:enabled_on_action?) && method&.enabled_on_action?
+      method ||= first_method_enabled_for_verified_actions
+      return { allowed: false } unless method.respond_to?(:enabled_for_verified_actions?) && method&.enabled_for_verified_actions?
 
       name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
 

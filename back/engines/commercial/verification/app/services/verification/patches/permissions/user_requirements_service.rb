@@ -35,6 +35,8 @@ module Verification
 
         def mark_satisfied_requirements!(requirements, permission, user)
           super
+
+          requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified' && user.verified?
           return unless requirements[:verification]
 
           requirements[:verification] = requires_verification?(permission, user)

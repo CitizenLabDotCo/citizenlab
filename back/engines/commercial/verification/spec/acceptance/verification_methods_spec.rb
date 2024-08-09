@@ -96,4 +96,34 @@ resource 'Verification methods' do
       )
     end
   end
+
+  get 'web_api/v1/verification_methods/first_enabled_for_verified_actions' do
+    example_request 'Returns the first verification method enabled for verified actions' do
+      expect(status).to eq(200)
+      expect(response_data).to eq(
+        {
+          id: '8bb00a8d-26a5-4e00-866d-36e23986d441',
+          type: 'verification_method',
+          attributes: {
+            name: 'fake_sso',
+            action_metadata: {
+              allowed: true,
+              name: 'Fake SSO',
+              locked_attributes: [
+                { :en => 'First name(s)', :'fr-FR' => 'Prénom(s)', :'nl-NL' => 'Voornamen' },
+                { :en => 'Last name', :'fr-FR' => 'Nom de famille', :'nl-NL' => 'Achternaam' }
+              ],
+              other_attributes: [
+                { :en => 'Email', :'fr-FR' => 'E-mail', :'nl-NL' => 'E-mail' }
+              ],
+              locked_custom_fields: [
+                { :en => 'gender' }, { :en => 'birthyear' }
+              ],
+              other_custom_fields: []
+            }
+          }
+        }
+      )
+    end
+  end
 end
