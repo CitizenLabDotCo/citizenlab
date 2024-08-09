@@ -29,9 +29,13 @@ class UserService
 
     # If SSO method doesn't provide email, user enters it manually
     # (`update_in_web_api` is called)
-    def build_in_sso(user_params, confirm_user, locale)
+    def build_in_sso(user_params, confirm_user, fallback_locale)
       user = User.new(user_params)
-      user.locale = locale if locale
+
+      if user_params[:locale].blank?
+        user.locale = fallback_locale
+      end
+
       user.confirm if confirm_user
       user
     end
