@@ -6,12 +6,12 @@ module Verification
       module UserRequirementsService
         MIN_VERIFICATION_EXPIRY = 30.minutes
 
-        # Verification requirement can now come from either a group or the permitted_by value
+        # Verification requirement can now come from either a group or the "verified" permitted_by value
         def requires_verification?(permission, user)
-          return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
+          return false if permission.permitted_by != 'verified' && user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
           return false unless permission.permitted_by == 'verified' || verification_service.find_verification_group(permission.groups)
 
-          if !permission.verification_expiry.nil? && user.verifications.present?
+          if permission.permitted_by == 'verified' && !permission.verification_expiry.nil? && user.verifications.present?
             # Check requirements for when we require verification again
             expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
             last_verification_time = user.verifications.last&.updated_at
@@ -44,7 +44,14 @@ module Verification
 
         # User can be in other groups that are not verification groups and therefore not need to be verified
         def user_allowed_through_other_groups?(permission, user)
-          (permission.groups.any? && user.in_any_groups?(permission.groups)) && permission.permitted_by != 'verified'
+          return false unless permission.groups.any?
+
+          # Remove the verification group from the list of groups
+          groups = permission.groups.to_a
+          groups.delete(verification_service.find_verification_group(groups))
+          return false unless groups.any?
+
+          user.in_any_groups?(groups)
         end
 
         def verification_service

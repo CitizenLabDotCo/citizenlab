@@ -6,6 +6,11 @@ describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
   describe 'user_denied_reason' do
+    before do
+      # To allow permitted_by 'verified' we need to enable at least one verification method
+      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+    end
+
     context 'verification via groups' do
       let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
       let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
@@ -46,15 +51,24 @@ describe Permissions::BasePermissionsService do
 
         it { expect(service.send(:user_denied_reason, group_permission)).to be_nil }
       end
+
+      context 'permission has a verification expiry value' do
+        let(:user) { create(:user, verified: true) }
+
+        before { create(:verification, user: user, method_name: 'fake_sso') }
+
+        it 'ignores the verification value if permitted_by is not "verified"' do
+          group_permission.update!(permitted_by: 'verified', verification_expiry: 1)
+          group_permission.update!(permitted_by: 'users')
+          travel_to Time.now + 2.days do
+            expect(service.send(:user_denied_reason, group_permission)).to be_nil
+          end
+        end
+      end
     end
 
-    context 'verification via permitted_by' do
+    context 'verification via permitted_by "verified"' do
       let(:verified_permission) { create(:permission, permitted_by: 'verified') }
-
-      before do
-        # To allow permitted_by 'verified' we need to enable at least one verification method
-        SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
-      end
 
       context 'when not signed in' do
         let(:user) { nil }
