@@ -1,23 +1,15 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  stylingConsts,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import { PermittedBy } from 'api/phase_permissions/types';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-
-import Arrow from './Arrow';
-import { SupportedPermittedBy } from './typings';
-import { VISUALIZATION_STEPS } from './utils';
+import Blocks from './Blocks';
 
 interface Props {
-  permittedBy: SupportedPermittedBy;
+  permittedBy: PermittedBy;
   phaseId?: string;
   action: Action;
 }
@@ -28,25 +20,14 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
     action,
   });
 
-  if (!permissionsCustomFields?.data) return null;
-
-  const visualizationSteps = VISUALIZATION_STEPS[permittedBy](
-    permissionsCustomFields?.data
-  );
+  if (!permissionsCustomFields) return;
 
   return (
     <Box display="flex" flexDirection="row">
-      {visualizationSteps.map((step, index) => {
-        return (
-          <Box display="flex" flexDirection="row" key={index}>
-            <Block
-              number={visualizationSteps.length === 1 ? undefined : index + 1}
-              text={step}
-            />
-            <Edge />
-          </Box>
-        );
-      })}
+      <Blocks
+        permittedBy={permittedBy}
+        permissionsCustomFields={permissionsCustomFields.data}
+      />
       <Box display="flex" alignItems="center">
         <Box
           bgColor={colors.green100}
@@ -66,44 +47,3 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
 };
 
 export default FlowVisualization;
-
-interface BlockProps {
-  number?: number;
-  text: MessageDescriptor;
-}
-
-const VERIFICATION_PROVIDER = 'MitID';
-
-const Block = ({ number, text }: BlockProps) => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <Box
-      borderRadius={stylingConsts.borderRadius}
-      border={`1px solid ${colors.blue700}`}
-      bgColor={colors.teal50}
-      p="16px"
-      w="220px"
-    >
-      {number && <Box>{`${number}.`}</Box>}
-      <Box>
-        {formatMessage(text, { verificationProvider: VERIFICATION_PROVIDER })}
-      </Box>
-    </Box>
-  );
-};
-
-const EDGE_WIDTH = 20;
-
-const Edge = () => {
-  return (
-    <Box
-      w={`${EDGE_WIDTH}px`}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-    >
-      <Arrow width={EDGE_WIDTH} />
-    </Box>
-  );
-};
