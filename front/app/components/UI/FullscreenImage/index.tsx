@@ -9,6 +9,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props {
   src: string;
   altText: string;
@@ -19,6 +23,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
   const [isImagedLoaded, setIsImageLoaded] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
   const fullscreenButtonRef = useRef<HTMLButtonElement | null>(null);
+  const { formatMessage } = useIntl();
 
   const toggleFullscreen = (event: React.MouseEvent) => {
     event.preventDefault(); // prevent the image option from being checked (selected)
@@ -107,9 +112,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
               iconRef={fullscreenButtonRef}
               buttonType="button"
               iconName="layout-white-space"
-              a11y_buttonActionMessage={
-                'formatMessage(messages.a11y_removeFile)'
-              }
+              a11y_buttonActionMessage={formatMessage(messages.a11yViewImage)}
               onClick={toggleFullscreen}
               iconColor={colors.textSecondary}
               iconColorOnHover={colors.primary}
