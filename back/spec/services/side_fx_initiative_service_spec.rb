@@ -146,7 +146,7 @@ describe SideFxInitiativeService do
         :permission,
         permission_scope: nil,
         action: 'reacting_initiative',
-        permitted_by: 'groups',
+        permitted_by: 'users',
         groups: [create(:group)]
       )
 

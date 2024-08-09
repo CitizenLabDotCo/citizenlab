@@ -38,7 +38,7 @@ describe PermissionPolicy do
   context 'for a member of a group with permissions on a phase' do
     let(:user) { create(:user) }
     let(:group) { create(:group) }
-    let!(:permission) { create(:permission, permitted_by: 'groups', groups: [group]) }
+    let!(:permission) { create(:permission, permitted_by: 'users', groups: [group]) }
 
     before do
       group.members << user

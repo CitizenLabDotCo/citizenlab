@@ -210,7 +210,7 @@ describe LocalProjectCopyService do
       expect(copied_project.groups).to match_array(source_project.groups)
     end
 
-    describe 'when a certain project action is permitted only for groups' do
+    describe 'when a certain project action is permitted only for certain groups' do
       let(:with_permissions) { true }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
@@ -219,7 +219,7 @@ describe LocalProjectCopyService do
       end
 
       it 'copies the action groups permission' do
-        permission.update!(permitted_by: 'groups', groups: groups)
+        permission.update!(permitted_by: 'users', groups: groups)
 
         copied_project = service.copy(open_ended_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
@@ -261,7 +261,7 @@ describe LocalProjectCopyService do
         end)
     end
 
-    describe 'when a certain phase action is permitted only for groups' do
+    describe 'when a certain phase action is permitted only for certain groups' do
       let!(:source_project) { create(:project_with_active_ideation_phase) }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
@@ -272,7 +272,7 @@ describe LocalProjectCopyService do
       end
 
       it 'copies the action groups permission' do
-        permission.update!(permitted_by: 'groups', groups: groups)
+        permission.update!(permitted_by: 'users', groups: groups)
 
         copied_project = service.copy(source_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)

@@ -13,7 +13,7 @@ import {
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step } from './typings';
-import { askCustomFields, showOnboarding } from './utils';
+import { confirmationRequired, askCustomFields, showOnboarding } from './utils';
 
 export const emaillessSsoFlow = (
   getRequirements: GetRequirements,
@@ -30,7 +30,8 @@ export const emaillessSsoFlow = (
         userId: string;
       }) => {
         const { requirements } = await getRequirements();
-        if (requirements.special.confirmation === 'require') {
+
+        if (confirmationRequired(requirements)) {
           await resendEmailConfirmationCode(email);
           setCurrentStep('emailless-sso:email-confirmation');
         } else {
@@ -51,12 +52,12 @@ export const emaillessSsoFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (askCustomFields(requirements.custom_fields)) {
+        if (askCustomFields(requirements)) {
           setCurrentStep('sign-up:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('sign-up:onboarding');
           return;
         }

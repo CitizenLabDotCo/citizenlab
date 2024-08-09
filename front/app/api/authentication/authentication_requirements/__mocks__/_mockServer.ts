@@ -8,23 +8,23 @@ export const initiativeResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: false,
+      disabled_reason: 'user_missing_requirements',
       requirements: {
-        permitted: false,
-        requirements: {
-          built_in: {
-            first_name: 'require',
-            last_name: 'require',
-            email: 'require',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'require',
-            confirmation: 'require',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'confirmation',
+          ],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },
@@ -34,23 +34,17 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: false,
+      disabled_reason: 'user_missing_requirements',
       requirements: {
-        permitted: false,
-        requirements: {
-          built_in: {
-            first_name: 'satisfied',
-            last_name: 'satisfied',
-            email: 'satisfied',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'satisfied',
-            confirmation: 'require',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: ['confirmation'],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },
@@ -60,23 +54,17 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: true,
+      disabled_reason: null,
       requirements: {
-        permitted: true,
-        requirements: {
-          built_in: {
-            first_name: 'satisfied',
-            last_name: 'satisfied',
-            email: 'satisfied',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'satisfied',
-            confirmation: 'satisfied',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: [],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },

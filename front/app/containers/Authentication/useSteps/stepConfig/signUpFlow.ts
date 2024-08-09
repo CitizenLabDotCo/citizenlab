@@ -1,4 +1,3 @@
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
@@ -6,6 +5,7 @@ import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
@@ -23,7 +23,12 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { askCustomFields, showOnboarding } from './utils';
+import {
+  askCustomFields,
+  confirmationRequired,
+  showOnboarding,
+  doesNotMeetGroupCriteria,
+} from './utils';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -46,13 +51,11 @@ export const signUpFlow = (
         }
 
         const { requirements } = await getRequirements();
-        const verificationRequired =
-          requirements.special.verification === 'require';
 
         handleOnSSOClick(
           authProvider,
           { ...getAuthenticationData(), flow: 'signup' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -78,30 +81,28 @@ export const signUpFlow = (
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
-          const emailConfirmationRequired =
-            requirements.special.confirmation === 'require';
 
-          if (emailConfirmationRequired) {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('sign-up:email-confirmation');
             return;
           }
 
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('sign-up:verification');
             return;
           }
 
-          if (askCustomFields(requirements.custom_fields)) {
+          if (askCustomFields(requirements)) {
             setCurrentStep('sign-up:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('sign-up:onboarding');
             return;
           }
 
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             setCurrentStep('closed');
             return;
           }
@@ -124,22 +125,22 @@ export const signUpFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (requirements.special.verification === 'require') {
+        if (requirements.verification) {
           setCurrentStep('sign-up:verification');
           return;
         }
 
-        if (askCustomFields(requirements.custom_fields)) {
+        if (askCustomFields(requirements)) {
           setCurrentStep('sign-up:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('sign-up:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -164,17 +165,17 @@ export const signUpFlow = (
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
 
-        if (askCustomFields(requirements.custom_fields)) {
+        if (askCustomFields(requirements)) {
           setCurrentStep('sign-up:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('sign-up:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -195,12 +196,12 @@ export const signUpFlow = (
 
           const { requirements } = await getRequirements();
 
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             setCurrentStep('closed');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('sign-up:onboarding');
             return;
           }
@@ -215,12 +216,12 @@ export const signUpFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('sign-up:onboarding');
           return;
         }
@@ -242,7 +243,7 @@ export const signUpFlow = (
 
           const { requirements } = await getRequirements();
 
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             setCurrentStep('closed');
             return;
           }
@@ -257,7 +258,7 @@ export const signUpFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }

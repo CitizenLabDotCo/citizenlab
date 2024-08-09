@@ -14,7 +14,7 @@ import { SupportedLocale } from 'typings';
 
 import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import useAddPermissionCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
+import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
@@ -68,7 +68,7 @@ const UserFieldSelection = ({
     action: permission.attributes.action,
   });
   const { mutate: addPermissionCustomField, isLoading } =
-    useAddPermissionCustomField({
+    useAddPermissionsCustomField({
       phaseId,
       projectId,
       initiativeContext,

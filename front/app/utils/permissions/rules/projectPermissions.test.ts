@@ -1,6 +1,7 @@
-import { canModerateProject } from './projectPermissions';
-import { makeUser } from 'api/users/__mocks__/useUsers';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
+import { makeUser } from 'api/users/__mocks__/useUsers';
+
+import { canModerateProject } from './projectPermissions';
 
 const folderId = '793ee057-3191-53ce-a862-5f97b5c03c8b';
 project1.attributes.folder_id = folderId;

@@ -24,8 +24,24 @@ module IdFakeSso
       %i[first_name last_name]
     end
 
+    def other_attributes
+      %i[email]
+    end
+
     def locked_custom_fields
       %i[gender birthyear]
+    end
+
+    def other_custom_fields
+      []
+    end
+
+    def enabled_for_verified_actions?
+      true
+    end
+
+    def ui_method_name
+      'Fake SSO'
     end
   end
 end

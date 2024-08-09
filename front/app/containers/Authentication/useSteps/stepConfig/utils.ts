@@ -1,40 +1,33 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
-export const showOnboarding = (
-  onboardingRequirements: AuthenticationRequirements['requirements']['onboarding']
+export const confirmationRequired = (
+  requirements: AuthenticationRequirements['requirements']
 ) => {
-  for (const fieldName in onboardingRequirements) {
-    if (
-      onboardingRequirements[fieldName] === 'ask' ||
-      onboardingRequirements[fieldName] === 'require'
-    ) {
-      return true;
-    }
-  }
+  return requirements.authentication.missing_user_attributes.includes(
+    'confirmation'
+  );
+};
 
-  return false;
+export const showOnboarding = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  return requirements.onboarding;
 };
 
 export const askCustomFields = (
-  customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
+  requirements: AuthenticationRequirements['requirements']
 ) => {
-  for (const fieldName in customFieldRequirements) {
-    if (
-      customFieldRequirements[fieldName] === 'ask' ||
-      customFieldRequirements[fieldName] === 'require'
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+  const { custom_fields } = requirements;
+  return Object.keys(custom_fields).length > 0;
 };
 
 export const requiredCustomFields = (
-  customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
+  requirements: AuthenticationRequirements['requirements']
 ) => {
-  for (const fieldName in customFieldRequirements) {
-    if (customFieldRequirements[fieldName] === 'require') {
+  const { custom_fields } = requirements;
+
+  for (const fieldName in custom_fields) {
+    if (custom_fields[fieldName] === 'required') {
       return true;
     }
   }
@@ -45,11 +38,19 @@ export const requiredCustomFields = (
 export const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
-  const builtIn = requirements.built_in;
+  const missingAttributes = new Set(
+    requirements.authentication.missing_user_attributes
+  );
 
-  const askFirstName = builtIn.first_name === 'require';
-  const askLastName = builtIn.last_name === 'require';
-  const askPassword = requirements.special.password === 'require';
+  const askFirstName = missingAttributes.has('first_name');
+  const askLastName = missingAttributes.has('last_name');
+  const askPassword = missingAttributes.has('password');
 
   return askFirstName || askLastName || askPassword;
+};
+
+export const doesNotMeetGroupCriteria = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  return requirements.group_membership;
 };

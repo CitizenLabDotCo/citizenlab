@@ -55,7 +55,7 @@ resource 'Volunteering Volunteers' do
         let(:cause) do
           cause = create(:cause, phase: project.phases.first)
           permission = cause.phase.permissions.find_by(action: 'volunteering')
-          permission.update!(permitted_by: 'groups', groups: [group])
+          permission.update!(permitted_by: 'users', groups: [group])
 
           cause
         end
