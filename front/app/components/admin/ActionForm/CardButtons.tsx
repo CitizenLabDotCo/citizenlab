@@ -32,8 +32,10 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
     onUpdate(permittedBy);
   };
 
-  const verificationMethodName =
-    verificationMethod?.data.attributes.action_metadata?.name;
+  const verificationMethodMetadata =
+    verificationMethod?.data.attributes.action_metadata;
+  const verificationMethodName = verificationMethodMetadata?.name;
+  const verificationMethodAllowed = verificationMethodMetadata?.allowed;
 
   return (
     <>
@@ -101,7 +103,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
           height="100%"
         />
       </Box>
-      {verificationMethodName && (
+      {verificationMethodAllowed && verificationMethodName && (
         <Box>
           <CardButton
             id="e2e-permission-verified-actions"
