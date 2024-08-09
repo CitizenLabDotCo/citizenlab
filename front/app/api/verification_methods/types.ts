@@ -15,19 +15,26 @@ export const verificationTypesLeavingPlatform = [
   'nemlog_in',
 ];
 
-export interface IVerificationMethodNamesMap {}
-
 export type TVerificationMethodName =
-  IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
+  | 'auth0'
+  | 'bogus'
+  | 'bosa_fas'
+  | 'clave_unica'
+  | 'cow'
+  | 'criipto'
+  | 'franceconnect'
+  | 'gent_rrn'
+  | 'id_card_lookup'
+  | 'nemlog_in'
+  | 'oostende_rrn';
 
-type TGenericMethod = {
-  id: string;
-  type: 'verification_method';
-  attributes: {
-    name: TVerificationMethodName;
-    action_metadata?: ActionMetadata;
-  };
-};
+export interface IVerificationMethods {
+  data: TVerificationMethod[];
+}
+
+export interface IVerificationMethod {
+  data: TVerificationMethod;
+}
 
 type ActionMetadata = {
   allowed: boolean;
@@ -38,17 +45,37 @@ type ActionMetadata = {
   other_custom_fields: Multiloc[];
 };
 
-export interface IVerificationMethodMap {
-  generic: TGenericMethod;
-}
+type TGenericMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: TVerificationMethodName;
+    action_metadata?: ActionMetadata;
+  };
+};
 
-export type TVerificationMethod =
-  IVerificationMethodMap[keyof IVerificationMethodMap];
+type IDLookupMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'id_card_lookup';
+    action_metadata?: ActionMetadata;
+    card_id: string;
+    card_id_placeholder: string;
+    card_id_tooltip: string;
+    explainer_image_url: string;
+    ui_method_name: string;
+  };
+};
 
-export interface IVerificationMethods {
-  data: TVerificationMethod[];
-}
+type IDCriiptoMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'criipto';
+    action_metadata?: ActionMetadata;
+    ui_method_name: string;
+  };
+};
 
-export interface IVerificationMethod {
-  data: TVerificationMethod;
-}
+type TVerificationMethod = TGenericMethod | IDLookupMethod | IDCriiptoMethod;
