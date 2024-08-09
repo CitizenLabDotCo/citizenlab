@@ -31,19 +31,33 @@ module IdFakeSso
       options[:client_options] = {
         identifier: 'govocal_client',
         secret: 'abc123',
-        port: 8081,
-        scheme: 'http',
+        port: port,
+        scheme: scheme,
         host: host,
         redirect_uri: "#{configuration.base_backend_uri}/auth/fake_sso/callback"
       }
     end
 
     def host
-      'host.docker.internal'
+      URI.parse(issuer).host
     end
 
     def issuer
-      "http://#{host}"
+      return issuer_in_settings if issuer_in_settings.present?
+
+      'http://host.docker.internal'
+    end
+
+    def port
+      return 443 if issuer_in_settings.present?
+
+      8081
+    end
+
+    def scheme
+      return 'https' if issuer_in_settings.present?
+
+      'http'
     end
 
     def verification_prioritized?
@@ -60,6 +74,10 @@ module IdFakeSso
 
     def jwt_secret_base64
       Base64.encode64(ENV.fetch('FAKE_SSO_JWT_SECRET'))
+    end
+
+    def issuer_in_settings
+      @issuer_in_settings ||= AppConfiguration.instance.settings('fake_sso', 'issuer')
     end
   end
 end

@@ -25,5 +25,11 @@ module IdFakeSso
     def self.enabled_by_default
       false
     end
+
+    add_setting 'issuer', required: false, schema: {
+      title: 'Issuer',
+      type: 'string',
+      private: true
+    }
   end
 end
