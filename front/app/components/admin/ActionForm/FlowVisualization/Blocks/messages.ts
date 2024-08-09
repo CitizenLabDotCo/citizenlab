@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedFields',
     defaultMessage: 'Verified fields: ',
   },
+  xVerification: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification',
+    defaultMessage: '{verificationMethod} verification',
+  },
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -10,9 +10,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Block from './Block';
+import { Block, SSOBlock } from './Block';
 import Edge from './Edge';
 import messages from './messages';
+import SSOConfigModal from './SSOConfigModal';
 import { getReturnedFieldsPreview } from './utils';
 
 interface Props {
@@ -24,6 +25,7 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const showCustomFields = permissionsCustomFields.length > 0;
 
@@ -98,7 +100,7 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
 
     return (
       <>
-        <Block
+        <SSOBlock
           number={1}
           text={
             <>
@@ -111,6 +113,7 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
               </Box>
             </>
           }
+          onClick={() => setModalOpen(true)}
         />
         {showCustomFields && (
           <>
@@ -121,6 +124,11 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
             />
           </>
         )}
+        <SSOConfigModal
+          opened={modalOpen}
+          onClose={() => setModalOpen(false)}
+          verificationMethodName={verificationMethodName ?? ''}
+        />
       </>
     );
   }
