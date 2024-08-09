@@ -26,7 +26,7 @@ resource 'Projects' do
       let(:project2) { create(:project, folder: folder, default_assignee: assignee) }
       let(:id) { project1.id }
 
-      example 'Assignees of moved project remain valid', document: false, if: defined?(ProjectFolders::Engine) do
+      example 'Assignees of moved project remain valid', document: false do
         idea1 = create(:idea, project: project1, assignee: assignee)
         idea2 = create(:idea, project: project2, assignee: assignee)
 
