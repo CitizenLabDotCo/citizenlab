@@ -65,6 +65,7 @@ describe('<ModeratorListRow />', () => {
         isLastItem={false}
         projectId={projectId}
         moderator={moderator}
+        folderId={null}
       />
     );
 
@@ -83,6 +84,27 @@ describe('<ModeratorListRow />', () => {
         isLastItem={false}
         projectId={projectId}
         moderator={moderator}
+        folderId={null}
+      />
+    );
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    expect(deleteButton).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('disables the delete button if the user moderates the folder containing the project', () => {
+    mockAuthUserData.attributes.highest_role = 'project_folder_moderator';
+    mockAuthUserData.attributes.roles = [
+      projectModeratorRole,
+      { type: 'project_folder_moderator', project_folder_id: 'folderId' },
+    ];
+
+    render(
+      <ModeratorListRow
+        isLastItem={false}
+        projectId={projectId}
+        moderator={moderator}
+        folderId="folderId"
       />
     );
 

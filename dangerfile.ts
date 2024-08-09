@@ -28,10 +28,8 @@ if (branchKeys.length === 0) {
   warn("The branch name contains no Jira issue key (case-sensitive)");
 }
 
-new Set([...branchKeys, ...prKeys]).forEach((jiraKey) => {
-  message(
-    `Jira issue: <a href="https://citizenlab.atlassian.net/browse/${jiraKey}">${jiraKey}</a>`
-  );
+new Set([...branchKeys, ...prKeys]).forEach((key) => {
+  message(`Notion issue: <a href="https://notion.so/${key}">${key}</a>`);
 });
 
 // Link to trigger e2e tests
