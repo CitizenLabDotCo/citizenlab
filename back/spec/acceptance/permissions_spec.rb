@@ -91,7 +91,7 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        expect(response_data.size).to eq 5
+        expect(response_data.size).to eq 6
         expect(response_data.map { |d| d.dig(:attributes, :action) }).to match_array Permission.available_actions(nil)
       end
     end
@@ -154,6 +154,7 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
+          expect(response_data.dig(:attributes, :verification_enabled)).to eq true
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
