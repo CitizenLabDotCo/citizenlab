@@ -71,22 +71,6 @@ module UserCustomFields
 
     private
 
-    def get_ui_schema_multiloc(fields)
-      custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
-    end
-
-    def user_ui_and_json_multiloc_schemas(fields)
-      json_forms_service.user_ui_and_json_multiloc_schemas(fields)
-    end
-
-    def custom_field_service
-      @custom_field_service ||= CustomFieldService.new
-    end
-
-    def json_forms_service
-      @json_forms_service ||= JsonFormsService.new
-    end
-
     def set_custom_field
       @custom_field = CustomField.find(params[:id])
       authorize @custom_field, policy_class: UserCustomFieldPolicy
