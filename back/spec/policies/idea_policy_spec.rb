@@ -516,7 +516,7 @@ describe IdeaPolicy do
       end
     end
     let!(:idea) do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
       phase = project.phases.first
       create(:idea, project: project, author: author, creation_phase: phase.native_survey? ? phase : nil)
     end

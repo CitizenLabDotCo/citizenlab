@@ -4,7 +4,7 @@ module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
     IDEAS_PER_JOB = 5
     POSITION_TOLERANCE = 10
-    MAX_TOTAL_PAGES = 50
+    MAX_TOTAL_PAGES = 100
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)

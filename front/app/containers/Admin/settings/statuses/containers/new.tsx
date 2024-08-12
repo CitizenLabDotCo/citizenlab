@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -11,7 +12,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 
@@ -21,18 +21,24 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const NewIdeaStatus = () => {
+const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+  const { data: ideaStatuses } = useIdeaStatuses({
+    participation_method: variant,
+  });
   const { mutate: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
   const handleSubmit = (values: FormValues) => {
-    addIdeaStatus(values, { onSuccess: goBack });
+    addIdeaStatus(
+      { ...values, participation_method: variant },
+      { onSuccess: goBack }
+    );
   };
 
   const goBack = () => {
-    clHistory.push('/admin/settings/statuses');
+    clHistory.push(`/admin/settings/${variant}/statuses`);
   };
 
-  if (!isNilOrError(tenantLocales)) {
+  if (tenantLocales && ideaStatuses) {
     return (
       <Section>
         <GoBackButton onClick={goBack} />
@@ -45,6 +51,8 @@ const NewIdeaStatus = () => {
             code: 'proposed',
           }}
           onSubmit={handleSubmit}
+          showCategorySelector
+          variant={variant}
         />
       </Section>
     );

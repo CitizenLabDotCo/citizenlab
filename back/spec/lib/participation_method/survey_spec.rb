@@ -8,6 +8,12 @@ RSpec.describe ParticipationMethod::Survey do
   let(:input) { create(:idea) }
   let(:phase) { create(:typeform_survey_phase) }
 
+  describe '#method_str' do
+    it 'returns survey' do
+      expect(described_class.method_str).to eq 'survey'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:typeform_survey_phase) }
 
