@@ -154,6 +154,7 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
+          expect(response_data.dig(:attributes, :verification_enabled)).to eq true
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
