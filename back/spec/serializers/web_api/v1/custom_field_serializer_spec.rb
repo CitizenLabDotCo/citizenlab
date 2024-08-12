@@ -148,7 +148,7 @@ describe WebApi::V1::CustomFieldSerializer do
     end
   end
 
-  context 'select field' do 
+  context 'select field' do
     let(:field) { create(:custom_field_select, :for_custom_form, key: 'select') }
 
     it 'includes the dropdown_layout attribute' do
