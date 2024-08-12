@@ -122,4 +122,54 @@ describe WebApi::V1::CustomFieldSerializer do
       })
     end
   end
+
+  context 'multiselect field' do
+    let(:field) { create(:custom_field_multiselect, :for_custom_form, key: 'multiselect') }
+
+    it 'includes the dropdown_layout attribute' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Select all that apply.' },
+        enabled: true,
+        input_type: 'multiselect',
+        key: 'multiselect',
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'What are your favorite colors?' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false,
+        dropdown_layout: 'default'
+      })
+    end
+  end
+
+  context 'select field' do 
+    let(:field) { create(:custom_field_select, :for_custom_form, key: 'select') }
+
+    it 'includes the dropdown_layout attribute' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Select all that apply.' },
+        enabled: true,
+        input_type: 'select',
+        key: 'select',
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'What are your favorite colors?' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false,
+        dropdown_layout: 'default'
+      })
+    end
+  end
 end
