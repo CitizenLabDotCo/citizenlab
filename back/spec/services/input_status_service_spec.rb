@@ -16,15 +16,15 @@ describe InputStatusService do
     describe 'auto_transition_input!' do
       it 'transitions when voting threshold was reached' do
         create_list(:reaction, 3, reactable: proposal, mode: 'up')
-  
+
         described_class.auto_transition_input!(proposal.reload)
-  
+
         expect(proposal.reload.idea_status.code).to eq 'threshold_reached'
       end
 
       it 'remains proposed if not expired nor threshold reached' do
         create(:reaction, reactable: proposal, mode: 'up')
-  
+
         travel_to(Time.now + 15.days) do
           described_class.auto_transition_input!(proposal.reload)
           expect(proposal.reload.idea_status.code).to eq 'proposed'
@@ -43,7 +43,7 @@ describe InputStatusService do
 
       it 'remains proposed if not expired nor threshold reached' do
         create(:reaction, reactable: proposal, mode: 'up')
-  
+
         travel_to(Time.now + 19.days) do
           described_class.auto_transition_hourly!
           expect(proposal.reload.idea_status.code).to eq 'proposed'
