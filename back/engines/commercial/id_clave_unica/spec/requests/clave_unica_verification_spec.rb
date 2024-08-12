@@ -226,13 +226,13 @@ describe 'clave_unica verification' do
 
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
-        expect(user.email).to be(nil)
+        expect(user.email).to be_nil
         expect(user.active?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
         headers = { 'Authorization' => authorization_header(user) }
 
-        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' }}, headers: headers
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
@@ -278,7 +278,7 @@ describe 'clave_unica verification' do
 
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
-        expect(user.email).to be(nil)
+        expect(user.email).to be_nil
         expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
       end
