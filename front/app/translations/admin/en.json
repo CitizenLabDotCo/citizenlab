@@ -961,6 +961,8 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword": "Enter name, last name, email and password",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Enter your email",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "No actions are required to participate",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Use smart groups to restrict participation based on the verified data listed above",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedData": "Verified data:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedFields": "Verified fields:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification": "{verificationMethod} verification",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation": "Account creation",
