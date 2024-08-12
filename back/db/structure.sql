@@ -2227,13 +2227,13 @@ CREATE TABLE public.custom_fields (
     minimum_select_count integer,
     random_option_ordering boolean DEFAULT false NOT NULL,
     page_layout character varying,
-    linear_scale_label_multiloc_n1 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n2 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n3 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n4 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n5 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n6 jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_multiloc_n7 jsonb DEFAULT '{}'::jsonb NOT NULL
+    linear_scale_label_1_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_3_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_4_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
