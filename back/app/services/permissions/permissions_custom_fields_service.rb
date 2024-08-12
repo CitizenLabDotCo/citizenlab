@@ -36,7 +36,7 @@ module Permissions
     end
 
     # Add non-persisted locked fields to the permission if they don't exist & ensure they appear at the start of the list
-    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type)
+    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type, insert_before: true)
       ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
       custom_field_required_array&.each do |field|
         custom_field_id = field[:id]
@@ -44,14 +44,21 @@ module Permissions
         existing_permissions_custom_field = permission_custom_fields.find { |f| f[:custom_field_id] == custom_field_id }
         if existing_permissions_custom_field.nil?
           # Insert a new one if it's not already there
-          new_field = PermissionsCustomField.new(id: SecureRandom.uuid, custom_field_id: custom_field_id, required: required, ordering: ordering, permission: permission, lock: lock_type)
-          permission_custom_fields.insert(ordering, new_field)
+          new_field = PermissionsCustomField.new(id: SecureRandom.uuid, custom_field_id: custom_field_id, required: required, permission: permission, lock: lock_type)
+          if insert_before
+            new_field.ordering = ordering
+            permission_custom_fields.insert(ordering, new_field)
+          else
+            permission_custom_fields << new_field
+          end
         else
           # Set the existing one to true and move to the top
-          existing_permissions_custom_field.ordering = ordering
           existing_permissions_custom_field.required = required
           existing_permissions_custom_field.lock = lock_type
-          permission_custom_fields.insert(ordering, permission_custom_fields.delete(existing_permissions_custom_field))
+          if insert_before
+            existing_permissions_custom_field.ordering = ordering
+            permission_custom_fields.insert(ordering, permission_custom_fields.delete(existing_permissions_custom_field))
+          end
         end
         ordering += 1
       end
@@ -61,15 +68,14 @@ module Permissions
     def add_related_group_fields(permission, fields)
       return fields unless permission.groups.any?
 
+      # Extract field ids and whether they should be require from rules and remove any that don't exist
       custom_fields_required_array = extract_custom_field_ids_from_rules(permission.groups)
-
-      # Ensure fields exist and remove any that don't
       custom_fields = CustomField.where(id: custom_fields_required_array.pluck(:id)).pluck(:id)
       custom_fields_required_array.each do |field|
         # TODO: JS - test for this
         custom_fields_required_array.delete(field) unless custom_fields.include?(field[:id])
       end
-      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group')
+      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group', insert_before: false)
     end
 
     def extract_custom_field_ids_from_rules(groups)

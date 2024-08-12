@@ -41,7 +41,7 @@ describe Permissions::PermissionsCustomFieldsService do
       end
 
       context 'fields related to groups' do
-        it 'automatically adds any fields requiring a value in a smart group as required' do
+        it 'automatically adds any fields requiring a value in a smart group as required after existing fields' do
           permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
           custom_field = create(:custom_field_domicile, enabled: false)
           group = create(:smart_group, rules: [
@@ -52,9 +52,9 @@ describe Permissions::PermissionsCustomFieldsService do
           permission.groups << group
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 3
-          expect(fields.first.custom_field_id).to eq custom_field.id
-          expect(fields.first.lock).to eq 'group'
-          expect(fields.first.required).to be true
+          expect(fields.last.custom_field_id).to eq custom_field.id
+          expect(fields.last.lock).to eq 'group'
+          expect(fields.last.required).to be true
         end
 
         it 'ignores smart groups with no custom field' do
@@ -70,7 +70,7 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.count).to eq 2
         end
 
-        it 'adds any fields used by a smart group where value should be empty as optional' do
+        it 'adds any fields used by a smart group where value should be empty as optional after existing fields' do
           permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
           custom_field = create(:custom_field_domicile, enabled: false)
           group = create(:smart_group, rules: [
@@ -81,9 +81,9 @@ describe Permissions::PermissionsCustomFieldsService do
           permission.groups << group
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 3
-          expect(fields.first.custom_field_id).to eq custom_field.id
-          expect(fields.first.lock).to eq 'group'
-          expect(fields.first.required).to be false
+          expect(fields.last.custom_field_id).to eq custom_field.id
+          expect(fields.last.lock).to eq 'group'
+          expect(fields.last.required).to be false
         end
 
         describe '#extract_custom_field_ids_from_rules' do
@@ -134,7 +134,7 @@ describe Permissions::PermissionsCustomFieldsService do
       end
 
       context 'fields related to groups' do
-        it 'automatically adds any fields used in a group' do
+        it 'automatically adds any fields used in a group to the end' do
           permission = create(:permission, permitted_by: 'users')
           permission.update!(global_custom_fields: false)
           create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
@@ -147,28 +147,31 @@ describe Permissions::PermissionsCustomFieldsService do
           permission.groups << group
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
-          expect(fields.first.custom_field_id).to eq group_custom_field.id
-          expect(fields.first.persisted?).to be false
-          expect(fields.first.required).to be false
-          expect(fields.first.lock).to eq 'group'
-          expect(fields.last.persisted?).to be true
-          expect(fields.last.lock).to be_nil
+          expect(fields.first.persisted?).to be true
+          expect(fields.first.lock).to be_nil
+          expect(fields.last.custom_field_id).to eq group_custom_field.id
+          expect(fields.last.persisted?).to be false
+          expect(fields.last.required).to be false
+          expect(fields.last.lock).to eq 'group'
         end
 
-        it 'reorders moves existing fields to the top of the list if used in a group' do
+        it 'updates existing fields if used in a group' do
           permission = create(:permission, permitted_by: 'users')
           service.persist_default_fields(permission)
           fields = service.fields_for_permission(permission)
           birth_year_field = fields.last
+          birth_year_field.update!(required: false)
           expect(birth_year_field.custom_field.code).to eq 'birthyear'
+          expect(birth_year_field.required).to be false
 
           group = create(:smart_group, rules: [
-            { ruleType: 'custom_field_select', customFieldId: birth_year_field.custom_field_id, predicate: 'is_empty' }
+            { ruleType: 'custom_field_select', customFieldId: birth_year_field.custom_field_id, predicate: 'is_one_of', value: ['b167e8b7-efd6-4948-a182-69749fbbd6f3'] }
           ])
           permission.groups << group
           fields = service.fields_for_permission(permission)
-          expect(fields.first.id).to eq birth_year_field.id
-          expect(fields.first.custom_field.code).to eq 'birthyear'
+          expect(fields.last.id).to eq birth_year_field.id
+          expect(fields.last.custom_field.code).to eq 'birthyear'
+          expect(fields.last.required).to be true
         end
       end
     end
