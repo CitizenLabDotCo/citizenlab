@@ -4,30 +4,37 @@
 #
 # Table name: custom_fields
 #
-#  id                     :uuid             not null, primary key
-#  resource_type          :string
-#  key                    :string
-#  input_type             :string
-#  title_multiloc         :jsonb
-#  description_multiloc   :jsonb
-#  required               :boolean          default(FALSE)
-#  ordering               :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  enabled                :boolean          default(TRUE), not null
-#  code                   :string
-#  resource_id            :uuid
-#  hidden                 :boolean          default(FALSE), not null
-#  maximum                :integer
-#  minimum_label_multiloc :jsonb            not null
-#  maximum_label_multiloc :jsonb            not null
-#  logic                  :jsonb            not null
-#  answer_visible_to      :string
-#  select_count_enabled   :boolean          default(FALSE), not null
-#  maximum_select_count   :integer
-#  minimum_select_count   :integer
-#  random_option_ordering :boolean          default(FALSE), not null
-#  page_layout            :string
+#  id                             :uuid             not null, primary key
+#  resource_type                  :string
+#  key                            :string
+#  input_type                     :string
+#  title_multiloc                 :jsonb
+#  description_multiloc           :jsonb
+#  required                       :boolean          default(FALSE)
+#  ordering                       :integer
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  enabled                        :boolean          default(TRUE), not null
+#  code                           :string
+#  resource_id                    :uuid
+#  hidden                         :boolean          default(FALSE), not null
+#  maximum                        :integer
+#  minimum_label_multiloc         :jsonb            not null
+#  maximum_label_multiloc         :jsonb            not null
+#  logic                          :jsonb            not null
+#  answer_visible_to              :string
+#  select_count_enabled           :boolean          default(FALSE), not null
+#  maximum_select_count           :integer
+#  minimum_select_count           :integer
+#  random_option_ordering         :boolean          default(FALSE), not null
+#  page_layout                    :string
+#  linear_scale_label_multiloc_n1 :jsonb            not null
+#  linear_scale_label_multiloc_n2 :jsonb            not null
+#  linear_scale_label_multiloc_n3 :jsonb            not null
+#  linear_scale_label_multiloc_n4 :jsonb            not null
+#  linear_scale_label_multiloc_n5 :jsonb            not null
+#  linear_scale_label_multiloc_n6 :jsonb            not null
+#  linear_scale_label_multiloc_n7 :jsonb            not null
 #
 # Indexes
 #
