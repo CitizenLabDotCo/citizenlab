@@ -78,6 +78,8 @@ class InputStatusService
   end
 
   private_class_method def self.expired_scope(inputs, now = Time.zone.now)
+    # This code assumes that the consultation context corresponds to
+    # the creation phase, which is not yet the case for ideation.
     inputs
       .includes(:creation_phase)
       .where.not(creation_phase: { expire_days_limit: nil })
