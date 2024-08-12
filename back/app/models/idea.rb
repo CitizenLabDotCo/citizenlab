@@ -188,7 +188,7 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    consultation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end
 
   def input_term
