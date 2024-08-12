@@ -6,6 +6,7 @@ import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types
 import { PermittedBy } from 'api/phase_permissions/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
@@ -14,7 +15,7 @@ import { Block, SSOBlock } from './Block';
 import Edge from './Edge';
 import messages from './messages';
 import SSOConfigModal from './SSOConfigModal';
-import { getReturnedFieldsPreview } from './utils';
+import { getReturnedFieldsPreview, enabledSteps } from './utils';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -28,6 +29,9 @@ const Blocks = ({
   verificationEnabled,
 }: Props) => {
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+  const emailConfirmationEnabled = useFeatureFlag({
+    name: 'user_confirmation',
+  });
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,13 +55,17 @@ const Blocks = ({
     return (
       <>
         <Block number={1} text={formatMessage(messages.enterYourEmail)} />
-        <Edge />
-        <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
+        {emailConfirmationEnabled && (
+          <>
+            <Edge />
+            <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
+          </>
+        )}
         {verificationEnabled && (
           <>
             <Edge />
             <Block
-              number={3}
+              number={2 + enabledSteps(emailConfirmationEnabled)}
               text={formatMessage(messages.identityVerification)}
             />
           </>
@@ -66,7 +74,9 @@ const Blocks = ({
           <>
             <Edge />
             <Block
-              number={verificationEnabled ? 4 : 3}
+              number={
+                2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
+              }
               text={formatMessage(messages.completeTheExtraQuestionsBelow)}
             />
           </>
@@ -82,13 +92,17 @@ const Blocks = ({
           number={1}
           text={formatMessage(messages.enterNameLastNameEmailAndPassword)}
         />
-        <Edge />
-        <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
+        {emailConfirmationEnabled && (
+          <>
+            <Edge />
+            <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
+          </>
+        )}
         {verificationEnabled && (
           <>
             <Edge />
             <Block
-              number={3}
+              number={2 + enabledSteps(emailConfirmationEnabled)}
               text={formatMessage(messages.identityVerification)}
             />
           </>
@@ -97,7 +111,9 @@ const Blocks = ({
           <>
             <Edge />
             <Block
-              number={verificationEnabled ? 4 : 3}
+              number={
+                2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
+              }
               text={formatMessage(messages.completeTheExtraQuestionsBelow)}
             />
           </>

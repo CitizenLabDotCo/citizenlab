@@ -69,3 +69,7 @@ export const getVerifiedDataList = (
 
   return allAttributes;
 };
+
+export const enabledSteps = (...stepsEnabled: boolean[]) => {
+  return stepsEnabled.filter((stepEnabled) => stepEnabled).length;
+};

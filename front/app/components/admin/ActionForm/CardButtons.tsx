@@ -24,7 +24,9 @@ interface Props {
 
 const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
-  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
+  const emailConfirmationEnabled = useFeatureFlag({
+    name: 'user_confirmation',
+  });
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
 
   const handleUpdate = (permittedBy: PermittedBy) => (e) => {
@@ -77,7 +79,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
           subtitle={formatMessage(messages.emailConfirmationSubtitle)}
           onClick={handleUpdate('everyone_confirmed_email')}
           selected={permittedBy === 'everyone_confirmed_email'}
-          disabled={!userConfirmationEnabled}
+          disabled={!emailConfirmationEnabled}
           height="100%"
         />
       </Box>
