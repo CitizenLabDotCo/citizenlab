@@ -24,8 +24,22 @@ class InputStatusService
     end
   end
 
-  def self.auto_transition_hourly!(input)
-    # TODO: Implement this method
+  def self.auto_transition_hourly!
+    AUTOMATED_TRANSITIONS&.each do |code_from, codes_to|
+      inputs = Idea.includes(:idea_status).where(idea_status: { code: code_from })
+      codes_to.each do |code_to|
+        inputs_to_transition = case code_to
+        when 'expired'
+          expired_scope(inputs)
+        else
+          inputs.none
+        end
+
+        inputs_to_transition.each do |input|
+          apply_transition!(input, code_to)
+        end
+      end
+    end
   end
 
   def can_transition_manually?
@@ -61,5 +75,12 @@ class InputStatusService
   private_class_method def self.threshold_reached_condition?(input)
     threshold = input.consultation_context.try(:reacting_threshold)
     threshold && input.likes_count >= threshold
+  end
+
+  private_class_method def self.expired_scope(inputs, now = Time.zone.now)
+    inputs
+      .includes(:creation_phase)
+      .where.not(creation_phase: { expire_days_limit: nil })
+      .where("published_at + creation_phase.expire_days_limit * interval '1 day' < ?", now)
   end
 end
