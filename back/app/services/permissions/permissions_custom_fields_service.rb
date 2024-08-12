@@ -74,7 +74,7 @@ module Permissions
 
     def extract_custom_field_ids_from_rules(groups)
       custom_field_ids = groups.map { |g| g[:rules].pluck('customFieldId') }.flatten.uniq.compact
-      custom_fields_required = custom_field_ids.map { |id| {id: id, required: true} }
+      custom_fields_required = custom_field_ids.map { |id| { id: id, required: true } }
       # Set required to false if the rule is is_empty at any point
       custom_fields_required.each do |field|
         groups.each do |g|

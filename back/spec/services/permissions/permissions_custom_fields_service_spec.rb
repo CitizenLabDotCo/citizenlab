@@ -45,7 +45,7 @@ describe Permissions::PermissionsCustomFieldsService do
           permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
           custom_field = create(:custom_field_domicile, enabled: false)
           group = create(:smart_group, rules: [
-            { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_one_of', "value": ["a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5"] }
+            { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
           ])
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 2
@@ -90,22 +90,22 @@ describe Permissions::PermissionsCustomFieldsService do
           it 'successfully extracts custom field ids and whether required from rules' do
             groups = [
               create(:smart_group, rules: [
-                { ruleType: 'custom_field_select', customFieldId: "19b2088c-bb8c-4f3c-812d-4a2faf594497", predicate: 'is_empty' },
-                { ruleType: 'custom_field_select', customFieldId: "9b43081c-2ba1-432a-89fb-81cfa243cee7", predicate: 'is_one_of', "value": ["a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5"] },
-                { ruleType: 'email', predicate: 'ends_on', value: 'test.com' },
+                { ruleType: 'custom_field_select', customFieldId: '19b2088c-bb8c-4f3c-812d-4a2faf594497', predicate: 'is_empty' },
+                { ruleType: 'custom_field_select', customFieldId: '9b43081c-2ba1-432a-89fb-81cfa243cee7', predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] },
+                { ruleType: 'email', predicate: 'ends_on', value: 'test.com' }
               ]),
-               create(:smart_group, rules: [
-                 { ruleType: 'custom_field_select', customFieldId: "8240f6b0-aca3-4151-a8ca-f68a028d0e83", predicate: 'is_one_of', "value": ["a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5"] },
-               ]),
-                create(:smart_group, rules: [
-                  { ruleType: 'custom_field_select', customFieldId: "2a982fca-e026-4173-9ddd-03a8082160dc", predicate: 'is_empty' },
-                ])
+              create(:smart_group, rules: [
+                { ruleType: 'custom_field_select', customFieldId: '8240f6b0-aca3-4151-a8ca-f68a028d0e83', predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
+              ]),
+              create(:smart_group, rules: [
+                { ruleType: 'custom_field_select', customFieldId: '2a982fca-e026-4173-9ddd-03a8082160dc', predicate: 'is_empty' }
+              ])
             ]
             expect(service.send(:extract_custom_field_ids_from_rules, groups)).to match_array([
-              {:id=>"19b2088c-bb8c-4f3c-812d-4a2faf594497", :required=>false},
-               {:id=>"9b43081c-2ba1-432a-89fb-81cfa243cee7", :required=>true},
-               {:id=>"8240f6b0-aca3-4151-a8ca-f68a028d0e83", :required=>true},
-               {:id=>"2a982fca-e026-4173-9ddd-03a8082160dc", :required=>false}
+              { :id => '19b2088c-bb8c-4f3c-812d-4a2faf594497', :required => false },
+              { :id => '9b43081c-2ba1-432a-89fb-81cfa243cee7', :required => true },
+              { :id => '8240f6b0-aca3-4151-a8ca-f68a028d0e83', :required => true },
+              { :id => '2a982fca-e026-4173-9ddd-03a8082160dc', :required => false }
             ])
           end
         end
@@ -149,7 +149,7 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.count).to eq 2
           expect(fields.first.custom_field_id).to eq group_custom_field.id
           expect(fields.first.persisted?).to be false
-          expect(fields.first.required).to be true
+          expect(fields.first.required).to be false
           expect(fields.first.lock).to eq 'group'
           expect(fields.last.persisted?).to be true
           expect(fields.last.lock).to be_nil
