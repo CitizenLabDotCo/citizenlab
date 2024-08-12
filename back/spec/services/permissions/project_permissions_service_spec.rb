@@ -581,13 +581,13 @@ describe Permissions::ProjectPermissionsService do
     context 'when the timeline is over' do
       let(:project) { create(:project_with_past_phases) }
 
-      it "returns 'project_inactive'" do
-        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      it 'returns nil - attending is allowed even though the phase is over' do
+        expect(service.denied_reason_for_action('attending_event')).to be_nil
       end
     end
 
     context 'when the project is archived' do
-      let(:project) { create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
 
       it "returns 'project_inactive'" do
         expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
@@ -843,7 +843,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
@@ -875,7 +875,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors

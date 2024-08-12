@@ -2,9 +2,18 @@
 
 module ParticipationMethod
   class Voting < Ideation
+    def self.method_str
+      'voting'
+    end
+
     def assign_defaults_for_phase
       phase.ideas_order ||= 'random'
       Factory.instance.voting_method_for(phase).assign_defaults_for_phase
+    end
+
+    # Remove after unified status implementation
+    def idea_status_method
+      'ideation'
     end
 
     def allowed_ideas_orders

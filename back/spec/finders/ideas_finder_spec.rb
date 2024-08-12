@@ -11,9 +11,7 @@ describe IdeasFinder do
   let(:timeline_project) { create(:project_with_phases) }
   let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
-  before_all do
-    IdeaStatus.create_defaults
-  end
+  before_all { create(:idea_status_proposed) }
 
   context 'default scope' do
     it 'filters out non-ideation inputs' do

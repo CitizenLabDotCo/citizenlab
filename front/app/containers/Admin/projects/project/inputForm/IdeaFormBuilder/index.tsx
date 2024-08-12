@@ -36,6 +36,7 @@ const IdeaFormBuilder = () => {
 
   const participation_method =
     phase?.data.attributes.participation_method || 'ideation';
+  const config = configs[participation_method] || ideationConfig;
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
@@ -59,7 +60,7 @@ const IdeaFormBuilder = () => {
     <>
       <FormBuilder
         builderConfig={{
-          ...configs[participation_method],
+          ...config,
           formCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,

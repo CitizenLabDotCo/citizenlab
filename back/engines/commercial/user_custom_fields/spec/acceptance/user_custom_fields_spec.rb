@@ -239,10 +239,8 @@ resource 'User Custom Fields' do
       end
 
       context 'Disabling a custom field' do
-        let(:field) { create(:custom_field, enabled: true) }
+        let!(:field) { create(:custom_field, enabled: true) }
         let(:enabled) { false }
-
-        before { field } # Ensure field created before example runs
 
         example 'Update & disable a custom field' do
           do_request
