@@ -12,6 +12,7 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       super
+      phase.reacting_dislike_enabled = false 
       phase.expire_days_limit ||= 90
       phase.reacting_threshold ||= 300
     end
