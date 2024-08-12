@@ -35,7 +35,7 @@ module Permissions
       end
     end
 
-    # Add non-persisted locked fields to the permission
+    # Add non-persisted locked fields to the permission if they don't exist & ensure they appear at the start of the list
     def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type)
       ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
       custom_field_required_array&.each do |field|

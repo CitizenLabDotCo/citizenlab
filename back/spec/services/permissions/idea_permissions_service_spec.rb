@@ -395,7 +395,7 @@ describe Permissions::IdeaPermissionsService do
 
       # First check ideas length sure all the 'ideas' queries are preloaded
       expect(ideas.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         ideas.each do |idea|
           described_class.new(idea, user, user_requirements_service: user_requirements_service).action_descriptors
