@@ -124,11 +124,13 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
             />
           </>
         )}
-        <SSOConfigModal
-          opened={modalOpen}
-          onClose={() => setModalOpen(false)}
-          verificationMethodName={verificationMethodName ?? ''}
-        />
+        {verificationMethodMetadata && (
+          <SSOConfigModal
+            opened={modalOpen}
+            onClose={() => setModalOpen(false)}
+            verificationMethodMetadata={verificationMethodMetadata}
+          />
+        )}
       </>
     );
   }

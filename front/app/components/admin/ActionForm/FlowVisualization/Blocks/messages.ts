@@ -33,4 +33,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification',
     defaultMessage: '{verificationMethod} verification',
   },
+  verifiedData: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedData',
+    defaultMessage: 'Verified data:',
+  },
+  useSmartGroups: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups',
+    defaultMessage:
+      'Use smart groups to restrict participation based on the verified data listed above',
+  },
 });
