@@ -9,6 +9,8 @@ export const phasePermissionsData: IPhasePermissionData = {
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
     global_custom_fields: false,
+    verification_enabled: false,
+    verification_expiry: null,
   },
   relationships: {
     permission_scope: {
