@@ -19,9 +19,14 @@ import { getReturnedFieldsPreview } from './utils';
 interface Props {
   permittedBy: PermittedBy;
   permissionsCustomFields: IPermissionsCustomFieldData[];
+  verificationEnabled: boolean;
 }
 
-const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
+const Blocks = ({
+  permittedBy,
+  permissionsCustomFields,
+  verificationEnabled,
+}: Props) => {
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -31,7 +36,6 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
 
   const verificationMethodMetadata =
     verificationMethod?.data.attributes.action_metadata;
-  const verificationMethodName = verificationMethodMetadata?.name;
 
   if (permittedBy === 'admins_moderators') return null;
 
@@ -49,11 +53,20 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
         <Block number={1} text={formatMessage(messages.enterYourEmail)} />
         <Edge />
         <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-        {showCustomFields && (
+        {verificationEnabled && (
           <>
             <Edge />
             <Block
               number={3}
+              text={formatMessage(messages.identityVerification)}
+            />
+          </>
+        )}
+        {showCustomFields && (
+          <>
+            <Edge />
+            <Block
+              number={verificationEnabled ? 4 : 3}
               text={formatMessage(messages.completeTheExtraQuestionsBelow)}
             />
           </>
@@ -71,11 +84,20 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
         />
         <Edge />
         <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
-        {showCustomFields && (
+        {verificationEnabled && (
           <>
             <Edge />
             <Block
               number={3}
+              text={formatMessage(messages.identityVerification)}
+            />
+          </>
+        )}
+        {showCustomFields && (
+          <>
+            <Edge />
+            <Block
+              number={verificationEnabled ? 4 : 3}
               text={formatMessage(messages.completeTheExtraQuestionsBelow)}
             />
           </>
@@ -84,11 +106,11 @@ const Blocks = ({ permittedBy, permissionsCustomFields }: Props) => {
     );
   }
 
-  if (permittedBy === 'verified') {
+  if (permittedBy === 'verified' && verificationMethodMetadata) {
     const authenticateMessage = formatMessage(
       messages.authenticateWithVerificationProvider,
       {
-        verificationMethod: verificationMethodName ?? '',
+        verificationMethod: verificationMethodMetadata.name,
       }
     );
 

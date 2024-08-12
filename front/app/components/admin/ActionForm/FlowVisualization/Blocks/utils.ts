@@ -3,7 +3,7 @@ import { ActionMetadata } from 'api/verification_methods/types';
 import { Localize } from 'hooks/useLocalize';
 
 export const getReturnedFieldsPreview = (
-  verificationActionMetadata: ActionMetadata | undefined,
+  verificationActionMetadata: ActionMetadata,
   localize: Localize
 ) => {
   if (!verificationActionMetadata) return null;

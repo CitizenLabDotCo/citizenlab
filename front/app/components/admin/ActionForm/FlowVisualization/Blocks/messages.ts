@@ -42,4 +42,8 @@ export default defineMessages({
     defaultMessage:
       'Use smart groups to restrict participation based on the verified data listed above',
   },
+  identityVerification: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification',
+    defaultMessage: 'Identity verification (based on user group)',
+  },
 });

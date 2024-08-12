@@ -12,10 +12,16 @@ import Edge from './Blocks/Edge';
 interface Props {
   permittedBy: PermittedBy;
   phaseId?: string;
+  verificationEnabled: boolean;
   action: Action;
 }
 
-const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
+const FlowVisualization = ({
+  permittedBy,
+  phaseId,
+  verificationEnabled,
+  action,
+}: Props) => {
   const { data: permissionsCustomFields } = usePermissionsCustomFields({
     phaseId,
     action,
@@ -28,6 +34,7 @@ const FlowVisualization = ({ permittedBy, phaseId, action }: Props) => {
       <Blocks
         permittedBy={permittedBy}
         permissionsCustomFields={permissionsCustomFields.data}
+        verificationEnabled={verificationEnabled}
       />
       <Edge />
       <Box display="flex" alignItems="center">
