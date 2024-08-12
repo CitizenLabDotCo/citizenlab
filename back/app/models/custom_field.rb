@@ -160,6 +160,10 @@ class CustomField < ApplicationRecord
     page? || section?
   end
 
+  def dropdown_layout_type?
+    %w[multiselect select].include?(input_type)
+  end
+
   def accepts_input?
     !page_or_section?
   end

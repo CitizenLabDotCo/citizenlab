@@ -56,7 +56,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       defaults[:answer_visible_to] = field.answer_visible_to
     end
     defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
-    defaults[:dropdown_layout] = field.dropdown_layout if %w[multiselect select].include?(field.input_type)
+    defaults[:dropdown_layout] = field.dropdown_layout if object.dropdown_layout_type?
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
