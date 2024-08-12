@@ -2,12 +2,12 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   viewIndividualSubmissions: {
-    id: 'app.containers.Admin.projects.project.survey.viewIndividualSubmissions',
+    id: 'app.containers.Admin.projects.project.survey.viewIndividualSubmissions2',
     defaultMessage:
-      'You can view individual survey submissions by visiting the AI Analysis View and selecting "View All Questions" in the third column.',
+      'To browse individual survey submissions you can visit the AI analysis view and select "View all questions" in the third column.',
   },
   aiAnalysis: {
-    id: 'app.containers.Admin.projects.project.survey.aiAnalysis',
-    defaultMessage: 'Go to AI Analysis View',
+    id: 'app.containers.Admin.projects.project.survey.aiAnalysis2',
+    defaultMessage: 'Open AI analysis',
   },
 });
