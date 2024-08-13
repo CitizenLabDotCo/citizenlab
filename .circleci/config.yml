@@ -711,7 +711,7 @@ jobs:
           cd front
           mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-3 | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
@@ -731,6 +731,17 @@ jobs:
 
 workflows:
   version: 2
+
+  manually-e2e-tests:
+    jobs:
+      - e2e-tests:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
 
   # ci:
   #   when: << pipeline.parameters.trigger >>
