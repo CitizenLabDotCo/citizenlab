@@ -11,6 +11,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { getNumberOfVerificationLockedItems } from '../../utils';
+
 import { Block, SSOBlock } from './Block';
 import Edge from './Edge';
 import messages from './messages';
@@ -36,7 +38,12 @@ const Blocks = ({
   const localize = useLocalize();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const showCustomFields = permissionsCustomFields.length > 0;
+  const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
+    permissionsCustomFields
+  );
+
+  const showCustomFields =
+    permissionsCustomFields.length > numberOfVerificatiomLockedItems;
 
   const verificationMethodMetadata =
     verificationMethod?.data.attributes.action_metadata;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
@@ -9,8 +9,12 @@ import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useR
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { getNumberOfVerificationLockedItems } from '../utils';
+
 import CustomField from './CustomField';
-import { getNumberOfVerificationLockedItems } from './utils';
+import messages from './messages';
 
 interface Props {
   phaseId?: string;
@@ -26,7 +30,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
   const { mutate: reorderPermissionsCustomField } =
     useReorderPermissionsCustomField({ phaseId, action });
 
-  if (!permissionFields || permissionFields.data.length === 0) {
+  if (!permissionFields) {
     return null;
   }
 
@@ -36,6 +40,14 @@ const FieldsList = ({ phaseId, action }: Props) => {
   const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
     permissionFields.data
   );
+
+  if (permissionFields.data.length === numberOfVerificatiomLockedItems) {
+    return (
+      <Text mb="24px">
+        <FormattedMessage {...messages.noExtraQuestions} />
+      </Text>
+    );
+  }
 
   return (
     <>

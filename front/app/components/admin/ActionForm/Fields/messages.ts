@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredBecauseOfGroup',
     defaultMessage: 'Required because part of group',
   },
+  noExtraQuestions: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions',
+    defaultMessage: 'No extra questions will be asked.',
+  },
 });
