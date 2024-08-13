@@ -681,11 +681,11 @@ jobs:
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
+      - shallow-clone
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
       - run: test -f e2e-tenant.dump && circleci-agent step halt
-      - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           docker_layer_caching: true
@@ -765,14 +765,14 @@ workflows:
 
   manually-e2e-tests:
     jobs:
-      - back-build-docker-image:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          filters:
-            branches:
-              only:
-                - TAN-2500-ci-e2e-speedup
+      # - back-build-docker-image:
+      #     context:
+      #       - docker-hub-access
+      #       - citizenlab-ee-environment
+      #     filters:
+      #       branches:
+      #         only:
+      #           - TAN-2500-ci-e2e-speedup
       - e2e-setup-db:
           context:
             - docker-hub-access
@@ -781,8 +781,8 @@ workflows:
             branches:
               only:
                 - TAN-2500-ci-e2e-speedup
-          requires:
-            - back-build-docker-image
+          # requires:
+          #   - back-build-docker-image
       - e2e-tests:
           context:
             - docker-hub-access
