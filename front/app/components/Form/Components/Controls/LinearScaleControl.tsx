@@ -42,7 +42,7 @@ const LinearScaleControl = ({
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const getValueText = useCallback(
+  const getAriaValueText = useCallback(
     (value: number, total: number) => {
       if (value === minimum && uischema?.options?.minimum_label) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
@@ -76,10 +76,10 @@ const LinearScaleControl = ({
       sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getValueText(data || minimum, maximum)
+        getAriaValueText(data || minimum, maximum)
       );
     }
-  }, [data, getValueText, minimum, maximum]);
+  }, [data, getAriaValueText, minimum, maximum]);
 
   if (!visible) {
     return null;
@@ -120,7 +120,7 @@ const LinearScaleControl = ({
       sliderRef.current.setAttribute('aria-valuenow', String(newValue));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getValueText(newValue, maximum)
+        getAriaValueText(newValue, maximum)
       );
     }
     event.preventDefault();
