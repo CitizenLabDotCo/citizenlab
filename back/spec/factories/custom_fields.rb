@@ -142,6 +142,33 @@ FactoryBot.define do
           'en' => 'Strongly agree'
         }
       end
+      linear_scale_label_1_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      linear_scale_label_2_multiloc do
+        {
+          'en' => 'Disagree'
+        }
+      end
+      linear_scale_label_3_multiloc do
+        {
+          'en' => 'Neutral'
+        }
+      end
+      linear_scale_label_4_multiloc do
+        {
+          'en' => 'Agree'
+        }
+      end
+      linear_scale_label_5_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
+      linear_scale_label_6_multiloc { {} }
+      linear_scale_label_7_multiloc { {} }
     end
 
     factory :custom_field_page do
