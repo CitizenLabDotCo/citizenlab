@@ -8,10 +8,6 @@ export const getNumberOfVerificationLockedItems = (
     .length;
 };
 
-export const showGroupSelect = (permittedBy: PermittedBy) => {
-  return permittedBy !== 'everyone' && permittedBy !== 'admins_moderators';
-};
-
 export const showResetButton = (
   permittedBy: PermittedBy,
   fields: IPermissionsCustomFieldData[],
