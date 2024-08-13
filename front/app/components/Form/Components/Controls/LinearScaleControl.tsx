@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
-// JSON forms
 import {
   Box,
   Text,
@@ -14,7 +13,7 @@ import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
@@ -36,18 +35,95 @@ const LinearScaleControl = ({
 }: ControlProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
-  const maximum = schema?.maximum;
+  const { formatMessage } = useIntl();
+
+  const minimum = 1;
+  const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const getAriaValueText = useCallback(
+    (value: number, total: number) => {
+      if (value === minimum && uischema?.options?.minimum_label) {
+        return formatMessage(messages.valueOutOfTotalWithLabel, {
+          value,
+          total,
+          label: uischema.options.minimum_label,
+        });
+      }
+      if (value === maximum && uischema?.options?.maximum_label) {
+        return formatMessage(messages.valueOutOfTotalWithLabel, {
+          value,
+          total,
+          label: uischema.options.maximum_label,
+        });
+      }
+      if (uischema?.options?.maximum_label) {
+        return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
+          value,
+          total,
+          maxValue: maximum,
+          maxLabel: uischema.options.maximum_label,
+        });
+      }
+      return formatMessage(messages.valueOutOfTotal, { value, total });
+    },
+    [minimum, maximum, uischema?.options, formatMessage]
+  );
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
+      sliderRef.current.setAttribute(
+        'aria-valuetext',
+        getAriaValueText(data || minimum, maximum)
+      );
+    }
+  }, [data, getAriaValueText, minimum, maximum]);
 
   if (!visible) {
     return null;
   }
 
   const getButtonWidth = () => {
-    if (maximum && maximum > 5) {
+    if (maximum > 5) {
       return maximum > 6 ? '64px' : '80px';
     }
     return 'auto';
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const value = data || minimum;
+    let newValue = value;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        newValue = Math.max(minimum, value - 1);
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        newValue = Math.min(maximum, value + 1);
+        break;
+      case 'Home':
+        newValue = minimum;
+        break;
+      case 'End':
+        newValue = maximum;
+        break;
+      default:
+        return;
+    }
+
+    handleChange(path, newValue);
+    if (sliderRef.current) {
+      sliderRef.current.setAttribute('aria-valuenow', String(newValue));
+      sliderRef.current.setAttribute(
+        'aria-valuetext',
+        getAriaValueText(newValue, maximum)
+      );
+    }
+    event.preventDefault();
   };
 
   return (
@@ -64,7 +140,16 @@ const LinearScaleControl = ({
           <FormattedMessage {...messages.notPublic} />
         </Text>
       )}
-      <Box data-testid="linearScaleControl">
+      <Box
+        data-testid="linearScaleControl"
+        role="slider"
+        ref={sliderRef}
+        aria-valuemin={minimum}
+        aria-valuemax={maximum}
+        aria-labelledby={sanitizeForClassname(id)}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+      >
         <Box
           gap={isSmallerThanPhone ? '8px' : '12px'}
           display="flex"
@@ -72,18 +157,19 @@ const LinearScaleControl = ({
           justifyContent="center"
         >
           {[...Array(maximum).keys()].map((i) => {
-            const rowId = `${path}-radio-${i}`;
             const visualIndex = i + 1;
             return (
               <Box
                 flexGrow={isSmallerThanPhone && maximum && maximum > 5 ? 0 : 1}
-                key={rowId}
+                key={`${path}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
                 padding="16px, 20px, 16px, 20px"
               >
                 <Button
                   py="12px"
                   id={`linear-scale-option-${visualIndex}`}
+                  tabIndex={-1}
+                  aria-pressed={data === visualIndex}
                   borderColor={theme.colors.tenantPrimary}
                   borderHoverColor={theme.colors.tenantPrimary}
                   bgColor={
