@@ -2,8 +2,7 @@ import React from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
-import { Action } from 'api/permissions/types';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import Blocks from './Blocks';
@@ -11,29 +10,20 @@ import Edge from './Blocks/Edge';
 
 interface Props {
   permittedBy: PermittedBy;
-  phaseId?: string;
   verificationEnabled: boolean;
-  action: Action;
+  permissionsCustomFields: IPermissionsCustomFieldData[];
 }
 
 const FlowVisualization = ({
   permittedBy,
-  phaseId,
   verificationEnabled,
-  action,
+  permissionsCustomFields,
 }: Props) => {
-  const { data: permissionsCustomFields } = usePermissionsCustomFields({
-    phaseId,
-    action,
-  });
-
-  if (!permissionsCustomFields) return null;
-
   return (
     <Box display="flex" flexDirection="row">
       <Blocks
         permittedBy={permittedBy}
-        permissionsCustomFields={permissionsCustomFields.data}
+        permissionsCustomFields={permissionsCustomFields}
         verificationEnabled={verificationEnabled}
       />
       <Edge />

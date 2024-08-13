@@ -33,9 +33,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField',
     defaultMessage: 'Remove field',
   },
-  requiredBecauseOfGroup: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredBecauseOfGroup',
-    defaultMessage: 'Required because part of group',
+  requiredGroup: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredGroup',
+    defaultMessage: 'Required - Enabled because referenced by group',
+  },
+  optionalGroup: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.optionalGroup',
+    defaultMessage: 'Optional - Enabled because referenced by group',
   },
   noExtraQuestions: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions',

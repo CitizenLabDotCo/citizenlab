@@ -15,9 +15,10 @@ import messages from './messages';
 interface Props {
   phaseId?: string;
   action: Action;
+  showAddQuestion: boolean;
 }
 
-const Fields = ({ phaseId, action }: Props) => {
+const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsCustomFields({
     phaseId,
@@ -39,34 +40,36 @@ const Fields = ({ phaseId, action }: Props) => {
       <Box mt="20px">
         <FieldsList phaseId={phaseId} action={action} />
       </Box>
-      <Box mt="20px" w="100%" display="flex">
-        <Button
-          buttonStyle="admin-dark"
-          icon="plus-circle"
-          onClick={(e) => {
-            e.preventDefault();
-            setShowSelectionModal(true);
-          }}
-        >
-          <FormattedMessage {...messages.addAQuestion} />
-        </Button>
-        {selectedCustomFields && (
-          <FieldSelectionModal
-            showSelectionModal={showSelectionModal}
-            setShowSelectionModal={setShowSelectionModal}
-            selectedFields={selectedCustomFields}
-            handleAddField={(customField) => {
-              addPermissionsCustomField({
-                custom_field_id: customField.id,
-                required: false,
-                phaseId,
-                action,
-              });
+      {showAddQuestion && (
+        <Box mt="20px" w="100%" display="flex">
+          <Button
+            buttonStyle="admin-dark"
+            icon="plus-circle"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowSelectionModal(true);
             }}
-            isLoading={isLoading}
-          />
-        )}
-      </Box>
+          >
+            <FormattedMessage {...messages.addAQuestion} />
+          </Button>
+          {selectedCustomFields && (
+            <FieldSelectionModal
+              showSelectionModal={showSelectionModal}
+              setShowSelectionModal={setShowSelectionModal}
+              selectedFields={selectedCustomFields}
+              handleAddField={(customField) => {
+                addPermissionsCustomField({
+                  custom_field_id: customField.id,
+                  required: false,
+                  phaseId,
+                  action,
+                });
+              }}
+              isLoading={isLoading}
+            />
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

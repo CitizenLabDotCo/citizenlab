@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.xVerification',
     defaultMessage: '{verificationMethod} verification',
   },
-  verifiedData: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verifiedData',
-    defaultMessage: 'Verified data:',
+  dataReturned: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned',
+    defaultMessage: 'Data returned from verification method:',
   },
   useSmartGroups: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups',
