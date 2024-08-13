@@ -99,7 +99,11 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
             </Box>
           }
           title={formatMessage(messages.accountCreation)}
-          subtitle={formatMessage(messages.accountCreationSubtitle)}
+          subtitle={formatMessage(
+            emailConfirmationEnabled
+              ? messages.accountCreationSubtitle
+              : messages.accountCreationSubtitle_confirmationOff
+          )}
           onClick={handleUpdate('users')}
           selected={permittedBy === 'users'}
           height="100%"
