@@ -684,7 +684,8 @@ jobs:
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
@@ -711,7 +712,7 @@ jobs:
           cd front
           mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-3 | sed 's/ /,/g')
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-2 | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
