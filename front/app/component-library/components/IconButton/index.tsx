@@ -31,10 +31,12 @@ const StyledIcon = styled(Icon)<{
 const StyledBox = styled(Box)<{
   iconColorOnHover: string;
 }>`
+  cursor: pointer;
+
   &:hover,
   &:focus {
     ${StyledIcon} {
-      ${({ iconColorOnHover }) => `fill: ${iconColorOnHover};`}
+      fill: ${({ iconColorOnHover }) => iconColorOnHover};
     }
   }
 `;
