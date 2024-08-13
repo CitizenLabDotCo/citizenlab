@@ -19,9 +19,5 @@ export const showResetButton = (
     return false;
   }
 
-  if (permittedBy === 'everyone_confirmed_email') {
-    return fields.length > 0;
-  }
-
   return fields.some((field) => field.attributes.persisted);
 };
