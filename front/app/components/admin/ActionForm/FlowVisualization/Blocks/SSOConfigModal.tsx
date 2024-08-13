@@ -59,7 +59,7 @@ const SSOConfigModal = ({
       <Box m="20px">
         <Box mb="24px">
           <Text fontWeight="bold">
-            <FormattedMessage {...messages.verifiedData} />
+            <FormattedMessage {...messages.dataReturned} />
           </Text>
           <ul>
             {verifiedDataList.map((attribute, index) => (
