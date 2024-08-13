@@ -765,6 +765,7 @@ workflows:
       - e2e-setup-db:
           context:
             - docker-hub-access
+            - citizenlab-ee-environment
           filters:
             branches:
               only:
