@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'app.components.form.controls.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
+  tapOnFullscreenMapToAddPoint: {
+    id: 'app.components.form.controls.tapOnFullscreenMapToAddPoint',
+    defaultMessage: 'Tap on the map to draw.',
+  },
   tapOnFullscreenMapToAdd: {
     id: 'app.components.form.controls.tapOnFullscreenMapToAdd4',
     defaultMessage:
