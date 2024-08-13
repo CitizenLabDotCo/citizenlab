@@ -4,7 +4,6 @@ import {
   Dropdown,
   colors,
   fontSizes,
-  isRtl,
   Box,
   Button,
   useBreakpoint,
@@ -17,32 +16,10 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import { List, ListItemText } from './StyledComponents';
 import Title from './Title';
 
 import { IFilterSelectorValue } from '.';
-
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`;
-
-const ListItemText = styled.span`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  ${isRtl`
-    text-align: right;
-  `}
-`;
 
 const CheckboxLabel = styled.span`
   flex: 1;
