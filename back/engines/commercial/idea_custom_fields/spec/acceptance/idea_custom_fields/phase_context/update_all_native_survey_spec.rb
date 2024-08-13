@@ -905,6 +905,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -1622,6 +1629,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
             },
@@ -1775,6 +1789,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
             },
@@ -1916,6 +1937,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2026,6 +2054,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2195,6 +2230,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -2278,6 +2320,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+              linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+              linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+              linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+              linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+              linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+              linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2334,6 +2383,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2659,6 +2715,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: { en: 'Strongly disagree' },
             maximum_label_multiloc: { en: 'Strongly agree' },
+            linear_scale_label_1_multiloc: {},
+            linear_scale_label_2_multiloc: {},
+            linear_scale_label_3_multiloc: {},
+            linear_scale_label_4_multiloc: {},
+            linear_scale_label_5_multiloc: {},
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2796,6 +2859,13 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [
                 { if: 1, goto_page_id: page2.id },
