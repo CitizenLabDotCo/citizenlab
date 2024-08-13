@@ -17,7 +17,11 @@ const SSOVerificationPolicies = ({ state, loading, onAccept }: Props) => {
   if (!ssoProvider) return null;
 
   return (
-    <PoliciesForm loading={loading} onSubmit={() => onAccept(ssoProvider)} />
+    <PoliciesForm
+      loading={loading}
+      showByContinuingText={false}
+      onSubmit={() => onAccept(ssoProvider)}
+    />
   );
 };
 
