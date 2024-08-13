@@ -304,6 +304,13 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_1_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_2_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_3_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_4_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_5_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_6_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_7_multiloc: CL2_SUPPORTED_LOCALES,
           options: [
             :id,
             :key,

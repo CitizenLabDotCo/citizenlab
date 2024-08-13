@@ -317,6 +317,69 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ errors: { '1': { input_type: [{ error: 'inclusion', value: 'topic_ids' }] } } })
       end
 
+      example 'Update linear_scale field' do
+        field_to_update = create(:custom_field_linear_scale, resource: custom_form)
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value from the scale' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              enabled: true,
+              maximum: 7,
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Low-ish' },
+              linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
+              linear_scale_label_6_multiloc: { 'en' => 'High' },
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' }
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            enabled: true,
+            input_type: 'linear_scale',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value from the scale' },
+            updated_at: an_instance_of(String),
+            maximum: 7,
+            minimum_label_multiloc: { en: 'Strongly disagree' },
+            maximum_label_multiloc: { en: 'Strongly agree' },
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Low-ish' },
+            linear_scale_label_4_multiloc: { en: 'Neutral' },
+            linear_scale_label_5_multiloc: { en: 'High-ish' },
+            linear_scale_label_6_multiloc: { en: 'High' },
+            linear_scale_label_7_multiloc: { en: 'Highest' },
+            logic: {},
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: { options: { data: [] } }
+        })
+      end
+
       context 'Update custom field options with images' do
         let!(:page) { create(:custom_field_page, resource: custom_form) }
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
@@ -840,6 +903,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -1564,6 +1634,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -1725,6 +1802,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 1, goto_page_id: page2.id }]
               }
@@ -1883,6 +1967,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {}
             },
             {
@@ -2009,6 +2100,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {}
             }
           ]
@@ -2165,6 +2263,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -2320,13 +2425,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
-              linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
-              linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
-              linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
-              linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
-              linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
-              linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
-              linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2655,9 +2760,16 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Description of question 1 on page 1' },
               required: true,
               enabled: true,
-              maximum: 5,
+              maximum: 7,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Low-ish' },
+              linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
+              linear_scale_label_6_multiloc: { 'en' => 'High' },
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' },
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2712,16 +2824,16 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Question 1 on page 1' },
             updated_at: an_instance_of(String),
-            maximum: 5,
+            maximum: 7,
             minimum_label_multiloc: { en: 'Strongly disagree' },
             maximum_label_multiloc: { en: 'Strongly agree' },
-            linear_scale_label_1_multiloc: {},
-            linear_scale_label_2_multiloc: {},
-            linear_scale_label_3_multiloc: {},
-            linear_scale_label_4_multiloc: {},
-            linear_scale_label_5_multiloc: {},
-            linear_scale_label_6_multiloc: {},
-            linear_scale_label_7_multiloc: {},
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Low-ish' },
+            linear_scale_label_4_multiloc: { en: 'Neutral' },
+            linear_scale_label_5_multiloc: { en: 'High-ish' },
+            linear_scale_label_6_multiloc: { en: 'High' },
+            linear_scale_label_7_multiloc: { en: 'Highest' },
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2791,6 +2903,13 @@ resource 'Idea Custom Fields' do
               maximum: 5,
               minimum_label_multiloc: { 'en' => 'Strongly disagree' },
               maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [
                   { if: 1, goto_page_id: page2.id },
