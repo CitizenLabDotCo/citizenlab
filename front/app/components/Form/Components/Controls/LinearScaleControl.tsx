@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { UiSchema } from 'react-jsonschema-form';
 import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -45,20 +46,20 @@ const LinearScaleControl = ({
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
-      if (uischema?.options?.[`linear_scale_label_${value}_multiloc`]) {
+      if (uischema?.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
-          label: uischema.options[`linear_scale_label_${value}_multiloc`],
+          label: uischema.options[`linear_scale_label${value}`],
         });
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      else if (uischema?.options?.[`linear_scale_label_${maximum}_multiloc`]) {
+      else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
           maxValue: maximum,
-          maxLabel: uischema.options[`linear_scale_label_${maximum}_multiloc`],
+          maxLabel: uischema.options[`linear_scale_label${maximum}`],
         });
       }
       // Otherwise, just read out the value and the maximum value
@@ -124,8 +125,8 @@ const LinearScaleControl = ({
 
   // Put all labels from the UI Schema in an array
   const labelsFromSchema = Array.from({ length: maximum }).map((_, index) => {
-    if (uischema?.options?.[`linear_scale_label_${index + 1}_multiloc`]) {
-      return uischema.options[`linear_scale_label_${index + 1}_multiloc`];
+    if (uischema?.options?.[`linear_scale_label${index + 1}`]) {
+      return uischema.options[`linear_scale_label${index + 1}`];
     }
   });
 
@@ -277,8 +278,8 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester = (schema) => {
-  if (schema?.options?.minimum_label?.length >= 0) {
+export const linearScaleControlTester = (schema: UiSchema) => {
+  if (schema?.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }
   return -1;
