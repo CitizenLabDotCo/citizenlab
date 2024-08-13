@@ -45,9 +45,9 @@ const AccessRightsNotice = ({
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
 
-  const permissionCustomFieldIds = permissionCustomFields?.data
-    .map((customField) => customField.relationships.custom_field.data?.id)
-    .filter((id) => id !== null) as string[];
+  const permissionCustomFieldIds = permissionCustomFields?.data.map(
+    (customField) => customField.relationships.custom_field.data.id
+  );
 
   const surveyUserFields: Array<string | null> | undefined =
     userCustomFields?.data
