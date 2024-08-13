@@ -100,6 +100,11 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     permission = Permission.find(permission_params_for_update[:permission_id])
     Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
     field = permission.permissions_custom_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
+
+    # TODO: JS - Persist a group field if it does not exist in the list of persisted fields
+    binding.pry
+
+
     raise ActiveRecord::RecordNotFound unless field
 
     field

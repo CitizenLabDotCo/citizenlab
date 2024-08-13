@@ -187,24 +187,49 @@ resource 'PermissionsCustomField' do
     end
 
     context 'fields already exist' do
-      before do
-        permission = create(:permission, action: 'commenting_idea', permitted_by: 'users')
-        @permissions_custom_fields = create_list(:permissions_custom_field, 4, permission: permission)
+      let(:permission) { create(:permission, action: 'commenting_idea', permitted_by: 'users') }
+      let!(:permission_custom_fields) { create_list(:permissions_custom_field, 4, permission: permission) }
+
+      context 'All fields are already persisted' do
+        let(:id) { permission_custom_fields.last.id }
+        let(:ordering) { 1 }
+
+        example 'Reorder a permissions field' do
+          expect(permission_custom_fields.last.ordering).to eq 3
+
+          do_request
+          expect(response_status).to eq 200
+          expect(response_data.dig(:attributes, :ordering)).to match ordering
+          expect(PermissionsCustomField.order(:ordering)[1].id).to eq id
+          expect(PermissionsCustomField.order(:ordering).pluck(:ordering)).to eq (0..3).to_a
+        end
       end
 
-      let(:permissions_custom_field) { create(:permissions_custom_field, required: false) }
-      let(:id) { @permissions_custom_fields.last.id }
-      let(:ordering) { 1 }
+      context 'Fields are persisted exist and then group is added' do
+        let(:group_field) { create(:custom_field_domicile, enabled: false) }
+        let(:custom_field_id) { group_field.id }
+        let(:permission_id) { permission.id }
+        let(:ordering) { 1 }
 
-      example 'Reorder a permissions field' do
-        expect(@permissions_custom_fields.last.ordering).to eq 3
+        example 'Reorder a non-persisted group field when all other fields are already persisted' do
+          group = create(:smart_group, rules: [
+            { ruleType: 'custom_field_select', customFieldId: group_field.id, predicate: 'is_empty' }
+          ])
+          permission.groups << group
+          fields = Permissions::PermissionsCustomFieldsService.new.fields_for_permission(permission)
 
-        do_request
-        expect(response_status).to eq 200
-        expect(response_data.dig(:attributes, :ordering)).to match ordering
-        expect(PermissionsCustomField.order(:ordering)[1].id).to eq id
-        expect(PermissionsCustomField.order(:ordering).pluck(:ordering)).to eq (0..3).to_a
+          expect(PermissionsCustomField.count).to eq 4
+          expect(fields.last.custom_field.code).to eq 'domicile'
+          expect(fields.last.ordering).to eq 4
+
+          do_request
+          expect(response_status).to eq 200
+          expect(response_data.dig(:attributes, :ordering)).to match ordering
+          expect(PermissionsCustomField.count).to eq 5
+        end
+
       end
+
     end
 
     context 'fields are not yet persisted' do
