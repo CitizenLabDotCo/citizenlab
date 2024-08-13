@@ -457,6 +457,7 @@ class WebApi::V1::IdeasController < ApplicationController
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
       return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
     end
+
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
       { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
     end
