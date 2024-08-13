@@ -217,7 +217,7 @@ class WebApi::V1::IdeasController < ApplicationController
       authorize input
       if not_allowed_update_errors(input)
         render json: not_allowed_update_errors(input), status: :unprocessable_entity
-        return
+        return # rubocop:disable Rails/TransactionExitStatement
       end
       verify_profanity input
     end
@@ -458,7 +458,7 @@ class WebApi::V1::IdeasController < ApplicationController
       return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
     end
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
-      return { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
     end
   end
 end
