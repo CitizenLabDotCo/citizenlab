@@ -178,12 +178,12 @@ const Dropdown: React.FC<Props> = ({
 
   useEffect(() => {
     if (opened && dropdownElement.current) {
-      // Move focus to the dropdown
       const focusableElements =
         dropdownElement.current.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
       if (focusableElements.length > 0) {
+        // Move focus to the first focusable element in the dropdown
         focusableElements[0].focus();
       }
     }
