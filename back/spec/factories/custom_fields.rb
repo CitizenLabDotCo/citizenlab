@@ -132,16 +132,6 @@ FactoryBot.define do
       end
       input_type { 'linear_scale' }
       maximum { 5 }
-      minimum_label_multiloc do
-        {
-          'en' => 'Strongly disagree'
-        }
-      end
-      maximum_label_multiloc do
-        {
-          'en' => 'Strongly agree'
-        }
-      end
       linear_scale_label_1_multiloc do
         {
           'en' => 'Strongly disagree'
