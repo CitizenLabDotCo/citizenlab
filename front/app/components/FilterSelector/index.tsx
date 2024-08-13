@@ -180,13 +180,6 @@ const FilterSelector = ({
     closeExpanded();
   };
 
-  const currentTitle = getTitle(
-    selected,
-    values,
-    multipleSelectionAllowed,
-    title
-  );
-
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
@@ -201,6 +194,28 @@ const FilterSelector = ({
     [name]
   );
 
+  const sharedProps = {
+    opened,
+    selected,
+    onClickOutside: handleClickOutside,
+    baseID,
+    width,
+    mobileWidth,
+    maxHeight,
+    mobileMaxHeight,
+    top,
+    left,
+    mobileLeft,
+    right,
+    mobileRight,
+    filterSelectorStyle,
+    minWidth,
+    toggleValuesList,
+    textColor,
+    currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
+    handleKeyDown,
+  };
+
   return (
     <Container
       id={id}
@@ -210,53 +225,17 @@ const FilterSelector = ({
     >
       {multipleSelectionAllowed ? (
         <MultiSelectDropdown
-          opened={opened}
           values={values}
-          selected={selected}
           onChange={selectionChange}
-          onClickOutside={handleClickOutside}
-          baseID={baseID}
-          width={width}
-          mobileWidth={mobileWidth}
-          maxHeight={maxHeight}
-          mobileMaxHeight={mobileMaxHeight}
-          top={top}
-          left={left}
-          mobileLeft={mobileLeft}
-          right={right}
-          mobileRight={mobileRight}
-          name={name}
           selectorId={selectorId}
-          filterSelectorStyle={filterSelectorStyle}
-          minWidth={minWidth}
-          toggleValuesList={toggleValuesList}
-          textColor={textColor}
-          currentTitle={currentTitle}
-          handleKeyDown={handleKeyDown}
+          name={name}
+          {...sharedProps}
         />
       ) : (
         <Combobox
           options={values}
-          width={width}
           onChange={selectionChange}
-          opened={opened}
-          onClickOutside={handleClickOutside}
-          selected={selected}
-          baseID={baseID}
-          mobileWidth={mobileWidth}
-          maxHeight={maxHeight}
-          mobileMaxHeight={mobileMaxHeight}
-          top={top}
-          left={left}
-          mobileLeft={mobileLeft}
-          right={right}
-          mobileRight={mobileRight}
-          filterSelectorStyle={filterSelectorStyle}
-          minWidth={minWidth}
-          toggleValuesList={toggleValuesList}
-          textColor={textColor}
-          currentTitle={currentTitle}
-          handleKeyDown={handleKeyDown}
+          {...sharedProps}
         />
       )}
     </Container>
