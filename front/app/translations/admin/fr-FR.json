@@ -859,7 +859,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Veuillez sélectionner une phase d'idéation.",
   "app.containers.Admin.projects.all.askPersonalData": "Demander les données personnelles",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Types de questions non pris en charge actuellement : Images, Étiquettes et Téléchargement de fichiers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Questions non prises en charge actuellement : Les questions relatives à la cartographie (déposer une épingle, dessiner un itinéraire et dessiner une zone), et les questions relatives au téléchargement de fichiers.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Questions non prises en charge actuellement : questions cartographiques (placer un repère, dessiner un tracé et délimiter une zone) et téléchargement de fichiers.",
   "app.containers.Admin.projects.all.components.archived": "Archivé",
   "app.containers.Admin.projects.all.components.draft": "Brouillon",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gérer",
