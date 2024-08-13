@@ -10,6 +10,7 @@ import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useR
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 import CustomField from './CustomField';
+import { getNumberOfVerificationLockedItems } from './utils';
 
 interface Props {
   phaseId?: string;
@@ -25,15 +26,23 @@ const FieldsList = ({ phaseId, action }: Props) => {
   const { mutate: reorderPermissionsCustomField } =
     useReorderPermissionsCustomField({ phaseId, action });
 
-  if (permissionFields && permissionFields.data.length === 0) {
+  if (!permissionFields || permissionFields.data.length === 0) {
     return null;
   }
+
+  // Hack to ignore the first verification-locked custom fields without breaking ordering.
+  // It would be better to not return them from the BE at all and adjust the way the ordering is done.
+  // Hopefully we can do that later.
+  const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
+    permissionFields.data
+  );
 
   return (
     <>
       {permissionFields && (
         <SortableList
           items={permissionFields.data}
+          lockFirstNItems={numberOfVerificatiomLockedItems}
           onReorder={(permissionFieldId, newOrder) => {
             const permissionsCustomField = permissionFields.data.find(
               (field) => field.id === permissionFieldId
