@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Opções de resposta",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Formato de resposta",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Deve ser apresentada pelo menos uma opção",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Esse usuário modera a pasta que contém esse projeto. Para remover os direitos de moderador desse projeto, você pode revogar seus direitos de pasta ou mover o projeto para uma pasta diferente.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Criar uma nova pergunta",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Criar uma pergunta",
   "app.containers.AdminPage.groups.permissions.defaultField": "Campo por defeito",
