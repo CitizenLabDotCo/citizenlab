@@ -103,7 +103,11 @@ const ActionForm = ({
           />
         </Box>
       )}
-      {showResetButton(permitted_by, permissionsCustomFields.data) && (
+      {showResetButton(
+        permitted_by,
+        permissionsCustomFields.data,
+        groupIds
+      ) && (
         <Box mt="28px" w="100%" display="flex">
           <Button
             width="auto"
