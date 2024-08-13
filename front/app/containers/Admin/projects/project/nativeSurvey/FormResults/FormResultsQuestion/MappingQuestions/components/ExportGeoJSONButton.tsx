@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
+import moment from 'moment';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -35,7 +36,7 @@ const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
         `${API_PATH}/admin/phases/${phaseId}/custom_fields/${customFieldId}/as_geojson`,
         'application/geo+json'
       );
-      saveAs(blob, `${phaseTitle}_geojson.geojson`);
+      saveAs(blob, `${phaseTitle}_${moment().format('YYYY-MM-DD')}.geojson`);
     } catch (error) {
       // Error
     }

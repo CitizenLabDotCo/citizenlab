@@ -32,8 +32,9 @@ export default defineMessages({
     defaultMessage: 'SSO verification',
   },
   ssoVerificationSubtitle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerificationSubtitle',
-    defaultMessage: 'Participants need to verify their identify with SSO.',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerificationSubtitle2',
+    defaultMessage:
+      'Participants need to verify their identify with {verificationMethod}.',
   },
   restrictParticipation: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation',

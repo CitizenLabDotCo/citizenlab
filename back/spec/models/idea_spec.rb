@@ -354,7 +354,7 @@ RSpec.describe Idea do
   end
 
   context 'creation_phase' do
-    before { IdeaStatus.create_defaults }
+    before { create(:idea_status_proposed) }
 
     it 'is invalid for a phase that does not belong to the input\'s project' do
       project = create(:project_with_active_native_survey_phase)
@@ -436,9 +436,9 @@ RSpec.describe Idea do
     it 'should select ideas with no official feedback or no idea status change' do
       ideas = [
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status_accepted)),
+        create(:idea, idea_status: create(:idea_status, code: 'accepted')),
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status_viewed))
+        create(:idea, idea_status: create(:idea_status, code: 'viewed'))
       ]
       create(:official_feedback, post: ideas[0])
 

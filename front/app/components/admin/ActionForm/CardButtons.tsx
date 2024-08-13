@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
+import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -23,12 +24,20 @@ interface Props {
 
 const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   const { formatMessage } = useIntl();
-  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
+  const emailConfirmationEnabled = useFeatureFlag({
+    name: 'user_confirmation',
+  });
+  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
 
   const handleUpdate = (permittedBy: PermittedBy) => (e) => {
     e.preventDefault();
     onUpdate(permittedBy);
   };
+
+  const verificationMethodMetadata =
+    verificationMethod?.data.attributes.action_metadata;
+  const verificationMethodName = verificationMethodMetadata?.name;
+  const verificationMethodAllowed = verificationMethodMetadata?.allowed;
 
   return (
     <>
@@ -70,7 +79,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
           subtitle={formatMessage(messages.emailConfirmationSubtitle)}
           onClick={handleUpdate('everyone_confirmed_email')}
           selected={permittedBy === 'everyone_confirmed_email'}
-          disabled={!userConfirmationEnabled}
+          disabled={!emailConfirmationEnabled}
           height="100%"
         />
       </Box>
@@ -96,27 +105,31 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
           height="100%"
         />
       </Box>
-      <Box>
-        <CardButton
-          id="e2e-permission-custom"
-          icon={
-            <Box display="flex" flexDirection="row">
-              <Icon
-                name="user-circle"
-                fill={colors.teal200}
-                width="32px"
-                height="32px"
-              />
-              <Icon name="shield-check" fill={colors.teal300} width="16px" />
-            </Box>
-          }
-          title={formatMessage(messages.ssoVerification)}
-          subtitle={formatMessage(messages.ssoVerificationSubtitle)}
-          onClick={handleUpdate('verified')}
-          selected={permittedBy === 'verified'}
-          height="100%"
-        />
-      </Box>
+      {verificationMethodAllowed && verificationMethodName && (
+        <Box>
+          <CardButton
+            id="e2e-permission-verified-actions"
+            icon={
+              <Box display="flex" flexDirection="row">
+                <Icon
+                  name="user-circle"
+                  fill={colors.teal200}
+                  width="32px"
+                  height="32px"
+                />
+                <Icon name="shield-check" fill={colors.teal300} width="16px" />
+              </Box>
+            }
+            title={formatMessage(messages.ssoVerification)}
+            subtitle={formatMessage(messages.ssoVerificationSubtitle, {
+              verificationMethod: verificationMethodName,
+            })}
+            onClick={handleUpdate('verified')}
+            selected={permittedBy === 'verified'}
+            height="100%"
+          />
+        </Box>
+      )}
     </>
   );
 };

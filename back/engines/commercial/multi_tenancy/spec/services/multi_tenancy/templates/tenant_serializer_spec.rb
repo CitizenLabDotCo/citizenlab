@@ -138,7 +138,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'successfully copies over native surveys and responses' do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
 
       timeline_project = create(:project_with_future_native_survey_phase)
       survey_phase = timeline_project.phases.last
@@ -153,7 +153,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant = create(:tenant)
       tenant.switch do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         expect(Project.count).to eq 0
 
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)

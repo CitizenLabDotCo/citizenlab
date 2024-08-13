@@ -12,7 +12,7 @@ import PolygonMap from 'components/admin/Graphs/PolygonMap';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  polygonResponses: { response: GeoJSON.Polygon }[];
+  polygonResponses: { answer: GeoJSON.Polygon }[];
   mapConfigId?: string;
   customFieldId: string;
   projectId: string;
@@ -27,7 +27,7 @@ const PolygonLocationQuestion = ({
   const { formatMessage } = useIntl();
 
   const polygons = useMemo(() => {
-    return polygonResponses.map(({ response }) => response);
+    return polygonResponses.map(({ answer }) => answer);
   }, [polygonResponses]);
 
   const { data: customMapConfig, isLoading: isLoadingCustomMapConfig } =
