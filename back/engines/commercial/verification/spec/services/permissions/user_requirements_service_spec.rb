@@ -6,15 +6,79 @@ describe Permissions::UserRequirementsService do
   let(:service) { described_class.new }
 
   describe '#requirements' do
-    context 'when permitted_by is set to a verification group' do
-      let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
-      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+    context 'verification via groups' do
+      context 'when permission has groups and permission has a verification group' do
+        let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
+        let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        context 'there is no user' do
+          it 'requires verification' do
+            requirements = service.requirements(group_permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be true
+          end
+        end
+
+        context 'a user is not verified' do
+          let(:user) { create(:user, verified: false) }
+
+          it 'requires verification' do
+            requirements = service.requirements(group_permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be true
+          end
+        end
+
+        context 'a user is verified' do
+          let(:user) { create(:user, verified: true) }
+
+          it 'verification is satisfied' do
+            requirements = service.requirements(group_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
+            expect(requirements[:verification]).to be false
+          end
+        end
+      end
+
+      context 'when permission has a group but is NOT set to a verification group' do
+        let(:groups) { [create(:group), create(:smart_group)] }
+        let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        it 'verification is not required' do
+          requirements = service.requirements(group_permission, nil)
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
+          expect(requirements[:verification]).to be false
+        end
+      end
+
+      context 'when permission has no groups' do
+        let(:permission) { create(:permission, permitted_by: 'users') }
+
+        it 'verification is not required' do
+          requirements = service.requirements(permission, nil)
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
+          expect(requirements[:verification]).to be false
+        end
+      end
+    end
+
+    context 'verification via permitted_by "verified"' do
+      let(:verified_permission) { create(:permission, permitted_by: 'verified') }
+
+      before do
+        # To allow permitted_by 'verified' we need to enable at least one verification method
+        SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+      end
 
       context 'there is no user' do
         it 'requires verification' do
-          requirements = service.requirements(group_permission, nil)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          requirements = service.requirements(verified_permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
         end
       end
 
@@ -22,40 +86,114 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:user, verified: false) }
 
         it 'requires verification' do
-          requirements = service.requirements(group_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('require')
-          expect(requirements[:permitted]).to be false
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:verification]).to be true
+        end
+
+        it 'does not remove missing authentication requirements if not verified' do
+          user.update!(unique_code: '1234abcd', email: nil, password: nil)
+          requirements = service.requirements(verified_permission, user)
+          expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
         end
       end
 
       context 'a user is verified' do
         let(:user) { create(:user, verified: true) }
 
-        it 'verification is satisfied' do
-          requirements = service.requirements(group_permission, user)
-          expect(requirements[:requirements][:special][:verification]).to eq('satisfied')
-          expect(requirements[:permitted]).to be true
+        before { create(:verification, user: user, method_name: 'fake_sso') }
+
+        context 'when verification_expiry is nil' do
+          it 'verification is satisfied' do
+            requirements = service.requirements(verified_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+            expect(requirements[:verification]).to be false
+          end
+
+          it 'removes all missing authentication requirements if verified' do
+            user.update!(unique_code: '1234abcd', email: nil, password: nil)
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+          end
+        end
+
+        context 'when verification_expiry is set to 0' do
+          before { verified_permission.update!(verification_expiry: 0) }
+
+          it 'does not require verification after less than 30 minutes' do
+            travel_to Time.now + 15.minutes do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 minutes' do
+            travel_to Time.now + 30.minutes + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+        end
+
+        context 'when verification_expiry is set greater than 0' do
+          it 'requires verification again after more than a day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 1.day + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
+
+          it 'does not requires verification before 1 day' do
+            verified_permission.update!(verification_expiry: 1)
+            travel_to Time.now + 23.hours do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be true
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be false
+            end
+          end
+
+          it 'requires verification again after more than 30 days' do
+            verified_permission.update!(verification_expiry: 30)
+            travel_to Time.now + 30.days + 1.second do
+              requirements = service.requirements(verified_permission, user)
+              expect(service.permitted?(requirements)).to be false
+              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:verification]).to be true
+            end
+          end
         end
       end
     end
 
-    context 'when permitted_by group is NOT set to a verification group' do
-      let(:groups) { [create(:group), create(:smart_group)] }
-      let(:group_permission) { create(:permission, permitted_by: 'groups', groups: groups) }
-
-      it 'verification is not required' do
-        requirements = service.requirements(group_permission, nil)
-        expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
-      end
-    end
-
-    context 'when permitted_by is NOT set to groups' do
-      let(:permission) { create(:permission, permitted_by: 'users') }
-
-      it 'verification is not required' do
-        requirements = service.requirements(permission, nil)
-        expect(requirements[:requirements][:special][:verification]).to eq('dont_ask')
-      end
-    end
+    # context 'when permitted_by is set to "verified"' do
+    #   let(:permission) { create(:permission, permitted_by: 'verified') }
+    #
+    #   before do
+    #     # To allow permitted_by 'verified' we need to enable at least one verification method
+    #     SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+    #   end
+    #
+    #   it 'does not remove missing authentication requirements if not verified' do
+    #     user = create(:user, unique_code: '1234abcd', email: nil, password: nil)
+    #     requirements = service.requirements(permission, user)
+    #     expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+    #   end
+    #
+    #   it 'removes all missing authentication requirements if verified' do
+    #     user = create(:user, unique_code: '1234abcd', email: nil, password: nil, verified: true)
+    #     requirements = service.requirements(permission, user)
+    #     expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+    #   end
+    # end
   end
 end

@@ -44,13 +44,16 @@ module Permissions
       not_volunteering: 'not_volunteering'
     }.freeze
 
+    # Actions not to block if the project is inactive - ie no current phase
+    IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
+
     def initialize(phase, user, user_requirements_service: nil)
       super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
     end
 
     def denied_reason_for_action(action, reaction_mode: nil)
-      return PHASE_DENIED_REASONS[:project_inactive] unless phase
+      return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -151,15 +154,16 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
-      if phase.posting_limited?
-        num_authored = phase.ideas.where(author: user, publication_status: 'published').size
-        return true if num_authored >= phase.posting_limited_max
+      limit = phase.pmethod.posting_limit
+      return false unless limit
 
-        if phase.allow_anonymous_participation?
-          author_hash = Idea.create_author_hash user.id, phase.project.id, true
-          num_authored_anonymously = phase.ideas.where(author_hash: author_hash).size
-          return true if (num_authored + num_authored_anonymously) >= phase.posting_limited_max
-        end
+      num_posts = phase.ideas.where(author: user, publication_status: 'published').size
+      return true if num_posts >= limit
+
+      if phase.allow_anonymous_participation?
+        author_hash = Idea.create_author_hash user.id, phase.project.id, true
+        num_anonymous_posts = phase.ideas.where(author_hash: author_hash).size
+        return true if (num_posts + num_anonymous_posts) >= limit
       end
 
       false

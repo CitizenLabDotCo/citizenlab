@@ -48,6 +48,14 @@ en-GB:
     implemented_description: This idea has been implemented by the city
     rejected: rejected
     rejected_description: This idea has been rejected
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -267,6 +275,7 @@ en-GB:
       submitted_at: 'Submitted at'
       tags: 'Tags'
       title: 'Title'
+      user_data: 'User data'
       votes_count: 'Votes'
   form_builder:
     default_select_field:

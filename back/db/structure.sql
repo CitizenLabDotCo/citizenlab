@@ -1231,7 +1231,8 @@ CREATE TABLE public.idea_statuses (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ideas_count integer DEFAULT 0
+    ideas_count integer DEFAULT 0,
+    participation_method character varying DEFAULT 'ideation'::character varying NOT NULL
 );
 
 
@@ -1606,8 +1607,6 @@ CREATE TABLE public.phases (
     voting_min_total integer DEFAULT 0,
     reacting_dislike_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
     reacting_dislike_limited_max integer DEFAULT 10,
-    posting_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    posting_limited_max integer DEFAULT 1,
     allow_anonymous_participation boolean DEFAULT false NOT NULL,
     document_annotation_embed_url character varying,
     voting_method character varying,
@@ -2879,7 +2878,8 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL
+    global_custom_fields boolean DEFAULT false NOT NULL,
+    verification_expiry integer
 );
 
 
@@ -2893,7 +2893,8 @@ CREATE TABLE public.permissions_custom_fields (
     custom_field_id uuid NOT NULL,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ordering integer DEFAULT 0
 );
 
 
@@ -7514,8 +7515,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240606112752'),
 ('20240612134240'),
 ('202407081751'),
+('20240710101033'),
 ('20240722090955'),
 ('20240729141927'),
-('20240731181623');
+('20240730093933'),
+('20240731181623'),
+('20240731223530'),
+('20240805121645'),
+('20240806161121');
+
 
 

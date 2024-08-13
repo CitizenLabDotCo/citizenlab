@@ -26,7 +26,7 @@ const addPermissionsCustomField = async (
     },
   });
 
-const useAddPermissionCustomField = ({
+const useAddPermissionsCustomField = ({
   phaseId,
   projectId,
   initiativeContext,
@@ -52,4 +52,4 @@ const useAddPermissionCustomField = ({
   });
 };
 
-export default useAddPermissionCustomField;
+export default useAddPermissionsCustomField;

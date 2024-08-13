@@ -25,6 +25,7 @@ const componentMap = {
   answered: Answered,
   threshold_reached: ThresholdReached,
   ineligible: Ineligible,
+  custom: () => <></>,
 };
 
 interface Props {

@@ -122,9 +122,9 @@ resource 'User Custom Fields' do
       end
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
-      let(:custom_field) { build(:custom_field, enabled: false) }
+      let(:custom_field) { build(:custom_field, enabled: true) }
 
-      describe do
+      describe 'Create an enabled custom field' do
         let(:key) { custom_field.key }
         let(:input_type) { custom_field.input_type }
         let(:title_multiloc) { custom_field.title_multiloc }
@@ -132,7 +132,8 @@ resource 'User Custom Fields' do
         let(:required) { custom_field.required }
         let(:enabled) { custom_field.enabled }
 
-        example_request 'Create a custom field' do
+        example 'Create an enabled custom field' do
+          do_request
           assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :key)).to match key
@@ -145,7 +146,7 @@ resource 'User Custom Fields' do
         end
       end
 
-      describe do
+      describe 'Invalid custom fields' do
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
@@ -183,19 +184,41 @@ resource 'User Custom Fields' do
       end
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
-      let(:id) { create(:custom_field).id }
+      let(:field) { create(:custom_field, enabled: false) }
+      let(:id) { field.id }
       let(:title_multiloc) { { 'en' => 'New title' } }
       let(:description_multiloc) { { 'en' => 'New description' } }
       let(:required) { true }
-      let(:enabled) { false }
 
-      example_request 'Update a custom field' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data, :attributes, :required)).to match required
-        expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
+      context 'Enabling a custom field' do
+        let(:enabled) { true }
+
+        before { field } # Ensure field created before example runs
+
+        example 'Update & enable a custom field' do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :required)).to match required
+          expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
+        end
+      end
+
+      context 'Disabling a custom field' do
+        let!(:field) { create(:custom_field, enabled: true) }
+        let(:enabled) { false }
+
+        example 'Update & disable a custom field' do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :required)).to match required
+          expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
+        end
       end
 
       context 'when images are included in the description' do

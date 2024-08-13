@@ -41,7 +41,9 @@ const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
-  const { data: statuses } = useIdeaStatuses();
+  const { data: statuses } = useIdeaStatuses({
+    participation_method: 'ideation',
+  });
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: prospectAssignees } = useUsers({
     can_moderate_project: projectId,

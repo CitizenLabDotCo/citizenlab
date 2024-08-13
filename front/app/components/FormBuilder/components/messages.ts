@@ -70,9 +70,21 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
-  locationAnswer: {
-    id: 'app.components.formBuilder.locationAnswer',
-    defaultMessage: 'Location answer',
+  shapefileUpload: {
+    id: 'app.components.formBuilder.shapefileUpload',
+    defaultMessage: 'Esri shapefile upload',
+  },
+  dropPin: {
+    id: 'app.components.formBuilder.dropPin',
+    defaultMessage: 'Drop pin',
+  },
+  drawRoute: {
+    id: 'app.components.formBuilder.drawRoute',
+    defaultMessage: 'Draw route',
+  },
+  drawArea: {
+    id: 'app.components.formBuilder.drawArea',
+    defaultMessage: 'Draw area',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
@@ -173,6 +185,10 @@ export default defineMessages({
   optional: {
     id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
+  },
+  mapping: {
+    id: 'app.components.formBuilder.mapping',
+    defaultMessage: 'Mapping',
   },
   // Logic Settings
   formEnd: {

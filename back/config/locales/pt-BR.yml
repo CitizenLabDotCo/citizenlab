@@ -48,6 +48,14 @@ pt:
     implemented_description: Esta ideia foi implementada pela organização.
     rejected: Rejeitada
     rejected_description: Esta Idea foi rejeitada
+    expired: expirado
+    expired_description: expirado
+    threshold_reached: limite atingido
+    threshold_reached_description: limite atingido
+    answered: respondeu
+    answered_description: respondeu
+    ineligible: inelegível
+    ineligible_description: inelegível
   initiative_statuses:
     review_pending: revisão pendente
     review_pending_description: revisão pendente
@@ -267,6 +275,7 @@ pt:
       submitted_at: 'Enviado em'
       tags: 'Tags'
       title: 'Título'
+      user_data: 'Dados do usuário'
       votes_count: 'Votos'
   form_builder:
     default_select_field:

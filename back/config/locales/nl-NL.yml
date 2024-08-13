@@ -48,6 +48,14 @@ nl:
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
+    expired: verstreken
+    expired_description: verstreken
+    threshold_reached: drempel bereikt
+    threshold_reached_description: drempel bereikt
+    answered: beantwoord
+    answered_description: beantwoord
+    ineligible: komt niet in aanmerking
+    ineligible_description: komt niet in aanmerking
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
@@ -267,6 +275,7 @@ nl:
       submitted_at: 'Ingediend op'
       tags: 'Tags'
       title: 'Naam'
+      user_data: 'Gebruikersgegevens'
       votes_count: 'Stemmen'
   form_builder:
     default_select_field:

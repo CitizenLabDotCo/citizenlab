@@ -13,7 +13,10 @@ import T from 'components/T';
 import Files from '../Files';
 
 import InputType from './InputType';
-import PointLocationQuestion from './PointLocationQuestion';
+import LineLocationQuestion from './MappingQuestions/LineLocationQuestion';
+import PointLocationQuestion from './MappingQuestions/PointLocationQuestion';
+import PolygonLocationQuestion from './MappingQuestions/PolygonLocationQuestion';
+import NumberQuestion from './NumberQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {
@@ -35,6 +38,9 @@ const FormResultsQuestion = ({
     answers,
     textResponses,
     pointResponses,
+    lineResponses,
+    polygonResponses,
+    numberResponses,
     inputType,
     question,
     required,
@@ -46,8 +52,13 @@ const FormResultsQuestion = ({
 
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
+  const hasNumberResponses = numberResponses && numberResponses.length > 0;
   const isPointAndHasAnswers =
     inputType === 'point' && pointResponses && pointResponses?.length > 0;
+  const isLineAndHasAnswers =
+    inputType === 'line' && lineResponses && lineResponses?.length > 0;
+  const isPolygonAndHasAnswers =
+    inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
 
   return (
     <>
@@ -71,9 +82,26 @@ const FormResultsQuestion = ({
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
           />
         )}
+        {hasNumberResponses && (
+          <NumberQuestion numberResponses={numberResponses} />
+        )}
         {isPointAndHasAnswers && (
           <PointLocationQuestion
             pointResponses={pointResponses}
+            mapConfigId={mapConfigId}
+            customFieldId={customFieldId}
+          />
+        )}
+        {isLineAndHasAnswers && (
+          <LineLocationQuestion
+            lineResponses={lineResponses}
+            mapConfigId={mapConfigId}
+            customFieldId={customFieldId}
+          />
+        )}
+        {isPolygonAndHasAnswers && (
+          <PolygonLocationQuestion
+            polygonResponses={polygonResponses}
             mapConfigId={mapConfigId}
             customFieldId={customFieldId}
           />

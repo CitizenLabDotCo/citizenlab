@@ -25,4 +25,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.viewSelectedQuestions',
     defaultMessage: 'View selected questions',
   },
+  shapefileUploadDisclaimer: {
+    id: 'app.containers.AdminPage.projects.project.analysis.shapefileUploadDisclaimer2',
+    defaultMessage:
+      '* Shapefiles are displayed in GeoJSON format here. As such, styling in the original file may not display correctly.',
+  },
+  invalidShapefile: {
+    id: 'app.containers.AdminPage.projects.project.analysis.invalidShapefile',
+    defaultMessage:
+      'An invalid shapefile was uploaded and cannot be displayed.',
+  },
+  noFileUploaded: {
+    id: 'app.containers.AdminPage.projects.project.analysis.noFileUploaded',
+    defaultMessage: 'No shapefile uploaded.',
+  },
 });

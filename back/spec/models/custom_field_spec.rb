@@ -67,6 +67,14 @@ class TestVisitor < FieldVisitorService
     'point from visitor'
   end
 
+  def visit_line(_field)
+    'line from visitor'
+  end
+
+  def visit_polygon(_field)
+    'polygon from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
@@ -85,6 +93,10 @@ class TestVisitor < FieldVisitorService
 
   def visit_file_upload(_field)
     'file_upload from visitor'
+  end
+
+  def visit_shapefile_upload(_field)
+    'shapefile_upload from visitor'
   end
 end
 
@@ -115,6 +127,11 @@ RSpec.describe CustomField do
   describe '#file_upload?' do
     it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
+      expect(files_field.file_upload?).to be true
+    end
+
+    it 'returns true when the input_type is "shapefile_upload"' do
+      files_field = described_class.new input_type: 'shapefile_upload'
       expect(files_field.file_upload?).to be true
     end
 
@@ -512,37 +529,6 @@ RSpec.describe CustomField do
 
     it 'returns nil otherwise' do
       expect(field.other_option_text_field).to be_nil
-    end
-  end
-
-  context 'when point field methods are called' do
-    let(:point_field) { create(:custom_field_point, title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }) }
-    let(:text_field) { create(:custom_field_text) }
-
-    describe '#point_latitude_field' do
-      it "returns a point field when the field has input_type: 'point'" do
-        expect(point_field.point_latitude_field).not_to be_nil
-        expect(point_field.point_latitude_field.key).to eq "#{point_field.key}_latitude"
-        expect(point_field.point_latitude_field.title_multiloc)
-          .to eq({ 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' })
-      end
-
-      it 'returns nil otherwise' do
-        expect(text_field.point_latitude_field).to be_nil
-      end
-    end
-
-    describe '#point_longitude_field' do
-      it "returns a point field when the field has input_type: 'point'" do
-        expect(point_field.point_longitude_field).not_to be_nil
-        expect(point_field.point_longitude_field.key).to eq "#{point_field.key}_longitude"
-        expect(point_field.point_longitude_field.title_multiloc)
-          .to eq({ 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' })
-      end
-
-      it 'returns nil otherwise' do
-        expect(text_field.point_longitude_field).to be_nil
-      end
     end
   end
 end

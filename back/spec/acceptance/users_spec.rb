@@ -826,7 +826,7 @@ resource 'Users' do
             ])
 
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'users', groups: [old_timers])
           end
 
           context 'on a resident' do
@@ -1341,7 +1341,7 @@ resource 'Users' do
         let(:id) { @user.id }
 
         example 'Get the number of ideas published by one user' do
-          IdeaStatus.create_defaults
+          create(:idea_status_proposed)
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')

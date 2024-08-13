@@ -48,6 +48,14 @@ hr:
     implemented_description: Ova je ideja provedena
     rejected: odbijeno
     rejected_description: Ova je ideja odbijena
+    expired: istekao
+    expired_description: istekao
+    threshold_reached: dosegnut prag
+    threshold_reached_description: dosegnut prag
+    answered: odgovorio
+    answered_description: odgovorio
+    ineligible: nepodoban
+    ineligible_description: nepodoban
   initiative_statuses:
     review_pending: pregled na čekanju
     review_pending_description: pregled na čekanju
@@ -267,6 +275,7 @@ hr:
       submitted_at: 'Predano u'
       tags: 'Oznake'
       title: 'Titula'
+      user_data: 'Korisnički podaci'
       votes_count: 'Glasovi'
   form_builder:
     default_select_field:

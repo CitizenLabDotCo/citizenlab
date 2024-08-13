@@ -11,7 +11,7 @@ resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
     header_token_for user
-    IdeaStatus.create_defaults
+    create(:idea_status_proposed)
   end
 
   get 'web_api/v1/ideas/:id' do
@@ -163,8 +163,99 @@ resource 'Ideas' do
         end
       end
 
-      describe do
-        file = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+      context 'with two shapefile upload fields' do
+        # Note the "notwhitelisted" file extension. It is here to validate
+        # that no file extension validation is done.
+        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename2) { 'afvalkalender2023.pdf' }
+        let(:fixture_filename) { 'afvalkalender.pdf' }
+        let(:fixture_mime_type) { 'application/pdf' }
+        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let!(:files_field1) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'shapefile_upload',
+            key: 'custom_field_name1',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload a zipfile containing shapefile(s)' }
+          )
+        end
+        let!(:files_field2) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'shapefile_upload',
+            key: 'custom_field_name2',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload another zipfile containing shapefile(s)' }
+          )
+        end
+        let(:custom_field_name1) do
+          {
+            content: file_contents1,
+            name: filename1
+          }
+        end
+        let(:custom_field_name2) do
+          {
+            content: file_contents2,
+            name: filename2
+          }
+        end
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+
+        context 'published idea' do
+          example_request 'Create a survey response with shapefile upload fields' do
+            assert_status 201
+            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            input = inputs.first
+            expect(input.phase_ids).to eq [project.phases.first.id]
+            expect(input.creation_phase).to eq project.phases.first
+
+            # Verify that the files are saved correctly
+            file1_id = input.custom_field_values['custom_field_name1']['id']
+            file2_id = input.custom_field_values['custom_field_name2']['id']
+            file1 = IdeaFile.find(file1_id)
+            file2 = IdeaFile.find(file2_id)
+            expect(input.idea_files.size).to eq 2
+            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
+            expect(file1.name).to eq filename1
+            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
+            expect(file2.name).to eq filename2
+            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+
+            # Verify that the custom field value is saved correctly.
+            expect(input.custom_field_values).to eq({
+              'custom_field_name1' => { 'id' => file1.id, 'name' => file1.name },
+              'custom_field_name2' => { 'id' => file2.id, 'name' => file2.name }
+            })
+          end
+        end
+
+        context 'draft idea' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'Create a draft survey response with a shapefile upload field' do
+            assert_status 201
+            survey = project.reload.ideas.first
+            expect(survey.publication_status).to eq 'draft'
+            expect(survey.custom_field_values.values).to match_array(
+              IdeaFile.all.map { |file| { 'id' => file.id, 'name' => file.name } }
+            )
+          end
+        end
+      end
+
+      describe 'without custom_field_values_params for geo fields' do
+        file1 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+        file2 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_shapefile.pdf')
         [
           { factory: :custom_field_number, value: 42 },
           { factory: :custom_field_linear_scale, value: 3 },
@@ -173,8 +264,8 @@ resource 'Ideas' do
           { factory: :custom_field_select, options: [:with_options], value: 'option1' },
           { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
           { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
-          { factory: :custom_field_file_upload, value: { 'id' => file.id, 'name' => file.name } },
-          { factory: :custom_field_point, value: { 'type' => 'Point', 'coordinates' => [4.30, 50.85] } },
+          { factory: :custom_field_file_upload, value: { 'id' => file1.id, 'name' => file1.name } },
+          { factory: :custom_field_shapefile_upload, value: { 'id' => file2.id, 'name' => file2.name } },
           { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
         ].each do |field_desc|
           describe do
@@ -189,6 +280,43 @@ resource 'Ideas' do
               idea_from_db = Idea.find(json_response[:data][:id])
               expect(idea_from_db.custom_field_values).to eq({
                 'custom_field_name1' => field_desc[:value]
+              })
+            end
+          end
+        end
+      end
+
+      describe 'with custom_field_values_params for geo fields' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:form) { create(:custom_form, participation_context: project.phases.first) }
+
+        where(:factory, :param_value, :expected_stored_value) do
+          [
+            [:custom_field_point, 'POINT (4.31 50.85)', { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }],
+            [
+              :custom_field_line,
+              'LINESTRING (4.30 50.85, 4.660 51.15)',
+              { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] }
+            ],
+            [
+              :custom_field_polygon,
+              'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
+              { 'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]] }
+            ]
+          ]
+        end
+
+        with_them do
+          describe do
+            let!(:survey_field) { create(factory, key: 'custom_field_name1', required: true, resource: form) }
+            let!(:custom_field_name1) { param_value }
+
+            example_request "Create a response with a #{params[:factory]} field" do
+              assert_status 201
+              json_response = json_parse(response_body)
+              idea_from_db = Idea.find(json_response[:data][:id])
+              expect(idea_from_db.custom_field_values).to eq({
+                'custom_field_name1' => expected_stored_value
               })
             end
           end
@@ -309,6 +437,9 @@ resource 'Ideas' do
       parameter :project_id, 'The identifier of the project that hosts the input', required: true
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
+      parameter :custom_field_name3, 'A value for another custom field'
+      parameter :custom_field_name4, 'A value for another custom field'
+      parameter :custom_field_name5, 'A value for another custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     let(:project) { create(:project_with_active_native_survey_phase) }
@@ -416,6 +547,37 @@ resource 'Ideas' do
             # Verify that the custom field value is saved correctly.
             expect(input.reload.custom_field_values).to eq({
               'custom_field_name2' => { 'id' => new_idea_file.id, 'name' => file_name }
+            })
+          end
+        end
+
+        context 'with geo fields' do
+          let!(:point_field) { create(:custom_field_point, resource: custom_form, key: 'custom_field_name3') }
+          let!(:line_field) { create(:custom_field_line, resource: custom_form, key: 'custom_field_name4') }
+          let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, key: 'custom_field_name5') }
+
+          let(:custom_field_name3) { 'POINT (4.31 50.85)' }
+          let(:custom_field_name4) { 'LINESTRING (4.30 50.85, 4.660 51.15)' }
+          let(:custom_field_name5) { 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))' }
+
+          example 'Create a survey response with geo fields' do
+            input.update!(publication_status: 'draft')
+
+            do_request
+            assert_status 200
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+
+            # Verify that the custom field values are saved correctly.
+            expect(input.reload.custom_field_values).to eq({
+              'custom_field_name3' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
+              'custom_field_name4' => { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] },
+              'custom_field_name5' => {
+                'type' => 'Polygon',
+                'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+              }
             })
           end
         end

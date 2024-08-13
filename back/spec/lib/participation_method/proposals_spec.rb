@@ -8,6 +8,12 @@ RSpec.describe ParticipationMethod::Proposals do
   let(:phase) { create(:proposals_phase) }
   let(:proposal) { create(:proposal, project: phase.project) }
 
+  describe '#method_str' do
+    it 'returns proposals' do
+      expect(described_class.method_str).to eq 'proposals'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:proposals_phase) }
 
@@ -50,7 +56,7 @@ RSpec.describe ParticipationMethod::Proposals do
     end
 
     it 'each constraint has locks only on enabled, required & title_multiloc' do
-      participation_method.constraints.each do |_key, value|
+      participation_method.constraints.each_value do |value|
         expect(value.key?(:locks)).to be true
         valid_locks = %i[enabled required title_multiloc]
         expect(valid_locks).to include(*value[:locks].keys)
@@ -116,21 +122,36 @@ RSpec.describe ParticipationMethod::Proposals do
   end
 
   describe '#assign_defaults' do
-    context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status_implemented) }
+    context 'when the proposed status is available' do
+      let!(:ideation_proposed) { create(:idea_status_proposed) }
+      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
+      let!(:custom_status) { create(:proposals_status) }
 
-      it 'sets a default "proposed" idea_status if not set' do
+      it 'assignes the default "proposed" status if not set' do
         proposal = build(:proposal, idea_status: nil)
         participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq proposed
+        expect(proposal.idea_status).to eq proposed_status
+      end
+
+      it 'does not change the status if it is already set' do
+        proposal = build(:proposal, idea_status: custom_status)
+        participation_method.assign_defaults proposal
+        expect(proposal.idea_status).to eq custom_status
+      end
+    end
+
+    context 'when the proposed status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:proposal, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
       end
 
       it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
-        proposal = build(:proposal, idea_status: initial_status)
-        participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq initial_status
+        create(:proposals_status, code: 'proposed')
+        initial_status = create(:proposals_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
       end
     end
   end

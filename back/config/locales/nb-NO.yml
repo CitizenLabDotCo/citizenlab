@@ -48,6 +48,14 @@
     implemented_description: Denne ideen har blitt tatt i bruk av kommunen
     rejected: avslått
     rejected_description: Denne ideen ble avslått
+    expired: utløpt
+    expired_description: utløpt
+    threshold_reached: terskel nådd
+    threshold_reached_description: terskel nådd
+    answered: svarte
+    answered_description: svarte
+    ineligible: ikke kvalifisert
+    ineligible_description: ikke kvalifisert
   initiative_statuses:
     review_pending: vurdering venter
     review_pending_description: vurdering venter
@@ -267,6 +275,7 @@
       submitted_at: 'Innlevert kl'
       tags: 'Tagger'
       title: 'Tittel'
+      user_data: 'Brukerdata'
       votes_count: 'Stemmer'
   form_builder:
     default_select_field:

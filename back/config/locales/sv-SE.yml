@@ -48,6 +48,14 @@ sv:
     implemented_description: Den här idén har genomförts av staden
     rejected: avvisad
     rejected_description: Den här idén har avvisats
+    expired: utgått
+    expired_description: utgått
+    threshold_reached: tröskelvärdet uppnått
+    threshold_reached_description: tröskelvärdet uppnått
+    answered: besvarade
+    answered_description: besvarade
+    ineligible: obehörig
+    ineligible_description: obehörig
   initiative_statuses:
     review_pending: pågående granskning
     review_pending_description: pågående granskning
@@ -267,6 +275,7 @@ sv:
       submitted_at: 'Inlämnad på'
       tags: 'Etiketter'
       title: 'Titel'
+      user_data: 'Användardata'
       votes_count: 'Röster'
   form_builder:
     default_select_field:

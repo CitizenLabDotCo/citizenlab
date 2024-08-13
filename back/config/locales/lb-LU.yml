@@ -48,6 +48,14 @@ lb:
     implemented_description: Dës Iddi gouf ëmgesat
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
+    expired: ofgelaaf
+    expired_description: ofgelaaf
+    threshold_reached: Schwell erreecht
+    threshold_reached_description: Schwell erreecht
+    answered: geäntwert
+    answered_description: geäntwert
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: Iwwerpréiwung waarden
     review_pending_description: Iwwerpréiwung waarden
@@ -267,6 +275,7 @@ lb:
       submitted_at: 'Erlaabt am'
       tags: 'Tags'
       title: 'Titel'
+      user_data: 'Benotzer Daten'
       votes_count: 'Stëmmen'
   form_builder:
     default_select_field:

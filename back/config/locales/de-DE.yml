@@ -48,6 +48,14 @@ de:
     implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
+    expired: abgelaufen
+    expired_description: abgelaufen
+    threshold_reached: Schwelle erreicht
+    threshold_reached_description: Schwelle erreicht
+    answered: beantwortet
+    answered_description: beantwortet
+    ineligible: unzulässig
+    ineligible_description: unzulässig
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
@@ -267,6 +275,7 @@ de:
       submitted_at: 'Eingereicht am'
       tags: 'Themen-Tags'
       title: 'Titel'
+      user_data: 'Nutzer*innendaten'
       votes_count: 'Stimmen'
   form_builder:
     default_select_field:
