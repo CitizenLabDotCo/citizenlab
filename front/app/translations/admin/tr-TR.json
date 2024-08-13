@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Cevap seçenekleri",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Cevap formatı",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "En az bir seçenek sunulmalıdır",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Bu kullanıcı, bu projeyi içeren klasörü yönetir. Bu kullanıcının bu proje için moderatörlük haklarını kaldırmak için ya klasör haklarını iptal edebilir ya da projeyi farklı bir klasöre taşıyabilirsiniz.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Yeni bir soru oluşturun",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Bir soru oluşturun",
   "app.containers.AdminPage.groups.permissions.defaultField": "Varsayılan alan",
