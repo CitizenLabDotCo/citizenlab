@@ -228,9 +228,7 @@ resource 'PermissionsCustomField' do
           expect(response_data.dig(:attributes, :ordering)).to match ordering
           expect(PermissionsCustomField.count).to eq 5
         end
-
       end
-
     end
 
     context 'fields are not yet persisted' do
