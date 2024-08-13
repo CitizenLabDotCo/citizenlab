@@ -6,7 +6,7 @@ export const getDescriptionMessage = ({
   attributes: { lock, required },
 }: IPermissionsCustomFieldData) => {
   if (lock === 'group') {
-    return messages.requiredBecauseOfGroup;
+    return required ? messages.requiredGroup : messages.optionalGroup;
   }
 
   return required ? messages.required : messages.optional;
