@@ -169,26 +169,29 @@ const Dropdown: React.FC<Props> = ({
       currentElement.addEventListener('wheel', scrolling);
     }
 
-    if (opened && currentElement) {
+    return () => {
+      if (currentElement) {
+        currentElement.removeEventListener('wheel', scrolling);
+      }
+    };
+  }, []); // No dependencies, so it runs only on mount and unmount
+
+  useEffect(() => {
+    if (opened && dropdownElement.current) {
       // Move focus to the dropdown
-      const focusableElements = currentElement.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
+      const focusableElements =
+        dropdownElement.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
       if (focusableElements.length > 0) {
         focusableElements[0].focus();
       }
     }
 
-    return () => {
-      if (currentElement) {
-        currentElement.removeEventListener('wheel', scrolling);
-      }
-
-      if (!opened && triggerElement.current) {
-        // Move focus back to the trigger element
-        triggerElement.current.focus();
-      }
-    };
+    if (!opened && triggerElement.current) {
+      // Move focus back to the trigger element
+      triggerElement.current.focus();
+    }
   }, [opened]);
 
   const close = (event: FormEvent) => {
