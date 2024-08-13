@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Antwort-Möglichkeiten",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Antwortformat",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Mindestens eine Wahlmöglichkeit muss gegeben sein",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Diese*r Nutzer*in moderiert den Ordner, der dieses Projekt enthält. Um ihr oder ihm die Moderatorenrechte für dieses Projekt zu entziehen, können Sie ihr oder ihm entweder die Ordnerrechte entziehen oder das Projekt in einen anderen Ordner verschieben.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Eine neue Frage erstellen",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Eine Frage erstellen",
   "app.containers.AdminPage.groups.permissions.defaultField": "Standardfeld",
