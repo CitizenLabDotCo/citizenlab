@@ -684,12 +684,10 @@ jobs:
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
-      - run: |
-          if [ ! -f e2e-tenant.dump ]; then
-            bin/rails db:drop db:create db:schema:load
-            bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-            pg_dump -h localhost -U postgres -F c -b -v -f e2e-tenant.dump e2e_front
-          fi
+      - wait-for-postgres
+      - run: test -f e2e-tenant.dump && bin/rails db:create db:schema:load
+      - run: test -f e2e-tenant.dump && bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+      - run: test -f e2e-tenant.dump && pg_dump -h localhost -U postgres -F c -b -v -f e2e-tenant.dump e2e_front
       - save_cache:
           key: e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
           paths:
@@ -720,6 +718,10 @@ jobs:
             cd e2e
             docker-compose up
           background: true
+      - restore_cache:
+          keys:
+            - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      - run: pg_restore -h localhost -U postgres -d e2e_front -c e2e-tenant.dump
       # Wait until build is finished.
       - run: |
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
