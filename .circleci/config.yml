@@ -684,7 +684,7 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
+            - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
       - run: test -f e2e-tenant.dump && circleci-agent step halt
       - copy_secrets_from_lastpass
       - setup_remote_docker:
@@ -698,7 +698,7 @@ jobs:
       - run: cd e2e && docker-compose run web PGPASSWORD=postgres pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump e2e_front
       - run: docker cp $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump .
       - save_cache:
-          key: e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
+          key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
           paths:
             - e2e-tenant.dump
   e2e-tests:
