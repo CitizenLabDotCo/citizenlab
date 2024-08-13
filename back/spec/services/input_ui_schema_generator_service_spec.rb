@@ -873,8 +873,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Submit your answers',
+                  description: "You are about to submit your response. By clicking 'Submit' you give us permission to analyse and include your response in our results. After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -1078,8 +1078,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Submit your answers',
+                  description: "You are about to submit your response. By clicking 'Submit' you give us permission to analyse and include your response in our results. After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
