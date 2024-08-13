@@ -78,8 +78,6 @@ describe WebApi::V1::CustomFieldSerializer do
         input_type: 'linear_scale',
         key: 'scale',
         maximum: 5,
-        maximum_label_multiloc: { 'en' => 'Strongly agree' },
-        minimum_label_multiloc: { 'en' => 'Strongly disagree' },
         linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
         linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
         linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
