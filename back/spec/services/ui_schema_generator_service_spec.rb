@@ -623,7 +623,14 @@ RSpec.describe UiSchemaGeneratorService do
           input_type: field.input_type,
           description: 'Please indicate how strong you agree or disagree.',
           minimum_label: 'Strongly disagree',
-          maximum_label: 'Strongly agree'
+          maximum_label: 'Strongly agree',
+          linear_scale_label_1_multiloc: 'Strongly disagree',
+          linear_scale_label_2_multiloc: 'Disagree',
+          linear_scale_label_3_multiloc: 'Neutral',
+          linear_scale_label_4_multiloc: 'Agree',
+          linear_scale_label_5_multiloc: 'Strongly agree',
+          linear_scale_label_6_multiloc: '',
+          linear_scale_label_7_multiloc: ''
         }
       })
     end
