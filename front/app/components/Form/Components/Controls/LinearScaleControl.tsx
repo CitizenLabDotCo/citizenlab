@@ -44,26 +44,7 @@ const LinearScaleControl = ({
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
-      // Value is 1 and we have a label
-      if (
-        value === minimum &&
-        uischema?.options?.linear_scale_label_1_multiloc
-      ) {
-        return formatMessage(messages.valueOutOfTotalWithLabel, {
-          value,
-          total,
-          label: uischema.options.linear_scale_label_1_multiloc,
-        });
-      }
-      // Value is the max and we have a label
-      if (value === maximum && uischema?.options?.maximum_label) {
-        return formatMessage(messages.valueOutOfTotalWithLabel, {
-          value,
-          total,
-          label: uischema.options.maximum_label,
-        });
-      }
-      // Value is in the middle, and we have a label
+      // If the value has a label, read it out
       if (uischema?.options?.[`linear_scale_label_${value}_multiloc`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
@@ -71,18 +52,19 @@ const LinearScaleControl = ({
           label: uischema.options[`linear_scale_label_${value}_multiloc`],
         });
       }
-      // Value is in the middle, and we have a max label (but not its own label)
-      if (uischema?.options?.[`linear_scale_label_${maximum}_multiloc`]) {
+      // If we don't have a label but we do have a maximum, read out the current value & maximum label
+      else if (uischema?.options?.[`linear_scale_label_${maximum}_multiloc`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
           maxValue: maximum,
-          maxLabel: uischema.options[`linear_scale_label_${value}_multiloc`],
+          maxLabel: uischema.options[`linear_scale_label_${maximum}_multiloc`],
         });
       }
+      // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [minimum, maximum, uischema?.options, formatMessage]
+    [maximum, uischema.options, formatMessage]
   );
 
   useEffect(() => {
@@ -140,17 +122,19 @@ const LinearScaleControl = ({
     event.preventDefault();
   };
 
+  // Put all labels from the UI Schema in an array
   const labelsFromSchema = Array.from({ length: maximum }).map((_, index) => {
     if (uischema?.options?.[`linear_scale_label_${index + 1}_multiloc`]) {
       return uischema.options[`linear_scale_label_${index + 1}_multiloc`];
     }
   });
 
+  // Get an array of the middle value labels so we can determine how to show them in the UI
   const middleValueLabels = labelsFromSchema
-    .map((label) => label) // Copy the array so we don't mutate the original
+    .map((label) => label) // First copy the array so we don't mutate the original
     .splice(1, labelsFromSchema.length - 2); // Get only the middle values
 
-  const hasOnlyMinAndOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
+  const hasOnlyMinOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
 
   return (
     <>
@@ -232,23 +216,22 @@ const LinearScaleControl = ({
           display={isSmallerThanPhone ? 'block' : 'flex'}
           justifyContent="space-between"
         >
-          {hasOnlyMinAndOrMaxLabels &&
+          {hasOnlyMinOrMaxLabels &&
             !isSmallerThanPhone && ( // For desktop view when only min and/or max labels are present
-              <Box maxWidth={'50%'}>
-                <Text mt="8px" mb="0px" color="textSecondary">
-                  {labelsFromSchema[0]}
-                </Text>
-              </Box>
+              <>
+                <Box maxWidth={'50%'}>
+                  <Text mt="8px" mb="0px" color="textSecondary">
+                    {labelsFromSchema[0]}
+                  </Text>
+                </Box>
+                <Box maxWidth={'50%'}>
+                  <Text mt={'8px'} m="0px" color="textSecondary">
+                    {labelsFromSchema[labelsFromSchema.length - 1]}
+                  </Text>
+                </Box>
+              </>
             )}
-          {hasOnlyMinAndOrMaxLabels &&
-            !isSmallerThanPhone && ( // For desktop view when only min and/or max labels are present
-              <Box maxWidth={'50%'}>
-                <Text mt={'8px'} m="0px" color="textSecondary">
-                  {labelsFromSchema[labelsFromSchema.length - 1]}
-                </Text>
-              </Box>
-            )}
-          {(!hasOnlyMinAndOrMaxLabels || isSmallerThanPhone) && ( // Show labels as list when more than 3 or on mobile devices
+          {(!hasOnlyMinOrMaxLabels || isSmallerThanPhone) && ( // Show labels as list when more than 3 or on mobile devices
             <Box maxWidth={'100%'}>
               {labelsFromSchema.map((label, index) => (
                 <Box display="flex" key={`${path}-${index}`}>
