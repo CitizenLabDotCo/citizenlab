@@ -729,13 +729,17 @@ jobs:
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - run: |
-            cd e2e
-            docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
-            docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
       - restore_cache:
           keys:
             - e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      - run: |
+            cd e2e
+            # Wait until the web container is running
+            while [ -z "$(docker-compose ps -q web)" ]; do
+              sleep 1
+            done
+            docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
+            docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
       - run: |
             cd e2e
             docker cp ../uploads $(docker-compose ps -q web):/cl2_back/public/uploads
