@@ -68,11 +68,10 @@ module Permissions
     def add_related_group_fields(permission, fields)
       return fields unless permission.groups.any?
 
-      # Extract field ids and whether they should be require from rules and remove any that don't exist
+      # Extract custom field ids and whether they should be required from rules and then remove any that don't exist
       custom_fields_required_array = extract_custom_field_ids_from_rules(permission.groups)
       custom_fields = CustomField.where(id: custom_fields_required_array.pluck(:id)).pluck(:id)
       custom_fields_required_array.each do |field|
-        # TODO: JS - test for this
         custom_fields_required_array.delete(field) unless custom_fields.include?(field[:id])
       end
       add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group', insert_before: false)
