@@ -76,7 +76,9 @@ const InputManager = ({
     transitive: true,
   });
   const { data: ideas } = useIdeas(queryParameters);
-  const { data: ideaStatuses } = useIdeaStatuses();
+  const { data: ideaStatuses } = useIdeaStatuses({
+    participation_method: 'ideation',
+  });
   const { data: ideaTopics } = useTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
     projectId:

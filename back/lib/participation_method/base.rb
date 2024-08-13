@@ -2,6 +2,10 @@
 
 module ParticipationMethod
   class Base
+    def self.all_methods
+      [DocumentAnnotation, Ideation, Information, NativeSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+    end
+
     def initialize(phase)
       @phase = phase
     end
@@ -12,6 +16,11 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       # Default is to do nothing.
+    end
+
+    # Remove after unified status implementation
+    def idea_status_method
+      self.class.method_str
     end
 
     def generate_slug(input)

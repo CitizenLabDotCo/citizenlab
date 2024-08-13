@@ -11,6 +11,7 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
   end
 
   let(:project_id) { @project.id }
@@ -90,7 +91,7 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        expect(response_data.size).to eq 5
+        expect(response_data.size).to eq 6
         expect(response_data.map { |d| d.dig(:attributes, :action) }).to match_array Permission.available_actions(nil)
       end
     end
@@ -138,6 +139,7 @@ resource 'Permissions' do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
+        parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
@@ -146,10 +148,13 @@ resource 'Permissions' do
 
       context 'permitted_by: verified' do
         let(:permitted_by) { 'verified' }
+        let(:verification_expiry) { 30 }
 
         example_request 'Update a permission with verified permitted_by' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
+          expect(response_data.dig(:attributes, :verification_enabled)).to eq true
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end

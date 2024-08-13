@@ -69,8 +69,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   useObserveEvent('eventAttendance', handleEventAttendanceEvent);
 
-  // NOTE: If the project does not have a current phase then users cannot register for events
-  if (!project || !currentPhase) return null;
+  if (!project) return null;
 
   const { enabled, disabled_reason } =
     project.data.attributes.action_descriptors.attending_event;
@@ -92,11 +91,18 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     }
 
     if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
-      const context = {
-        type: 'phase',
-        action: 'attending_event',
-        id: currentPhase?.id,
-      } as const;
+      // If no current phase, we cannot use the phase context and get specific requirements for the phase
+      // BUT we still allow event registration by using the global context and triggering the default flow
+      const context = currentPhase
+        ? ({
+            type: 'phase',
+            action: 'attending_event',
+            id: currentPhase?.id,
+          } as const)
+        : ({
+            type: 'global',
+            action: 'visiting',
+          } as const);
 
       const successAction: SuccessAction = {
         name: 'attendEvent',

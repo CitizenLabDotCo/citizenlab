@@ -96,7 +96,12 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
     }
   }, [esriLayers, mapView?.map?.layers, mapView]);
 
-  if (!fileUrl?.endsWith('.zip')) {
+  if (!fileUrl) {
+    // No file was uploaded
+    return (
+      <Text fontStyle="italic">{formatMessage(messages.noFileUploaded)}</Text>
+    );
+  } else if (!fileUrl?.endsWith('.zip')) {
     // This is not a valid file for this question type
     return (
       <Text fontStyle="italic">{formatMessage(messages.invalidShapefile)}</Text>

@@ -30,13 +30,6 @@ RSpec.describe Permission do
         expect(permission.global_custom_fields).to be_truthy
       end
     end
-
-    context 'verified' do
-      it 'is true when created' do
-        permission = create(:permission, :by_verified, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
   end
 
   describe 'scopes' do

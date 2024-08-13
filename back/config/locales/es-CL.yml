@@ -48,6 +48,14 @@ es-CL:
     implemented_description: Esta idea ha sido implementada
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
+    expired: finalizado
+    expired_description: finalizado
+    threshold_reached: límite alcanzado
+    threshold_reached_description: límite alcanzado
+    answered: respondida
+    answered_description: respondida
+    ineligible: no elegible
+    ineligible_description: no elegible
   initiative_statuses:
     review_pending: revisión pendiente
     review_pending_description: revisión pendiente

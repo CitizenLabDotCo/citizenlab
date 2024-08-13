@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import CustomFieldModal from './CustomFieldModal';
+import { getDescriptionMessage } from './utils';
 
 interface Props {
   phaseId?: string;
@@ -39,7 +40,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
 
   const fieldName = localize(field.attributes.title_multiloc);
 
-  const disabled = field.attributes.lock !== null;
+  const disableEditAndDelete = field.attributes.lock === 'group';
 
   return (
     <>
@@ -50,52 +51,46 @@ const CustomField = ({ field, phaseId, action }: Props) => {
         justifyContent="space-between"
       >
         <Box>
-          <Text
-            m="0"
-            mt="4px"
-            fontSize="m"
-            color={disabled ? 'grey800' : 'primary'}
-          >
+          <Text m="0" mt="4px" fontSize="m" color={'primary'}>
             {fieldName}
           </Text>
-          <Text fontSize="s" m="0px" color={disabled ? 'grey700' : 'grey800'}>
-            {formatMessage(
-              field.attributes.required ? messages.required : messages.optional
-            )}
+          <Text fontSize="s" m="0px" color={'grey800'}>
+            {formatMessage(getDescriptionMessage(field))}
           </Text>
         </Box>
-        <Box display="flex">
-          <Button
-            icon="edit"
-            buttonStyle="text"
-            p="0"
-            m="0"
-            mr="28px"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsModalOpen(true);
-            }}
-          >
-            {formatMessage(messages.edit)}
-          </Button>
-          <IconButton
-            iconName="delete"
-            iconColor={colors.grey700}
-            iconColorOnHover={colors.black}
-            iconWidth="20px"
-            mr="8px"
-            a11y_buttonActionMessage={formatMessage(messages.removeField)}
-            disabled={disabled}
-            onClick={(e) => {
-              e?.preventDefault();
-              deletePermissionsCustomField({
-                id: field.id,
-                permission_id: field.relationships.permission.data.id,
-                custom_field_id: field.relationships.custom_field.data.id,
-              });
-            }}
-          />
-        </Box>
+        {!disableEditAndDelete && (
+          <Box display="flex">
+            <Button
+              icon="edit"
+              buttonStyle="text"
+              p="0"
+              m="0"
+              mr="28px"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsModalOpen(true);
+              }}
+            >
+              {formatMessage(messages.edit)}
+            </Button>
+            <IconButton
+              iconName="delete"
+              iconColor={colors.grey700}
+              iconColorOnHover={colors.black}
+              iconWidth="20px"
+              mr="8px"
+              a11y_buttonActionMessage={formatMessage(messages.removeField)}
+              onClick={(e) => {
+                e?.preventDefault();
+                deletePermissionsCustomField({
+                  id: field.id,
+                  permission_id: field.relationships.permission.data.id,
+                  custom_field_id: field.relationships.custom_field.data.id,
+                });
+              }}
+            />
+          </Box>
+        )}
       </Box>
       <CustomFieldModal
         field={field}

@@ -16,16 +16,15 @@ module Verification
 
         # Add any fields that are locked to verification method
         def add_verification_fields(permission, fields)
-          method = verification_methods.first
-          return fields unless method.respond_to?(:locked_custom_fields)
+          method = VerificationService.new.first_method_enabled_for_verified_actions
+          return fields unless method.respond_to?(:locked_custom_fields) && method.locked_custom_fields.present?
 
           # Get the IDs of the custom fields that are locked to the verification method
-          custom_field_ids = method&.locked_custom_fields&.filter_map { |field_code| CustomField.find_by(code: field_code.to_s)&.id }
-          add_and_lock_related_fields(permission, fields, custom_field_ids, 'verification')
-        end
+          custom_field_required_array = CustomField.where(code: method.locked_custom_fields).map do |field|
+            { id: field.id, required: true }
+          end
 
-        def verification_methods
-          @verification_methods ||= VerificationService.new.active_methods(AppConfiguration.instance)
+          add_and_lock_related_fields(permission, fields, custom_field_required_array, 'verification')
         end
       end
     end

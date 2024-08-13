@@ -42,7 +42,7 @@ const ActionForm = ({
 
   const {
     id: permissionId,
-    attributes: { permitted_by: permittedBy, action },
+    attributes: { permitted_by, action, verification_enabled },
   } = permissionData;
 
   const participation_method = phase?.data.attributes.participation_method;
@@ -64,32 +64,33 @@ const ActionForm = ({
           <FormattedMessage {...messages.authentication} />
         </Title>
         <AdminCollaboratorToggle
-          checked={permittedBy === 'admins_moderators'}
+          checked={permitted_by === 'admins_moderators'}
           id={`participation-permission-admins-${permissionId}`}
           onChange={() => {
             handlePermittedByUpdate(
-              permittedBy === 'admins_moderators'
+              permitted_by === 'admins_moderators'
                 ? 'users'
                 : 'admins_moderators'
             );
           }}
         />
       </Box>
-      {permittedBy !== 'admins_moderators' && (
+      {permitted_by !== 'admins_moderators' && (
         <Box display="flex" gap="16px">
           <CardButtons
             showAnyone={isSurveyAction}
-            permittedBy={permittedBy}
+            permittedBy={permitted_by}
             onUpdate={handlePermittedByUpdate}
           />
         </Box>
       )}
-      {permittedBy !== 'admins_moderators' && (
+      {permitted_by !== 'admins_moderators' && (
         <Box mt="20px">
           <FlowVisualization
-            permittedBy={permittedBy}
+            permittedBy={permitted_by}
             phaseId={phaseId}
             action={action}
+            verificationEnabled={verification_enabled}
           />
         </Box>
       )}
@@ -101,7 +102,7 @@ const ActionForm = ({
       <Box mt="20px">
         <Fields phaseId={phaseId} action={action} />
       </Box>
-      {showGroupSelect(permittedBy) && (
+      {showGroupSelect(permitted_by) && (
         <Box mt="28px">
           <Title variant="h4" color="primary">
             <FormattedMessage {...messages.restrictParticipation} />

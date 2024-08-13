@@ -49,7 +49,7 @@ export interface IPermissionsCustomFieldData {
   type: 'permissions_custom_field';
   attributes: {
     created_at: string;
-    lock: null | 'verification' | 'groups';
+    lock: null | 'verification' | 'group';
     ordering: number;
     persisted: boolean;
     required: boolean;

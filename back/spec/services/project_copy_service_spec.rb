@@ -31,7 +31,7 @@ describe ProjectCopyService do
     end
 
     it 'successfully copies over native surveys and responses' do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
 
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
@@ -52,7 +52,7 @@ describe ProjectCopyService do
 
       tenant = create(:tenant)
       tenant.switch do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         expect(Project.count).to eq 0
 
         service.import template1

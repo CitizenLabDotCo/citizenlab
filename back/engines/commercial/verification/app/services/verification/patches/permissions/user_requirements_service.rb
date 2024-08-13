@@ -4,10 +4,23 @@ module Verification
   module Patches
     module Permissions
       module UserRequirementsService
-        # Verification requirement can now come from either a group or the permitted_by value
+        MIN_VERIFICATION_EXPIRY = 30.minutes
+
+        # Verification requirement can now come from either a group or the "verified" permitted_by value
         def requires_verification?(permission, user)
-          return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
-          return false unless verification_service.find_verification_group(permission.groups) || permission.permitted_by == 'verified'
+          if permission.permitted_by == 'verified'
+            # Only check requirements for when we require verification again if permitted_by is 'verified'
+            if !permission.verification_expiry.nil? && user.verifications.present?
+              expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
+              last_verification_time = user.verifications.last&.updated_at
+              next_verification_time = last_verification_time + expiry_offset
+              return next_verification_time < Time.now
+            end
+          else
+            # Verification via groups
+            return false if user_allowed_through_other_groups?(permission, user) # if the user meets the requirements of any other group we don't need to ask for verification
+            return false unless verification_service.find_verification_group(permission.groups)
+          end
 
           !user.verified?
         end
@@ -17,8 +30,7 @@ module Verification
         def base_requirements(permission)
           requirements = super
 
-          # TODO: JS - does check groups need to only work with group based verification?
-          if @check_groups && permission.verification_enabled?
+          if @check_groups_and_verification && permission.verification_enabled?
             requirements[:verification] = true
           end
           requirements
@@ -30,14 +42,19 @@ module Verification
           requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified' && user.verified?
           return unless requirements[:verification]
 
-          if user.verified? || user_allowed_through_other_groups?(permission, user)
-            requirements[:verification] = false
-          end
+          requirements[:verification] = requires_verification?(permission, user)
         end
 
         # User can be in other groups that are not verification groups and therefore not need to be verified
         def user_allowed_through_other_groups?(permission, user)
-          (permission.groups.any? && user.in_any_groups?(permission.groups)) && !permission.permitted_by != 'verified'
+          return false unless permission.groups.any?
+
+          # Remove the verification group from the list of groups
+          groups = permission.groups.to_a
+          groups.delete(verification_service.find_verification_group(groups))
+          return false unless groups.any?
+
+          user.in_any_groups?(groups)
         end
 
         def verification_service

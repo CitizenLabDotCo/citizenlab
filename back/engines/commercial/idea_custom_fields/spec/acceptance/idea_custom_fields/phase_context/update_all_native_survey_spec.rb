@@ -583,7 +583,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Updating custom fields in a native survey phase when there are responses' do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea, project: context.project, creation_phase: context, phases: [context])
 
@@ -2963,7 +2963,7 @@ resource 'Idea Custom Fields' do
 
       example 'Updating custom fields when there are responses' do
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         create(:idea, project: context.project, phases: [context])
 
         do_request(custom_fields: [])

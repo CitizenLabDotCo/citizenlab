@@ -48,6 +48,14 @@ cy:
     implemented_description: Mae'r syniad hwn wedi'i roi ar waith gan y ddinas
     rejected: gwrthodwyd
     rejected_description: Mae'r syniad hwn wedi'i wrthod
+    expired: wedi dod i ben
+    expired_description: wedi dod i ben
+    threshold_reached: trothwy wedi ei gyrraedd
+    threshold_reached_description: trothwy wedi ei gyrraedd
+    answered: atebodd
+    answered_description: atebodd
+    ineligible: anghymwys
+    ineligible_description: anghymwys
   initiative_statuses:
     review_pending: adolygiad yn yr arfaeth
     review_pending_description: adolygiad yn yr arfaeth
