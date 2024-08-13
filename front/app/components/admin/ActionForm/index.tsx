@@ -62,28 +62,19 @@ const ActionForm = ({
 
   return (
     <form>
-      <Box
-        mb="20px"
-        display="flex"
-        flexDirection="row"
-        w="100%"
-        maxWidth="996px"
-        justifyContent="space-between"
-      >
+      <AdminCollaboratorToggle
+        checked={permitted_by === 'admins_moderators'}
+        id={`participation-permission-admins-${permissionId}`}
+        onChange={() => {
+          handlePermittedByUpdate(
+            permitted_by === 'admins_moderators' ? 'users' : 'admins_moderators'
+          );
+        }}
+      />
+      <Box my="20px">
         <Title variant="h4" m="0" color="primary">
           <FormattedMessage {...messages.authentication} />
         </Title>
-        <AdminCollaboratorToggle
-          checked={permitted_by === 'admins_moderators'}
-          id={`participation-permission-admins-${permissionId}`}
-          onChange={() => {
-            handlePermittedByUpdate(
-              permitted_by === 'admins_moderators'
-                ? 'users'
-                : 'admins_moderators'
-            );
-          }}
-        />
       </Box>
       {permitted_by !== 'admins_moderators' && (
         <Box display="flex" gap="16px">
