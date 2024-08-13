@@ -685,7 +685,7 @@ jobs:
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - run: test -f e2e-tenant.dump && circleci-agent step halt
+      # - run: test -f e2e-tenant.dump && circleci-agent step halt
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           docker_layer_caching: true
