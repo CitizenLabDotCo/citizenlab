@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Ateb dewisiadau",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Fformat ateb",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Rhaid darparu o leiaf un dewis",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Mae'r defnyddiwr hwn yn cymedroli'r ffolder sy'n cynnwys y prosiect hwn. I ddileu eu hawliau safonwr ar gyfer y prosiect hwn, gallwch naill ai ddiddymu eu hawliau ffolder neu symud y prosiect i ffolder arall.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Creu cwestiwn newydd",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Creu cwestiwn",
   "app.containers.AdminPage.groups.permissions.defaultField": "Maes rhagosodedig",
