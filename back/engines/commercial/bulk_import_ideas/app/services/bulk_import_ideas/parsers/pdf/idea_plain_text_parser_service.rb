@@ -56,8 +56,8 @@ module BulkImportIdeas::Parsers::Pdf
 
     def process_field_value(field, value)
       # Remove static instructions
-      instructions_copy = ::BulkImportIdeas::Exporters::IdeaPdfFormExporter.generate_multiselect_instructions(field, @locale)
-      value = value.gsub(instructions_copy, '')
+      instructions_copy = BulkImportIdeas::Exporters::IdeaPdfFormExporter.generate_multiselect_instructions(field, @locale)
+      value = value.gsub("*#{instructions_copy}", '') if instructions_copy
 
       # Strip out unneeded generic text
       field_value = value.strip

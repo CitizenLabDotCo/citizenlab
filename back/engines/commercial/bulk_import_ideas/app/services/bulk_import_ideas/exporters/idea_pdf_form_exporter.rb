@@ -398,7 +398,7 @@ module BulkImportIdeas::Exporters
         min = custom_field.minimum_select_count
         max = custom_field.maximum_select_count
         min = nil if min == 0
-        max = nil if max >= custom_field.options.length
+        max = nil if max&.>= custom_field.options.length
 
         I18n.with_locale(locale) do
           if custom_field.select_count_enabled && (min || max)
