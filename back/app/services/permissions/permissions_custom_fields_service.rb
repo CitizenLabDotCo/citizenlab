@@ -3,6 +3,10 @@
 module Permissions
   class PermissionsCustomFieldsService
     def fields_for_permission(permission, return_hidden: false)
+      # Currently we don't support custom fields for 'everyone' though the rest of the code is ready for it
+      # So we have added this block until we do support it
+      return [] if permission.permitted_by == 'everyone'
+
       fields = if permission.global_custom_fields
         default_fields(permission)
       else
