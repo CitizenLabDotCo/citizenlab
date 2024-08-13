@@ -15,9 +15,9 @@ export const showGroupSelect = (permittedBy: PermittedBy) => {
 export const showResetButton = (
   permittedBy: PermittedBy,
   fields: IPermissionsCustomFieldData[],
-  groupIds: string[]
+  groupIds?: string[]
 ) => {
-  if (groupIds.length > 0) return true;
+  if (groupIds && groupIds.length > 0) return true;
 
   if (permittedBy === 'admins_moderators' || permittedBy === 'everyone') {
     return false;
