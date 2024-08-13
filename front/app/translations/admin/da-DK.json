@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Svarmuligheder",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Svarformat",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Der skal være mindst ét valg",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Denne bruger modererer den mappe, der indeholder dette projekt. For at fjerne deres moderatorrettigheder til dette projekt kan du enten tilbagekalde deres mapperettigheder eller flytte projektet til en anden mappe.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Opret et nyt spørgsmål",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Opret et spørgsmål",
   "app.containers.AdminPage.groups.permissions.defaultField": "Standardfelt",
