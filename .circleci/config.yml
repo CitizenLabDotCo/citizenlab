@@ -675,6 +675,25 @@ jobs:
       - run: npm run chromatic
 
   # E2E TESTS
+  e2e-setup-db:
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    steps:
+      - restore_cache:
+          keys:
+            - e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
+      - run: |
+          if [ ! -f e2e-tenant.dump ]; then
+            bin/rails db:drop db:create db:schema:load
+            bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+            pg_dump -h localhost -U postgres -F c -b -v -f e2e-tenant.dump e2e_front
+          fi
+      - save_cache:
+          key: e2e-tenant-dump-{{ checksum "config/tenant_templates/e2etests_template.yml" }}-{{ checksum "db/structure.sql" }}
+          paths:
+            - e2e-tenant.dump
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
@@ -735,6 +754,23 @@ workflows:
 
   manually-e2e-tests:
     jobs:
+      - back-build-docker-image:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+      - e2e-setup-db:
+          context:
+            - docker-hub-access
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+          requires:
+            - back-build-docker-image
       - e2e-tests:
           context:
             - docker-hub-access
@@ -743,6 +779,8 @@ workflows:
             branches:
               only:
                 - TAN-2500-ci-e2e-speedup
+          requires:
+            - e2e-setup-db
 
   # ci:
   #   when: << pipeline.parameters.trigger >>
@@ -791,7 +829,7 @@ workflows:
   #               - /l10n_.*/
   #         context:
   #           - docker-hub-access
-  #           - citizenlab-ee-environment
+  #           - 
   #     - back-lint:
   #         context:
   #           - docker-hub-access
