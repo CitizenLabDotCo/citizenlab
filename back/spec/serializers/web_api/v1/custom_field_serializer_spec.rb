@@ -67,7 +67,7 @@ describe WebApi::V1::CustomFieldSerializer do
   context 'linear_scale field' do
     let(:field) { create(:custom_field_linear_scale, :for_custom_form, key: 'scale') }
 
-    it 'includes maximum, minimum_label_multiloc, and maximum_label_multiloc' do
+    it 'includes maximum and scale value labels' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
       expect(attributes).to match({
