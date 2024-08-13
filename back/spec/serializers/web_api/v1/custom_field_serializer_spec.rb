@@ -67,7 +67,7 @@ describe WebApi::V1::CustomFieldSerializer do
   context 'linear_scale field' do
     let(:field) { create(:custom_field_linear_scale, :for_custom_form, key: 'scale') }
 
-    it 'includes maximum, minimum_label_multiloc, and maximum_label_multiloc' do
+    it 'includes maximum and scale value labels' do
       serialized_field = described_class.new(field).serializable_hash
       attributes = serialized_field[:data][:attributes]
       expect(attributes).to match({
@@ -78,8 +78,6 @@ describe WebApi::V1::CustomFieldSerializer do
         input_type: 'linear_scale',
         key: 'scale',
         maximum: 5,
-        maximum_label_multiloc: { 'en' => 'Strongly agree' },
-        minimum_label_multiloc: { 'en' => 'Strongly disagree' },
         linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
         linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
         linear_scale_label_3_multiloc: { 'en' => 'Neutral' },

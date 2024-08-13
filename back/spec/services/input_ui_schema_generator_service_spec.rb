@@ -1000,8 +1000,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    maximum_label: '',
-                    minimum_label: '',
                     linear_scale_label_1_multiloc: '',
                     linear_scale_label_2_multiloc: '',
                     linear_scale_label_3_multiloc: '',

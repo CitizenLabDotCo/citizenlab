@@ -29,8 +29,6 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   end
 
   attributes :maximum,
-    :minimum_label_multiloc,
-    :maximum_label_multiloc,
     :linear_scale_label_1_multiloc,
     :linear_scale_label_2_multiloc,
     :linear_scale_label_3_multiloc,

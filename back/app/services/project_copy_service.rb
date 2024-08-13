@@ -159,8 +159,6 @@ class ProjectCopyService < TemplateService
         'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
-        'minimum_label_multiloc' => field.minimum_label_multiloc,
-        'maximum_label_multiloc' => field.maximum_label_multiloc,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
