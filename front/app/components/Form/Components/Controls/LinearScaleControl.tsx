@@ -39,7 +39,6 @@ const LinearScaleControl = ({
 
   const minimum = 1;
   const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
-  const totalOptions = maximum;
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -77,10 +76,10 @@ const LinearScaleControl = ({
       sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getValueText(data || minimum, totalOptions)
+        getValueText(data || minimum, maximum)
       );
     }
-  }, [data, getValueText, minimum, totalOptions]);
+  }, [data, getValueText, minimum, maximum]);
 
   if (!visible) {
     return null;
@@ -121,7 +120,7 @@ const LinearScaleControl = ({
       sliderRef.current.setAttribute('aria-valuenow', String(newValue));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getValueText(newValue, totalOptions)
+        getValueText(newValue, maximum)
       );
     }
     event.preventDefault();
@@ -161,9 +160,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box
-                flexGrow={
-                  isSmallerThanPhone && totalOptions && totalOptions > 5 ? 0 : 1
-                }
+                flexGrow={isSmallerThanPhone && maximum && maximum > 5 ? 0 : 1}
                 key={`${path}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
                 padding="16px, 20px, 16px, 20px"
