@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required',
     defaultMessage: 'Required',
   },
-  notRequired: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.notRequired',
-    defaultMessage: 'Not required',
-  },
   addAQuestion: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion',
     defaultMessage: 'Add a question',
@@ -33,12 +29,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus',
     defaultMessage: 'Field status',
   },
-  notAsked: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.notAsked',
-    defaultMessage: 'Not asked',
-  },
   removeField: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.removeField',
     defaultMessage: 'Remove field',
+  },
+  requiredBecauseOfGroup: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.requiredBecauseOfGroup',
+    defaultMessage: 'Required because part of group',
   },
 });

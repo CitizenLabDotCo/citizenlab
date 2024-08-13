@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import CustomFieldModal from './CustomFieldModal';
+import { getDescriptionMessage } from './utils';
 
 interface Props {
   phaseId?: string;
@@ -39,7 +40,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
 
   const fieldName = localize(field.attributes.title_multiloc);
 
-  const disabled = field.attributes.lock !== null;
+  const disableEditAndDelete = field.attributes.lock === 'group';
 
   return (
     <>
@@ -50,21 +51,14 @@ const CustomField = ({ field, phaseId, action }: Props) => {
         justifyContent="space-between"
       >
         <Box>
-          <Text
-            m="0"
-            mt="4px"
-            fontSize="m"
-            color={disabled ? 'grey800' : 'primary'}
-          >
+          <Text m="0" mt="4px" fontSize="m" color={'primary'}>
             {fieldName}
           </Text>
-          <Text fontSize="s" m="0px" color={disabled ? 'grey700' : 'grey800'}>
-            {formatMessage(
-              field.attributes.required ? messages.required : messages.optional
-            )}
+          <Text fontSize="s" m="0px" color={'grey800'}>
+            {formatMessage(getDescriptionMessage(field))}
           </Text>
         </Box>
-        {!disabled && (
+        {!disableEditAndDelete && (
           <Box display="flex">
             <Button
               icon="edit"
@@ -86,7 +80,6 @@ const CustomField = ({ field, phaseId, action }: Props) => {
               iconWidth="20px"
               mr="8px"
               a11y_buttonActionMessage={formatMessage(messages.removeField)}
-              disabled={disabled}
               onClick={(e) => {
                 e?.preventDefault();
                 deletePermissionsCustomField({
