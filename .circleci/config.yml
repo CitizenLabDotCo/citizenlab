@@ -694,7 +694,7 @@ jobs:
           cd e2e
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-      - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump e2e_front
+      - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
       - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
       - save_cache:
           key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
@@ -729,7 +729,7 @@ jobs:
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - run: pg_restore -h localhost -U postgres -d e2e_front -c e2e-tenant.dump
+      - run: pg_restore -h localhost -U postgres -d cl2_back_development -c e2e-tenant.dump
       # Wait until build is finished.
       - run: |
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
