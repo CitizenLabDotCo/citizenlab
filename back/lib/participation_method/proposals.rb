@@ -17,10 +17,6 @@ module ParticipationMethod
       phase.reacting_threshold ||= 300
     end
 
-    # def assign_defaults(_)
-    #   super # TODO: default status and publication status
-    # end
-
     def budget_in_form?(_)
       false
     end
@@ -34,12 +30,8 @@ module ParticipationMethod
     # end
 
     def supports_automated_statuses?
-      true # TODO: This is temorary, until proposal statuses are implemented
+      true
     end
-
-    # def supports_status?
-    #   super # TODO: separate proposal statuses
-    # end
 
     def supports_serializing?(attribute)
       %i[expire_days_limit reacting_threshold].include?(attribute)

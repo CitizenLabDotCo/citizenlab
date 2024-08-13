@@ -108,7 +108,7 @@ module ParticipationMethod
     end
 
     def supports_automated_statuses?
-      false # TODO: This is temorary, until proposal statuses are implemented
+      false
     end
 
     def supports_status?
