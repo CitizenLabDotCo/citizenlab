@@ -102,7 +102,7 @@ const ScaleLabelsInput = ({
               </Box>
               <Input
                 type="text"
-                value={labelMultiloc[selectedLocale]}
+                value={labelMultiloc?.[selectedLocale]}
                 onChange={(value) => {
                   const updatedMultiloc = labelMultiloc;
                   updatedMultiloc[selectedLocale] = value;

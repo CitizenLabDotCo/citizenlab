@@ -44,13 +44,18 @@ const LinearScaleControl = ({
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
-      if (value === minimum && uischema?.options?.minimum_label) {
+      // Value is 1 and we have a label
+      if (
+        value === minimum &&
+        uischema?.options?.linear_scale_label_1_multiloc
+      ) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
-          label: uischema.options.minimum_label,
+          label: uischema.options.linear_scale_label_1_multiloc,
         });
       }
+      // Value is the max and we have a label
       if (value === maximum && uischema?.options?.maximum_label) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
@@ -58,12 +63,21 @@ const LinearScaleControl = ({
           label: uischema.options.maximum_label,
         });
       }
-      if (uischema?.options?.maximum_label) {
+      // Value is in the middle, and we have a label
+      if (uischema?.options?.[`linear_scale_label_${value}_multiloc`]) {
+        return formatMessage(messages.valueOutOfTotalWithLabel, {
+          value,
+          total,
+          label: uischema.options[`linear_scale_label_${value}_multiloc`],
+        });
+      }
+      // Value is in the middle, and we have a max label (but not its own label)
+      if (uischema?.options?.[`linear_scale_label_${maximum}_multiloc`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
           maxValue: maximum,
-          maxLabel: uischema.options.maximum_label,
+          maxLabel: uischema.options[`linear_scale_label_${value}_multiloc`],
         });
       }
       return formatMessage(messages.valueOutOfTotal, { value, total });
@@ -125,6 +139,18 @@ const LinearScaleControl = ({
     }
     event.preventDefault();
   };
+
+  const labelsFromSchema = Array.from({ length: maximum }).map((_, index) => {
+    if (uischema?.options?.[`linear_scale_label_${index + 1}_multiloc`]) {
+      return uischema.options[`linear_scale_label_${index + 1}_multiloc`];
+    }
+  });
+
+  const middleValueLabels = labelsFromSchema
+    .map((label) => label) // Copy the array so we don't mutate the original
+    .splice(1, labelsFromSchema.length - 2); // Get only the middle values
+
+  const hasOnlyMinAndOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
 
   return (
     <>
@@ -206,30 +232,51 @@ const LinearScaleControl = ({
           display={isSmallerThanPhone ? 'block' : 'flex'}
           justifyContent="space-between"
         >
-          {uischema.options?.minimum_label && (
-            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
-              <Text
-                mt="8px"
-                mb="0px"
-                color="textSecondary"
-                fontSize={isSmallerThanPhone ? 's' : 'm'}
-              >
-                {isSmallerThanPhone && <>1. </>}
-                {uischema.options?.minimum_label}
-              </Text>
-            </Box>
-          )}
-          {uischema.options?.maximum_label && (
-            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
-              <Text
-                mt={isSmallerThanPhone ? '0px' : '8px'}
-                m="0px"
-                color="textSecondary"
-                fontSize={isSmallerThanPhone ? 's' : 'm'}
-              >
-                {isSmallerThanPhone && <>{maximum}. </>}
-                {uischema.options?.maximum_label}
-              </Text>
+          {hasOnlyMinAndOrMaxLabels &&
+            !isSmallerThanPhone && ( // For desktop view when only min and/or max labels are present
+              <Box maxWidth={'50%'}>
+                <Text mt="8px" mb="0px" color="textSecondary">
+                  {labelsFromSchema[0]}
+                </Text>
+              </Box>
+            )}
+          {hasOnlyMinAndOrMaxLabels &&
+            !isSmallerThanPhone && ( // For desktop view when only min and/or max labels are present
+              <Box maxWidth={'50%'}>
+                <Text mt={'8px'} m="0px" color="textSecondary">
+                  {labelsFromSchema[labelsFromSchema.length - 1]}
+                </Text>
+              </Box>
+            )}
+          {(!hasOnlyMinAndOrMaxLabels || isSmallerThanPhone) && ( // Show labels as list when more than 3 or on mobile devices
+            <Box maxWidth={'100%'}>
+              {labelsFromSchema.map((label, index) => (
+                <Box display="flex" key={`${path}-${index}`}>
+                  {label && (
+                    <>
+                      <Text
+                        key={`${path}-${index}-number`}
+                        mt="8px"
+                        mb="0px"
+                        mr="8px"
+                        color="textSecondary"
+                        style={{ textAlign: 'center' }}
+                      >
+                        {`${index + 1}.`}
+                      </Text>
+                      <Text
+                        key={`${path}-${index}-value`}
+                        mt="8px"
+                        mb="0px"
+                        color="textSecondary"
+                        style={{ textAlign: 'center' }}
+                      >
+                        {label}
+                      </Text>
+                    </>
+                  )}
+                </Box>
+              ))}
             </Box>
           )}
         </Box>
