@@ -8,7 +8,7 @@ import permissionsCustomFieldsKeys from './keys';
 import { IPermissionsCustomFields, EventsKeys, IListParameters } from './types';
 import { getPath } from './utils';
 
-const fetchEvents = ({ phaseId, action }: IListParameters) => {
+const fetchPermissionsCustomFields = ({ phaseId, action }: IListParameters) => {
   return fetcher<IPermissionsCustomFields>({
     path: getPath({ phaseId, action }),
     action: 'get',
@@ -26,7 +26,7 @@ const usePermissionsCustomFields = ({ phaseId, action }: IListParameters) => {
       phaseId,
       action,
     }),
-    queryFn: () => fetchEvents({ phaseId, action }),
+    queryFn: () => fetchPermissionsCustomFields({ phaseId, action }),
   });
 };
 
