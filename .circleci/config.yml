@@ -696,10 +696,15 @@ jobs:
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
       - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
+      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
       - save_cache:
           key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
           paths:
             - e2e-tenant.dump
+      - save_cache:
+          key: e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+          paths:
+            - uploads
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
@@ -709,18 +714,13 @@ jobs:
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
           # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
           # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
           docker-compose build --parallel
-      - run: |
-          cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load
-          docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run:
           command: |
             cd e2e
@@ -729,7 +729,16 @@ jobs:
       - restore_cache:
           keys:
             - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - run: pg_restore -h localhost -U postgres -d cl2_back_development -c e2e-tenant.dump
+      - run: |
+            cd e2e
+            docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
+            docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
+      - restore_cache:
+          keys:
+            - e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      - run: |
+            cd e2e
+            docker cp ../uploads $(docker-compose ps -q web):/cl2_back/public/uploads
       # Wait until build is finished.
       - run: |
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
