@@ -338,7 +338,7 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {},
       author: female_user
     )
-    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
+    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1, 6 => 2, 7 => 3 }.each do |value, count|
       count.times do
         create(
           :native_survey_response,
@@ -361,7 +361,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct totals' do
-        expect(generated_results[:totalSubmissions]).to eq 22
+        expect(generated_results[:totalSubmissions]).to eq 27
       end
 
       it 'returns the correct fields and structure' do
@@ -379,7 +379,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'What is your favourite colour?' },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 4,
           textResponses: [
             { answer: 'Blue' },
@@ -406,7 +406,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
           }
@@ -423,7 +423,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
           }
@@ -443,11 +443,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 4,
-          totalPickCount: 28,
+          totalPickCount: 33,
           answers: [
-            { answer: nil, count: 18 },
+            { answer: nil, count: 23 },
             { answer: 'cat', count: 4 },
             { answer: 'dog', count: 3 },
             { answer: 'cow', count: 2 },
@@ -484,11 +484,11 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 18,
+                count: 23,
                 groups: [
                   { count: 1, group: 'male' },
                   { count: 2, group: 'female' },
-                  { count: 15, group: nil }
+                  { count: 20, group: nil }
                 ]
               }, {
                 answer: 'cat',
@@ -537,11 +537,11 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 18,
+                count: 23,
                 groups: [
                   { count: 1, group: 'la' },
                   { count: 1, group: 'other' },
-                  { count: 16, group: nil }
+                  { count: 21, group: nil }
                 ]
               }, {
                 answer: 'cat',
@@ -616,12 +616,12 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          totalResponseCount: 22,
-          questionResponseCount: 17,
-          totalPickCount: 22,
+          totalResponseCount: 27,
+          questionResponseCount: 22,
+          totalPickCount: 27,
           answers: [
-            { answer: 7, count: 0 },
-            { answer: 6, count: 0 },
+            { answer: 7, count: 3 },
+            { answer: 6, count: 2 },
             { answer: 5, count: 1 },
             { answer: 4, count: 1 },
             { answer: 3, count: 8 },
@@ -691,12 +691,16 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            totalResponseCount: 22,
-            questionResponseCount: 17,
-            totalPickCount: 22,
+            totalResponseCount: 27,
+            questionResponseCount: 22,
+            totalPickCount: 27,
             answers: [
-              { answer: 7, count: 0, groups: [] },
-              { answer: 6, count: 0, groups: [] },
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
               { answer: 5, count: 1, groups: [
                 { count: 1, group: nil }
               ] },
@@ -763,11 +767,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 6,
-          totalPickCount: 22,
+          totalPickCount: 27,
           answers: [
-            { answer: nil, count: 16 },
+            { answer: nil, count: 21 },
             { answer: 'la', count: 2 },
             { answer: 'ny', count: 1 },
             { answer: 'other', count: 3 }
@@ -795,7 +799,7 @@ RSpec.describe SurveyResultsGeneratorService do
         it 'returns select answers in order of the number of responses, with other always last' do
           answers = generator.generate_results.dig(:results, 4, :answers)
           expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
-          expect(answers.pluck(:count)).to eq [16, 2, 1, 3]
+          expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
         end
 
         it 'returns a single result for a select field' do
@@ -811,10 +815,10 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 16,
+                count: 21,
                 groups: [
                   { count: 1, group: 'female' },
-                  { count: 15, group: nil }
+                  { count: 20, group: nil }
                 ]
               }, {
                 answer: 'la',
@@ -857,14 +861,16 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 6,
-            totalPickCount: 22,
+            totalPickCount: 27,
             answers: [
               {
                 answer: nil,
-                count: 16,
+                count: 21,
                 groups: [
+                  { count: 3, group: 7 },
+                  { count: 2, group: 6 },
                   { count: 1, group: 5 },
                   { count: 7, group: 3 },
                   { count: 5, group: 2 },
@@ -954,11 +960,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 3,
-          totalPickCount: 22,
+          totalPickCount: 27,
           answers: [
-            { answer: nil, count: 19 },
+            { answer: nil, count: 24 },
             { answer: 'house', count: 2 },
             { answer: 'school', count: 1 }
           ],
@@ -1003,12 +1009,12 @@ RSpec.describe SurveyResultsGeneratorService do
           expect(result[:answers]).to match [
             {
               answer: nil,
-              count: 19,
+              count: 24,
               groups: [
                 { count: 1, group: 'la' },
                 { count: 1, group: 'ny' },
                 { count: 1, group: 'other' },
-                { count: 16, group: nil }
+                { count: 21, group: nil }
               ]
             },
             {
@@ -1038,7 +1044,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
             { name: end_with('.pdf'), url: end_with('.pdf') }
@@ -1059,7 +1065,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
             { name: end_with('.pdf'), url: end_with('.pdf') }
@@ -1080,7 +1086,7 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           grouped: false,
           questionResponseCount: 2,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           customFieldId: point_field.id,
           mapConfigId: map_config_for_point.id,
           pointResponses: a_collection_containing_exactly(
@@ -1103,7 +1109,7 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           grouped: false,
           questionResponseCount: 2,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           customFieldId: line_field.id,
           mapConfigId: map_config_for_line.id,
           lineResponses: a_collection_containing_exactly(
@@ -1126,7 +1132,7 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           grouped: false,
           questionResponseCount: 2,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           customFieldId: polygon_field.id,
           mapConfigId: map_config_for_polygon.id,
           polygonResponses: a_collection_containing_exactly(
@@ -1149,7 +1155,7 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           grouped: false,
           questionResponseCount: 1,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           customFieldId: number_field.id,
           numberResponses: a_collection_containing_exactly(
             { answer: 42 }
