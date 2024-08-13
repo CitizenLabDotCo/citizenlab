@@ -65,13 +65,14 @@ resource 'PermissionsCustomField' do
       do_request
 
       assert_status 200
+
       expect(response_data.size).to eq 2
       expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true, true]
       expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id, permission.id]
-      expect(response_data.first.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
-      expect(response_data.first.dig(:relationships, :groups, :data).count).to eq 1
-      expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
-      expect(response_data.first.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
+      expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
+      expect(response_data.last.dig(:relationships, :groups, :data).count).to eq 1
+      expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).to include associated_group.id
+      expect(response_data.last.dig(:relationships, :groups, :data).pluck(:id)).not_to include not_used_group.id
     end
   end
 
