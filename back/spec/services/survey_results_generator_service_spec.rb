@@ -74,13 +74,38 @@ RSpec.describe SurveyResultsGeneratorService do
         'fr-FR' => "Êtes-vous d'accord avec la vision ?",
         'nl-NL' => 'Ben je het eens met de visie?'
       },
-      maximum: 5,
-      minimum_label_multiloc: {
+      maximum: 7,
+      linear_scale_label_1_multiloc: {
         'en' => 'Strongly disagree',
         'fr-FR' => "Pas du tout d'accord",
         'nl-NL' => 'Helemaal niet mee eens'
       },
-      maximum_label_multiloc: {
+      linear_scale_label_2_multiloc: {
+        'en' => 'Disagree',
+        'fr-FR' => 'Être en désaccord',
+        'nl-NL' => 'Niet mee eens'
+      },
+      linear_scale_label_3_multiloc: {
+        'en' => 'Slightly disagree',
+        'fr-FR' => 'Plutôt en désaccord',
+        'nl-NL' => 'Enigszins oneens'
+      },
+      linear_scale_label_4_multiloc: {
+        'en' => 'Neutral',
+        'fr-FR' => 'Neutre',
+        'nl-NL' => 'Neutraal'
+      },
+      linear_scale_label_5_multiloc: {
+        'en' => 'Slightly agree',
+        'fr-FR' => "Plutôt d'accord",
+        'nl-NL' => 'Enigszins eens'
+      },
+      linear_scale_label_6_multiloc: {
+        'en' => 'Agree',
+        'fr-FR' => "D'accord",
+        'nl-NL' => 'Mee eens'
+      },
+      linear_scale_label_7_multiloc: {
         'en' => 'Strongly agree',
         'fr-FR' => "Tout à fait d'accord",
         'nl-NL' => 'Strerk mee eens'
@@ -595,6 +620,8 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 17,
           totalPickCount: 22,
           answers: [
+            { answer: 7, count: 0 },
+            { answer: 6, count: 0 },
             { answer: 5, count: 1 },
             { answer: 4, count: 1 },
             { answer: 3, count: 8 },
@@ -605,10 +632,12 @@ RSpec.describe SurveyResultsGeneratorService do
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
             }
           }
         }
@@ -625,23 +654,23 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
         let(:expected_result_linear_scale_without_min_and_max_labels) do
           expected_result_linear_scale.tap do |result|
-            result[:multilocs][:answer][5][:title_multiloc] = {
-              'en' => '5 - Strongly agree',
-              'fr-FR' => '5',
-              'nl-NL' => '5'
-            }
             result[:multilocs][:answer][1][:title_multiloc] = {
               'en' => '1',
               'fr-FR' => "1 - Pas du tout d'accord",
               'nl-NL' => '1'
+            }
+            result[:multilocs][:answer][5][:title_multiloc] = {
+              'en' => '5 - Slightly agree',
+              'fr-FR' => '5',
+              'nl-NL' => '5'
             }
           end
         end
 
         before do
           linear_scale_field.update!(
-            minimum_label_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
-            maximum_label_multiloc: { 'en' => 'Strongly agree' }
+            linear_scale_label_1_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
+            linear_scale_label_5_multiloc: { 'en' => 'Slightly agree' }
           )
         end
 
@@ -666,6 +695,8 @@ RSpec.describe SurveyResultsGeneratorService do
             questionResponseCount: 17,
             totalPickCount: 22,
             answers: [
+              { answer: 7, count: 0, groups: [] },
+              { answer: 6, count: 0, groups: [] },
               { answer: 5, count: 1, groups: [
                 { count: 1, group: nil }
               ] },
@@ -691,10 +722,12 @@ RSpec.describe SurveyResultsGeneratorService do
             multilocs: {
               answer: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
@@ -870,13 +903,15 @@ RSpec.describe SurveyResultsGeneratorService do
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
-            legend: [5, 4, 3, 2, 1, nil],
+            legend: [7, 6, 5, 4, 3, 2, 1, nil],
             textResponses: [
               { answer: 'Austin' },
               { answer: 'Miami' },

@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Image upload",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Invalid logic",
-  "app.components.formBuilder.labels": "Labels",
-  "app.components.formBuilder.labelsTooltipContent": "Choose optional labels for your minimum and maximum values.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Are you sure you want to leave?",
   "app.components.formBuilder.leaveBuilderText": "You have unsaved changes. Please save before leaving. If you leave, you'll lose your changes.",

@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Konstruktor formularzy",
   "app.components.formBuilder.imageFileUpload": "Przesyłanie zdjęć",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nieprawidłowa logika",
-  "app.components.formBuilder.labels": "Etykiety",
-  "app.components.formBuilder.labelsTooltipContent": "Wybierz opcjonalne etykiety dla swoich wartości minimalnych i maksymalnych.",
   "app.components.formBuilder.layout": "Układ",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Jesteś pewien, że chcesz odejść?",
   "app.components.formBuilder.leaveBuilderText": "Masz niezapisane zmiany. Zapisz je przed wyjściem. Jeśli wyjdziesz, utracisz wprowadzone zmiany.",

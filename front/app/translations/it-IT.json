@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Costruttore di moduli",
   "app.components.formBuilder.imageFileUpload": "Caricamento dell'immagine",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logica non valida",
-  "app.components.formBuilder.labels": "Etichette",
-  "app.components.formBuilder.labelsTooltipContent": "Scegliere le etichette opzionali per i valori minimi e massimi.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Sei sicuro di volertene andare?",
   "app.components.formBuilder.leaveBuilderText": "Le modifiche non sono state salvate. Salva prima di andartene. Se esci, perderai le tue modifiche.",
