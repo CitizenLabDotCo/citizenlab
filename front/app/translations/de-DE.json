@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Eingabeformular erstellen",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ungültige Logik",
-  "app.components.formBuilder.labels": "Beschriftungen",
-  "app.components.formBuilder.labelsTooltipContent": "Wählen Sie optionale Beschriftungen für Ihre Mindest- und Höchstwerte.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Sind Sie sicher, dass Sie das Fenster schließen möchten ohne zu speichern?",
   "app.components.formBuilder.leaveBuilderText": "Sie haben nicht gespeicherte Änderungen. Bitte speichern Sie, bevor Sie gehen. Wenn Sie gehen, gehen Ihre Änderungen verloren.",

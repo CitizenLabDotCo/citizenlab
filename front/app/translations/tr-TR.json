@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Form oluşturucu",
   "app.components.formBuilder.imageFileUpload": "Resim yükleme",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Geçersiz mantık",
-  "app.components.formBuilder.labels": "Etiketler",
-  "app.components.formBuilder.labelsTooltipContent": "Minimum ve maksimum değerleriniz için isteğe bağlı etiketler seçin.",
   "app.components.formBuilder.layout": "Düzen",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Gitmek istediğine emin misin?",
   "app.components.formBuilder.leaveBuilderText": "Kaydedilmemiş değişiklikleriniz var. Lütfen ayrılmadan önce kaydedin. Ayrılırsanız, değişikliklerinizi kaybedersiniz.",

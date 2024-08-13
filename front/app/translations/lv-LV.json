@@ -716,8 +716,6 @@
   "app.components.formBuilder.helmetTitle": "Veidlapas veidotājs",
   "app.components.formBuilder.imageFileUpload": "Attēlu augšupielāde",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nederīga loģika",
-  "app.components.formBuilder.labels": "Etiķetes",
-  "app.components.formBuilder.labelsTooltipContent": "Izvēlieties neobligātās minimālās un maksimālās vērtības etiķetes.",
   "app.components.formBuilder.layout": "Izkārtojums",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Vai esat pārliecināts, ka vēlaties doties prom?",
   "app.components.formBuilder.leaveBuilderText": "Jums ir nesaglabātas izmaiņas. Lūdzu, saglabājiet pirms aiziešanas. Ja aiziesiet, jūs zaudēsiet savas izmaiņas.",
