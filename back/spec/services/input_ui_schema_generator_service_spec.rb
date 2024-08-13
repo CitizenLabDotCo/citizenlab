@@ -1000,13 +1000,13 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    linear_scale_label_1_multiloc: '',
-                    linear_scale_label_2_multiloc: '',
-                    linear_scale_label_3_multiloc: '',
-                    linear_scale_label_4_multiloc: '',
-                    linear_scale_label_5_multiloc: '',
-                    linear_scale_label_6_multiloc: '',
-                    linear_scale_label_7_multiloc: ''
+                    linear_scale_label1: '',
+                    linear_scale_label2: '',
+                    linear_scale_label3: '',
+                    linear_scale_label4: '',
+                    linear_scale_label5: '',
+                    linear_scale_label6: '',
+                    linear_scale_label7: ''
                   }
                 }]
               },
