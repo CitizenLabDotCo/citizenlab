@@ -284,7 +284,7 @@ tr:
       option2: 'Seçenek 2'
     form_end_page:
       title_text: 'Neredeyse bitti'
-      description_text: "Cevaplarınızı göndermek üzeresiniz. 'Gönder' butonuna tıklayarak bize cevaplarınızı analiz etme izni vermiş olursunuz. Gönderdikten sonra, artık geri dönüp cevaplarınızdan herhangi birini değiştiremezsiniz."
+      description_text_2: "Cevaplarınızı göndermek üzeresiniz. 'Gönder'e tıklayarak bize cevaplarınızı analiz etme izni vermiş olursunuz.<br/>Gönderdikten sonra artık geri dönüp cevaplarınızdan herhangi birini değiştiremezsiniz."
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
