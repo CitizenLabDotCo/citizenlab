@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "crwdns2862079:0crwdne2862079:0",
   "app.containers.AdminPage.groups.permissions.answerFormat": "crwdns2862081:0crwdne2862081:0",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "crwdns2862083:0crwdne2862083:0",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "crwdns2876845:0crwdne2876845:0",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "crwdns2862085:0crwdne2862085:0",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "crwdns2862087:0crwdne2862087:0",
   "app.containers.AdminPage.groups.permissions.defaultField": "crwdns2862089:0crwdne2862089:0",
