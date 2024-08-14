@@ -4,6 +4,8 @@ module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'
 
+    helper_method :show_unsubscribe_link?
+
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
 
@@ -25,7 +27,7 @@ module EmailCampaigns
     private
 
     def show_unsubscribe_link?
-      true
+      user && campaign.class.try(:consentable_for?, user)
     end
 
     def show_terms_link?
