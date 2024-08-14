@@ -112,6 +112,7 @@ RSpec.describe ParticipationMethod::Poll do
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:supports_built_in_fields?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_posting_inputs?) { is_expected.to be false }
