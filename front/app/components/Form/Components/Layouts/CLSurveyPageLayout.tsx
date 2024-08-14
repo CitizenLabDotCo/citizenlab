@@ -402,7 +402,6 @@ const CLSurveyPageLayout = memo(
                               <Box
                                 mb={hasOtherFieldBelow ? undefined : '28px'}
                                 key={index}
-                                zIndex="1020 !important"
                               >
                                 <JsonFormsDispatch
                                   renderers={renderers}
