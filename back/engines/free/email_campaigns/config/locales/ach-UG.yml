@@ -77,7 +77,8 @@ ach:
       "link_terms_conditions": "crwdns2852259:0crwdne2852259:0"
       "link_unsubscribe": "crwdns2852261:0crwdne2852261:0"
       "powered_by": "crwdns2852263:0crwdne2852263:0"
-      "statement": "crwdns2852265:0%{organizationName}crwdnd2852265:0%{organizationLink}crwdnd2852265:0%{unsubscribeLink}crwdne2852265:0"
+      "recipient_statement": "crwdns2876851:0%{organizationName}crwdnd2876851:0%{organizationLink}crwdne2876851:0"
+      "unsubscribe_statement": "crwdns2876853:0%{unsubscribeLink}crwdne2876853:0"
       "unsubscribe_text": "crwdns2852267:0crwdne2852267:0"
     follow:
       "unfollow_here": "crwdns2852269:0%{unfollow_url}crwdne2852269:0"
