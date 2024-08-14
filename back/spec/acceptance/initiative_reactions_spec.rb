@@ -53,7 +53,6 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    # TODO: JS Used to include REACTING_DENIED_REASONS.values - is there some code missing?
     disabled_reasons = Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 

@@ -122,15 +122,20 @@ describe Permissions::PermissionsCustomFieldsService do
         end
       end
 
-      it 'returns persisted fields for all permitted_by values' do
+      it 'returns persisted fields for all permitted_by values (except "everyone")' do
         domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
-        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
+        %w[everyone_confirmed_email users verified].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
           expect(fields.first.persisted?).to be true
           expect(fields.first).to eq domicile_field
         end
+
+        # 'everyone' currently does not support fields
+        permission.update!(permitted_by: 'everyone', global_custom_fields: false)
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 0
       end
 
       context 'fields related to groups' do
