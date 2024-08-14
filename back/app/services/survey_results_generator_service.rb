@@ -297,9 +297,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
 
-    answer_titles.each_with_index do |(value, _title_hash), _index|
-      label_name = "linear_scale_label_#{value}_multiloc"
-      labels = field.send(label_name).transform_values do |label|
+    answer_titles.each_key do |value|
+      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
         label.present? ? "#{value} - #{label}" : value
       end
 
