@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Επιλογές απαντήσεων",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Μορφή απάντησης",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Πρέπει να παρέχεται τουλάχιστον μία επιλογή",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Αυτός ο χρήστης συντονίζει το φάκελο που περιέχει αυτό το έργο. Για να αφαιρέσετε τα δικαιώματα συντονιστή για αυτό το έργο, μπορείτε είτε να ανακαλέσετε τα δικαιώματα του φακέλου του είτε να μετακινήσετε το έργο σε διαφορετικό φάκελο.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Δημιουργία νέας ερώτησης",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Δημιουργήστε μια ερώτηση",
   "app.containers.AdminPage.groups.permissions.defaultField": "Προεπιλεγμένο πεδίο",
