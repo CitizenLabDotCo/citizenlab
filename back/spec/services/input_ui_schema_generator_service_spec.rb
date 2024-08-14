@@ -874,7 +874,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   id: 'survey_end',
                   title: 'Almost done',
-                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers. After you submit, you will no longer be able to go back and change any of your answers."
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -1079,7 +1079,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   id: 'survey_end',
                   title: 'Almost done',
-                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers. After you submit, you will no longer be able to go back and change any of your answers."
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
