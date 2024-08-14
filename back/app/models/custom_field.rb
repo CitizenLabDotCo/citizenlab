@@ -295,7 +295,7 @@ class CustomField < ApplicationRecord
     min_text = linear_scale_label_1_multiloc[locale]
     min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
 
-    max_text = send(:"linear_scale_label_#{maximum}_multiloc")[locale]
+    max_text = nth_linear_scale_multiloc(maximum)[locale]
     max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
 
     I18n.with_locale(locale) do
@@ -305,6 +305,10 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def nth_linear_scale_multiloc(n)
+    send(:"linear_scale_label_#{n}_multiloc")
   end
 
   def input_term

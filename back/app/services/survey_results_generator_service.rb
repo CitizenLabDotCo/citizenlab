@@ -298,9 +298,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_titles.each_key do |value|
-      label_name = "linear_scale_label_#{value}_multiloc"
-
-      labels = field.send(label_name).transform_values do |label|
+      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
         label.present? ? "#{value} - #{label}" : value
       end
 
