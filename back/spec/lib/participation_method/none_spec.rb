@@ -57,12 +57,6 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
   describe '#supports_toxicity_detection?' do
     it 'returns true' do
       expect(participation_method.supports_toxicity_detection?).to be true

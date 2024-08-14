@@ -162,12 +162,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[

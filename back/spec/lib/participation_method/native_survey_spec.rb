@@ -131,12 +131,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#extra_fields_category_translation_key' do
-    it 'returns nil' do
-      expect(participation_method.extra_fields_category_translation_key).to be_nil
-    end
-  end
-
   describe '#supports_toxicity_detection?' do
     it 'returns false' do
       expect(participation_method.supports_toxicity_detection?).to be false

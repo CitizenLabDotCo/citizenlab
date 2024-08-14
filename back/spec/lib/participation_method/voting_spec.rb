@@ -131,12 +131,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
       it 'returns [picks, budget]' do

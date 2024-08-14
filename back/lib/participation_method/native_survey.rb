@@ -115,13 +115,6 @@ module ParticipationMethod
       true
     end
 
-    # The "Additional information" category in the UI should be suppressed.
-    # As long as the form builder does not support sections/categories,
-    # we can suppress the heading by returning nil.
-    def extra_fields_category_translation_key
-      nil
-    end
-
     def supports_multiple_posts?
       false
     end
