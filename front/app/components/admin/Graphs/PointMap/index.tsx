@@ -81,6 +81,7 @@ const PointMap = ({
         onInit?.(mapView);
       },
       showLegend: true,
+      showLegendExpanded: false,
       showLayerVisibilityControl: true,
       zoom: Number(mapConfig?.data?.attributes.zoom_level),
       center: mapConfig?.data?.attributes.center_geojson,

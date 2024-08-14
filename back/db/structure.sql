@@ -1231,7 +1231,8 @@ CREATE TABLE public.idea_statuses (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ideas_count integer DEFAULT 0
+    ideas_count integer DEFAULT 0,
+    participation_method character varying DEFAULT 'ideation'::character varying NOT NULL
 );
 
 
@@ -2227,6 +2228,13 @@ CREATE TABLE public.custom_fields (
     random_option_ordering boolean DEFAULT false NOT NULL,
     page_layout character varying,
     dropdown_layout boolean DEFAULT false NOT NULL
+    linear_scale_label_1_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_3_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_4_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7515,8 +7523,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('202407081751'),
 ('20240722090955'),
 ('20240729141927'),
+('20240730093933'),
 ('20240731181623'),
 ('20240731223530'),
-('20240807223530');
-
-
+('20240807223530'),
+('20240812115140');

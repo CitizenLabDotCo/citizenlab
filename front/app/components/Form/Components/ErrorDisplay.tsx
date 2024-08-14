@@ -167,6 +167,7 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
         className="e2e-error-message"
         id="error-display"
         aria-describedby={inputId}
+        aria-live="polite"
       >
         <ContainerInner>
           <ErrorIcon name="alert-circle" fill={colors.error} />

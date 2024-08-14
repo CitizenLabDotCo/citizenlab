@@ -159,8 +159,7 @@ export function getAdditionalSettings(
         <LinearScaleSettings
           platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
-          minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
-          maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
+          labelBaseName={`customFields.${field.index}`}
           locales={locales}
         />
       );

@@ -11,8 +11,8 @@ import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 
-import FullscreenImage from 'components/FullscreenImage';
 import { FormLabel } from 'components/UI/FormComponents';
+import FullscreenImage from 'components/UI/FullscreenImage';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';

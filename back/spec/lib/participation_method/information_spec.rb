@@ -8,6 +8,12 @@ RSpec.describe ParticipationMethod::Information do
   let(:input) { create(:idea) }
   let(:phase) { create(:phase) }
 
+  describe '#method_str' do
+    it 'returns information' do
+      expect(described_class.method_str).to eq 'information'
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 

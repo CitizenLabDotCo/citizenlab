@@ -29,6 +29,13 @@
 #  random_option_ordering :boolean          default(FALSE), not null
 #  page_layout            :string
 #  dropdown_layout        :boolean          default(FALSE), not null
+#  linear_scale_label_1_multiloc :jsonb            not null
+#  linear_scale_label_2_multiloc :jsonb            not null
+#  linear_scale_label_3_multiloc :jsonb            not null
+#  linear_scale_label_4_multiloc :jsonb            not null
+#  linear_scale_label_5_multiloc :jsonb            not null
+#  linear_scale_label_6_multiloc :jsonb            not null
+#  linear_scale_label_7_multiloc :jsonb            not null
 #
 # Indexes
 #
@@ -290,8 +297,14 @@ class CustomField < ApplicationRecord
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
-    min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
-    max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
+    multiloc_service = MultilocService.new
+
+    min_text = multiloc_service.t(linear_scale_label_1_multiloc, locale)
+    min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
+
+    max_text = multiloc_service.t(nth_linear_scale_multiloc(maximum), locale)
+    max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
+
     I18n.with_locale(locale) do
       I18n.t(
         'form_builder.pdf_export.linear_scale_print_description',
@@ -299,6 +312,10 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def nth_linear_scale_multiloc(n)
+    send(:"linear_scale_label_#{n}_multiloc")
   end
 
   def input_term

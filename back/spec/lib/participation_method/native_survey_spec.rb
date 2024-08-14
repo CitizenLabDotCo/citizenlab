@@ -7,6 +7,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   let(:phase) { create(:native_survey_phase) }
 
+  describe '#method_str' do
+    it 'returns native_survey' do
+      expect(described_class.method_str).to eq 'native_survey'
+    end
+  end
+
   describe '#generate_slug' do
     let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
 

@@ -170,6 +170,10 @@ class WebApi::V1::IdeasController < ApplicationController
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
+    if idea_status_not_allowed?(input)
+      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity input
 
     save_options = {}
@@ -213,6 +217,10 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     if anonymous_not_allowed?(phase)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
+      return
+    end
+    if idea_status_not_allowed?(input)
+      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
       return
     end
     verify_profanity input
@@ -376,6 +384,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def anonymous_not_allowed?(phase)
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def idea_status_not_allowed?(input)
+    return false if params.dig(:idea, :idea_status_id).blank?
+
+    !InputStatusService.new(input.idea_status).can_transition_manually?
   end
 
   def serialization_options_for(ideas)

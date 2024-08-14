@@ -2,5 +2,8 @@
 
 module ParticipationMethod
   class Poll < Base
+    def self.method_str
+      'poll'
+    end
   end
 end
