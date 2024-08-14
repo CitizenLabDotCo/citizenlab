@@ -2218,8 +2218,6 @@ CREATE TABLE public.custom_fields (
     resource_id uuid,
     hidden boolean DEFAULT false NOT NULL,
     maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     logic jsonb DEFAULT '{}'::jsonb NOT NULL,
     answer_visible_to character varying,
     select_count_enabled boolean DEFAULT false NOT NULL,
@@ -7525,6 +7523,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240730093933'),
 ('20240731181623'),
 ('20240731223530'),
-('20240812115140');
+('20240812115140'),
+('20240814163522');
 
 
