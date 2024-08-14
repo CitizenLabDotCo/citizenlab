@@ -1,20 +1,30 @@
 describe('Bla', () => {
-  it('redirects', () => {
-    // cy.origin('https://fake-sso.onrender.com', () => {
-    //   cy.visit('/');
-    //   cy.wait(2000);
-    // });
+  let jwt = '';
+  let TEST = '';
 
+  it('redirects', () => {
     cy.visit('/');
 
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-login-with-fake-sso').click();
 
     // Now we are on the fake-sso page
-    // here we submit the form and get redirected back to the platform
-    cy.get('#submit-button').click();
+    cy.intercept('**', (req) => {
+      if (req.url.startsWith('http://localhost:4000/auth/fake_sso/callback')) {
+        const cookieHeader = req.headers['cookie'];
+        if (typeof cookieHeader !== 'string') {
+          throw new Error('Wrong cookie header type');
+        }
 
-    // Now we're back on the platform
-    // TODO confirm we're logged in
+        throw new Error(cookieHeader.includes('cl2_jwt=').toString());
+      }
+    });
+
+    cy.origin('http://host.docker.internal:8081/oauth/authorize', () => {
+      cy.get('#submit-button').click();
+    });
+
+    cy.location('pathname').should('eq', '/en/');
+    // cy.setCookie('cl2_jwt', jwt.slice(8, jwt.length))
   });
 });
