@@ -96,7 +96,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       options: {
         id: 'survey_end',
         title: I18n.t('form_builder.form_end_page.title_text'),
-        description: I18n.t('form_builder.form_end_page.description_text')
+        description: I18n.t('form_builder.form_end_page.description_text_2')
       },
       elements: []
     }
