@@ -200,7 +200,9 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
+  its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:additional_export_columns) { is_expected.to eq [] }
 end

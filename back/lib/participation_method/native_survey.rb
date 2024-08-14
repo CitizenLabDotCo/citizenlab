@@ -122,8 +122,8 @@ module ParticipationMethod
       nil
     end
 
-    def posting_limit
-      1
+    def supports_multiple_posts?
+      false
     end
   end
 end
