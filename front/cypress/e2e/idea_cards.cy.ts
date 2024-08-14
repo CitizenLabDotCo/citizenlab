@@ -41,7 +41,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   it('lets you sort the ideas', () => {
     // sort by newest first
     cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
@@ -51,7 +51,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
     // sort by most reacted
     cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-popular').click();
+    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-popular').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
@@ -63,7 +63,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
     // sort by oldest first
     cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-old').click();
+    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item--new').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
