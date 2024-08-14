@@ -299,8 +299,8 @@ fr:
       choose_exactly:
         one: 'Choisissez exactement %{count} option'
         other: 'Choisissez exactement %{count} options'
-      choose_between: 'Choisissez entre les options %{min} et %{max}'
-      choose_at_least: 'Choisissez au moins %{count} options'
+      choose_between: 'Choisissez entre %{min} et %{max} options'
+      choose_at_least: 'Choisissez au minimum %{count} options'
       choose_at_most: 'Choisissez au maximum %{count} options'
       this_answer: 'Cette réponse ne sera communiquée qu''aux modérateurs, et non au public.'
       page: 'Page'
