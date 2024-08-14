@@ -291,10 +291,6 @@ module ParticipationMethod
       form
     end
 
-    def validate_built_in_fields?
-      true
-    end
-
     def author_in_form?(user)
       AppConfiguration.instance.feature_activated?('idea_author_change') \
       && !!user \
@@ -355,7 +351,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_idea_form?
+    def supports_built_in_fields?
       true
     end
   end

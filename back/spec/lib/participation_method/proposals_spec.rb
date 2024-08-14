@@ -188,7 +188,6 @@ RSpec.describe ParticipationMethod::Proposals do
 
   its(:transitive?) { is_expected.to be false }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
-  its(:validate_built_in_fields?) { is_expected.to be true }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
@@ -201,6 +200,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_assignment?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be true }

@@ -282,7 +282,7 @@ module BulkImportIdeas::Exporters
 
     def write_instructions_and_disclaimers(pdf, custom_field)
       show_multiselect_instructions = custom_field.input_type == 'multiselect'
-      show_visibility_disclaimer = @phase.pmethod.supports_idea_form? && custom_field.answer_visible_to == 'admins'
+      show_visibility_disclaimer = @phase.pmethod.supports_public_visibility? && custom_field.answer_visible_to == 'admins'
 
       if show_multiselect_instructions || show_visibility_disclaimer
         pdf.move_down 2.mm

@@ -52,12 +52,6 @@ module ParticipationMethod
       false
     end
 
-    def validate_built_in_fields?
-      # Most participation methods do not have built-in fields,
-      # so return false.
-      false
-    end
-
     def author_in_form?(_user)
       false
     end
@@ -127,7 +121,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_idea_form?
+    def supports_built_in_fields?
       false
     end
 
