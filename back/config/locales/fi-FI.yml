@@ -199,12 +199,6 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
-      details:
-        title: Yksityiskohdat
-      attachements:
-        title: Kuvat ja liitteet
-      extra:
-        title: Lisäinformaatio
   custom_field_options:
     gender:
       male: Mies

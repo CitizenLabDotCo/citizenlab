@@ -199,12 +199,6 @@ es:
           title: '¿Cuál es su respuesta?'
         option:
           title: '¿Cuál es su opción?'
-      details:
-        title: Detalles
-      attachements:
-        title: Imágenes y archivos adjuntos
-      extra:
-        title: Información adicional
   custom_field_options:
     gender:
       male: Masculino

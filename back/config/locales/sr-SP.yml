@@ -199,12 +199,6 @@ sr-Cyrl:
           title: Који је твој коментар?
         option:
           title: Која је твоја опција?
-      details:
-        title: Детаљи
-      attachements:
-        title: Слике и прилози
-      extra:
-        title: Додатне Информације
   custom_field_options:
     gender:
       male: Мушки

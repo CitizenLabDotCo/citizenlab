@@ -199,12 +199,6 @@ pt:
           title: Qual é o seu problema?
         option:
           title: Qual é a sua opção?
-      details:
-        title: Detalhes
-      attachements:
-        title: Imagens e Anexos
-      extra:
-        title: Informações adicionais
   custom_field_options:
     gender:
       male: Homem

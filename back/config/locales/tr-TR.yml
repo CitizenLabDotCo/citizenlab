@@ -199,12 +199,6 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
-      details:
-        title: Ayrıntılar
-      attachements:
-        title: Görseller ve Ekler
-      extra:
-        title: Diğer bilgiler
   custom_field_options:
     gender:
       male: Erkek

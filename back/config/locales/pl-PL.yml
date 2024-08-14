@@ -199,12 +199,6 @@ pl:
           title: Jaka jest Twoja sprawa ?
         option:
           title: Jaka jest Twója opcja?
-      details:
-        title: Szczegóły
-      attachements:
-        title: Zdjęcia i załączniki
-      extra:
-        title: Dodatkowe informacje
   custom_field_options:
     gender:
       male: Mężczyzna

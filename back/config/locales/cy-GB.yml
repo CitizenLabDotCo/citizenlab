@@ -199,12 +199,6 @@ cy:
           title: Beth yw eich sylw?
         option:
           title: Beth yw eich opsiwn?
-      details:
-        title: Manylion
-      attachements:
-        title: Delweddau ac atodiadau
-      extra:
-        title: Gwybodaeth Ychwanegol
   custom_field_options:
     gender:
       male: Gwryw

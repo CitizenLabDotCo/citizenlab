@@ -199,12 +199,6 @@ sv:
           title: Vad är ditt problem?
         option:
           title: Vad är ditt alternativ?
-      details:
-        title: Detaljer
-      attachements:
-        title: Bilder och bilagor
-      extra:
-        title: Ytterligare information
   custom_field_options:
     gender:
       male: Man

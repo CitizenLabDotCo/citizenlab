@@ -199,12 +199,6 @@ da:
           title: Hvad er dit input?
         option:
           title: Hvad er din mulighed?
-      details:
-        title: Detaljer
-      attachements:
-        title: Billeder og vedhæftede filer
-      extra:
-        title: Yderligere oplysninger
   custom_field_options:
     gender:
       male: Mand

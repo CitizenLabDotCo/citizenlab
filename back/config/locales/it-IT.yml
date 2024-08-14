@@ -199,12 +199,6 @@ it:
           title: Qual è il suo commento?
         option:
           title: Qual è la sua opzione?
-      details:
-        title: Dettagli
-      attachements:
-        title: Immagini e allegati
-      extra:
-        title: Informazioni aggiuntive
   custom_field_options:
     gender:
       male: Maschio
