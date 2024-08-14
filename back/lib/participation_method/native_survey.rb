@@ -18,8 +18,8 @@ module ParticipationMethod
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
     end
 
-    def form_structure_element
-      'page'
+    def supports_pages_in_form?
+      true
     end
 
     def default_fields(custom_form)

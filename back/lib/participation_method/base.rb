@@ -48,8 +48,8 @@ module ParticipationMethod
       {}
     end
 
-    def form_structure_element
-      nil
+    def supports_pages_in_form?
+      false
     end
 
     def validate_built_in_fields?

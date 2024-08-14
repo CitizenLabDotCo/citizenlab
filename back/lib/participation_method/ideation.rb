@@ -278,10 +278,6 @@ module ParticipationMethod
       result
     end
 
-    def form_structure_element
-      'section'
-    end
-
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       context = transitive? ? phase.project : phase
