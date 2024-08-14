@@ -720,6 +720,8 @@
   "app.components.formBuilder.helmetTitle": "Κατασκευαστής φορμών",
   "app.components.formBuilder.imageFileUpload": "Ανέβασμα εικόνας",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Άκυρη λογική",
+  "app.components.formBuilder.labels2": "Ετικέτες (προαιρετικά)",
+  "app.components.formBuilder.labelsTooltipContent2": "Επιλέξτε προαιρετικές ετικέτες για οποιαδήποτε από τις τιμές της γραμμικής κλίμακας.",
   "app.components.formBuilder.layout": "Διάταξη",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Είσαι σίγουρος ότι θέλεις να φύγεις;",
   "app.components.formBuilder.leaveBuilderText": "Έχετε μη αποθηκευμένες αλλαγές. Παρακαλώ αποθηκεύστε τις πριν φύγετε. Αν φύγετε, θα χάσετε τις αλλαγές σας.",
