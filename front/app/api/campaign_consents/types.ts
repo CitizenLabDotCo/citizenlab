@@ -33,7 +33,7 @@ export interface ICampaignConsent {
 
 export interface IUpdateCampaignConsentObject {
   consentChanges: IConsentChanges[];
-  unsubscriptionToken?: string;
+  unsubscriptionToken?: string | null;
 }
 
 export interface IConsentChanges {

@@ -47,4 +47,9 @@ export default defineMessages({
     id: 'app.components.UserSearch.searchUsers',
     defaultMessage: 'Type to search users...',
   },
+  cannotDeleteFolderModerator: {
+    id: 'app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator',
+    defaultMessage:
+      'This user moderates the folder containing this project. To remove their moderator rights for this project, you can either revoke their folder rights or move the project to a different folder.',
+  },
 });
