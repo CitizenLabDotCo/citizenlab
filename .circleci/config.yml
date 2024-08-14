@@ -1370,6 +1370,13 @@ workflows:
     jobs:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Paris)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
           name: "South America"
           context:
             - slack-dev-notifications-inconsistent-data
