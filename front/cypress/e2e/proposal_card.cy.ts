@@ -18,8 +18,8 @@ describe.skip('Proposal card component', () => {
     it('contains the correct information on the card', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
-      cy.get('#e2e-initiatives-sort-dropdown').click();
-      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.get('#e2e-ideas-sort-dropdown').click();
+      cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
       cy.wait(1000);
@@ -94,8 +94,8 @@ describe.skip('Proposal card component', () => {
     it('correctly increments the reaction count', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
-      cy.get('#e2e-initiatives-sort-dropdown').click();
-      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.get('#e2e-ideas-sort-dropdown').click();
+      cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
       cy.wait(1000);
@@ -145,8 +145,8 @@ describe.skip('Proposal card component', () => {
     it('correctly increments the comment count', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
-      cy.get('#e2e-initiatives-sort-dropdown').click();
-      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.get('#e2e-ideas-sort-dropdown').click();
+      cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
       cy.wait(1000);
