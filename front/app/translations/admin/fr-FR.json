@@ -1619,7 +1619,7 @@
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Plus de détails",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newContribution": "Ajouter une contribution",
-  "app.containers.AdminPage.ProjectEdit.newIdea": "Nouvelle idée",
+  "app.containers.AdminPage.ProjectEdit.newIdea": "Ajouter une contribution",
   "app.containers.AdminPage.ProjectEdit.newIssue": "Ajoutez un problème",
   "app.containers.AdminPage.ProjectEdit.newOption": "Ajouter une option",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nouveau projet",
