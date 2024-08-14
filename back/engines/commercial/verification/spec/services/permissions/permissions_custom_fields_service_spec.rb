@@ -31,6 +31,7 @@ describe Permissions::PermissionsCustomFieldsService do
         permission = create(:permission, permitted_by: 'verified')
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:lock)).to eq ['verification', nil]
         expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
       end
@@ -42,13 +43,38 @@ describe Permissions::PermissionsCustomFieldsService do
         permission = create(:permission, permitted_by: 'users')
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:lock)).to eq [nil, nil]
         expect(fields.pluck(:required)).to eq [false, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
 
-        # check has changed after enforcing restrictions
+        # check has changed after updating to verified permitted_by
         permission.update!(permitted_by: 'verified')
         fields = service.fields_for_permission(permission, return_hidden: true)
         expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:lock)).to eq ['verification', nil]
+        expect(fields.pluck(:required)).to eq [true, false]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
+      end
+
+      it 'sets the value of lock to "verification" and reorders for fields already added and locked by groups' do
+        permission = create(:permission, permitted_by: 'users')
+        group = create(:smart_group, rules: [
+          { ruleType: 'custom_field_select', customFieldId: @gender_field.id, predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
+        ])
+        permission.groups << group
+
+        # check initial state
+        fields = service.fields_for_permission(permission, return_hidden: true)
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:lock)).to eq [nil, 'group']
+        expect(fields.pluck(:required)).to eq [false, true]
+        expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
+
+        # check has changed after updating to verified permitted_by
+        permission.update!(permitted_by: 'verified')
+        fields = service.fields_for_permission(permission, return_hidden: true)
+        expect(fields.pluck(:ordering)).to eq [0, 1]
+        expect(fields.pluck(:lock)).to eq ['verification', nil]
         expect(fields.pluck(:required)).to eq [true, false]
         expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
       end

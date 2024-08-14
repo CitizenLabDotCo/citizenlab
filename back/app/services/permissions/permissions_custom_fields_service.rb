@@ -3,6 +3,10 @@
 module Permissions
   class PermissionsCustomFieldsService
     def fields_for_permission(permission, return_hidden: false)
+      # Currently we don't support custom fields for 'everyone' though the rest of the code is ready for it
+      # So we have added this block until we do support it
+      return [] if permission.permitted_by == 'everyone'
+
       fields = if permission.global_custom_fields
         default_fields(permission)
       else
@@ -36,8 +40,9 @@ module Permissions
     end
 
     # Add non-persisted locked fields to the permission if they don't exist & ensure they appear at the start of the list
-    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type, insert_before: true)
+    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type)
       ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
+      insert_before = lock_type != 'group' # Group fields should be added at the end
       custom_field_required_array&.each do |field|
         custom_field_id = field[:id]
         required = field[:required]
@@ -68,14 +73,13 @@ module Permissions
     def add_related_group_fields(permission, fields)
       return fields unless permission.groups.any?
 
-      # Extract field ids and whether they should be require from rules and remove any that don't exist
+      # Extract custom field ids and whether they should be required from rules and then remove any that don't exist
       custom_fields_required_array = extract_custom_field_ids_from_rules(permission.groups)
       custom_fields = CustomField.where(id: custom_fields_required_array.pluck(:id)).pluck(:id)
       custom_fields_required_array.each do |field|
-        # TODO: JS - test for this
         custom_fields_required_array.delete(field) unless custom_fields.include?(field[:id])
       end
-      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group', insert_before: false)
+      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group')
     end
 
     def extract_custom_field_ids_from_rules(groups)
