@@ -297,7 +297,7 @@ fr:
       permission: 'Permission'
       choose_as_many: 'Sélectionnez-en autant que vous le souhaitez'
       choose_exactly:
-        one: 'Choisissez exactement l''option %{count}'
+        one: 'Choisissez exactement %{count} option'
         other: 'Choisissez exactement %{count} options'
       choose_between: 'Choisissez entre les options %{min} et %{max}'
       choose_at_least: 'Choisissez au moins %{count} options'
