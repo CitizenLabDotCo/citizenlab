@@ -284,7 +284,7 @@ sv:
       option2: 'Alternativ 2'
     form_end_page:
       title_text: 'Nästan klar'
-      description_text: "Du är på väg att skicka in dina svar. Genom att klicka på \"Skicka\" ger du oss tillåtelse att analysera dina svar. När du har skickat in dina svar kan du inte längre gå tillbaka och ändra dem."
+      description_text_2: "Du är på väg att skicka in dina svar. Genom att klicka på \"Skicka\" ger du oss tillåtelse att analysera dina svar.<br/>Efter att du har skickat in kan du inte längre gå tillbaka och ändra något av dina svar."
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
