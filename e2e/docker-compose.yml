@@ -50,4 +50,4 @@ services:
     environment:
       API_HOST: e2e-web
       TEST_BUILD: "true"
-    command: npm start:prod
+    command: npm run start:prod
