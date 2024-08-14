@@ -92,7 +92,7 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
         <Button
           onClick={goToAnalysis}
           fontSize="14px"
-          buttonStyle="primary-outlined"
+          buttonStyle="admin-dark-outlined"
         >
           {formatMessage(messages.aiAnalysis)}
         </Button>
