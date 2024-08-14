@@ -560,5 +560,13 @@ RSpec.describe CustomField do
       expect(field.linear_scale_print_description('fr-FR'))
         .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
     end
+
+    it 'returns default copy if the locale values is/are not specified' do
+      field.linear_scale_label_1_multiloc = { en: '' }
+      field.linear_scale_label_3_multiloc = { en: '' }
+
+      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
+      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
+    end
   end
 end
