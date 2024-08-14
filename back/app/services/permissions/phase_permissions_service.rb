@@ -155,7 +155,7 @@ module Permissions
       return true if phase.ideas.published.exists?(author: user)
 
       if phase.allow_anonymous_participation?
-        author_hash = Idea.create_author_hash user.id, phase.project.id, true 
+        author_hash = Idea.create_author_hash user.id, phase.project.id, true
         return true if phase.ideas.published.exists?(author_hash: author_hash)
       end
 
