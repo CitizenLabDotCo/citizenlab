@@ -2113,7 +2113,7 @@
   "app.utils.actionDescriptors.volunteeringNotPermitted": "Vous n'êtes pas autorisé à vous porter volontaire.",
   "app.utils.actionDescriptors.volunteeringNotSignedIn": "Vous devez vous connecter ou vous inscrire pour vous porter volontaire.",
   "app.utils.actionDescriptors.volunteeringNotVerified": "Vous devez vérifier votre compte avant de pouvoir vous porter volontaire.",
-  "app.utils.actionDescriptors.volunteeringdNotActiveUser": "Veuillez vous rendre sur le site {completeRegistrationLink} pour vous porter volontaire.",
+  "app.utils.actionDescriptors.volunteeringdNotActiveUser": "Veuillez {completeRegistrationLink} pour pouvoir vous porter volontaire.",
   "app.utils.errors.api_error_default.in": "Ce n'est pas bien",
   "app.utils.errors.default.ajv_error_birthyear_required": "Veuillez indiquer votre année de naissance",
   "app.utils.errors.default.ajv_error_date_any": "Veuillez indiquer une date valide",
