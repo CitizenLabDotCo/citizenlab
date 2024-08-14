@@ -569,4 +569,19 @@ RSpec.describe CustomField do
       expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
     end
   end
+
+  describe '#nth_linear_scale_multiloc' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        linear_scale_label_3_multiloc: { en: 'I am label 3 multiloc' },
+        linear_scale_label_7_multiloc: { en: 'I am label 7 multiloc' }
+      )
+    end
+
+    it 'returns the nth linear scale label multiloc' do
+      expect(field.nth_linear_scale_multiloc(3)).to eq({ 'en' => 'I am label 3 multiloc' })
+      expect(field.nth_linear_scale_multiloc(7)).to eq({ 'en' => 'I am label 7 multiloc' })
+    end
+  end
 end
