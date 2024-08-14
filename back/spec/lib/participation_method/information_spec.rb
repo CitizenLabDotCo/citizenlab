@@ -64,12 +64,6 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  describe '#update_if_published?' do
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -114,6 +108,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_posting_inputs?) { is_expected.to be false }

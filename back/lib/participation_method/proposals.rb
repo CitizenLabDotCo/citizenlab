@@ -25,10 +25,6 @@ module ParticipationMethod
       false
     end
 
-    # def update_if_published?
-    #   super # TODO: if no reviewing and no reactions + toggle
-    # end
-
     def supports_automated_statuses?
       true
     end

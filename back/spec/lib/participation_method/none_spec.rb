@@ -57,12 +57,6 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#update_if_published?' do
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#sign_in_required_for_posting?' do
     it 'returns false' do
       expect(participation_method.sign_in_required_for_posting?).to be false
@@ -97,6 +91,7 @@ RSpec.describe ParticipationMethod::None do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_posting_inputs?) { is_expected.to be false }

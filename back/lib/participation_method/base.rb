@@ -68,7 +68,7 @@ module ParticipationMethod
       []
     end
 
-    def update_if_published?
+    def supports_edits_after_publication?
       true
     end
 

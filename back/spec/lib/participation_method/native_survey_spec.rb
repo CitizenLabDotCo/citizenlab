@@ -122,12 +122,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#update_if_published?' do
-    it 'returns false' do
-      expect(participation_method.update_if_published?).to be false
-    end
-  end
-
   describe '#custom_form' do
     let(:project_form) { create(:custom_form, participation_context: phase.project) }
     let(:phase) { create(:native_survey_phase) }
@@ -176,6 +170,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }

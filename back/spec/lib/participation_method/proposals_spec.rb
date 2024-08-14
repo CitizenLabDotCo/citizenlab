@@ -156,12 +156,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#update_if_published?' do # TODO
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#custom_form' do
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
@@ -190,6 +184,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
   its(:sign_in_required_for_posting?) { is_expected.to be true }

@@ -152,12 +152,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#update_if_published?' do
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -226,6 +220,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
