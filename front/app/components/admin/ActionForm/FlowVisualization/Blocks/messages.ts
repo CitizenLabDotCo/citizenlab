@@ -18,8 +18,8 @@ export default defineMessages({
     defaultMessage: 'Complete the extra questions below',
   },
   enterNameLastNameEmailAndPassword: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword',
-    defaultMessage: 'Enter name, last name, email and password',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1',
+    defaultMessage: 'Enter first name, last name, email and password',
   },
   authenticateWithVerificationProvider: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2',

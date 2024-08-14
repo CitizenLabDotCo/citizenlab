@@ -6,9 +6,9 @@ import {
   PermittedBy,
 } from 'api/phase_permissions/types';
 
-import { MessageDescriptor } from 'utils/cl-intl';
+import newMessages from 'components/admin/ActionForm/messages';
 
-import newMessages from '../../../../../components/admin/ActionForm/messages';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 

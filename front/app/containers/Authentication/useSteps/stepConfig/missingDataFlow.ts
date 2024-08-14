@@ -18,6 +18,7 @@ import {
   requiredBuiltInFields,
   showOnboarding,
   doesNotMeetGroupCriteria,
+  confirmationRequired,
 } from './utils';
 
 export const missingDataFlow = (
@@ -91,6 +92,11 @@ export const missingDataFlow = (
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
+
+        if (confirmationRequired(requirements)) {
+          setCurrentStep('missing-data:email-confirmation');
+          return;
+        }
 
         if (requirements.verification) {
           setCurrentStep('missing-data:verification');

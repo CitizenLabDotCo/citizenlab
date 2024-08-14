@@ -63,16 +63,16 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
-        if (enterSsoNoEmailEmail) {
-          setCurrentStep('emailless-sso:email');
-          return;
-        }
-
+      RESUME_FLOW_AFTER_SSO: async () => {
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('sign-up:built-in');
+            return;
+          }
+
           if (requirements.verification) {
             setCurrentStep('sign-up:verification');
             return;
@@ -92,6 +92,11 @@ export const sharedSteps = (
         }
 
         if (flow === 'signin') {
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('missing-data:built-in');
+            return;
+          }
+
           if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
@@ -121,13 +126,14 @@ export const sharedSteps = (
           email: null,
           token: null,
           prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
         const { requirements, disabled_reason } = await getRequirements();
 
-        const isLightFlow =
-          requirements.authentication.permitted_by ===
-          'everyone_confirmed_email';
+        const { permitted_by } = requirements.authentication;
+        const isLightFlow = permitted_by === 'everyone_confirmed_email';
+
         const signedIn =
           disabled_reason && disabled_reason !== 'user_not_signed_in';
 
@@ -141,6 +147,13 @@ export const sharedSteps = (
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
+        }
+
+        const isVerifiedActionFlow = permitted_by === 'verified';
+
+        if (isVerifiedActionFlow) {
+          setCurrentStep('sso-verification:sso-providers');
+          return;
         }
 
         if (signedIn) {
@@ -191,10 +204,6 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
-      },
-
-      REOPEN_EMAILLESS_SSO: () => {
-        setCurrentStep('emailless-sso:email');
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
