@@ -692,16 +692,15 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load
-          docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker-compose run web bin/rails db:drop db:create db:schema:load && bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run: |
           cd e2e
-          docker commit $(docker-compose ps -q web) citizenlabdotco/back-e2e:$CIRCLE_SHA1
+          docker commit $(docker-compose ps -a -q web) citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - run: |
           docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - run: |
           cd e2e
-          docker commit $(docker-compose ps -q postgres) citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
+          docker commit $(docker-compose ps -a -q postgres) citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
       - run: |
           docker push citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
       # - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
