@@ -692,7 +692,7 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load && bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker-compose run web "bin/rails db:drop db:create db:schema:load && bin/rails cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run: |
           cd e2e
           docker commit $(docker-compose ps -a -q web) citizenlabdotco/back-e2e:$CIRCLE_SHA1
@@ -738,17 +738,12 @@ jobs:
       - image: cimg/base:2021.03
     parallelism: 3
     working_directory: ~/citizenlab
-    resource_class: medium+
+    resource_class: medium
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: |
-          cd e2e
-          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
-          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
-          docker-compose build --parallel
       - run:
           command: |
             cd e2e
