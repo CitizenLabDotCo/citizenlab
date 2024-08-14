@@ -5,12 +5,12 @@ import {
   ControlProps,
   isPrimitiveArrayControl,
   JsonSchema,
-  Tester,
   UISchemaElement,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
+import { dropdownLayoutTester } from 'components/Form/utils';
 import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -25,6 +25,9 @@ import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
+  [class*='MenuPortal'] {
+    z-index: 1050 !important;
+  }
 `;
 
 const MultiSelectControl = ({
@@ -101,10 +104,6 @@ const MultiSelectControl = ({
 };
 
 export default withJsonFormsControlProps(MultiSelectControl);
-
-const dropdownLayoutTester: Tester = (uischema) => {
-  return uischema?.options?.dropdown_layout || false;
-};
 
 export const multiSelectControlTester = (
   uiSchema: UISchemaElement,
