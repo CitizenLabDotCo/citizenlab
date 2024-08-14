@@ -1,0 +1,11 @@
+# This files should be used in a chained way with
+# `docker-compose -f docker-compose.setup.yml -f docker-compose.yml up`
+
+version: "3.8"
+
+services:
+  web:
+    image: citizenlabdotco/back-e2e:${$CIRCLE_SHA1}
+
+  front:
+    image: citizenlabdotco/front-e2e:${$CIRCLE_SHA1}

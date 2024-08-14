@@ -705,6 +705,28 @@ jobs:
           key: e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
           paths:
             - uploads
+    e2e-setup-front:
+      docker:
+        - image: cimg/base:2021.03
+      resource_class: large
+      working_directory: ~/citizenlab
+      steps:
+        - shallow-clone
+        - copy_secrets_from_lastpass
+        - setup_remote_docker
+        - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - run: |
+            cd e2e
+            docker-compose build front
+        - run: |
+            cd e2e
+            docker-compose run front npm run build
+        - run: |
+            docker commit $(docker ps -lq) citizenlabdotco/front-e2e:$CIRCLE_SHA1
+        - run: |
+            docker push citizenlabdotco/front-e2e:$CIRCLE_SHA1
+         
+
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
@@ -795,6 +817,14 @@ workflows:
                 - TAN-2500-ci-e2e-speedup
           # requires:
           #   - back-build-docker-image
+      - e2e-setup-front:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
       - e2e-tests:
           context:
             - docker-hub-access
@@ -805,6 +835,7 @@ workflows:
                 - TAN-2500-ci-e2e-speedup
           requires:
             - e2e-setup-db
+            - e2e-setup-front
 
   # ci:
   #   when: << pipeline.parameters.trigger >>

@@ -49,4 +49,4 @@ services:
       - "../env_files/front-secret.env"
     environment:
       API_HOST: e2e-web
-    command: npm start
+    command: npm start:prod
