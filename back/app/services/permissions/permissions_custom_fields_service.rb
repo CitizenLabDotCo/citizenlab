@@ -40,8 +40,9 @@ module Permissions
     end
 
     # Add non-persisted locked fields to the permission if they don't exist & ensure they appear at the start of the list
-    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type, insert_before: true)
+    def add_and_lock_related_fields(permission, permission_custom_fields, custom_field_required_array, lock_type)
       ordering = 0 # Any locked fields to get inserted/moved above any other custom fields
+      insert_before = lock_type != 'group' # Group fields should be added at the end
       custom_field_required_array&.each do |field|
         custom_field_id = field[:id]
         required = field[:required]
@@ -78,7 +79,7 @@ module Permissions
       custom_fields_required_array.each do |field|
         custom_fields_required_array.delete(field) unless custom_fields.include?(field[:id])
       end
-      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group', insert_before: false)
+      add_and_lock_related_fields(permission, fields, custom_fields_required_array, 'group')
     end
 
     def extract_custom_field_ids_from_rules(groups)
