@@ -581,8 +581,6 @@
   "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Image upload",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Invalid logic",
-  "app.components.formBuilder.labels": "Labels",
-  "app.components.formBuilder.labelsTooltipContent": "Choose optional labels for your minimum and maximum values.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.linearScale": "Linear scale",
   "app.components.formBuilder.locationDescription": "Location",

@@ -720,8 +720,6 @@
   "app.components.formBuilder.helmetTitle": "Lomakkeen rakentaja",
   "app.components.formBuilder.imageFileUpload": "Kuvan lataus",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Virheellinen logiikka",
-  "app.components.formBuilder.labels": "Tarrat",
-  "app.components.formBuilder.labelsTooltipContent": "Valitse valinnaiset tunnisteet vähimmäis- ja enimmäisarvoille.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Oletko varma, että haluat lähteä?",
   "app.components.formBuilder.leaveBuilderText": "Sinulla on tallentamattomia muutoksia. Ole hyvä ja säästä ennen lähtöä. Jos poistut, menetät tekemäsi muutokset.",

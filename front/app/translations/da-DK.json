@@ -720,8 +720,6 @@
   "app.components.formBuilder.helmetTitle": "Formularbygger",
   "app.components.formBuilder.imageFileUpload": "Upload af billede",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logik",
-  "app.components.formBuilder.labels": "Etiketter",
-  "app.components.formBuilder.labelsTooltipContent": "Vælg valgfrie etiketter for dine minimums- og maksimumsværdier.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Er du sikker på, at du vil forlade os?",
   "app.components.formBuilder.leaveBuilderText": "Du har ændringer, der ikke er gemt. Gem venligst, før du går. Hvis du går, mister du dine ændringer.",

@@ -720,8 +720,6 @@
   "app.components.formBuilder.helmetTitle": "Form Builder",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ongëlteg Logik",
-  "app.components.formBuilder.labels": "Labelen",
-  "app.components.formBuilder.labelsTooltipContent": "Wielt optionell Labelen fir Är Minimal- a Maximalwäerter.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Sidd Dir sécher datt Dir fortgoe wëllt?",
   "app.components.formBuilder.leaveBuilderText": "Dir hutt net gespäichert Ännerungen. Spuert w.e.g. ier Dir fortgeet. Wann Dir fortgeet, verléiert Dir Är Ännerungen.",

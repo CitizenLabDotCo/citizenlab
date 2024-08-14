@@ -720,8 +720,6 @@
   "app.components.formBuilder.helmetTitle": "Formulier vormgever",
   "app.components.formBuilder.imageFileUpload": "Afbeelding uploaden",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ongeldige logica",
-  "app.components.formBuilder.labels": "Labels",
-  "app.components.formBuilder.labelsTooltipContent": "Kies optionele labels voor je minimale en maximale waarden.",
   "app.components.formBuilder.layout": "Lay-out",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Weet je zeker dat je wilt vertrekken?",
   "app.components.formBuilder.leaveBuilderText": "Je hebt niet-opgeslagen wijzigingen. Sla ze op voordat je weggaat. Als je weggaat, ben je je wijzigingen kwijt.",

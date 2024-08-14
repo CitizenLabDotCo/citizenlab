@@ -720,8 +720,6 @@
   "app.components.formBuilder.helmetTitle": "Adeiladwr ffurflenni",
   "app.components.formBuilder.imageFileUpload": "Uwchlwytho delwedd",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Rhesymeg annilys",
-  "app.components.formBuilder.labels": "Labelau",
-  "app.components.formBuilder.labelsTooltipContent": "Dewiswch labeli dewisol ar gyfer eich gwerthoedd lleiaf ac uchaf.",
   "app.components.formBuilder.layout": "Gosodiad",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Ydych chi'n siŵr eich bod am adael?",
   "app.components.formBuilder.leaveBuilderText": "Mae gennych newidiadau heb eu cadw. Arbedwch cyn gadael. Os byddwch yn gadael, byddwch yn colli eich newidiadau.",
