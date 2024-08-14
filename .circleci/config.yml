@@ -693,7 +693,7 @@ jobs:
       - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
       - run: |
           cd e2e
-          docker cp $(docker compose ps -q postgres):/var/lib/postgresql/data postgresql-data
+          docker cp $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
       # - run: |
       #     cd e2e
       #     docker compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
