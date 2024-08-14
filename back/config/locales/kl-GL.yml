@@ -48,6 +48,14 @@ kl:
     implemented_description: Isumassarsiaq una illoqarfimmit atuutilersinneqareerpoq
     rejected: itigartinneqarpoq
     rejected_description: Isumassarsiaq una itigartinneqarpoq
+    expired: expired
+    expired_description: expired
+    threshold_reached: threshold reached
+    threshold_reached_description: threshold reached
+    answered: answered
+    answered_description: answered
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
