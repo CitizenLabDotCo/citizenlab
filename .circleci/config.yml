@@ -742,7 +742,7 @@ jobs:
           at: .
       - run: |
           cd e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-create
+          docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
       - run: |
           WEB_CONTAINER_ID=$(docker compose ps -q web)
           FRONT_CONTAINER_ID=$(docker compose ps -q front)
