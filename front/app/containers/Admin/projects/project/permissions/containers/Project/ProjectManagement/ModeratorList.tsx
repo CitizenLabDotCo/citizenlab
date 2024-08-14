@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useProjectById from 'api/projects/useProjectById';
 import useProjectModerators from 'api/project_moderators/useProjectModerators';
+import useProjectById from 'api/projects/useProjectById';
 
 import { List } from 'components/admin/ResourceList';
 
