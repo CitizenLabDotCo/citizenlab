@@ -45,10 +45,8 @@ export const configureMapView = (
   }
 
   // Add map legend if set
-  const showLegendExpanded = initialData?.showLegendExpanded;
-
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller, showLegendExpanded);
+    addMapLegend(mapView, isMobileOrSmaller, initialData?.showLegendExpanded);
   }
 
   // Show layer visibility controls if set
