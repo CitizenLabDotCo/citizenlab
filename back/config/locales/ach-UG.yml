@@ -48,6 +48,14 @@ ach:
     implemented_description: crwdns2792711:0crwdne2792711:0
     rejected: crwdns2792713:0crwdne2792713:0
     rejected_description: crwdns2792715:0crwdne2792715:0
+    expired: crwdns2876889:0crwdne2876889:0
+    expired_description: crwdns2876891:0crwdne2876891:0
+    threshold_reached: crwdns2876893:0crwdne2876893:0
+    threshold_reached_description: crwdns2876895:0crwdne2876895:0
+    answered: crwdns2876897:0crwdne2876897:0
+    answered_description: crwdns2876899:0crwdne2876899:0
+    ineligible: crwdns2876901:0crwdne2876901:0
+    ineligible_description: crwdns2876903:0crwdne2876903:0
   initiative_statuses:
     review_pending: crwdns2792717:0crwdne2792717:0
     review_pending_description: crwdns2792719:0crwdne2792719:0
