@@ -1684,8 +1684,8 @@ const createBaseCustomField =
     ...(input_type === 'linear_scale'
       ? {
           maximum: 5,
-          minimum_label_multiloc: { en: 'Min label' },
-          maximum_label_multiloc: { en: 'Max label' },
+          linear_scale_label_1_multiloc: { en: 'Min label' },
+          linear_scale_label_5_multiloc: { en: 'Max label' },
         }
       : {}),
   });
