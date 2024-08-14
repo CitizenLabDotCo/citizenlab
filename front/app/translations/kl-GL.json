@@ -636,8 +636,6 @@
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedback process",
   "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} platforminut pilersuisinnaapput atuisunut tamanut taakkuninnga atuisinnaasunut teknologi piginnaasalluunniit apeqqutaatinnagit. Platforminut tamanut atuisartutsinnut isersinnaanerat atuisinnaanerallu periaatsit akuerisaasut naapertorlugit malinneqarnissaat anguniartuaannarparput.",
-  "app.containers.AccessibilityStatement.mapviewIdeas": "Isummersuisut takutinnerat",
-  "app.containers.AccessibilityStatement.mapviewIdeasException": "Suliniuteqartut isummatik allanik takuneqarsinnaajunnaarlugit inississinnaavaat. Taamaattoq takuneqarsinnaasumik allanit listinit takutinneqarsinnaavoq.",
   "app.containers.AccessibilityStatement.onlineWorkshopsException": "Internetti aqqutigalugu workshopi ingerlaartoq videomik tigooraasinnaavoq taannali piffissami matumani allagartalersuisinnaanngilaq.",
   "app.containers.AccessibilityStatement.pageDescription": "A statement on the accessibility of this website",
   "app.containers.AccessibilityStatement.postalAddress": "Postal address:",
