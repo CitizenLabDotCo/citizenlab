@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Äntwert Choixen",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Äntwert Format",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Op d'mannst ee Choix muss zur Verfügung gestallt ginn",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Dëse Benotzer moderéiert den Dossier mat dësem Projet. Fir hir Moderatorrechter fir dëse Projet ze läschen, kënnt Dir entweder hir Dossierrechter zréckzéien oder de Projet an en aneren Dossier réckelen.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Schafen eng nei Fro",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Schafen eng Fro",
   "app.containers.AdminPage.groups.permissions.defaultField": "Default Feld",
