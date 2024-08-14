@@ -461,7 +461,7 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               # issuer: 'https://fake-sso.onrender.com'
-              issuer: nil
+              issuer: ''
             }
           })
         )
