@@ -6,5 +6,21 @@ version: "3.8"
 services:
   web:
     image: citizenlabdotco/back-e2e:${CIRCLE_SHA1}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://e2e-web:4000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   front:
     image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://e2e.front:3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  postgres:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
