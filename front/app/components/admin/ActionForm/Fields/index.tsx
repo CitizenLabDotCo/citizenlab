@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Title, Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Box,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
@@ -34,17 +39,23 @@ const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
 
   return (
     <Box maxWidth="844px">
-      <Title variant="h4" color="primary">
-        <FormattedMessage {...messages.extraQuestions} />
-      </Title>
-      <Box mt="20px">
-        <FieldsList phaseId={phaseId} action={action} />
-      </Box>
-      {showAddQuestion && (
-        <Box mt="20px" w="100%" display="flex">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        <Title variant="h4" color="primary" mt="0px" mb="0px">
+          <FormattedMessage {...messages.extraQuestions} />
+        </Title>
+        {showAddQuestion && (
           <Button
             buttonStyle="admin-dark"
             icon="plus-circle"
+            iconSize={`${fontSizes.s}px`}
+            fontSize={`${fontSizes.s}px`}
+            padding="4px 8px"
+            ml="16px"
             onClick={(e) => {
               e.preventDefault();
               setShowSelectionModal(true);
@@ -52,23 +63,26 @@ const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
           >
             <FormattedMessage {...messages.addAQuestion} />
           </Button>
-          {selectedCustomFields && (
-            <FieldSelectionModal
-              showSelectionModal={showSelectionModal}
-              setShowSelectionModal={setShowSelectionModal}
-              selectedFields={selectedCustomFields}
-              handleAddField={(customField) => {
-                addPermissionsCustomField({
-                  custom_field_id: customField.id,
-                  required: false,
-                  phaseId,
-                  action,
-                });
-              }}
-              isLoading={isLoading}
-            />
-          )}
-        </Box>
+        )}
+      </Box>
+      <Box mt="20px">
+        <FieldsList phaseId={phaseId} action={action} />
+      </Box>
+      {selectedCustomFields && (
+        <FieldSelectionModal
+          showSelectionModal={showSelectionModal}
+          setShowSelectionModal={setShowSelectionModal}
+          selectedFields={selectedCustomFields}
+          handleAddField={(customField) => {
+            addPermissionsCustomField({
+              custom_field_id: customField.id,
+              required: false,
+              phaseId,
+              action,
+            });
+          }}
+          isLoading={isLoading}
+        />
       )}
     </Box>
   );
