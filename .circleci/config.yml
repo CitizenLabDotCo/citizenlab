@@ -677,7 +677,7 @@ jobs:
   # E2E TESTS
   e2e-setup-db:
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2024.08
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
@@ -692,19 +692,19 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load
-          docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker compose run web bin/rails db:drop db:create db:schema:load
+          docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run: |
           docker commit $(docker ps -lq) citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - run: |
           docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - run: |
           cd e2e
-          docker commit $(docker-compose ps -a -q postgres) citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
+          docker commit $(docker compose ps -a -q postgres) citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
       - run: |
           docker push citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
       # - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
-      # - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
+      # - run: cd e2e && docker compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
       # - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
       # - save_cache:
       #     key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
@@ -716,17 +716,18 @@ jobs:
       #       - uploads
   e2e-setup-front:
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2024.08
     resource_class: large
     working_directory: ~/citizenlab
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose run front npm run build
+          docker compose run front npm run build
       - run: |
           docker commit $(docker ps -lq) citizenlabdotco/front-e2e:$CIRCLE_SHA1
       - run: |
@@ -735,7 +736,7 @@ jobs:
 
   e2e-tests:
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2024.08
     parallelism: 3
     working_directory: ~/citizenlab
     resource_class: medium
@@ -747,7 +748,7 @@ jobs:
       - run:
           command: |
             cd e2e
-            docker-compose -f docker-compose.test.yml -f docker-compose.yml up
+            docker compose -f docker-compose.yml -f docker-compose.test.yml up
           background: true
       # - restore_cache:
       #     keys:
@@ -758,21 +759,21 @@ jobs:
       # - run: |
       #       cd e2e
       #       # Wait until the web container is running
-      #       while [ -z "$(docker-compose ps -q web)" ]; do
+      #       while [ -z "$(docker compose ps -q web)" ]; do
       #         sleep 1
       #       done
-      #       docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
-      #       docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
+      #       docker cp ../e2e-tenant.dump $(docker compose ps -q web):/cl2_back/e2e-tenant.dump
+      #       docker compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
       # - run: |
       #       cd e2e
-      #       docker cp ../uploads $(docker-compose ps -q web):/cl2_back/public/uploads
+      #       docker cp ../uploads $(docker compose ps -q web):/cl2_back/public/uploads
       # Wait until build is finished.
       - run: |
-          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
+          sleep 10 # if we run `docker compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
           # we cannot access localhost:3000, so we call it from the container
           # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
-          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
+          docker compose -f docker-compose.yml -f docker-compose.test.yml run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
           cd front
           mkdir -p reports
@@ -780,7 +781,7 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-2 | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
       - run: |
           mkdir -p front/reports
