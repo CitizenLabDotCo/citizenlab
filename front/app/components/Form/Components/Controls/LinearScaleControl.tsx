@@ -124,17 +124,12 @@ const LinearScaleControl = ({
   };
 
   // Put all labels from the UI Schema in an array so we can easily access them
-  const labelsFromSchema = Array.from({ length: maximum }).map((_, index) => {
-    if (uischema?.options?.[`linear_scale_label${index + 1}`]) {
-      return uischema.options[`linear_scale_label${index + 1}`];
-    }
+  const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
+    return uischema?.options?.[`linear_scale_label${index + 1}`];
   });
 
   // Get an array of the middle value labels so we can determine how to show them in the UI
-  const middleValueLabels = labelsFromSchema
-    .map((label) => label) // First copy the array so we don't mutate the original
-    .splice(1, labelsFromSchema.length - 2); // Get only the middle values
-
+  const middleValueLabels = labelsFromSchema.slice(1, -1); // Get only the middle values
   const hasOnlyMinOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
 
   return (
@@ -217,29 +212,27 @@ const LinearScaleControl = ({
           display={isSmallerThanPhone ? 'block' : 'flex'}
           justifyContent="space-between"
         >
-          {hasOnlyMinOrMaxLabels &&
-            !isSmallerThanPhone && ( // For desktop view when only min and/or max labels are present
-              <>
-                <Box maxWidth={'50%'}>
-                  <Text mt="8px" mb="0px" color="textSecondary">
-                    {labelsFromSchema[0]}
-                  </Text>
-                </Box>
-                <Box maxWidth={'50%'}>
-                  <Text mt={'8px'} m="0px" color="textSecondary">
-                    {labelsFromSchema[labelsFromSchema.length - 1]}
-                  </Text>
-                </Box>
-              </>
-            )}
-          {(!hasOnlyMinOrMaxLabels || isSmallerThanPhone) && ( // Show labels as list when more than 3 or on mobile devices
+          {hasOnlyMinOrMaxLabels && !isSmallerThanPhone ? ( // For desktop view when only min and/or max labels are present
+            <>
+              <Box maxWidth={'50%'}>
+                <Text mt="8px" mb="0px" color="textSecondary">
+                  {labelsFromSchema[0]}
+                </Text>
+              </Box>
+              <Box maxWidth={'50%'}>
+                <Text mt={'8px'} m="0px" color="textSecondary">
+                  {labelsFromSchema[labelsFromSchema.length - 1]}
+                </Text>
+              </Box>
+            </>
+          ) : (
+            // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
             <Box maxWidth={'100%'}>
               {labelsFromSchema.map((label, index) => (
                 <Box display="flex" key={`${path}-${index}`}>
                   {label && (
                     <>
                       <Text
-                        key={`${path}-${index}-number`}
                         mt="8px"
                         mb="0px"
                         mr="8px"
@@ -249,7 +242,6 @@ const LinearScaleControl = ({
                         {`${index + 1}.`}
                       </Text>
                       <Text
-                        key={`${path}-${index}-value`}
                         mt="8px"
                         mb="0px"
                         color="textSecondary"
