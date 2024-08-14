@@ -2226,7 +2226,14 @@ CREATE TABLE public.custom_fields (
     maximum_select_count integer,
     minimum_select_count integer,
     random_option_ordering boolean DEFAULT false NOT NULL,
-    page_layout character varying
+    page_layout character varying,
+    linear_scale_label_1_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_3_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_4_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7517,6 +7524,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240729141927'),
 ('20240730093933'),
 ('20240731181623'),
-('20240731223530');
+('20240731223530'),
+('20240812115140');
 
 
