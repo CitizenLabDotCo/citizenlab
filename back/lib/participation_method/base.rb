@@ -170,6 +170,10 @@ module ParticipationMethod
       nil
     end
 
+    def use_reactions_as_votes?
+      false
+    end
+
     private
 
     attr_reader :phase

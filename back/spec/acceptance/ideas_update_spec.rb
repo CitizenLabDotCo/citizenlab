@@ -379,11 +379,22 @@ resource 'Ideas' do
         let(:author) { input.author }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-        example_request 'Update an initiative' do
+        example 'Update an initiative' do
+          create(:reaction, reactable: input, user: author, mode: 'up')
+          do_request
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
           expect(json_response.dig(:data, :attributes, :custom_field_name1)).to eq custom_field_name1
+        end
+
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example '[error] Update an initiative', document: false do
+            do_request
+            assert_status 401
+          end
         end
 
         # TODO: Update the cosponsors
@@ -438,6 +449,15 @@ resource 'Ideas' do
             assert_status 422
             expect(json_response_body).to include_response_error(:project_id, 'Cannot change the project of non-transitive inputs')
             expect(input.reload.project_id).not_to eq project_id
+          end
+        end
+
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example 'Update an initiative', document: false do
+            do_request
+            assert_status 200
           end
         end
       end
