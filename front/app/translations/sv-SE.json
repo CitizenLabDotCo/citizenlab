@@ -720,6 +720,8 @@
   "app.components.formBuilder.helmetTitle": "Formulärbyggare",
   "app.components.formBuilder.imageFileUpload": "Bilduppladdning",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ogiltig logik",
+  "app.components.formBuilder.labels2": "Etiketter (tillval)",
+  "app.components.formBuilder.labelsTooltipContent2": "Välj valfria etiketter för något av värdena i den linjära skalan.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Är du säker på att du vill åka?",
   "app.components.formBuilder.leaveBuilderText": "Du har osparade ändringar. Spara innan du går. Om du lämnar förlorar du dina ändringar.",
