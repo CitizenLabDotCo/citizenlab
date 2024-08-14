@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.groups.permissions.answerChoices": "Scelte di risposta",
   "app.containers.AdminPage.groups.permissions.answerFormat": "Formato della risposta",
   "app.containers.AdminPage.groups.permissions.atLeastOneOptionError": "Deve essere fornita almeno una scelta",
+  "app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator": "Questo utente modera la cartella contenente questo progetto. Per rimuovere i suoi diritti di moderatore per questo progetto, puoi revocare i suoi diritti di cartella o spostare il progetto in un'altra cartella.",
   "app.containers.AdminPage.groups.permissions.createANewQuestion": "Creare una nuova domanda",
   "app.containers.AdminPage.groups.permissions.createAQuestion": "Creare una domanda",
   "app.containers.AdminPage.groups.permissions.defaultField": "Campo predefinito",
