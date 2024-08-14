@@ -123,7 +123,7 @@ const LinearScaleControl = ({
     event.preventDefault();
   };
 
-  // Put all labels from the UI Schema in an array
+  // Put all labels from the UI Schema in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }).map((_, index) => {
     if (uischema?.options?.[`linear_scale_label${index + 1}`]) {
       return uischema.options[`linear_scale_label${index + 1}`];
