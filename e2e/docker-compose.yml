@@ -49,4 +49,5 @@ services:
       - "../env_files/front-secret.env"
     environment:
       API_HOST: e2e-web
+      TEST_BUILD: "true"
     command: npm start:prod

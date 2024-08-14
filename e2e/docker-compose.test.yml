@@ -4,8 +4,9 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: citizenlabdotco/postgres-e2e:${$CIRCLE_SHA1}
   web:
     image: citizenlabdotco/back-e2e:${$CIRCLE_SHA1}
-
   front:
     image: citizenlabdotco/front-e2e:${$CIRCLE_SHA1}

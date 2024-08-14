@@ -682,10 +682,10 @@ jobs:
     resource_class: medium
     steps:
       - shallow-clone
-      - restore_cache:
-          keys:
-            - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      # - run: test -f e2e-tenant.dump && circleci-agent step halt
+      # - restore_cache:
+      #     keys:
+      #       - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      # # - run: test -f e2e-tenant.dump && circleci-agent step halt
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           docker_layer_caching: true
@@ -694,17 +694,27 @@ jobs:
           cd e2e
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
-      - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
-      - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
-      - save_cache:
-          key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-          paths:
-            - e2e-tenant.dump
-      - save_cache:
-          key: e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-          paths:
-            - uploads
+      - run: |
+          cd e2e
+          docker commit $(docker-compose ps -q web) citizenlabdotco/back-e2e:$CIRCLE_SHA1
+      - run: |
+          docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
+      - run: |
+          cd e2e
+          docker commit $(docker-compose ps -q postgres) citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
+      - run: |
+          docker push citizenlabdotco/postgres-e2e:$CIRCLE_SHA1
+      # - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
+      # - run: cd e2e && docker-compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
+      # - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
+      # - save_cache:
+      #     key: e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      #     paths:
+      #       - e2e-tenant.dump
+      # - save_cache:
+      #     key: e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      #     paths:
+      #       - uploads
   e2e-setup-front:
     docker:
       - image: cimg/base:2021.03
@@ -743,25 +753,25 @@ jobs:
       - run:
           command: |
             cd e2e
-            docker-compose up
+            docker-compose -f docker-compose.test.yml -f docker-compose.yml up
           background: true
-      - restore_cache:
-          keys:
-            - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - restore_cache:
-          keys:
-            - e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
-      - run: |
-            cd e2e
-            # Wait until the web container is running
-            while [ -z "$(docker-compose ps -q web)" ]; do
-              sleep 1
-            done
-            docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
-            docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
-      - run: |
-            cd e2e
-            docker cp ../uploads $(docker-compose ps -q web):/cl2_back/public/uploads
+      # - restore_cache:
+      #     keys:
+      #       - e2e-tenant-dump-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      # - restore_cache:
+      #     keys:
+      #       - e2e-tenant-uploads-{{ checksum "back/config/tenant_templates/e2etests_template.yml" }}-{{ checksum "back/db/structure.sql" }}
+      # - run: |
+      #       cd e2e
+      #       # Wait until the web container is running
+      #       while [ -z "$(docker-compose ps -q web)" ]; do
+      #         sleep 1
+      #       done
+      #       docker cp ../e2e-tenant.dump $(docker-compose ps -q web):/cl2_back/e2e-tenant.dump
+      #       docker-compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
+      # - run: |
+      #       cd e2e
+      #       docker cp ../uploads $(docker-compose ps -q web):/cl2_back/public/uploads
       # Wait until build is finished.
       - run: |
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
