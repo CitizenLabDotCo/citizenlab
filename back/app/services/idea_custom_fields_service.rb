@@ -96,15 +96,16 @@ class IdeaCustomFieldsService
   def check_form_structure(fields, errors)
     return if fields.empty?
 
-    can_have_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
-    if fields[0][:input_type] != can_have_type
-      error = { error: "First field must be of type '#{can_have_type}'" }
+    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
+    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
+    if fields[0][:input_type] != first_field_type
+      error = { error: "First field must be of type '#{first_field_type}'" }
       errors['0'] = { structure: [error] }
     end
     fields.each_with_index do |field, index|
-      next if field[:input_type] == can_have_type
+      next unless field[:input_type] == cannot_have_type
 
-      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{field[:input_type]}'" }
+      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
       if errors[index.to_s] && errors[index.to_s][:structure]
         errors[index.to_s][:structure] << error
       else
