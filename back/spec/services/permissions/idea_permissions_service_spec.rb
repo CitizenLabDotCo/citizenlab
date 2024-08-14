@@ -97,7 +97,7 @@ describe Permissions::IdeaPermissionsService do
       let(:input) { create(:proposal, project: project, creation_phase: phase) }
 
       context 'when the timeline is over' do
-        let(:phase) { create(:proposals_phase, start_at: 10.days.ago, end_at: 5.days.ago ) }
+        let(:phase) { create(:proposals_phase, start_at: 10.days.ago, end_at: 5.days.ago) }
 
         it "returns 'project_inactive'" do
           expect(reason).to eq 'project_inactive'
@@ -194,7 +194,7 @@ describe Permissions::IdeaPermissionsService do
       let(:input) { create(:proposal, project: project, creation_phase: phase) }
 
       context 'when the timeline is over' do
-        let(:phase) { create(:proposals_phase, start_at: 10.days.ago, end_at: 5.days.ago ) }
+        let(:phase) { create(:proposals_phase, start_at: 10.days.ago, end_at: 5.days.ago) }
 
         it "returns 'project_inactive'" do
           expect(reason).to eq 'project_inactive'

@@ -152,11 +152,11 @@ module Permissions
 
     def posting_limit_reached?
       return false if phase.pmethod.supports_multiple_posts?
-      return true if phase.ideas.published.where(author: user).exists?
+      return true if phase.ideas.published.exists?(author: user)
 
       if phase.allow_anonymous_participation?
         author_hash = Idea.create_author_hash user.id, phase.project.id, true 
-        return true if phase.ideas.published.where(author_hash: author_hash).exists?
+        return true if phase.ideas.published.exists?(author_hash: author_hash)
       end
 
       false
