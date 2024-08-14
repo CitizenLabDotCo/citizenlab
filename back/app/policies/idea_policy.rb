@@ -37,7 +37,7 @@ class IdeaPolicy < ApplicationPolicy
     return false if user&.blocked?
     return true if record.draft?
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
-    return false if !active? && record.participation_method_on_creation.sign_in_required_for_posting?
+    return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
     reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
     raise_not_authorized(reason) if reason

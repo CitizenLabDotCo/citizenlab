@@ -185,10 +185,10 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be true }
-  its(:sign_in_required_for_posting?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
+  its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }

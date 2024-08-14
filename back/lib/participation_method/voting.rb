@@ -35,10 +35,6 @@ module ParticipationMethod
       ].include?(attribute)
     end
 
-    def sign_in_required_for_posting?
-      true
-    end
-
     def additional_export_columns
       Factory.instance.voting_method_for(phase).export_columns
     end

@@ -77,8 +77,8 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def sign_in_required_for_posting?
-      false
+    def supports_inputs_without_author?
+      true
     end
 
     def extra_fields_category_translation_key

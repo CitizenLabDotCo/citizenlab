@@ -426,7 +426,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
-    input.participation_method_on_creation.sign_in_required_for_posting?
+    !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
   # Change counts on idea for values for phase, if filtered by phase

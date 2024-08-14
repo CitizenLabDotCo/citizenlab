@@ -343,8 +343,8 @@ module ParticipationMethod
       true
     end
 
-    def sign_in_required_for_posting?
-      true
+    def supports_inputs_without_author?
+      false
     end
 
     def supports_answer_visible_to?

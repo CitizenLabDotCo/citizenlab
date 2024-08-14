@@ -162,12 +162,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#sign_in_required_for_posting?' do
-    it 'returns true' do
-      expect(participation_method.sign_in_required_for_posting?).to be true
-    end
-  end
-
   describe '#extra_fields_category_translation_key' do
     it 'returns the translation key for the extra fields category' do
       expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
@@ -225,6 +219,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_posting_inputs?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
+  its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
