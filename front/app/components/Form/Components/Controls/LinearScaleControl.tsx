@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { UiSchema } from 'react-jsonschema-form';
 import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -44,31 +45,27 @@ const LinearScaleControl = ({
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
-      if (value === minimum && uischema?.options?.minimum_label) {
+      // If the value has a label, read it out
+      if (uischema?.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
-          label: uischema.options.minimum_label,
+          label: uischema.options[`linear_scale_label${value}`],
         });
       }
-      if (value === maximum && uischema?.options?.maximum_label) {
-        return formatMessage(messages.valueOutOfTotalWithLabel, {
-          value,
-          total,
-          label: uischema.options.maximum_label,
-        });
-      }
-      if (uischema?.options?.maximum_label) {
+      // If we don't have a label but we do have a maximum, read out the current value & maximum label
+      else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
           maxValue: maximum,
-          maxLabel: uischema.options.maximum_label,
+          maxLabel: uischema.options[`linear_scale_label${maximum}`],
         });
       }
+      // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [minimum, maximum, uischema?.options, formatMessage]
+    [maximum, uischema.options, formatMessage]
   );
 
   useEffect(() => {
@@ -125,6 +122,15 @@ const LinearScaleControl = ({
     }
     event.preventDefault();
   };
+
+  // Put all labels from the UI Schema in an array so we can easily access them
+  const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
+    return uischema?.options?.[`linear_scale_label${index + 1}`];
+  });
+
+  // Get an array of the middle value labels so we can determine how to show them in the UI
+  const middleValueLabels = labelsFromSchema.slice(1, -1); // Get only the middle values
+  const hasOnlyMinOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
 
   return (
     <>
@@ -206,30 +212,47 @@ const LinearScaleControl = ({
           display={isSmallerThanPhone ? 'block' : 'flex'}
           justifyContent="space-between"
         >
-          {uischema.options?.minimum_label && (
-            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
-              <Text
-                mt="8px"
-                mb="0px"
-                color="textSecondary"
-                fontSize={isSmallerThanPhone ? 's' : 'm'}
-              >
-                {isSmallerThanPhone && <>1. </>}
-                {uischema.options?.minimum_label}
-              </Text>
-            </Box>
-          )}
-          {uischema.options?.maximum_label && (
-            <Box maxWidth={isSmallerThanPhone ? '100%' : '50%'}>
-              <Text
-                mt={isSmallerThanPhone ? '0px' : '8px'}
-                m="0px"
-                color="textSecondary"
-                fontSize={isSmallerThanPhone ? 's' : 'm'}
-              >
-                {isSmallerThanPhone && <>{maximum}. </>}
-                {uischema.options?.maximum_label}
-              </Text>
+          {hasOnlyMinOrMaxLabels && !isSmallerThanPhone ? ( // For desktop view when only min and/or max labels are present
+            <>
+              <Box maxWidth={'50%'}>
+                <Text mt="8px" mb="0px" color="textSecondary">
+                  {labelsFromSchema[0]}
+                </Text>
+              </Box>
+              <Box maxWidth={'50%'}>
+                <Text mt={'8px'} m="0px" color="textSecondary">
+                  {labelsFromSchema[labelsFromSchema.length - 1]}
+                </Text>
+              </Box>
+            </>
+          ) : (
+            // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
+            <Box maxWidth={'100%'}>
+              {labelsFromSchema.map((label, index) => (
+                <Box display="flex" key={`${path}-${index}`}>
+                  {label && (
+                    <>
+                      <Text
+                        mt="8px"
+                        mb="0px"
+                        mr="8px"
+                        color="textSecondary"
+                        style={{ textAlign: 'center' }}
+                      >
+                        {`${index + 1}.`}
+                      </Text>
+                      <Text
+                        mt="8px"
+                        mb="0px"
+                        color="textSecondary"
+                        style={{ textAlign: 'center' }}
+                      >
+                        {label}
+                      </Text>
+                    </>
+                  )}
+                </Box>
+              ))}
             </Box>
           )}
         </Box>
@@ -247,8 +270,8 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester = (schema) => {
-  if (schema?.options?.minimum_label?.length >= 0) {
+export const linearScaleControlTester = (schema: UiSchema) => {
+  if (schema?.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }
   return -1;

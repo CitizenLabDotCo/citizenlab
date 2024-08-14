@@ -8,8 +8,7 @@ import ScaleLabelInput from './ScaleLabelsInput';
 
 interface Props {
   maximumName: string;
-  minimumLabelName: string;
-  maximumLabelName: string;
+  labelBaseName: string;
   onSelectedLocaleChange?: (locale: SupportedLocale) => void;
   locales: SupportedLocale[];
   platformLocale: SupportedLocale;
@@ -18,8 +17,7 @@ interface Props {
 const LinearScaleSettings = ({
   onSelectedLocaleChange,
   maximumName,
-  minimumLabelName,
-  maximumLabelName,
+  labelBaseName,
   platformLocale,
   locales,
 }: Props) => {
@@ -31,8 +29,7 @@ const LinearScaleSettings = ({
       <Box mb="32px">
         <ScaleLabelInput
           platformLocale={platformLocale}
-          minimumLabelName={minimumLabelName}
-          maximumLabelName={maximumLabelName}
+          labelBaseName={labelBaseName}
           maximumName={maximumName}
           onSelectedLocaleChange={onSelectedLocaleChange}
           locales={locales}
