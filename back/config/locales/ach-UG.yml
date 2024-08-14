@@ -284,7 +284,7 @@ ach:
       option2: 'crwdns2875523:0crwdne2875523:0'
     form_end_page:
       title_text: 'crwdns2875525:0crwdne2875525:0'
-      description_text: "crwdns2875527:0crwdne2875527:0"
+      description_text_2: "crwdns2876839:0crwdne2876839:0"
     pdf_export:
       personal_data: 'crwdns2875529:0crwdne2875529:0'
       personal_data_explanation_public: "crwdns2875531:0%{organizationName}crwdnd2875531:0%{organizationName}crwdne2875531:0"
