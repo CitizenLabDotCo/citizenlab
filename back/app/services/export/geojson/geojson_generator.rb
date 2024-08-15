@@ -1,5 +1,5 @@
 module Export
-  module GeojsonExport
+  module Geojson
     # This class is responsible for generating a GeoJSON representation of the answers to a survey mapping question.
     # It generates a GeoJSON FeatureCollection, with a Feature for each response to the question.
     # Each Feature has a geometry attribute, with its value representing the response,
@@ -12,7 +12,7 @@ module Export
         @inputs = phase.ideas.native_survey.published
         @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
         @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
-        @value_visitor = GeojsonExport::ValueVisitor
+        @value_visitor = Geojson::ValueVisitor
       end
 
       def generate_geojson

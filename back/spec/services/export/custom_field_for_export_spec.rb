@@ -110,7 +110,7 @@ describe Export::CustomFieldForExport do
 
   context 'when a scope is given' do
     subject(:report_field) do
-      described_class.new(custom_field, Export::GeojsonExport::ValueVisitor, :author)
+      described_class.new(custom_field, Export::Geojson::ValueVisitor, :author)
     end
 
     let(:user) { create(:user, custom_field_values: { 'birthyear' => 1984 }) }

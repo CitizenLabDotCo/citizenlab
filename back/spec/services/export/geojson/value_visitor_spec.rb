@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Export::GeojsonExport::ValueVisitor do
+describe Export::Geojson::ValueVisitor do
   subject(:visitor) do
     described_class.new(model, option_index)
   end
