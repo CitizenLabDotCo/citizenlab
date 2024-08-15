@@ -126,6 +126,7 @@ const IdeaCard = ({
   const { slug } = idea.data.attributes;
 
   const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
     clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
@@ -134,7 +135,11 @@ const IdeaCard = ({
   const innerHeight = showFollowButton ? '192px' : '162px';
 
   return (
-    <Container className="e2e-card e2e-idea-card" id={idea.data.id}>
+    <Container
+      className="e2e-card e2e-idea-card"
+      id={idea.data.id}
+      onClick={handleClick}
+    >
       <CardImage
         phase={phaseData}
         image={image}
