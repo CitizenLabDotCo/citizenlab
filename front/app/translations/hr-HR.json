@@ -688,6 +688,8 @@
   "app.components.formBuilder.description": "Opis",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Ovo je već dodano u obrazac. Zadani sadržaj može se koristiti samo jednom.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Dodavanje prilagođenog sadržaja dio je premium licence. Obratite se svom GovSuccess upravitelju kako biste saznali više o tome.",
+  "app.components.formBuilder.displayAsDropdown": "Prikaži kao padajući izbornik",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Prikažite opcije u padajućem izborniku. Ako imate mnogo opcija, ovo se preporučuje.",
   "app.components.formBuilder.done": "Gotovo",
   "app.components.formBuilder.drawArea": "Područje crtanja",
   "app.components.formBuilder.drawRoute": "Nacrtaj rutu",

@@ -688,6 +688,8 @@
   "app.components.formBuilder.description": "Beschrijving",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dit is al toegevoegd in het formulier. Standaard inhoud mag maar één keer gebruikt worden.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Het toevoegen van aangepaste inhoud is onderdeel van de premium licentie. Neem contact op met uw Government Success Manager voor meer informatie.",
+  "app.components.formBuilder.displayAsDropdown": "Weergeven als dropdown",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Geef de opties weer in een dropdown. Als je veel opties hebt, is dit aan te raden.",
   "app.components.formBuilder.done": "Klaar",
   "app.components.formBuilder.drawArea": "Tekengebied",
   "app.components.formBuilder.drawRoute": "Route tekenen",
