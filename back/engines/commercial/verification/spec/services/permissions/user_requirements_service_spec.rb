@@ -124,7 +124,7 @@ describe Permissions::UserRequirementsService do
             create(:permissions_custom_field, custom_field: create(:custom_field_birthyear), permission: verified_permission, required: true) # locked
             create(:permissions_custom_field, custom_field: create(:custom_field_domicile), permission: verified_permission, required: true) # not locked
             requirements = service.requirements(verified_permission, user)
-            expect(requirements[:custom_fields]).to eq({ "domicile" => 'required' })
+            expect(requirements[:custom_fields]).to eq({ 'domicile' => 'required' })
           end
         end
 
