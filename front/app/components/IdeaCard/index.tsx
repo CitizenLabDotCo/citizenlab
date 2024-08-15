@@ -134,12 +134,7 @@ const IdeaCard = ({
   const innerHeight = showFollowButton ? '192px' : '162px';
 
   return (
-    <Container
-      onClick={handleClick}
-      aria-hidden={true}
-      className="e2e-card e2e-idea-card"
-      id={idea.data.id}
-    >
+    <Container className="e2e-card e2e-idea-card" id={idea.data.id}>
       <CardImage
         phase={phaseData}
         image={image}
