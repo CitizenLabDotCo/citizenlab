@@ -688,6 +688,8 @@
   "app.components.formBuilder.description": "Περιγραφή",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Αυτό έχει ήδη προστεθεί στη φόρμα. Το προεπιλεγμένο περιεχόμενο μπορεί να χρησιμοποιηθεί μόνο μία φορά.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Η προσθήκη προσαρμοσμένου περιεχομένου αποτελεί μέρος της άδειας premium. Επικοινωνήστε με τον διαχειριστή του GovSuccess για να μάθετε περισσότερα σχετικά.",
+  "app.components.formBuilder.displayAsDropdown": "Εμφάνιση ως dropdown",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Εμφανίστε τις επιλογές σε ένα αναπτυσσόμενο μενού. Εάν έχετε πολλές επιλογές, συνιστάται αυτή η επιλογή.",
   "app.components.formBuilder.done": "Έγινε",
   "app.components.formBuilder.drawArea": "Περιοχή κλήρωσης",
   "app.components.formBuilder.drawRoute": "Διαδρομή κλήρωσης",
