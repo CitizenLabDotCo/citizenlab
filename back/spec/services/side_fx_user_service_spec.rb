@@ -6,13 +6,32 @@ describe SideFxUserService do
   let(:service) { described_class.new }
 
   describe 'after_create' do
-    it "logs a 'created' action job when a user is created" do
+    it "logs a 'created' action job with type: 'email' when a normal user is created" do
       user = create(:user)
 
       expect { service.after_create(user, user) }
         .to enqueue_job(LogActivityJob)
-        .with(user, 'created', user, user.created_at.to_i)
+        .with(user, 'created', user, user.created_at.to_i, payload: { type: 'email' })
         .exactly(1).times
+    end
+
+    it "logs a 'created' action job with type: 'email_only' when a user is created without a password" do
+      user = create(:user, password: nil)
+
+      expect { service.after_create(user, user) }
+        .to enqueue_job(LogActivityJob)
+              .with(user, 'created', user, user.created_at.to_i, payload: { type: 'email_only' })
+              .exactly(1).times
+    end
+
+    it "logs a 'created' action job with type: 'sso' when a user is created with sso" do
+      user = create(:user)
+      user.identities << create(:facebook_identity)
+
+      expect { service.after_create(user, user) }
+        .to enqueue_job(LogActivityJob)
+              .with(user, 'created', user, user.created_at.to_i, payload: { type: 'sso', method: 'facebook' })
+              .exactly(1).times
     end
 
     it 'creates a follower for the domicile' do
