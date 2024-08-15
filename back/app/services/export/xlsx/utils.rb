@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class InvalidSheetnameError < StandardError
       def initialize(sheetname, sanitized_sheetname)
         super("sheet name '#{sheetname}' (sanitized as '#{sanitized_sheetname}') is invalid")

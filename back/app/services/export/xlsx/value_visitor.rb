@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class ValueVisitor < FieldVisitorService
       def initialize(model, option_index, app_configuration: nil)
         super()

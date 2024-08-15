@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class ProjectIdeasVotesGenerator < Generator
       def generate_project_ideas_votes_xlsx(project)
         phases = project.phases.where(participation_method: 'voting')

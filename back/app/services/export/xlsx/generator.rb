@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class Generator
       private
 

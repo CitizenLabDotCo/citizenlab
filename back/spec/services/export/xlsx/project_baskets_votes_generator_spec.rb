@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Export::XlsxExport::ProjectBasketsVotesGenerator do
+describe Export::Xlsx::ProjectBasketsVotesGenerator do
   let(:service) { described_class.new }
 
   describe 'generate_project_baskets_votes_xlsx' do

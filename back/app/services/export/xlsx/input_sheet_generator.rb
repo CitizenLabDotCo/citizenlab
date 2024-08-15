@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class InputSheetGenerator
       US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
@@ -8,7 +8,7 @@ module Export
         @phase = phase
         @include_private_attributes = include_private_attributes
         @participation_method = phase.pmethod
-        @value_visitor = XlsxExport::ValueVisitor
+        @value_visitor = Xlsx::ValueVisitor
         @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
         @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
         @url_service = Frontend::UrlService.new

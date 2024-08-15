@@ -1,5 +1,5 @@
 module Export
-  module XlsxExport
+  module Xlsx
     class AttendeesGenerator < Generator
       def generate_attendees_xlsx(users, view_private_attributes: false)
         columns = [
