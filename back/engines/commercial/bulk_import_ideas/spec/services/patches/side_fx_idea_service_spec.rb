@@ -20,7 +20,7 @@ describe SideFxIdeaService do
                 'created',
                 admin_user,
                 author.created_at.to_i,
-                payload: { type: 'imported' }
+                payload: { flow: 'importer' }
               )
               .exactly(1).times
     end

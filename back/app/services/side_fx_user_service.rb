@@ -138,11 +138,11 @@ class SideFxUserService
 
   def create_user_activity_payload(user)
     if user.sso?
-      { type: 'sso', method: user.identities.first&.provider }
+      { flow: 'sso', method: user.identities.first&.provider }
     elsif user.password.nil?
-      { type: 'email_only' }
+      { flow: 'email_confirmation' }
     else
-      { type: 'email' }
+      { flow: 'email_password' }
     end
   end
 end
