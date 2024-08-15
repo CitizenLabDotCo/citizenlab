@@ -688,6 +688,8 @@
   "app.components.formBuilder.description": "crwdns213958:0crwdne213958:0",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "crwdns213960:0crwdne213960:0",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "crwdns213962:0crwdne213962:0",
+  "app.components.formBuilder.displayAsDropdown": "crwdns2888701:0crwdne2888701:0",
+  "app.components.formBuilder.displayAsDropdownTooltip": "crwdns2888703:0crwdne2888703:0",
   "app.components.formBuilder.done": "crwdns213964:0crwdne213964:0",
   "app.components.formBuilder.drawArea": "crwdns2747313:0crwdne2747313:0",
   "app.components.formBuilder.drawRoute": "crwdns2747315:0crwdne2747315:0",
