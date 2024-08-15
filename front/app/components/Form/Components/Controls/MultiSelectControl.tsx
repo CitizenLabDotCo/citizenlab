@@ -25,9 +25,7 @@ import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
-  [class*='MenuPortal'] {
-    z-index: 1050 !important;
-  }
+  z-index: 800 !important;
 `;
 
 const MultiSelectControl = ({
