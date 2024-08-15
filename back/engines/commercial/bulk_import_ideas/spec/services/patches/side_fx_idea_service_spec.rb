@@ -15,14 +15,14 @@ describe SideFxIdeaService do
 
       expect { service.after_import(idea, admin_user) }
         .to enqueue_job(LogActivityJob)
-              .with(
-                author,
-                'created',
-                admin_user,
-                author.created_at.to_i,
-                payload: { flow: 'importer' }
-              )
-              .exactly(1).times
+        .with(
+          author,
+          'created',
+          admin_user,
+          author.created_at.to_i,
+          payload: { flow: 'importer' }
+        )
+        .exactly(1).times
     end
 
     it "doesn't log a 'create' activity job when a user was not created with the import" do
@@ -30,13 +30,13 @@ describe SideFxIdeaService do
 
       expect { service.after_import(idea, admin_user) }
         .not_to enqueue_job(LogActivityJob)
-                  .with(author, 'created', any_args)
+        .with(author, 'created', any_args)
     end
 
     it "doesn't log a 'create' activity job when the idea was not imported" do
       expect { service.after_import(idea, admin_user) }
         .not_to enqueue_job(LogActivityJob)
-                  .with(author, 'created', any_args)
+        .with(author, 'created', any_args)
     end
   end
 end

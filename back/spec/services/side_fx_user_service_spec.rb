@@ -20,8 +20,8 @@ describe SideFxUserService do
 
       expect { service.after_create(user, user) }
         .to enqueue_job(LogActivityJob)
-              .with(user, 'created', user, user.created_at.to_i, payload: { flow: 'email_confirmation' })
-              .exactly(1).times
+        .with(user, 'created', user, user.created_at.to_i, payload: { flow: 'email_confirmation' })
+        .exactly(1).times
     end
 
     it "logs a 'created' action job with type: 'sso' when a user is created with sso" do
@@ -29,8 +29,8 @@ describe SideFxUserService do
 
       expect { service.after_create(user, user) }
         .to enqueue_job(LogActivityJob)
-              .with(user, 'created', user, user.created_at.to_i, payload: { flow: 'sso', method: 'facebook' })
-              .exactly(1).times
+        .with(user, 'created', user, user.created_at.to_i, payload: { flow: 'sso', method: 'facebook' })
+        .exactly(1).times
     end
 
     it 'generates an avatar after a user is created' do
@@ -73,7 +73,7 @@ describe SideFxUserService do
     end
 
     it "logs a 'changed' action job when the avatar has changed" do
-      user.update(avatar: Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg').open)
+      user.update(avatar: Rails.root.join('spec/fixtures/lorem-ipsum.jpg').open)
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)
     end
@@ -168,17 +168,17 @@ describe SideFxUserService do
     it "logs a 'blocked' action job when a user is blocked" do
       expect { service.after_block(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
-              .with(
-                user,
-                'blocked',
-                current_user,
-                user.updated_at.to_i,
-                payload: {
-                  block_reason: user.block_reason,
-                  block_start_at: user.block_start_at,
-                  block_end_at: user.block_end_at
-                }
-              )
+        .with(
+          user,
+          'blocked',
+          current_user,
+          user.updated_at.to_i,
+          payload: {
+            block_reason: user.block_reason,
+            block_start_at: user.block_start_at,
+            block_end_at: user.block_end_at
+          }
+        )
     end
 
     it 'schedules a UserBlockedMailer job' do
