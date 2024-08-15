@@ -481,8 +481,6 @@
   "app.components.formBuilder.helmetTitle": "Constructor de formulare",
   "app.components.formBuilder.imageFileUpload": "Încărcare imagine",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logică invalidă",
-  "app.components.formBuilder.labels": "Etichete",
-  "app.components.formBuilder.labelsTooltipContent": "Alegeți etichete opționale pentru valorile minime și maxime.",
   "app.components.formBuilder.layout": "Layout",
   "app.components.formBuilder.linearScale": "Scară liniară",
   "app.components.formBuilder.locationDescription": "Locație",

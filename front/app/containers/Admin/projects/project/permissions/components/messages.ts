@@ -33,4 +33,9 @@ export default defineMessages({
     id: 'app.modules.project_management.admin.components.permissionsTab',
     defaultMessage: 'Access rights',
   },
+  cannotDeleteFolderModerator: {
+    id: 'app.containers.AdminPage.groups.permissions.cannotDeleteFolderModerator',
+    defaultMessage:
+      'This user moderates the folder containing this project. To remove their moderator rights for this project, you can either revoke their folder rights or move the project to a different folder.',
+  },
 });

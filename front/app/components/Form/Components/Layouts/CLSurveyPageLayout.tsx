@@ -438,7 +438,6 @@ const CLSurveyPageLayout = memo(
           w="100%"
           position="fixed"
           bottom={isMobileOrSmaller ? '0' : '40px'}
-          zIndex="1010"
         >
           <Box background={colors.background}>
             <Box

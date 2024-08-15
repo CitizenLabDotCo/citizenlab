@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Box } from '@citizenlab/cl2-component-library';
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -14,6 +14,7 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
 
@@ -21,13 +22,19 @@ interface Props {
   isLastItem: boolean;
   moderator: IUserData;
   projectId: string;
+  folderId: string | null;
 }
 
 const PendingInvitation = styled.span`
   font-style: italic;
 `;
 
-const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
+const ModeratorListRow = ({
+  isLastItem,
+  moderator,
+  projectId,
+  folderId,
+}: Props) => {
   const { mutate: deleteProjectModerator, isLoading } =
     useDeleteProjectModerator();
   const { formatMessage } = useIntl();
@@ -49,6 +56,15 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   ) : (
     name
   );
+
+  const moderatesFolder = folderId
+    ? isProjectFolderModerator({ data: moderator }, folderId)
+    : false;
+  const deleteDisabled = !isAdmin(authUser) || moderatesFolder;
+  const disabledTooltip = moderatesFolder
+    ? formatMessage(messages.cannotDeleteFolderModerator)
+    : null;
+
   const handleDeleteClick = () => {
     if (window.confirm(formatMessage(messages.moderatorDeletionConfirmation))) {
       deleteProjectModerator({ projectId, id: moderatorId });
@@ -68,17 +84,27 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
       <Text as="span" m="0">
         {moderator.attributes.email}
       </Text>
-      <Button
-        onClick={handleDeleteClick}
-        buttonStyle="text"
-        icon="delete"
-        // Component is on a page that is accessible
-        // for both project moderators and admins
-        disabled={!isAdmin(authUser)}
-        processing={isLoading}
-      >
-        {formatMessage(messages.deleteModeratorLabel)}
-      </Button>
+      {/*
+        For some reason, the button moves slightly to the left when the tooltip
+        is displayed if the Tooltip is not wrapped in a Box.
+      */}
+      <Box>
+        <Tooltip
+          content={disabledTooltip}
+          disabled={!disabledTooltip}
+          placement="left"
+        >
+          <Button
+            onClick={handleDeleteClick}
+            buttonStyle="text"
+            icon="delete"
+            disabled={deleteDisabled}
+            processing={isLoading}
+          >
+            {formatMessage(messages.deleteModeratorLabel)}
+          </Button>
+        </Tooltip>
+      </Box>
     </Row>
   );
 };

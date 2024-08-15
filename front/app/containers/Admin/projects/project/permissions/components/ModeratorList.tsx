@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useProjectById from 'api/projects/useProjectById';
 import useProjectModerators from 'api/project_moderators/useProjectModerators';
 
 import { List } from 'components/admin/ResourceList';
@@ -17,6 +18,8 @@ interface Props {
 
 const ModeratorList = memo(({ projectId }: Props) => {
   const { data: moderators, isError } = useProjectModerators({ projectId });
+  const { data: project } = useProjectById(projectId);
+  const folderId = project?.data.attributes.folder_id ?? null;
 
   if (isError) {
     return <FormattedMessage {...messages.moderatorsNotFound} />;
@@ -34,6 +37,7 @@ const ModeratorList = memo(({ projectId }: Props) => {
                   isLastItem={index === moderators.data.length - 1}
                   moderator={moderator}
                   projectId={projectId}
+                  folderId={folderId}
                 />
               );
             })}
