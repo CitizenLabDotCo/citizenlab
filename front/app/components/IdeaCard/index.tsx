@@ -43,7 +43,7 @@ export interface Props {
   showFollowButton?: boolean;
 }
 
-const Container = styled(Link)`
+const Container = styled(Box)`
   display: block;
   ${defaultCardStyle};
   cursor: pointer;
@@ -135,10 +135,10 @@ const IdeaCard = ({
 
   return (
     <Container
+      onClick={handleClick}
+      aria-hidden={true}
       className="e2e-card e2e-idea-card"
       id={idea.data.id}
-      to={`/ideas/${slug}?go_back=true`}
-      onClick={handleClick}
     >
       <CardImage
         phase={phaseData}
@@ -163,15 +163,17 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Title
-            variant="h3"
-            mt="4px"
-            mb="16px"
-            className="e2e-idea-card-title"
-          >
-            {ideaTitle}
-          </Title>
-          {!hideBody && <Body idea={idea} />}
+          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+            <Title
+              variant="h3"
+              mt="4px"
+              mb="16px"
+              className="e2e-idea-card-title"
+            >
+              {ideaTitle}
+            </Title>
+            {!hideBody && <Body idea={idea} />}
+          </Link>
         </Box>
         <Box>
           <Interactions idea={idea} phase={phaseData || null} />
