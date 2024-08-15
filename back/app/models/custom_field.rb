@@ -33,6 +33,7 @@
 #  linear_scale_label_5_multiloc :jsonb            not null
 #  linear_scale_label_6_multiloc :jsonb            not null
 #  linear_scale_label_7_multiloc :jsonb            not null
+#  dropdown_layout               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -162,6 +163,10 @@ class CustomField < ApplicationRecord
 
   def page_or_section?
     page? || section?
+  end
+
+  def dropdown_layout_type?
+    %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?

@@ -118,6 +118,7 @@ export function getAdditionalSettings(
           />
           <SelectSettings
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );
@@ -132,6 +133,7 @@ export function getAdditionalSettings(
           />
           <SelectSettings
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );
