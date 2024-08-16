@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GeojsonExport::ValueVisitor do
+describe Export::Geojson::ValueVisitor do
   subject(:visitor) do
     described_class.new(model, option_index)
   end
@@ -383,6 +383,33 @@ describe GeojsonExport::ValueVisitor do
 
         it 'returns the value for the report' do
           expect(visitor.visit_file_upload(field)).to eq file.file.url
+        end
+      end
+    end
+
+    describe '#visit_shapefile_upload' do
+      let(:input_type) { 'shapefile_upload' }
+
+      context 'when there is no value' do
+        let(:value) { nil }
+
+        it 'returns nil' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_shapefile_upload(field)).to be_nil
+          end
+        end
+      end
+
+      context 'when there is a value' do
+        let(:model) { create(:native_survey_response) }
+        let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
+
+        before do
+          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+        end
+
+        it 'returns the value for the report' do
+          expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end
     end

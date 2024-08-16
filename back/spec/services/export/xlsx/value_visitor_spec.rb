@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::ValueVisitor do
+describe Export::Xlsx::ValueVisitor do
   subject(:visitor) do
     described_class.new(model, option_index)
   end

@@ -1,4 +1,4 @@
-module GeojsonExport
+module Export
   class DomicileFieldForExport < CustomFieldForExport
     private
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::ComputedFieldForReport do
+describe Export::Xlsx::ComputedFieldForReport do
   subject(:report_field) do
     described_class.new(column_header, ->(model) { model.budget })
   end
