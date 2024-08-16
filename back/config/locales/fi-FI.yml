@@ -296,6 +296,12 @@ fi:
       optional: 'valinnainen'
       permission: 'Lupa'
       choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_exactly:
+        one: 'Valitse täsmälleen %{count} -vaihtoehto'
+        other: 'Valitse täsmälleen %{count} vaihtoehdot'
+      choose_between: 'Valitse %{min} ja %{max} vaihtoehdoista'
+      choose_at_least: 'Valitse vähintään %{count} vaihtoehtoa'
+      choose_at_most: 'Valitse enintään %{count} vaihtoehtoa'
       this_answer: 'Tämä vastaus jaetaan vain moderaattoreille, ei yleisölle.'
       page: 'Sivu'
       date_published: 'Julkaisupäivä (pp-kk-vvvv)'
