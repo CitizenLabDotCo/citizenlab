@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::AttendeesGenerator do
+describe Export::Xlsx::AttendeesGenerator do
   let(:service) { described_class.new }
 
   describe 'generate_attendees_xlsx' do

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe XlsxExport::CustomFieldForReport do
+describe Export::CustomFieldForExport do
   context 'when no scope is given' do
     subject(:report_field) do
-      described_class.new(custom_field)
+      described_class.new(custom_field, Export::Xlsx::ValueVisitor)
     end
 
     let(:input_type) { 'text' }
@@ -90,7 +90,7 @@ describe XlsxExport::CustomFieldForReport do
 
     describe '#accept' do
       let(:result) { double }
-      let(:visitor) { XlsxExport::ValueVisitor.new(model, {}) }
+      let(:visitor) { Export::Xlsx::ValueVisitor.new(model, {}) }
 
       it 'delegates to the field' do
         expect(custom_field).to receive(:accept).with(visitor).and_return result
@@ -110,7 +110,7 @@ describe XlsxExport::CustomFieldForReport do
 
   context 'when a scope is given' do
     subject(:report_field) do
-      described_class.new(custom_field, :author)
+      described_class.new(custom_field, Export::Geojson::ValueVisitor, :author)
     end
 
     let(:user) { create(:user, custom_field_values: { 'birthyear' => 1984 }) }
@@ -192,7 +192,7 @@ describe XlsxExport::CustomFieldForReport do
 
     describe '#accept' do
       let(:result) { double }
-      let(:visitor) { XlsxExport::ValueVisitor.new(model, {}) }
+      let(:visitor) { Export::Xlsx::ValueVisitor.new(model, {}) }
 
       it 'delegates to the field' do
         expect(custom_field).to receive(:accept).with(visitor).and_return result

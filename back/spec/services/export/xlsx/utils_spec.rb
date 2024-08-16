@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::Utils do
+describe Export::Xlsx::Utils do
   subject(:service) { described_class.new }
 
   describe 'escape_formula' do
@@ -64,7 +64,7 @@ describe XlsxExport::Utils do
       with_them do
         specify do
           expect { service.send(:sanitize_sheetname, sheetname) }
-            .to raise_error(XlsxExport::InvalidSheetnameError)
+            .to raise_error(Export::Xlsx::InvalidSheetnameError)
         end
       end
     end

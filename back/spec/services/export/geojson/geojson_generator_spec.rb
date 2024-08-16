@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GeojsonExport::GeojsonGenerator do
+describe Export::Geojson::GeojsonGenerator do
   subject(:service) { described_class.new phase, custom_field1 }
 
   let(:project) { create(:single_phase_native_survey_project) }
