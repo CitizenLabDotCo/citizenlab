@@ -201,7 +201,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def check_publication_inconsistencies!
     # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
     if Project.all.any? { |project| project.admin_publication.blank? }
-      raise 'Project has no admin_publication!'
+      raise "Project with id #{project.id} has no admin_publication!"
     end
   end
 end
