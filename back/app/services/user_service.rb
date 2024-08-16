@@ -32,7 +32,6 @@ class UserService
       user.locale = locale
 
       user.confirm if confirm_user
-
       user
     end
 
