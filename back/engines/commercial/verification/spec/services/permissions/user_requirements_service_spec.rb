@@ -112,7 +112,7 @@ describe Permissions::UserRequirementsService do
             expect(requirements[:verification]).to be false
           end
 
-          it 'removes all missing authentication requirements if verified' do
+          it 'removes all missing authentication requirements' do
             user.update!(unique_code: '1234abcd', email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
             expect(requirements[:authentication][:missing_user_attributes]).to be_empty
