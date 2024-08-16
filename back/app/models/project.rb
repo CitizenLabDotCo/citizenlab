@@ -263,7 +263,6 @@ class Project < ApplicationRecord
     old_folder_moderators.each do |moderator|
       next unless moderator.moderatable_project_ids.include?(id)
 
-      project.update(default_assignee_id: nil) if default_assignee_id == moderator.id
       moderator.delete_role('project_moderator', project_id: id)
       moderator.save
     end
