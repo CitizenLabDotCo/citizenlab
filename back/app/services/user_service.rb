@@ -31,25 +31,7 @@ class UserService
       user = User.new(user_params)
       user.locale = locale
 
-      if confirm_user
-        # If the SSO returned that the email is confirmed, we can confirm the user
-        user.confirm
-      else
-        # If the SSO says that the email is not confirmed, we don't
-        # save the email at all. Before, we were saving it,
-        # but this created problems with the confirmation_required? method.
-        # Basically, if there is a verified user with email but without email confirmation,
-        # the user cannot do anything until the email is confirmed.
-        # This doesn't make any sense- why does a verified user with email
-        # have less rights than one without?
-        # Maybe the confirmation_required? method should not care about email
-        # if the user is verified... but this is a much bigger change
-        # with potentially big security implications. So for now we fix it like this.
-        # It's an edge case anyway
-        # (Luuc)
-
-        user.email = nil
-      end
+      user.confirm if confirm_user
 
       user
     end
