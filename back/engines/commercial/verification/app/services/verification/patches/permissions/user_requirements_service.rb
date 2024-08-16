@@ -39,10 +39,9 @@ module Verification
         def mark_satisfied_requirements!(requirements, permission, user)
           super
 
-          # requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified' && user.verified?
           if permission.permitted_by == 'verified' && user.verified?
             requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
-              ['email_confirmation']
+              ['confirmation']
             else
               []
             end
