@@ -296,6 +296,12 @@ nl:
       optional: 'optioneel'
       permission: 'Toestemming'
       choose_as_many: 'Kies er zoveel als je wilt'
+      choose_exactly:
+        one: 'Kies precies %{count} optie'
+        other: 'Kies precies %{count} opties'
+      choose_between: 'Kies tussen %{min} en %{max} opties'
+      choose_at_least: 'Kies ten minste %{count} opties'
+      choose_at_most: 'Kies maximaal %{count} opties'
       this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
       page: 'Pagina'
       date_published: 'Datum gepubliceerd (dd-mm-jjjj)'
