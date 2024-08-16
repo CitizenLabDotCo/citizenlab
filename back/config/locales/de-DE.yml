@@ -296,6 +296,12 @@ de:
       optional: 'optional'
       permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
+      choose_exactly:
+        one: 'Wählen Sie genau %{count} Option'
+        other: 'Wählen Sie genau %{count} Optionen'
+      choose_between: 'Wählen Sie zwischen %{min} und %{max} Optionen'
+      choose_at_least: 'Wählen Sie mindestens %{count} Optionen'
+      choose_at_most: 'Wählen Sie höchstens %{count} Optionen'
       this_answer: 'Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.'
       page: 'Seite'
       date_published: 'Veröffentlichungsdatum (TT-MM-JJJJ)'
