@@ -117,6 +117,15 @@ describe Permissions::UserRequirementsService do
             requirements = service.requirements(verified_permission, user)
             expect(requirements[:authentication][:missing_user_attributes]).to be_empty
           end
+
+          it 'removes locked custom fields if verified' do
+            verified_permission.update!(global_custom_fields: false)
+            create(:permissions_custom_field, custom_field: create(:custom_field_gender), permission: verified_permission, required: true) # locked
+            create(:permissions_custom_field, custom_field: create(:custom_field_birthyear), permission: verified_permission, required: true) # locked
+            create(:permissions_custom_field, custom_field: create(:custom_field_domicile), permission: verified_permission, required: true) # not locked
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:custom_fields]).to eq({ 'domicile' => 'required' })
+          end
         end
 
         context 'when verification_expiry is set to 0' do
@@ -174,26 +183,5 @@ describe Permissions::UserRequirementsService do
         end
       end
     end
-
-    # context 'when permitted_by is set to "verified"' do
-    #   let(:permission) { create(:permission, permitted_by: 'verified') }
-    #
-    #   before do
-    #     # To allow permitted_by 'verified' we need to enable at least one verification method
-    #     SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
-    #   end
-    #
-    #   it 'does not remove missing authentication requirements if not verified' do
-    #     user = create(:user, unique_code: '1234abcd', email: nil, password: nil)
-    #     requirements = service.requirements(permission, user)
-    #     expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
-    #   end
-    #
-    #   it 'removes all missing authentication requirements if verified' do
-    #     user = create(:user, unique_code: '1234abcd', email: nil, password: nil, verified: true)
-    #     requirements = service.requirements(permission, user)
-    #     expect(requirements[:authentication][:missing_user_attributes]).to be_empty
-    #   end
-    # end
   end
 end
