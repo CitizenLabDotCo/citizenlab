@@ -43,8 +43,10 @@ module Verification
             requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified'
 
             # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
+            locked_fields = verification_service.locked_custom_fields(user)
+
             requirements[:custom_fields]&.each_key do |key|
-              requirements[:custom_fields].delete(key) if verification_service.locked_custom_fields(user).include?(key.to_sym)
+              requirements[:custom_fields].delete(key) if locked_fields.include?(key.to_sym)
             end
           end
 
