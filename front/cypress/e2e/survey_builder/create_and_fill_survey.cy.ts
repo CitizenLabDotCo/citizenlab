@@ -412,7 +412,7 @@ describe('Survey builder', () => {
 
   it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
     cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-    cy.get('#e2e-granular-permissions-phase-accordion').click();
+    cy.get('.e2e-granular-permissions-phase-accordion').first().click();
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').click();
     });
@@ -732,7 +732,7 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/settings/access-rights`);
 
-    cy.get('#e2e-granular-permissions-phase-accordion').click();
+    cy.get('.e2e-granular-permissions-phase-accordion').first().click();
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').click();
     });

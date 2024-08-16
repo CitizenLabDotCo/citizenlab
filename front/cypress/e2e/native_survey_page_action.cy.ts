@@ -110,7 +110,7 @@ describe('Native survey project page actions', () => {
         `admin/projects/${projectIdWithOneOpenEndedPhase}/settings/access-rights`
       );
       // Select that unregistered users may submit surveys
-      cy.get('#e2e-granular-permissions-phase-accordion').click();
+      cy.get('.e2e-granular-permissions-phase-accordion').first().click();
       cy.get('#e2e-granular-permissions').within(() => {
         cy.contains('Anyone').should('be.visible');
         cy.contains('Anyone').click({ force: true });
