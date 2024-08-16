@@ -296,6 +296,12 @@ ach:
       optional: 'crwdns1160108:0crwdne1160108:0'
       permission: 'crwdns1160110:0crwdne1160110:0'
       choose_as_many: 'crwdns1160112:0crwdne1160112:0'
+      choose_exactly:
+        one: 'crwdns2888705:1%{count}crwdne2888705:1'
+        other: 'crwdns2888705:5%{count}crwdne2888705:5'
+      choose_between: 'crwdns2888707:0%{min}crwdnd2888707:0%{max}crwdne2888707:0'
+      choose_at_least: 'crwdns2888709:0%{count}crwdne2888709:0'
+      choose_at_most: 'crwdns2888711:0%{count}crwdne2888711:0'
       this_answer: 'crwdns1160114:0crwdne1160114:0'
       page: 'crwdns1160116:0crwdne1160116:0'
       date_published: 'crwdns1160118:0crwdne1160118:0'
