@@ -5,6 +5,10 @@ require 'rails_helper'
 describe Permissions::UserRequirementsService do
   let(:service) { described_class.new }
 
+  before do
+    SettingsService.new.activate_feature! 'user_confirmation'
+  end
+
   describe '#requirements' do
     context 'verification via groups' do
       context 'when permission has groups and permission has a verification group' do
@@ -171,6 +175,17 @@ describe Permissions::UserRequirementsService do
               expect(requirements[:verification]).to be true
             end
           end
+        end
+      end
+
+      context 'a user is verified and has email, but is not confirmed' do
+        let(:user) { create(:user_with_confirmation, verified: true) }
+
+        it 'requires email confirmation' do
+          expect(user.confirmation_required?).to be true
+          requirements = service.requirements(verified_permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:missing_user_attributes]).to eq ['confirmation']
         end
       end
     end
