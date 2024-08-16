@@ -44,7 +44,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       {showAnyone && (
         <Box>
           <CardButton
-            id="e2e-permission-anyone"
+            className="e2e-permission-anyone"
             icon={
               <Icon
                 name="user-circle"
@@ -63,7 +63,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       )}
       <Box>
         <CardButton
-          id="e2e-permission-email-confirmed-users"
+          className="e2e-permission-email-confirmed-users"
           icon={
             <Box display="flex" flexDirection="row">
               <Icon
@@ -85,7 +85,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       </Box>
       <Box>
         <CardButton
-          id="e2e-permission-registered-users"
+          className="e2e-permission-registered-users"
           icon={
             <Box display="flex" flexDirection="row">
               <Icon
@@ -112,7 +112,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
       {verificationMethodAllowed && verificationMethodName && (
         <Box>
           <CardButton
-            id="e2e-permission-verified-actions"
+            className="e2e-permission-verified-actions"
             icon={
               <Box display="flex" flexDirection="row">
                 <Icon

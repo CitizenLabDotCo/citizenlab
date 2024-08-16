@@ -29,7 +29,7 @@ const PhaseAccordion = ({
       isOpenByDefault={false}
       title={
         <Title
-          id="e2e-granular-permissions-phase-accordion"
+          className="e2e-granular-permissions-phase-accordion"
           variant="h3"
           color="primary"
           my="20px"
