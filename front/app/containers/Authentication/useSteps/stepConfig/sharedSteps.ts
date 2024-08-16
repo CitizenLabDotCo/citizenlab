@@ -135,7 +135,8 @@ export const sharedSteps = (
         const isLightFlow = permitted_by === 'everyone_confirmed_email';
 
         const signedIn =
-          disabled_reason && disabled_reason !== 'user_not_signed_in';
+          !disabled_reason || // To allow onboarding for already signed in users
+          (disabled_reason && disabled_reason !== 'user_not_signed_in');
 
         if (isLightFlow) {
           if (!signedIn) {
