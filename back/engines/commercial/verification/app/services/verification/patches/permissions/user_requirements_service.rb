@@ -39,11 +39,20 @@ module Verification
         def mark_satisfied_requirements!(requirements, permission, user)
           super
 
-          if permission.permitted_by == 'verified' && user.verified?
-            requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
-              ['confirmation']
-            else
-              []
+          if user.verified?
+            if permission.permitted_by == 'verified'
+              requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
+                ['confirmation']
+              else
+                []
+              end
+            end
+
+            # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
+            locked_fields = verification_service.locked_custom_fields(user)
+
+            requirements[:custom_fields]&.each_key do |key|
+              requirements[:custom_fields].delete(key) if locked_fields.include?(key.to_sym)
             end
           end
 
