@@ -32,6 +32,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_trending_info,
       :topics,
       :phases,
+      :creation_phase,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
