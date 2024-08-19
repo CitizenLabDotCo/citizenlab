@@ -99,19 +99,14 @@ describe WebApi::V1::IdeaSerializer do
       end
     end
 
-    describe 'reactions_needed' do
+    describe 'reacting_threshold' do
       let(:reacting_threshold) { 5 }
 
       before { proposal.creation_phase.update!(reacting_threshold: reacting_threshold) }
 
-      it 'returns the difference between reacting_threshold and likes_count' do
+      it 'returns the reacting_threshold from the creation phase' do
         proposal.update!(likes_count: 2)
-        expect(result.dig(:data, :attributes, :reactions_needed)).to eq 3
-      end
-
-      it 'returns 0 if the difference is negative' do
-        proposal.update!(likes_count: 10)
-        expect(result.dig(:data, :attributes, :reactions_needed)).to eq 0
+        expect(result.dig(:data, :attributes, :reacting_threshold)).to eq reacting_threshold
       end
     end
   end

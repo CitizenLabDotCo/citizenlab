@@ -34,7 +34,7 @@ module ParticipationMethod
     end
 
     def supports_serializing_input?(attribute)
-      %i[expires_at reactions_needed].include?(attribute)
+      %i[expires_at reacting_threshold].include?(attribute)
     end
 
     def use_reactions_as_votes?
