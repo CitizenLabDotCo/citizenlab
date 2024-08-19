@@ -3033,7 +3033,8 @@ CREATE TABLE public.project_images (
     image character varying,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -7527,6 +7528,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240731181623'),
 ('20240731223530'),
 ('20240812115140'),
-('20240814133336');
+('20240814133336'),
+('20240818102933');
 
 

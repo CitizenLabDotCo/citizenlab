@@ -108,7 +108,8 @@ class WebApi::V1::ImagesController < ApplicationController
   def image_params
     params.require(:image).permit(
       :image,
-      :ordering
+      :ordering,
+      :alt_text_multiloc
     )
   end
 
