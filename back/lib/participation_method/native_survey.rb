@@ -6,11 +6,9 @@ module ParticipationMethod
       'native_survey'
     end
 
-    # Survey responses do not have a fixed field that can be used
-    # to generate a slug, so use the id as the basis for the slug.
-    def generate_slug(input)
-      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
-      SlugService.new.generate_slug input, input.id
+    def allowed_extra_field_input_types
+      %w[page number linear_scale text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon]
     end
 
     def assign_defaults(input)
@@ -18,8 +16,23 @@ module ParticipationMethod
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
     end
 
-    def supports_pages_in_form?
-      true
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
+    def create_default_form!
+      form = CustomForm.new(participation_context: phase)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      form.save!
+      phase.reload
+
+      form
+    end
+
+    def custom_form
+      phase.custom_form || CustomForm.new(participation_context: phase)
     end
 
     def default_fields(custom_form)
@@ -59,47 +72,30 @@ module ParticipationMethod
       ]
     end
 
-    def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect
-        multiselect_image file_upload shapefile_upload point line polygon]
+    # Survey responses do not have a fixed field that can be used
+    # to generate a slug, so use the id as the basis for the slug.
+    def generate_slug(input)
+      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
+      SlugService.new.generate_slug input, input.id
     end
 
-    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
-    def create_default_form!
-      form = CustomForm.new(participation_context: phase)
-
-      default_fields(form).reverse_each do |field|
-        field.save!
-        field.move_to_top
-      end
-
-      form.save!
-      phase.reload
-
-      form
+    def return_disabled_actions?
+      true
     end
 
     def supports_edits_after_publication?
       false
     end
 
-    def custom_form
-      phase.custom_form || CustomForm.new(participation_context: phase)
-    end
-
     def supports_exports?
       true
     end
 
-    def supports_toxicity_detection?
+    def supports_multiple_posts?
       false
     end
 
-    def supports_posting_inputs?
-      true
-    end
-
-    def supports_survey_form?
+    def supports_pages_in_form?
       true
     end
 
@@ -107,15 +103,19 @@ module ParticipationMethod
       true
     end
 
+    def supports_posting_inputs?
+      true
+    end
+
     def supports_serializing?(attribute)
       %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
     end
 
-    def return_disabled_actions?
+    def supports_survey_form?
       true
     end
 
-    def supports_multiple_posts?
+    def supports_toxicity_detection?
       false
     end
   end

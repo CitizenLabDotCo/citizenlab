@@ -6,10 +6,6 @@ module ParticipationMethod
       'proposals'
     end
 
-    def transitive?
-      false
-    end
-
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false
@@ -18,10 +14,6 @@ module ParticipationMethod
     end
 
     def budget_in_form?(_)
-      false
-    end
-
-    def proposed_budget_in_form?
       false
     end
 
@@ -37,8 +29,18 @@ module ParticipationMethod
       %i[expires_at reacting_threshold].include?(attribute)
     end
 
+    def transitive?
+      false
+    end
+
     def use_reactions_as_votes?
       true
+    end
+
+    private
+
+    def proposed_budget_in_form?
+      false
     end
   end
 end
