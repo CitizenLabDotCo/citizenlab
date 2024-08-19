@@ -31,12 +31,9 @@ module BulkImportIdeas::Parsers::Pdf
     def parse_page(page)
       page = page.squish # Remove new lines and extra whitespace
 
-      # Remove static content from the whole page - ' eg *This answer may be shared...'
-      choose_as_many_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
+      # Remove static content from the whole page - 'eg *This answer may be shared...'
       this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
-      %W[*#{choose_as_many_copy} *#{this_answer_copy}].each do |control_content|
-        page = page.gsub(control_content, '')
-      end
+      page = page.gsub("*#{this_answer_copy}", '')
 
       # Extract each field by splitting the page by each field title
       optional_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
@@ -58,6 +55,10 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def process_field_value(field, value)
+      # Remove static instructions
+      instructions_copy = BulkImportIdeas::Exporters::IdeaPdfFormExporter.generate_multiselect_instructions(field, @locale)
+      value = value.gsub("*#{instructions_copy}", '') if instructions_copy
+
       # Strip out unneeded generic text
       field_value = value.strip
 

@@ -48,6 +48,14 @@ de:
     implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
+    expired: abgelaufen
+    expired_description: abgelaufen
+    threshold_reached: Schwelle erreicht
+    threshold_reached_description: Schwelle erreicht
+    answered: beantwortet
+    answered_description: beantwortet
+    ineligible: unzulässig
+    ineligible_description: unzulässig
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
@@ -282,6 +290,12 @@ de:
       optional: 'optional'
       permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
+      choose_exactly:
+        one: 'Wählen Sie genau %{count} Option'
+        other: 'Wählen Sie genau %{count} Optionen'
+      choose_between: 'Wählen Sie zwischen %{min} und %{max} Optionen'
+      choose_at_least: 'Wählen Sie mindestens %{count} Optionen'
+      choose_at_most: 'Wählen Sie höchstens %{count} Optionen'
       this_answer: 'Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.'
       page: 'Seite'
       date_published: 'Veröffentlichungsdatum (TT-MM-JJJJ)'

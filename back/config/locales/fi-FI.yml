@@ -48,6 +48,14 @@ fi:
     implemented_description: Tämä idea on kaupungin toimesta toteutettu
     rejected: hylätty
     rejected_description: Tämä ajatus on hylätty
+    expired: vanhentunut
+    expired_description: vanhentunut
+    threshold_reached: kynnys saavutettu
+    threshold_reached_description: kynnys saavutettu
+    answered: vastasi
+    answered_description: vastasi
+    ineligible: kelpaamattomia
+    ineligible_description: kelpaamattomia
   initiative_statuses:
     review_pending: tarkistus odottaa
     review_pending_description: tarkistus odottaa
@@ -282,6 +290,12 @@ fi:
       optional: 'valinnainen'
       permission: 'Lupa'
       choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_exactly:
+        one: 'Valitse täsmälleen %{count} -vaihtoehto'
+        other: 'Valitse täsmälleen %{count} vaihtoehdot'
+      choose_between: 'Valitse %{min} ja %{max} vaihtoehdoista'
+      choose_at_least: 'Valitse vähintään %{count} vaihtoehtoa'
+      choose_at_most: 'Valitse enintään %{count} vaihtoehtoa'
       this_answer: 'Tämä vastaus jaetaan vain moderaattoreille, ei yleisölle.'
       page: 'Sivu'
       date_published: 'Julkaisupäivä (pp-kk-vvvv)'

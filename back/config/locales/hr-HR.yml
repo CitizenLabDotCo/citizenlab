@@ -48,6 +48,14 @@ hr:
     implemented_description: Ova je ideja provedena
     rejected: odbijeno
     rejected_description: Ova je ideja odbijena
+    expired: istekao
+    expired_description: istekao
+    threshold_reached: dosegnut prag
+    threshold_reached_description: dosegnut prag
+    answered: odgovorio
+    answered_description: odgovorio
+    ineligible: nepodoban
+    ineligible_description: nepodoban
   initiative_statuses:
     review_pending: pregled na čekanju
     review_pending_description: pregled na čekanju
@@ -282,6 +290,13 @@ hr:
       optional: 'neobavezan'
       permission: 'Dopuštenje'
       choose_as_many: 'Odaberite koliko god želite'
+      choose_exactly:
+        one: 'Odaberite točno opciju %{count}'
+        few: 'Odaberite točno %{count} opcija'
+        other: 'Odaberite točno %{count} opcija'
+      choose_between: 'Odaberite između opcija %{min} i %{max}'
+      choose_at_least: 'Odaberite najmanje %{count} opcija'
+      choose_at_most: 'Odaberite najviše %{count} opcija'
       this_answer: 'Ovaj odgovor će biti podijeljen samo moderatorima, a ne javnosti.'
       page: 'Stranica'
       date_published: 'Datum objave (dd-mm-gggg)'

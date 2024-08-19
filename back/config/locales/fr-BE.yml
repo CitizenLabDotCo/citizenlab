@@ -48,6 +48,14 @@ fr-BE:
     implemented_description: Cette idée a été mise en place par l'administration
     rejected: non-retenu.e
     rejected_description: Cette idée n'a pas été retenue
+    expired: expirée
+    expired_description: expirée
+    threshold_reached: seuil atteint
+    threshold_reached_description: seuil atteint
+    answered: répondue
+    answered_description: répondue
+    ineligible: inéligible
+    ineligible_description: inéligible
   initiative_statuses:
     review_pending: examen en cours
     review_pending_description: examen en cours
@@ -273,7 +281,7 @@ fr-BE:
       description: "Veuillez soumettre vos réponses en cliquant sur « Envoyer » ci-dessous."
     pdf_export:
       personal_data: 'Données personnelles'
-      personal_data_explanation_public: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et ne sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
+      personal_data_explanation_public: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
       personal_data_explanation_private: "Vos réponses seront enregistrées sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez recevoir des mises à jour concernant le projet par e-mail, veuillez remplir les champs suivants et nous créerons un compte pour vous. Vos données ne seront pas publiques et ne seront utilisées que par %{organizationName}. Si vous ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
       first_name: 'Prénom'
       last_name: 'Nom'
@@ -282,6 +290,12 @@ fr-BE:
       optional: 'optionnel'
       permission: 'Permission'
       choose_as_many: 'Sélectionnez-en autant que vous le souhaitez'
+      choose_exactly:
+        one: 'Choisissez exactement %{count} option'
+        other: 'Choisissez exactement %{count} options'
+      choose_between: 'Choisissez entre %{min} et %{max} options'
+      choose_at_least: 'Choisissez au minimum %{count} options'
+      choose_at_most: 'Choisissez au maximum %{count} options'
       this_answer: 'Cette réponse ne sera communiquée qu''aux modérateurs, et non au public.'
       page: 'Page'
       date_published: 'Date de publication (jj-mm-aaaa)'

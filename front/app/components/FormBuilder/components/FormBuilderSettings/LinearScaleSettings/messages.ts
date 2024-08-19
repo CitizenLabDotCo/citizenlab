@@ -2,13 +2,13 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   labels: {
-    id: 'app.components.formBuilder.labels',
-    defaultMessage: 'Labels',
+    id: 'app.components.formBuilder.labels2',
+    defaultMessage: 'Labels (optional)',
   },
   labelsTooltipContent: {
-    id: 'app.components.formBuilder.labelsTooltipContent',
+    id: 'app.components.formBuilder.labelsTooltipContent2',
     defaultMessage:
-      'Choose optional labels for your minimum and maximum values.',
+      'Choose optional labels for any of the linear scale values.',
   },
   range: {
     id: 'app.components.formBuilder.range',

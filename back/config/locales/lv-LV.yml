@@ -48,6 +48,14 @@ lv:
     implemented_description: Šo ideju ir īstenojusi pilsēta
     rejected: noraidīts
     rejected_description: Šī ideja ir noraidīta
+    expired: beidzās
+    expired_description: beidzās
+    threshold_reached: sasniegts slieksnis
+    threshold_reached_description: sasniegts slieksnis
+    answered: atbildēja
+    answered_description: atbildēja
+    ineligible: neatbilstoši
+    ineligible_description: neatbilstoši
   initiative_statuses:
     review_pending: pārskatīšana vēl nav pabeigta
     review_pending_description: pārskatīšana vēl nav pabeigta
@@ -282,6 +290,13 @@ lv:
       optional: 'izvēles'
       permission: 'Atļauja'
       choose_as_many: 'Izvēlieties tik daudz, cik vēlaties'
+      choose_exactly:
+        zero: 'Izvēlieties tieši %{count} iespējas'
+        one: 'Izvēlieties tieši %{count} opciju'
+        other: 'Izvēlieties tieši %{count} iespējas'
+      choose_between: 'Izvēlieties starp %{min} un %{max} iespējām'
+      choose_at_least: 'Izvēlieties vismaz %{count} iespējas'
+      choose_at_most: 'Izvēlieties ne vairāk kā %{count} iespējas'
       this_answer: 'Šī atbilde tiks izpausta tikai moderatoriem, bet ne sabiedrībai.'
       page: 'Lapa'
       date_published: 'Publicēšanas datums (dd-mm-gggg)'

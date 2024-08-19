@@ -48,6 +48,14 @@ cy:
     implemented_description: Mae'r syniad hwn wedi'i roi ar waith gan y ddinas
     rejected: gwrthodwyd
     rejected_description: Mae'r syniad hwn wedi'i wrthod
+    expired: wedi dod i ben
+    expired_description: wedi dod i ben
+    threshold_reached: trothwy wedi ei gyrraedd
+    threshold_reached_description: trothwy wedi ei gyrraedd
+    answered: atebodd
+    answered_description: atebodd
+    ineligible: anghymwys
+    ineligible_description: anghymwys
   initiative_statuses:
     review_pending: adolygiad yn yr arfaeth
     review_pending_description: adolygiad yn yr arfaeth
@@ -282,6 +290,16 @@ cy:
       optional: 'dewisol'
       permission: 'Caniatâd'
       choose_as_many: 'Dewiswch gymaint ag y dymunwch'
+      choose_exactly:
+        zero: 'Dewiswch yn union %{count} opsiynau'
+        one: 'Choose exactly %{count} option'
+        two: 'Dewiswch yn union %{count} opsiynau'
+        few: 'Dewiswch yn union %{count} opsiynau'
+        many: 'Dewiswch yn union %{count} opsiynau'
+        other: 'Dewiswch yn union %{count} opsiynau'
+      choose_between: 'Dewiswch rhwng opsiynau %{min} a %{max}'
+      choose_at_least: 'Dewiswch o leiaf %{count} opsiynau'
+      choose_at_most: 'Dewiswch opsiynau %{count} ar y mwyaf'
       this_answer: 'Bydd yr ateb hwn yn cael ei rannu â chymedrolwyr yn unig, ac nid â''r cyhoedd.'
       page: 'Tudalen'
       date_published: 'Dyddiad Cyhoeddi (dd-mm-bbbb)'

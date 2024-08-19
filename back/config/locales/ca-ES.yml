@@ -48,6 +48,14 @@ ca:
     implemented_description: Aquesta idea ha estat implementada per l'Ajuntament
     rejected: rebutjada
     rejected_description: Aquesta idea ha estat rebutjada
+    expired: caducat
+    expired_description: caducat
+    threshold_reached: llindar assolit
+    threshold_reached_description: llindar assolit
+    answered: va respondre
+    answered_description: va respondre
+    ineligible: inelegible
+    ineligible_description: inelegible
   initiative_statuses:
     review_pending: revisió pendent
     review_pending_description: revisió pendent
@@ -282,6 +290,12 @@ ca:
       optional: 'opcional'
       permission: 'Permís'
       choose_as_many: 'Trieu-ne tantes com vulgueu'
+      choose_exactly:
+        one: 'Trieu exactament l''opció %{count}'
+        other: 'Trieu exactament les opcions %{count}'
+      choose_between: 'Trieu entre les opcions %{min} i %{max}'
+      choose_at_least: 'Trieu almenys %{count} opcions'
+      choose_at_most: 'Trieu com a màxim %{count} opcions'
       this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
       page: 'Pàgina'
       date_published: 'Data de publicació (dd-mm-aaaa)'

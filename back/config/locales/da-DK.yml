@@ -48,6 +48,14 @@ da:
     implemented_description: Denne ide er blevet implementeret af byen
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
+    expired: udløbet
+    expired_description: udløbet
+    threshold_reached: fået nok stemmer
+    threshold_reached_description: fået nok stemmer
+    answered: under politisk behandling
+    answered_description: under politisk behandling
+    ineligible: opfylder ikke kriterierne
+    ineligible_description: opfylder ikke kriterierne
   initiative_statuses:
     review_pending: afventer gennemgang
     review_pending_description: afventer gennemgang
@@ -282,6 +290,12 @@ da:
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
+      choose_exactly:
+        one: 'Vælg præcis %{count} mulighed'
+        other: 'Vælg præcis %{count} muligheder'
+      choose_between: 'Vælg mellem %{min} og %{max}'
+      choose_at_least: 'Vælg mindst %{count} muligheder'
+      choose_at_most: 'Vælg højst %{count} muligheder'
       this_answer: 'Dette svar vil kun blive delt med moderatorer og ikke med offentligheden.'
       page: 'Side'
       date_published: 'Dato for offentliggørelse (dd-mm-åååå)'

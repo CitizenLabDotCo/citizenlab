@@ -48,6 +48,14 @@ pl:
     implemented_description: Ten pomysł ten został zrealizowany przez miasto
     rejected: odrzucony
     rejected_description: Ten pomysł został odrzucony
+    expired: wygasł
+    expired_description: wygasł
+    threshold_reached: osiągnięty próg
+    threshold_reached_description: osiągnięty próg
+    answered: odpowiedział
+    answered_description: odpowiedział
+    ineligible: niekwalifikujący się
+    ineligible_description: niekwalifikujący się
   initiative_statuses:
     review_pending: przegląd w toku
     review_pending_description: przegląd w toku
@@ -282,6 +290,14 @@ pl:
       optional: 'opcjonalny'
       permission: 'Zezwolenie'
       choose_as_many: 'Wybierz dowolną liczbę'
+      choose_exactly:
+        one: 'Wybierz dokładnie opcję %{count}'
+        few: 'Wybierz dokładnie opcje %{count}'
+        many: 'Wybierz dokładnie opcje %{count}'
+        other: 'Wybierz dokładnie opcje %{count}'
+      choose_between: 'Wybierz pomiędzy opcjami %{min} i %{max}'
+      choose_at_least: 'Wybierz co najmniej opcje %{count}'
+      choose_at_most: 'Wybierz co najwyżej opcje %{count}'
       this_answer: 'Ta odpowiedź zostanie udostępniona tylko moderatorom, a nie publicznie.'
       page: 'Strona'
       date_published: 'Data publikacji (dd-mm-rrrr)'

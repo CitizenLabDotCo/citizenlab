@@ -48,6 +48,14 @@ lb:
     implemented_description: Dës Iddi gouf ëmgesat
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
+    expired: ofgelaaf
+    expired_description: ofgelaaf
+    threshold_reached: Schwell erreecht
+    threshold_reached_description: Schwell erreecht
+    answered: geäntwert
+    answered_description: geäntwert
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: Iwwerpréiwung waarden
     review_pending_description: Iwwerpréiwung waarden
@@ -282,6 +290,12 @@ lb:
       optional: 'fakultativ'
       permission: 'Erlaabnis'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
+      choose_exactly:
+        one: 'Wielt genau %{count} Optioun'
+        other: 'Wielt genau %{count} Optiounen'
+      choose_between: 'Wielt tëscht %{min} an %{max} Optiounen'
+      choose_at_least: 'Wielt op d''mannst %{count} Optiounen'
+      choose_at_most: 'Wielt maximal %{count} Optiounen'
       this_answer: 'Dës Äntwert gëtt nëmme mat Moderatoren gedeelt, an net un de Public.'
       page: 'Säit'
       date_published: 'Verëffentlechungsdatum (dd-mm-jjjj)'

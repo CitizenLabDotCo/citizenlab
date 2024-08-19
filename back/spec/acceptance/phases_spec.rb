@@ -752,9 +752,9 @@ resource 'Phases' do
 
           example 'Download native survey phase inputs in one sheet' do
             expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
-            allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+            allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
-            expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
 
             assert_status 200
             expect(xlsx_contents(response_body)).to match([
@@ -873,9 +873,9 @@ resource 'Phases' do
 
       example 'Download phase inputs WITH private user data', document: false do
         expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
-        allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+        allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
-        expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
         assert_status 200
         expect(xlsx_contents(response_body)).to match([
           {

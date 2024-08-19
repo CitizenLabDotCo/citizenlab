@@ -48,6 +48,14 @@ ar:
     implemented_description: تم تنفيذ هذه الفكرة من قِبل المدينة
     rejected: تم رفضها
     rejected_description: تم رفض هذه الفكرة
+    expired: منتهي الصلاحية
+    expired_description: منتهي الصلاحية
+    threshold_reached: وصلت العتبة
+    threshold_reached_description: وصلت العتبة
+    answered: أجاب
+    answered_description: أجاب
+    ineligible: غير مؤهل
+    ineligible_description: غير مؤهل
   initiative_statuses:
     review_pending: المراجعة معلقة
     review_pending_description: المراجعة معلقة
@@ -282,6 +290,16 @@ ar:
       optional: 'خياري'
       permission: 'إذن'
       choose_as_many: 'اختر العدد الذي تريده'
+      choose_exactly:
+        zero: 'اختر بالضبط %{count} الخيارات'
+        one: 'اختر بالضبط الخيار %{count}'
+        two: 'اختر بالضبط %{count} الخيارات'
+        few: 'اختر بالضبط %{count} الخيارات'
+        many: 'اختر بالضبط %{count} الخيارات'
+        other: 'اختر بالضبط %{count} الخيارات'
+      choose_between: 'اختر بين الخيارين %{min} و %{max}'
+      choose_at_least: 'اختر ما لا يقل عن %{count} خيارًا'
+      choose_at_most: 'اختر ما لا يزيد عن %{count} من الخيارات'
       this_answer: 'سيتم مشاركة هذه الإجابة مع المشرفين فقط، وليس للعامة.'
       page: 'صفحة'
       date_published: 'تاريخ النشر (يوم-شهر-س س س س)'

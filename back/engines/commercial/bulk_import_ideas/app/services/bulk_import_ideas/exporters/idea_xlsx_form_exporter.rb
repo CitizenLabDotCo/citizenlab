@@ -17,7 +17,7 @@ module BulkImportIdeas::Exporters
         locale_published_label => '18-07-2022'
       }
 
-      xlsx_utils = XlsxExport::Utils.new
+      xlsx_utils = Export::Xlsx::Utils.new
       @form_fields.each do |field|
         column_name = xlsx_utils.add_duplicate_column_name_suffix(field.title_multiloc[@locale])
 

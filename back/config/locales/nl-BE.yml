@@ -48,6 +48,14 @@ nl-BE:
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
+    expired: verstreken
+    expired_description: verstreken
+    threshold_reached: drempel bereikt
+    threshold_reached_description: drempel bereikt
+    answered: beantwoord
+    answered_description: beantwoord
+    ineligible: komt niet in aanmerking
+    ineligible_description: komt niet in aanmerking
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
@@ -282,6 +290,12 @@ nl-BE:
       optional: 'optioneel'
       permission: 'Toestemming'
       choose_as_many: 'Kies er zoveel als je wilt'
+      choose_exactly:
+        one: 'Kies precies %{count} optie'
+        other: 'Kies precies %{count} opties'
+      choose_between: 'Kies tussen %{min} en %{max} opties'
+      choose_at_least: 'Kies ten minste %{count} opties'
+      choose_at_most: 'Kies maximaal %{count} opties'
       this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
       page: 'Pagina'
       date_published: 'Datum gepubliceerd (dd-mm-jjjj)'

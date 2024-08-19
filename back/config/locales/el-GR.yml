@@ -48,6 +48,14 @@ el:
     implemented_description: Η ιδέα αυτή εφαρμόστηκε από την πόλη
     rejected: απορρίφθηκε
     rejected_description: Η ιδέα αυτή έχει απορριφθεί
+    expired: λήξει
+    expired_description: λήξει
+    threshold_reached: Επίτευξη ορίου
+    threshold_reached_description: Επίτευξη ορίου
+    answered: απάντησε το
+    answered_description: απάντησε το
+    ineligible: μη επιλέξιμες
+    ineligible_description: μη επιλέξιμες
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
@@ -282,6 +290,12 @@ el:
       optional: 'προαιρετικό'
       permission: 'Άδεια'
       choose_as_many: 'Επιλέξτε όσα θέλετε'
+      choose_exactly:
+        one: 'Επιλέξτε ακριβώς την επιλογή %{count}'
+        other: 'Επιλέξτε ακριβώς %{count} επιλογές'
+      choose_between: 'Επιλέξτε μεταξύ των επιλογών %{min} και %{max}'
+      choose_at_least: 'Επιλέξτε τουλάχιστον %{count} επιλογές'
+      choose_at_most: 'Επιλέξτε το πολύ %{count} επιλογές'
       this_answer: 'Αυτή η απάντηση θα κοινοποιηθεί μόνο στους συντονιστές και όχι στο κοινό.'
       page: 'Σελίδα'
       date_published: 'Ημερομηνία δημοσίευσης (ηη-μμ-ηηη)'

@@ -48,6 +48,14 @@
     implemented_description: Denne ideen har blitt tatt i bruk av kommunen
     rejected: avslått
     rejected_description: Denne ideen ble avslått
+    expired: utløpt
+    expired_description: utløpt
+    threshold_reached: terskel nådd
+    threshold_reached_description: terskel nådd
+    answered: svarte
+    answered_description: svarte
+    ineligible: ikke kvalifisert
+    ineligible_description: ikke kvalifisert
   initiative_statuses:
     review_pending: vurdering venter
     review_pending_description: vurdering venter
@@ -282,6 +290,12 @@
       optional: 'valgfri'
       permission: 'Tillatelse'
       choose_as_many: 'Velg så mange du vil'
+      choose_exactly:
+        one: 'Velg nøyaktig %{count} -alternativet'
+        other: 'Velg nøyaktig %{count} alternativer'
+      choose_between: 'Velg mellom %{min} og %{max} alternativer'
+      choose_at_least: 'Velg minst %{count} alternativer'
+      choose_at_most: 'Velg maksimalt %{count} alternativer'
       this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke til offentligheten.'
       page: 'Side'
       date_published: 'Publiseringsdato (dd-mm-åååå)'
