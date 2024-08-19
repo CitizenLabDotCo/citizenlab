@@ -79,6 +79,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
               iconColorOnHover={colors.black}
               iconWidth="20px"
               mr="8px"
+              className="e2e-delete-custom-field"
               a11y_buttonActionMessage={formatMessage(messages.removeField)}
               onClick={(e) => {
                 e?.preventDefault();
