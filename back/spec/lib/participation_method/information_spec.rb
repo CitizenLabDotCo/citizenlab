@@ -74,12 +74,6 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  describe '#supports_toxicity_detection?' do
-    it 'returns true' do
-      expect(participation_method.supports_toxicity_detection?).to be true
-    end
-  end
-
   describe '#supports_serializing?' do
     it 'returns false for all attributes' do
       %i[
@@ -92,24 +86,25 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
-  its(:transitive?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be true }
-  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be false }
-  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
-  its(:supports_commenting?) { is_expected.to be false }
-  its(:supports_reacting?) { is_expected.to be false }
-  its(:supports_status?) { is_expected.to be false }
-  its(:supports_assignment?) { is_expected.to be false }
   its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
+  its(:supports_reacting?) { is_expected.to be false }
+  its(:supports_status?) { is_expected.to be false }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:transitive?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
-  its(:additional_export_columns) { is_expected.to eq [] }
 end
