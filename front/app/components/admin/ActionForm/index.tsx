@@ -92,27 +92,6 @@ const ActionForm = ({
               permissionsCustomFields={permissionsCustomFields.data}
             />
           </Box>
-          {showResetButton(
-            permitted_by,
-            permissionsCustomFields.data,
-            groupIds
-          ) && (
-            <Box mt="28px" w="100%" display="flex">
-              <Button
-                width="auto"
-                buttonStyle="text"
-                onClick={onReset}
-                padding="0px"
-                fontSize={`${fontSizes.m}px`}
-              >
-                <span style={{ textDecorationLine: 'underline' }}>
-                  <FormattedMessage
-                    {...messages.resetExtraQuestionsAndGroups}
-                  />
-                </span>
-              </Button>
-            </Box>
-          )}
           <Box mt="20px">
             <Fields
               phaseId={phaseId}
@@ -136,6 +115,27 @@ const ActionForm = ({
                   }}
                 />
               </Box>
+            </Box>
+          )}
+          {showResetButton(
+            permitted_by,
+            permissionsCustomFields.data,
+            groupIds
+          ) && (
+            <Box mt="28px" w="100%" display="flex">
+              <Button
+                width="auto"
+                buttonStyle="text"
+                onClick={onReset}
+                padding="0px"
+                fontSize={`${fontSizes.m}px`}
+              >
+                <span style={{ textDecorationLine: 'underline' }}>
+                  <FormattedMessage
+                    {...messages.resetExtraQuestionsAndGroups}
+                  />
+                </span>
+              </Button>
             </Box>
           )}
         </>

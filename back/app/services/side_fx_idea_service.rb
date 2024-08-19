@@ -158,3 +158,4 @@ end
 
 SideFxIdeaService.prepend(FlagInappropriateContent::Patches::SideFxIdeaService)
 SideFxIdeaService.prepend(IdeaAssignment::Patches::SideFxIdeaService)
+SideFxIdeaService.prepend(BulkImportIdeas::Patches::SideFxIdeaService)

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-const EDGE_WIDTH = 20;
+const EDGE_WIDTH = 16;
 
 const Edge = () => {
   return (
