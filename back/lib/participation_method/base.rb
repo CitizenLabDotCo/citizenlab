@@ -73,79 +73,79 @@ module ParticipationMethod
     def supports_answer_visible_to?
       false
     end
-    
+
     def supports_assignment?
       false
     end
-    
+
     def supports_automated_statuses?
       false
     end
-    
+
     def supports_built_in_fields?
       false
     end
-    
+
     def supports_commenting?
       false
     end
-    
+
     def supports_edits_after_publication?
       true
     end
-    
+
     def supports_exports?
       false
     end
-    
+
     def supports_input_term?
       false
     end
-    
+
     def supports_inputs_without_author?
       true
     end
-    
+
     def supports_multiple_posts?
       true
     end
-    
+
     def supports_pages_in_form?
       false
     end
-    
+
     def supports_permitted_by_everyone?
       false
     end
-    
+
     def supports_posting_inputs?
       false
     end
-    
+
     def supports_public_visibility?
       false
     end
-    
+
     def supports_reacting?
       false
     end
-    
+
     def supports_serializing?(_attribute)
       false
     end
-    
+
     def supports_serializing_input?(_attribute)
       false
     end
-    
+
     def supports_status?
       false
     end
-    
+
     def supports_survey_form?
       false
     end
-    
+
     def supports_toxicity_detection?
       true
     end
