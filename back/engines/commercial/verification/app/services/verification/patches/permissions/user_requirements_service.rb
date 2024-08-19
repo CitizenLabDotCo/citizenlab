@@ -40,7 +40,13 @@ module Verification
           super
 
           if user.verified?
-            requirements[:authentication][:missing_user_attributes] = [] if permission.permitted_by == 'verified'
+            if permission.permitted_by == 'verified'
+              requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
+                ['confirmation']
+              else
+                []
+              end
+            end
 
             # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
             locked_fields = verification_service.locked_custom_fields(user)
