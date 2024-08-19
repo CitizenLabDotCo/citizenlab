@@ -207,8 +207,8 @@ class WebApi::V1::ProjectsController < ApplicationController
 
       # Skip a known case where we expect project to be invalid at this point
       moved_folder = project.admin_publication&.parent_id_was == project.folder_id
-      assignee_error = errors&.first == [:default_assignee_id, [{ :error => :assignee_can_not_moderate_project }]]
-      next if assignee_error && moved_folder
+      assignee_error_only = errors == { :default_assignee_id => [{ :error => :assignee_can_not_moderate_project }] }
+      next if assignee_error_only && moved_folder
 
       # Errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg('Project change would lead to inconsistencies!', extra: errors || {})
