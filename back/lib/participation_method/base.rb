@@ -81,10 +81,6 @@ module ParticipationMethod
       true
     end
 
-    def extra_fields_category_translation_key
-      'custom_forms.categories.extra.title'
-    end
-
     def supports_public_visibility?
       false
     end
