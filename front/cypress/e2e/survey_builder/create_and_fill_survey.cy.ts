@@ -414,7 +414,7 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/settings/access-rights`);
     cy.get('.e2e-granular-permissions-phase-accordion').first().click();
     cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('#e2e-permission-registered-users').click();
+      cy.get('.e2e-permission-registered-users').first().click();
     });
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
@@ -734,7 +734,7 @@ describe('Survey builder', () => {
 
     cy.get('.e2e-granular-permissions-phase-accordion').first().click();
     cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('#e2e-permission-registered-users').click();
+      cy.get('.e2e-permission-registered-users').first().click();
     });
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
