@@ -759,7 +759,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
       admin_header_token
