@@ -297,7 +297,10 @@ const AdminProjectsProjectGeneral = () => {
           croppedProjectCardBase64 && latestProjectId
             ? addProjectImage({
                 projectId: latestProjectId,
-                image: { image: croppedProjectCardBase64 },
+                image: {
+                  image: croppedProjectCardBase64,
+                  alt_text_multiloc: { en: 'Project card image' },
+                },
               })
             : null;
 
