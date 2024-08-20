@@ -38,8 +38,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
 
   const isRegisteredUser =
     !isNilOrError(authUser) &&
-    !!authenticationRequirementsResponse?.data.attributes.requirements
-      .permitted;
+    !!authenticationRequirementsResponse?.data.attributes.permitted;
 
   const isConfirmedUser =
     !isNilOrError(authUser) && !authUser.data.attributes.confirmation_required;
@@ -49,7 +48,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
     authenticationRequirementsResponse && !showCompleteProfile
       ? showOnboarding(
           authenticationRequirementsResponse.data.attributes.requirements
-            .requirements.onboarding
         )
       : false;
 
