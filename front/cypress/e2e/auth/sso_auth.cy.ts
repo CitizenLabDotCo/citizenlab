@@ -104,20 +104,18 @@ describe.skip('SSO authentication', () => {
             `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
           );
 
-          cy.get('.e2e-action-form-posting_idea')
-            .first()
-            .within(() => {
-              // Establish there are four custom fields using the delete button
-              cy.get('.e2e-delete-custom-field').should('have.length', 4);
+          cy.get('.e2e-action-form-posting_idea').within(() => {
+            // Establish there are four custom fields using the delete button
+            cy.get('.e2e-delete-custom-field').should('have.length', 4);
 
-              // // Delete custom field number 4
-              cy.get('.e2e-delete-custom-field').eq(3).click();
-              cy.get('.e2e-delete-custom-field').should('have.length', 3);
+            // // Delete custom field number 4
+            cy.get('.e2e-delete-custom-field').eq(3).click();
+            cy.get('.e2e-delete-custom-field').should('have.length', 3);
 
-              // // Delete custom field number 3
-              cy.get('.e2e-delete-custom-field').eq(2).click();
-              cy.get('.e2e-delete-custom-field').should('have.length', 2);
-            });
+            // // Delete custom field number 3
+            cy.get('.e2e-delete-custom-field').eq(2).click();
+            cy.get('.e2e-delete-custom-field').should('have.length', 2);
+          });
 
           cy.logout();
         });
