@@ -11,13 +11,17 @@ import Edge from './Blocks/Edge';
 interface Props {
   permittedBy: PermittedBy;
   verificationEnabled: boolean;
+  verificationExpiry: number | null;
   permissionsCustomFields: IPermissionsCustomFieldData[];
+  onChangeVerificationExpiry: (value: number | null) => void;
 }
 
 const FlowVisualization = ({
   permittedBy,
   verificationEnabled,
+  verificationExpiry,
   permissionsCustomFields,
+  onChangeVerificationExpiry,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="row">
@@ -25,6 +29,8 @@ const FlowVisualization = ({
         permittedBy={permittedBy}
         permissionsCustomFields={permissionsCustomFields}
         verificationEnabled={verificationEnabled}
+        verificationExpiry={verificationExpiry}
+        onChangeVerificationExpiry={onChangeVerificationExpiry}
       />
       <Edge />
       <Box display="flex" alignItems="center">
