@@ -20,7 +20,13 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
+import {
+  askCustomFields,
+  requiredCustomFields,
+  showOnboarding,
+  doesNotMeetGroupCriteria,
+  confirmationRequired,
+} from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -94,13 +100,10 @@ export const lightFlow = (
       ACCEPT_POLICIES: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'google',
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -110,13 +113,10 @@ export const lightFlow = (
       ACCEPT_POLICIES: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'facebook',
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -126,13 +126,10 @@ export const lightFlow = (
       ACCEPT_POLICIES: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'azureactivedirectory',
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -142,13 +139,10 @@ export const lightFlow = (
       ACCEPT_POLICIES: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'azureactivedirectory_b2c',
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -158,13 +152,10 @@ export const lightFlow = (
       LOGIN: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'franceconnect',
           { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          requirements.verification
         );
       },
     },
@@ -179,17 +170,17 @@ export const lightFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (askCustomFields(requirements.custom_fields)) {
+        if (askCustomFields(requirements)) {
           setCurrentStep('sign-up:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('sign-up:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -210,17 +201,17 @@ export const lightFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (requirements.special.confirmation === 'require') {
+        if (confirmationRequired(requirements)) {
           setCurrentStep('missing-data:email-confirmation');
           return;
         }
 
-        if (requiredCustomFields(requirements.custom_fields)) {
+        if (requiredCustomFields(requirements)) {
           setCurrentStep('missing-data:custom-fields');
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
@@ -230,7 +221,7 @@ export const lightFlow = (
 
         trackEventByName(tracks.signUpFlowCompleted);
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           return;
         }
 

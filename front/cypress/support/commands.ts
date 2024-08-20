@@ -79,7 +79,7 @@ declare global {
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
-      apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
+      apiUpdatePermissionCustomField: typeof apiUpdatePermissionCustomField;
       apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
@@ -1535,28 +1535,34 @@ function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
   });
 }
 
-function apiSetPermissionCustomField(
-  phaseId: string,
+function apiUpdatePermissionCustomField(
+  permissionId: string,
   action: IPhasePermissionAction,
   custom_field_id: string
-) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
+) {}
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
-      body: {
-        custom_field_id,
-        required: true,
-      },
-    });
-  });
-}
+// function apiSetPermissionCustomField(
+//   phaseId: string,
+//   action: IPhasePermissionAction,
+//   custom_field_id: string
+// ) {
+//   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+//     const adminJwt = response.body.jwt;
+
+//     return cy.request({
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${adminJwt}`,
+//       },
+//       method: 'POST',
+//       url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
+//       body: {
+//         custom_field_id,
+//         required: true,
+//       },
+//     });
+//   });
+// }
 
 function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
@@ -1678,8 +1684,8 @@ const createBaseCustomField =
     ...(input_type === 'linear_scale'
       ? {
           maximum: 5,
-          minimum_label_multiloc: { en: 'Min label' },
-          maximum_label_multiloc: { en: 'Max label' },
+          linear_scale_label_1_multiloc: { en: 'Min label' },
+          linear_scale_label_5_multiloc: { en: 'Max label' },
         }
       : {}),
   });
@@ -1982,8 +1988,8 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiRemoveSmartGroup', apiRemoveSmartGroup);
 Cypress.Commands.add(
-  'apiSetPermissionCustomField',
-  apiSetPermissionCustomField
+  'apiUpdatePermissionCustomField',
+  apiUpdatePermissionCustomField
 );
 Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
 Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);

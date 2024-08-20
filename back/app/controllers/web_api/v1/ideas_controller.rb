@@ -409,7 +409,7 @@ class WebApi::V1::IdeasController < ApplicationController
         params: jsonapi_serializer_params(
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
-          user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
+          user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
         ),
         include: include
       }

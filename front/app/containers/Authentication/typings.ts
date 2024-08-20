@@ -31,6 +31,7 @@ export interface State {
     last_name?: string;
     email?: string;
   } | null;
+  ssoProvider: SSOProvider | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;

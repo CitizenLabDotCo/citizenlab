@@ -106,8 +106,13 @@ const FormEdit = ({
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
-        minimum_label_multiloc: object(),
-        maximum_label_multiloc: object(),
+        linear_scale_label_1_multiloc: object(),
+        linear_scale_label_2_multiloc: object(),
+        linear_scale_label_3_multiloc: object(),
+        linear_scale_label_4_multiloc: object(),
+        linear_scale_label_5_multiloc: object(),
+        linear_scale_label_6_multiloc: object(),
+        linear_scale_label_7_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -213,10 +218,23 @@ const FormEdit = ({
             : null,
           select_count_enabled: field.select_count_enabled,
           random_option_ordering: field.random_option_ordering,
+          dropdown_layout: field.dropdown_layout,
         }),
         ...(field.input_type === 'linear_scale' && {
-          minimum_label_multiloc: field.minimum_label_multiloc || {},
-          maximum_label_multiloc: field.maximum_label_multiloc || {},
+          linear_scale_label_1_multiloc:
+            field.linear_scale_label_1_multiloc || {},
+          linear_scale_label_2_multiloc:
+            field.linear_scale_label_2_multiloc || {},
+          linear_scale_label_3_multiloc:
+            field.linear_scale_label_3_multiloc || {},
+          linear_scale_label_4_multiloc:
+            field.linear_scale_label_4_multiloc || {},
+          linear_scale_label_5_multiloc:
+            field.linear_scale_label_5_multiloc || {},
+          linear_scale_label_6_multiloc:
+            field.linear_scale_label_6_multiloc || {},
+          linear_scale_label_7_multiloc:
+            field.linear_scale_label_7_multiloc || {},
           maximum: field.maximum?.toString() || '5',
         }),
       }));

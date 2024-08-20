@@ -873,8 +873,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -1000,8 +1000,13 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    maximum_label: '',
-                    minimum_label: ''
+                    linear_scale_label1: '',
+                    linear_scale_label2: '',
+                    linear_scale_label3: '',
+                    linear_scale_label4: '',
+                    linear_scale_label5: '',
+                    linear_scale_label6: '',
+                    linear_scale_label7: ''
                   }
                 }]
               },
@@ -1022,6 +1027,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   options: {
                     input_type: field_in_page2.input_type,
                     description: '',
+                    dropdown_layout: false,
                     isAdminField: false,
                     hasRule: true,
                     enumNames: ['Every day', 'Never', 'Other'],
@@ -1078,8 +1084,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }

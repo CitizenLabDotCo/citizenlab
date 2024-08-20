@@ -8215,35 +8215,35 @@ models:
   permissions:
     - &111
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &112
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &113
       action: commenting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &1132
       action: taking_poll
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedPoll_phase
     - &114
       action: voting
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedPb_phase
     - &115
       action: taking_survey
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedSurvey_phase
     - &1111
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1112
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1113
       action: commenting_idea
@@ -8251,27 +8251,27 @@ models:
       permission_scope_ref: *charliesIdeation_phase
     - &1114
       action: voting
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesPb_phase
     - &1115
       action: taking_survey
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesSurvey_phase
     - &1116
       action: taking_poll
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesPoll_phase
     - &1117
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1118
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1119
       action: commenting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
   groups_permissions:
   - permission_ref: *111

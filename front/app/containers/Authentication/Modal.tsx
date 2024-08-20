@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -25,8 +25,8 @@ import ChangeEmail from './steps/ChangeEmail';
 import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
 import EmailConfirmation from './steps/EmailConfirmation';
-import EmaillessSsoEmail from './steps/EmaillessSsoEmail';
 import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
@@ -37,6 +37,8 @@ import EmailPolicies from './steps/Policies/EmailPolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import GooglePolicies from './steps/Policies/GooglePolicies';
+import SSOVerification from './steps/SSOVerification';
+import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
 import Success from './steps/Success';
 import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
@@ -57,14 +59,13 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // old sign up flow
   'sign-up:auth-providers': messages.signUp,
   'sign-up:email-password': messages.signUp,
+  'sign-up:built-in': messages.signUp,
   'sign-up:email-confirmation': messages.signUp,
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
-  'emailless-sso:email': messages.signUp,
-  'emailless-sso:email-confirmation': messages.confirmYourEmail,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -88,6 +89,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
+
+  // sso verification flow
+  'sso-verification:sso-providers': messages.verificationRequired,
+  'sso-verification:sso-providers-policies': messages.verificationRequired,
+  'sso-verification:email-password': messages.logIn,
 };
 
 const getHeaderMessage = (
@@ -163,10 +169,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable =
-    currentStep !== 'closed' &&
-    currentStep !== 'success' &&
-    currentStep !== 'emailless-sso:email';
+  const closable = currentStep !== 'closed' && currentStep !== 'success';
 
   const {
     context: { action },
@@ -301,13 +304,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {currentStep === 'emailless-sso:email' && (
-          <EmaillessSsoEmail
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-          />
-        )}
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -362,7 +358,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {/* missing data flow / shared */}
-        {currentStep === 'missing-data:built-in' && (
+        {(currentStep === 'missing-data:built-in' ||
+          currentStep === 'sign-up:built-in') && (
           <BuiltInFields
             loading={loading}
             authenticationData={authenticationData}
@@ -372,8 +369,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
         {(currentStep === 'sign-up:email-confirmation' ||
           currentStep === 'light-flow:email-confirmation' ||
-          currentStep === 'missing-data:email-confirmation' ||
-          currentStep === 'emailless-sso:email-confirmation') && (
+          currentStep === 'missing-data:email-confirmation') && (
           <EmailConfirmation
             state={state}
             loading={loading}
@@ -424,6 +420,32 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
 
         {currentStep === 'verification-success' && (
           <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
+        )}
+
+        {/* sso verification flow */}
+        {currentStep === 'sso-verification:sso-providers' && (
+          <SSOVerification
+            onClickSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onClickLogin={transition(currentStep, 'GO_TO_LOGIN')}
+          />
+        )}
+
+        {currentStep === 'sso-verification:sso-providers-policies' && (
+          <SSOVerificationPolicies
+            state={state}
+            loading={loading}
+            onAccept={transition(currentStep, 'ACCEPT')}
+          />
+        )}
+
+        {currentStep === 'sso-verification:email-password' && (
+          <EmailAndPasswordVerifiedActions
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SIGN_IN')}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            closeModal={transition(currentStep, 'CLOSE')}
+          />
         )}
       </Box>
     </Modal>
