@@ -101,7 +101,7 @@ const CLSurveyPageLayout = memo(
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
-    const { setErrorToReadId } = useErrorToRead();
+    const { announceError } = useErrorToRead();
 
     // Get project and relevant phase data
     const { slug } = useParams() as {
@@ -169,16 +169,11 @@ const CLSurveyPageLayout = memo(
             inline: 'start',
           });
 
-          // Force re-reading of the error message by temporarily clearing the activeErrorId
-          setErrorToReadId(null);
-
-          setTimeout(() => {
-            setErrorToReadId(firstErrorElement.id);
-          }, 100); // Small delay to ensure the DOM has updated
+          announceError(firstErrorElement.id);
         }
         setScrollToError(false);
       }
-    }, [scrollToError, setErrorToReadId]);
+    }, [scrollToError, announceError]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {
