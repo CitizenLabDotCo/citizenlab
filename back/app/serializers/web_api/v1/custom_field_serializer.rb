@@ -20,6 +20,10 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.input_type == 'page'
   }
 
+  attribute :dropdown_layout, if: proc { |object, _params|
+    object.dropdown_layout_type?
+  }
+
   attribute :constraints do |object, params|
     if params[:constraints]
       params[:constraints][object.code&.to_sym] || {}

@@ -689,6 +689,8 @@
   "app.components.formBuilder.description": "Description",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "This has already been added in the form. Default content may only be used once.",
   "app.components.formBuilder.disabledCustomFieldsTooltip": "Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.components.formBuilder.displayAsDropdown": "Display as dropdown",
+  "app.components.formBuilder.displayAsDropdownTooltip": "Display the options in a dropdown. If you have many options, this is recommended.",
   "app.components.formBuilder.done": "Done",
   "app.components.formBuilder.drawArea": "Draw area",
   "app.components.formBuilder.drawRoute": "Draw route",

@@ -19,8 +19,6 @@
 #  resource_id                   :uuid
 #  hidden                        :boolean          default(FALSE), not null
 #  maximum                       :integer
-#  minimum_label_multiloc        :jsonb            not null
-#  maximum_label_multiloc        :jsonb            not null
 #  logic                         :jsonb            not null
 #  answer_visible_to             :string
 #  select_count_enabled          :boolean          default(FALSE), not null
@@ -35,6 +33,7 @@
 #  linear_scale_label_5_multiloc :jsonb            not null
 #  linear_scale_label_6_multiloc :jsonb            not null
 #  linear_scale_label_7_multiloc :jsonb            not null
+#  dropdown_layout               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -164,6 +163,10 @@ class CustomField < ApplicationRecord
 
   def page_or_section?
     page? || section?
+  end
+
+  def dropdown_layout_type?
+    %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?

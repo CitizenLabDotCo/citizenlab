@@ -76,6 +76,21 @@ resource 'Reactions' do
         assert_status 422
       end
     end
+
+    describe do
+      let!(:status_threshold_reached) { create(:proposals_status, code: 'threshold_reached') }
+      let(:phase) { create(:proposals_phase, reacting_threshold: 2) }
+      let(:proposal) { create(:proposal, idea_status: create(:proposals_status, code: 'proposed'), creation_phase: phase, project: phase.project, phases: [phase]) }
+      let(:idea_id) { proposal.id }
+
+      example 'Reaching the voting threshold immediately triggers status change', document: false do
+        create_list(:reaction, 2, reactable: proposal, mode: 'up')
+
+        do_request
+        assert_status 201
+        expect(proposal.reload.idea_status).to eq status_threshold_reached
+      end
+    end
   end
 
   post 'web_api/v1/ideas/:idea_id/reactions/up' do

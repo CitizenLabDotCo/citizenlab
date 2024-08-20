@@ -9,4 +9,13 @@ export default defineMessages({
     id: 'app.components.formBuilder.randomizeToolTip',
     defaultMessage: 'The order of the answers will be randomized per user',
   },
+  displayAsDropdown: {
+    id: 'app.components.formBuilder.displayAsDropdown',
+    defaultMessage: 'Display as dropdown',
+  },
+  displayAsDropdownTooltip: {
+    id: 'app.components.formBuilder.displayAsDropdownTooltip',
+    defaultMessage:
+      'Display the options in a dropdown. If you have many options, this is recommended.',
+  },
 });

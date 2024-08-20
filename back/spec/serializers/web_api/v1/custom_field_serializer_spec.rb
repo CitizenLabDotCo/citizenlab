@@ -127,4 +127,57 @@ describe WebApi::V1::CustomFieldSerializer do
       })
     end
   end
+
+  context 'multiselect field' do
+    let(:field) { create(:custom_field_multiselect, :for_custom_form, key: 'multiselect') }
+
+    it 'includes the dropdown_layout attribute' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
+        dropdown_layout: false,
+        enabled: true,
+        input_type: 'multiselect',
+        maximum_select_count: nil,
+        minimum_select_count: nil,
+        key: 'multiselect',
+        ordering: 0,
+        required: false,
+        select_count_enabled: false,
+        title_multiloc: { 'en' => 'What languages do you speak?' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false
+      })
+    end
+  end
+
+  context 'select_field' do
+    let(:field) { create(:custom_field_select, :for_custom_form, key: 'select') }
+
+    it 'includes the dropdown_layout attribute' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
+        dropdown_layout: false,
+        enabled: true,
+        input_type: 'select',
+        key: 'select',
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'Member of councils?' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false
+      })
+    end
+  end
 end

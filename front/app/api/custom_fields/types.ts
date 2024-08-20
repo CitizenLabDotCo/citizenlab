@@ -90,6 +90,7 @@ export interface IAttributes {
   select_count_enabled?: boolean;
   other?: boolean;
   random_option_ordering?: boolean;
+  dropdown_layout?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -142,6 +143,7 @@ export type IFlatCreateCustomField = Optional<
   | 'linear_scale_label_7_multiloc'
   | 'maximum'
   | 'random_option_ordering'
+  | 'dropdown_layout'
 > & {
   isLocalOnly: boolean;
 };

@@ -67,6 +67,7 @@ resource 'Reactions' do
       expect(@initiative.reload.likes_count).to eq 3
     end
 
+    # TODO: cleanup-after-proposals-migration
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
       settings['initiatives']['reacting_threshold'] = 3

@@ -106,7 +106,6 @@ const FormEdit = ({
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
-        minimum_label_multiloc: object(),
         linear_scale_label_1_multiloc: object(),
         linear_scale_label_2_multiloc: object(),
         linear_scale_label_3_multiloc: object(),
@@ -219,6 +218,7 @@ const FormEdit = ({
             : null,
           select_count_enabled: field.select_count_enabled,
           random_option_ordering: field.random_option_ordering,
+          dropdown_layout: field.dropdown_layout,
         }),
         ...(field.input_type === 'linear_scale' && {
           linear_scale_label_1_multiloc:
