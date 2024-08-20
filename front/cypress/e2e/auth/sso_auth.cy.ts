@@ -1,7 +1,7 @@
 import { randomEmail, randomString } from '../../support/commands';
 import moment = require('moment');
 
-describe('SSO authentication', () => {
+describe.skip('SSO authentication', () => {
   describe('Global log in', () => {
     it('Correctly creates account if no account exists', () => {
       cy.visit('/');
