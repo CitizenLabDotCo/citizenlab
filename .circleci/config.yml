@@ -767,7 +767,7 @@ jobs:
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
-            -e DEBUG=cypress:*
+            -e DEBUG=cypress:* \
             front npm run cypress:run -- \
             --reporter cypress-circleci-reporter \
             --config baseUrl=http://e2e.front:3000 \
