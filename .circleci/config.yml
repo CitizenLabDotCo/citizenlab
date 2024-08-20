@@ -711,8 +711,8 @@ jobs:
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
-          # docker_layer_caching: true
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
@@ -729,7 +729,7 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2024.08
-    parallelism: 12
+    parallelism: 16
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
@@ -762,7 +762,7 @@ jobs:
           cd front
           mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-2 | sed 's/ /,/g')
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
@@ -772,7 +772,7 @@ jobs:
             --spec ${COMMA_SEPARATED_TESTFILES}
       - run:
           command: |
-            docker exec cypress_run test -f /front/test_results && docker cp cypress_run:/front/test_results front/. || echo "test_results not found in container"
+            docker cp cypress_run:/front/test_results front/.
           when: always
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
