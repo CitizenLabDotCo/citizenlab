@@ -38,7 +38,12 @@ interface Props {
 const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const {
     id: permissionId,
-    attributes: { permitted_by, action, verification_enabled },
+    attributes: {
+      permitted_by,
+      action,
+      verification_enabled,
+      verification_expiry,
+    },
     relationships,
   } = permissionData;
 
@@ -91,7 +96,11 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
             <FlowVisualization
               permittedBy={permitted_by}
               verificationEnabled={verification_enabled}
+              verificationExpiry={verification_expiry}
               permissionsCustomFields={permissionsCustomFields.data}
+              onChangeVerificationExpiry={(verificationExpiry) => {
+                onChange({ verificationExpiry });
+              }}
             />
           </Box>
           <Box mt="20px">
