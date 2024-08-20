@@ -142,6 +142,7 @@ const EmailChange = () => {
                 email: methods.watch('email'),
                 token: null,
                 prefilledBuiltInFields: null,
+                ssoProvider: null,
               }}
               loading={loading}
               setError={setConfirmationError}
