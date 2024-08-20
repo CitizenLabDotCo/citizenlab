@@ -19,8 +19,6 @@
 #  resource_id                   :uuid
 #  hidden                        :boolean          default(FALSE), not null
 #  maximum                       :integer
-#  minimum_label_multiloc        :jsonb            not null
-#  maximum_label_multiloc        :jsonb            not null
 #  logic                         :jsonb            not null
 #  answer_visible_to             :string
 #  select_count_enabled          :boolean          default(FALSE), not null
