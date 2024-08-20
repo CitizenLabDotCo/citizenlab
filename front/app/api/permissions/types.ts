@@ -28,7 +28,7 @@ export interface IGlobalPermissionData {
     updated_at: string;
     global_custom_fields: boolean;
     verification_enabled: boolean;
-    verification_expiry: boolean | null;
+    verification_expiry: number | null;
   };
   relationships: {
     permission_scope: {
@@ -58,6 +58,7 @@ export interface PermissionUpdateParams {
   group_ids: string[];
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
+  verification_expiry: number | null;
 }
 
 export type ResetPermissionParams = {
