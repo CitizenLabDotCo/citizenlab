@@ -30,6 +30,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           flow="signup"
           showConsentOnFlow="signin"
           authProvider="fake_sso"
+          id="e2e-verified-action-fake-sso-button"
           onContinue={onClickSSO}
         >
           <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
