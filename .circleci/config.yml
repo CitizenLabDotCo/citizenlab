@@ -762,7 +762,7 @@ jobs:
       - run: |
           cd front
           mkdir -p reports
-          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings --timings-type=file)
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings --timings-type=filename)
           COMMA_SEPARATED_TESTFILES=cypress/e2e/input_form_builder/create_and_fill_form.cy.ts
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
