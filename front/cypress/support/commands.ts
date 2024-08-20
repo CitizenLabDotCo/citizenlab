@@ -1,7 +1,10 @@
 import 'cypress-file-upload';
 import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
-import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
+import {
+  IAppConfiguration,
+  IUpdatedAppConfigurationProperties,
+} from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { Multiloc } from '../../app/typings';
@@ -419,49 +422,13 @@ function apiGetAppConfiguration() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.request<IAppConfiguration>({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
       url: `web_api/v1/app_configuration`,
-    });
-  });
-}
-
-function apiCreateModeratorForProject(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  projectId: string
-) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-          roles: [
-            {
-              type: 'project_moderator',
-              project_id: projectId,
-            },
-          ],
-        },
-      },
     });
   });
 }

@@ -2,7 +2,7 @@ import moment = require('moment');
 import { randomString } from '../support/commands';
 
 describe('Existing Timeline project', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/projects/test-project-1-timeline-with-file');
     cy.get('#e2e-project-page');
     cy.acceptCookies();
@@ -21,30 +21,13 @@ describe('Existing Timeline project', () => {
     cy.get('.e2e-project-info')
       .contains('20190110_rueil_intermediaire.pdf')
       .should('have.attr', 'href');
-  });
 
-  it('shows the timeline', () => {
-    cy.get('#project-timeline');
-  });
-
-  it('shows the timeline phases', () => {
-    cy.get('.e2e-phases');
-  });
-
-  it('shows the phase navigation buttons', () => {
-    cy.get('.e2e-timeline-phase-navigation');
-  });
-
-  it('has a selected phase', () => {
-    cy.get('.e2e-phases .selectedPhase');
-  });
-
-  it('shows the phase title', () => {
-    cy.get('.e2e-phase-title');
-  });
-
-  it('shows the phase description', () => {
-    cy.get('.e2e-phase-description');
+    cy.get('#project-timeline'); // shows the timeline
+    cy.get('.e2e-phases'); // shows the timeline phases
+    cy.get('.e2e-timeline-phase-navigation'); // shows the phase navigation buttons
+    cy.get('.e2e-phases .selectedPhase'); // has a selected phase
+    cy.get('.e2e-phase-title'); // shows the phase title
+    cy.get('.e2e-phase-description'); // shows the phase description
   });
 });
 
