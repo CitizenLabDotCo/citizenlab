@@ -32,9 +32,7 @@ export const ssoVerificationFlow = (
       CONTINUE_WITH_SSO: async (ssoProvider: SSOProvider) => {
         const { disabled_reason } = await getRequirements();
 
-        const signedIn =
-          !disabled_reason ||
-          (disabled_reason && disabled_reason !== 'user_not_signed_in');
+        const signedIn = disabled_reason !== 'user_not_signed_in';
 
         if (signedIn) {
           handleOnSSOClick(
