@@ -379,7 +379,7 @@ resource 'Ideas' do
         let(:author) { input.author }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-        example 'Update an initiative' do
+        example 'Update a proposal' do
           create(:reaction, reactable: input, user: author, mode: 'up')
           do_request
           assert_status 200
@@ -391,7 +391,7 @@ resource 'Ideas' do
         context 'when the proposal has reactions' do
           before { create(:reaction, reactable: input, mode: 'up') }
 
-          example '[error] Update an initiative', document: false do
+          example '[error] Update a proposal', document: false do
             do_request
             assert_status 401
           end
@@ -455,7 +455,7 @@ resource 'Ideas' do
         context 'when the proposal has reactions' do
           before { create(:reaction, reactable: input, mode: 'up') }
 
-          example 'Update an initiative', document: false do
+          example 'Update a proposal', document: false do
             do_request
             assert_status 200
           end
