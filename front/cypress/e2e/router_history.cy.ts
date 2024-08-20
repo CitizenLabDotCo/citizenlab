@@ -21,7 +21,7 @@ describe('router history', () => {
     );
   });
 
-  it('works with nested routes (show idea) op', () => {
+  it('works with nested routes (show idea)', () => {
     // Get first idea
     cy.get('#e2e-ideas-list a')
       .first()
