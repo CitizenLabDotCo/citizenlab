@@ -30,23 +30,19 @@ type Changes = {
 
 interface Props {
   phaseId?: string;
-  groupIds?: string[];
   permissionData: IPermissionData;
   onChange: (changes: Changes) => void;
   onReset: () => void;
 }
 
-const ActionForm = ({
-  phaseId,
-  permissionData,
-  groupIds,
-  onChange,
-  onReset,
-}: Props) => {
+const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const {
     id: permissionId,
     attributes: { permitted_by, action, verification_enabled },
+    relationships,
   } = permissionData;
+
+  const groupIds = relationships.groups.data.map((p) => p.id);
 
   const { data: phase } = usePhase(phaseId);
 

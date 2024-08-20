@@ -62,7 +62,6 @@ const ActionForms = ({ phaseId }: Props) => {
             <ActionForm
               phaseId={phaseId}
               permissionData={permission}
-              groupIds={permission.relationships.groups.data.map((p) => p.id)}
               onChange={({ permittedBy, groupIds, verificationExpiry }) =>
                 updatePhasePermission({
                   permissionId: permission.id,
