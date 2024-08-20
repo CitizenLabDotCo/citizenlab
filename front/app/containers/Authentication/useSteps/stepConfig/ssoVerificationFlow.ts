@@ -29,9 +29,23 @@ export const ssoVerificationFlow = (
   return {
     'sso-verification:sso-providers': {
       CLOSE: () => setCurrentStep('closed'),
-      CONTINUE_WITH_SSO: (ssoProvider: SSOProvider) => {
-        updateState({ ssoProvider });
-        setCurrentStep('sso-verification:sso-providers-policies');
+      CONTINUE_WITH_SSO: async (ssoProvider: SSOProvider) => {
+        const { disabled_reason } = await getRequirements();
+
+        const signedIn =
+          !disabled_reason ||
+          (disabled_reason && disabled_reason !== 'user_not_signed_in');
+
+        if (signedIn) {
+          handleOnSSOClick(
+            ssoProvider,
+            { ...getAuthenticationData(), flow: 'signup' },
+            true
+          );
+        } else {
+          updateState({ ssoProvider });
+          setCurrentStep('sso-verification:sso-providers-policies');
+        }
       },
       GO_TO_LOGIN: () => {
         setCurrentStep('sso-verification:email-password');

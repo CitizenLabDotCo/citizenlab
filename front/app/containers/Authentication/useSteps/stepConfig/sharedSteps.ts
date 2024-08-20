@@ -162,7 +162,7 @@ export const sharedSteps = (
 
         const isVerifiedActionFlow = permitted_by === 'verified';
 
-        if (isVerifiedActionFlow && !signedIn) {
+        if (isVerifiedActionFlow && (!signedIn || requirements.verification)) {
           setCurrentStep('sso-verification:sso-providers');
           return;
         }
