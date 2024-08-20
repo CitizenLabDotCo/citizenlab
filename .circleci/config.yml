@@ -765,18 +765,22 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-2 | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run front npm run cypress:run -- --reporter cypress-multi-reporters --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # We run cypress tests in container, so we need to copy the results out.
-      - run: |
-          mkdir -p front/reports
-          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
+            front npm run cypress:run -- \
+            --reporter cypress-circleci-reporter \
+            --config baseUrl=http://e2e.front:3000 \
+            --spec ${COMMA_SEPARATED_TESTFILES}
+      - run:
+          command: |
+            docker exec cypress_run test -f /front/test_results && docker cp cypress_run:/front/test_results front/. || echo "test_results not found in container"
+          when: always
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
-          path: front/reports
+          path: /front/test_results
       - store_artifacts:
           path: screenshots
 
