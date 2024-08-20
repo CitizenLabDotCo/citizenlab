@@ -694,17 +694,12 @@ jobs:
       - run: |
           cd e2e
           docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
-      # - run: |
-      #     cd e2e
-      #     docker compose run -e PGPASSWORD=postgres web pg_dump -h e2e-postgres -U postgres -F c -b -v -f e2e-tenant.dump cl2_back_development
-      # - run: docker cp $(docker ps -lq):/cl2_back/e2e-tenant.dump .
       - run: |
           docker tag e2e_web citizenlabdotco/back-e2e:$CIRCLE_SHA1
           docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - persist_to_workspace:
           root: .
           paths:
-            # - e2e-tenant.dump
             - postgresql-data
             - uploads
 
@@ -755,22 +750,14 @@ jobs:
           docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
           docker cp ../build $FRONT_CONTAINER_ID:/front/build
           docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
-        # docker cp ../e2e-tenant.dump $WEB_CONTAINER_ID:/cl2_back/e2e-tenant.dump
       - run: |
           cd e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
       - run:
-          command: docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
+          command: |
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
-      # - run: |
-      #       cd e2e
-      #       docker compose exec -e PGPASSWORD=postgres web pg_restore -h e2e-postgres -U postgres -d cl2_back_development -c e2e-tenant.dump
-      # - run: |
-      #     sleep 10 # if we run `docker compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
-      #     cd e2e
-      #     # we cannot access localhost:3000, so we call it from the container
-      #     # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
-      #     docker compose -f docker-compose.yml -f docker-compose.test.yml run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
           cd front
           mkdir -p reports
@@ -778,7 +765,7 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | cut -d' ' -f1-2 | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run front npm run cypress:run -- --reporter cypress-multi-reporters --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
       - run: |
           mkdir -p front/reports
