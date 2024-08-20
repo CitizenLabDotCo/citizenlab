@@ -772,7 +772,7 @@ jobs:
             --spec ${COMMA_SEPARATED_TESTFILES}
       - run:
           command: |
-            docker cp cypress_run:/front/test_results front/.
+            docker cp cypress_run:/front/test_results .
           when: always
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
@@ -780,7 +780,7 @@ jobs:
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
-          path: /front/test_results
+          path: test_results
       - store_artifacts:
           path: screenshots
 
