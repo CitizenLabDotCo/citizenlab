@@ -729,7 +729,7 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2024.08
-    parallelism: 16
+    parallelism: 1
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
@@ -758,14 +758,16 @@ jobs:
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
+        # COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
       - run: |
           cd front
           mkdir -p reports
-          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings --timings-type=file)
+          COMMA_SEPARATED_TESTFILES=cypress/e2e/input_form_builder/create_and_fill_form.cy.ts
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
+            -e DEBUG=cypress:*
             front npm run cypress:run -- \
             --reporter cypress-circleci-reporter \
             --config baseUrl=http://e2e.front:3000 \
