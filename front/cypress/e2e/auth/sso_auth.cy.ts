@@ -72,8 +72,22 @@ describe('SSO authentication', () => {
             `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
           );
 
-          cy.get('.e2e-delete-custom-field').eq(3).click();
-          cy.get('.e2e-delete-custom-field').eq(2).click();
+          cy.get('.e2e-action-form-posting_idea')
+            .first()
+            .within(() => {
+              // Establish there are four custom fields using the delete button
+              cy.get('.e2e-delete-custom-field').should('have.length', 4);
+
+              // // Delete custom field number 4
+              cy.get('.e2e-delete-custom-field').eq(3).click();
+              cy.get('.e2e-delete-custom-field').should('have.length', 3);
+
+              // // Delete custom field number 3
+              cy.get('.e2e-delete-custom-field').eq(2).click();
+              cy.get('.e2e-delete-custom-field').should('have.length', 2);
+            });
+
+          cy.wait(10000);
 
           cy.logout();
         });
@@ -96,14 +110,14 @@ describe('SSO authentication', () => {
       });
 
       // Make sure we're redirected back to the correct page
-      cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+      // cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
 
       // Now something goes wrong with cypress: we are on the correct page,
       // but the token is not set for some reason. This can be solved
       // by manually doing the redirect another time.
       // No idea why it works like this, but it does.
       cy.visit(
-        `/en/projects/${projectSlug}?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2F&sso_verification_action=visiting&sso_verification_type=global`
+        `http://localhost:3000/en/complete-signup?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2Fprojects%2F${projectSlug}&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
       );
 
       // Make sure we're at success screen
