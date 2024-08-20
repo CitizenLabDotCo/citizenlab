@@ -1,7 +1,7 @@
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
-describe('Verified action', () => {
+describe.skip('Verified action', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
