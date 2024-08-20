@@ -1,4 +1,4 @@
-import { randomString } from '../../support/commands';
+import { randomEmail, randomString } from '../../support/commands';
 import moment = require('moment');
 
 describe('SSO authentication', () => {
@@ -34,9 +34,41 @@ describe('SSO authentication', () => {
       // Make sure we're at success screen
       cy.get('#e2e-sign-up-success-modal').should('exist');
     });
+
+    it('Asks for email if email is missing', () => {
+      cy.visit('/');
+
+      cy.get('#e2e-navbar-login-menu-item').click();
+      cy.get('#e2e-login-with-fake-sso').click();
+
+      // Now we are on the fake-sso page
+      cy.origin('http://host.docker.internal:8081/oauth/authorize', () => {
+        // Select profile without email
+        cy.get('select#profile-select').select('jane_doe');
+        cy.get('#submit-button').click();
+      });
+
+      // See test above
+      cy.location('pathname').should('eq', '/en/');
+      cy.visit(
+        '/en/complete-signup?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2F&sso_verification_action=visiting&sso_verification_type=global'
+      );
+
+      // Make sure we have to enter email
+      cy.get('#e2e-built-in-fields-container').should('exist');
+      cy.get('input#email').focus().type(randomEmail());
+      cy.get('#e2e-built-in-fields-submit-button').click();
+
+      // Make sure we can confirm email
+      cy.get('input#code').focus().type('1234');
+      cy.get('#e2e-verify-email-button').click();
+
+      // Make sure that custom fields window is opened
+      cy.get('#e2e-signup-custom-fields-container');
+    });
   });
 
-  describe.only('Action sign up', () => {
+  describe('Action sign up', () => {
     let projectId: string;
     let projectSlug: string;
     let phaseId: string;
@@ -87,8 +119,6 @@ describe('SSO authentication', () => {
               cy.get('.e2e-delete-custom-field').should('have.length', 2);
             });
 
-          cy.wait(10000);
-
           cy.logout();
         });
     });
@@ -110,7 +140,7 @@ describe('SSO authentication', () => {
       });
 
       // Make sure we're redirected back to the correct page
-      // cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+      cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
 
       // Now something goes wrong with cypress: we are on the correct page,
       // but the token is not set for some reason. This can be solved
