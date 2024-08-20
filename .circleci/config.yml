@@ -695,7 +695,7 @@ jobs:
           cd e2e
           docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
       - run: |
-          docker tag e2e_web citizenlabdotco/back-e2e:$CIRCLE_SHA1
+          docker tag e2e-web citizenlabdotco/back-e2e:$CIRCLE_SHA1
           docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
       - persist_to_workspace:
           root: .
@@ -719,7 +719,7 @@ jobs:
           docker compose run front npm run build
       - run: docker cp $(docker ps -lq):/front/build .
       - run: |
-          docker tag e2e_front citizenlabdotco/front-e2e:$CIRCLE_SHA1
+          docker tag e2e-front citizenlabdotco/front-e2e:$CIRCLE_SHA1
       - run: |
           docker push citizenlabdotco/front-e2e:$CIRCLE_SHA1
       - persist_to_workspace:
