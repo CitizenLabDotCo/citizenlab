@@ -70,7 +70,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
     onlyCheckAllowed: true,
   });
 
-  const handleReorder = (id: string, ordering: number) => () => {
+  const handleReorder = (id: string, ordering: number) => {
     updateIdeaStatus({
       id,
       requestBody: { participation_method: variant, ordering },
