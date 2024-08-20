@@ -92,4 +92,8 @@ describe.skip('Verified action', () => {
     // Unfortunately we can't test redirect back to the survey bc the local storage gets lost
     // while cypress switches domains
   });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
 });

@@ -151,5 +151,9 @@ describe.skip('SSO authentication', () => {
       // Make sure we're at success screen
       cy.get('#e2e-sign-up-success-modal').should('exist');
     });
+
+    after(() => {
+      cy.apiRemoveProject(projectId);
+    });
   });
 });
