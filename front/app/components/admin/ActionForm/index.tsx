@@ -22,11 +22,17 @@ import GroupSelect from './GroupSelect';
 import messages from './messages';
 import { showResetButton } from './utils';
 
+type Changes = {
+  permittedBy?: PermittedBy;
+  groupIds?: string[];
+  verificationExpiry?: number | null;
+};
+
 interface Props {
   phaseId?: string;
   groupIds?: string[];
   permissionData: IPermissionData;
-  onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
+  onChange: (changes: Changes) => void;
   onReset: () => void;
 }
 
@@ -50,7 +56,7 @@ const ActionForm = ({
   });
 
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
-    onChange(permittedBy, groupIds);
+    onChange({ permittedBy });
   };
 
   const participation_method = phase?.data.attributes.participation_method;
@@ -110,8 +116,8 @@ const ActionForm = ({
               <Box w="300px">
                 <GroupSelect
                   groupIds={groupIds}
-                  onChange={(groups) => {
-                    onChange(permissionData.attributes.permitted_by, groups);
+                  onChange={(groupIds) => {
+                    onChange({ groupIds });
                   }}
                 />
               </Box>
