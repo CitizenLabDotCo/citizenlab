@@ -9,6 +9,11 @@ describe('Existing Timeline project', () => {
     cy.wait(1000);
   });
 
+  beforeEach(() => {
+    cy.visit('/projects/test-project-1-timeline-with-file');
+    cy.get('#e2e-project-page');
+  });
+
   it('shows the correct project header', () => {
     cy.get('#e2e-project-header-image');
     cy.get('#e2e-project-description');

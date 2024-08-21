@@ -19,6 +19,7 @@ import {
 
 import { Step } from './typings';
 import {
+  confirmationRequired,
   requiredCustomFields,
   requiredBuiltInFields,
   askCustomFields,
@@ -62,27 +63,32 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
-        if (enterSsoNoEmailEmail) {
-          setCurrentStep('emailless-sso:email');
-          return;
-        }
-
+      RESUME_FLOW_AFTER_SSO: async () => {
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
         if (flow === 'signup') {
-          if (requirements.special.verification === 'require') {
+          if (confirmationRequired(requirements)) {
+            setCurrentStep('sign-up:email-confirmation');
+            return;
+          }
+
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('sign-up:built-in');
+            return;
+          }
+
+          if (requirements.verification) {
             setCurrentStep('sign-up:verification');
             return;
           }
 
-          if (askCustomFields(requirements.custom_fields)) {
+          if (askCustomFields(requirements)) {
             setCurrentStep('sign-up:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('sign-up:onboarding');
             return;
           }
@@ -91,17 +97,27 @@ export const sharedSteps = (
         }
 
         if (flow === 'signin') {
-          if (requirements.special.verification === 'require') {
+          if (confirmationRequired(requirements)) {
+            setCurrentStep('missing-data:email-confirmation');
+            return;
+          }
+
+          if (requiredBuiltInFields(requirements)) {
+            setCurrentStep('missing-data:built-in');
+            return;
+          }
+
+          if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
           }
 
-          if (requiredCustomFields(requirements.custom_fields)) {
+          if (requiredCustomFields(requirements)) {
             setCurrentStep('missing-data:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
@@ -120,12 +136,17 @@ export const sharedSteps = (
           email: null,
           token: null,
           prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
 
-        const isLightFlow = requirements.special.password === 'dont_ask';
-        const signedIn = requirements.built_in.email === 'satisfied';
+        const { permitted_by } = requirements.authentication;
+        const isLightFlow = permitted_by === 'everyone_confirmed_email';
+
+        const signedIn =
+          !disabled_reason || // To allow onboarding for already signed in users
+          (disabled_reason && disabled_reason !== 'user_not_signed_in');
 
         if (isLightFlow) {
           if (!signedIn) {
@@ -133,14 +154,27 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
         }
 
+        const isVerifiedActionFlow = permitted_by === 'verified';
+
+        const userNotSignedIn = !signedIn;
+        const userRequiresVerification = requirements.verification;
+
+        if (
+          isVerifiedActionFlow &&
+          (userNotSignedIn || userRequiresVerification)
+        ) {
+          setCurrentStep('sso-verification:sso-providers');
+          return;
+        }
+
         if (signedIn) {
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('missing-data:email-confirmation');
             return;
           }
@@ -150,17 +184,17 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.verification === 'require') {
+          if (requirements.verification) {
             setCurrentStep('missing-data:verification');
             return;
           }
 
-          if (requiredCustomFields(requirements.custom_fields)) {
+          if (requiredCustomFields(requirements)) {
             setCurrentStep('missing-data:custom-fields');
             return;
           }
 
-          if (showOnboarding(requirements.onboarding)) {
+          if (showOnboarding(requirements)) {
             setCurrentStep('missing-data:onboarding');
             return;
           }
@@ -187,10 +221,6 @@ export const sharedSteps = (
 
       TRIGGER_VERIFICATION_ONLY: () => {
         setCurrentStep('verification-only');
-      },
-
-      REOPEN_EMAILLESS_SSO: () => {
-        setCurrentStep('emailless-sso:email');
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {

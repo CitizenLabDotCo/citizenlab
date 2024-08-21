@@ -116,8 +116,9 @@ class OmniauthCallbackController < ApplicationController
 
     else # New user
       confirm = authver_method.email_confirmed?(auth)
-      locale = selected_locale(omniauth_params)
-      @user = UserService.build_in_sso(user_attrs, confirm, locale)
+      user_locale = get_user_locale(omniauth_params, user_attrs)
+
+      @user = UserService.build_in_sso(user_attrs, confirm, user_locale)
 
       @user.identities << @identity
       begin
@@ -196,14 +197,23 @@ class OmniauthCallbackController < ApplicationController
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
-  # and is not the default locale, otherwise return nil.
-  def selected_locale(omniauth_params)
-    return unless omniauth_params['sso_pathname']
-
+  # and is not the default locale.
+  # If that fails, return the locale returned by the SSO provider.
+  # If that also fails, just return the default locale.
+  def get_user_locale(omniauth_params, user_attrs)
     locales = AppConfiguration.instance.settings.dig('core', 'locales')
-    selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+    sso_pathname = omniauth_params['sso_pathname']
+    locale_in_pathname = sso_pathname ? sso_pathname.split('/', 2)[1].split('/')[0] : nil
 
-    return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
+    if locale_in_pathname.present? && locales.include?(locale_in_pathname) && locale_in_pathname != locales.first
+      return locale_in_pathname
+    end
+
+    if user_attrs[:locale].present? && locales.include?(user_attrs[:locale])
+      return user_attrs[:locale]
+    end
+
+    locales.first
   end
 
   def get_verification_method(_provider)

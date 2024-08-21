@@ -9,29 +9,19 @@ import {
   IPermissionsCustomField,
   IPermissionsCustomFieldAdd,
 } from './types';
+import { getPath } from './utils';
 
-const addPermissionsCustomField = async (
-  parameters: IPermissionsCustomFieldAdd
-) =>
+const addPermissionsCustomField = async (params: IPermissionsCustomFieldAdd) =>
   fetcher<IPermissionsCustomField>({
-    path: parameters.initiativeContext
-      ? `/permissions/${parameters.action}/permissions_custom_fields`
-      : parameters.phaseId
-      ? `/phases/${parameters.phaseId}/permissions/${parameters.action}/permissions_custom_fields`
-      : `/projects/${parameters.projectId}/permissions/${parameters.action}/permissions_custom_fields`,
+    path: getPath(params),
     action: 'post',
     body: {
-      custom_field_id: parameters.custom_field_id,
-      required: parameters.required,
+      custom_field_id: params.custom_field_id,
+      required: params.required,
     },
   });
 
-const useAddPermissionCustomField = ({
-  phaseId,
-  projectId,
-  initiativeContext,
-  action,
-}: IListParameters) => {
+const useAddPermissionsCustomField = ({ phaseId, action }: IListParameters) => {
   const queryClient = useQueryClient();
   return useMutation<
     IPermissionsCustomField,
@@ -43,8 +33,6 @@ const useAddPermissionCustomField = ({
       queryClient.invalidateQueries({
         queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
-          projectId,
-          initiativeContext,
           action,
         }),
       });
@@ -52,4 +40,4 @@ const useAddPermissionCustomField = ({
   });
 };
 
-export default useAddPermissionCustomField;
+export default useAddPermissionsCustomField;
