@@ -155,12 +155,6 @@ ro:
           title: Care este problema ta?
         option:
           title: Care este opțiunea ta?
-      details:
-        title: Detalii
-      attachements:
-        title: Imagini și atașamente
-      extra:
-        title: Informații suplimentare
   custom_field_options:
     gender:
       male: Masculin

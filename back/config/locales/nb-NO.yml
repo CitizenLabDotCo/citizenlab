@@ -207,12 +207,6 @@
           title: Hva er problemet ditt?
         option:
           title: Hva er alternativet ditt?
-      details:
-        title: Detaljer
-      attachements:
-        title: Bilder og vedlagte filer
-      extra:
-        title: Tilleggsinformasjon
   custom_field_options:
     gender:
       male: Mann
