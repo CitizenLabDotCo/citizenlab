@@ -207,12 +207,6 @@ de:
           title: Was ist Ihr Vorhaben?
         option:
           title: Was ist Ihre Option?
-      details:
-        title: Details
-      attachements:
-        title: Bilder und Anhänge
-      extra:
-        title: Zusätzliche Informationen
   custom_field_options:
     gender:
       male: Männlich
@@ -283,8 +277,8 @@ de:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title: 'Danke fürs Mitmachen'
-      description: "Antworten übermitteln, indem Sie unten auf \"Einreichen\" klicken."
+      title_text: 'Fast fertig'
+      description_text_2: "Sie sind dabei, Ihre Antworten abzuschicken. Indem Sie auf 'Einreichen' klicken, erteilen Sie uns die Erlaubnis, Ihre Antworten zu analysieren.<br/>Nachdem Sie abgeschickt haben, können Sie nicht mehr zurückgehen und Ihre Antworten ändern."
     pdf_export:
       personal_data: 'Persönliche Daten'
       personal_data_explanation_public: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
@@ -296,6 +290,12 @@ de:
       optional: 'optional'
       permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
+      choose_exactly:
+        one: 'Wählen Sie genau %{count} Option'
+        other: 'Wählen Sie genau %{count} Optionen'
+      choose_between: 'Wählen Sie zwischen %{min} und %{max} Optionen'
+      choose_at_least: 'Wählen Sie mindestens %{count} Optionen'
+      choose_at_most: 'Wählen Sie höchstens %{count} Optionen'
       this_answer: 'Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.'
       page: 'Seite'
       date_published: 'Veröffentlichungsdatum (TT-MM-JJJJ)'
