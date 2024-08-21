@@ -36,7 +36,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
       return
     end
     @idea_status.assign_attributes(idea_status_params_for_update)
-    if code_change && @idea_status.locked
+    if code_change && @idea_status.locked?
       render json: { errors: { code: [{ error: 'Cannot set the code to a locked status code', value: @idea_status.code }] } }, status: :unprocessable_entity
       return
     end

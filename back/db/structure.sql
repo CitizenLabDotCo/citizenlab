@@ -1619,7 +1619,8 @@ CREATE TABLE public.phases (
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
-    reacting_threshold integer
+    reacting_threshold integer,
+    reviewing_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -7531,4 +7532,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240806161121'),
 ('20240812115140'),
 ('20240814133336'),
-('20240814163522');
+('20240814163522'),
+('20240821135150');
+
+

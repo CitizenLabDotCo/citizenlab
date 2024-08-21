@@ -43,6 +43,7 @@
 #  native_survey_button_multiloc :jsonb
 #  expire_days_limit             :integer
 #  reacting_threshold            :integer
+#  reviewing_enabled             :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -93,6 +94,7 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :campaigns_settings, presence: true
   validates :start_at, presence: true
+  validates :reviewing_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
@@ -192,10 +194,6 @@ class Phase < ApplicationRecord
       )
     )
   }
-
-  def reviewing_enabled
-    false # TODO: Add column
-  end
 
   def ends_before?(date)
     return false if end_at.blank?
