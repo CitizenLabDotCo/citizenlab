@@ -4,7 +4,8 @@ namespace :cl2_back do
   #
   # It specifically processes all multilocs for the project, and its phases,
   # including; survey custom_fields & related custom_field_options, and report layouts.
-  # When reports are processed, it will re-publish the graph_data_units for each report.
+  # When related reports exist, it will re-publish the graph_data_units for each report to update
+  # any multilocs they may contain.
   #
   # It assumes that correct English (en) values are present in all the multilocs to be processed,
   # and machine translates these to all other multiloc keys in use by the tenant.
@@ -13,11 +14,6 @@ namespace :cl2_back do
   # It will overwrite any existing translations.
   desc 'Translate project multilocs to all tenant locales'
   task :translate_project_to_tenant_locales, %i[host project_id] => :environment do |_t, args|
-    # Temporary way to kill logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
-
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       project = Project.find(args[:project_id])
       locales = AppConfiguration.instance.settings['core']['locales']
