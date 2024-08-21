@@ -1,6 +1,10 @@
+import { FormatMessage } from 'typings';
+
 import { ActionMetadata } from 'api/verification_methods/types';
 
 import { Localize } from 'hooks/useLocalize';
+
+import messages from './messages';
 
 export const getReturnedFieldsPreview = (
   verificationActionMetadata: ActionMetadata,
@@ -72,4 +76,21 @@ export const getVerifiedDataList = (
 
 export const enabledSteps = (...stepsEnabled: boolean[]) => {
   return stepsEnabled.filter((stepEnabled) => stepEnabled).length;
+};
+
+export const getVerificationFrequencyExplanation = (
+  verificationExpiry: number | null,
+  formatMessage: FormatMessage
+) => {
+  if (verificationExpiry === null) {
+    return null;
+  }
+
+  if (verificationExpiry === 0) {
+    return formatMessage(messages.verificationFlowVizExplanation30Min);
+  }
+
+  return formatMessage(messages.verificationFlowVizExplanationXDays, {
+    days: verificationExpiry,
+  });
 };

@@ -61,6 +61,7 @@ describe('Multiple voting project', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
   });
 
   after(() => {
