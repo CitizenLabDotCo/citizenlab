@@ -397,6 +397,31 @@ resource 'Ideas' do
           end
         end
 
+        context 'when reviewing is enabled' do
+          let(:creation_phase) { create(:proposals_phase, reviewing_enabled: true) }
+          let(:input) { create(:proposal, idea_status: proposals_status, creation_phase: creation_phase, project: creation_phase.project) }
+
+          describe do
+            let(:proposals_status) { create(:idea_status, code: 'prescreening') }
+
+            example 'Update a proposal in prescreening', document: false do
+              do_request
+              assert_status 200
+              expect(input.reload.title_multiloc).to eq title_multiloc
+            end
+          end
+
+          describe do
+            let(:proposals_status) { create(:idea_status, code: 'proposed') }
+
+            example '[error] Cannot update a proposal in proposed', document: false do
+              do_request
+              assert_status 401
+              expect(input.reload.title_multiloc).not_to eq title_multiloc
+            end
+          end
+        end
+
         # TODO: Update the cosponsors
       end
 
@@ -458,6 +483,18 @@ resource 'Ideas' do
           example 'Update a proposal', document: false do
             do_request
             assert_status 200
+          end
+        end
+
+        context 'when reviewing is enabled' do
+          let(:creation_phase) { create(:proposals_phase, reviewing_enabled: true) }
+          let(:input) { create(:proposal, idea_status: create(:idea_status, code: 'proposed'), creation_phase: creation_phase, project: creation_phase.project) }
+          let(:body_multiloc) { { 'en' => 'Changed body' } }
+
+          example 'Update a proposal in proposed', document: false do
+            do_request
+            assert_status 200
+            expect(input.reload.body_multiloc).to eq body_multiloc
           end
         end
       end
