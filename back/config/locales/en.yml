@@ -36,6 +36,8 @@ en:
   symbols:
     outside: somewhere else
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: pre-screening
     proposed: proposed
     proposed_description: This idea has been proposed to the city
     viewed: viewed
