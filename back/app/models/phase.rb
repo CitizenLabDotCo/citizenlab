@@ -193,6 +193,10 @@ class Phase < ApplicationRecord
     )
   }
 
+  def reviewing_enabled
+    false # TODO: Add column
+  end
+
   def ends_before?(date)
     return false if end_at.blank?
 
