@@ -216,7 +216,7 @@ resource 'IdeaStatuses' do
 
     let(:idea_status) { create(:idea_status) }
     let(:id) { idea_status.id }
-    let(:ordering) { 0 }
+    let(:ordering) { 1 }
 
     context 'when resident' do
       before { resident_header_token }
@@ -266,9 +266,8 @@ resource 'IdeaStatuses' do
 
       describe do
         before do
-          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code) }
+          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code, participation_method: 'proposals') }
         end
-
         let(:idea_status) { create(:proposals_status) }
 
         example '[Error] Cannot reorder a proposals status into the automated status section', document: false do
