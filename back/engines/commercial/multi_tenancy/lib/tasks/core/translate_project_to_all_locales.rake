@@ -17,98 +17,101 @@ namespace :cl2_back do
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       project = Project.find(args[:project_id])
       locales = AppConfiguration.instance.settings['core']['locales']
+      translate_model = TranslateProjectMethods.new
 
       puts "\nTranslating project: '#{project.title_multiloc['en']}' to all tenant locales\n\n"
 
-      process_model(project, locales)
+      translate_model.process_model(project, locales)
 
       project.phases.each do |phase|
-        process_model(phase, locales)
+        translate_model.process_model(phase, locales)
 
         fields = phase&.custom_form&.custom_fields
         fields&.each do |field|
-          process_model(field, locales)
+          translate_model.process_model(field, locales)
           options = field&.options
-          options&.each { |option| process_model(option, locales) }
+          options&.each { |option| translate_model.process_model(option, locales) }
         end
 
         report = phase&.report
         layout = report&.layout
-        process_layout(layout, locales) if layout
-        process_data_units(report) if report
+        translate_model.process_layout(layout, locales) if layout
+        translate_model.process_data_units(report) if report
       end
 
-      puts "--- end ---\n\n"
+      puts "\n--- end ---\n\n"
     end
   end
 end
 
-def process_model(model, locales)
-  multiloc_attributes = model.attributes.select { |attribute| attribute.ends_with? '_multiloc' }
+class TranslateProjectMethods
+  def process_model(model, locales)
+    multiloc_attributes = model.attributes.select { |attribute| attribute.ends_with? '_multiloc' }
 
-  multiloc_attributes.each do |multiloc_attribute|
-    attribute_name = multiloc_attribute[0]
-    translated = process_multiloc(multiloc_attribute[1], locales)
-    next unless translated
+    multiloc_attributes.each do |multiloc_attribute|
+      attribute_name = multiloc_attribute[0]
+      translated = process_multiloc(multiloc_attribute[1], locales)
+      next unless translated
 
-    model[attribute_name] = translated
+      model[attribute_name] = translated
+    end
+
+    save_model(model)
   end
 
-  save_model(model)
-end
+  def process_layout(layout, locales)
+    craftjs_json = layout.craftjs_json
 
-def process_layout(layout, locales)
-  craftjs_json = layout.craftjs_json
+    craftjs_json.each do |k, v|
+      next unless v.is_a?(Hash)
 
-  craftjs_json.each do |k, v|
-    next unless v.is_a?(Hash)
+      text = v.dig('props', 'text')
+      next unless text.is_a?(Hash) && text['en'].present?
 
-    text = v.dig('props', 'text')
-    next unless text.is_a?(Hash) && text['en'].present?
+      craftjs_json[k]['props']['text'] = process_multiloc(text, locales)
+    end
 
-    craftjs_json[k]['props']['text'] = process_multiloc(text, locales)
+    layout.craftjs_json = craftjs_json
+
+    save_model(layout)
   end
 
-  layout.craftjs_json = craftjs_json
+  def process_data_units(report)
+    user = User.find_by(email: 'moderator@citizenlab.co') || User.find_by(email: 'moderator@govocal.com')
 
-  save_model(layout)
-end
+    if user.blank?
+      puts "No moderator user found, so could not re-publish graph_data_units for Report: #{report.id}"
+      nil
+    end
 
-def process_data_units(report)
-  user = User.find_by(email: 'moderator@citizenlab.co') || User.find_by(email: 'moderator@govocal.com')
+    ReportBuilder::ReportPublisher.new(report, user).publish
 
-  if user.blank?
-    puts "No moderator user found, so could not re-publish graph_data_units for Report: #{report.id}"
-    nil
+    puts "Re-published graph_data_units for Report: #{report.id}"
   end
 
-  ReportBuilder::ReportPublisher.new(report, user).publish
+  def process_multiloc(multiloc, locales)
+    english = multiloc['en']
+    return nil unless english
 
-  puts "Re-published graph_data_units for Report: #{report.id}"
-end
+    translator = MachineTranslations::MachineTranslationService.new
 
-def process_multiloc(multiloc, locales)
-  english = multiloc['en']
-  return nil unless english
+    locales.each do |locale|
+      next if locale == 'en'
 
-  translator = MachineTranslations::MachineTranslationService.new
+      multiloc[locale] = translator.translate(english, 'en', locale)
+    end
 
-  locales.each do |locale|
-    next if locale == 'en'
-
-    multiloc[locale] = translator.translate(english, 'en', locale)
+    multiloc
   end
 
-  multiloc
-end
+  def save_model(model)
+    return unless model.changed?
 
-def save_model(model)
-  return unless model.changed?
-
-  if model.save
-    puts "Processed #{model.class} #{model.id}"
-  else
-    puts "Failed to save #{model.class} #{model.id}"
-    pp model.errors
+    if model.save
+      puts "Processed #{model.class} #{model.id}"
+    else
+      puts "Failed to save #{model.class} #{model.id}"
+      pp model.errors
+    end
   end
 end
