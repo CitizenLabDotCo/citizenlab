@@ -36,9 +36,7 @@ const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
   () => import('./project/permissions/containers/Project')
 );
-const AdminPhasePermissions = lazy(
-  () => import('./project/permissions/containers/Phase')
-);
+const AdminPhasePermissions = lazy(() => import('./project/permissions/Phase'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));

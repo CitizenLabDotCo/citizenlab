@@ -13,7 +13,7 @@ import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUs
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
-import { getLabelForInputType } from 'containers/Admin/projects/project/permissions/components/ActionForms/utils';
+import { getLabelForInputType } from 'containers/Admin/projects/project/permissions/Phase/ActionForms/utils';
 import {
   FieldType,
   fieldTypes,
