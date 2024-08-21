@@ -65,7 +65,6 @@ export const signUpFlow = (
       SUBMIT: async (params: CreateAccountParameters) => {
         try {
           await createAccountWithPassword(params);
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
 
