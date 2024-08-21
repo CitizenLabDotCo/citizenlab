@@ -9,7 +9,7 @@ import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
