@@ -171,12 +171,12 @@ export const lightFlow = (
         const { requirements } = await getRequirements();
 
         if (askCustomFields(requirements)) {
-          setCurrentStep('sign-up:custom-fields');
+          setCurrentStep('missing-data:custom-fields');
           return;
         }
 
         if (showOnboarding(requirements)) {
-          setCurrentStep('sign-up:onboarding');
+          setCurrentStep('missing-data:onboarding');
           return;
         }
 

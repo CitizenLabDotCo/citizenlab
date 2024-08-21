@@ -10,15 +10,7 @@ export type Step =
   // old sign up flow
   | 'sign-up:auth-providers'
   | 'sign-up:email-password'
-  | 'sign-up:built-in'
-  | 'sign-up:email-confirmation'
-  | 'sign-up:change-email'
-  | 'sign-up:verification'
-  | 'sign-up:custom-fields'
   | 'sign-up:invite'
-
-  // onboarding sign up flow
-  | 'sign-up:onboarding'
 
   // light flow
   | 'light-flow:email'

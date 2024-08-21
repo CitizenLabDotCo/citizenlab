@@ -22,7 +22,6 @@ import {
   confirmationRequired,
   requiredCustomFields,
   requiredBuiltInFields,
-  askCustomFields,
   showOnboarding,
 } from './utils';
 
@@ -67,61 +66,34 @@ export const sharedSteps = (
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
-        if (flow === 'signup') {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('sign-up:email-confirmation');
-            return;
-          }
-
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('sign-up:built-in');
-            return;
-          }
-
-          if (requirements.verification) {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('sign-up:onboarding');
-            return;
-          }
-
-          setCurrentStep('success');
+        if (confirmationRequired(requirements)) {
+          setCurrentStep('missing-data:email-confirmation');
+          return;
         }
 
-        if (flow === 'signin') {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+        if (requiredBuiltInFields(requirements)) {
+          setCurrentStep('missing-data:built-in');
+          return;
+        }
 
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
+        if (requirements.verification) {
+          setCurrentStep('missing-data:verification');
+          return;
+        }
 
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
+        if (requiredCustomFields(requirements)) {
+          setCurrentStep('missing-data:custom-fields');
+          return;
+        }
 
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
+        if (showOnboarding(requirements)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
 
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
+        if (flow === 'signup') {
+          setCurrentStep('success');
+        } else {
           const { successAction } = getAuthenticationData();
           if (successAction) {
             triggerSuccessAction(successAction);

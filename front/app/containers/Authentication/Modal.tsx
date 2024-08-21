@@ -59,12 +59,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // old sign up flow
   'sign-up:auth-providers': messages.signUp,
   'sign-up:email-password': messages.signUp,
-  'sign-up:built-in': messages.signUp,
-  'sign-up:email-confirmation': messages.signUp,
-  'sign-up:change-email': messages.signUp,
-  'sign-up:verification': messages.verifyYourIdentity,
-  'sign-up:custom-fields': messages.completeYourProfile,
-  'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
 
   // light flow
@@ -140,7 +134,6 @@ type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
 const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
   'sign-up:auth-providers': 'signup_helper_text',
   'sign-up:email-password': 'signup_helper_text',
-  'sign-up:custom-fields': 'custom_fields_signup_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };
 
@@ -358,8 +351,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {/* missing data flow / shared */}
-        {(currentStep === 'missing-data:built-in' ||
-          currentStep === 'sign-up:built-in') && (
+        {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
             authenticationData={authenticationData}
@@ -367,8 +359,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {(currentStep === 'sign-up:email-confirmation' ||
-          currentStep === 'light-flow:email-confirmation' ||
+        {(currentStep === 'light-flow:email-confirmation' ||
           currentStep === 'missing-data:email-confirmation') && (
           <EmailConfirmation
             state={state}
@@ -379,8 +370,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {(currentStep === 'sign-up:change-email' ||
-          currentStep === 'missing-data:change-email') && (
+        {currentStep === 'missing-data:change-email' && (
           <ChangeEmail
             loading={loading}
             setError={setError}
@@ -390,16 +380,14 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {(currentStep === 'missing-data:verification' ||
-          currentStep === 'verification-only' ||
-          currentStep === 'sign-up:verification') && (
+          currentStep === 'verification-only') && (
           <Verification
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
             authenticationData={authenticationData}
           />
         )}
-        {(currentStep === 'missing-data:custom-fields' ||
-          currentStep === 'sign-up:custom-fields') && (
+        {currentStep === 'missing-data:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
             loading={loading}
@@ -409,8 +397,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {(currentStep === 'sign-up:onboarding' ||
-          currentStep === 'missing-data:onboarding') && (
+        {currentStep === 'missing-data:onboarding' && (
           <Onboarding
             authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
