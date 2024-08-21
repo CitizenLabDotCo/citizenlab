@@ -15,10 +15,7 @@ export type Step =
   // light flow
   | 'light-flow:email'
   | 'light-flow:email-policies'
-  | 'light-flow:google-policies'
-  | 'light-flow:facebook-policies'
-  | 'light-flow:azure-ad-policies'
-  | 'light-flow:azure-ad-b2c-policies'
+  | 'light-flow:sso-policies'
   | 'light-flow:france-connect-login'
   | 'light-flow:email-confirmation'
   | 'light-flow:password'

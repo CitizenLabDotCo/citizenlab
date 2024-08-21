@@ -31,12 +31,9 @@ import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
-import AzureAdB2cPolicies from './steps/Policies/AzureAdB2cPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import EmailPolicies from './steps/Policies/EmailPolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import GooglePolicies from './steps/Policies/GooglePolicies';
+import SSOPolicies from './steps/Policies/SSOPolicies';
 import SSOVerification from './steps/SSOVerification';
 import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
 import Success from './steps/Success';
@@ -64,10 +61,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
   'light-flow:email-policies': messages.beforeYouParticipate,
-  'light-flow:google-policies': messages.beforeYouParticipate,
-  'light-flow:facebook-policies': messages.beforeYouParticipate,
-  'light-flow:azure-ad-policies': messages.beforeYouParticipate,
-  'light-flow:azure-ad-b2c-policies': messages.beforeYouParticipate,
+  'light-flow:sso-policies': messages.beforeYouParticipate,
   'light-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
@@ -314,26 +308,9 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-        {currentStep === 'light-flow:google-policies' && (
-          <GooglePolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:facebook-policies' && (
-          <FacebookPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:azure-ad-policies' && (
-          <AzureAdPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:azure-ad-b2c-policies' && (
-          <AzureAdB2cPolicies
+        {currentStep === 'light-flow:sso-policies' && (
+          <SSOPolicies
+            state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />

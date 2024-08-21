@@ -58,22 +58,11 @@ export const lightFlow = (
         }
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        switch (ssoProvider) {
-          case 'google':
-            setCurrentStep('light-flow:google-policies');
-            break;
-          case 'facebook':
-            setCurrentStep('light-flow:facebook-policies');
-            break;
-          case 'azureactivedirectory':
-            setCurrentStep('light-flow:azure-ad-policies');
-            break;
-          case 'azureactivedirectory_b2c':
-            setCurrentStep('light-flow:azure-ad-b2c-policies');
-            break;
-          case 'franceconnect':
-            setCurrentStep('light-flow:france-connect-login');
-            break;
+        if (ssoProvider === 'franceconnect') {
+          setCurrentStep('light-flow:france-connect-login');
+        } else {
+          updateState({ ssoProvider });
+          setCurrentStep('light-flow:sso-policies');
         }
       },
     },
@@ -95,54 +84,13 @@ export const lightFlow = (
       },
     },
 
-    'light-flow:google-policies': {
+    'light-flow:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
+      ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         handleOnSSOClick(
-          'google',
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
-        );
-      },
-    },
-
-    'light-flow:facebook-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          'facebook',
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
-        );
-      },
-    },
-
-    'light-flow:azure-ad-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          'azureactivedirectory',
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
-        );
-      },
-    },
-
-    'light-flow:azure-ad-b2c-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          'azureactivedirectory_b2c',
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
+          ssoProvider,
+          { ...getAuthenticationData(), flow: 'signup' },
+          true
         );
       },
     },
