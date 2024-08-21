@@ -540,7 +540,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "O declarație privind accesibilitatea acestui site web",
   "app.containers.AccessibilityStatement.postalAddress": "Adresa poștală:",
   "app.containers.AccessibilityStatement.publicationDate": "Data publicării",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Această declarație de accesibilitate a fost publicată la 30 iunie 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "Ne propunem să răspundem la feedback în termen de 1-2 zile lucrătoare.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Erorile cititorului de ecran pot apărea la diferite combinații de browser/cititor de ecran. Erorile pot fi raportate prin procesul de feedback descris mai jos.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Funcția de căutare",

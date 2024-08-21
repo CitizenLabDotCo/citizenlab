@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "En erklæring om tilgængeligheden af denne platform",
   "app.containers.AccessibilityStatement.postalAddress": "Post adresse:",
   "app.containers.AccessibilityStatement.publicationDate": "Udgivelsesdato",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Denne tilgængelighedserklæring blev offentliggjort den 30. juni 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "Vi tilstræber at svare indenfor 1-2 arbejdsdage.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Fejl i skærmlæser kan forekomme med forskellige kombinationer af browser / skærmlæser. Fejl kan rapporteres gennem feedback processen beskrevet nedenfor.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Søgefunktion",

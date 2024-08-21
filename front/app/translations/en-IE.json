@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "A statement on the accessibility of this website",
   "app.containers.AccessibilityStatement.postalAddress": "Postal address:",
   "app.containers.AccessibilityStatement.publicationDate": "Publication date",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "This accessibility statement was published on June 30, 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "We aim to respond to feedback within 1-2 business days.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Screen reader bugs may occur with different browser/screen reader combinations. Bugs can be reported through the feedback process outlined below.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Search function",

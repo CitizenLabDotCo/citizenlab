@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Bu web sitesinin erişilebilirlik durumu beyanı",
   "app.containers.AccessibilityStatement.postalAddress": "Posta adresi:",
   "app.containers.AccessibilityStatement.publicationDate": "Yayınlanma tarihi",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Bu erişilebilirlik beyanı 30 Haziran 2022 tarihinde yayımlanmıştır.",
   "app.containers.AccessibilityStatement.responsiveness": "Geri bildirimlere 1-2 iş günü içinde yanıt vermeyi hedefliyoruz.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Farklı tarayıcı/ekran okuyucu birleşimlerinde ekran okuyucu hataları ortaya çıkabilir. Hatalar, aşağıda açıklanan geri bildirim süreci aracılığıyla bildirilebilir.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Arama işlevi",

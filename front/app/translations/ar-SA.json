@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "بيان حول إمكانية الوصول لهذا الموقع الإلكتروني",
   "app.containers.AccessibilityStatement.postalAddress": "العنوان البريدي:",
   "app.containers.AccessibilityStatement.publicationDate": "تاريخ النشر",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "تم نشر بيان إمكانية الوصول هذا في 30 يونيو 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "نسعى للرد على ملاحظاتك خلال 1-2 يوم عمل.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "قد يُعاني قارئ الشاشة من أخطاء برمجية مع اختلاف مجموعة \"المتصفح/ قارئ الشاشة\". يمكن الإبلاغ عن الأخطاء البرمجية من خلال عملية تقديم الملاحظات الموضحة أدناه.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "وظيفة البحث",

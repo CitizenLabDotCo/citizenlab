@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Standard d'accessibilité de ce site internet",
   "app.containers.AccessibilityStatement.postalAddress": "Courrier postal :",
   "app.containers.AccessibilityStatement.publicationDate": "Date de publication",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Cette déclaration d'accessibilité a été publiée le 30 juin 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "Nous vous répondons en 1 à 2 jours ouvrés.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Des bugs peuvent être générés par l'utilisation de lecteurs d'écran avec certains navigateurs. Ces bugs peuvent-être remontés comme remarques et suggestions comme le propose la procédure ci-dessous.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Fonction de recherche",

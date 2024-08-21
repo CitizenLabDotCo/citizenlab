@@ -983,7 +983,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Ett uttalande om tillgängligheten för den här webbplatsen",
   "app.containers.AccessibilityStatement.postalAddress": "Postadress:",
   "app.containers.AccessibilityStatement.publicationDate": "Publiceringsdatum",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Den här tillgänglighetsförklaringen publicerades 30 juni 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "Vi strävar efter att svara på återkoppling inom 1–2 arbetsdagar.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Skärmläsarbuggar kan uppstå med olika kombinationer av webbläsare och skärmläsare. Buggar kan rapporteras genom återkopplingsprocessen som beskrivs nedan.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Sökfunktion",
