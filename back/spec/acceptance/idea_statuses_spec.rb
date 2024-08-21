@@ -212,7 +212,11 @@ resource 'IdeaStatuses' do
       parameter :ordering, 'The position, starting from 0, where the status should be at. Fields after will move down.', required: true
     end
 
-    before { create_list(:idea_status, 3) }
+    before do
+      create_list(:idea_status, 2)
+      # Ensure testing that only one set is taken into account when calculating the max_ordering
+      (IdeaStatus::LOCKED_CODES + ['custom']).each { |code| create(:proposals_status, code: code) }
+    end
 
     let(:idea_status) { create(:idea_status) }
     let(:id) { idea_status.id }
@@ -245,36 +249,37 @@ resource 'IdeaStatuses' do
         end
       end
 
-      describe do
-        let(:idea_status) { create(:proposals_status, code: 'answered') }
+      context 'when proposals statuses' do
+        let(:ordering) { IdeaStatus::LOCKED_CODES.size }
 
-        example 'Reorder a manual default proposals status', document: false do
-          do_request
-          assert_status 200
-          expect(response_data.dig(:attributes, :ordering)).to eq ordering
-        end
-      end
+        describe do
+          let(:idea_status) { create(:proposals_status, code: 'answered') }
 
-      describe do
-        let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
-
-        example '[Error] Cannot reorder a locked status', document: false do
-          do_request
-          assert_status 401
-        end
-      end
-
-      describe do
-        before do
-          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code, participation_method: 'proposals') }
+          example 'Reorder a manual default proposals status', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:attributes, :ordering)).to eq ordering
+          end
         end
 
-        let(:idea_status) { create(:proposals_status) }
+        describe do
+          let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
 
-        example '[Error] Cannot reorder a proposals status into the locked status section', document: false do
-          do_request
-          assert_status 422
-          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the locked statuses section'
+          example '[Error] Cannot reorder a locked status', document: false do
+            do_request
+            assert_status 401
+          end
+        end
+
+        describe do
+          let(:idea_status) { create(:proposals_status) }
+          let(:ordering) { 2 }
+
+          example '[Error] Cannot reorder a proposals status into the locked status section', document: false do
+            do_request
+            assert_status 422
+            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the locked statuses section'
+          end
         end
       end
     end
