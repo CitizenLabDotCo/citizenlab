@@ -27,7 +27,7 @@ class IdeaStatusPolicy < ApplicationPolicy
   end
 
   def reorder?
-    update? && InputStatusService.new(record).can_reorder?
+    update? && !record.locked?
   end
 
   def destroy?

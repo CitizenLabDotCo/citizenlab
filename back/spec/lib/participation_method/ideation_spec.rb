@@ -13,6 +13,42 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#assign_defaults' do
+    context 'when the proposed idea status is available' do
+      let!(:ideation_proposed) { create(:idea_status_proposed) }
+      let!(:proposals_proposed) { create(:proposals_status, code: 'proposed') }
+      let!(:initial_status) { create(:idea_status) }
+
+      it 'sets a default "proposed" idea_status if not set' do
+        input = build(:idea, idea_status: nil)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq ideation_proposed
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+
+    context 'when the proposed idea status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:idea, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        create(:idea_status_proposed)
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 
@@ -113,42 +149,6 @@ RSpec.describe ParticipationMethod::Ideation do
 
     it 'returns true for a moderator and a timeline project with a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:admin))).to be true
-    end
-  end
-
-  describe '#assign_defaults' do
-    context 'when the proposed idea status is available' do
-      let!(:ideation_proposed) { create(:idea_status_proposed) }
-      let!(:proposals_proposed) { create(:proposals_status, code: 'proposed') }
-      let!(:initial_status) { create(:idea_status) }
-
-      it 'sets a default "proposed" idea_status if not set' do
-        input = build(:idea, idea_status: nil)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq ideation_proposed
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-
-    context 'when the proposed idea status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:idea, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        create(:idea_status_proposed)
-        initial_status = create(:idea_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
     end
   end
 

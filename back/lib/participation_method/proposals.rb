@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      if input.creation_phase.reviewing_enabled
+      if input.creation_phase&.reviewing_enabled
         input.idea_status ||= IdeaStatus.find_by!(code: 'prescreening', participation_method: idea_status_method)
       end
       super

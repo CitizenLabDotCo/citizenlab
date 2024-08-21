@@ -14,6 +14,62 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe '#assign_defaults' do
+    context 'when the proposed and prescreening statuses are available' do
+      let!(:ideation_proposed) { create(:idea_status_proposed) }
+      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
+      let!(:custom_status) { create(:proposals_status) }
+
+      context 'when the creation phase has reviewing enabled' do
+        let(:creation_phase) { create(:proposals_phase, reviewing_enabled: true) }
+
+        it 'assignes the default "prescreening" status if not set' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq prescreening_status
+        end
+
+        it 'does not change the status if it is already set' do
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq custom_status
+        end
+      end
+
+      context 'when the creation phase does not have reviewing enabled' do
+        let(:creation_phase) { create(:proposals_phase, reviewing_enabled: false) }
+
+        it 'assignes the default "proposed" status if not set' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq proposed_status
+        end
+
+        it 'does not change the status if it is already set' do
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq custom_status
+        end
+      end
+    end
+
+    context 'when the proposed status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:proposal, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        create(:proposals_status, code: 'proposed')
+        initial_status = create(:proposals_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:proposals_phase) }
 
@@ -118,41 +174,6 @@ RSpec.describe ParticipationMethod::Proposals do
   describe '#budget_in_form?' do
     it 'returns false' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
-    end
-  end
-
-  describe '#assign_defaults' do
-    context 'when the proposed status is available' do
-      let!(:ideation_proposed) { create(:idea_status_proposed) }
-      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
-      let!(:custom_status) { create(:proposals_status) }
-
-      it 'assignes the default "proposed" status if not set' do
-        proposal = build(:proposal, idea_status: nil)
-        participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq proposed_status
-      end
-
-      it 'does not change the status if it is already set' do
-        proposal = build(:proposal, idea_status: custom_status)
-        participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq custom_status
-      end
-    end
-
-    context 'when the proposed status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:proposal, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        create(:proposals_status, code: 'proposed')
-        initial_status = create(:proposals_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
     end
   end
 

@@ -7,6 +7,13 @@ RSpec.describe ParticipationMethod::None do
 
   let(:input) { create(:idea) }
 
+  describe '#assign_defaults' do
+    it 'does not change the input' do
+      participation_method.assign_defaults input
+      expect(input).not_to be_changed
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 
@@ -47,13 +54,6 @@ RSpec.describe ParticipationMethod::None do
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
-    end
-  end
-
-  describe '#assign_defaults' do
-    it 'does not change the input' do
-      participation_method.assign_defaults input
-      expect(input).not_to be_changed
     end
   end
 

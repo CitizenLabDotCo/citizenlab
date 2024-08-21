@@ -13,17 +13,24 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#generate_slug' do
-    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
+  describe '#assign_defaults' do
+    context 'when the proposed idea status is available' do
+      let!(:proposed) { create(:idea_status_proposed) }
+      let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
-    before { create(:idea_status_proposed) }
+      it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
+        participation_method.assign_defaults input
+        expect(input.publication_status).to eq 'published'
+        expect(input.idea_status).to eq proposed
+      end
+    end
 
-    it 'sets and persists the id as the slug of the input' do
-      expect(input.slug).to eq input.id
+    context 'when the proposed idea status is not available' do
+      let(:input) { build(:idea, idea_status: nil) }
 
-      input.update_column :slug, nil
-      input.reload
-      expect(participation_method.generate_slug(input)).to eq input.id
+      it 'raises ActiveRecord::RecordNotFound' do
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
     end
   end
 
@@ -88,6 +95,20 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#generate_slug' do
+    let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
+
+    before { create(:idea_status_proposed) }
+
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
+
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
+    end
+  end
+
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'
@@ -98,27 +119,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
-    end
-  end
-
-  describe '#assign_defaults' do
-    context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
-
-      it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
-        participation_method.assign_defaults input
-        expect(input.publication_status).to eq 'published'
-        expect(input.idea_status).to eq proposed
-      end
-    end
-
-    context 'when the proposed idea status is not available' do
-      let(:input) { build(:idea, idea_status: nil) }
-
-      it 'raises ActiveRecord::RecordNotFound' do
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
     end
   end
 
