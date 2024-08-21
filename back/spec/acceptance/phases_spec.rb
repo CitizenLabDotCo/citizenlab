@@ -449,7 +449,7 @@ resource 'Phases' do
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
       let(:reviewing_enabled) { true }
-      
+
       example_request 'Update a phase' do
         expect(response_status).to eq 200
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc

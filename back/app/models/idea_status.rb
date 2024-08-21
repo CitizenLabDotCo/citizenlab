@@ -36,7 +36,6 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
-
   def locked?
     LOCKED_CODES.include? code
   end
