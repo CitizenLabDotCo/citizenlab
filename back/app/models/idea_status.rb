@@ -17,8 +17,7 @@
 #
 class IdeaStatus < ApplicationRecord
   CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
-  AUTOMATIC_STATUS_CODES = %w[prescreening proposed threshold_reached expired].freeze # TODO: Remove
-  PROPOSED_CODE = 'proposed' # TODO: Initial status can be prescreening
+  LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -36,8 +35,9 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
-  def proposed? # TODO: Initial status can be prescreening
-    code == PROPOSED_CODE
+
+  def locked?
+    LOCKED_CODES.include? code
   end
 
   def automatic? # TODO: Remove

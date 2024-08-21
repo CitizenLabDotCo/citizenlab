@@ -63,8 +63,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def destroy
-    if @idea_status.proposed?
-      render json: { errors: { base: 'Cannot delete the proposed status' } }, status: :unprocessable_entity
+    if @idea_status.locked?
+      render json: { errors: { base: 'Cannot delete the locked status' } }, status: :unprocessable_entity
       return
     end
     frozen_idea_status = @idea_status.destroy
