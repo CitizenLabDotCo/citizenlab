@@ -18,7 +18,17 @@ namespace :cl2_back do
       locales = AppConfiguration.instance.settings['core']['locales']
 
       puts "\nTranslating project #{project.title_multiloc['en']} to all tenant locales\n\n"
+
       process_all_multilocs(project, locales)
+
+      project.phases.each do |phase|
+        fields = phase&.custom_form&.custom_fields
+        fields&.each do |field|
+          process_all_multilocs(field, locales)
+          options = field&.options
+          options&.each { |option| process_all_multilocs(option, locales) }
+        end
+      end
 
       puts "--- end ---\n\n"
     end
@@ -32,6 +42,7 @@ def process_all_multilocs(model, locales)
   multiloc_attributes.each do |multiloc_attribute|
     attribute_name = multiloc_attribute[0]
     english = multiloc_attribute[1]['en']
+    next unless english
 
     locales.each do |locale|
       next if locale == 'en'
