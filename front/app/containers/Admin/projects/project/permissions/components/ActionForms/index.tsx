@@ -43,7 +43,7 @@ const ActionForms = ({ phaseId }: Props) => {
     const permission = permissions.data[0];
     const permissionAction = permission.attributes.action;
     return (
-      <Box className={`e2e-action-form-${permissionAction}`}>
+      <Box>
         <Title variant="h3" color="primary">
           <FormattedMessage
             {...getPermissionActionSectionSubtitle({
@@ -86,6 +86,7 @@ const ActionForms = ({ phaseId }: Props) => {
 
         return (
           <Accordion
+            className={`e2e-action-accordion-${permissionAction}`}
             key={permission.id}
             timeoutMilliseconds={1000}
             transitionHeightPx={1700}
