@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Kas var kļūt par brīvprātīgo?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Kas var balsot par priekšlikumiem?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Kas var balsot?",
-  "app.containers.AdminPage.groups.permissions.phase": "Fāze",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Jautājuma apraksts",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Jautājuma nosaukums",
   "app.containers.AdminPage.groups.permissions.save": "Saglabāt",

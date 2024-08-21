@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Hvem kan være frivillig?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Hvem kan stemme på forslag?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Hvem kan stemme?",
-  "app.containers.AdminPage.groups.permissions.phase": "Fase",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Spørsmålsbeskrivelse",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Spørsmålets tittel",
   "app.containers.AdminPage.groups.permissions.save": "Lagre",

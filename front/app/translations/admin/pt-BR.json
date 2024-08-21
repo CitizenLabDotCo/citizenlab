@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Quem pode ser voluntário?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Quem pode votar nas propostas?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Quem pode votar?",
-  "app.containers.AdminPage.groups.permissions.phase": "Fase",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Descrição da pergunta",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Título da pergunta",
   "app.containers.AdminPage.groups.permissions.save": "Salvar",

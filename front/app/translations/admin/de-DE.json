@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Wer kann teilnehmen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Wer kann über Vorschläge abstimmen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Wer darf abstimmen?",
-  "app.containers.AdminPage.groups.permissions.phase": "Phase",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Beschreibung der Frage",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Titel der Frage",
   "app.containers.AdminPage.groups.permissions.save": "Speichern",

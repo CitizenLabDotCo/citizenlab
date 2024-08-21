@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Pwy all wirfoddoli?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Pwy all bleidleisio ar gynigion?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Pwy all bleidleisio?",
-  "app.containers.AdminPage.groups.permissions.phase": "Cyfnod",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Disgrifiad o'r cwestiwn",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Teitl y cwestiwn",
   "app.containers.AdminPage.groups.permissions.save": "Arbed",

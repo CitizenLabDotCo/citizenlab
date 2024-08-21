@@ -1539,7 +1539,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Chi può partecipare al sondaggio?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Chi può votare le proposte?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Chi può votare?",
-  "app.containers.AdminPage.groups.permissions.phase": "Fase",
   "app.containers.AdminPage.groups.permissions.save": "Save",
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Success!",

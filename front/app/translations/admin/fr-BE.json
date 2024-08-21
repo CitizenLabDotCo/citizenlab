@@ -2159,7 +2159,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Qui peut se porter volontaire ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Qui peut voter pour des propositions ?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Qui peut voter ?",
-  "app.containers.AdminPage.groups.permissions.phase": "Phase",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Description",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Titre",
   "app.containers.AdminPage.groups.permissions.save": "Sauvegarder",

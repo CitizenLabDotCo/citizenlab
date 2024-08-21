@@ -2194,7 +2194,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Tko može volontirati?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Tko može glasovati o prijedlozima?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Tko može glasati?",
-  "app.containers.AdminPage.groups.permissions.phase": "Faza",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Opis pitanja",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Naslov pitanja",
   "app.containers.AdminPage.groups.permissions.save": "Spremi",
