@@ -33,19 +33,17 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   });
   const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
-  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
+  const { mutateAsync: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = async (values: FormValues) => {
     const { ...params } = values;
 
-    updateIdeaStatus(
-      {
-        id: statusId,
-        requestBody: { ...params, participation_method: variant },
-      },
-      { onSuccess: goBack }
-    );
+    await updateIdeaStatus({
+      id: statusId,
+      requestBody: { ...params, participation_method: variant },
+    });
+    goBack();
   };
 
   const goBack = () => {
