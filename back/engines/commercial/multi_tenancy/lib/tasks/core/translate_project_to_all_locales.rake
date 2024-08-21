@@ -22,12 +22,15 @@ namespace :cl2_back do
       process_all_multilocs(project, locales)
 
       project.phases.each do |phase|
-        fields = phase&.custom_form&.custom_fields
-        fields&.each do |field|
-          process_all_multilocs(field, locales)
-          options = field&.options
-          options&.each { |option| process_all_multilocs(option, locales) }
-        end
+        # fields = phase&.custom_form&.custom_fields
+        # fields&.each do |field|
+        #   process_all_multilocs(field, locales)
+        #   options = field&.options
+        #   options&.each { |option| process_all_multilocs(option, locales) }
+        # end
+
+        layout = phase&.report&.layout
+        process_layout(layout, locales) if layout
       end
 
       puts "--- end ---\n\n"
@@ -37,19 +40,45 @@ end
 
 def process_all_multilocs(model, locales)
   multiloc_attributes = model.attributes.select { |attribute| attribute.ends_with? '_multiloc' }
-  translator = MachineTranslations::MachineTranslationService.new
 
   multiloc_attributes.each do |multiloc_attribute|
     attribute_name = multiloc_attribute[0]
-    english = multiloc_attribute[1]['en']
-    next unless english
+    translated = process_multiloc(multiloc_attribute[1], locales)
+    next unless translated
 
-    locales.each do |locale|
-      next if locale == 'en'
-
-      model[attribute_name][locale] = translator.translate(english, 'en', locale)
-    end
+    model[attribute_name] = translated
   end
 
   pp model
+end
+
+def process_multiloc(multiloc, locales)
+  english = multiloc['en']
+  return nil unless english
+
+  translator = MachineTranslations::MachineTranslationService.new
+
+  locales.each do |locale|
+    next if locale == 'en'
+
+    multiloc[locale] = translator.translate(english, 'en', locale)
+  end
+
+  multiloc
+end
+
+def process_layout(layout, locales)
+  craftjs_json = layout.craftjs_json
+
+  craftjs_json.each do |k, v|
+    next unless v.is_a?(Hash)
+
+    text = v.dig('props', 'text')
+    next unless text.is_a?(Hash) && text['en'].present?
+
+    craftjs_json[k]['props']['text'] = process_multiloc(text, locales)
+  end
+
+  layout.craftjs_json = craftjs_json
+  pp layout
 end
