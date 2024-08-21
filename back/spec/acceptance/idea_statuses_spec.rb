@@ -268,7 +268,7 @@ resource 'IdeaStatuses' do
         before do
           IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code, participation_method: 'proposals') }
         end
-        
+
         let(:idea_status) { create(:proposals_status) }
 
         example '[Error] Cannot reorder a proposals status into the automated status section', document: false do
