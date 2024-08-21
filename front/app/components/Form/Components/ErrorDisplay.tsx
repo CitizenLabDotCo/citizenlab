@@ -177,7 +177,7 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
         className="e2e-error-message error-display-container"
         id={`error-display-${inputId}`}
         aria-describedby={inputId}
-        aria-live="assertive"
+        aria-live="polite"
         key={`error-display-${inputId}-${errorMessageKey}`}
       >
         <ContainerInner>
