@@ -158,7 +158,7 @@ module Frontend
       if last_phase_id
         "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
       else
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/setup"
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings"
       end
     end
 

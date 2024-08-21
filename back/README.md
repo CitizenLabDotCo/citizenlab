@@ -124,7 +124,7 @@ In order to have more fake data in your localhost tenant, set the `SEED_SIZE` en
 
 If you would like to access another tenant than the `localhost` tenant, created through e.d. cl2-admin, you can set the `OVERRIDE_HOST` environment variable in `.env` prior to starting the container. This makes cl2-back believe that all requests are coming from that tenants host, letting you access the tenant at localhost:3000 through cl2-front.
 
-NOTE: Watch out that you don't accidently commit these changes!
+NOTE: Watch out that you don't accidentally commit these changes!
 
 
 ## Using S3 storage in development

@@ -31,6 +31,9 @@ describe('Project description builder Iframe component', () => {
   });
   beforeEach(() => {
     cy.setAdminLoginCookie();
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
   });
 
   after(() => {

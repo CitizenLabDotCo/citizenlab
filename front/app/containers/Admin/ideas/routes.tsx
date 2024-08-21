@@ -2,7 +2,6 @@ import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
 
-import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
@@ -35,14 +34,7 @@ export default () => ({
         </PageLoading>
       ),
     },
-    {
-      path: ideaRoutes.ideaId,
-      element: (
-        <PageLoading>
-          <IdeaPreviewIndex goBackUrl="/admin/ideas" />
-        </PageLoading>
-      ),
-    },
+
     ...moduleConfiguration.routes['admin.ideas'],
   ],
 });

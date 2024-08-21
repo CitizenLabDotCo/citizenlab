@@ -45,7 +45,7 @@ const Proposed = (props: StatusComponentProps) => {
           <FormattedMessage
             {...messages.proposedStatusExplanation}
             values={{
-              votingThreshold: props.idea.attributes.reactions_needed,
+              votingThreshold: props.idea.attributes.reacting_threshold,
               proposedStatusExplanationBold: (
                 <b>
                   <FormattedMessage

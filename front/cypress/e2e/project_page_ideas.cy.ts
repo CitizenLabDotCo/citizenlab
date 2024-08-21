@@ -167,9 +167,12 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
-        cy.visit(`/projects/${projectTitle}`);
-        cy.clearCookies();
       });
+  });
+
+  beforeEach(() => {
+    cy.visit(`/projects/${projectTitle}`);
+    cy.clearCookies();
   });
 
   it('shows the correct project header', () => {
@@ -276,8 +279,6 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
-        cy.setAdminLoginCookie();
-        cy.visit(`/projects/${projectTitle}`);
       })
       .then(() => {
         return cy.apiEditProject({
@@ -285,6 +286,11 @@ describe('Archived timeline project with ideation phase', () => {
           publicationStatus: 'archived',
         });
       });
+  });
+
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/projects/${projectTitle}`);
   });
 
   it('shows the see-the-ideas button', () => {

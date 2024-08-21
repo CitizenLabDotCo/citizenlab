@@ -207,12 +207,6 @@ cy:
           title: Beth yw eich sylw?
         option:
           title: Beth yw eich opsiwn?
-      details:
-        title: Manylion
-      attachements:
-        title: Delweddau ac atodiadau
-      extra:
-        title: Gwybodaeth Ychwanegol
   custom_field_options:
     gender:
       male: Gwryw
@@ -283,8 +277,8 @@ cy:
       option1: 'Opsiwn 1'
       option2: 'Opsiwn 2'
     form_end_page:
-      title: 'Diolch am gymryd rhan'
-      description: "Cyflwynwch eich atebion trwy ddewis 'Cyflwyno' isod."
+      title_text: 'Bron wedi''i wneud'
+      description_text_2: "Rydych ar fin cyflwyno eich atebion. Drwy glicio ar 'Cyflwyno' rydych yn rhoi caniatâd i ni ddadansoddi eich atebion.<br/>Ar ôl i chi gyflwyno, ni fyddwch yn gallu mynd yn ôl a newid unrhyw un o'ch atebion mwyach."
     pdf_export:
       personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."
@@ -296,6 +290,16 @@ cy:
       optional: 'dewisol'
       permission: 'Caniatâd'
       choose_as_many: 'Dewiswch gymaint ag y dymunwch'
+      choose_exactly:
+        zero: 'Dewiswch yn union %{count} opsiynau'
+        one: 'Choose exactly %{count} option'
+        two: 'Dewiswch yn union %{count} opsiynau'
+        few: 'Dewiswch yn union %{count} opsiynau'
+        many: 'Dewiswch yn union %{count} opsiynau'
+        other: 'Dewiswch yn union %{count} opsiynau'
+      choose_between: 'Dewiswch rhwng opsiynau %{min} a %{max}'
+      choose_at_least: 'Dewiswch o leiaf %{count} opsiynau'
+      choose_at_most: 'Dewiswch opsiynau %{count} ar y mwyaf'
       this_answer: 'Bydd yr ateb hwn yn cael ei rannu â chymedrolwyr yn unig, ac nid â''r cyhoedd.'
       page: 'Tudalen'
       date_published: 'Dyddiad Cyhoeddi (dd-mm-bbbb)'

@@ -143,6 +143,7 @@ const AuthProviders = memo<Props>(
             flow={flow}
             authProvider="fake_sso"
             onContinue={onSelectAuthProvider}
+            id="e2e-login-with-fake-sso"
           >
             <FormattedMessage {...messages.continueWithFakeSSO} />
           </StyledAuthProviderButton>

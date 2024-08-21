@@ -117,7 +117,9 @@ export function getAdditionalSettings(
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
           />
           <SelectSettings
+            inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );
@@ -131,7 +133,9 @@ export function getAdditionalSettings(
             inputType={field.input_type}
           />
           <SelectSettings
+            inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );

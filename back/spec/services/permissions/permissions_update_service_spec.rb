@@ -58,14 +58,22 @@ describe Permissions::PermissionsUpdateService do
 
     it 'does not changes permitted_by from native_survey if permitted_by is not "everyone"' do
       phase = create(:native_survey_phase, with_permissions: true)
-      phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'groups')
+      phase.permissions.where(action: 'posting_idea').update!(permitted_by: 'users')
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea attending_event]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users]
 
       phase.update!(participation_method: 'ideation')
       service.update_permissions_for_scope(phase)
       expect(phase.permissions.pluck(:action)).to match_array %w[posting_idea commenting_idea reacting_idea attending_event]
-      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[groups users users users]
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
+    end
+
+    it 'sets all permissions to "users" when creating new permissions' do
+      phase = create(:phase)
+      expect(phase.permissions).to be_empty
+
+      service.update_permissions_for_scope(phase)
+      expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users users]
     end
   end
 end

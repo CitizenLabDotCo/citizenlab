@@ -104,11 +104,11 @@ class Idea < ApplicationRecord
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
 
-  with_options if: :validate_built_in_fields? do
+  with_options if: :supports_built_in_fields? do
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
+  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
 
@@ -183,9 +183,12 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def consultation_context
+    creation_phase || project
+  end
+
   def custom_form
-    participation_context = creation_phase || project
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end
 
   def input_term
@@ -197,7 +200,7 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    (creation_phase || project).pmethod
+    consultation_context.pmethod
   end
 
   private
@@ -208,8 +211,8 @@ class Idea < ApplicationRecord
     multiloc_schema.values.first
   end
 
-  def validate_built_in_fields?
-    !draft? && participation_method_on_creation.validate_built_in_fields?
+  def supports_built_in_fields?
+    !draft? && participation_method_on_creation.supports_built_in_fields?
   end
 
   def assign_defaults
