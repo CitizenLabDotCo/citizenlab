@@ -93,9 +93,13 @@ export const sharedSteps = (
         const { permitted_by } = requirements.authentication;
         const isLightFlow = permitted_by === 'everyone_confirmed_email';
 
+        // This `disabled_reason === null` is a bit of a weird check,
+        // because most of the times if there is no disabled reason,
+        // you would never get into the authentication flow.
+        // There are however some weird exceptions related to onboarding,
+        // so we need to check for this.
         const signedIn =
-          !disabled_reason || // To allow onboarding for already signed in users
-          (disabled_reason && disabled_reason !== 'user_not_signed_in');
+          disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (isLightFlow) {
           if (!signedIn) {
