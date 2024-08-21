@@ -17,26 +17,26 @@ namespace :cl2_back do
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       project = Project.find(args[:project_id])
       locales = AppConfiguration.instance.settings['core']['locales']
-      translate_model = TranslateProjectMethods.new
+      translate_project = TranslateProjectMethods.new
 
       puts "\nTranslating project: '#{project.title_multiloc['en']}' to all tenant locales\n\n"
 
-      translate_model.process_model(project, locales)
+      translate_project.process_model(project, locales)
 
       project.phases.each do |phase|
-        translate_model.process_model(phase, locales)
+        translate_project.process_model(phase, locales)
 
         fields = phase&.custom_form&.custom_fields
         fields&.each do |field|
-          translate_model.process_model(field, locales)
+          translate_project.process_model(field, locales)
           options = field&.options
-          options&.each { |option| translate_model.process_model(option, locales) }
+          options&.each { |option| translate_project.process_model(option, locales) }
         end
 
         report = phase&.report
         layout = report&.layout
-        translate_model.process_layout(layout, locales) if layout
-        translate_model.process_data_units(report) if report
+        translate_project.process_layout(layout, locales) if layout
+        translate_project.process_data_units(report) if report
       end
 
       puts "\n--- end ---\n\n"
