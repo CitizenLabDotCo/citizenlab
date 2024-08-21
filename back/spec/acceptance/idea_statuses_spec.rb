@@ -216,7 +216,7 @@ resource 'IdeaStatuses' do
 
     let(:idea_status) { create(:idea_status) }
     let(:id) { idea_status.id }
-    let(:ordering) { 1 }
+    let(:ordering) { 0 }
 
     context 'when resident' do
       before { resident_header_token }
