@@ -37,10 +37,14 @@ describe('Light authentication flow', () => {
         );
 
         cy.setAdminLoginCookie();
-        cy.visit(`/admin/projects/${projectId}/settings/access-rights`);
-        cy.get('.e2e-granular-permissions-phase-accordion').first().click();
-        cy.wait(2000);
-        cy.get('.e2e-permission-email-confirmed-users').first().click();
+        cy.visit(
+          `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
+        );
+
+        cy.get('.e2e-action-accordion-posting_idea').click();
+        cy.get('.e2e-action-form-posting_idea').within(() => {
+          cy.get('.e2e-permission-email-confirmed-users').click();
+        });
 
         cy.wait('@setPermissionRequest').then(() => {
           cy.logout();
