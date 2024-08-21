@@ -41,7 +41,7 @@ class IdeaStatus < ApplicationRecord
     LOCKED_CODES.include? code
   end
 
-  def can_transition_manually?
+  def can_manually_transition_to?
     MANUAL_TRANSITION_NOT_ALLOWED_CODES.exclude? code
   end
 

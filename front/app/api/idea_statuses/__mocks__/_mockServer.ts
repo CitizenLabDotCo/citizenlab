@@ -16,8 +16,8 @@ export const ideaStatusesData: IIdeaStatusData[] = [
       },
       color: '#FF0000',
       ordering: 1,
-      can_reorder: false,
-      can_transition_manually: true,
+      locked: false,
+      can_manually_transition_to: true,
     },
   },
   {
@@ -33,8 +33,8 @@ export const ideaStatusesData: IIdeaStatusData[] = [
       },
       color: '#00FF00',
       ordering: 2,
-      can_reorder: true,
-      can_transition_manually: true,
+      locked: true,
+      can_manually_transition_to: true,
     },
   },
 ];

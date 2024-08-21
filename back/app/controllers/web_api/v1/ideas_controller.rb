@@ -387,7 +387,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_status_not_allowed?(input)
     return false if params.dig(:idea, :idea_status_id).blank?
 
-    !input.idea_status.can_transition_manually?
+    !input.idea_status.can_manually_transition_to?
   end
 
   def serialization_options_for(ideas)

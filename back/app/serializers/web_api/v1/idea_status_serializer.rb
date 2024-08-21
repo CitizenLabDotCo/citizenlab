@@ -8,6 +8,6 @@ class WebApi::V1::IdeaStatusSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :can_manually_transition_to do |status|
-    status.can_transition_manually?
+    status.can_manually_transition_to?
   end
 end
