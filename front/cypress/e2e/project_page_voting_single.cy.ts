@@ -49,8 +49,8 @@ describe('Project with single voting phase', () => {
                 userId = (response as any).body.data.id;
               }
             );
-            cy.setLoginCookie(email, password);
             cy.visit(`/en/projects/${projectSlug}`);
+            cy.setLoginCookie(email, password);
             cy.acceptCookies();
             cy.wait(1000);
           });
@@ -60,6 +60,7 @@ describe('Project with single voting phase', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
   });
 
   after(() => {
@@ -106,7 +107,7 @@ describe('Project with single voting phase', () => {
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('not.have.class', 'disabled');
-    cy.wait(1000);
+    cy.wait(4000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
 
     cy.contains('Vote submitted');

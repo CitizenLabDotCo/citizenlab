@@ -48,13 +48,21 @@ describe('Idea show page actions', () => {
 
   describe('not logged in', () => {
     before(() => {
+      cy.intercept('**/idea_statuses/**').as('ideaStatuses');
+
       cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
       cy.acceptCookies();
+
+      // We wait for this request so that we know the idea page is more or less
+      // done loading. Should not be necessary but reduces flakiness.
+      cy.wait('@ideaStatuses');
     });
 
     it('asks unauthorised users to log in or sign up before they reaction', () => {
-      cy.get('.e2e-reaction-controls .e2e-ideacard-like-button').click();
+      cy.get('.e2e-reaction-controls .e2e-ideacard-like-button').click({
+        force: true,
+      });
       cy.get('#e2e-authentication-modal');
     });
   });
