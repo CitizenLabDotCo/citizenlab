@@ -135,12 +135,12 @@ resource 'IdeaStatuses' do
         end
 
         describe do
-          let(:code) { 'proposed' }
+          let(:code) { 'prescreening' }
 
-          example '[Error] Cannot create a proposed status', document: false do
+          example '[Error] Cannot create a locked status', document: false do
             expect { do_request }.not_to change(IdeaStatus, :count)
             assert_status 422
-            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional locked statuses', value: 'proposed')
+            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional locked statuses', value: code)
           end
         end
       end
@@ -258,7 +258,7 @@ resource 'IdeaStatuses' do
       describe do
         let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
 
-        example '[Error] Cannot reorder an automated status', document: false do
+        example '[Error] Cannot reorder a locked status', document: false do
           do_request
           assert_status 401
         end
