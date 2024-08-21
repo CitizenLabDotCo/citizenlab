@@ -78,7 +78,7 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.conformanceStatus)}</h2>
-                    <p>WCAG 2.1 AA</p>
+                    <p>WCAG 2.2 AA</p>
                     <h2>{formatMessage(messages.conformanceExceptions)}</h2>
                     <p>
                       {formatMessage(messages.contentConformanceExceptions)}
@@ -129,7 +129,7 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.publicationDate)}</h2>
-                    <p>{formatMessage(messages.publicationDateIntro)}</p>
+                    <p>{formatMessage(messages.publicationDateIntro2024)}</p>
                     <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                     <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                     <ul>

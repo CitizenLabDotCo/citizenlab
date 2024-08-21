@@ -105,10 +105,10 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.publicationDate',
     defaultMessage: 'Publication date',
   },
-  publicationDateIntro: {
-    id: 'app.containers.AccessibilityStatement.publicationDateIntro',
+  publicationDateIntro2024: {
+    id: 'app.containers.AccessibilityStatement.publicationDateIntro2024',
     defaultMessage:
-      'This accessibility statement was published on June 30, 2022.',
+      'This accessibility statement was published on August 21, 2024.',
   },
   applicability: {
     id: 'app.containers.AccessibilityStatement.applicability',
