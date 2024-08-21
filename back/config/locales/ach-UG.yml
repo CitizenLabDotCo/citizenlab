@@ -207,12 +207,6 @@ ach:
           title: crwdns2887265:0crwdne2887265:0
         option:
           title: crwdns2887267:0crwdne2887267:0
-      details:
-        title: crwdns2887269:0crwdne2887269:0
-      attachements:
-        title: crwdns2887271:0crwdne2887271:0
-      extra:
-        title: crwdns2887273:0crwdne2887273:0
   custom_field_options:
     gender:
       male: crwdns2887275:0crwdne2887275:0
@@ -283,8 +277,8 @@ ach:
       option1: 'crwdns2887381:0crwdne2887381:0'
       option2: 'crwdns2887383:0crwdne2887383:0'
     form_end_page:
-      title: 'crwdns2887385:0crwdne2887385:0'
-      description: "crwdns2887387:0crwdne2887387:0"
+      title_text: 'crwdns2900741:0crwdne2900741:0'
+      description_text_2: "crwdns2900743:0crwdne2900743:0"
     pdf_export:
       personal_data: 'crwdns2887389:0crwdne2887389:0'
       personal_data_explanation_public: "crwdns2887391:0%{organizationName}crwdnd2887391:0%{organizationName}crwdne2887391:0"
@@ -296,6 +290,12 @@ ach:
       optional: 'crwdns2887403:0crwdne2887403:0'
       permission: 'crwdns2887405:0crwdne2887405:0'
       choose_as_many: 'crwdns2887407:0crwdne2887407:0'
+      choose_exactly:
+        one: 'crwdns2900745:1%{count}crwdne2900745:1'
+        other: 'crwdns2900745:5%{count}crwdne2900745:5'
+      choose_between: 'crwdns2900747:0%{min}crwdnd2900747:0%{max}crwdne2900747:0'
+      choose_at_least: 'crwdns2900749:0%{count}crwdne2900749:0'
+      choose_at_most: 'crwdns2900751:0%{count}crwdne2900751:0'
       this_answer: 'crwdns2887409:0crwdne2887409:0'
       page: 'crwdns2887411:0crwdne2887411:0'
       date_published: 'crwdns2887413:0crwdne2887413:0'
