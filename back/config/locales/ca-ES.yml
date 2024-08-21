@@ -207,12 +207,6 @@ ca:
           title: Quin és el vostre comentari?
         option:
           title: Quina és la vostra opció ?
-      details:
-        title: Detalls
-      attachements:
-        title: Imatges i fitxers adjunts
-      extra:
-        title: Informació adicional
   custom_field_options:
     gender:
       male: Mascle

@@ -207,12 +207,6 @@ lv:
           title: Kāda ir jūsu problēma?
         option:
           title: Kāda ir jūsu izvēle?
-      details:
-        title: Detalizēta informācija
-      attachements:
-        title: Attēli un pielikumi
-      extra:
-        title: Papildu informācija
   custom_field_options:
     gender:
       male: Vīrietis

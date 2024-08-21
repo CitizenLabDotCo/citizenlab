@@ -207,12 +207,6 @@ en-CA:
           title: What is your comment?
         option:
           title: What is your option?
-      details:
-        title: Details
-      attachements:
-        title: Images and attachments
-      extra:
-        title: Additional information
   custom_field_options:
     gender:
       male: Male

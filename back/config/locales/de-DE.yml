@@ -207,12 +207,6 @@ de:
           title: Was ist Ihr Vorhaben?
         option:
           title: Was ist Ihre Option?
-      details:
-        title: Details
-      attachements:
-        title: Bilder und Anhänge
-      extra:
-        title: Zusätzliche Informationen
   custom_field_options:
     gender:
       male: Männlich

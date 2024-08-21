@@ -33,7 +33,7 @@ const ProposalFooter = ({
   const ideaStatusId = idea.relationships.idea_status.data?.id;
   const theme = useTheme();
   const reactionCount = idea.attributes.likes_count;
-  const reactionLimit = idea.attributes.reactions_needed;
+  const reactionLimit = idea.attributes.reacting_threshold;
 
   return (
     <>
