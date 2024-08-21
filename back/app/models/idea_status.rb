@@ -17,7 +17,6 @@
 #
 class IdeaStatus < ApplicationRecord
   CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
-  NON_PUBLIC_CODES = %w[prescreening].freeze
   LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
   MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
 
@@ -36,10 +35,6 @@ class IdeaStatus < ApplicationRecord
   validates :code, presence: true, inclusion: { in: CODES }
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
-
-  def public?
-    NON_PUBLIC_CODES.exclude? code
-  end
 
   def locked?
     LOCKED_CODES.include? code
