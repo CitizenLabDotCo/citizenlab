@@ -13,12 +13,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  confirmationRequired,
-  requiredCustomFields,
-  showOnboarding,
-  doesNotMeetGroupCriteria,
-} from './utils';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const ssoVerificationFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -82,23 +77,10 @@ export const ssoVerificationFlow = (
 
           const { requirements } = await getRequirements();
 
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+          const missingDataStep = checkMissingData(requirements);
 
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 

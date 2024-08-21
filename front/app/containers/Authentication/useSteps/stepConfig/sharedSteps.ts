@@ -18,12 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  confirmationRequired,
-  requiredCustomFields,
-  requiredBuiltInFields,
-  showOnboarding,
-} from './utils';
+import { confirmationRequired, checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -66,28 +61,10 @@ export const sharedSteps = (
         const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
 
-        if (confirmationRequired(requirements)) {
-          setCurrentStep('missing-data:email-confirmation');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (requiredBuiltInFields(requirements)) {
-          setCurrentStep('missing-data:built-in');
-          return;
-        }
-
-        if (requirements.verification) {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -146,32 +123,12 @@ export const sharedSteps = (
         }
 
         if (signedIn) {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
+          const missingDataStep = checkMissingData(requirements);
+
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
-
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
-
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
-          return;
         }
 
         const { flow } = getAuthenticationData();

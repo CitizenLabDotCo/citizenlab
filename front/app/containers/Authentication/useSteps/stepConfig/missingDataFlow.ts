@@ -14,11 +14,9 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {
-  requiredCustomFields,
-  requiredBuiltInFields,
   showOnboarding,
   doesNotMeetGroupCriteria,
-  confirmationRequired,
+  checkMissingData,
 } from './utils';
 
 export const missingDataFlow = (
@@ -42,23 +40,10 @@ export const missingDataFlow = (
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
 
-        if (requiredBuiltInFields(requirements)) {
-          setCurrentStep('missing-data:built-in');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (requirements.verification) {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -93,23 +78,10 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (confirmationRequired(requirements)) {
-          setCurrentStep('missing-data:email-confirmation');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (requirements.verification) {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -125,13 +97,10 @@ export const missingDataFlow = (
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
 
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 

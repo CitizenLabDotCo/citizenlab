@@ -20,13 +20,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  askCustomFields,
-  requiredCustomFields,
-  showOnboarding,
-  doesNotMeetGroupCriteria,
-  confirmationRequired,
-} from './utils';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -118,13 +112,10 @@ export const lightFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (askCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -149,18 +140,10 @@ export const lightFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (confirmationRequired(requirements)) {
-          setCurrentStep('missing-data:email-confirmation');
-          return;
-        }
+        const missingDataStep = checkMissingData(requirements);
 
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 

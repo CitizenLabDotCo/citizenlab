@@ -1,5 +1,37 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
+export const checkMissingData = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
+  }
+
+  if (confirmationRequired(requirements)) {
+    return 'missing-data:email-confirmation';
+  }
+
+  if (requirements.verification) {
+    return 'missing-data:verification';
+  }
+
+  if (askCustomFields(requirements)) {
+    return 'missing-data:custom-fields';
+  }
+
+  if (showOnboarding(requirements)) {
+    return 'missing-data:onboarding';
+  }
+
+  return null;
+};
+
+export const doesNotMeetGroupCriteria = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  return requirements.group_membership;
+};
+
 export const confirmationRequired = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
@@ -14,28 +46,14 @@ export const showOnboarding = (
   return requirements.onboarding;
 };
 
-export const askCustomFields = (
+const askCustomFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   const { custom_fields } = requirements;
   return Object.keys(custom_fields).length > 0;
 };
 
-export const requiredCustomFields = (
-  requirements: AuthenticationRequirements['requirements']
-) => {
-  const { custom_fields } = requirements;
-
-  for (const fieldName in custom_fields) {
-    if (custom_fields[fieldName] === 'required') {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-export const requiredBuiltInFields = (
+const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   const missingAttributes = new Set(
@@ -48,10 +66,4 @@ export const requiredBuiltInFields = (
   const askPassword = missingAttributes.has('password');
 
   return askFirstName || askLastName || askEmail || askPassword;
-};
-
-export const doesNotMeetGroupCriteria = (
-  requirements: AuthenticationRequirements['requirements']
-) => {
-  return requirements.group_membership;
 };
