@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkLabel',
     defaultMessage: 'Primary button URL',
   },
+  highlightPrimaryButtonLinkPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkPlaceholder',
+    defaultMessage: 'https://example.com',
+  },
   highlightSecondaryButtonTextLabel: {
     id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonTextLabel',
     defaultMessage: 'Secondary button text',
@@ -28,5 +32,9 @@ export default defineMessages({
   highlightSecondaryButtonLinkLabel: {
     id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkLabel',
     defaultMessage: 'Secondary button URL',
+  },
+  highlightSecondaryButtonLinkPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkPlaceholder',
+    defaultMessage: 'https://example.com',
   },
 });

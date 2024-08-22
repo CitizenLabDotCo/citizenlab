@@ -249,6 +249,9 @@ const HighlightSettings = () => {
         id="highlight_primaryButtonLink"
         type="text"
         label={formatMessage(messages.highlightPrimaryButtonLinkLabel)}
+        placeholder={formatMessage(
+          messages.highlightPrimaryButtonLinkPlaceholder
+        )}
         name="highlight_primaryButtonLink"
         value={primaryButtonLink}
         onChange={(value) =>
@@ -269,6 +272,9 @@ const HighlightSettings = () => {
         id="highlight_secondaryButtonLink"
         type="text"
         label={formatMessage(messages.highlightSecondaryButtonLinkLabel)}
+        placeholder={formatMessage(
+          messages.highlightSecondaryButtonLinkPlaceholder
+        )}
         name="highlight_secondaryButtonLink"
         value={secondaryButtonLink}
         onChange={(value) =>
