@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Uma declaração sobre acessibilidade deste site",
   "app.containers.AccessibilityStatement.postalAddress": "Endereço:",
   "app.containers.AccessibilityStatement.publicationDate": "Data de publicação",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Esta declaração de acessibilidade foi publicada a 30 de Junho de 2022.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Esta declaração de acessibilidade foi publicada em 21 de agosto de 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "O nosso objetivo é responder ao feedback dentro de 1-2 dias úteis.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Podem ocorrer erros no leitor de browser/tela. Os bugs podem ser reportados através do processo de feedback descrito abaixo.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Função de pesquisa",
