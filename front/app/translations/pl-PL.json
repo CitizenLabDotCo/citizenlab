@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Oświadczenie o dostępności tej strony internetowej",
   "app.containers.AccessibilityStatement.postalAddress": "Adres pocztowy:",
   "app.containers.AccessibilityStatement.publicationDate": "Data publikacji",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "To oświadczenie o dostępności zostało opublikowane 30 czerwca 2022 roku.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Niniejsze oświadczenie o dostępności zostało opublikowane 21 sierpnia 2024 r.",
   "app.containers.AccessibilityStatement.responsiveness": "Staramy się udzielać odpowiedzi w ciągu 1-2 dni roboczych.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "W przypadku różnych kombinacji przeglądarki/czytnika ekranowego mogą wystąpić błędy w czytniku ekranowym. Błędy te można zgłaszać w następujący sposób.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Funkcja wyszukiwania",
