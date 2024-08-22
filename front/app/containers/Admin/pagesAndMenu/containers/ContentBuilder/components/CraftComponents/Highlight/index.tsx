@@ -10,7 +10,7 @@ import {
   Title,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
+import { useEditor, useNode } from '@craftjs/core';
 import { Multiloc } from 'component-library/utils/typings';
 import styled, { useTheme } from 'styled-components';
 
@@ -43,6 +43,7 @@ const Container = styled.div`
     padding: 60px 30px 40px;
   `}
 `;
+
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -91,6 +92,25 @@ const Highlight = ({
   secondaryButtonText,
   secondaryButtonLink,
 }: HighlightProps) => {
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
+
+  const openInNewTab = (url?: string) => {
+    if (!url) {
+      return false;
+    }
+    // Links that are relative or of same hostname should open in same window
+    else if (url.includes(window.location.hostname)) {
+      return false;
+    } else if (!url.includes('.')) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
@@ -115,24 +135,31 @@ const Highlight = ({
             </Text>
           </Box>
           <ButtonContainer>
-            <Button
-              fontWeight="500"
-              padding="13px 22px"
-              buttonStyle="text"
-              textColor={theme.colors.tenantPrimary}
-              textDecorationHover="underline"
-              fullWidth={isSmallerThanSmallTablet}
-              linkTo={secondaryButtonLink}
-            >
-              {lоcalize(secondaryButtonText)}
-            </Button>
-            <StyledPrimaryButton
-              linkTo={primaryButtonLink}
-              buttonStyle="primary"
-              padding="13px 22px"
-            >
-              {lоcalize(primaryButtonText)}
-            </StyledPrimaryButton>
+            {((enabled && secondaryButtonText) ||
+              (secondaryButtonLink && secondaryButtonText)) && (
+              <Button
+                padding="13px 22px"
+                buttonStyle="text"
+                textColor={theme.colors.tenantPrimary}
+                textDecorationHover="underline"
+                fullWidth={isSmallerThanSmallTablet}
+                linkTo={secondaryButtonLink}
+                openLinkInNewTab={openInNewTab(secondaryButtonLink)}
+              >
+                {lоcalize(secondaryButtonText)}
+              </Button>
+            )}
+            {((enabled && primaryButtonText) ||
+              (primaryButtonLink && primaryButtonText)) && (
+              <StyledPrimaryButton
+                linkTo={primaryButtonLink}
+                buttonStyle="primary"
+                padding="13px 22px"
+                openLinkInNewTab={openInNewTab(primaryButtonLink)}
+              >
+                {lоcalize(primaryButtonText)}
+              </StyledPrimaryButton>
+            )}
           </ButtonContainer>
         </Container>
       </Box>
