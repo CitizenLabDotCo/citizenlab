@@ -47,7 +47,7 @@ module Analysis
         task.set_succeeded!
       rescue SummarizationFailedError, Faraday::BadRequestError => e
         extra = {}
-        if e.instance_of?('Faraday::BadRequestError')
+        if e.instance_of?(Faraday::BadRequestError)
           extra[:response] = e&.response
           extra[:response_headers] = e&.response&.headers
           extra[:response_body] = e&.response&.body
