@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
 
-import eventEmitter from 'utils/eventEmitter';
+import eventEmitter, { IEventEmitterEvent } from 'utils/eventEmitter';
 
 // Hook
-export default (eventName: string | undefined, callBack: () => void) => {
+export default (
+  eventName: string | undefined,
+  callBack: (event: IEventEmitterEvent<unknown>) => void
+) => {
   useEffect(() => {
     if (eventName) {
       const subscription = eventEmitter
         .observeEvent(eventName)
-        .subscribe(() => {
-          callBack();
+        .subscribe((event) => {
+          callBack(event);
         });
 
       return () => subscription.unsubscribe();

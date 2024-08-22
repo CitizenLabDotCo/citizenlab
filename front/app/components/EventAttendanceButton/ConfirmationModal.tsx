@@ -2,19 +2,21 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 import Modal from 'components/UI/Modal';
 
+import { useIntl } from 'utils/cl-intl';
+import { getEventDateString } from 'utils/dateUtils';
+
 import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { useIntl } from 'utils/cl-intl';
-import { IEventData } from 'api/events/types';
-import useLocalize from 'hooks/useLocalize';
-import { getEventDateString } from 'utils/dateUtils';
 
 interface Props {
   opened: boolean;
