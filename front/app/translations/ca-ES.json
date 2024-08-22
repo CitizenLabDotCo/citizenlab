@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Declaració sobre l'accessibilitat d'aquest lloc web",
   "app.containers.AccessibilityStatement.postalAddress": "Adreça postal:",
   "app.containers.AccessibilityStatement.publicationDate": "Data de publicació",
-  "app.containers.AccessibilityStatement.publicationDate2024": "This accessibility statement was published on August 21, 2024.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Aquesta declaració d'accessibilitat es va publicar el 21 d'agost de 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Pretenem respondre als comentaris en un termini d'1 a 2 dies laborables.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Es poden produir errors del lector de pantalla amb diferents combinacions de navegador/lector de pantalla. Els errors es poden informar mitjançant el procés de comentaris que es descriu a continuació.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Funció de cerca",
