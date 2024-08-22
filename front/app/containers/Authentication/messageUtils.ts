@@ -17,11 +17,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   closed: null,
   success: null,
 
-  // old sign in flow
+  // sign in flow
   'sign-in:auth-providers': messages.logIn,
   'sign-in:email-password': messages.logIn,
 
-  // old sign up flow
+  // full account creation sign up flow
   'sign-up:auth-providers': messages.signUp,
   'sign-up:email-password': messages.signUp,
   'sign-up:invite': messages.signUp,
