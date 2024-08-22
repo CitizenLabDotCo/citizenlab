@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "En beskrivelse av tilgjengeligheten på dette nettstedet",
   "app.containers.AccessibilityStatement.postalAddress": "Postadresse:",
   "app.containers.AccessibilityStatement.publicationDate": "Publiseringsdato",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Denne tilgjengelighetserklæringen ble publisert 30. juni 2022.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Denne tilgjengelighetserklæringen ble publisert 21. august 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Vi betsreber oss på å svare på tilbakemeldinger innen 1-2 arbeidsdager.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Buggs ved innlesing av skjerm kan oppstå ved ulike nettleser/skjermleser kombinasjoner. Bugs kan rapporteres via tilbakemeldingsprosessen beskrevet under.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Søkefunksjon",
