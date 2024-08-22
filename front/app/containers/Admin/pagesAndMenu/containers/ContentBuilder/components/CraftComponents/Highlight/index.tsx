@@ -21,6 +21,7 @@ import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 import messages from './messages';
 
@@ -98,12 +99,19 @@ const Highlight = ({
     };
   });
 
+  const isInternalLink = (url?: string) => {
+    if (!url) {
+      return false;
+    }
+    return url.includes(window.location.hostname);
+  };
+
   const openInNewTab = (url?: string) => {
     if (!url) {
       return false;
     }
     // Links that are relative or of same hostname should open in same window
-    else if (url.includes(window.location.hostname)) {
+    else if (isInternalLink(url)) {
       return false;
     } else if (!url.includes('.')) {
       return false;
@@ -111,6 +119,16 @@ const Highlight = ({
       return true;
     }
   };
+
+  const getLink = (url?: string) => {
+    if (isInternalLink(url)) {
+      const pathname = url?.replace(window.location.origin, '') || '';
+      const pathnameWithoutLocale = removeUrlLocale(pathname);
+      return pathnameWithoutLocale;
+    }
+    return url;
+  };
+
   const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
@@ -138,12 +156,14 @@ const Highlight = ({
             {((enabled && secondaryButtonText) ||
               (secondaryButtonLink && secondaryButtonText)) && (
               <Button
+                fontWeight="500"
                 padding="13px 22px"
                 buttonStyle="text"
                 textColor={theme.colors.tenantPrimary}
                 textDecorationHover="underline"
                 fullWidth={isSmallerThanSmallTablet}
-                linkTo={secondaryButtonLink}
+                linkTo={getLink(secondaryButtonLink)}
+                scrollToTop
                 openLinkInNewTab={openInNewTab(secondaryButtonLink)}
               >
                 {lоcalize(secondaryButtonText)}
@@ -152,7 +172,9 @@ const Highlight = ({
             {((enabled && primaryButtonText) ||
               (primaryButtonLink && primaryButtonText)) && (
               <StyledPrimaryButton
-                linkTo={primaryButtonLink}
+                fontWeight="500"
+                linkTo={getLink(primaryButtonLink)}
+                scrollToTop
                 buttonStyle="primary"
                 padding="13px 22px"
                 openLinkInNewTab={openInNewTab(primaryButtonLink)}
