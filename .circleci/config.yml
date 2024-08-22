@@ -758,12 +758,12 @@ jobs:
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
-        # COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+      # COMMA_SEPARATED_TESTFILES=cypress/e2e/input_form_builder/create_and_fill_form.cy.ts
       - run: |
           cd front
           mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings --timings-type=filename)
-          COMMA_SEPARATED_TESTFILES=cypress/e2e/input_form_builder/create_and_fill_form.cy.ts
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
