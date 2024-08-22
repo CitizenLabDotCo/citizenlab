@@ -27,7 +27,7 @@ export interface IPhasePermissionData {
     updated_at: string;
     global_custom_fields: boolean;
     verification_enabled: boolean;
-    verification_expiry: boolean | null;
+    verification_expiry: number | null;
   };
   relationships: {
     permission_scope: {
@@ -67,8 +67,9 @@ export type PermittedBy =
   | 'everyone_confirmed_email'
   | 'verified';
 
-export interface IPermissionUpdate {
+interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
+  verification_expiry: number | null;
 }

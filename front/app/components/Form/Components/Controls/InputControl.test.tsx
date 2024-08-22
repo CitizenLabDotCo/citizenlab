@@ -3,6 +3,8 @@ import React from 'react';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
+import { ErrorToReadProvider } from '../Fields/ErrorToReadContext';
+
 import { InputControl } from './InputControl';
 
 const intl = getDummyIntlObject();
@@ -40,50 +42,74 @@ const mostProps = {
 
 describe('InputControl', () => {
   it('renders InputControl', () => {
-    render(<InputControl {...mostProps} data={undefined} />);
+    render(
+      <ErrorToReadProvider>
+        <InputControl {...mostProps} data={undefined} />
+      </ErrorToReadProvider>
+    );
     expect(screen.getByTestId('inputControl')).toBeInTheDocument();
   });
 
   it('shows optional for optional fields', () => {
-    render(<InputControl {...mostProps} data={undefined} />);
+    render(
+      <ErrorToReadProvider>
+        <InputControl {...mostProps} data={undefined} />
+      </ErrorToReadProvider>
+    );
     expect(screen.getByText('(optional)')).toBeInTheDocument();
   });
 
   it("doesn't show optional for required fields", () => {
-    render(<InputControl {...mostProps} data={undefined} required={true} />);
+    render(
+      <ErrorToReadProvider>
+        <InputControl {...mostProps} data={undefined} required={true} />
+      </ErrorToReadProvider>
+    );
     expect(screen.queryByText('(optional)')).toBeNull();
   });
 
   it('shows the current data', () => {
-    render(<InputControl {...mostProps} data="defined" />);
+    render(
+      <ErrorToReadProvider>
+        <InputControl {...mostProps} data="defined" />
+      </ErrorToReadProvider>
+    );
     expect(screen.getByRole('textbox')).toHaveValue('defined');
   });
 
   it("doesn't show an error when there is one but no interaction", () => {
     render(
-      <InputControl
-        {...mostProps}
-        data={undefined}
-        errors="We've got a problem"
-      />
+      <ErrorToReadProvider>
+        <InputControl
+          {...mostProps}
+          data={undefined}
+          errors="We've got a problem"
+        />
+      </ErrorToReadProvider>
     );
     expect(screen.queryByText("We've got a problem")).toBeNull();
   });
 
   it('shows an error when there is one after blur', () => {
     render(
-      <InputControl
-        {...mostProps}
-        data={undefined}
-        errors="We've got a problem"
-      />
+      <ErrorToReadProvider>
+        <InputControl
+          {...mostProps}
+          data={undefined}
+          errors="We've got a problem"
+        />
+      </ErrorToReadProvider>
     );
     fireEvent.blur(screen.getByRole('textbox'));
     expect(screen.getByText("We've got a problem")).toBeInTheDocument();
   });
 
   it('calls on change with the right value', () => {
-    render(<InputControl data={undefined} {...mostProps} />);
+    render(
+      <ErrorToReadProvider>
+        <InputControl data={undefined} {...mostProps} />
+      </ErrorToReadProvider>
+    );
 
     fireEvent.input(screen.getByRole('textbox'), {
       target: {

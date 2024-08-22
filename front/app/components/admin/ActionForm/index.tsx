@@ -22,25 +22,32 @@ import GroupSelect from './GroupSelect';
 import messages from './messages';
 import { showResetButton } from './utils';
 
+type Changes = {
+  permittedBy?: PermittedBy;
+  groupIds?: string[];
+  verificationExpiry?: number | null;
+};
+
 interface Props {
   phaseId?: string;
-  groupIds?: string[];
   permissionData: IPermissionData;
-  onChange: (permittedBy: PermittedBy, groupIds: Props['groupIds']) => void;
+  onChange: (changes: Changes) => void;
   onReset: () => void;
 }
 
-const ActionForm = ({
-  phaseId,
-  permissionData,
-  groupIds,
-  onChange,
-  onReset,
-}: Props) => {
+const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const {
     id: permissionId,
-    attributes: { permitted_by, action, verification_enabled },
+    attributes: {
+      permitted_by,
+      action,
+      verification_enabled,
+      verification_expiry,
+    },
+    relationships,
   } = permissionData;
+
+  const groupIds = relationships.groups.data.map((p) => p.id);
 
   const { data: phase } = usePhase(phaseId);
 
@@ -50,7 +57,7 @@ const ActionForm = ({
   });
 
   const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
-    onChange(permittedBy, groupIds);
+    onChange({ permittedBy });
   };
 
   const participation_method = phase?.data.attributes.participation_method;
@@ -89,7 +96,11 @@ const ActionForm = ({
             <FlowVisualization
               permittedBy={permitted_by}
               verificationEnabled={verification_enabled}
+              verificationExpiry={verification_expiry}
               permissionsCustomFields={permissionsCustomFields.data}
+              onChangeVerificationExpiry={(verificationExpiry) => {
+                onChange({ verificationExpiry });
+              }}
             />
           </Box>
           <Box mt="20px">
@@ -110,8 +121,8 @@ const ActionForm = ({
               <Box w="300px">
                 <GroupSelect
                   groupIds={groupIds}
-                  onChange={(groups) => {
-                    onChange(permissionData.attributes.permitted_by, groups);
+                  onChange={(groupIds) => {
+                    onChange({ groupIds });
                   }}
                 />
               </Box>

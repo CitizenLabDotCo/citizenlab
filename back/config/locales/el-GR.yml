@@ -207,12 +207,6 @@ el:
           title: Ποιο είναι το σχόλιό σας;
         option:
           title: Ποια είναι η επιλογή σας;
-      details:
-        title: Λεπτομέρειες
-      attachements:
-        title: Εικόνες και συνημμένα αρχεία
-      extra:
-        title: Πρόσθετες πληροφορίες
   custom_field_options:
     gender:
       male: Άνδρας
