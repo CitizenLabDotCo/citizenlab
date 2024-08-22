@@ -7,10 +7,18 @@ import {
   Text,
   defaultCardStyle,
   media,
+  Title,
+  Input,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { useNode } from '@craftjs/core';
+import { Multiloc } from 'component-library/utils/typings';
+import styled, { useTheme } from 'styled-components';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import Button from 'components/UI/Button';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -35,9 +43,58 @@ const Container = styled.div`
     padding: 60px 30px 40px;
   `}
 `;
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 
-const Highlight = () => {
+  ${media.tablet`
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin-left: 20px;
+  `}
+
+  ${media.phone`
+    margin-left: 0;
+    width: 100%;
+    margin-top: 20px;
+  `}
+`;
+
+const StyledPrimaryButton = styled(Button)`
+  margin-left: 20px;
+
+  ${media.tablet`
+    margin-top: 15px;
+    margin-left: 0;
+  `}
+
+  ${media.phone`
+    margin-top: 20px;
+  `}
+`;
+
+type HighlightProps = {
+  title?: Multiloc;
+  description?: Multiloc;
+  primaryButtonText?: Multiloc;
+  primaryButtonLink?: string;
+  secondaryButtonText?: Multiloc;
+  secondaryButtonLink?: string;
+};
+
+const Highlight = ({
+  title,
+  description,
+  primaryButtonText,
+  primaryButtonLink,
+  secondaryButtonText,
+  secondaryButtonLink,
+}: HighlightProps) => {
+  const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const lоcalize = useLocalize();
+  const isSmallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
     <Box bg={colors.background} data-cy="e2e-highlight">
@@ -48,7 +105,36 @@ const Highlight = () => {
         pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
-        <Container />
+        <Container>
+          <Box flex="1 1 auto">
+            <Title fontSize="xxl" color="tenantText">
+              {lоcalize(title)}
+            </Title>
+            <Text color="textSecondary" maxWidth="400px">
+              {lоcalize(description)}
+            </Text>
+          </Box>
+          <ButtonContainer>
+            <Button
+              fontWeight="500"
+              padding="13px 22px"
+              buttonStyle="text"
+              textColor={theme.colors.tenantPrimary}
+              textDecorationHover="underline"
+              fullWidth={isSmallerThanSmallTablet}
+              linkTo={secondaryButtonLink}
+            >
+              {lоcalize(secondaryButtonText)}
+            </Button>
+            <StyledPrimaryButton
+              linkTo={primaryButtonLink}
+              buttonStyle="primary"
+              padding="13px 22px"
+            >
+              {lоcalize(primaryButtonText)}
+            </StyledPrimaryButton>
+          </ButtonContainer>
+        </Container>
       </Box>
     </Box>
   );
@@ -56,6 +142,22 @@ const Highlight = () => {
 
 const HighlightSettings = () => {
   const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    title,
+    description,
+    primaryButtonText,
+    primaryButtonLink,
+    secondaryButtonText,
+    secondaryButtonLink,
+  } = useNode((node) => ({
+    title: node.data.props.title,
+    description: node.data.props.description,
+    primaryButtonText: node.data.props.primaryButtonText,
+    primaryButtonLink: node.data.props.primaryButtonLink,
+    secondaryButtonText: node.data.props.secondaryButtonText,
+    secondaryButtonLink: node.data.props.secondaryButtonLink,
+  }));
   return (
     <Box
       background="#ffffff"
@@ -64,7 +166,66 @@ const HighlightSettings = () => {
       flexDirection="column"
       gap="16px"
     >
-      <Text color="textSecondary">hi</Text>
+      <InputMultilocWithLocaleSwitcher
+        id="highlight_title"
+        type="text"
+        label={formatMessage(messages.highlightTitleLabel)}
+        name="highlight_title"
+        valueMultiloc={title}
+        onChange={(valueMultiloc) =>
+          setProp((props) => (props.title = valueMultiloc))
+        }
+      />
+      <InputMultilocWithLocaleSwitcher
+        id="highlight_description"
+        type="text"
+        label={formatMessage(messages.highlightDescriptionLabel)}
+        name="highlight_description"
+        valueMultiloc={description}
+        onChange={(valueMultiloc) =>
+          setProp((props) => (props.description = valueMultiloc))
+        }
+      />
+      <InputMultilocWithLocaleSwitcher
+        id="highlight_primaryButtonText"
+        type="text"
+        label={formatMessage(messages.highlightPrimaryButtonTextLabel)}
+        name="highlight_primaryButtonText"
+        valueMultiloc={primaryButtonText}
+        onChange={(valueMultiloc) =>
+          setProp((props) => (props.primaryButtonText = valueMultiloc))
+        }
+      />
+      <Input
+        id="highlight_primaryButtonLink"
+        type="text"
+        label={formatMessage(messages.highlightPrimaryButtonLinkLabel)}
+        name="highlight_primaryButtonLink"
+        value={primaryButtonLink}
+        onChange={(value) =>
+          setProp((props) => (props.primaryButtonLink = value))
+        }
+      />
+      <InputMultilocWithLocaleSwitcher
+        id="highlight_secondaryButtonText"
+        type="text"
+        label={formatMessage(messages.highlightSecondaryButtonTextLabel)}
+        name="highlight_secondaryButtonText"
+        valueMultiloc={secondaryButtonText}
+        onChange={(valueMultiloc) =>
+          setProp((props) => (props.secondaryButtonText = valueMultiloc))
+        }
+      />
+      <Input
+        id="highlight_secondaryButtonLink"
+        type="text"
+        label={formatMessage(messages.highlightSecondaryButtonLinkLabel)}
+        name="highlight_secondaryButtonLink"
+        value={secondaryButtonLink}
+        onChange={(value) =>
+          setProp((props) => (props.secondaryButtonLink = value))
+        }
+      />
     </Box>
   );
 };
