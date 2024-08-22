@@ -129,7 +129,7 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.publicationDate)}</h2>
-                    <p>{formatMessage(messages.publicationDateIntro2024)}</p>
+                    <p>{formatMessage(messages.publicationDate2024)}</p>
                     <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                     <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                     <ul>
