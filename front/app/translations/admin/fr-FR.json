@@ -982,7 +982,7 @@
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Êtes-vous sûr de vouloir supprimer cette analyse ? Cette action ne peut pas être annulée.",
   "app.containers.Admin.projects.project.survey.explore": "Explorer",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSON": "Exporter au format GeoJSON",
-  "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exportez les réponses à cette question dans un fichier GeoJSON. Pour chaque entité GeoJSON, toutes les réponses à l'enquête des personnes interrogées seront répertoriées dans l'objet \"propriétés\" de cette entité.",
+  "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exportez les réponses à cette question dans un fichier GeoJSON. Chaque réponse apparaîtra sous la forme d'une entité GeoJSON. Pour chaque entité, toutes les autres réponses de cette personne aux autres questions de l'enquête seront aussi listées dans l'objet \"properties\" de cette entité.",
   "app.containers.Admin.projects.project.survey.heatMap": "Carte thermique",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLink": "https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLinkText": "En savoir plus sur les cartes thermiques générées à l'aide de Esri Smart Mapping.",
