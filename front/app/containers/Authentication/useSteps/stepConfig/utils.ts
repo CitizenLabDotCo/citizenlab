@@ -1,8 +1,10 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
+import { AuthenticationData } from 'containers/Authentication/typings';
+
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
-  flow: 'signup' | 'signin'
+  { flow, context }: AuthenticationData
 ) => {
   if (requiredBuiltInFields(requirements)) {
     return 'missing-data:built-in';
@@ -16,16 +18,22 @@ export const checkMissingData = (
     return 'missing-data:verification';
   }
 
-  // In the sign up flow, we want to ask for all custom
-  // fields not filled out.
-  if (flow === 'signup' && askCustomFields(requirements)) {
+  const isGlobalSignInFlow =
+    flow === 'signin' &&
+    context.action === 'visiting' &&
+    context.type === 'global';
+
+  // In the global sign in flow, we only want to show the custom
+  // fields step if there are required custom fields.
+  // Otherwise it's kind of annoying, because every time you log
+  // in you get asked to fill them out.
+  // NOTE: maybe this should be calculated in the BE instead.
+  if (isGlobalSignInFlow && requiredCustomFields(requirements)) {
     return 'missing-data:custom-fields';
   }
 
-  // In the sign in flow, we only want to ask for required custom
-  // fields.
-  // TODO: this should be calculated on the BE instead
-  if (flow === 'signin' && requiredCustomFields(requirements)) {
+  // In any other situation we just ask for all custom fields
+  if (!isGlobalSignInFlow && askCustomFields(requirements)) {
     return 'missing-data:custom-fields';
   }
 

@@ -59,16 +59,19 @@ export const sharedSteps = (
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async () => {
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
           return;
         }
 
-        if (flow === 'signup') {
+        if (authenticationData.flow === 'signup') {
           setCurrentStep('success');
         } else {
           const { successAction } = getAuthenticationData();
@@ -89,7 +92,7 @@ export const sharedSteps = (
         });
 
         const { requirements, disabled_reason } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
         const { permitted_by } = requirements.authentication;
         const isLightFlow = permitted_by === 'everyone_confirmed_email';
@@ -128,13 +131,18 @@ export const sharedSteps = (
         }
 
         if (signedIn) {
-          const missingDataStep = checkMissingData(requirements, flow);
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData
+          );
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);
             return;
           }
         }
+
+        const { flow } = authenticationData;
 
         if (flow === 'signin') {
           anySSOEnabled

@@ -111,9 +111,12 @@ export const lightFlow = (
         await confirmEmail({ code });
 
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
@@ -140,9 +143,12 @@ export const lightFlow = (
         await signIn({ email, password, rememberMe, tokenLifetime });
 
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);

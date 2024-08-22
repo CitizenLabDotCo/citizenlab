@@ -43,9 +43,12 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
@@ -82,9 +85,12 @@ export const missingDataFlow = (
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
@@ -102,9 +108,12 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
-        const { flow } = getAuthenticationData();
+        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements, flow);
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);

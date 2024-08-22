@@ -67,9 +67,12 @@ export const signUpFlow = (
           await createAccountWithPassword(params);
 
           const { requirements } = await getRequirements();
-          const { flow } = getAuthenticationData();
+          const authenticationData = getAuthenticationData();
 
-          const missingDataStep = checkMissingData(requirements, flow);
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData
+          );
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);
