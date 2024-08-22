@@ -37,19 +37,19 @@ en:
     outside: somewhere else
   idea_statuses:
     prescreening: pre-screening
-    prescreening_description: pre-screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.
     proposed: proposed
-    proposed_description: This idea has been proposed to the city
+    proposed_description: This input has been proposed to the city
     viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
+    viewed_description: This input has been seen by someone from the city
     under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
+    under_consideration_description: This input has been taken into consideration by the city
     accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
+    accepted_description: This input has been accepted and will be implemented by the city
     implemented: implemented
-    implemented_description: This idea has been implemented by the city
+    implemented_description: This input has been implemented by the city
     rejected: rejected
-    rejected_description: This idea has been rejected
+    rejected_description: This input has been rejected
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached

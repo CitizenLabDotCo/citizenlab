@@ -56,6 +56,15 @@ RSpec.describe ParticipationMethod::Ideation do
       participation_method.assign_defaults_for_phase
       expect(phase.ideas_order).to eq 'trending'
     end
+
+    describe 'when prescreening is activated' do
+      before { SettingsService.new.activate_feature! 'prescreening' }
+
+      it 'sets reviewing_enabled to false' do
+        participation_method.assign_defaults_for_phase
+        expect(phase.reviewing_enabled).to be false
+      end
+    end
   end
 
   describe '#generate_slug' do

@@ -87,6 +87,24 @@ RSpec.describe ParticipationMethod::Proposals do
       participation_method.assign_defaults_for_phase
       expect(phase.reacting_threshold).to eq 300
     end
+
+    describe 'when prescreening is deactivated' do
+      before { SettingsService.new.deactivate_feature! 'prescreening' }
+
+      it 'does not set reviewing_enabled' do
+        participation_method.assign_defaults_for_phase
+        expect(phase.reviewing_enabled).to be false
+      end
+    end
+  
+    describe 'when prescreening is activated' do
+      before { SettingsService.new.activate_feature! 'prescreening' }
+
+      it 'sets reviewing_enabled to true' do
+        participation_method.assign_defaults_for_phase
+        expect(phase.reviewing_enabled).to be true
+      end
+    end
   end
 
   describe '#generate_slug' do
