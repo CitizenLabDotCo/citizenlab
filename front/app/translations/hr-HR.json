@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Izjava o pristupačnosti ovog web-mjesta",
   "app.containers.AccessibilityStatement.postalAddress": "Poštanska adresa:",
   "app.containers.AccessibilityStatement.publicationDate": "Datum objave",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Izjava o pristupačnosti objavljena je 30 lipnja 2022.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Ova izjava o pristupačnosti objavljena je 21. kolovoza 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Nastojimo odgovoriti na povratne informacije u roku od 1 – 2 radna dana.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Pogreške pri upotrebi čitača ekrana se mogu javiti na različitim kombinacijama čitača/preglednika. Možete ih prijaviti putem postupka slanja povratnih informacija, na način koji je opisan u nastavku.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Funkcija pretrage",
