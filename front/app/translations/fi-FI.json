@@ -988,7 +988,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Lausunto tämän sivuston saavutettavuudesta",
   "app.containers.AccessibilityStatement.postalAddress": "Postiosoite:",
   "app.containers.AccessibilityStatement.publicationDate": "Julkaisupäivämäärä",
-  "app.containers.AccessibilityStatement.publicationDateIntro": "Tämä esteettömyysseloste on julkaistu 30.6.2022.",
+  "app.containers.AccessibilityStatement.publicationDate2024": "Tämä esteettömyysseloste on julkaistu 21.8.2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Pyrimme vastaamaan palautteeseen 1-2 arkipäivän kuluessa.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "Näytönlukijavirheitä voi esiintyä erilaisissa selain/näytönlukijayhdistelmissä. Virheistä voi ilmoittaa alla kuvatun palauteprosessin kautta.",
   "app.containers.AccessibilityStatement.screenReaderSearchResults": "Hakutoiminto",
