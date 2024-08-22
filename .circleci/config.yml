@@ -729,7 +729,7 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2024.08
-    parallelism: 1
+    parallelism: 8
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
