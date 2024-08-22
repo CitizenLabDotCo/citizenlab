@@ -25,13 +25,11 @@ const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
     participation_method: variant,
   });
-  const { mutate: addIdeaStatus } = useAddIdeaStatus();
+  const { mutateAsync: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
-  const handleSubmit = (values: FormValues) => {
-    addIdeaStatus(
-      { ...values, participation_method: variant },
-      { onSuccess: goBack }
-    );
+  const handleSubmit = async (values: FormValues) => {
+    await addIdeaStatus({ ...values, participation_method: variant });
+    goBack();
   };
 
   const goBack = () => {
@@ -48,7 +46,7 @@ const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
         <IdeaStatusForm
           defaultValues={{
             color: '#b5b5b5',
-            code: 'proposed',
+            code: 'custom',
           }}
           onSubmit={handleSubmit}
           showCategorySelector

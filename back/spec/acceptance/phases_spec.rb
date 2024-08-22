@@ -200,8 +200,10 @@ resource 'Phases' do
 
         example_request 'Create a proposals phase' do
           assert_status 201
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'proposals'
           expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
           expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
         end
       end
 

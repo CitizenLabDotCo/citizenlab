@@ -207,12 +207,6 @@ ar:
           title: ما مشكلتك؟
         option:
           title: ما خيارك؟
-      details:
-        title: التفاصيل
-      attachements:
-        title: الصور والمرفقات
-      extra:
-        title: معلومات إضافية
   custom_field_options:
     gender:
       male: ذكر
