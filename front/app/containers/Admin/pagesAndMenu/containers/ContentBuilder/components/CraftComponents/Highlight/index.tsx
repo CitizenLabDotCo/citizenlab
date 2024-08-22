@@ -39,6 +39,7 @@ const Container = styled.div`
   `}
 
   ${media.phone`
+    text-align: center;
     flex-direction: column;
     align-items: flex-start;
     padding: 60px 30px 40px;
@@ -144,13 +145,15 @@ const Highlight = ({
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
         <Container>
-          <Box flex="1 1 auto">
+          <Box
+            flex="1 1 auto"
+            w="100%"
+            maxWidth={isSmallerThanTablet ? undefined : '400px'}
+          >
             <Title fontSize="xxl" color="tenantText">
               {lоcalize(title)}
             </Title>
-            <Text color="textSecondary" maxWidth="400px">
-              {lоcalize(description)}
-            </Text>
+            <Text color="textSecondary">{lоcalize(description)}</Text>
           </Box>
           <ButtonContainer>
             {((enabled && secondaryButtonText) ||
