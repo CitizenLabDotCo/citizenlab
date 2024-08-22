@@ -2574,7 +2574,7 @@
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Modifier les statuts des contributions",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Sélectionnés pour la mise en œuvre ou les prochaines étapes",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Approuvé",
-  "app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription": "Retour d'information officiel",
+  "app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription": "Retour d'information officiel fourni",
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Répondu",
   "app.containers.admin.ideaStatuses.form.category": "Catégorie",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Veuillez sélectionner la catégorie qui correspond le mieux à votre statut. Cette sélection permettra à notre outil d'analyse de traiter et d'analyser plus précisément les contributions.",
