@@ -207,12 +207,6 @@ lb:
           title: Wat ass Är Ugeleeënheet ?
         option:
           title: Wat ass Är Optioun?
-      details:
-        title: Detailer
-      attachements:
-        title: Biller an Annexen
-      extra:
-        title: Zousätzlech Informatiounen
   custom_field_options:
     gender:
       male: Männlech

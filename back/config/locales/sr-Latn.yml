@@ -207,12 +207,6 @@ sr-Latn:
           title: Šta je vaša tema ?
         option:
           title: Šta je vaša opcija ?
-      details:
-        title: Detalji
-      attachements:
-        title: Slike i prilozi
-      extra:
-        title: Dodatne informacije
   custom_field_options:
     gender:
       male: Muškarac

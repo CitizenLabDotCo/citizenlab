@@ -379,14 +379,24 @@ resource 'Ideas' do
         let(:author) { input.author }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-        example_request 'Update an initiative' do
+        example 'Update a proposal' do
+          create(:reaction, reactable: input, user: author, mode: 'up')
+          do_request
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
           expect(json_response.dig(:data, :attributes, :custom_field_name1)).to eq custom_field_name1
         end
 
-        # TODO: Do not allow changing the project or phases
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example '[error] Update a proposal', document: false do
+            do_request
+            assert_status 401
+          end
+        end
+
         # TODO: Update the cosponsors
       end
 
@@ -412,9 +422,42 @@ resource 'Ideas' do
           let(:input) { create(:proposal, idea_status: create(:proposals_status)) }
           let(:idea_status_id) { create(:proposals_status, code: 'threshold_reached').id }
 
-          example '[Error] Manually change the idea status to an automated status', document: false do
+          example '[error] Manually change the idea status to an automated status', document: false do
             do_request
             expect(input.reload.idea_status.code).not_to eq 'threshold_reached'
+          end
+        end
+
+        describe do
+          let(:phase) { create(:proposals_phase, project: input.project, start_at: 1.year.from_now, end_at: 2.years.from_now) }
+          let(:phase_ids) { [phase.id] }
+
+          example '[error] Move a proposal to a different phase', document: false do
+            do_request
+            assert_status 422
+            expect(json_response_body).to include_response_error(:phase_ids, 'Cannot change the phases of non-transitive inputs')
+            expect(input.reload.phase_ids).not_to include phase.id
+          end
+        end
+
+        describe do
+          let(:project) { create(:single_phase_proposals_project) }
+          let(:project_id) { project.id }
+
+          example '[error] Move a proposal to a different project', document: false do
+            do_request
+            assert_status 422
+            expect(json_response_body).to include_response_error(:project_id, 'Cannot change the project of non-transitive inputs')
+            expect(input.reload.project_id).not_to eq project_id
+          end
+        end
+
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example 'Update a proposal', document: false do
+            do_request
+            assert_status 200
           end
         end
       end
