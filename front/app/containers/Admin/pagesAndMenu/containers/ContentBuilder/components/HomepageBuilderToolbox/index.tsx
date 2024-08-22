@@ -67,7 +67,9 @@ const HomepageBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-events"
-        component={<Highlight />}
+        component={
+          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
+        }
         icon="flash"
         label={formatMessage(messages.highlightTitle)}
       />
