@@ -8,7 +8,10 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { GetRequirements } from 'containers/Authentication/typings';
+import {
+  AuthenticationData,
+  GetRequirements,
+} from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -20,6 +23,7 @@ import {
 } from './utils';
 
 export const missingDataFlow = (
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void
 ) => {
@@ -39,8 +43,9 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
+        const { flow } = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements);
+        const missingDataStep = checkMissingData(requirements, flow);
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
@@ -77,8 +82,9 @@ export const missingDataFlow = (
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
+        const { flow } = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements);
+        const missingDataStep = checkMissingData(requirements, flow);
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
@@ -96,8 +102,9 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
+        const { flow } = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(requirements);
+        const missingDataStep = checkMissingData(requirements, flow);
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);

@@ -76,8 +76,9 @@ export const ssoVerificationFlow = (
           });
 
           const { requirements } = await getRequirements();
+          const { flow } = getAuthenticationData();
 
-          const missingDataStep = checkMissingData(requirements);
+          const missingDataStep = checkMissingData(requirements, flow);
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);
