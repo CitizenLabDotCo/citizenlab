@@ -46,8 +46,7 @@ export const getStepConfig = (
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled,
-      state
+      anySSOEnabled
     ),
 
     ...signInFlow(

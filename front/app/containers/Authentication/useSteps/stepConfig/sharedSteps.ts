@@ -15,7 +15,6 @@ import {
   AuthenticationData,
   SignUpInError,
   VerificationError,
-  State,
 } from '../../typings';
 
 import { Step } from './typings';
@@ -27,8 +26,7 @@ export const sharedSteps = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
-  state: State
+  anySSOEnabled: boolean
 ) => {
   return {
     closed: {
@@ -59,14 +57,14 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async () => {
+      RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          flow
         );
 
         if (missingDataStep) {
@@ -74,7 +72,7 @@ export const sharedSteps = (
           return;
         }
 
-        if (state.flow === 'signup') {
+        if (flow === 'signup') {
           setCurrentStep('success');
         }
 
@@ -86,7 +84,7 @@ export const sharedSteps = (
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async () => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
           email: null,
           token: null,
@@ -137,7 +135,7 @@ export const sharedSteps = (
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            state.flow
+            flow
           );
 
           if (missingDataStep) {
@@ -146,14 +144,14 @@ export const sharedSteps = (
           }
         }
 
-        if (state.flow === 'signin') {
+        if (flow === 'signin') {
           anySSOEnabled
             ? setCurrentStep('sign-in:auth-providers')
             : setCurrentStep('sign-in:email-password');
           return;
         }
 
-        if (state.flow === 'signup') {
+        if (flow === 'signup') {
           anySSOEnabled
             ? setCurrentStep('sign-up:auth-providers')
             : setCurrentStep('sign-up:email-password');

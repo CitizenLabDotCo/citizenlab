@@ -158,10 +158,12 @@ export default function useSteps() {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
 
-      authenticationDataRef.current = event.eventValue.authenticationData;
-      updateState({ flow: event.eventValue.flow });
+      const { authenticationData, flow } = event.eventValue;
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+      authenticationDataRef.current = authenticationData;
+      updateState({ flow });
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
     });
 
     return () => subscription.unsubscribe();
@@ -218,7 +220,7 @@ export default function useSteps() {
 
         updateState({ flow: 'signin' });
 
-        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signin');
       }
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -234,7 +236,7 @@ export default function useSteps() {
 
         updateState({ flow: 'signup' });
 
-        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signup');
       }
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -294,7 +296,8 @@ export default function useSteps() {
         context: context as AuthenticationContext,
       };
 
-      updateState({ flow: sso_flow || 'signin' });
+      const flow = sso_flow ?? 'signin';
+      updateState({ flow });
 
       if (pathname.endsWith('authentication-error')) {
         transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
@@ -311,7 +314,7 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
     }
   }, [
     pathname,
