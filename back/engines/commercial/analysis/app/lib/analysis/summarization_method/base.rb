@@ -46,7 +46,7 @@ module Analysis
         run(plan)
         task.set_succeeded!
       rescue SummarizationFailedError => e
-        ErrorReporter.report(e, extra: { e_inspect: e.inspect })
+        ErrorReporter.report(e)
 
         task.set_failed!
         summary.update!(accuracy: old_accuracy, summary: old_summary)
