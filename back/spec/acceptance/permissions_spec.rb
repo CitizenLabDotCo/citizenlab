@@ -140,11 +140,13 @@ resource 'Permissions' do
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
+        parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @phase.permissions.first.action }
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+      let(:access_denied_explanation_multiloc) { { en: 'You do not have access because you are not in the right group' } }
 
       context 'permitted_by: verified' do
         let(:permitted_by) { 'verified' }
@@ -155,6 +157,7 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
           expect(response_data.dig(:attributes, :verification_enabled)).to be true
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
@@ -165,6 +168,7 @@ resource 'Permissions' do
         example_request 'Update group IDs when permitted_by "everyone_confirmed_email"' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
