@@ -60,6 +60,7 @@ module Analysis
           extra[:response_status] = e&.response&.status
           extra[:backtrace] = e&.backtrace
           ErrorReporter.report(e, extra: extra)
+        end
       end
     end
 
