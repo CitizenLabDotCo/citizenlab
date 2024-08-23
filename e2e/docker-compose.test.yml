@@ -8,19 +8,25 @@ services:
     image: citizenlabdotco/back-e2e:${CIRCLE_SHA1}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://e2e-web:4000"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      interval: 1s
+      timeout: 1s
+      retries: 20
   front:
     image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
+    # build:
+    #   context: ../front/.
+    #   dockerfile: Dockerfile-static-hosting
     healthcheck:
       test: ["CMD", "curl", "-f", "http://e2e.front:3000"]
-      interval: 5s
-      timeout: 5s
+      interval: 1s
+      timeout: 1s
       retries: 10
+    environment:
+      API_HOST: e2e-web
+      API_PORT: 4000
   postgres:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
+      interval: 1s
+      timeout: 1s
       retries: 10

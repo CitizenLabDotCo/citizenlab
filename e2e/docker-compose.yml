@@ -48,6 +48,6 @@ services:
       - "../env_files/front-safe.env"
       - "../env_files/front-secret.env"
     environment:
-      API_HOST: e2e-web
+      API_HOST: e2e.front
+      API_PORT: 3000
       TEST_BUILD: "true"
-    command: npm run start:prod
