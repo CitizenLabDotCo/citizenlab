@@ -136,7 +136,7 @@ describe('Sign up - Email + password step', () => {
     cy.clearCookies();
   });
 
-  it.only('confirms the account successfully', () => {
+  it('confirms the account successfully', () => {
     signUp();
     cy.get('#code').click().type('1234');
     cy.get('#e2e-verify-email-button').click();
