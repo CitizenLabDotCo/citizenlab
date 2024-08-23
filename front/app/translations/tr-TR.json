@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Trend",
   "app.utils.IdeasNewPage.contributionFormTitle": "Yeni katkı ekleyin",
   "app.utils.IdeasNewPage.ideaFormTitle": "Yeni fikir ekleyin",
-  "app.utils.IdeasNewPage.issueFormTitle": "Yeni yorum ekleyin",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Yeni yorum ekle",
   "app.utils.IdeasNewPage.optionFormTitle": "Yeni seçenek ekleyin",
   "app.utils.IdeasNewPage.projectFormTitle": "Yeni proje ekleyin",
   "app.utils.IdeasNewPage.questionFormTitle": "Yeni soru ekleyin",
