@@ -30,7 +30,7 @@ export const getStepConfig = (
       updateState
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep),
+    ...missingDataFlow(getAuthenticationData, getRequirements, setCurrentStep),
 
     ...sharedSteps(
       getAuthenticationData,

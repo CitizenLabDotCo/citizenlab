@@ -8,20 +8,22 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { GetRequirements } from 'containers/Authentication/typings';
+import {
+  AuthenticationData,
+  GetRequirements,
+} from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {
-  requiredCustomFields,
-  requiredBuiltInFields,
   showOnboarding,
   doesNotMeetGroupCriteria,
-  confirmationRequired,
+  checkMissingData,
 } from './utils';
 
 export const missingDataFlow = (
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void
 ) => {
@@ -41,24 +43,15 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredBuiltInFields(requirements)) {
-          setCurrentStep('missing-data:built-in');
-          return;
-        }
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
-        if (requirements.verification) {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -92,24 +85,15 @@ export const missingDataFlow = (
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (confirmationRequired(requirements)) {
-          setCurrentStep('missing-data:email-confirmation');
-          return;
-        }
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
-        if (requirements.verification) {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
@@ -124,14 +108,15 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredCustomFields(requirements)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
-        if (showOnboarding(requirements)) {
-          setCurrentStep('missing-data:onboarding');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 

@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Trending",
   "app.utils.IdeasNewPage.contributionFormTitle": "Voeg een nieuw onderwerp toe",
   "app.utils.IdeasNewPage.ideaFormTitle": "Nieuwe bijdrage toevoegen",
-  "app.utils.IdeasNewPage.issueFormTitle": "Voeg nieuwe input toe",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Nieuwe reactie toevoegen",
   "app.utils.IdeasNewPage.optionFormTitle": "Nieuwe optie toevoegen",
   "app.utils.IdeasNewPage.projectFormTitle": "Nieuw project toevoegen",
   "app.utils.IdeasNewPage.questionFormTitle": "Nieuwe vraag toevoegen",

@@ -18,13 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  confirmationRequired,
-  requiredCustomFields,
-  requiredBuiltInFields,
-  askCustomFields,
-  showOnboarding,
-} from './utils';
+import { confirmationRequired, checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -64,64 +58,22 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async () => {
-        const { flow } = getAuthenticationData();
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (flow === 'signup') {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('sign-up:email-confirmation');
-            return;
-          }
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData
+        );
 
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('sign-up:built-in');
-            return;
-          }
-
-          if (requirements.verification) {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('sign-up:onboarding');
-            return;
-          }
-
-          setCurrentStep('success');
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
         }
 
-        if (flow === 'signin') {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
-
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
-
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
+        if (authenticationData.flow === 'signup') {
+          setCurrentStep('success');
+        } else {
           const { successAction } = getAuthenticationData();
           if (successAction) {
             triggerSuccessAction(successAction);
@@ -140,13 +92,18 @@ export const sharedSteps = (
         });
 
         const { requirements, disabled_reason } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
         const { permitted_by } = requirements.authentication;
         const isLightFlow = permitted_by === 'everyone_confirmed_email';
 
+        // This `disabled_reason === null` is a bit of a weird check,
+        // because most of the times if there is no disabled reason,
+        // you would never get into the authentication flow.
+        // There are however some weird exceptions related to onboarding,
+        // so we need to check for this.
         const signedIn =
-          !disabled_reason || // To allow onboarding for already signed in users
-          (disabled_reason && disabled_reason !== 'user_not_signed_in');
+          disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (isLightFlow) {
           if (!signedIn) {
@@ -174,35 +131,18 @@ export const sharedSteps = (
         }
 
         if (signedIn) {
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData
+          );
+
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
-
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
-
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
-          return;
         }
 
-        const { flow } = getAuthenticationData();
+        const { flow } = authenticationData;
 
         if (flow === 'signin') {
           anySSOEnabled

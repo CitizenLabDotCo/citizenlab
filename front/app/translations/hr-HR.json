@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "U trendu",
   "app.utils.IdeasNewPage.contributionFormTitle": "Dodaj novi doprinos",
   "app.utils.IdeasNewPage.ideaFormTitle": "Dodaj novu ideju",
-  "app.utils.IdeasNewPage.issueFormTitle": "Dodajte novo izdanje",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Dodajte novi komentar",
   "app.utils.IdeasNewPage.optionFormTitle": "Dodaj novu opciju",
   "app.utils.IdeasNewPage.projectFormTitle": "Dodaj novi projekt",
   "app.utils.IdeasNewPage.questionFormTitle": "Dodaj novo pitanje",

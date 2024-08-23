@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ActionForms from '../../components/ActionForms';
-import messages from '../../messages';
+import ActionForms from './ActionForms';
+import messages from '../messages';
 
 const Phase = () => {
   const { phaseId } = useParams();
