@@ -77,7 +77,7 @@ class TranslateProjectMethods
   end
 
   def process_data_units(report)
-    user = User.find_by(email: 'moderator@citizenlab.co') || User.find_by(email: 'moderator@govocal.com')
+    user = User.admin.first
 
     if user.blank?
       puts "No moderator user found, so could not re-publish graph_data_units for Report: #{report.id}"
