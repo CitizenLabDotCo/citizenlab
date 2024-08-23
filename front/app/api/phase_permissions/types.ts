@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -21,6 +21,7 @@ export interface IPhasePermissionData {
   id: string;
   type: string;
   attributes: {
+    access_denied_explanation_multiloc: Multiloc;
     action: IPhasePermissionAction;
     permitted_by: PermittedBy;
     created_at: string;
@@ -72,4 +73,5 @@ interface IPermissionUpdate {
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
   verification_expiry: number | null;
+  access_denied_explanation_multiloc: Multiloc;
 }
