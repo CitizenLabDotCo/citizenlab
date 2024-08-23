@@ -24,6 +24,7 @@ services:
     environment:
       API_HOST: e2e-web
       API_PORT: 4000
+    command: npm run start:prod
   postgres:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
