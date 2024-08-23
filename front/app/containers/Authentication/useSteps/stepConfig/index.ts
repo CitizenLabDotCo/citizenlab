@@ -4,6 +4,7 @@ import {
   UpdateState,
   AuthenticationData,
   SetError,
+  State,
 } from '../../typings';
 
 import { lightFlow } from './lightFlow';
@@ -20,17 +21,24 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean
+  anySSOEnabled: boolean,
+  state: State
 ) => {
   return {
     ...lightFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      updateState
+      updateState,
+      state
     ),
 
-    ...missingDataFlow(getAuthenticationData, getRequirements, setCurrentStep),
+    ...missingDataFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      state
+    ),
 
     ...sharedSteps(
       getAuthenticationData,
@@ -38,13 +46,15 @@ export const getStepConfig = (
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled
+      anySSOEnabled,
+      state
     ),
 
     ...signInFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      updateState,
       anySSOEnabled
     ),
 

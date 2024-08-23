@@ -15,6 +15,7 @@ import {
   AuthenticationData,
   SignUpInError,
   VerificationError,
+  State,
 } from '../../typings';
 
 import { Step } from './typings';
@@ -26,7 +27,8 @@ export const sharedSteps = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean
+  anySSOEnabled: boolean,
+  state: State
 ) => {
   return {
     closed: {
@@ -63,7 +65,8 @@ export const sharedSteps = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {
@@ -71,13 +74,13 @@ export const sharedSteps = (
           return;
         }
 
-        if (authenticationData.flow === 'signup') {
+        if (state.flow === 'signup') {
           setCurrentStep('success');
-        } else {
-          const { successAction } = getAuthenticationData();
-          if (successAction) {
-            triggerSuccessAction(successAction);
-          }
+        }
+
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
         }
       },
 
@@ -133,7 +136,8 @@ export const sharedSteps = (
         if (signedIn) {
           const missingDataStep = checkMissingData(
             requirements,
-            authenticationData
+            authenticationData,
+            state.flow
           );
 
           if (missingDataStep) {
@@ -142,16 +146,14 @@ export const sharedSteps = (
           }
         }
 
-        const { flow } = authenticationData;
-
-        if (flow === 'signin') {
+        if (state.flow === 'signin') {
           anySSOEnabled
             ? setCurrentStep('sign-in:auth-providers')
             : setCurrentStep('sign-in:email-password');
           return;
         }
 
-        if (flow === 'signup') {
+        if (state.flow === 'signup') {
           anySSOEnabled
             ? setCurrentStep('sign-up:auth-providers')
             : setCurrentStep('sign-up:email-password');

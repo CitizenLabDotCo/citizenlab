@@ -11,6 +11,7 @@ import {
 import {
   AuthenticationData,
   GetRequirements,
+  State,
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -25,7 +26,8 @@ import {
 export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void
+  setCurrentStep: (step: Step) => void,
+  state: State
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -47,7 +49,8 @@ export const missingDataFlow = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {
@@ -89,7 +92,8 @@ export const missingDataFlow = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {
@@ -112,7 +116,8 @@ export const missingDataFlow = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {

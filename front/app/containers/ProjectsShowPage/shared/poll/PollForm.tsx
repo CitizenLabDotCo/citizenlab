@@ -105,7 +105,6 @@ const PollForm = ({
       if (!phaseId) return;
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           action: 'taking_poll',
           id: phaseId,
