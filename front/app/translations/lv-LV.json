@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Tendences",
   "app.utils.IdeasNewPage.contributionFormTitle": "Pievienot jaunu ieguldījumu",
   "app.utils.IdeasNewPage.ideaFormTitle": "Pievienot jaunu ideju",
-  "app.utils.IdeasNewPage.issueFormTitle": "Pievienot jaunu problēmu",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Pievienot jaunu komentāru",
   "app.utils.IdeasNewPage.optionFormTitle": "Pievienot jaunu iespēju",
   "app.utils.IdeasNewPage.projectFormTitle": "Pievienot jaunu projektu",
   "app.utils.IdeasNewPage.questionFormTitle": "Pievienot jaunu jautājumu",
