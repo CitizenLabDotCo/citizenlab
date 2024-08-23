@@ -2508,7 +2508,7 @@
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkPlaceholder": "https://example.com",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonTextLabel": "Secundaire knop tekst",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitle": "Markeer",
-  "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel": "Naam",
+  "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel": "Titel",
   "app.containers.admin.ContentBuilder.homepage.highlightTitle": "Markeer",
   "app.containers.admin.ContentBuilder.homepage.homepageBanner": "Startpagina banner",
   "app.containers.admin.ContentBuilder.homepage.homepageBannerTitle": "Homepagina banner",
