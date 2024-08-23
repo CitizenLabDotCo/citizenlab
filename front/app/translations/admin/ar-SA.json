@@ -2201,7 +2201,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "من يمكنه التطوع؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "من يمكنه التصويت على المقترحات؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "من يستطيع التصويت؟",
-  "app.containers.AdminPage.groups.permissions.phase": "مرحلة",
   "app.containers.AdminPage.groups.permissions.questionDescription": "وصف السؤال",
   "app.containers.AdminPage.groups.permissions.questionTitle": "عنوان السؤال",
   "app.containers.AdminPage.groups.permissions.save": "حفظ",

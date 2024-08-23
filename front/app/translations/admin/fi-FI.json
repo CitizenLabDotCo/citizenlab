@@ -2201,7 +2201,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Kuka voi tehdä vapaaehtoistyötä?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Kuka voi äänestää ehdotuksista?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Kuka voi äänestää?",
-  "app.containers.AdminPage.groups.permissions.phase": "Vaihe",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Kysymyksen kuvaus",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Kysymyksen otsikko",
   "app.containers.AdminPage.groups.permissions.save": "Tallentaa",

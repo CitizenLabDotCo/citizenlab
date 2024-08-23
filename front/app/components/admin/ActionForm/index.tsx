@@ -68,7 +68,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   if (!permissionsCustomFields) return null;
 
   return (
-    <form>
+    <form className={`e2e-action-form-${action}`}>
       <AdminCollaboratorToggle
         checked={permitted_by === 'admins_moderators'}
         id={`participation-permission-admins-${permissionId}`}

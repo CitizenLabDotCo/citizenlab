@@ -2201,7 +2201,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Who can volunteer?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Ко може да гласа о предлозима?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Ко може да гласа?",
-  "app.containers.AdminPage.groups.permissions.phase": "Фаза",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Опис питања",
   "app.containers.AdminPage.groups.permissions.questionTitle": "Наслов питања",
   "app.containers.AdminPage.groups.permissions.save": "сачувати",

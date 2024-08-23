@@ -1539,7 +1539,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Ποιος μπορεί να συμμετάσχει στην έρευνα;",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Ποιος μπορεί να ψηφίσει επί των προτάσεων;",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Ποιος μπορεί να ψηφίσει;",
-  "app.containers.AdminPage.groups.permissions.phase": "Φάση",
   "app.containers.AdminPage.groups.permissions.save": "Save",
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Success!",

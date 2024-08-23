@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Title, Accordion } from '@citizenlab/cl2-component-library';
 
 import { IGlobalPermissionData } from 'api/permissions/types';
 import useResetPermission from 'api/permissions/useResetPermission';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
-import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/components/ActionForms/utils';
+import { getPermissionActionSectionSubtitle } from 'containers/Admin/projects/project/permissions/Phase/ActionForms/utils';
 
 import ActionForm from 'components/admin/ActionForm';
 
@@ -22,20 +22,32 @@ const ActionForms = ({ permissions }: Props) => {
 
   return (
     <>
-      {permissions.map((permission, index) => {
+      {permissions.map((permission) => {
         const permissionAction = permission.attributes.action;
-        const last = index === permissions.length - 1;
 
         return (
-          <Box key={permission.id} mb={last ? '0px' : '60px'}>
-            <Title variant="h3" color="primary">
-              <FormattedMessage
-                {...getPermissionActionSectionSubtitle({
-                  permissionAction,
-                  postType: 'initiative',
-                })}
-              />
-            </Title>
+          <Accordion
+            className={`e2e-action-accordion-${permissionAction}`}
+            key={permission.id}
+            timeoutMilliseconds={1000}
+            transitionHeightPx={1700}
+            isOpenByDefault={false}
+            title={
+              <Title
+                variant="h3"
+                color="primary"
+                my="20px"
+                style={{ fontWeight: 500 }}
+              >
+                <FormattedMessage
+                  {...getPermissionActionSectionSubtitle({
+                    permissionAction,
+                    postType: 'initiative',
+                  })}
+                />
+              </Title>
+            }
+          >
             <ActionForm
               permissionData={permission}
               onChange={({ permittedBy, groupIds, verificationExpiry }) =>
@@ -54,7 +66,7 @@ const ActionForms = ({ permissions }: Props) => {
                 })
               }
             />
-          </Box>
+          </Accordion>
         );
       })}
     </>

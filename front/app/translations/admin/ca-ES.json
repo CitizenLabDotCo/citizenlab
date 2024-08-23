@@ -1539,7 +1539,6 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Qui pot respondre l'enquesta?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Qui pot votar les propostes?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Qui pot votar?",
-  "app.containers.AdminPage.groups.permissions.phase": "Fase",
   "app.containers.AdminPage.groups.permissions.save": "Save",
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Success!",
