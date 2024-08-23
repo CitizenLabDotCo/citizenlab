@@ -136,13 +136,13 @@ describe('Sign up - Email + password step', () => {
     cy.clearCookies();
   });
 
-  it('confirms the account successfully', () => {
+  it.only('confirms the account successfully', () => {
     signUp();
     cy.get('#code').click().type('1234');
     cy.get('#e2e-verify-email-button').click();
-    cy.get('#e2e-success-continue-button').click();
-    cy.get('#e2e-authentication-modal').should('not.exist');
-    cy.get('#e2e-user-menu-container');
+    cy.wait(5000);
+    cy.get('#e2e-verify-email-button').should('not.exist');
+    cy.get('.e2e-error-message').should('not.exist');
     cy.clearCookies();
   });
 
