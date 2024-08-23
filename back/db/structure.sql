@@ -2885,7 +2885,8 @@ CREATE TABLE public.permissions (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     global_custom_fields boolean DEFAULT false NOT NULL,
-    verification_expiry integer
+    verification_expiry integer,
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7531,4 +7532,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240806161121'),
 ('20240812115140'),
 ('20240814133336'),
-('20240814163522');
+('20240814163522'),
+('20240923112800');
+
+
