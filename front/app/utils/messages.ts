@@ -145,9 +145,9 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.questionFormTitle',
     defaultMessage: 'Add new question',
   },
-  issueFormTitle: {
-    id: 'app.utils.IdeasNewPage.issueFormTitle',
-    defaultMessage: 'Add new issue',
+  issueFormTitle1: {
+    id: 'app.utils.IdeasNewPage.issueFormTitle1',
+    defaultMessage: 'Add new comment',
   },
   surveyTitle: {
     id: 'app.utils.IdeasNewPage.surveyTitle',
