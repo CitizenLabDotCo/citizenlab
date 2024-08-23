@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Trendaavat",
   "app.utils.IdeasNewPage.contributionFormTitle": "Lisää uusi panos",
   "app.utils.IdeasNewPage.ideaFormTitle": "Lisää uusi idea",
-  "app.utils.IdeasNewPage.issueFormTitle": "Lisää uusi kommentti",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Lisää uusi kommentti",
   "app.utils.IdeasNewPage.optionFormTitle": "Lisää uusi vaihtoehto",
   "app.utils.IdeasNewPage.projectFormTitle": "Lisää uusi projekti",
   "app.utils.IdeasNewPage.questionFormTitle": "Lisää uusi kysymys",
