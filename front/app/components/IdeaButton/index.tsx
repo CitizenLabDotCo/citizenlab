@@ -131,11 +131,13 @@ const IdeaButton = memo<Props>(
 
         trackEventByName(tracks.signUpInModalOpened);
 
-        triggerAuthenticationFlow({
-          flow,
-          context,
-          successAction,
-        });
+        triggerAuthenticationFlow(
+          {
+            context,
+            successAction,
+          },
+          flow
+        );
       };
 
     const tippyEnabled = !enabled && !!disabledReason;
