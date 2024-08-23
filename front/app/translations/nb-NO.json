@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Trender",
   "app.utils.IdeasNewPage.contributionFormTitle": "Tilføy nytt bidrag",
   "app.utils.IdeasNewPage.ideaFormTitle": "Tilføy ny ide",
-  "app.utils.IdeasNewPage.issueFormTitle": "Legg til en ny utgave",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Legg til en ny kommentar",
   "app.utils.IdeasNewPage.optionFormTitle": "Tilføy nytt alternativ",
   "app.utils.IdeasNewPage.projectFormTitle": "Tilføy nytt prosjekt",
   "app.utils.IdeasNewPage.questionFormTitle": "Tilføy nytt spørsmål",
