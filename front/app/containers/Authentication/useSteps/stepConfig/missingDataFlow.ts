@@ -56,7 +56,7 @@ export const missingDataFlow = (
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -98,7 +98,7 @@ export const missingDataFlow = (
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
       },
@@ -121,7 +121,7 @@ export const missingDataFlow = (
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -143,7 +143,7 @@ export const missingDataFlow = (
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -170,7 +170,7 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
 

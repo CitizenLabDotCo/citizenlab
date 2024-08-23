@@ -2,6 +2,7 @@ export type Step =
   // shared
   | 'closed'
   | 'success'
+  | 'access-denied'
 
   // old sign in flow
   | 'sign-in:auth-providers'

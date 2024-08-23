@@ -88,11 +88,12 @@ export const ssoVerificationFlow = (
             return;
           }
 
-          setCurrentStep('closed');
-
           if (doesNotMeetGroupCriteria(requirements)) {
+            setCurrentStep('access-denied');
             return;
           }
+
+          setCurrentStep('closed');
 
           const { successAction } = getAuthenticationData();
 

@@ -197,5 +197,9 @@ export const sharedSteps = (
         }
       },
     },
+
+    'access-denied': {
+      CLOSE: () => setCurrentStep('closed'),
+    },
   };
 };
