@@ -42,7 +42,6 @@ export default function useSteps() {
   // In practice, this will be overwritten before firing the flow (see event
   // listeners below). But this is easier typescript-wise
   const authenticationDataRef = useRef<AuthenticationData>({
-    flow: 'signup',
     context: GLOBAL_CONTEXT,
   });
 
@@ -64,6 +63,7 @@ export default function useSteps() {
   }, []);
 
   const [state, setState] = useState<State>({
+    flow: 'signup',
     email: null,
     /** the invite token, set in case the flow started with an invitation */
     token: null,
@@ -112,7 +112,8 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled
+      anySSOEnabled,
+      state
     );
   }, [
     getAuthenticationData,
@@ -121,6 +122,7 @@ export default function useSteps() {
     setError,
     updateState,
     anySSOEnabled,
+    state,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
@@ -156,13 +158,16 @@ export default function useSteps() {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
 
-      authenticationDataRef.current = event.eventValue;
+      const { authenticationData, flow } = event.eventValue;
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+      authenticationDataRef.current = authenticationData;
+      updateState({ flow });
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition]);
+  }, [currentStep, transition, updateState]);
 
   // Listen for any action that triggers the VERIFICATION flow, and initialize
   // the flow in no flow is ongoing
@@ -171,14 +176,16 @@ export default function useSteps() {
       if (currentStep !== 'closed') return;
 
       authenticationDataRef.current = {
-        flow: 'signup',
         context: GLOBAL_CONTEXT,
       };
+
+      updateState({ flow: 'signup' });
+
       transition(currentStep, 'TRIGGER_VERIFICATION_ONLY')();
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition]);
+  }, [currentStep, transition, updateState]);
 
   // Logic to launch other flows
   useEffect(() => {
@@ -191,9 +198,10 @@ export default function useSteps() {
     if (pathname.endsWith('/invite')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
-          flow: 'signup',
           context: GLOBAL_CONTEXT,
         };
+
+        updateState({ flow: 'signup' });
 
         transition(currentStep, 'START_INVITE_FLOW')(search);
       }
@@ -207,10 +215,12 @@ export default function useSteps() {
     if (pathname.endsWith('/sign-in')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
-          flow: 'signin',
           context: GLOBAL_CONTEXT,
         };
-        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+
+        updateState({ flow: 'signin' });
+
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signin');
       }
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -221,10 +231,12 @@ export default function useSteps() {
     if (pathname.endsWith('/sign-up')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
-          flow: 'signup',
           context: GLOBAL_CONTEXT,
         };
-        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
+
+        updateState({ flow: 'signup' });
+
+        transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signup');
       }
       // Remove all parameters from URL as they've already been captured
       window.history.replaceState(null, '', '/');
@@ -279,11 +291,13 @@ export default function useSteps() {
           };
 
       authenticationDataRef.current = {
-        flow: sso_flow || 'signin',
         successAction:
           actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
         context: context as AuthenticationContext,
       };
+
+      const flow = sso_flow ?? 'signin';
+      updateState({ flow });
 
       if (pathname.endsWith('authentication-error')) {
         transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
@@ -300,9 +314,17 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')();
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
     }
-  }, [pathname, search, currentStep, transition, authUser, setError]);
+  }, [
+    pathname,
+    search,
+    currentStep,
+    transition,
+    authUser,
+    setError,
+    updateState,
+  ]);
 
   return {
     currentStep,

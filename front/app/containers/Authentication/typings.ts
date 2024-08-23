@@ -24,6 +24,7 @@ export type ErrorCode =
   | 'resending_code_failed';
 
 export interface State {
+  flow: 'signup' | 'signin';
   email: string | null;
   token: string | null;
   prefilledBuiltInFields: {
@@ -48,7 +49,6 @@ export type SignUpInError = 'general' | 'franceconnect_merging_failed';
 export type VerificationError = 'not_entitled_under_minimum_age';
 
 export interface AuthenticationData {
-  flow: SignUpInFlow;
   context: AuthenticationContext;
   successAction?: SuccessAction;
 }

@@ -90,7 +90,6 @@ describe('FollowUnfollow', () => {
     await user.click(followButton);
     await waitFor(() =>
       expect(triggerAuthenticationFlow).toHaveBeenCalledWith({
-        flow: 'signup',
         context: { type: 'follow', action: 'following' },
         successAction: {
           name: 'follow',

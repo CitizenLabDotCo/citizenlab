@@ -115,7 +115,7 @@ const DesktopNavbarContent = () => {
   const isDesktopUser = !isSmallerThanTablet;
 
   const signIn = () => {
-    triggerAuthenticationFlow({ flow: 'signin' });
+    triggerAuthenticationFlow({}, 'signin');
   };
 
   return (
