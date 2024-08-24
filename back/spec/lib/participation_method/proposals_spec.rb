@@ -40,7 +40,7 @@ RSpec.describe ParticipationMethod::Proposals do
       context 'when the creation phase does not have reviewing enabled' do
         let(:creation_phase) { create(:proposals_phase, reviewing_enabled: false) }
 
-        it 'assignes the default "proposed" status if not set' do
+        it 'assigns the default "proposed" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
           participation_method.assign_defaults proposal
           expect(proposal.idea_status).to eq proposed_status
