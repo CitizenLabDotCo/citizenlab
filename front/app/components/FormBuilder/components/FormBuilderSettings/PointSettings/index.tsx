@@ -230,7 +230,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
           buttonStyle="secondary-outlined"
           onClick={onConfigureMapClick}
         >
-          {formatMessage(messages.configureMap)}
+          {formatMessage(messages.configureMap2)}
         </Button>
       </Box>
       <Modal

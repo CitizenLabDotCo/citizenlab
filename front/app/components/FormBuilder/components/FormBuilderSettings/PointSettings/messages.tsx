@@ -5,7 +5,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.mapConfigurationTitle',
     defaultMessage: 'Map configuration',
   },
-  configureMap: {
+  configureMap2: {
     id: 'app.components.formBuilder.configureMap2',
     defaultMessage: 'Configure map',
   },
