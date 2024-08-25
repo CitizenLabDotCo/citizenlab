@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  mapConfiguration: {
-    id: 'app.components.formBuilder.mapConfiguration',
+  mapConfigurationTitle: {
+    id: 'app.components.formBuilder.mapConfigurationTitle',
     defaultMessage: 'Map configuration',
   },
   configureMap: {
-    id: 'app.components.formBuilder.configureMap',
+    id: 'app.components.formBuilder.configureMap2',
     defaultMessage: 'Configure map',
   },
   linePolygonMapWarning: {

@@ -187,7 +187,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
       <Box mb="24px">
         <StyledLabel
           htmlFor="maximumInput"
-          value={<>{formatMessage(messages.mapConfiguration)}</>}
+          value={<>{formatMessage(messages.mapConfigurationTitle)}</>}
         />
         <EsriMap
           height="400px"
@@ -237,7 +237,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
         opened={showModal}
         width="84vw"
         close={onModalClose}
-        header={formatMessage(messages.mapConfiguration)}
+        header={formatMessage(messages.mapConfigurationTitle)}
       >
         <Box p="20px">
           <CustomMapConfigPage
