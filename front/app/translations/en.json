@@ -671,8 +671,6 @@
   "app.components.form.submit": "Submit",
   "app.components.form.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.components.form.verifiedBlocked": "You can't edit this field because it contains verified information",
-  "app.components.formBuilder.mapConfigurationTitle": "Map configuration",
-  "app.components.formBuilder.configureMap2": "Configure map",
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Add answer",
   "app.components.formBuilder.ai1": "AI",
