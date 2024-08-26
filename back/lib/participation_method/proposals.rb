@@ -18,7 +18,7 @@ module ParticipationMethod
       phase.reacting_dislike_enabled = false
       phase.expire_days_limit ||= 90
       phase.reacting_threshold ||= 300
-      phase.reviewing_enabled ||= true if AppConfiguration.instance.feature_activated?('prescreening')
+      phase.reviewing_enabled ||= false
     end
 
     def budget_in_form?(_)

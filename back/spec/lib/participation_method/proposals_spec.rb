@@ -100,9 +100,9 @@ RSpec.describe ParticipationMethod::Proposals do
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets reviewing_enabled to true' do
+      it 'sets reviewing_enabled to false' do
         participation_method.assign_defaults_for_phase
-        expect(phase.reviewing_enabled).to be true
+        expect(phase.reviewing_enabled).to be false
       end
     end
   end
