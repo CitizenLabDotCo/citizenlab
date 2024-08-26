@@ -6,13 +6,6 @@ module ParticipationMethod
       'proposals'
     end
 
-    def assign_defaults(input)
-      if input.creation_phase&.reviewing_enabled
-        input.idea_status ||= IdeaStatus.find_by!(code: 'prescreening', participation_method: idea_status_method)
-      end
-      super
-    end
-
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false

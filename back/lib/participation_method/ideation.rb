@@ -15,7 +15,9 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: idea_status_method)
+      input_status_code = input.creation_phase&.reviewing_enabled ? 'prescreening' : 'proposed'
+      input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
+      input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
 
     def assign_defaults_for_phase

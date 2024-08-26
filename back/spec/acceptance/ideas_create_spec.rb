@@ -33,7 +33,6 @@ resource 'Ideas' do
     response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:project_id) { project.id }
-    let(:publication_status) { 'published' }
 
     context 'in an ideation phase' do
       public_input_params(self)
@@ -42,6 +41,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end
 
+      let(:publication_status) { 'published' }
       let(:with_permissions) { false }
       let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
       let(:idea) { build(:idea) }
@@ -384,11 +384,16 @@ resource 'Ideas' do
       end
 
       let(:with_permissions) { false }
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:phase) { create(:proposals_phase, with_permissions: true) }
+      let(:project) { phase.project }
+      let(:creation_phase_id) { phase.id } 
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
       let(:topic_ids) { [create(:topic, projects: [project]).id] }
+      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
+      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+      
 
       context 'when visitor' do
         example '[error] Create a proposal', document: false do
@@ -404,12 +409,30 @@ resource 'Ideas' do
         let(:with_permissions) { true }
         let(:group) { create(:group) }
 
-        example 'Create a proposal when permitted (group membership)', document: false do
+        example 'Publish a proposal when permitted (group membership)', document: false do
           group.add_member(resident).save!
           project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'users', groups: [group])
           do_request
 
           assert_status 201
+          input = Idea.find json_parse(response_body).dig(:data, :id)
+          expect(input.reload.idea_status).to eq proposed_status
+          expect(input.publication_status).to eq 'published'
+          expect(input.published_at).to be_present
+        end
+
+        describe 'when reviewing is enabled' do
+          before { phase.update!(reviewing_enabled: true) }
+
+          example 'Submit a proposal in prescreening', document: false do
+            do_request
+            assert_status 201
+            input = Idea.find json_parse(response_body).dig(:data, :id)
+            expect(input.reload.idea_status).to eq prescreening_status
+            expect(input.publication_status).to eq 'submitted'
+            expect(input.submitted_at).to be_present
+            expect(input.published_at).to be_nil
+          end
         end
 
         example '[error] Create a proposal when not permitted (group membership)', document: false do

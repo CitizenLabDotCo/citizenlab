@@ -397,22 +397,43 @@ resource 'Ideas' do
           end
         end
 
+        describe do
+          let(:input) { create(:proposal, publication_status: 'draft') }
+          let(:publication_status) { 'published' }
+
+          example 'Publish a proposal', document: false do
+            expect { do_request }.to change { input.reload.publication_status }.from('draft').to('published')
+            expect(input.published_at).to be_present
+          end
+        end
+
         context 'when reviewing is enabled' do
           let(:creation_phase) { create(:proposals_phase, reviewing_enabled: true) }
-          let(:input) { create(:proposal, idea_status: proposals_status, creation_phase: creation_phase, project: creation_phase.project) }
+          let(:input) { create(:proposal, idea_status: proposals_status, publication_status: publication_status, creation_phase: creation_phase, project: creation_phase.project) }
 
           describe do
-            let(:proposals_status) { create(:idea_status, code: 'prescreening') }
+            let(:proposals_status) { create(:proposals_status, code: 'prescreening') }
+            let(:publication_status) { 'submitted' }
 
             example 'Update a proposal in prescreening', document: false do
               do_request
               assert_status 200
               expect(input.reload.title_multiloc).to eq title_multiloc
             end
+
+            example 'Submit a draft proposal', document: false do
+              input.update!(publication_status: 'draft')
+              do_request(idea: { publication_status: 'submitted' })
+
+              assert_status 200
+              expect(input.reload.publication_status).to eq 'submitted'
+              expect(input.submitted_at).to be_present
+            end
           end
 
           describe do
-            let(:proposals_status) { create(:idea_status, code: 'proposed') }
+            let(:proposals_status) { create(:proposals_status, code: 'proposed') }
+            let(:publication_status) { 'published' }
 
             example '[error] Cannot update a proposal in proposed', document: false do
               do_request
@@ -488,13 +509,26 @@ resource 'Ideas' do
 
         context 'when reviewing is enabled' do
           let(:creation_phase) { create(:proposals_phase, reviewing_enabled: true) }
-          let(:input) { create(:proposal, idea_status: create(:idea_status, code: 'proposed'), creation_phase: creation_phase, project: creation_phase.project) }
+          let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
+          let!(:proposed) { create(:proposals_status, code: 'proposed') }
+          let(:input) { create(:proposal, idea_status: proposed, creation_phase: creation_phase, project: creation_phase.project) }
           let(:body_multiloc) { { 'en' => 'Changed body' } }
 
           example 'Update a proposal in proposed', document: false do
             do_request
             assert_status 200
             expect(input.reload.body_multiloc).to eq body_multiloc
+          end
+
+          describe do
+            let(:input) { create(:proposal, idea_status: prescreening, publication_status: 'submitted', creation_phase: creation_phase, project: creation_phase.project) }
+            let(:idea_status_id) { proposed.id }
+
+            example 'Move a proposal from prescreening to proposed', document: false do
+              expect { do_request }.to change { input.reload.publication_status }.from('submitted').to('published')
+              expect(input.published_at).to be_present
+              expect(input.idea_status.code).to eq 'proposed'
+            end
           end
         end
       end

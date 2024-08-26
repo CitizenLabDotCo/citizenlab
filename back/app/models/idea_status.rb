@@ -19,6 +19,7 @@ class IdeaStatus < ApplicationRecord
   CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
   LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
   MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
+  NON_PUBLIC_CODES = %w[prescreening].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -42,6 +43,10 @@ class IdeaStatus < ApplicationRecord
 
   def can_manually_transition_to?
     MANUAL_TRANSITION_NOT_ALLOWED_CODES.exclude? code
+  end
+
+  def public_post?
+    NON_PUBLIC_CODES.exclude? code
   end
 
   private
