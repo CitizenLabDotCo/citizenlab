@@ -962,7 +962,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.dataReturned": "Gegevens die terugkomen van de verificatiemethode:",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Voer voornaam, achternaam, e-mail en wachtwoord in",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Voer je e-mail in",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Hoe recent moeten gebruikers worden geverifieerd?",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Hoe recent moeten gebruikers zijn geverifieerd?",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification": "Identiteitsverificatie (gebaseerd op gebruikersgroep)",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "Er zijn geen acties nodig om deel te nemen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Gebruik slimme groepen om deelname te beperken op basis van bovenstaande geverifieerde gegevens",
