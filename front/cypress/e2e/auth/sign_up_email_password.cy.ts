@@ -166,9 +166,5 @@ describe('Sign up - Email + password step', () => {
 
     cy.contains(newEmail).should('exist');
     cy.contains(oldEmail).should('not.exist');
-
-    cy.wait(10000);
-    // cy.get('.e2e-modal-close-button').first().click();
-    // cy.clearCookies();
   });
 });
