@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Lagre zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "støtteartikkel",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Ikke navngitt lag",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kartets zoomnivå",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Standard zoomnivå for kartet. Godtar en verdi mellom 1 og 17, der 1 er helt utzoomet (hele verden er synlig) og 17 er helt innzoomet (kvartaler og bygninger er synlige)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonymiser alle brukerdata",
