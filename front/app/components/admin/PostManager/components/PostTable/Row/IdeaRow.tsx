@@ -28,6 +28,7 @@ import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
+import IdeaOfficialFeedbackModal from '../../IdeaOfficialFeedbackModal';
 
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -79,6 +80,9 @@ const IdeaRow = ({
   const [phasesToBeSelected, setPhasesToBeSeselected] = useState<
     string[] | null
   >(null);
+
+  const [ideaOfficialFeedbackModalIsOpen, setIdeaOfficialFeedbackModalIsOpen] =
+    useState(false);
 
   const phaseDeselectModalOpen = !!phasesToBeSelected;
   const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
@@ -411,6 +415,8 @@ const IdeaRow = ({
       method: 'Clicked on the squares representing the statuses',
       idea: ideaId,
     });
+
+    setIdeaOfficialFeedbackModalIsOpen(true);
   };
 
   return (
@@ -448,6 +454,10 @@ const IdeaRow = ({
         isLoading={updatingIdea}
         onClose={closePhaseDeselectModal}
         onConfirm={handleConfirmDeselectPhase}
+      />
+      <IdeaOfficialFeedbackModal
+        open={ideaOfficialFeedbackModalIsOpen}
+        onClose={() => setIdeaOfficialFeedbackModalIsOpen(false)}
       />
     </>
   );
