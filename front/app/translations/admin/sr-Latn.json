@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Save zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "podrška (tekst)",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Unnamed layer",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivo zumiranja mape",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Podrazumevani nivo zumiranja karte. Prihvata vrednost između 1 i 17, pri čemu je 1 potpuno zumirana na gore (čitav svet je vidljiv), a 17 je potpuno zumirana ka tlu (vidljivi su blokovi i zgrade)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Анонимизирајте све корисничке податке",
