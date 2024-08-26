@@ -2448,7 +2448,7 @@
   "app.containers.AdminPage.widgets.sortNewest": "Most recent",
   "app.containers.AdminPage.widgets.sortPopular": "Most voted",
   "app.containers.AdminPage.widgets.sortTrending": "Trending",
-  "app.containers.AdminPage.widgets.subtitleWidgets": "Widgetiliorsinnaavutit, naleqqussariarlugulu quppernermi inunnut ikiuutissatut nittartakkannut ilanngullugu.",
+  "app.containers.AdminPage.widgets.subtitleWidgets": "You can create a widget, customize it and add it to your own website to attract people to this platform.",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Angissutsit",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Header & Footer",
