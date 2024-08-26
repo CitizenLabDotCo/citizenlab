@@ -152,7 +152,7 @@ describe('Sign up - Email + password step', () => {
     cy.get('.e2e-error-message');
   });
 
-  it.only('allows changing email during sign-up flow', () => {
+  it('allows changing email during sign-up flow', () => {
     const oldEmail = randomEmail();
     signUp(oldEmail);
 
