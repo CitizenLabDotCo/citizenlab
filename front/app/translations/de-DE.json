@@ -672,7 +672,7 @@
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
   "app.components.form.verifiedBlocked": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
   "app.components.formBuilder.Page": "Seite",
-  "app.components.formBuilder.accessibilityStatement": "richtlinie zur Barrierefreiheit",
+  "app.components.formBuilder.accessibilityStatement": "Richtlinie zur Barrierefreiheit",
   "app.components.formBuilder.addAnswer": "Antwort hinzufügen",
   "app.components.formBuilder.ai1": "KI",
   "app.components.formBuilder.aiUpsellText1": "Wenn Sie Zugang zu unserem KI-Paket haben, können Sie Textantworten mit KI zusammenfassen und kategorisieren",
