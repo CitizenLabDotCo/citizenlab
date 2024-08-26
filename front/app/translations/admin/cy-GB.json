@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Arbed chwyddo",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "erthygl cefnogi",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Haen ddienw",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Lefel chwyddo map",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Lefel chwyddo rhagosodedig y map. Yn derbyn gwerth rhwng 1 a 17, lle mae 1 wedi'i chwyddo'n llwyr (mae'r byd i gyd yn weladwy) a 17 wedi'i chwyddo'n llawn (mae blociau ac adeiladau yn weladwy)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonymize holl ddata defnyddwyr",
