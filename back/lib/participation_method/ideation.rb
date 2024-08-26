@@ -331,7 +331,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_posting_inputs?
+    def supports_submission?
       true
     end
 

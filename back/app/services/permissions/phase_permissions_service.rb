@@ -88,7 +88,7 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_action
-      if !participation_method.supports_posting_inputs?
+      if !participation_method.supports_submission?
         POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
       elsif !phase.submission_enabled
         POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled

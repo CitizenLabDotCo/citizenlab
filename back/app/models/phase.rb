@@ -109,7 +109,7 @@ class Phase < ApplicationRecord
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
-    phase.pmethod.supports_posting_inputs?
+    phase.pmethod.supports_submission?
   }
 
   with_options if: ->(phase) { phase.pmethod.supports_commenting? } do

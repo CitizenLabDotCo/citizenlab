@@ -118,8 +118,7 @@ module ParticipationMethod
       false
     end
 
-    # Perhaps supports_submission? would be a better name?
-    def supports_posting_inputs?
+    def supports_submission?
       false
     end
 

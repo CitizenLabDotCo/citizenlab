@@ -24,7 +24,7 @@ module ParticipationMethod
       'ideation'
     end
 
-    def supports_posting_inputs?
+    def supports_submission?
       false
     end
 
