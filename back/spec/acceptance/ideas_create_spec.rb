@@ -386,14 +386,13 @@ resource 'Ideas' do
       let(:with_permissions) { false }
       let(:phase) { create(:proposals_phase, with_permissions: true) }
       let(:project) { phase.project }
-      let(:creation_phase_id) { phase.id } 
+      let(:creation_phase_id) { phase.id }
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
       let(:topic_ids) { [create(:topic, projects: [project]).id] }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
       let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
-      
 
       context 'when visitor' do
         example '[error] Create a proposal', document: false do
