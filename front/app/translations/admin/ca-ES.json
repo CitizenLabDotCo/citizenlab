@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Desa el zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "article de suport",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Capa sense nom",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivell de zoom del mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "El nivell de zoom predeterminat del mapa. Accepta un valor entre 1 i 17, on 1 s'allunya completament (tot el món és visible) i 17 s'apropa completament (els blocs i els edificis són visibles)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anònim totes les dades dels usuaris",
