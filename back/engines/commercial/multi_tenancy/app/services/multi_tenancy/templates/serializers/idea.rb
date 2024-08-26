@@ -20,6 +20,7 @@ module MultiTenancy
           votes_count
         ]
 
+        attribute(:submitted_at) { |idea| serialize_timestamp(idea.submitted_at) }
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }
 
         attribute(:custom_field_values) do |idea, _serialization_params|
