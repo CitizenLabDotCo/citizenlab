@@ -7058,7 +7058,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7076,7 +7076,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7094,7 +7094,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7110,7 +7110,7 @@ models:
       title_multiloc:
         en: Current phase
       participation_method: ideation
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7126,7 +7126,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7143,7 +7143,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7159,7 +7159,7 @@ models:
       participation_method: ideation
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7174,7 +7174,7 @@ models:
       participation_method: ideation
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7190,7 +7190,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7209,7 +7209,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7252,7 +7252,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7271,7 +7271,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7284,7 +7284,7 @@ models:
       title_multiloc:
         en: Current phase
       participation_method: native_survey
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7322,7 +7322,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: limited
@@ -7354,7 +7354,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7385,7 +7385,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7420,7 +7420,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7451,7 +7451,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7498,7 +7498,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7531,7 +7531,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: false
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7559,7 +7559,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7589,7 +7589,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7623,7 +7623,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7652,7 +7652,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7682,7 +7682,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: false
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7709,7 +7709,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7739,7 +7739,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: limited
@@ -7768,7 +7768,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: limited
@@ -7797,7 +7797,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7829,7 +7829,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7860,7 +7860,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited

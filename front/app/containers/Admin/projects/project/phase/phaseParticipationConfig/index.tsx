@@ -214,7 +214,7 @@ const PhaseParticipationConfig = ({
   const togglePostingEnabled = () => {
     setParticipationConfig((state) => ({
       ...state,
-      posting_enabled: !state.posting_enabled,
+      submission_enabled: !state.submission_enabled,
     }));
   };
 
@@ -411,7 +411,7 @@ const PhaseParticipationConfig = ({
 
   const {
     participation_method,
-    posting_enabled,
+    submission_enabled,
     commenting_enabled,
     reacting_enabled,
     reacting_like_method,
@@ -481,7 +481,7 @@ const PhaseParticipationConfig = ({
           <IdeationInputs
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
-            posting_enabled={posting_enabled}
+            submission_enabled={submission_enabled}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}
@@ -521,7 +521,7 @@ const PhaseParticipationConfig = ({
           <ProposalsInputs
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
-            posting_enabled={posting_enabled}
+            submission_enabled={submission_enabled}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}

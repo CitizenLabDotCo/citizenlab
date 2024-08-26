@@ -13,7 +13,7 @@
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #  participation_method          :string           default("ideation"), not null
-#  posting_enabled               :boolean          default(TRUE)
+#  submission_enabled            :boolean          default(TRUE)
 #  commenting_enabled            :boolean          default(TRUE)
 #  reacting_enabled              :boolean          default(TRUE), not null
 #  reacting_like_method          :string           default("unlimited"), not null
@@ -108,7 +108,7 @@ class Phase < ApplicationRecord
     validates :presentation_mode, presence: true
   end
 
-  validates :posting_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
+  validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
     phase.pmethod.supports_posting_inputs?
   }
 

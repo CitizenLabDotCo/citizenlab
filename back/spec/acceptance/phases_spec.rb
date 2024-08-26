@@ -124,7 +124,7 @@ resource 'Phases' do
         parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
-        parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
+        parameter :submission_enabled, 'Can citizens submit inputs in this phase? Defaults to true', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
         parameter :reacting_like_method, "How does reacting work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -177,7 +177,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
@@ -316,7 +316,7 @@ resource 'Phases' do
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
           expect(phase_in_db.presentation_mode).to eq 'card'
-          expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
@@ -409,7 +409,7 @@ resource 'Phases' do
         parameter :title_multiloc, 'The title of the phase in nultiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
-        parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
+        parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
         parameter :reacting_like_method, "How does liking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
@@ -441,7 +441,7 @@ resource 'Phases' do
       let(:id) { phase.id }
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
-      let(:posting_enabled) { false }
+      let(:submission_enabled) { false }
       let(:commenting_enabled) { false }
       let(:reacting_enabled) { true }
       let(:reacting_like_method) { 'limited' }
@@ -454,7 +454,7 @@ resource 'Phases' do
         expect(response_status).to eq 200
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+        expect(json_response.dig(:data, :attributes, :submission_enabled)).to eq submission_enabled
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method

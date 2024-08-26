@@ -295,7 +295,7 @@ class ProjectCopyService < TemplateService
                                     end,
         'presentation_mode' => phase.presentation_mode,
         'participation_method' => phase.participation_method,
-        'posting_enabled' => phase.posting_enabled,
+        'submission_enabled' => phase.submission_enabled,
         'commenting_enabled' => phase.commenting_enabled,
         'reacting_enabled' => phase.reacting_enabled,
         'reacting_like_method' => phase.reacting_like_method,

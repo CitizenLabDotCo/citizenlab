@@ -109,7 +109,7 @@ module MultiTenancy
             phase.assign_attributes(voting_method: 'budgeting', voting_max_total: rand(100..1_000_099).round(-2))
           elsif phase.participation_method == 'ideation'
             phase.assign_attributes({
-              posting_enabled: rand(4) != 0,
+              submission_enabled: rand(4) != 0,
               reacting_enabled: rand(4) != 0,
               reacting_dislike_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,

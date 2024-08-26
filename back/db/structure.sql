@@ -1541,7 +1541,8 @@ CREATE TABLE public.ideas (
     anonymous boolean DEFAULT false NOT NULL,
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    submitted_at timestamp(6) without time zone
 );
 
 
@@ -1590,7 +1591,7 @@ CREATE TABLE public.phases (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     participation_method character varying DEFAULT 'ideation'::character varying NOT NULL,
-    posting_enabled boolean DEFAULT true,
+    submission_enabled boolean DEFAULT true,
     commenting_enabled boolean DEFAULT true,
     reacting_enabled boolean DEFAULT true NOT NULL,
     reacting_like_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
@@ -7533,6 +7534,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240812115140'),
 ('20240814133336'),
 ('20240814163522'),
-('20240821135150');
+('20240821135150'),
+('20240826083227');
 
 

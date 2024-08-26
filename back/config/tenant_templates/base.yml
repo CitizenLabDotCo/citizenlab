@@ -401,7 +401,7 @@ models:
       participation_method: ideation
       campaigns_settings:
         project_phase_started: true
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited

@@ -7,7 +7,7 @@ module Post
   include GeoJsonHelpers
   extend ActiveSupport::Concern
 
-  PUBLICATION_STATUSES = %w[draft published].freeze
+  PUBLICATION_STATUSES = %w[draft submitted published].freeze
 
   included do
     pg_search_scope :restricted_search,

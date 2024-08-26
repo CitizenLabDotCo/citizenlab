@@ -109,7 +109,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :start_at,
       :end_at,
       :participation_method,
-      :posting_enabled,
+      :submission_enabled,
       :commenting_enabled,
       :reacting_enabled,
       :reacting_like_method,

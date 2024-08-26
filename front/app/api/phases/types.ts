@@ -40,7 +40,7 @@ export interface IPhaseAttributes {
   created_at: string;
   updated_at: string;
   participation_method: ParticipationMethod;
-  posting_enabled: boolean;
+  submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
   reacting_like_method: 'limited' | 'unlimited';
@@ -88,7 +88,7 @@ export interface IUpdatedPhaseProperties {
   start_at?: string;
   end_at?: string;
   participation_method?: ParticipationMethod;
-  posting_enabled?: boolean | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;
