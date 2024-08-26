@@ -2503,7 +2503,7 @@
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightDescriptionLabel": "Beschreibung",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkLabel": "URL der primären Schaltfläche",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkPlaceholder": "https://beispiel.de",
-  "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonTextLabel": "Text der Hauptschaltfläche",
+  "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonTextLabel": "Text der primären Schaltfläche",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkLabel": "URL der sekundären Schaltfläche",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkPlaceholder": "https://beispiel.de",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonTextLabel": "Text der sekundären Schaltfläche",
