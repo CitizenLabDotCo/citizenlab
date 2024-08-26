@@ -46,9 +46,9 @@ describe('Idea posting permissions', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('/projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.wait(2000);
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.wait(500);
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-verification-wizard-root').should('exist');
     });
 
@@ -56,9 +56,9 @@ describe('Idea posting permissions', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('/projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.wait(2000);
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.wait(500);
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-idea-new-page').should('exist');
     });
   });
