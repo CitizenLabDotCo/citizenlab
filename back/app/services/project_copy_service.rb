@@ -308,7 +308,7 @@ class ProjectCopyService < TemplateService
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
-        'reviewing_enabled' => phase.reviewing_enabled,
+        'reviewing_enabled' => phase.reviewing_enabled
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
