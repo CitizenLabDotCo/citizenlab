@@ -768,6 +768,8 @@ jobs:
           cd ../e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
             -e DEBUG=cypress:* \
+            -e API_HOST=e2e.front \
+            -e API_PORT=3000 \
             front npm run cypress:run -- \
             --reporter cypress-circleci-reporter \
             --config baseUrl=http://e2e.front:3000 \
