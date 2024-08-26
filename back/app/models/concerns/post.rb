@@ -90,11 +90,11 @@ module Post
     end
 
     def set_submitted_at
-      self.submitted_at ||= Time.zone.now if submitted?
+      self.submitted_at ||= Time.zone.now
     end
 
     def set_published_at
-      self.published_at ||= Time.zone.now if published?
+      self.published_at ||= Time.zone.now
     end
 
     def set_assigned_at
