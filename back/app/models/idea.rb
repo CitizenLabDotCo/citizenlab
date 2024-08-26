@@ -101,6 +101,7 @@ class Idea < ApplicationRecord
 
   with_options unless: :draft? do |post|
     post.before_validation :strip_title
+    post.after_validation :set_submitted_at, if: ->(record) { record.submitted? && record.publication_status_changed? }
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end

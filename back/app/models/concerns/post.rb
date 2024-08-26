@@ -65,6 +65,10 @@ module Post
       publication_status == 'draft'
     end
 
+    def submitted?
+      %w[submitted published].include? publication_status
+    end
+
     def published?
       publication_status == 'published'
     end
@@ -83,6 +87,10 @@ module Post
       title_multiloc.each do |key, value|
         title_multiloc[key] = value.strip
       end
+    end
+
+    def set_submitted_at
+      self.submitted_at ||= Time.zone.now
     end
 
     def set_published_at
