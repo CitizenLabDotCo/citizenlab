@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Salva lo zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "support article",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Strato senza nome",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Map zoom level",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "The default zoom level of the map. Accepts a value between 1 and 17, where 1 is fully zoomed out (the entire world is visible) and 17 is fully zoomed in (blocks and buildings are visible)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonimizzare tutti i dati degli utenti",
