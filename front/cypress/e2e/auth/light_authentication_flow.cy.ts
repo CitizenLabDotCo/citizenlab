@@ -32,25 +32,12 @@ describe('Light authentication flow', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
 
-        cy.intercept(`**/phases/${phaseId}/permissions/posting_idea`).as(
-          'setPermissionRequest'
-        );
-
-        cy.setAdminLoginCookie();
-        cy.visit(
-          `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
-        );
-        cy.acceptCookies();
-        cy.get('.e2e-action-accordion-posting_idea');
-        cy.wait(1000);
-
-        cy.get('.e2e-action-accordion-posting_idea').click();
-        cy.get('.e2e-action-form-posting_idea').within(() => {
-          cy.get('.e2e-permission-email-confirmed-users').click();
-        });
-
-        cy.wait('@setPermissionRequest').then(() => {
-          cy.logout();
+        cy.apiSetPhasePermission({
+          phaseId,
+          permissionBody: {
+            permitted_by: 'everyone_confirmed_email',
+          },
+          action: 'posting_idea',
         });
       });
   });
