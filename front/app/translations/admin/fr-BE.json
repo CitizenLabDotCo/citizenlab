@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Enregistrer le zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "article de support",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/fr/articles/7022129-collecte-de-commentaires-et-de-reactions-liste-et-vue-cartographique",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Couche sans nom",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Niveau de zoom par défaut",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Définissez le niveau de zoom de la carte par défaut. Choisissez une valeur entre 0 et 20, où 0 est entièrement dézoomé (le monde entier est visible) et 20 est entièrement zoomé (les blocs d'habitations et les bâtiments sont visibles)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonymiser toutes les données des utilisateurs",
