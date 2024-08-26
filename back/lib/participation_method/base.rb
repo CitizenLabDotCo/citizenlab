@@ -118,12 +118,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_submission?
-      false
-    end
-
-    # Perhaps supports_posting? would be a better name?
-    def supports_public_visibility?
+    def supports_posting?
       false
     end
 
@@ -140,6 +135,10 @@ module ParticipationMethod
     end
 
     def supports_status?
+      false
+    end
+
+    def supports_submission?
       false
     end
 

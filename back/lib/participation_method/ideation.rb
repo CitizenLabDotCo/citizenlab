@@ -331,11 +331,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_submission?
-      true
-    end
-
-    def supports_public_visibility?
+    def supports_posting?
       true
     end
 
@@ -344,6 +340,10 @@ module ParticipationMethod
     end
 
     def supports_status?
+      true
+    end
+
+    def supports_submission?
       true
     end
 
