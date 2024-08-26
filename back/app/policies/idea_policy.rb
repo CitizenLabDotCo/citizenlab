@@ -67,7 +67,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
     return false if record.participation_method_on_creation.use_reactions_as_votes? && record.reactions.where.not(user_id: user.id).exists?
-    return false if record.creation_phase&.reviewing_enabled && record.idea_status.code != 'prescreening' # TODO: Use record.published?
+    return false if record.creation_phase&.reviewing_enabled && record.published?
 
     posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
 
