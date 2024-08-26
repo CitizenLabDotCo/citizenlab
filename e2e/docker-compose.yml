@@ -48,6 +48,7 @@ services:
       - "../env_files/front-safe.env"
       - "../env_files/front-secret.env"
     environment:
+      NODE_ENV: "test"
       API_HOST: e2e.front
       API_PORT: 3000
       TEST_BUILD: "true"
