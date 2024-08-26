@@ -2508,7 +2508,7 @@
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonLinkPlaceholder": "https://beispiel.de",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightSecondaryButtonTextLabel": "Text der sekundären Schaltfläche",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitle": "Highlight",
-  "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel": "Name",
+  "app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel": "Titel",
   "app.containers.admin.ContentBuilder.homepage.highlightTitle": "Highlight",
   "app.containers.admin.ContentBuilder.homepage.homepageBanner": "Homepage-Banner",
   "app.containers.admin.ContentBuilder.homepage.homepageBannerTitle": "Homepage-Banner",
