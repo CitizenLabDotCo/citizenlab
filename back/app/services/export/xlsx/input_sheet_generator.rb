@@ -77,10 +77,6 @@ module Export
         ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { input.created_at })
       end
 
-      def submitted_at_report_field
-        ComputedFieldForReport.new(column_header_for('submitted_at'), ->(input) { input.submitted_at })
-      end
-
       def published_at_report_field
         ComputedFieldForReport.new(column_header_for('published_at'), ->(input) { input.published_at })
       end
@@ -165,7 +161,6 @@ module Export
       def meta_report_fields
         [].tap do |meta_fields|
           meta_fields << created_at_report_field
-          meta_fields << submitted_at_report_field if participation_method.supports_posting_inputs?
           meta_fields << published_at_report_field if participation_method.supports_public_visibility?
           meta_fields << comments_count_report_field if participation_method.supports_commenting?
           if participation_method.supports_reacting?

@@ -44,7 +44,6 @@ module Export
           { header: I18n.t('author_fullname', scope: t_scope), f: ->(i) { xlsx_service.format_author_name i } },
           { header: I18n.t('author_email', scope: t_scope),    f: ->(i) { i.author&.email } },
           { header: I18n.t('author_id', scope: t_scope),       f: ->(i) { i.author_id } },
-          { header: I18n.t('submitted_at', scope: t_scope),    f: ->(i) { i.submitted_at }, skip_sanitization: true },
           { header: I18n.t('published_at', scope: t_scope),    f: ->(i) { i.published_at }, skip_sanitization: true }
         ]
 
