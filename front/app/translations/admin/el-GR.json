@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Αποθήκευση ζουμ",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "άρθρο υποστήριξης",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Ανώνυμο στρώμα",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Επίπεδο ζουμ χάρτη",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Το προεπιλεγμένο επίπεδο ζουμ του χάρτη. Δέχεται μια τιμή μεταξύ 1 και 17, όπου το 1 είναι πλήρως ζουμαρισμένο (όλος ο κόσμος είναι ορατός) και το 17 είναι πλήρως ζουμαρισμένο (τα τετράγωνα και τα κτίρια είναι ορατά)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Ανωνυμοποίηση όλων των δεδομένων χρήστη",
