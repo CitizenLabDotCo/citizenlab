@@ -44,6 +44,10 @@ module Verification
       end
     end
 
+    def first_method_enabled
+      active_methods(AppConfiguration.instance).first
+    end
+
     class NoMatchError < StandardError; end
 
     class NotEntitledError < StandardError
