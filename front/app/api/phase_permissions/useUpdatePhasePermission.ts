@@ -3,26 +3,28 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import permissionsCustomFieldsKeys from '../permissions_custom_fields/keys';
+
 import phasePermissionKeys from './keys';
-import { IPCPermission, IUpdatePermissionObject } from './types';
+import { IPhasePermission, UpdatePermissionParams } from './types';
 
 const updatePhasePermission = ({
   permissionId,
   phaseId,
   action,
   permission,
-}: IUpdatePermissionObject) =>
-  fetcher<IPCPermission>({
+}: UpdatePermissionParams) =>
+  fetcher<IPhasePermission>({
     path: `/phases/${phaseId}/permissions/${action}`,
     action: 'patch',
     body: { permissionId, permission },
   });
 
-const useUpdatePhasePermission = (phaseId?: string | null) => {
+const useUpdatePhasePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPCPermission, CLErrors, IUpdatePermissionObject>({
+  return useMutation<IPhasePermission, CLErrors, UpdatePermissionParams>({
     mutationFn: updatePhasePermission,
-    onSuccess: () => {
+    onSuccess: (_, { action, phaseId }) => {
       queryClient.invalidateQueries({
         queryKey: phasePermissionKeys.lists(),
       });
@@ -31,6 +33,13 @@ const useUpdatePhasePermission = (phaseId?: string | null) => {
           queryKey: phasePermissionKeys.list({ phaseId }),
         });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: permissionsCustomFieldsKeys.list({
+          phaseId,
+          action,
+        }),
+      });
     },
   });
 };

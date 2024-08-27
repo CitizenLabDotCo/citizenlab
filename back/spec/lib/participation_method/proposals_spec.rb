@@ -156,21 +156,9 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#update_if_published?' do # TODO
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#custom_form' do
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
-    end
-  end
-
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
 
@@ -186,21 +174,25 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  its(:transitive?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
-  its(:validate_built_in_fields?) { is_expected.to be true }
   its(:proposed_budget_in_form?) { is_expected.to be false }
-  its(:supports_public_visibility?) { is_expected.to be true }
-  its(:supports_posting_inputs?) { is_expected.to be true }
-  its(:sign_in_required_for_posting?) { is_expected.to be true }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be true }
+  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
-  its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be true }
+  its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
-  its(:supports_assignment?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
-  its(:additional_export_columns) { is_expected.to eq [] }
+  its(:use_reactions_as_votes?) { is_expected.to be true }
+  its(:transitive?) { is_expected.to be false }
 end

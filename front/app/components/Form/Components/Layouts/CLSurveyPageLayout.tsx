@@ -57,6 +57,7 @@ import {
   hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
+import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
@@ -100,6 +101,7 @@ const CLSurveyPageLayout = memo(
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
+    const { announceError } = useErrorToRead();
 
     // Get project and relevant phase data
     const { slug } = useParams() as {
@@ -156,15 +158,22 @@ const CLSurveyPageLayout = memo(
 
     useEffect(() => {
       if (scrollToError) {
-        // Scroll to the first field with an error
-        document.getElementById('error-display')?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start',
-        });
+        // Select the first error element by its class name
+        const firstErrorElement = document.querySelector(
+          '.error-display-container'
+        );
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start',
+          });
+
+          announceError(firstErrorElement.id);
+        }
         setScrollToError(false);
       }
-    }, [scrollToError]);
+    }, [scrollToError, announceError]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {

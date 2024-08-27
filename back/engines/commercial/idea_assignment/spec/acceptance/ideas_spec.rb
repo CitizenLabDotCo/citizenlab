@@ -176,7 +176,7 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
-      example 'Changing the project keeps the assignee valid', document: false, if: defined?(ProjectManagement::Engine) do
+      example 'Changing the project keeps the assignee valid', document: false do
         @idea.update! assignee: create(:project_moderator, projects: [@project])
         do_request project_id: create(:project).id
 
@@ -186,7 +186,7 @@ resource 'Ideas' do
       end
     end
 
-    context 'when moderator', if: defined?(ProjectManagement::Engine) do
+    context 'when moderator' do
       before { header_token_for create(:project_moderator, projects: [@project]) }
 
       let(:assignee_id) { create(:admin).id }

@@ -1,7 +1,6 @@
-import {
-  IGlobalPermissionAction,
-  IPhasePermissionAction,
-} from 'api/permissions/types';
+import { Multiloc } from 'typings';
+
+import { Action } from 'api/permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -18,10 +17,8 @@ export type IItemParameters = {
 };
 
 export type IListParameters = {
-  phaseId?: string | null;
-  initiativeContext?: boolean | null;
-  projectId?: string | null;
-  action: IGlobalPermissionAction | IPhasePermissionAction;
+  phaseId?: string;
+  action: Action;
 };
 
 export interface IPermissionsCustomField {
@@ -29,25 +26,34 @@ export interface IPermissionsCustomField {
 }
 
 export interface IPermissionsCustomFieldAdd {
-  custom_field_id: string;
+  action: Action;
+  phaseId?: string;
   required: boolean;
-  phaseId?: string | null;
-  initiativeContext?: boolean | null;
-  projectId?: string | null;
-  action: string;
+  custom_field_id: string;
 }
 
-export interface IPermissionCustomFieldUpdate {
+export type IPermissionCustomFieldUpdate = {
   id: string;
-  required: boolean;
-}
+
+  // These two should be defined if the
+  // field is not persisted yet.
+  permission_id?: string;
+  custom_field_id?: string;
+
+  // the actual parameter
+  required?: boolean;
+};
 
 export interface IPermissionsCustomFieldData {
   id: string;
   type: 'permissions_custom_field';
   attributes: {
-    required: boolean;
     created_at: string;
+    lock: null | 'verification' | 'group';
+    ordering: number;
+    persisted: boolean;
+    required: boolean;
+    title_multiloc?: Multiloc;
     updated_at: string;
   };
   relationships: {

@@ -266,7 +266,7 @@ resource 'IdeaStatuses' do
 
       describe do
         before do
-          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code) }
+          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code, participation_method: 'proposals') }
         end
 
         let(:idea_status) { create(:proposals_status) }

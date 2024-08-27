@@ -60,13 +60,15 @@ const CommentingProposalDisabled = () => {
   const messageDescriptor = calculateMessageDescriptor(commentingPermissions);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
-    triggerAuthenticationFlow({
-      flow,
-      context: {
-        action: 'commenting_initiative',
-        type: 'initiative',
+    triggerAuthenticationFlow(
+      {
+        context: {
+          action: 'commenting_initiative',
+          type: 'initiative',
+        },
       },
-    });
+      flow
+    );
   };
 
   const signIn = () => {

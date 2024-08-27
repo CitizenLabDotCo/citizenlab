@@ -3,6 +3,8 @@ import React from 'react';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { render, screen } from 'utils/testUtils/rtl';
 
+import { ErrorToReadProvider } from '../Fields/ErrorToReadContext';
+
 import LinearScaleControl from './LinearScaleControl';
 
 const intl = getDummyIntlObject();
@@ -48,16 +50,30 @@ const props = {
 
 describe('LinearScaleControl', () => {
   it('renders LinearScaleControl', () => {
-    render(<LinearScaleControl {...props} />);
+    render(
+      <ErrorToReadProvider>
+        <LinearScaleControl {...props} />
+      </ErrorToReadProvider>
+    );
     expect(screen.getByTestId('linearScaleControl')).toBeInTheDocument();
   });
+
   it("doesn't show optional for required fields", () => {
-    render(<LinearScaleControl {...props} />);
+    render(
+      <ErrorToReadProvider>
+        <LinearScaleControl {...props} />
+      </ErrorToReadProvider>
+    );
     expect(screen.queryByText('(optional)')).toBeNull();
   });
+
   it('shows optional for optional fields', () => {
     props.schema.required = [];
-    render(<LinearScaleControl {...props} />);
+    render(
+      <ErrorToReadProvider>
+        <LinearScaleControl {...props} />
+      </ErrorToReadProvider>
+    );
     expect(screen.getByText('(optional)')).toBeInTheDocument();
   });
 });

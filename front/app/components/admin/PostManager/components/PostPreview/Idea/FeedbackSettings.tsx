@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Select, Label } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
@@ -11,6 +12,7 @@ import { IIdea } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import useUsers from 'api/users/useUsers';
 
 import useLocalize from 'hooks/useLocalize';
@@ -38,13 +40,18 @@ interface Props {
 }
 
 const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
+  const { phaseId } = useParams() as { phaseId: string };
+  const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { data: statuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method:
+      phase?.data.attributes.participation_method === 'proposals'
+        ? 'proposals'
+        : 'ideation',
   });
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: prospectAssignees } = useUsers({

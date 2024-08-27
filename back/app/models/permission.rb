@@ -12,6 +12,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  global_custom_fields  :boolean          default(FALSE), not null
+#  verification_expiry   :integer
 #
 # Indexes
 #
@@ -19,7 +20,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative attending_event],
@@ -43,7 +44,7 @@ class Permission < ApplicationRecord
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
-  has_many :permissions_custom_fields, -> { includes(:custom_field).order('custom_fields.ordering') }, inverse_of: :permission, dependent: :destroy
+  has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
@@ -52,7 +53,6 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
-  before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -79,6 +79,16 @@ class Permission < ApplicationRecord
     sql
   end
 
+  def verification_enabled?
+    false
+  end
+
+  def allow_global_custom_fields?
+    return true if %w[users verified].include? permitted_by
+
+    false
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields
@@ -87,10 +97,8 @@ class Permission < ApplicationRecord
     else
       'users'
     end
-    self.global_custom_fields ||= (permitted_by == 'users')
-  end
-
-  def update_global_custom_fields
-    self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
+    self.global_custom_fields ||= true
   end
 end
+
+Permission.include(Verification::Patches::Permission)

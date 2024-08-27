@@ -58,12 +58,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#validate_built_in_fields?' do
-    it 'returns true' do
-      expect(participation_method.validate_built_in_fields?).to be true
-    end
-  end
-
   describe '#author_in_form?' do
     before { SettingsService.new.activate_feature! 'idea_author_change' }
 
@@ -137,12 +131,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
       it 'returns [picks, budget]' do
@@ -184,21 +172,24 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  its(:transitive?) { is_expected.to be true }
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
-  its(:validate_built_in_fields?) { is_expected.to be true }
-  its(:supports_public_visibility?) { is_expected.to be true }
-  its(:supports_posting_inputs?) { is_expected.to be false }
-  its(:update_if_published?) { is_expected.to be true }
-  its(:sign_in_required_for_posting?) { is_expected.to be true }
-  its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be true }
+  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
-  its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be true }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }
-  its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:use_reactions_as_votes?) { is_expected.to be false }
+  its(:transitive?) { is_expected.to be true }
 end

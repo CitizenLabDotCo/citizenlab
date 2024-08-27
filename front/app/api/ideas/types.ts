@@ -91,7 +91,7 @@ export interface IIdeaData {
     anonymous: boolean;
     author_hash: string;
     followers_count: number;
-    reactions_needed?: number;
+    reacting_threshold?: number;
     expires_at?: string;
   };
   relationships: {

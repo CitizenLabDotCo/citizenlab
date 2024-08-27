@@ -4,10 +4,10 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { IPCPermissionData } from './types';
+import { IPhasePermissionData } from './types';
 import useUpdateProjectPermission from './useUpdateProjectPermission';
 
-export const data: IPCPermissionData = {
+export const data: IPhasePermissionData = {
   id: '5d14ece5feb0',
   type: 'permission',
   attributes: {

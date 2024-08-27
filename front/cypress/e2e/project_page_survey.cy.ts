@@ -3,7 +3,7 @@ import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
 describe('Existing project with survey', () => {
-  before(() => {
+  beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
     cy.get('#e2e-project-page');

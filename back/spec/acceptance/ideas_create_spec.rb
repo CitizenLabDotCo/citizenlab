@@ -262,7 +262,7 @@ resource 'Ideas' do
 
           before do
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [group])
+              .update!(permitted_by: 'users', groups: [group])
           end
 
           example '[error] Create an idea in a project with groups posting permission', document: false do
@@ -406,14 +406,14 @@ resource 'Ideas' do
 
         example 'Create a proposal when permitted (group membership)', document: false do
           group.add_member(resident).save!
-          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'groups', groups: [group])
+          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'users', groups: [group])
           do_request
 
           assert_status 201
         end
 
         example '[error] Create a proposal when not permitted (group membership)', document: false do
-          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'groups', groups: [group])
+          project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'users', groups: [group])
           do_request
 
           assert_status 401

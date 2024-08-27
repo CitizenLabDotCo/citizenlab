@@ -32,6 +32,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_trending_info,
       :topics,
       :phases,
+      :creation_phase,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
@@ -195,8 +196,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update
     input = Idea.find params[:id]
-    project = input.project
-    phase = TimelineService.new.current_phase_not_archived project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -209,21 +208,20 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
+    user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
-    input.assign_attributes update_params
-    authorize input
-    if anonymous_not_allowed?(phase)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
+
+    ActiveRecord::Base.transaction do # Assigning relationships cause database changes
+      input.assign_attributes update_params
+      authorize input
+      if not_allowed_update_errors(input)
+        render json: not_allowed_update_errors(input), status: :unprocessable_entity
+        return # rubocop:disable Rails/TransactionExitStatement
+      end
+      verify_profanity input
     end
-    if idea_status_not_allowed?(input)
-      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
-      return
-    end
-    verify_profanity input
 
     sidefx.before_update(input, current_user)
 
@@ -409,7 +407,7 @@ class WebApi::V1::IdeasController < ApplicationController
         params: jsonapi_serializer_params(
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
-          user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
+          user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
         ),
         include: include
       }
@@ -429,7 +427,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
-    input.participation_method_on_creation.sign_in_required_for_posting?
+    !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
   # Change counts on idea for values for phase, if filtered by phase
@@ -448,6 +446,22 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
     ideas
+  end
+
+  def not_allowed_update_errors(input)
+    if anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+    end
+    if idea_status_not_allowed?(input)
+      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }
+    end
+    if !input.participation_method_on_creation.transitive? && input.project_id_changed?
+      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+    end
+
+    if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
+      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+    end
   end
 end
 

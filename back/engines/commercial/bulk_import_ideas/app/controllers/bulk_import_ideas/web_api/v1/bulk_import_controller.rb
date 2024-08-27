@@ -51,9 +51,11 @@ module BulkImportIdeas
       records = imported_draft_records
       approved = 0
       not_approved = 0
+      side_fx_idea_service = SideFxIdeaService.new
       records.each do |record|
         if record.update(publication_status: 'published')
           approved += 1
+          side_fx_idea_service.after_import(record, current_user)
         else
           not_approved += 1
         end

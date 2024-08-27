@@ -207,12 +207,6 @@ fr-BE:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
-      details:
-        title: Détails
-      attachements:
-        title: Images et pièces jointes
-      extra:
-        title: Informations complémentaires
   custom_field_options:
     gender:
       male: Masculin
@@ -283,8 +277,8 @@ fr-BE:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title: 'Merci pour votre participation'
-      description: "Veuillez soumettre vos réponses en cliquant sur « Envoyer » ci-dessous."
+      title_text: 'Presque terminé'
+      description_text_2: "Vous êtes sur le point de soumettre vos réponses. En cliquant sur « Soumettre », vous acceptez que vos réponses soient analysées.<br/>Notez qu'une fois soumises, celles-ci ne pourront plus être modifiées."
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_public: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."

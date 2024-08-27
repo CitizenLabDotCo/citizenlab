@@ -5,7 +5,7 @@ require 'rails_helper'
 describe IdeaAssignment::IdeaAssignmentService do
   let(:service) { described_class.new }
 
-  describe 'clean_idea_assignees_for_user!', if: defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine) do
+  describe 'clean_idea_assignees_for_user!' do
     it 'clears the assignee where they no longer moderate the ideas' do
       assignee = create(:admin)
       folder1 = create(:project_folder)
@@ -36,7 +36,7 @@ describe IdeaAssignment::IdeaAssignmentService do
     end
   end
 
-  describe 'clean_assignees_for_project!', if: defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine) do
+  describe 'clean_assignees_for_project!' do
     it 'clears the assignee where they no longer moderate the ideas' do
       folder = create(:project_folder)
       project = create(:project, folder: folder)

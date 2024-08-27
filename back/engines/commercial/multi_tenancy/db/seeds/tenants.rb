@@ -459,7 +459,8 @@ module MultiTenancy
             },
             fake_sso: {
               enabled: true,
-              allowed: true
+              allowed: true,
+              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
             }
           })
         )

@@ -6,12 +6,7 @@ import PageLoading from 'components/UI/PageLoading';
 import { AdminRoute } from '../routes';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
-const AdminGranularPermissionsComponent = lazy(
-  () =>
-    import(
-      'containers/Admin/projects/project/permissions/granular_permissions/containers/permissions'
-    )
-);
+const AdminGranularPermissionsComponent = lazy(() => import('./permissions'));
 
 export enum initiativeRoutes {
   initiatives = 'initiatives',

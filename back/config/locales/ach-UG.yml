@@ -207,12 +207,6 @@ ach:
           title: crwdns207914:0crwdne207914:0
         option:
           title: crwdns207916:0crwdne207916:0
-      details:
-        title: crwdns207918:0crwdne207918:0
-      attachements:
-        title: crwdns207920:0crwdne207920:0
-      extra:
-        title: crwdns207922:0crwdne207922:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0
@@ -283,8 +277,8 @@ ach:
       option1: 'crwdns207996:0crwdne207996:0'
       option2: 'crwdns207998:0crwdne207998:0'
     form_end_page:
-      title: 'crwdns1963126:0crwdne1963126:0'
-      description: "crwdns1963128:0crwdne1963128:0"
+      title_text: 'crwdns2888713:0crwdne2888713:0'
+      description_text_2: "crwdns2888715:0crwdne2888715:0"
     pdf_export:
       personal_data: 'crwdns1160094:0crwdne1160094:0'
       personal_data_explanation_public: "crwdns2677453:0%{organizationName}crwdnd2677453:0%{organizationName}crwdne2677453:0"

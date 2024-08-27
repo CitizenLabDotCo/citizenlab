@@ -105,13 +105,14 @@ describe('Native survey project page actions', () => {
     it('tests actions when unregistered users may submit survey responses', () => {
       // Login as admin
       cy.setAdminLoginCookie();
-      // Visit admin project permissions page
+      // Visit admin phase permissions page
       cy.visit(
-        `admin/projects/${projectIdWithOneOpenEndedPhase}/settings/access-rights`
+        `admin/projects/${projectIdWithOneOpenEndedPhase}/phases/${phaseId}/access-rights`
       );
+
       // Select that unregistered users may submit surveys
-      cy.get('#e2e-granular-permissions-phase-accordion').click();
-      cy.get('#e2e-granular-permissions').within(() => {
+      cy.get('.e2e-action-accordion-posting_idea').click();
+      cy.get('.e2e-action-form-posting_idea').within(() => {
         cy.contains('Anyone').should('be.visible');
         cy.contains('Anyone').click({ force: true });
       });

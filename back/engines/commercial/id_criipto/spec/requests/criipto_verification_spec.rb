@@ -283,31 +283,34 @@ context 'criipto verification' do
         configuration.save!
       end
 
-      it 'creates user that can confirm her email' do
+      it 'creates user that can add & confirm her email' do
         get '/auth/criipto'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
+        expect(user.email).to be_nil
+        expect(user.active?).to be(true)
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
 
         headers = { 'Authorization' => authorization_header(user) }
 
-        expect(ActionMailer::Base.deliveries.count).to eq(0)
-
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
+        expect(user.active?).to be(false)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
         post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
+        expect(user.active?).to be(true)
         expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.new_email).to be_nil
       end
 
-      it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
+      it 'allows users to be active without adding an email & confirmation' do
         get '/auth/criipto'
         follow_redirect!
 
@@ -315,12 +318,10 @@ context 'criipto verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-
-        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-        headers = { 'Authorization' => "Bearer #{token}" }
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
-
-        expect(user.confirmation_required?).to be(true)
+        expect_to_create_verified_and_identified_user(user)
+        expect(user.email).to be_nil
+        expect(user.confirmation_required?).to be(false)
+        expect(user.active?).to be(true)
       end
     end
 

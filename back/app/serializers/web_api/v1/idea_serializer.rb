@@ -37,7 +37,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :action_descriptors do |object, params|
-    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups: false)
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
@@ -47,10 +47,10 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     input.published_at + input.creation_phase.expire_days_limit.days
   end
 
-  attribute :reactions_needed, if: proc { |input|
-    input.participation_method_on_creation.supports_serializing_input?(:reactions_needed)
+  attribute :reacting_threshold, if: proc { |input|
+    input.participation_method_on_creation.supports_serializing_input?(:reacting_threshold)
   } do |input|
-    [input.creation_phase.reacting_threshold - input.likes_count, 0].max
+    input.creation_phase.reacting_threshold
   end
 
   has_many :topics

@@ -21,7 +21,7 @@ const Expired = (props: StatusComponentProps) => {
                 <FormattedMessage
                   {...messages.expiredStatusExplanationBold}
                   values={{
-                    votingThreshold: props.idea.attributes.reactions_needed,
+                    votingThreshold: props.idea.attributes.reacting_threshold,
                   }}
                 />
               </b>
