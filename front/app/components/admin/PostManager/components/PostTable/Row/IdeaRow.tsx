@@ -456,6 +456,7 @@ const IdeaRow = ({
         onConfirm={handleConfirmDeselectPhase}
       />
       <IdeaOfficialFeedbackModal
+        ideaId={idea.id}
         open={ideaOfficialFeedbackModalIsOpen}
         onClose={() => setIdeaOfficialFeedbackModalIsOpen(false)}
       />
