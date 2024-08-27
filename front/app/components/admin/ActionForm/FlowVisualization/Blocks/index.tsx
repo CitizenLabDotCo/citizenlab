@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
@@ -13,7 +13,6 @@ import Block from './Block';
 import Edge from './Edge';
 import messages from './messages';
 import SSOBlock from './SSOBlock';
-import SSOConfigModal from './SSOConfigModal';
 import { enabledSteps } from './utils';
 import VerificationBlock from './VerificationBlock';
 
@@ -36,7 +35,6 @@ const Blocks = ({
     name: 'user_confirmation',
   });
   const { formatMessage } = useIntl();
-  const [modalOpen, setModalOpen] = useState(false);
 
   const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
     permissionsCustomFields
@@ -129,7 +127,7 @@ const Blocks = ({
       <>
         <SSOBlock
           verificationExpiry={verificationExpiry}
-          onClick={() => setModalOpen(true)}
+          onChangeVerificationExpiry={onChangeVerificationExpiry}
         />
         {showCustomFields && (
           <>
@@ -140,12 +138,6 @@ const Blocks = ({
             />
           </>
         )}
-        <SSOConfigModal
-          opened={modalOpen}
-          onClose={() => setModalOpen(false)}
-          verificationExpiry={verificationExpiry}
-          onChangeVerificationExpiry={onChangeVerificationExpiry}
-        />
       </>
     );
   }

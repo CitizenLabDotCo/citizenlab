@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -16,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import SSOConfigModal from './SSOConfigModal';
 import {
   getVerificationFrequencyExplanation,
   getReturnedFieldsPreview,
@@ -29,13 +30,17 @@ const StyledBox = styled(Box)`
 
 interface Props {
   verificationExpiry: number | null;
-  onClick: () => void;
+  onChangeVerificationExpiry: (value: number | null) => void;
 }
 
-const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
+const SSOBlock = ({
+  verificationExpiry,
+  onChangeVerificationExpiry,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const verificationMethodMetadata =
     verificationMethod?.data.attributes.action_metadata;
@@ -62,49 +67,57 @@ const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
   );
 
   return (
-    <StyledBox
-      borderRadius={stylingConsts.borderRadius}
-      border={`1px solid ${colors.blue700}`}
-      bgColor={colors.teal50}
-      p="16px"
-      w="240px"
-      style={{
-        cursor: 'pointer',
-      }}
-      onClick={onClick}
-    >
-      <Box
-        display="flex"
-        w="100%"
-        justifyContent="space-between"
-        mb="8px"
-        alignItems="flex-start"
+    <>
+      <StyledBox
+        borderRadius={stylingConsts.borderRadius}
+        border={`1px solid ${colors.blue700}`}
+        bgColor={colors.teal50}
+        p="16px"
+        w="240px"
+        style={{
+          cursor: 'pointer',
+        }}
+        onClick={() => setModalOpen(true)}
       >
-        <Box>{'1.'}</Box>
-        <Icon
-          name="settings"
-          fill={colors.blue500}
-          width="16px"
-          height="16px"
-        />
-      </Box>
-      <Box>
-        {authenticateMessage}
-        <br />
-        {verificationFrequencyExplanation && (
-          <>
-            <Text fontSize="xs" mt="8px" color="primary">
-              {verificationFrequencyExplanation}
-            </Text>
-          </>
-        )}
-        <Box mt="12px">
-          {verifiedFieldsMessage}
-          <br />
-          <b>{returnedFieldsPreview}</b>
+        <Box
+          display="flex"
+          w="100%"
+          justifyContent="space-between"
+          mb="8px"
+          alignItems="flex-start"
+        >
+          <Box>{'1.'}</Box>
+          <Icon
+            name="settings"
+            fill={colors.blue500}
+            width="16px"
+            height="16px"
+          />
         </Box>
-      </Box>
-    </StyledBox>
+        <Box>
+          {authenticateMessage}
+          <br />
+          {verificationFrequencyExplanation && (
+            <>
+              <Text fontSize="xs" mt="8px" color="primary">
+                {verificationFrequencyExplanation}
+              </Text>
+            </>
+          )}
+          <Box mt="12px">
+            {verifiedFieldsMessage}
+            <br />
+            <b>{returnedFieldsPreview}</b>
+          </Box>
+        </Box>
+      </StyledBox>
+      <SSOConfigModal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        verificationExpiry={verificationExpiry}
+        onChangeVerificationExpiry={onChangeVerificationExpiry}
+      />
+    </>
   );
 };
 
