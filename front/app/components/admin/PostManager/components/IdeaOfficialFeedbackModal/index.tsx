@@ -45,7 +45,7 @@ const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [ideaId]);
 
   const { mutateAsync: addIdeaOfficialFeedback } = useAddIdeaOfficialFeedback();
   const { formatMessage } = useIntl();
