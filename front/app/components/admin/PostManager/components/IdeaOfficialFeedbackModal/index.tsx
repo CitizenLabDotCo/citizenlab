@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,22 +15,38 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import eventEmitter from 'utils/eventEmitter';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
 type Props = {
   ideaId: string;
-  open: boolean;
-  onClose: () => void;
 };
 
 type FormValues = {
   body_multiloc: Multiloc;
   author_multiloc: Multiloc;
 };
+export const getIdeaOfficialFeedbackModalEventName = (ideaId: string) => {
+  return `openIdeaOfficialFeedbackModal-${ideaId}`;
+};
 
-const IdeaOfficialFeedbackModal = ({ open, onClose, ideaId }: Props) => {
+const IdeaOfficialFeedbackModal = ({ ideaId }: Props) => {
+  const [ideaOfficialFeedbackModalIsOpen, setIdeaOfficialFeedbackModalIsOpen] =
+    useState(false);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(getIdeaOfficialFeedbackModalEventName(ideaId))
+      .subscribe(() => {
+        setIdeaOfficialFeedbackModalIsOpen(true);
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const { mutateAsync: addIdeaOfficialFeedback } = useAddIdeaOfficialFeedback();
   const { formatMessage } = useIntl();
   const schema = object({
@@ -49,7 +65,7 @@ const IdeaOfficialFeedbackModal = ({ open, onClose, ideaId }: Props) => {
 
   const onCloseModal = () => {
     methods.reset();
-    onClose();
+    setIdeaOfficialFeedbackModalIsOpen(false);
   };
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -63,7 +79,7 @@ const IdeaOfficialFeedbackModal = ({ open, onClose, ideaId }: Props) => {
   };
   return (
     <Modal
-      opened={open}
+      opened={ideaOfficialFeedbackModalIsOpen}
       close={onCloseModal}
       header={formatMessage(messages.title)}
     >

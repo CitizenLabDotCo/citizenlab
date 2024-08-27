@@ -22,13 +22,16 @@ import Checkbox from 'components/UI/Checkbox';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
-import IdeaOfficialFeedbackModal from '../../IdeaOfficialFeedbackModal';
+import IdeaOfficialFeedbackModal, {
+  getIdeaOfficialFeedbackModalEventName,
+} from '../../IdeaOfficialFeedbackModal';
 
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -80,9 +83,6 @@ const IdeaRow = ({
   const [phasesToBeSelected, setPhasesToBeSeselected] = useState<
     string[] | null
   >(null);
-
-  const [ideaOfficialFeedbackModalIsOpen, setIdeaOfficialFeedbackModalIsOpen] =
-    useState(false);
 
   const phaseDeselectModalOpen = !!phasesToBeSelected;
   const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
@@ -416,7 +416,7 @@ const IdeaRow = ({
       idea: ideaId,
     });
 
-    setIdeaOfficialFeedbackModalIsOpen(true);
+    eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(ideaId));
   };
 
   return (
@@ -455,11 +455,7 @@ const IdeaRow = ({
         onClose={closePhaseDeselectModal}
         onConfirm={handleConfirmDeselectPhase}
       />
-      <IdeaOfficialFeedbackModal
-        ideaId={idea.id}
-        open={ideaOfficialFeedbackModalIsOpen}
-        onClose={() => setIdeaOfficialFeedbackModalIsOpen(false)}
-      />
+      <IdeaOfficialFeedbackModal ideaId={idea.id} />
     </>
   );
 };
