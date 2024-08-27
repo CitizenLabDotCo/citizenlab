@@ -286,5 +286,68 @@ resource 'Ideas' do
         end
       end
     end
+
+    describe 'visibility for submitted inputs' do
+      let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
+      let!(:proposed) { create(:proposals_status, code: 'proposed') }
+      let!(:custom_status) { create(:proposals_status) }
+      let(:user) { create(:user) }
+      let!(:published_proposal) { create(:proposal, publication_status: 'published', idea_status: custom_status) }
+      let!(:author_prescreening_proposal) { create(:proposal, publication_status: 'submitted', idea_status: prescreening, author: user) }
+      let!(:other_prescreening_proposal) { create(:proposal, publication_status: 'submitted', idea_status: prescreening, author: create(:user)) }
+      let!(:author_published_proposal) { create(:proposal, publication_status: 'published', idea_status: proposed, author: user) }
+      let!(:other_published_proposal) { create(:proposal, publication_status: 'published', idea_status: proposed, author: create(:user)) }
+
+      context 'when visitor' do
+        example 'Lists all published inputs and the submitted inputs of the author', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].pluck(:id)).to match_array([
+            published_proposal.id,
+            author_published_proposal.id,
+            other_published_proposal.id
+          ])
+        end
+      end
+      
+      context 'when resident' do
+        before { header_token_for(user) }
+
+        example 'Lists all published inputs and the submitted inputs of the author', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 4
+          expect(json_response[:data].pluck(:id)).to match_array([
+            published_proposal.id,
+            author_prescreening_proposal.id,
+            author_published_proposal.id,
+            other_published_proposal.id
+          ])
+        end
+      end
+
+      context 'when admin' do
+        before { header_token_for(user) }
+
+        let(:user) { create(:admin) }
+
+        example 'Lists all published inputs and the submitted inputs of the author', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 5
+          expect(json_response[:data].pluck(:id)).to match_array([
+            published_proposal.id,
+            author_prescreening_proposal.id,
+            other_prescreening_proposal.id,
+            author_published_proposal.id,
+            other_published_proposal.id
+          ])
+        end
+      end
+    end
   end
 end

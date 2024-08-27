@@ -51,6 +51,7 @@ module Post
 
     scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
+    scope :submitted, -> { where publication_status: %w[submitted published] }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, lambda { |user|
