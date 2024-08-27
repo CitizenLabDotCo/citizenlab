@@ -963,7 +963,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Anna etunimi, sukunimi, sähköpostiosoite ja salasana",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Kirjoita sähköpostiosoitteesi",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Kuinka hiljattain käyttäjät tulee vahvistaa?",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification": "Henkilöllisyyden vahvistus (käyttäjäryhmän perusteella)",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "Osallistuminen ei vaadi toimenpiteitä",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Käytä älykkäitä ryhmiä osallistumisen rajoittamiseen yllä lueteltujen vahvistettujen tietojen perusteella",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min1": "Käyttäjien on oltava vahvistettu viimeisen 30 minuutin aikana.",

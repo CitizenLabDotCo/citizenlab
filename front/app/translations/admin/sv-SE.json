@@ -963,7 +963,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Ange förnamn, efternamn, e-postadress och lösenord",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Ange din e-postadress",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Hur ofta ska användare verifieras?",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification": "Identitetsverifiering (baserat på användargrupp)",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "Inga åtgärder krävs för att delta",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Använd smarta grupper för att begränsa deltagandet baserat på de verifierade uppgifter som anges ovan",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min1": "Användare måste ha verifierats under de senaste 30 minuterna.",
