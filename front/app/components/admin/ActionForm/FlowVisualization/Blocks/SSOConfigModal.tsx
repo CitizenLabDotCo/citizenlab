@@ -10,7 +10,7 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 
-import { ActionMetadata } from 'api/verification_methods/types';
+import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -25,7 +25,6 @@ import { getVerifiedDataList } from './utils';
 interface Props {
   opened: boolean;
   verificationExpiry: number | null;
-  verificationMethodMetadata: ActionMetadata;
   onClose: () => void;
   onChangeVerificationExpiry: (value: number | null) => void;
 }
@@ -33,11 +32,18 @@ interface Props {
 const SSOConfigModal = ({
   opened,
   verificationExpiry,
-  verificationMethodMetadata,
   onClose,
   onChangeVerificationExpiry,
 }: Props) => {
   const localize = useLocalize();
+
+  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+
+  const verificationMethodMetadata =
+    verificationMethod?.data.attributes.action_metadata;
+
+  if (!verificationMethodMetadata) return null;
+
   const verifiedDataList = getVerifiedDataList(
     verificationMethodMetadata,
     localize
