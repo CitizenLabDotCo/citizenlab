@@ -40,7 +40,6 @@ module Verification
     # Not all verification methods are allowed at a permission/action level
     # NOTE: for real platforms, you should never have
     # more than one verification method enabled at a time.
-    # The below list is for testing purposes only.
     def first_method_enabled_for_verified_actions
       active_methods(AppConfiguration.instance).find do |method|
         method.respond_to?(:enabled_for_verified_actions?) && method.enabled_for_verified_actions?
@@ -49,7 +48,6 @@ module Verification
 
     # NOTE: for real platforms, you should never have
     # more than one verification method enabled at a time.
-    # The below list is for testing purposes only.
     def first_method_enabled
       active_methods(AppConfiguration.instance).first
     end
