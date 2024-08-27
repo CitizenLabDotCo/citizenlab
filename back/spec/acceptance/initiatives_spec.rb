@@ -245,7 +245,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/filter_counts' do
     before do
       Initiative.all.each(&:destroy!)
@@ -745,7 +745,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
