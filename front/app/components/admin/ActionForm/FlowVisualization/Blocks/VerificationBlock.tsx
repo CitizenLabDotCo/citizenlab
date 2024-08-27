@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -16,6 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { getReturnedFieldsPreview } from './utils';
+import VerificationModal from './VerificationModal';
 
 const StyledBox = styled(Box)`
   &:hover {
@@ -25,10 +26,10 @@ const StyledBox = styled(Box)`
 
 interface Props {
   number: number;
-  // onClick: () => void;
 }
 
 const VerificationBlock = ({ number }: Props) => {
+  const [modalOpen, setModalOpen] = useState(false);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: verificationMethod } = useVerificationMethod();
@@ -46,44 +47,50 @@ const VerificationBlock = ({ number }: Props) => {
   );
 
   return (
-    <StyledBox
-      borderRadius={stylingConsts.borderRadius}
-      border={`1px solid ${colors.blue700}`}
-      bgColor={colors.teal50}
-      p="16px"
-      w="240px"
-      style={{
-        cursor: 'pointer',
-      }}
-      // onClick={onClick}
-    >
-      <Box
-        display="flex"
-        w="100%"
-        justifyContent="space-between"
-        mb="8px"
-        alignItems="flex-start"
+    <>
+      <StyledBox
+        borderRadius={stylingConsts.borderRadius}
+        border={`1px solid ${colors.blue700}`}
+        bgColor={colors.teal50}
+        p="16px"
+        w="240px"
+        style={{
+          cursor: 'pointer',
+        }}
+        onClick={() => setModalOpen(true)}
       >
-        <Box>{`${number}.`}</Box>
-        <Icon
-          name="settings"
-          fill={colors.blue500}
-          width="16px"
-          height="16px"
-        />
-      </Box>
-      <Box>
-        {formatMessage(messages.identityVerificationWith, {
-          verificationMethod: verificationMethodMetadata.name,
-        })}
-
-        <Box mt="12px">
-          {verifiedFieldsMessage}
-          <br />
-          <b>{returnedFieldsPreview}</b>
+        <Box
+          display="flex"
+          w="100%"
+          justifyContent="space-between"
+          mb="8px"
+          alignItems="flex-start"
+        >
+          <Box>{`${number}.`}</Box>
+          <Icon
+            name="settings"
+            fill={colors.blue500}
+            width="16px"
+            height="16px"
+          />
         </Box>
-      </Box>
-    </StyledBox>
+        <Box>
+          {formatMessage(messages.identityVerificationWith, {
+            verificationMethod: verificationMethodMetadata.name,
+          })}
+
+          <Box mt="12px">
+            {verifiedFieldsMessage}
+            <br />
+            <b>{returnedFieldsPreview}</b>
+          </Box>
+        </Box>
+      </StyledBox>
+      <VerificationModal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
+    </>
   );
 };
 
