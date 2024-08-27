@@ -384,7 +384,7 @@ resource 'Ideas' do
       end
 
       let(:with_permissions) { false }
-      let(:phase) { create(:proposals_phase, with_permissions: true) }
+      let(:phase) { create(:proposals_phase, with_permissions: with_permissions) }
       let(:project) { phase.project }
       let(:creation_phase_id) { phase.id }
       let(:input) { build(:proposal, project: project) }

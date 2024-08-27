@@ -1,0 +1,91 @@
+{
+  "creates": [
+    {
+      "model_name": "IdeaStatus",
+      "attributes": {
+        "title_multiloc": {
+          "en": "pre-screening",
+          "ar-MA": "pre-screening",
+          "ar-SA": "pre-screening",
+          "ca-ES": "pre-screening",
+          "cy-GB": "pre-screening",
+          "da-DK": "pre-screening",
+          "de-DE": "pre-screening",
+          "el-GR": "pre-screening",
+          "en-CA": "pre-screening",
+          "en-GB": "pre-screening",
+          "en-IE": "pre-screening",
+          "es-CL": "pre-screening",
+          "es-ES": "pre-screening",
+          "fi-FI": "pre-screening",
+          "fr-BE": "pre-screening",
+          "fr-FR": "pre-screening",
+          "hr-HR": "pre-screening",
+          "hu-HU": "pre-screening",
+          "it-IT": "pre-screening",
+          "kl-GL": "pre-screening",
+          "lb-LU": "pre-screening",
+          "lv-LV": "pre-screening",
+          "mi": "pre-screening",
+          "nb-NO": "pre-screening",
+          "nl-BE": "pre-screening",
+          "nl-NL": "pre-screening",
+          "pl-PL": "pre-screening",
+          "pt-BR": "pre-screening",
+          "ro-RO": "pre-screening",
+          "sr-Latn": "pre-screening",
+          "sr-SP": "pre-screening",
+          "sv-SE": "pre-screening",
+          "tr-TR": "pre-screening"
+        },
+        "code": "prescreening",
+        "color": "#767676",
+        "description_multiloc": {
+          "en": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "ar-MA": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "ar-SA": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "ca-ES": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "cy-GB": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "da-DK": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "de-DE": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "el-GR": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "en-CA": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "en-GB": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "en-IE": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "es-CL": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "es-ES": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "fi-FI": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "fr-BE": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "fr-FR": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "hr-HR": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "hu-HU": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "it-IT": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "kl-GL": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "lb-LU": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "lv-LV": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "mi": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "nb-NO": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "nl-BE": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "nl-NL": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "pl-PL": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "pt-BR": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "ro-RO": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "sr-Latn": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "sr-SP": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "sv-SE": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved.",
+          "tr-TR": "This input is currently under review by the project manager and is not yet visible to the public. You’ll be notified once its approved."
+        },
+        "participation_method": "proposals"
+      },
+      "context": {
+        "tenant": "localhost"
+      }
+    }
+  ],
+  "changes": [
+
+  ],
+  "errors": [
+
+  ]
+}
