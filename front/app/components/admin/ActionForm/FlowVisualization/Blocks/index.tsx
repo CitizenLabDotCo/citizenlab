@@ -15,6 +15,7 @@ import messages from './messages';
 import SSOBlock from './SSOBlock';
 import SSOConfigModal from './SSOConfigModal';
 import { enabledSteps } from './utils';
+import VerificationBlock from './VerificationBlock';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -67,9 +68,8 @@ const Blocks = ({
         {verificationEnabled && (
           <>
             <Edge />
-            <Block
+            <VerificationBlock
               number={2 + enabledSteps(emailConfirmationEnabled)}
-              text={formatMessage(messages.identityVerification)}
             />
           </>
         )}
@@ -104,9 +104,8 @@ const Blocks = ({
         {verificationEnabled && (
           <>
             <Edge />
-            <Block
+            <VerificationBlock
               number={2 + enabledSteps(emailConfirmationEnabled)}
-              text={formatMessage(messages.identityVerification)}
             />
           </>
         )}

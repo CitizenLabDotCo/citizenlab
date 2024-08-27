@@ -5,21 +5,17 @@ import {
   colors,
   stylingConsts,
   Icon,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
+import useVerificationMethod from 'api/verification_methods/useVerificationMethod';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import {
-  getVerificationFrequencyExplanation,
-  getReturnedFieldsPreview,
-} from './utils';
+import { getReturnedFieldsPreview } from './utils';
 
 const StyledBox = styled(Box)`
   &:hover {
@@ -28,33 +24,21 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
-  verificationExpiry: number | null;
-  onClick: () => void;
+  number: number;
+  // onClick: () => void;
 }
 
-const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
+const VerificationBlock = ({ number }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+  const { data: verificationMethod } = useVerificationMethod();
 
   const verificationMethodMetadata =
     verificationMethod?.data.attributes.action_metadata;
 
   if (!verificationMethodMetadata) return null;
 
-  const authenticateMessage = formatMessage(
-    messages.authenticateWithVerificationProvider,
-    {
-      verificationMethod: verificationMethodMetadata.name,
-    }
-  );
-
   const verifiedFieldsMessage = formatMessage(messages.verifiedFields);
-
-  const verificationFrequencyExplanation = getVerificationFrequencyExplanation(
-    verificationExpiry,
-    formatMessage
-  );
 
   const returnedFieldsPreview = getReturnedFieldsPreview(
     verificationMethodMetadata,
@@ -71,7 +55,7 @@ const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
       style={{
         cursor: 'pointer',
       }}
-      onClick={onClick}
+      // onClick={onClick}
     >
       <Box
         display="flex"
@@ -80,7 +64,7 @@ const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
         mb="8px"
         alignItems="flex-start"
       >
-        <Box>{'1.'}</Box>
+        <Box>{`${number}.`}</Box>
         <Icon
           name="settings"
           fill={colors.blue500}
@@ -89,15 +73,10 @@ const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
         />
       </Box>
       <Box>
-        {authenticateMessage}
-        <br />
-        {verificationFrequencyExplanation && (
-          <>
-            <Text fontSize="xs" mt="8px" color="primary">
-              {verificationFrequencyExplanation}
-            </Text>
-          </>
-        )}
+        {formatMessage(messages.identityVerificationWith, {
+          verificationMethod: verificationMethodMetadata.name,
+        })}
+
         <Box mt="12px">
           {verifiedFieldsMessage}
           <br />
@@ -108,4 +87,4 @@ const SSOBlock = ({ verificationExpiry, onClick }: Props) => {
   );
 };
 
-export default SSOBlock;
+export default VerificationBlock;
