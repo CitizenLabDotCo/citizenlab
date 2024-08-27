@@ -311,7 +311,7 @@ resource 'Ideas' do
           ])
         end
       end
-      
+
       context 'when resident' do
         before { header_token_for(user) }
 
