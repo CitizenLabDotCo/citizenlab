@@ -1,18 +1,10 @@
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
-import { OnboardingType } from 'api/users/types';
-import {
-  updateUser,
-  invalidateCacheAfterUpdateUser,
-} from 'api/users/useUpdateUser';
 
 import { trackEventByName } from 'utils/analytics';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import tracks from '../../tracks';
 import {
@@ -22,13 +14,8 @@ import {
   UpdateState,
 } from '../../typings';
 
-import { Step, BuiltInFieldsUpdate } from './typings';
-import {
-  askCustomFields,
-  confirmationRequired,
-  showOnboarding,
-  doesNotMeetGroupCriteria,
-} from './utils';
+import { Step } from './typings';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -42,6 +29,7 @@ export const signUpFlow = (
     'sign-up:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signin' });
         setCurrentStep('sign-in:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -54,8 +42,9 @@ export const signUpFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          requirements.verification
+          getAuthenticationData(),
+          requirements.verification,
+          'signup'
         );
       },
     },
@@ -66,6 +55,7 @@ export const signUpFlow = (
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-in:email-password');
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
@@ -78,27 +68,18 @@ export const signUpFlow = (
       SUBMIT: async (params: CreateAccountParameters) => {
         try {
           await createAccountWithPassword(params);
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
+          const authenticationData = getAuthenticationData();
 
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('sign-up:email-confirmation');
-            return;
-          }
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            'signup'
+          );
 
-          if (requirements.verification) {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('sign-up:onboarding');
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 
@@ -112,199 +93,6 @@ export const signUpFlow = (
           trackEventByName(tracks.signInEmailPasswordFailed);
           throw e;
         }
-      },
-    },
-
-    'sign-up:built-in': {
-      CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (
-        userId: string,
-        builtInFieldUpdate: BuiltInFieldsUpdate
-      ) => {
-        await updateUser({ userId, ...builtInFieldUpdate });
-        invalidateCacheAfterUpdateUser(queryClient);
-
-        const { requirements } = await getRequirements();
-
-        if (confirmationRequired(requirements)) {
-          setCurrentStep('sign-up:email-confirmation');
-          return;
-        }
-
-        if (requirements.verification) {
-          setCurrentStep('sign-up:verification');
-          return;
-        }
-
-        if (askCustomFields(requirements)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('sign-up:onboarding');
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:email-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: () => {
-        setCurrentStep('sign-up:change-email');
-      },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmEmail({ code });
-
-        const { requirements } = await getRequirements();
-
-        if (requirements.verification) {
-          setCurrentStep('sign-up:verification');
-          return;
-        }
-
-        if (askCustomFields(requirements)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('sign-up:onboarding');
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('sign-up:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        await resendEmailConfirmationCode(newEmail);
-        setCurrentStep('sign-up:email-confirmation');
-      },
-    },
-
-    'sign-up:verification': {
-      CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: async () => {
-        const { requirements } = await getRequirements();
-
-        if (askCustomFields(requirements)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('sign-up:onboarding');
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:custom-fields': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: async (userId: string, formData: FormData) => {
-        try {
-          await updateUser({ userId, custom_field_values: formData });
-          invalidateCacheAfterUpdateUser(queryClient);
-
-          const { requirements } = await getRequirements();
-
-          if (doesNotMeetGroupCriteria(requirements)) {
-            setCurrentStep('closed');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('sign-up:onboarding');
-            return;
-          }
-
-          setCurrentStep('success');
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch (e) {
-          trackEventByName(tracks.signUpCustomFieldsStepFailed);
-          throw e;
-        }
-      },
-      SKIP: async () => {
-        const { requirements } = await getRequirements();
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
-          return;
-        }
-
-        if (showOnboarding(requirements)) {
-          setCurrentStep('sign-up:onboarding');
-          return;
-        }
-
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
-      },
-    },
-
-    'sign-up:onboarding': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: async (userId: string, onboarding: OnboardingType) => {
-        try {
-          await updateUser({ userId, onboarding });
-          invalidateCacheAfterUpdateUser(queryClient);
-
-          const { requirements } = await getRequirements();
-
-          if (doesNotMeetGroupCriteria(requirements)) {
-            setCurrentStep('closed');
-            return;
-          }
-
-          setCurrentStep('success');
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-        } catch (e) {
-          trackEventByName(tracks.signUpCustomFieldsStepFailed);
-          throw e;
-        }
-      },
-      SKIP: async () => {
-        const { requirements } = await getRequirements();
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpOnboardingStepSkipped);
       },
     },
 

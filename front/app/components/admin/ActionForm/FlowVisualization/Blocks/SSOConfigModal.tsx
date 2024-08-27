@@ -64,9 +64,7 @@ const SSOConfigModal = ({
       <Box m="20px">
         <Box>
           <Text fontWeight="bold">
-            <FormattedMessage
-              {...messages.howOftenShouldThisActionBeVerified}
-            />
+            <FormattedMessage {...messages.howRecentlyShouldUsersBeVerified} />
           </Text>
           <Radio
             id={'verification-frequency-every-30-min-radio'}

@@ -42,14 +42,16 @@ const ParticipationPermission = ({
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;
 
-    triggerAuthenticationFlow({
-      flow,
-      context: {
-        action,
-        id: phaseId,
-        type: 'phase',
+    triggerAuthenticationFlow(
+      {
+        context: {
+          action,
+          id: phaseId,
+          type: 'phase',
+        },
       },
-    });
+      flow
+    );
   };
 
   const signIn = () => {

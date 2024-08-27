@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Tendència",
   "app.utils.IdeasNewPage.contributionFormTitle": "Afegiu una nova contribució",
   "app.utils.IdeasNewPage.ideaFormTitle": "Afegiu una nova idea",
-  "app.utils.IdeasNewPage.issueFormTitle": "Afegir un problema nou",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Afegeix un comentari nou",
   "app.utils.IdeasNewPage.optionFormTitle": "Afegiu una nova opció",
   "app.utils.IdeasNewPage.projectFormTitle": "Afegiu un projecte nou",
   "app.utils.IdeasNewPage.questionFormTitle": "Afegiu una pregunta nova",

@@ -79,6 +79,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box>
             <Input
+              id="email"
               name="email"
               type="email"
               label={formatMessage(sharedMessages.email)}
@@ -86,6 +87,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
+              id="e2e-change-email-submit"
               type="submit"
               width="auto"
               processing={loading}

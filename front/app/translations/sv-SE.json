@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Trendande",
   "app.utils.IdeasNewPage.contributionFormTitle": "Lägg till nytt bidrag",
   "app.utils.IdeasNewPage.ideaFormTitle": "Lägg till ny idé",
-  "app.utils.IdeasNewPage.issueFormTitle": "Lägg till nytt problem",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Lägg till ny kommentar",
   "app.utils.IdeasNewPage.optionFormTitle": "Lägg till nytt alternativ",
   "app.utils.IdeasNewPage.projectFormTitle": "Lägg till nytt projekt",
   "app.utils.IdeasNewPage.questionFormTitle": "Lägg till ny fråga",

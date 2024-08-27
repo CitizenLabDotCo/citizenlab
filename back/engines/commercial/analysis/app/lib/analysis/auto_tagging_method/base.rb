@@ -86,7 +86,7 @@ module Analysis
       chosen_topic = begin
         gpt3.chat(prompt)
       rescue Faraday::BadRequestError => e # https://go.microsoft.com/fwlink/?linkid=2198766
-        ErrorReporter.report(e)
+        ErrorReporter.report(e, extra: { e_inspect: e.inspect })
         'Other'
       end
       topics.include?(chosen_topic) ? chosen_topic : 'Other'

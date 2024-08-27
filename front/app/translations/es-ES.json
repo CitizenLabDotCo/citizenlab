@@ -2106,7 +2106,7 @@
   "app.utils.IdeaCards.trending": "Tendencias",
   "app.utils.IdeasNewPage.contributionFormTitle": "Agregar nueva propuesta",
   "app.utils.IdeasNewPage.ideaFormTitle": "Agregar nueva idea",
-  "app.utils.IdeasNewPage.issueFormTitle": "Agregar nueva respuesta",
+  "app.utils.IdeasNewPage.issueFormTitle1": "Agregar nueva respuesta",
   "app.utils.IdeasNewPage.optionFormTitle": "Agregar nueva opción",
   "app.utils.IdeasNewPage.projectFormTitle": "Agregar nuevo proyecto",
   "app.utils.IdeasNewPage.questionFormTitle": "Agregar nueva pregunta",

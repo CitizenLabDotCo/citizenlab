@@ -104,6 +104,8 @@ describe.skip('SSO authentication', () => {
             `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
           );
 
+          cy.get('.e2e-action-accordion-posting_idea').click();
+
           cy.get('.e2e-action-form-posting_idea').within(() => {
             // Establish there are four custom fields using the delete button
             cy.get('.e2e-delete-custom-field').should('have.length', 4);
