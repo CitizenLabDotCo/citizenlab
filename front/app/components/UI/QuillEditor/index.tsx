@@ -63,6 +63,7 @@ const QuillEditor = ({
     );
 
     const quill = createQuill(editorContainer, {
+      id,
       toolbarId,
       noImages,
       noVideos,

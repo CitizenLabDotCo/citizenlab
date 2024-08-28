@@ -3,6 +3,7 @@ import Quill from 'quill';
 import { attributes } from './altTextToImagesModule';
 
 interface Params {
+  id: string;
   toolbarId?: string;
   noImages?: boolean;
   noVideos?: boolean;
@@ -15,6 +16,7 @@ interface Params {
 export const createQuill = (
   editorContainer: HTMLDivElement,
   {
+    id,
     toolbarId,
     limitedTextFormatting,
     noAlign,
@@ -65,6 +67,20 @@ export const createQuill = (
       },
     },
   });
+
+  editorContainer
+    .getElementsByClassName('ql-editor')[0]
+    .setAttribute('name', id);
+  editorContainer.getElementsByClassName('ql-editor')[0].setAttribute('id', id);
+  editorContainer
+    .getElementsByClassName('ql-editor')[0]
+    .setAttribute('aria-labelledby', id);
+  editorContainer
+    .getElementsByClassName('ql-editor')[0]
+    .setAttribute('aria-multiline', 'true');
+  editorContainer
+    .getElementsByClassName('ql-editor')[0]
+    .setAttribute('role', 'textbox');
 
   return quill;
 };
