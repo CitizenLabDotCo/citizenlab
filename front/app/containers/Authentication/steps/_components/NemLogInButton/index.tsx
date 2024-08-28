@@ -13,14 +13,16 @@ import { removeUrlLocale } from 'utils/removeUrlLocale';
 import messages from './messages';
 
 interface Props {
-  method: TVerificationMethod;
+  method?: TVerificationMethod;
   last: boolean;
-  onClick: (method: TVerificationMethod) => void;
+  onClick?: (method: TVerificationMethod) => void;
 }
 
 const NemlogInButton = ({ method, last, onClick }: Props) => {
   const handleOnClick = () => {
-    onClick(method);
+    if (method && onClick) {
+      onClick(method);
+    }
 
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/nemlog_in?token=${jwt}&pathname=${removeUrlLocale(

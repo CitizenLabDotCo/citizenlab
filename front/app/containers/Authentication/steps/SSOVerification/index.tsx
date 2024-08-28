@@ -3,11 +3,13 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import NemlogInButton from '../_components/NemLogInButton';
 import TextButton from '../_components/TextButton';
 import AuthProviderButton from '../AuthProviders/AuthProviderButton';
 import authProviderMessages from '../AuthProviders/messages';
@@ -21,6 +23,11 @@ interface Props {
 
 const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
+  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+
+  if (!verificationMethod) return null;
+
+  const isNemLogIn = verificationMethod.data.attributes.name === 'nemlog_in';
 
   return (
     <Box>
@@ -36,6 +43,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
         </AuthProviderButton>
       )}
+      {isNemLogIn && <NemlogInButton last={false} />}
       <Text mt="20px" mb="0">
         <FormattedMessage
           {...messages.alreadyHaveAnAccount}
