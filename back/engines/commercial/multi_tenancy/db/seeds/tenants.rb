@@ -290,62 +290,62 @@ module MultiTenancy
                 # NOTE: for real platforms, you should never have
                 # more than one verification method enabled at a time.
                 # The below list is for testing purposes only.
-                # {
-                #   name: 'fake_sso'
-                # },
-                # {
-                #   name: 'cow',
-                #   api_username: 'fake_username',
-                #   api_password: 'fake_password',
-                #   rut_empresa: 'fake_rut_empresa'
-                # },
-                # {
-                #   name: 'bosa_fas',
-                #   environment: 'integration',
-                #   identifier: 'fake_identifier',
-                #   secret: 'fake_secret'
-                # },
-                # {
-                #   name: 'clave_unica',
-                #   client_id: 'fake_identifier',
-                #   client_secret: 'fake_secret'
-                # },
-                # {
-                #   name: 'bogus'
-                # },
-                # {
-                #   name: 'id_card_lookup',
-                #   ui_method_name: 'Enter social security number',
-                #   card_id: 'Social security number',
-                #   card_id_placeholder: 'xx-xxxxx-xx',
-                #   card_id_tooltip: 'You can find this number on you ID card. We check your number without storing it.',
-                #   explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
-                # },
-                # {
-                #   name: 'franceconnect'
-                # },
-                # {
-                #   name: 'auth0',
-                #   client_id: 'fake_client_id',
-                #   client_secret: 'fake_client_secret',
-                #   domain: 'fake_domain',
-                #   method_name_multiloc: { en: 'Verify with Auth0' }
-                # },
+                {
+                  name: 'fake_sso'
+                },
+                {
+                  name: 'cow',
+                  api_username: 'fake_username',
+                  api_password: 'fake_password',
+                  rut_empresa: 'fake_rut_empresa'
+                },
+                {
+                  name: 'bosa_fas',
+                  environment: 'integration',
+                  identifier: 'fake_identifier',
+                  secret: 'fake_secret'
+                },
+                {
+                  name: 'clave_unica',
+                  client_id: 'fake_identifier',
+                  client_secret: 'fake_secret'
+                },
+                {
+                  name: 'bogus'
+                },
+                {
+                  name: 'id_card_lookup',
+                  ui_method_name: 'Enter social security number',
+                  card_id: 'Social security number',
+                  card_id_placeholder: 'xx-xxxxx-xx',
+                  card_id_tooltip: 'You can find this number on you ID card. We check your number without storing it.',
+                  explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
+                },
+                {
+                  name: 'franceconnect'
+                },
+                {
+                  name: 'auth0',
+                  client_id: 'fake_client_id',
+                  client_secret: 'fake_client_secret',
+                  domain: 'fake_domain',
+                  method_name_multiloc: { en: 'Verify with Auth0' }
+                },
                 {
                   name: 'nemlog_in',
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
                   private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
                   enabled_for_verified_actions: true
+                },
+                {
+                  name: 'criipto',
+                  domain: 'cl-test.criipto.id',
+                  client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
+                  identity_source: 'DK MitID',
+                  ui_method_name: 'MitID (Criipto)'
                 }
-                # {
-                #   name: 'criipto',
-                #   domain: 'cl-test.criipto.id',
-                #   client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
-                #   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
-                #   identity_source: 'DK MitID',
-                #   ui_method_name: 'MitID (Criipto)'
-                # }
               ]
             },
             project_folders: {
