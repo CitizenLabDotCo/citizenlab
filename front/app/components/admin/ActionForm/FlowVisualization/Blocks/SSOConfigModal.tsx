@@ -9,6 +9,7 @@ import {
   colors,
   Radio,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
@@ -21,6 +22,11 @@ import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import { getVerifiedDataList } from './utils';
+
+const StyledLi = styled.li`
+  font-size: ${fontSizes.s}px;
+  margin-bottom: 8px;
+`;
 
 interface Props {
   opened: boolean;
@@ -119,10 +125,7 @@ const SSOConfigModal = ({
           </Text>
           <ul>
             {verifiedDataList.map((attribute, index) => (
-              <li
-                key={index}
-                style={{ fontSize: fontSizes.s, marginBottom: '8px' }}
-              >
+              <StyledLi key={index}>
                 <span style={{ marginRight: '4px' }}>{attribute.label}</span>
                 {attribute.locked && (
                   <Icon
@@ -133,7 +136,7 @@ const SSOConfigModal = ({
                     fill={colors.grey700}
                   />
                 )}
-              </li>
+              </StyledLi>
             ))}
           </ul>
         </Box>

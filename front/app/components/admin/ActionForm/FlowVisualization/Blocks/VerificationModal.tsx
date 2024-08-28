@@ -8,6 +8,7 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useVerificationMethod from 'api/verification_methods/useVerificationMethod';
 
@@ -24,6 +25,11 @@ interface Props {
   opened: boolean;
   onClose: () => void;
 }
+
+const StyledLi = styled.li`
+  font-size: ${fontSizes.s}px;
+  margin-bottom: 8px;
+`;
 
 const VerificationModal = ({ opened, onClose }: Props) => {
   const { data: verificationMethod } = useVerificationMethod();
@@ -64,10 +70,7 @@ const VerificationModal = ({ opened, onClose }: Props) => {
           </Text>
           <ul>
             {verifiedDataList.map((attribute, index) => (
-              <li
-                key={index}
-                style={{ fontSize: fontSizes.s, marginBottom: '8px' }}
-              >
+              <StyledLi key={index}>
                 <span style={{ marginRight: '4px' }}>{attribute.label}</span>
                 {attribute.locked && (
                   <Icon
@@ -78,7 +81,7 @@ const VerificationModal = ({ opened, onClose }: Props) => {
                     fill={colors.grey700}
                   />
                 )}
-              </li>
+              </StyledLi>
             ))}
           </ul>
         </Box>

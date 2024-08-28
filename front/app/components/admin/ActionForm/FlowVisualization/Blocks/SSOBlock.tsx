@@ -26,6 +26,8 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: ${colors.teal100};
   }
+  cursor: pointer;
+  text-align: left;
 `;
 
 interface Props {
@@ -74,10 +76,11 @@ const SSOBlock = ({
         bgColor={colors.teal50}
         p="16px"
         w="240px"
-        style={{
-          cursor: 'pointer',
+        as="button"
+        onClick={(e) => {
+          e.preventDefault();
+          setModalOpen(true);
         }}
-        onClick={() => setModalOpen(true)}
       >
         <Box
           display="flex"
