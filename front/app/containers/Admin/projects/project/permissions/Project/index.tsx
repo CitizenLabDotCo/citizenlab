@@ -5,25 +5,18 @@ import { useParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../messages';
 
-import Granular from './Granular';
 import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
 
 const Project = () => {
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
-
-  const isGranularPermissionsEnabled = useFeatureFlag({
-    name: 'granular_permissions',
-  });
 
   if (!projectId || !project) return null;
 
@@ -36,17 +29,6 @@ const Project = () => {
         <FormattedMessage {...messages.projectVisibilitySubtitle} />
       </Text>
       <ProjectVisibility projectId={projectId} />
-      {isGranularPermissionsEnabled && (
-        <Box mb="48px">
-          <Title variant="h2" color="primary">
-            <FormattedMessage {...messages.participationRequirementsTitle} />
-          </Title>
-          <Text color="coolGrey600" pb="8px">
-            <FormattedMessage {...messages.participationRequirementsSubtitle} />
-          </Text>
-          <Granular project={project.data} />
-        </Box>
-      )}
       <Outlet
         id="app.containers.Admin.project.edit.permissions.moderatorRights"
         projectId={projectId}

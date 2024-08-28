@@ -10,20 +10,17 @@ import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
+  UpdateState,
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  confirmationRequired,
-  requiredCustomFields,
-  showOnboarding,
-  doesNotMeetGroupCriteria,
-} from './utils';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -31,6 +28,7 @@ export const signInFlow = (
     'sign-in:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -43,8 +41,9 @@ export const signInFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
         );
       },
     },
@@ -52,6 +51,7 @@ export const signInFlow = (
     'sign-in:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:email-password');
       },
       GO_BACK: () => {
@@ -74,24 +74,16 @@ export const signInFlow = (
           });
 
           const { requirements } = await getRequirements();
+          const authenticationData = getAuthenticationData();
 
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            'signin'
+          );
 
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 

@@ -42,36 +42,37 @@ export default defineMessages({
     defaultMessage:
       'Use smart groups to restrict participation based on the verified data listed above',
   },
-  identityVerification: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification',
-    defaultMessage: 'Identity verification (based on user group)',
+  identityVerificationWith: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith',
+    defaultMessage:
+      'Identity verification with {verificationMethod} (based on user group)',
   },
-  howOftenShouldThisActionBeVerified: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howOftenShouldThisActionBeVerified',
-    defaultMessage: 'How often should users be verified?',
+  howRecentlyShouldUsersBeVerified: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified',
+    defaultMessage: 'How recently should users be verified?',
   },
   verificationFrequencyOnce: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequencyOnce',
-    defaultMessage: 'Once',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequencyOnce1',
+    defaultMessage: 'Once is enough',
   },
   verificationFrequency30Min: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency30Min',
-    defaultMessage: 'Every 30 minutes',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency30Min1',
+    defaultMessage: 'In the last 30 minutes',
   },
   verificationFrequency7Days: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency7Days',
-    defaultMessage: 'Every 7 days',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency7Days1',
+    defaultMessage: 'In the last 7 days',
   },
   verificationFrequency30Days: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency30Days',
-    defaultMessage: 'Every 30 days',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFrequency30Days1',
+    defaultMessage: 'In the last 30 days',
   },
   verificationFlowVizExplanation30Min: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min',
-    defaultMessage: 'Users will be verified every 30 minutes.',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min1',
+    defaultMessage: 'Users must have been verified in the last 30 minutes.',
   },
   verificationFlowVizExplanationXDays: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation7Days',
-    defaultMessage: 'Users will be verified every {days} days.',
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanationXDays',
+    defaultMessage: 'Users must have been verified in the last {days} days.',
   },
 });

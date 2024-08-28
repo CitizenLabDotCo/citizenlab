@@ -188,7 +188,7 @@ const Combobox = ({
             {options.map((option, index) => (
               <ListItem
                 key={index}
-                id={`option-${index}`}
+                id={`e2e-item-${option.value}`}
                 role="option"
                 aria-selected={selected.includes(option.value)}
                 onClick={(event) => {
@@ -197,9 +197,7 @@ const Combobox = ({
                 }}
                 tabIndex={-1}
               >
-                <ListItemText id={`e2e-item-${option.value}`}>
-                  {option.text}
-                </ListItemText>
+                <ListItemText>{option.text}</ListItemText>
               </ListItem>
             ))}
           </List>

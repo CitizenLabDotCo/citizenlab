@@ -45,7 +45,8 @@ const setHrefVienna = () => {
 export const handleOnSSOClick = (
   provider: SSOProvider,
   metaData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) => {
   if (metaData?.successAction) {
     localStorage.setItem(
@@ -56,15 +57,16 @@ export const handleOnSSOClick = (
 
   provider === 'id_vienna_saml'
     ? setHrefVienna()
-    : setHref(provider, metaData, verification);
+    : setHref(provider, metaData, verification, flow);
 };
 
 function setHref(
   provider: SSOProvider,
   authenticationData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) {
-  const { context, flow } = authenticationData;
+  const { context } = authenticationData;
 
   const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {

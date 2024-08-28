@@ -125,7 +125,7 @@ const ideationConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
@@ -180,7 +180,7 @@ const proposalsConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
@@ -306,7 +306,7 @@ const votingConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />

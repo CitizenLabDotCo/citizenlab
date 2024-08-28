@@ -95,7 +95,7 @@ const MobileNavbarContent = () => {
   const containerRef = useRef<HTMLElement>(null);
 
   const signIn = () => {
-    triggerAuthenticationFlow({ flow: 'signin' });
+    triggerAuthenticationFlow({}, 'signin');
   };
 
   const onShowMore = (isFullMenuOpened: boolean) => {
