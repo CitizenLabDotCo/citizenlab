@@ -1,11 +1,16 @@
 import React, { MouseEvent } from 'react';
 
+import { Text } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../../messages';
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +60,14 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
                 disabled={!status.attributes.can_manually_transition_to}
               />
             }
-            content={<T value={status.attributes.title_multiloc} />}
+            content={
+              <div>
+                <Text fontWeight="bold" m="0px">
+                  <T value={status.attributes.title_multiloc} />
+                </Text>
+                <FormattedMessage {...messages.automatedStatusTooltipText} />
+              </div>
+            }
             position="top center"
           />
         ))}
