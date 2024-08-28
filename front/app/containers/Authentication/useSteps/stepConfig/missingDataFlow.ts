@@ -12,6 +12,7 @@ import {
   AuthenticationData,
   GetRequirements,
   State,
+  UpdateState,
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -27,6 +28,7 @@ export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
   state: State
 ) => {
   return {
@@ -73,6 +75,7 @@ export const missingDataFlow = (
         setCurrentStep('missing-data:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
+        updateState({ email: newEmail });
         await resendEmailConfirmationCode(newEmail);
         setCurrentStep('missing-data:email-confirmation');
       },
