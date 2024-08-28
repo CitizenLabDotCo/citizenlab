@@ -1,10 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 import Quill from 'quill';
 
 import 'quill/dist/quill.snow.css';
-import { attributes } from './altTextToImagesModule';
+import { useIntl } from 'utils/cl-intl';
+
 import { configureQuill } from './configureQuill';
+import { createQuill } from './createQuill';
+import messages from './messages';
 import Toolbar from './Toolbar';
 
 export interface Props {
@@ -46,6 +49,8 @@ const QuillEditor = ({
 }: Props) => {
   const [editor, setEditor] = useState<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { formatMessage } = useIntl();
+  const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
 
   const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
 
@@ -59,47 +64,15 @@ const QuillEditor = ({
       container.ownerDocument.createElement('div')
     );
 
-    const quill = new Quill(editorContainer, {
-      theme: 'snow',
-      formats: [
-        'bold',
-        'italic',
-        'link',
-        ...attributes,
-        ...(withCTAButton ? ['button'] : []),
-        ...(!limitedTextFormatting ? ['header', 'list'] : []),
-        ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
-        ...(!noImages ? ['image'] : []),
-        ...(!noVideos ? ['video'] : []),
-      ],
-      placeholder: placeholder || '',
-      modules: {
-        altTextToImages: true,
-        blotFormatter: !noImages || !noVideos ? true : false,
-        toolbar: toolbarId ? `#${toolbarId}` : false,
-        keyboard: {
-          bindings: {
-            // overwrite default tab behavior
-            tab: {
-              key: 9,
-              handler: () => {
-                onBlur && onBlur();
-                return true;
-              }, // do nothing
-            },
-            'remove tab': {
-              key: 9,
-              shiftKey: true,
-              collapsed: true,
-              prefix: /\t$/,
-              handler: () => true, // do nothing
-            },
-          },
-        },
-        clipboard: {
-          matchVisual: false,
-        },
-      },
+    const quill = createQuill(editorContainer, {
+      toolbarId,
+      placeholder,
+      noImages,
+      noVideos,
+      noAlign,
+      limitedTextFormatting,
+      withCTAButton,
+      onBlur,
     });
 
     if (value) {
@@ -128,7 +101,38 @@ const QuillEditor = ({
     };
 
     editor.on('text-change', handler);
+
+    return () => {
+      editor.off('text-change', handler);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  const handleCustomLink = useCallback(() => {
+    if (!editor) return;
+
+    const selection = editor.getSelection();
+
+    if (selection && selection.length > 0) {
+      const value = prompt(formatMessage(messages.customLinkPrompt));
+      editor.format('button', value);
+      setIsButtonsMenuVisible(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  const handleNormalLink = useCallback(() => {
+    if (!editor) return;
+
+    const selection = editor.getSelection();
+
+    // copied from the snow toolbar code
+    // to manually add the handler that would have been callen on the toolbar button
+    if (selection == null || selection.length === 0) return;
+    const preview = editor.getText(selection as any);
+    const tooltip = (editor as any).theme.tooltip;
+    tooltip.edit('link', preview);
+    setIsButtonsMenuVisible(false);
   }, [editor]);
 
   return (
@@ -137,16 +141,13 @@ const QuillEditor = ({
         <Toolbar
           limitedTextFormatting={limitedTextFormatting}
           withCTAButton={withCTAButton}
-          isButtonsMenuVisible={false} // TODO
+          isButtonsMenuVisible={isButtonsMenuVisible}
           noImages={noImages}
           noVideos={noVideos}
           noAlign={noAlign}
-          // setIsButtonsMenuVisible={setIsButtonsMenuVisible}
-          setIsButtonsMenuVisible={() => {}} // TODO
-          // handleCustomLink={handleCustomLink}
-          handleCustomLink={() => {}} // TODO
-          // handleNormalLink={handleNormalLink}
-          handleNormalLink={() => {}} // TODO
+          setIsButtonsMenuVisible={setIsButtonsMenuVisible}
+          handleCustomLink={handleCustomLink}
+          handleNormalLink={handleNormalLink}
           id={toolbarId}
         />
       )}
