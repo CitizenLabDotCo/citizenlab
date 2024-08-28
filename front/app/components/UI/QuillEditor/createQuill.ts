@@ -4,7 +4,6 @@ import { attributes } from './altTextToImagesModule';
 
 interface Params {
   toolbarId?: string;
-  placeholder?: string;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
@@ -16,7 +15,6 @@ interface Params {
 export const createQuill = (
   editorContainer: HTMLDivElement,
   {
-    placeholder,
     toolbarId,
     limitedTextFormatting,
     noAlign,
@@ -39,7 +37,6 @@ export const createQuill = (
       ...(!noImages ? ['image'] : []),
       ...(!noVideos ? ['video'] : []),
     ],
-    placeholder: placeholder || '',
     modules: {
       altTextToImages: true,
       blotFormatter: !noImages || !noVideos,

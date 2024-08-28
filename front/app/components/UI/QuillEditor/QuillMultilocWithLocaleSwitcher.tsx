@@ -53,14 +53,8 @@ export interface Props
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
-  const {
-    valueMultiloc,
-    onChange,
-    className,
-    label,
-    labelTooltipText,
-    ...quillProps
-  } = props;
+  const { valueMultiloc, onChange, label, labelTooltipText, ...quillProps } =
+    props;
 
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>(
     useLocale()
@@ -90,7 +84,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     const id = `${props.id}-${selectedLocale}`;
 
     return (
-      <Container className={className} id={props.id}>
+      <Container id={props.id}>
         <LabelContainer>
           {label && (
             <StyledLabel htmlFor={id}>

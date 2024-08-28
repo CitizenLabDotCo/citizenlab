@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
 import messages from './messages';
+import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
 
 export interface Props {
@@ -15,21 +16,17 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  placeholder?: string;
   noToolbar?: boolean;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
-  hasError?: boolean;
-  className?: string;
   maxHeight?: string;
   minHeight?: string;
+  withCTAButton?: boolean;
   onChange?: (html: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  setRef?: (arg: HTMLDivElement) => void | undefined;
-  withCTAButton?: boolean;
 }
 
 configureQuill();
@@ -37,13 +34,14 @@ configureQuill();
 const QuillEditor = ({
   id,
   value,
-  placeholder,
-  withCTAButton,
-  limitedTextFormatting,
   noAlign,
+  noToolbar,
   noImages,
   noVideos,
-  noToolbar,
+  limitedTextFormatting,
+  maxHeight,
+  minHeight,
+  withCTAButton,
   onChange,
   onBlur,
 }: Props) => {
@@ -66,7 +64,6 @@ const QuillEditor = ({
 
     const quill = createQuill(editorContainer, {
       toolbarId,
-      placeholder,
       noImages,
       noVideos,
       noAlign,
@@ -136,7 +133,12 @@ const QuillEditor = ({
   }, [editor]);
 
   return (
-    <div>
+    <StyleContainer
+      maxHeight={maxHeight}
+      minHeight={minHeight}
+      className="" // TODO
+      onMouseLeave={() => {}} // TOOD
+    >
       {toolbarId && (
         <Toolbar
           limitedTextFormatting={limitedTextFormatting}
@@ -151,8 +153,10 @@ const QuillEditor = ({
           id={toolbarId}
         />
       )}
-      <div ref={containerRef} />
-    </div>
+      <div>
+        <div ref={containerRef} />
+      </div>
+    </StyleContainer>
   );
 };
 
