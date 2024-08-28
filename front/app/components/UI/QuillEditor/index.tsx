@@ -48,7 +48,8 @@ const QuillEditor = ({ value, onChange }: Props) => {
     });
 
     if (value) {
-      const delta = quill.clipboard.convert({ html: value });
+      // Hack to convert HTML to Delta
+      const delta = quill.clipboard.convert(value as any);
       quill.setContents(delta);
     }
 
