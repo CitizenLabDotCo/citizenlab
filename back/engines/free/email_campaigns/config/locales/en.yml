@@ -61,6 +61,7 @@ en:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
       cta_goto_idea: 'Go to this idea'
+      cta_goto_input: 'Go to this input'
       cta_goto_proposal: 'Go to this proposal'
       cta_goto_project: 'Go to this project'
     schedules:
