@@ -760,15 +760,15 @@ jobs:
           background: true
       - run: |
           cd front
-          COMMA_SEPARATED_TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | sed 's/ /,/g')
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+          echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          echo $COMMA_SEPARATED_TESTFILES | circleci tests run --command="xargs -I{} \
-            docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
-              cypress npm run cypress:run -- \
-              --reporter cypress-circleci-reporter \
-              --config baseUrl=http://e2e.front:3000 \
-              --spec {}" \
-            --verbose --split-by=timings
+          docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
+            cypress npm run cypress:run -- \
+            --reporter cypress-circleci-reporter \
+            --config baseUrl=http://e2e.front:3000 \
+            --spec ${COMMA_SEPARATED_TESTFILES}
       - run:
           command: |
             docker cp cypress_run:/front/test_results .
