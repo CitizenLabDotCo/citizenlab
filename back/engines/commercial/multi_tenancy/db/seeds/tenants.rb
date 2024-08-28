@@ -335,8 +335,9 @@ module MultiTenancy
                   name: 'nemlog_in',
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
-                },
+                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+                  enabled_for_verified_actions: true
+                }
                 # {
                 #   name: 'criipto',
                 #   domain: 'cl-test.criipto.id',

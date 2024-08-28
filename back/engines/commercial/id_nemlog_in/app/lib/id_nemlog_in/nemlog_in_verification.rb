@@ -24,6 +24,7 @@ module IdNemlogIn
         minimum_age
         birthday_custom_field_key
         birthyear_custom_field_key
+        enabled_for_verified_actions
       ]
     end
 
@@ -59,6 +60,11 @@ module IdNemlogIn
           private: true,
           type: 'string',
           description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
     end
@@ -74,7 +80,7 @@ module IdNemlogIn
     end
 
     def enabled_for_verified_actions?
-      true
+      config[:enabled_for_verified_actions]
     end
 
     def ui_method_name
