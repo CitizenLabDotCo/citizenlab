@@ -10,7 +10,7 @@ import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   method: TVerificationMethod;
