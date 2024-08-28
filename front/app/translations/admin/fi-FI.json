@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Tallenna zoomaus",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "tukiartikkeli",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Nimetön taso",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kartan zoomaustaso",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Kartan oletuszoomaustaso. Hyväksyy arvon väliltä 1–17, jossa 1 on täysin loitonnettu (koko maailma on näkyvissä) ja 17 on täysin zoomattu (korttelin ja rakennukset näkyvät)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonymisoi kaikki käyttäjätiedot",

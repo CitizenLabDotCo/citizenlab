@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Guardar zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "artículo de apoyo",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-viewhttps://support.citizenlab.co/es/articles/7025887-crear-un-proyecto-de-encuesta-externa",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Capa sin nombre",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nivel de zoom por defecto",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Establece el grado de ampliación del mapa por defecto. Elige un valor entre 0 y 20, donde 0 es un alejamiento total (todo el mundo es visible) y 20 es un acercamiento total (los bloques y edificios son visibles)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonimizar todos los datos de los usuarios",

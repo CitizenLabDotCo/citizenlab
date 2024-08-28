@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Zoom speichern",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "Support-Artikel",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/de/articles/7022129-sammeln-von-input-und-feedback-listen-und-kartenansicht",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Unbenannte Ebene",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Zoomstufe der Karte",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Die Standard-Zoomstufe der Karte. Akzeptiert einen Wert zwischen 1 und 17, wobei 1 vollständig herausgezoomt ist (die gesamte Welt ist sichtbar) und 17 vollständig hineingezoomt ist (Häuserblöcke und Gebäude sind sichtbar)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonymisierung aller Nutzer*innendaten",

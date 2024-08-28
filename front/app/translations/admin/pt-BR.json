@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Salvar zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "artigo de apoio",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Camada sem nome",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Nível de zoom predefinido",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Defina o padrão para o zoom do mapa. Escolha um valor entre 0 e 20, em que 0 é totalmente ampliado (o mundo inteiro é visível) e 20 é totalmente focado (blocos e edifícios são visíveis)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Tornar anônimos todos os dados de usuário",
