@@ -18,19 +18,32 @@ interface Props {
   method?: TVerificationMethod;
   last: boolean;
   grayBorder?: boolean;
+  standardSSOBehavior?: boolean;
   onClick?: (method: TVerificationMethod) => void;
+  onClick2?: () => void;
 }
 
-const NemlogInButton = ({ method, last, grayBorder, onClick }: Props) => {
+const NemlogInButton = ({
+  method,
+  last,
+  grayBorder,
+  standardSSOBehavior,
+  onClick,
+  onClick2,
+}: Props) => {
   const handleOnClick = () => {
     if (method && onClick) {
       onClick(method);
     }
 
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/nemlog_in?token=${jwt}&pathname=${removeUrlLocale(
-      window.location.pathname
-    )}`;
+    if (standardSSOBehavior) {
+      onClick2?.();
+    } else {
+      const jwt = getJwt();
+      window.location.href = `${AUTH_PATH}/nemlog_in?token=${jwt}&pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
+    }
   };
 
   return (
