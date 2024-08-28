@@ -1,7 +1,12 @@
 import React from 'react';
 
+import {
+  IconTooltip,
+  Box,
+  Button,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
-import { Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -12,10 +17,6 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-const ItemWrapper = styled.div`
-  display: flex;
-`;
 
 const ColorIndicator = styled.div`
   width: 1rem;
@@ -31,14 +32,10 @@ const StatusText = styled.div`
   }
 `;
 
-const StyledText = styled.span`
-  font-weight: 300;
-`;
-
 interface Props {
   status: IIdeaStatusData | IInitiativeStatusData;
   active: boolean;
-  onClick: any;
+  onClick: () => void;
 }
 
 const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
@@ -54,33 +51,43 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
     }),
   });
 
+  const showTooltip =
+    (status as IInitiativeStatusData).attributes.transition_type ===
+      'automatic' ||
+    (status as IIdeaStatusData).attributes.can_manually_transition_to === false;
   return (
     <div ref={drop}>
-      <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
-        <ItemWrapper>
+      <Button
+        onClick={onClick}
+        buttonStyle="text"
+        bgColor={
+          active || (isOver && canDrop) ? colors.background : 'transparent'
+        }
+        justify="left"
+        bgHoverColor={colors.background}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
+          w="100%"
+        >
           <ColorIndicator color={status.attributes.color} />
-          <div>
+          <Box display="flex" alignItems="center" gap="4px">
             <StatusText>
               <T value={status.attributes.title_multiloc} />
             </StatusText>
-            {/* TODO: Delete during proposal clean up */}
-            {(status as IInitiativeStatusData).attributes.transition_type ===
-              'automatic' && (
-              <StyledText>
-                &nbsp;
-                <FormattedMessage {...messages.automatic} />
-              </StyledText>
+            {showTooltip && (
+              <IconTooltip
+                iconSize="16px"
+                content={
+                  <FormattedMessage {...messages.automatedStatusTooltipText} />
+                }
+              />
             )}
-            {(status as IIdeaStatusData).attributes
-              .can_manually_transition_to === false && (
-              <StyledText>
-                &nbsp;
-                <FormattedMessage {...messages.automatic} />
-              </StyledText>
-            )}
-          </div>
-        </ItemWrapper>
-      </Menu.Item>
+          </Box>
+        </Box>
+      </Button>
     </div>
   );
 };

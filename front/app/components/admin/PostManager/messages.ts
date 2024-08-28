@@ -284,9 +284,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.latestFeedbackMode',
     defaultMessage: 'Use the latest existing official update as an explanation',
   },
-  automatic: {
-    id: 'app.components.admin.PostManager.automatic',
-    defaultMessage: '(automatic)',
+  automatedStatusTooltipText: {
+    id: 'app.components.admin.PostManager.automatedStatusTooltipText',
+    defaultMessage: 'This status updates automatically when conditions are met',
   },
   inputs: {
     id: 'app.components.admin.PostManager.inputs',
