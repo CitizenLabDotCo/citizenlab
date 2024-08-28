@@ -34,7 +34,7 @@ en:
       "new_comment_for_admin": New comment in a project I moderate
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
+      "official_feedback_on_idea_you_follow": Update on an input that you follow
       "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
@@ -343,10 +343,10 @@ en:
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      header_title: 'There''s an update on an idea you follow'
-      subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
-      preheader: 'There''s an update on an idea you follow'
+      header_message: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
+      header_title: 'There''s an update on an input you follow'
+      subject: 'An input you follow has received an official update on the platform of %{organizationName}'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       header_title: 'There''s an update on a proposal you follow'

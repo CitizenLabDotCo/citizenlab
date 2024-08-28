@@ -22,8 +22,8 @@ module EmailCampaigns
       format_message(
         'header_message',
         values: {
-          ideaTitle: localize_for_recipient(event.post_title_multiloc),
-          officialName: localize_for_recipient(event.official_feedback_author_multiloc)
+          input_title: localize_for_recipient(event.post_title_multiloc),
+          feedback_author_name: localize_for_recipient(event.official_feedback_author_multiloc)
         }
       )
     end
