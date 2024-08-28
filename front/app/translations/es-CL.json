@@ -732,7 +732,7 @@
   "app.components.formBuilder.leaveBuilderText": "Tienes cambios sin guardar. Por favor, guárdalos antes de irte. Si sales, perderás los cambios.",
   "app.components.formBuilder.limitAnswersTooltip": "Cuando está activado, los encuestados tienen que seleccionar el número especificado de respuestas para continuar.",
   "app.components.formBuilder.limitNumberAnswers": "Limitar el número de respuestas",
-  "app.components.formBuilder.linePolygonMapWarning2": "El dibujo de líneas y polígonos puede no cumplir las normas de accesibilidad. Puedes encontrar más información en {accessibilityStatement}.",
+  "app.components.formBuilder.linePolygonMapWarning2": "Es posible que las preguntas de dibujo de líneas y polígonos no cumplan con los estándares de accesibilidad. Puede encontrar más información en {accessibilityStatement}.",
   "app.components.formBuilder.linearScale": "Escala lineal",
   "app.components.formBuilder.locationDescription": "Ubicación",
   "app.components.formBuilder.logic": "Lógica",
