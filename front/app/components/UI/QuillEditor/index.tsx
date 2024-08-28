@@ -56,7 +56,6 @@ const QuillEditor = ({ value, onChange }: Props) => {
 
     return () => {
       container.innerHTML = '';
-      container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
