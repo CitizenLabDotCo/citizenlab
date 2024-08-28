@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Додељено мени",
   "app.components.admin.PostManager.assignee": "Асигнее",
   "app.components.admin.PostManager.authenticationError": "An authentication error occured while trying to fetch this layer. Please check the URL and that your Esri API key has access to this layer.",
-  "app.components.admin.PostManager.automatic": "(аутоматски)",
   "app.components.admin.PostManager.bodyTitle": "Опис",
   "app.components.admin.PostManager.cancel2": "Cancel",
   "app.components.admin.PostManager.changeStatusModalTitle": "Промените статус овог предлога",
