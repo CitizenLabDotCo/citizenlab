@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 
 import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
 
-// import { configureQuill } from './configureQuill';
+import 'quill/dist/quill.snow.css';
+import { attributes } from './altTextToImagesModule';
+import { configureQuill } from './configureQuill';
+import Toolbar from './Toolbar';
 
 export interface Props {
   id: string;
@@ -27,11 +29,25 @@ export interface Props {
   withCTAButton?: boolean;
 }
 
-// configureQuill();
+configureQuill();
 
-const QuillEditor = ({ value, onChange }: Props) => {
+const QuillEditor = ({
+  id,
+  value,
+  placeholder,
+  withCTAButton,
+  limitedTextFormatting,
+  noAlign,
+  noImages,
+  noVideos,
+  noToolbar,
+  onChange,
+  onBlur,
+}: Props) => {
   const [editor, setEditor] = useState<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
 
   // Initialize Quill
   // https://quilljs.com/playground/react
@@ -45,6 +61,45 @@ const QuillEditor = ({ value, onChange }: Props) => {
 
     const quill = new Quill(editorContainer, {
       theme: 'snow',
+      formats: [
+        'bold',
+        'italic',
+        'link',
+        ...attributes,
+        ...(withCTAButton ? ['button'] : []),
+        ...(!limitedTextFormatting ? ['header', 'list'] : []),
+        ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
+        ...(!noImages ? ['image'] : []),
+        ...(!noVideos ? ['video'] : []),
+      ],
+      placeholder: placeholder || '',
+      modules: {
+        altTextToImages: true,
+        blotFormatter: !noImages || !noVideos ? true : false,
+        toolbar: toolbarId ? `#${toolbarId}` : false,
+        keyboard: {
+          bindings: {
+            // overwrite default tab behavior
+            tab: {
+              key: 9,
+              handler: () => {
+                onBlur && onBlur();
+                return true;
+              }, // do nothing
+            },
+            'remove tab': {
+              key: 9,
+              shiftKey: true,
+              collapsed: true,
+              prefix: /\t$/,
+              handler: () => true, // do nothing
+            },
+          },
+        },
+        clipboard: {
+          matchVisual: false,
+        },
+      },
     });
 
     if (value) {
@@ -76,7 +131,28 @@ const QuillEditor = ({ value, onChange }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
-  return <div ref={containerRef} />;
+  return (
+    <div>
+      {toolbarId && (
+        <Toolbar
+          limitedTextFormatting={limitedTextFormatting}
+          withCTAButton={withCTAButton}
+          isButtonsMenuVisible={false} // TODO
+          noImages={noImages}
+          noVideos={noVideos}
+          noAlign={noAlign}
+          // setIsButtonsMenuVisible={setIsButtonsMenuVisible}
+          setIsButtonsMenuVisible={() => {}} // TODO
+          // handleCustomLink={handleCustomLink}
+          handleCustomLink={() => {}} // TODO
+          // handleNormalLink={handleNormalLink}
+          handleNormalLink={() => {}} // TODO
+          id={toolbarId}
+        />
+      )}
+      <div ref={containerRef} />
+    </div>
+  );
 };
 
 export default QuillEditor;

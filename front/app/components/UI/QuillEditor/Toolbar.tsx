@@ -42,7 +42,7 @@ const DropdownListItem = styled.button`
 `;
 
 interface Props {
-  toolbarId?: string;
+  id: string;
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
   isButtonsMenuVisible: boolean;
@@ -55,7 +55,7 @@ interface Props {
 }
 
 const Toolbar = ({
-  toolbarId,
+  id,
   limitedTextFormatting,
   withCTAButton,
   isButtonsMenuVisible,
@@ -137,7 +137,7 @@ const Toolbar = ({
   };
 
   return (
-    <div id={toolbarId}>
+    <div id={id}>
       {!limitedTextFormatting && (
         <span className="ql-formats" role="button" onClick={trackClickDropdown}>
           <select className="ql-header" defaultValue={''}>
