@@ -144,7 +144,7 @@
   "app.components.admin.PostManager.assignedToMe": "Assigned to me",
   "app.components.admin.PostManager.assignee": "Assignee",
   "app.components.admin.PostManager.authenticationError": "An authentication error occured while trying to fetch this layer. Please check the URL and that your Esri API key has access to this layer.",
-  "app.components.admin.PostManager.automatic": "(automatic)",
+  "app.components.admin.PostManager.automatedStatusTooltipText": "This status updates automatically when conditions are met",
   "app.components.admin.PostManager.bodyTitle": "Description",
   "app.components.admin.PostManager.cancel2": "Cancel",
   "app.components.admin.PostManager.changeStatusModalTitle": "Change this proposal's status",

@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Tilldelad till mig",
   "app.components.admin.PostManager.assignee": "Tilldelad person",
   "app.components.admin.PostManager.authenticationError": "Ett autentiseringsfel uppstod när du försökte hämta det här lagret. Kontrollera webbadressen och att din Esri API-nyckel har åtkomst till det här lagret.",
-  "app.components.admin.PostManager.automatic": "(automatisk)",
   "app.components.admin.PostManager.bodyTitle": "Beskrivning",
   "app.components.admin.PostManager.cancel2": "Avbryt",
   "app.components.admin.PostManager.changeStatusModalTitle": "Ändra det här förslagets status",

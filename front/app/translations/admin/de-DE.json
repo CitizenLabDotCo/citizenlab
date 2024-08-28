@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Mir zugewiesen",
   "app.components.admin.PostManager.assignee": "Zugewiesen an",
   "app.components.admin.PostManager.authenticationError": "Beim Versuch, diese Ebene abzurufen, ist ein Authentifizierungsfehler aufgetreten. Bitte überprüfen Sie die URL und stellen Sie sicher, dass Ihr Esri API-Schlüssel Zugriff auf diese Ebene hat.",
-  "app.components.admin.PostManager.automatic": "(automatisch)",
   "app.components.admin.PostManager.bodyTitle": "Beschreibung",
   "app.components.admin.PostManager.cancel2": "Abbrechen",
   "app.components.admin.PostManager.changeStatusModalTitle": "Den Status dieses Vorschlags ändern",

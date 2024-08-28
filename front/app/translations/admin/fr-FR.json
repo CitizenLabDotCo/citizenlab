@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Attribué à moi",
   "app.components.admin.PostManager.assignee": "Responsable",
   "app.components.admin.PostManager.authenticationError": "Une erreur d'authentification s'est produite lors de la récupération de cette couche. Veuillez vérifier l'URL et assurez-vous que votre clé API Esri a accès à cette couche.",
-  "app.components.admin.PostManager.automatic": "(automatique)",
   "app.components.admin.PostManager.bodyTitle": "Description",
   "app.components.admin.PostManager.cancel2": "Annuler",
   "app.components.admin.PostManager.changeStatusModalTitle": "Modifier le statut de cette proposition",

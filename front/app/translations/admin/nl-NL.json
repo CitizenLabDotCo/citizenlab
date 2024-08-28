@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Toegewezen aan mij",
   "app.components.admin.PostManager.assignee": "Toegewezen aan",
   "app.components.admin.PostManager.authenticationError": "Er is een authenticatiefout opgetreden tijdens het ophalen van deze laag. Controleer de URL en of je Esri API-sleutel toegang heeft tot deze laag.",
-  "app.components.admin.PostManager.automatic": "(automatisch)",
   "app.components.admin.PostManager.bodyTitle": "Beschrijving",
   "app.components.admin.PostManager.cancel2": "Annuleer",
   "app.components.admin.PostManager.changeStatusModalTitle": "Wijzig de status van dit voorstel",

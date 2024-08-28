@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Dodijeljeni meni",
   "app.components.admin.PostManager.assignee": "Opunomoćenik",
   "app.components.admin.PostManager.authenticationError": "Došlo je do pogreške pri autentifikaciji prilikom pokušaja dohvaćanja ovog sloja. Provjerite URL i ima li vaš Esri API ključ pristup ovom sloju.",
-  "app.components.admin.PostManager.automatic": "(automatski)",
   "app.components.admin.PostManager.bodyTitle": "Opis",
   "app.components.admin.PostManager.cancel2": "Otkazati",
   "app.components.admin.PostManager.changeStatusModalTitle": "Promijenite status ovog prijedloga",

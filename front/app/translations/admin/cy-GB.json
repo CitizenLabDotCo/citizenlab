@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Wedi'i neilltuo i mi",
   "app.components.admin.PostManager.assignee": "Aseinai",
   "app.components.admin.PostManager.authenticationError": "Digwyddodd gwall dilysu wrth geisio nôl yr haen hon. Gwiriwch yr URL a bod gan eich allwedd API Esri fynediad i'r haen hon.",
-  "app.components.admin.PostManager.automatic": "(awtomatig)",
   "app.components.admin.PostManager.bodyTitle": "Disgrifiad",
   "app.components.admin.PostManager.cancel2": "Canslo",
   "app.components.admin.PostManager.changeStatusModalTitle": "Newid statws y cynnig hwn",
