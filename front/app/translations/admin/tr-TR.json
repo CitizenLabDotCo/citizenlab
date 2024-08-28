@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Yakınlaştırmayı kaydet",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "destek makalesini",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "İsimsiz katman",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Harita yakınlaştırma düzeyi",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Haritanın varsayılan yakınlaştırma düzeyidir. 1 ile 17 arasında bir değer kabul edilir; burada 1 tamamen uzaklaştırılmış (tüm dünya görünür) ve 17 tamamen yakınlaştırılmış (sokaklar ve binalar görünür) olur",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Tüm kullanıcı verilerini anonimleştirin",
