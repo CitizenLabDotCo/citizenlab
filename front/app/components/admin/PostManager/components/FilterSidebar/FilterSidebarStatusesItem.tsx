@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { get } from 'lodash-es';
 import { useDrop } from 'react-dnd';
 import { Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -64,7 +63,16 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
             <StatusText>
               <T value={status.attributes.title_multiloc} />
             </StatusText>
-            {get(status, 'attributes.transition_type') === 'automatic' && (
+            {/* TODO: Delete during proposal clean up */}
+            {(status as IInitiativeStatusData).attributes.transition_type ===
+              'automatic' && (
+              <StyledText>
+                &nbsp;
+                <FormattedMessage {...messages.automatic} />
+              </StyledText>
+            )}
+            {(status as IIdeaStatusData).attributes
+              .can_manually_transition_to === false && (
               <StyledText>
                 &nbsp;
                 <FormattedMessage {...messages.automatic} />

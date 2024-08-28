@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ColorIndicator = styled.div<{ active: boolean }>`
+const ColorIndicator = styled.div<{ active: boolean; disabled: boolean }>`
   width: 1rem;
   height: 1rem;
   border: 1px solid ${(props) => props.color};
@@ -20,6 +20,7 @@ const ColorIndicator = styled.div<{ active: boolean }>`
   cursor: pointer;
   margin: 0 0.25rem;
   ${(props) => (props.active ? `background-color: ${props.color};` : '')}
+  ${(props) => (props.disabled ? 'cursor: not-allowed;' : '')}
 `;
 
 type Props = {
@@ -51,6 +52,7 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
                 color={status.attributes.color}
                 active={this.isActive(status.id)}
                 onClick={this.handleStatusClick(status.id)}
+                disabled={!status.attributes.can_manually_transition_to}
               />
             }
             content={<T value={status.attributes.title_multiloc} />}
