@@ -765,7 +765,7 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml run --profile cypress --name cypress_run \
+          docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
             cypress npm run cypress:run -- \
             --reporter cypress-circleci-reporter \
             --config baseUrl=http://e2e.front:3000 \
