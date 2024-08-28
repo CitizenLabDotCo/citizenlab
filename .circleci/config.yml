@@ -702,6 +702,7 @@ jobs:
           paths:
             - postgresql-data
             - uploads
+            - env_files
 
   e2e-setup-front:
     docker:
@@ -734,7 +735,6 @@ jobs:
     resource_class: medium
     steps:
       - shallow-clone
-      - copy_secrets_from_lastpass
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - attach_workspace:
@@ -758,7 +758,6 @@ jobs:
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
-      # COMMA_SEPARATED_TESTFILES=cypress/e2e/input_form_builder/create_and_fill_form.cy.ts
       - run: |
           cd front
           mkdir -p reports
@@ -766,11 +765,8 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml run --name cypress_run \
-            -e DEBUG=cypress:* \
-            -e API_HOST=e2e.front \
-            -e API_PORT=3000 \
-            front npm run cypress:run -- \
+          docker compose -f docker-compose.yml -f docker-compose.test.yml run --profile cypress --name cypress_run \
+            cypress npm run cypress:run -- \
             --reporter cypress-circleci-reporter \
             --config baseUrl=http://e2e.front:3000 \
             --spec ${COMMA_SEPARATED_TESTFILES}
@@ -784,6 +780,8 @@ jobs:
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
+          path: test_results
+      - store_artifacts:
           path: test_results
       - store_artifacts:
           path: screenshots

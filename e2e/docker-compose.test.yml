@@ -11,6 +11,7 @@ services:
       interval: 2s
       timeout: 1s
       retries: 20
+
   front:
     image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
     # build:
@@ -18,16 +19,27 @@ services:
     #   dockerfile: Dockerfile-static-hosting
     healthcheck:
       test: ["CMD", "curl", "-f", "http://e2e.front:3000"]
-      interval: 1s
+      interval: 2s
       timeout: 1s
       retries: 10
     environment:
       API_HOST: e2e-web
       API_PORT: 4000
     command: npm run start:prod
+
   postgres:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1s
       timeout: 1s
       retries: 10
+
+  cypress:
+    profiles: [cypress]
+    image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
+    environment:
+      API_HOST: e2e.front
+      API_PORT: 3000
+    env_file:
+      - "../env_files/front-safe.env"
+      - "../env_files/front-secret.env"
