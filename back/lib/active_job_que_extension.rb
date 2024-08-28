@@ -35,23 +35,11 @@ module ActiveJobQueExtension
       { args: args, kwargs: kwargs }
     end
 
-    begin
-      _run(
-        args: que_filter_args(args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }),
-        kwargs: que_filter_args(kwargs.deep_symbolize_keys),
-        reraise_errors: true
-      )
-    rescue Faraday::BadRequestError => e
-      extra = {
-        response: e&.response,
-        response_headers: e&.response&.headers,
-        response_body: e&.response&.body,
-        response_status: e&.response&.status,
-        backtrace: e&.backtrace
-      }
-
-      ErrorReporter.report(e, extra: extra)
-    end
+    _run(
+      args: que_filter_args(args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }),
+      kwargs: que_filter_args(kwargs.deep_symbolize_keys),
+      reraise_errors: true
+    )
   end
   ruby2_keywords(:perform) if respond_to?(:ruby2_keywords, true)
 end
