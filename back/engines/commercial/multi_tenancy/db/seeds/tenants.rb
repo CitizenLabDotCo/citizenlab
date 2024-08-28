@@ -287,6 +287,12 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               verification_methods: [
+                # NOTE: for real platforms, you should never have
+                # more than one verification method enabled at a time.
+                # The below list is for testing purposes only.
+                {
+                  name: 'fake_sso'
+                },
                 {
                   name: 'cow',
                   api_username: 'fake_username',
@@ -338,9 +344,6 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
-                },
-                {
-                  name: 'fake_sso'
                 }
               ]
             },
