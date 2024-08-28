@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Input, IOption } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  IOption,
+  Box,
+  Text,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
@@ -50,6 +56,8 @@ interface Props {
   ) => void;
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
+  reviewing_enabled: boolean | null | undefined;
+  toggleReviewingEnabled: (reviewing_enabled: boolean) => void;
 }
 
 const ProposalsInputs = ({
@@ -79,15 +87,11 @@ const ProposalsInputs = ({
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
   handleReactingThresholdChange,
+  reviewing_enabled,
+  toggleReviewingEnabled,
 }: Props) => {
   return (
     <>
-      <AnonymousPostingToggle
-        allow_anonymous_participation={allow_anonymous_participation}
-        handleAllowAnonymousParticipationOnChange={
-          handleAllowAnonymousParticipationOnChange
-        }
-      />
       <CustomFieldPicker
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
@@ -124,6 +128,41 @@ const ProposalsInputs = ({
         <Error
           text={reactingThresholdError}
           apiErrors={apiErrors && apiErrors.reacting_threshold}
+        />
+      </SectionField>
+      <AnonymousPostingToggle
+        allow_anonymous_participation={allow_anonymous_participation}
+        handleAllowAnonymousParticipationOnChange={
+          handleAllowAnonymousParticipationOnChange
+        }
+      />
+      <SectionField>
+        <SubSectionTitle style={{ marginBottom: '0px' }}>
+          <FormattedMessage {...messages.participationOptions} />
+        </SubSectionTitle>
+        <Toggle
+          checked={reviewing_enabled || false}
+          onChange={() => {
+            toggleReviewingEnabled(!reviewing_enabled);
+          }}
+          label={
+            <Box ml="8px" id="e2e-participation-options-toggle">
+              <Box display="flex">
+                <Text
+                  color="primary"
+                  mb="0px"
+                  fontSize="m"
+                  style={{ fontWeight: 600 }}
+                >
+                  <FormattedMessage {...messages.prescreeningText} />
+                </Text>
+              </Box>
+
+              <Text color="coolGrey600" mt="0px" fontSize="m">
+                <FormattedMessage {...messages.prescreeningSubtext} />
+              </Text>
+            </Box>
+          }
         />
       </SectionField>
       <UserActions

@@ -587,4 +587,17 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired',
     defaultMessage: 'Minimum number of votes is required',
   },
+  participationOptions: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationOptions',
+    defaultMessage: 'Participation options',
+  },
+  prescreeningText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningText',
+    defaultMessage: 'Require pre-screening of inputs',
+  },
+  prescreeningSubtext: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
+    defaultMessage:
+      'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
+  },
 });
