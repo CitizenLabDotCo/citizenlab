@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Zapisz powiększenie",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "artykuł pomocniczy",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Nienazwana warstwa",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Domyślny poziom powiększenia",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Ustaw, jak bardzo mapa jest domyślnie powiększona. Wybierz wartość pomiędzy 0 a 20, gdzie 0 oznacza całkowite pomniejszenie (cały świat jest widoczny), a 20 oznacza całkowite przybliżenie (bloki i budynki są widoczne)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "Anonimizuj wszystkie dane użytkownika",

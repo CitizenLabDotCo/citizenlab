@@ -1483,6 +1483,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "حفظ التكبير",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "مقالة دعم",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2": "https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "طبقة غير مسماة",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "مستوى تكبير/تصغير الخريطة",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "مستوى التكبير/التصغير الافتراضي للخريطة. يمكن قبول قيمة بين 1 و17، حيث تشير 1 إلى التصغير الكامل (إمكانية رؤية العالم بكامله) و17 إلى التكبير الكامل (إمكانية رؤية المربعات السكنية والمباني)",
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelMain2": "إخفاء هوية جميع بيانات المستخدم",
