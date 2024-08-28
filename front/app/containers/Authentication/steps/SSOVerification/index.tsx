@@ -31,6 +31,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
 
   return (
     <Box>
+      {isNemLogIn && <NemlogInButton last={false} grayBorder />}
       {fakeSsoEnabled && (
         <AuthProviderButton
           icon="bullseye"
@@ -43,7 +44,6 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
         </AuthProviderButton>
       )}
-      {isNemLogIn && <NemlogInButton last={false} />}
       <Text mt="20px" mb="0">
         <FormattedMessage
           {...messages.alreadyHaveAnAccount}

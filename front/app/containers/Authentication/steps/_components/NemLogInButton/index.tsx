@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
+
 import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
@@ -15,10 +17,11 @@ import messages from './messages';
 interface Props {
   method?: TVerificationMethod;
   last: boolean;
+  grayBorder?: boolean;
   onClick?: (method: TVerificationMethod) => void;
 }
 
-const NemlogInButton = ({ method, last, onClick }: Props) => {
+const NemlogInButton = ({ method, last, grayBorder, onClick }: Props) => {
   const handleOnClick = () => {
     if (method && onClick) {
       onClick(method);
@@ -31,7 +34,11 @@ const NemlogInButton = ({ method, last, onClick }: Props) => {
   };
 
   return (
-    <VerificationMethodButton last={last} onClick={handleOnClick}>
+    <VerificationMethodButton
+      last={last}
+      onClick={handleOnClick}
+      borderColor={grayBorder ? colors.grey500 : undefined}
+    >
       <FormattedMessage {...messages.verifyNemLogIn} />
     </VerificationMethodButton>
   );
