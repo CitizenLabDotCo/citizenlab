@@ -77,7 +77,6 @@ const QuillEditor = ({
   // Initialize Quill
   // https://quilljs.com/playground/react
   useEffect(() => {
-    if (editor) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -102,17 +101,8 @@ const QuillEditor = ({
     return () => {
       container.innerHTML = '';
     };
-  }, [
-    editor,
-    id,
-    toolbarId,
-    noImages,
-    noVideos,
-    noAlign,
-    limitedTextFormatting,
-    value,
-    withCTAButton,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle text and focus changes
   useEffect(() => {
