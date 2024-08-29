@@ -36,28 +36,28 @@ nl-BE:
   symbols:
     outside: ergens anders
   idea_statuses:
-    prescreening: voorvertoning
-    prescreening_description: Deze input wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
+    prescreening: voorselectie
+    prescreening_description: Deze bijdrage wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
     proposed: voorgesteld
-    proposed_description: Deze input is ingediend en kan nu door het publiek worden gesteund. Verzamel stemmen om het naar de volgende fase te helpen.
+    proposed_description: Deze bijdrage is ingediend en kan nu door het publiek worden gesteund. Verzamel stemmen om het naar de volgende fase te helpen.
     viewed: gezien
-    viewed_description: Deze input is gezien door de projectmanager.
+    viewed_description: Deze bijdrage is gezien door de projectmanager.
     under_consideration: in overweging
-    under_consideration_description: De projectmanager heeft rekening gehouden met deze input.
+    under_consideration_description: De projectmanager heeft deze bijdrage in overweging genomen.
     accepted: aangenomen
-    accepted_description: Deze input is geaccepteerd en zal door de projectmanager worden geïmplementeerd.
+    accepted_description: Deze bijdrage is geaccepteerd en zal door de projectmanager worden geïmplementeerd.
     implemented: uitgevoerd
-    implemented_description: Deze input is geïmplementeerd door de projectmanager.
+    implemented_description: Deze bijdrage is geïmplementeerd door de projectmanager.
     rejected: afgewezen
-    rejected_description: Deze invoer is afgewezen.
+    rejected_description: Deze bijdrage is afgewezen.
     expired: verstreken
-    expired_description: Deze ingang is niet langer actief en is gesloten vanwege tijdgebrek of inactiviteit.
+    expired_description: Deze bijdrage is niet langer actief en is gesloten vanwege tijdsrestricties of inactiviteit.
     threshold_reached: drempel bereikt
-    threshold_reached_description: Deze input heeft de vereiste ondersteuningsdrempel gehaald en zal nu worden overwogen voor verdere actie.
+    threshold_reached_description: Deze bijdrage heeft de vereiste stemdrempel gehaald en zal nu worden overwogen voor verdere actie.
     answered: beantwoord
-    answered_description: Er is een antwoord gegeven voor deze input. Bekijk de details voor meer informatie.
+    answered_description: Er is een antwoord gegeven op deze bijdrage. Bekijk de details voor meer informatie.
     ineligible: komt niet in aanmerking
-    ineligible_description: Deze input is bekeken en helaas afgewezen. Er is een officiële update gegeven met meer details.
+    ineligible_description: Deze bijdrage is bekeken en helaas afgewezen. Er is een officiële update gegeven met meer details.
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
