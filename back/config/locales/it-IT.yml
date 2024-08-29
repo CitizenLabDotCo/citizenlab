@@ -36,26 +36,28 @@ it:
   symbols:
     outside: da qualche altra parte
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
-    proposed_description: Questa idea è stata proposta alla città
+    proposed_description: Questo input è stato presentato ed è ora aperto al sostegno pubblico. Raccogli i voti per aiutarci a passare alla fase successiva.
     viewed: visto
-    viewed_description: Questa idea è stata vista da qualcuno della città
+    viewed_description: Questo input è stato visto dal project manager.
     under_consideration: in considerazione
-    under_consideration_description: Questa idea è stata presa in considerazione dalla città
+    under_consideration_description: Il responsabile del progetto ha tenuto conto di questi suggerimenti.
     accepted: accettato
-    accepted_description: Questa idea è stata accettata e sarà attuata dalla città
+    accepted_description: Questo suggerimento è stato accettato e sarà implementato dal responsabile del progetto.
     implemented: implementato
-    implemented_description: Questa idea è stata proposta alla città
+    implemented_description: Questo input è stato recepito dal responsabile del progetto.
     rejected: rifiutato
-    rejected_description: Questa idea è stata respinta
+    rejected_description: Questo input è stato rifiutato.
     expired: scaduto
-    expired_description: scaduto
+    expired_description: Questo ingresso non è più attivo ed è stato chiuso per motivi di tempo o di inattività.
     threshold_reached: soglia raggiunta
-    threshold_reached_description: soglia raggiunta
+    threshold_reached_description: Questo input ha raggiunto la soglia di supporto richiesta e sarà preso in considerazione per ulteriori azioni.
     answered: ha risposto
-    answered_description: ha risposto
+    answered_description: È stata fornita una risposta per questo input. Controlla i dettagli per maggiori informazioni.
     ineligible: non ammissibile
-    ineligible_description: non ammissibile
+    ineligible_description: Questo input è stato esaminato e, purtroppo, è stato respinto. È stato fornito un aggiornamento ufficiale con maggiori dettagli.
   initiative_statuses:
     review_pending: in attesa di revisione
     review_pending_description: in attesa di revisione
