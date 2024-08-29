@@ -42,7 +42,7 @@ en:
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
       "project_published": Project published
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
+      "status_change_on_idea_you_follow": Status change of an input that you follow
       "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
       "welcome": After registration
@@ -411,11 +411,11 @@ en:
       header_message: 'The participation platform of %{organizationName} just published the following project:'
       preheader: 'A new project was published'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      header_message: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      header_title: 'An idea you follow has a new status'
-      subject: 'The status of an idea you follow has been changed'
-      preheader: 'An idea you follow has a new status'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of an input you follow has been changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       header_message: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'

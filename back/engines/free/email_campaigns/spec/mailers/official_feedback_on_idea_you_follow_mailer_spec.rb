@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
     before_all do
       config = AppConfiguration.instance
-      config.settings['core']['organization_name'] = { 'en' => 'Awesometown' }
+      config.settings['core']['organization_name'] = { 'en' => 'Vaudeville' }
       config.save!
     end
 
@@ -27,11 +27,22 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('An input you follow has received an official update on the platform of Awesometown')
+      expect(mail.subject).to eq('An input you follow has received an official update on the platform of Vaudeville')
     end
 
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
+
+    it 'includes the header' do
+      expect(mail.body.encoded).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/There's an update on an input you follow/)
+        end
+        with_tag 'p' do
+          with_text(/Gonzo gave an update on the input 'Input title'. Click the button below to enter the conversation with Gonzo/)
+        end
+      end
     end
 
     it 'includes the input box' do
