@@ -36,26 +36,28 @@ nl:
   symbols:
     outside: ergens anders
   idea_statuses:
+    prescreening: voorvertoning
+    prescreening_description: Deze input wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
     proposed: voorgesteld
-    proposed_description: Dit idee is voorgesteld
+    proposed_description: Deze input is ingediend en kan nu door het publiek worden gesteund. Verzamel stemmen om het naar de volgende fase te helpen.
     viewed: gezien
-    viewed_description: Dit idee is gezien door iemand van de gemeente
+    viewed_description: Deze input is gezien door de projectmanager.
     under_consideration: in overweging
-    under_consideration_description: Dit idee is in overweging genomen
+    under_consideration_description: De projectmanager heeft rekening gehouden met deze input.
     accepted: aangenomen
-    accepted_description: Dit idee is aangenomen en zal worden uitgevoerd
+    accepted_description: Deze input is geaccepteerd en zal door de projectmanager worden geïmplementeerd.
     implemented: uitgevoerd
-    implemented_description: Dit idee is uitgevoerd
+    implemented_description: Deze input is geïmplementeerd door de projectmanager.
     rejected: afgewezen
-    rejected_description: Dit idee is afgewezen
+    rejected_description: Deze invoer is afgewezen.
     expired: verstreken
-    expired_description: verstreken
+    expired_description: Deze ingang is niet langer actief en is gesloten vanwege tijdgebrek of inactiviteit.
     threshold_reached: drempel bereikt
-    threshold_reached_description: drempel bereikt
+    threshold_reached_description: Deze input heeft de vereiste ondersteuningsdrempel gehaald en zal nu worden overwogen voor verdere actie.
     answered: beantwoord
-    answered_description: beantwoord
+    answered_description: Er is een antwoord gegeven voor deze input. Bekijk de details voor meer informatie.
     ineligible: komt niet in aanmerking
-    ineligible_description: komt niet in aanmerking
+    ineligible_description: Deze input is bekeken en helaas afgewezen. Er is een officiële update gegeven met meer details.
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
