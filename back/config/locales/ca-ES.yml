@@ -36,26 +36,28 @@ ca:
   symbols:
     outside: algun altre lloc
   idea_statuses:
+    prescreening: projecció prèvia
+    prescreening_description: Aquesta aportació està actualment en procés de revisió pel director del projecte i encara no és visible per al públic.
     proposed: proposat
-    proposed_description: Aquesta idea s'ha proposat a la ciutat
+    proposed_description: Aquesta aportació s'ha enviat i ara està oberta al suport públic. Reuneix vots per ajudar-lo a passar a la següent etapa.
     viewed: vist
-    viewed_description: Aquesta idea l'ha vist algú de la ciutat
+    viewed_description: Aquesta entrada l'ha vist el responsable del projecte.
     under_consideration: sota consideració
-    under_consideration_description: Aquesta idea ha estat presa en consideració per l'Ajuntament
+    under_consideration_description: Aquesta aportació ha estat presa en consideració pel director del projecte.
     accepted: acceptat
-    accepted_description: Aquesta idea ha estat acceptada i serà implementada per la ciutat
+    accepted_description: Aquesta aportació ha estat acceptada i serà implementada pel director del projecte.
     implemented: implementat
-    implemented_description: Aquesta idea ha estat implementada per l'Ajuntament
+    implemented_description: Aquesta aportació ha estat implementada pel director del projecte.
     rejected: rebutjada
-    rejected_description: Aquesta idea ha estat rebutjada
+    rejected_description: Aquesta entrada ha estat rebutjada.
     expired: caducat
-    expired_description: caducat
+    expired_description: Aquesta entrada ja no està activa i s'ha tancat per limitacions de temps o inactivitat.
     threshold_reached: llindar assolit
-    threshold_reached_description: llindar assolit
+    threshold_reached_description: Aquesta entrada ha assolit el llindar de suport requerit i ara es tindrà en compte per a més accions.
     answered: va respondre
-    answered_description: va respondre
+    answered_description: S'ha proporcionat una resposta per a aquesta entrada. Consulteu els detalls per obtenir més informació.
     ineligible: inelegible
-    ineligible_description: inelegible
+    ineligible_description: Aquesta aportació ha estat revisada i, malauradament, ha estat rebutjada. S'ha proporcionat una actualització oficial amb més detalls.
   initiative_statuses:
     review_pending: revisió pendent
     review_pending_description: revisió pendent
