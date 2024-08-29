@@ -36,26 +36,28 @@ sr-Latn:
   symbols:
     outside: negde drugde
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: predloženo
-    proposed_description: Ova ideja je predložena administraciji
+    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
     viewed: pregledano
-    viewed_description: Ova ideja je pogledana
+    viewed_description: This input has been seen by the project manager.
     under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra
+    under_consideration_description: This input has been taken into consideration by the project manager.
     accepted: prihvaćeno
-    accepted_description: Ova ideja je prihvaćena i biće realizovana
+    accepted_description: This input has been accepted and will be implemented by the project manager.
     implemented: realizovano
-    implemented_description: Ova ideja je realizovana
+    implemented_description: This input has been implemented by the project manager.
     rejected: odbijeno
-    rejected_description: Ova ideja je odbijena
+    rejected_description: This input has been rejected.
     expired: expired
-    expired_description: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
     answered: answered
-    answered_description: answered
+    answered_description: A response has been provided for this input. Check out the details for more information.
     ineligible: ineligible
-    ineligible_description: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
