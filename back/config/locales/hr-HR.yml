@@ -36,26 +36,28 @@ hr:
   symbols:
     outside: negdje drugdje
   idea_statuses:
+    prescreening: prethodni pregled
+    prescreening_description: Ovaj unos trenutno pregledava voditelj projekta i još nije vidljiv javnosti.
     proposed: predloženo
-    proposed_description: Ova je ideja predložena gradskoj administraciji
+    proposed_description: Ovaj unos je poslan i sada je otvoren za javnu podršku. Skupljajte glasove kako biste ga premjestili u sljedeću fazu.
     viewed: pregledano
-    viewed_description: Ovu je ideja pogledao netko iz gradske administracije
+    viewed_description: Ovaj unos je vidio voditelj projekta.
     under_consideration: razmatra se
-    under_consideration_description: Ova se ideja razmatra od strane grada
+    under_consideration_description: Voditelj projekta uzeo je u obzir ovaj unos.
     accepted: prihvaćeno
-    accepted_description: Ova je ideja prihvaćena i bit će provedena
+    accepted_description: Ovaj unos je prihvaćen i implementirat će ga voditelj projekta.
     implemented: provedeno
-    implemented_description: Ova je ideja provedena
+    implemented_description: Ovaj unos implementirao je voditelj projekta.
     rejected: odbijeno
-    rejected_description: Ova je ideja odbijena
+    rejected_description: Ovaj unos je odbijen.
     expired: istekao
-    expired_description: istekao
+    expired_description: Ovaj unos više nije aktivan i zatvoren je zbog vremenskog ograničenja ili neaktivnosti.
     threshold_reached: dosegnut prag
-    threshold_reached_description: dosegnut prag
+    threshold_reached_description: Ovaj unos je ispunio potrebni prag podrške i sada će se uzeti u obzir za daljnje radnje.
     answered: odgovorio
-    answered_description: odgovorio
+    answered_description: Za ovaj unos dat je odgovor. Provjerite pojedinosti za više informacija.
     ineligible: nepodoban
-    ineligible_description: nepodoban
+    ineligible_description: Ovaj unos je pregledan i, nažalost, odbijen. Dostavljeno je službeno ažuriranje s više pojedinosti.
   initiative_statuses:
     review_pending: pregled na čekanju
     review_pending_description: pregled na čekanju
