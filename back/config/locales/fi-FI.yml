@@ -36,26 +36,28 @@ fi:
   symbols:
     outside: jossain muualla
   idea_statuses:
+    prescreening: esiseulonta
+    prescreening_description: Projektipäällikkö tarkistaa parhaillaan tätä syötettä, eikä se ole vielä näkyvissä yleisölle.
     proposed: ehdotettu
-    proposed_description: Tätä ideaa on esitetty kaupungille
+    proposed_description: Tämä palaute on lähetetty ja on nyt avoinna yleisölle. Kerää ääniä, jotta se siirtyy seuraavaan vaiheeseen.
     viewed: katsottu
-    viewed_description: Tämän idean on nähnyt joku kaupunkilainen
+    viewed_description: Projektipäällikkö on nähnyt tämän syötteen.
     under_consideration: harkittavana
-    under_consideration_description: Tämä ajatus on otettu kaupungilla huomioon
+    under_consideration_description: Projektipäällikkö on ottanut tämän panoksen huomioon.
     accepted: hyväksytty
-    accepted_description: Tämä idea on hyväksytty ja kaupunki toteuttaa sen
+    accepted_description: Projektipäällikkö on hyväksynyt tämän panoksen ja toteuttaa sen.
     implemented: toteutettu
-    implemented_description: Tämä idea on kaupungin toimesta toteutettu
+    implemented_description: Tämän panoksen on toteuttanut projektipäällikkö.
     rejected: hylätty
-    rejected_description: Tämä ajatus on hylätty
+    rejected_description: Tämä syöte on hylätty.
     expired: vanhentunut
-    expired_description: vanhentunut
+    expired_description: Tämä tulo ei ole enää aktiivinen ja on suljettu aikarajoitusten tai passiivisuuden vuoksi.
     threshold_reached: kynnys saavutettu
-    threshold_reached_description: kynnys saavutettu
+    threshold_reached_description: Tämä panos on saavuttanut vaaditun tukikynnyksen, ja sitä harkitaan nyt lisätoimia varten.
     answered: vastasi
-    answered_description: vastasi
+    answered_description: Tähän syötteeseen on annettu vastaus. Katso lisätietoja saadaksesi lisätietoja.
     ineligible: kelpaamattomia
-    ineligible_description: kelpaamattomia
+    ineligible_description: Tämä syöte on tarkistettu ja valitettavasti hylätty. Virallinen päivitys, jossa on lisätietoja.
   initiative_statuses:
     review_pending: tarkistus odottaa
     review_pending_description: tarkistus odottaa
