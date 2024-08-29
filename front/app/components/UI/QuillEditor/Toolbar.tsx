@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { Tooltip, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import Quill from 'quill';
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';
@@ -49,9 +50,8 @@ interface Props {
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
+  editor: Quill | null;
   setIsButtonsMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  handleCustomLink: () => void;
-  handleNormalLink: () => void;
 }
 
 const Toolbar = ({
@@ -62,11 +62,34 @@ const Toolbar = ({
   noImages,
   noVideos,
   noAlign,
+  editor,
   setIsButtonsMenuVisible,
-  handleCustomLink,
-  handleNormalLink,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  const handleCustomLink = useCallback(() => {
+    if (!editor) return;
+    const selection = editor.getSelection();
+
+    if (selection && selection.length > 0) {
+      const value = prompt(formatMessage(messages.customLinkPrompt));
+      editor.format('button', value);
+      setIsButtonsMenuVisible(false);
+    }
+  }, [editor, setIsButtonsMenuVisible, formatMessage]);
+
+  const handleNormalLink = useCallback(() => {
+    if (!editor) return;
+    const selection = editor.getSelection();
+
+    // copied from the snow toolbar code
+    // to manually add the handler that would have been callen on the toolbar button
+    if (selection == null || selection.length === 0) return;
+    const preview = editor.getText(selection as any);
+    const tooltip = (editor as any).theme.tooltip;
+    tooltip.edit('link', preview);
+    setIsButtonsMenuVisible(false);
+  }, [editor, setIsButtonsMenuVisible]);
 
   const toggleButtonsMenu = useCallback(
     () => setIsButtonsMenuVisible((value) => !value),

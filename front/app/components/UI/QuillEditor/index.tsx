@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
@@ -8,7 +8,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
-import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
 
@@ -125,33 +124,6 @@ const QuillEditor = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
-  const handleCustomLink = useCallback(() => {
-    if (!editor) return;
-
-    const selection = editor.getSelection();
-
-    if (selection && selection.length > 0) {
-      const value = prompt(formatMessage(messages.customLinkPrompt));
-      editor.format('button', value);
-      setIsButtonsMenuVisible(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
-
-  const handleNormalLink = useCallback(() => {
-    if (!editor) return;
-
-    const selection = editor.getSelection();
-
-    // copied from the snow toolbar code
-    // to manually add the handler that would have been callen on the toolbar button
-    if (selection == null || selection.length === 0) return;
-    const preview = editor.getText(selection as any);
-    const tooltip = (editor as any).theme.tooltip;
-    tooltip.edit('link', preview);
-    setIsButtonsMenuVisible(false);
-  }, [editor]);
-
   const className = focussed ? 'focus' : '';
 
   return (
@@ -163,16 +135,15 @@ const QuillEditor = ({
     >
       {toolbarId && (
         <Toolbar
+          id={toolbarId}
           limitedTextFormatting={limitedTextFormatting}
           withCTAButton={withCTAButton}
           isButtonsMenuVisible={isButtonsMenuVisible}
           noImages={noImages}
           noVideos={noVideos}
           noAlign={noAlign}
+          editor={editor}
           setIsButtonsMenuVisible={setIsButtonsMenuVisible}
-          handleCustomLink={handleCustomLink}
-          handleNormalLink={handleNormalLink}
-          id={toolbarId}
         />
       )}
       <div>
