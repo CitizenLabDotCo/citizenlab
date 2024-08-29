@@ -36,26 +36,28 @@ lb:
   symbols:
     outside: anzwousch anescht
   idea_statuses:
+    prescreening: Pre-Screening
+    prescreening_description: Dësen Input gëtt am Moment vum Projet Manager iwwerpréift an ass nach net fir de Public ze gesinn.
     proposed: virgeschloen
-    proposed_description: Dës Iddi gouf virgeschloen
+    proposed_description: Dësen Input gouf proposéiert an ass elo op fir ëffentlech Ënnerstëtzung. Sammelt Stëmmen fir ze hëllefen et op déi nächst Etapp ze bewegen.
     viewed: gesinn
-    viewed_description: Dës Iddi gouf gesinn
+    viewed_description: Dësen Input gouf vum Projet Manager gesinn.
     under_consideration: Gëtt a betruecht gezunn
-    under_consideration_description: Dës Iddi gouf a betruecht gezunn
+    under_consideration_description: Dësen Input gouf vum Projet Manager berücksichtegt.
     accepted: akzeptéiert
-    accepted_description: Dës Iddi gouf akzeptéiert a wäert ëmgesat ginn
+    accepted_description: Dësen Input gouf ugeholl a gëtt vum Projet Manager ëmgesat.
     implemented: ëmgesat
-    implemented_description: Dës Iddi gouf ëmgesat
+    implemented_description: Dësen Input gouf vum Projet Manager ëmgesat.
     rejected: Ofgeleent
-    rejected_description: Dës Iddi gouf ofgeleent
+    rejected_description: Dësen Input gouf refuséiert.
     expired: ofgelaaf
-    expired_description: ofgelaaf
+    expired_description: Dësen Input ass net méi aktiv a gouf zougemaach wéinst Zäitbeschränkungen oder Inaktivitéit.
     threshold_reached: Schwell erreecht
-    threshold_reached_description: Schwell erreecht
+    threshold_reached_description: Dësen Input huet déi erfuerderlech Ënnerstëtzungsschwell erreecht a gëtt elo fir weider Handlung berücksichtegt.
     answered: geäntwert
-    answered_description: geäntwert
+    answered_description: Eng Äntwert gouf fir dësen Input geliwwert. Kuckt d'Detailer fir méi Informatioun.
     ineligible: ineligible
-    ineligible_description: ineligible
+    ineligible_description: Dësen Input gouf iwwerpréift a gouf leider refuséiert. En offiziellen Update gouf mat méi Detailer geliwwert.
   initiative_statuses:
     review_pending: Iwwerpréiwung waarden
     review_pending_description: Iwwerpréiwung waarden
