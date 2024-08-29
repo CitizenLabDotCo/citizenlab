@@ -36,26 +36,28 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
-    proposed_description: Bu fikir kent yönetimine önerildi
+    proposed_description: Bu girdi sunulmuştur ve şimdi kamuoyu desteğine açıktır. Bir sonraki aşamaya geçmesine yardımcı olmak için oy toplayın.
     viewed: görüntülendi
-    viewed_description: Bu fikir kent yönetiminden biri tarafından görülmüştür
+    viewed_description: Bu girdi proje yöneticisi tarafından görülmüştür.
     under_consideration: değerlendiriliyor
-    under_consideration_description: Bu fikir kent yönetimi tarafından dikkate alınmıştır
+    under_consideration_description: Bu girdiler proje yöneticisi tarafından dikkate alınmıştır.
     accepted: kabul edildi
-    accepted_description: Bu fikir kabul edildi ve kent yönetimi tarafından uygulanacak
+    accepted_description: Bu girdi kabul edilmiştir ve proje yöneticisi tarafından uygulanacaktır.
     implemented: uygulandı
-    implemented_description: Bu fikir kent yönetimi tarafından uygulandı
+    implemented_description: Bu girdi proje yöneticisi tarafından uygulanmıştır.
     rejected: reddedildi
-    rejected_description: Bu fikir reddedildi
+    rejected_description: Bu girdi reddedilmiştir.
     expired: süresi doldu
-    expired_description: süresi doldu
+    expired_description: Bu girdi artık aktif değildir ve zaman kısıtlamaları veya hareketsizlik nedeniyle kapatılmıştır.
     threshold_reached: eşiğe ulaşıldı
-    threshold_reached_description: eşiğe ulaşıldı
+    threshold_reached_description: Bu girdi gerekli destek eşiğini karşılamıştır ve şimdi daha fazla eylem için değerlendirilecektir.
     answered: cevap verdi
-    answered_description: cevap verdi
+    answered_description: Bu girdi için bir yanıt verilmiştir. Daha fazla bilgi için ayrıntılara göz atın.
     ineligible: uygun değil
-    ineligible_description: uygun değil
+    ineligible_description: Bu girdi incelenmiş ve ne yazık ki reddedilmiştir. Daha fazla ayrıntı içeren resmi bir güncelleme sağlanmıştır.
   initiative_statuses:
     review_pending: inceleme beklemede
     review_pending_description: inceleme beklemede
