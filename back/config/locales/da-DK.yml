@@ -36,26 +36,28 @@ da:
   symbols:
     outside: et andet sted
   idea_statuses:
+    prescreening: Forudgående screening
+    prescreening_description: Dette input er i øjeblikket ved at blive gennemgået af projektlederen og er endnu ikke synligt for offentligheden.
     proposed: foreslået
-    proposed_description: Denne idé er blevet foreslået til byen
+    proposed_description: Dette input er blevet indsendt og er nu åbent for offentlig støtte. Saml stemmer for at hjælpe med at flytte det til næste fase.
     viewed: set
-    viewed_description: Denne idé er blevet set af en person fra byen
+    viewed_description: Dette input er blevet set af projektlederen.
     under_consideration: I gang
-    under_consideration_description: Denne idé er blevet taget i betragtning af byen
+    under_consideration_description: Dette input er blevet taget i betragtning af projektlederen.
     accepted: accepteret
-    accepted_description: Denne ide er blevet accepteret og vil blive implementeret af byen
+    accepted_description: Dette input er blevet accepteret og vil blive implementeret af projektlederen.
     implemented: implementeret
-    implemented_description: Denne ide er blevet implementeret af byen
+    implemented_description: Dette input er blevet implementeret af projektlederen.
     rejected: afvist
-    rejected_description: Denne ide er blevet afvist
+    rejected_description: Dette input er blevet afvist.
     expired: udløbet
-    expired_description: udløbet
+    expired_description: Dette input er ikke længere aktivt og er blevet lukket på grund af tidsbegrænsninger eller inaktivitet.
     threshold_reached: fået nok stemmer
-    threshold_reached_description: fået nok stemmer
+    threshold_reached_description: Dette input har nået den nødvendige støttetærskel og vil nu blive overvejet med henblik på yderligere handling.
     answered: under politisk behandling
-    answered_description: under politisk behandling
+    answered_description: Der er kommet et svar på dette input. Se detaljerne for mere information.
     ineligible: opfylder ikke kriterierne
-    ineligible_description: opfylder ikke kriterierne
+    ineligible_description: Dette input er blevet gennemgået og er desværre blevet afvist. Der er udsendt en officiel opdatering med flere detaljer.
   initiative_statuses:
     review_pending: afventer gennemgang
     review_pending_description: afventer gennemgang
