@@ -1,40 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import moment from 'moment';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-import { IIdea, IIdeaData } from 'api/ideas/types';
+import { IIdea } from 'api/ideas/types';
 
-import Answered from './Status/Answered';
-import Expired from './Status/Expired';
-import Ineligible from './Status/Ineligible';
-import Proposed from './Status/Proposed';
-import ThresholdReached from './Status/ThresholdReached';
-
-export interface StatusComponentProps {
-  idea: IIdeaData;
-  ideaStatus: IIdeaStatusData;
-}
-
-/** Maps the idea status and whether the user reacted or not to the right component to render */
-const componentMap = {
-  proposed: Proposed,
-  expired: Expired,
-  answered: Answered,
-  threshold_reached: ThresholdReached,
-  ineligible: Ineligible,
-  custom: () => <></>,
-  prescreening: () => <></>,
-};
+import Status from './Status';
 
 interface Props {
   idea: IIdea;
   compact?: boolean;
+  ideaStatus: IIdeaStatusData;
 }
 
-const Status = ({ idea, compact }: Props) => {
+const ProposalInfo = ({ idea, compact }: Props) => {
   const timeoutRef = useRef<NodeJS.Timeout>();
   const [
     a11y_pronounceLatestOfficialFeedbackPost,
@@ -60,20 +39,6 @@ const Status = ({ idea, compact }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   if (!ideaStatus || !appConfiguration) return null;
 
-  const expiresAt = moment(
-    idea.data.attributes.expires_at,
-    'YYYY-MM-DDThh:mm:ss.SSSZ'
-  );
-  const durationAsSeconds = moment
-    .duration(expiresAt.diff(moment()))
-    .asSeconds();
-  const isExpired = durationAsSeconds < 0;
-  const statusCode =
-    ideaStatus.data.attributes.code === 'proposed' && isExpired
-      ? 'expired'
-      : ideaStatus.data.attributes.code;
-  const StatusComponent = componentMap[statusCode];
-
   const onScrollToOfficialFeedback = () => {
     const feedbackElement = document.getElementById('official-feedback-feed');
     if (feedbackElement) {
@@ -92,7 +57,7 @@ const Status = ({ idea, compact }: Props) => {
   };
 
   return (
-    <StatusComponent
+    <Status
       idea={idea.data}
       ideaStatus={ideaStatus.data}
       onScrollToOfficialFeedback={onScrollToOfficialFeedback}
@@ -101,4 +66,4 @@ const Status = ({ idea, compact }: Props) => {
   );
 };
 
-export default Status;
+export default ProposalInfo;
