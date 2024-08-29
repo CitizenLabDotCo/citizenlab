@@ -122,6 +122,15 @@ const QuillEditor = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
+  // Function to save the latest state of the content.
+  // We call this when the mouse leaves the editor, to ensure the
+  // latest content (and image size + alt text) is properly saved.
+  const saveLatestContent = () => {
+    if (!editor) return;
+    const html = editor.root.innerHTML;
+    onChange?.(html);
+  };
+
   const className = focussed ? 'focus' : '';
 
   return (
@@ -129,7 +138,7 @@ const QuillEditor = ({
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
-      onMouseLeave={() => {}} // TOOD
+      onMouseLeave={saveLatestContent}
     >
       {toolbarId && (
         <Toolbar
