@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useLayoutEffect,
+} from 'react';
 
 import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -10,6 +16,7 @@ import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
+import { getHTML, setHTML } from './utils';
 
 export interface Props {
   id: string;
@@ -49,9 +56,21 @@ const QuillEditor = ({
   onFocus,
 }: Props) => {
   const [editor, setEditor] = useState<Quill | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
   const [focussed, setFocussed] = useState(false);
+
+  const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const htmlRef = useRef<string | null>(null);
+
+  const onChangeRef = useRef(onChange);
+  const onBlurRef = useRef(onBlur);
+  const onFocusRef = useRef(onFocus);
+
+  useLayoutEffect(() => {
+    onChangeRef.current = onChange;
+    onBlurRef.current = onBlur;
+    onFocusRef.current = onFocus;
+  });
 
   const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
 
@@ -73,15 +92,10 @@ const QuillEditor = ({
       noAlign,
       limitedTextFormatting,
       withCTAButton,
-      onBlur,
+      onBlur: onBlurRef.current,
     });
 
-    if (value) {
-      // Hack to convert HTML to Delta
-      const delta = quill.clipboard.convert(value as any);
-      quill.setContents(delta);
-    }
-
+    setHTML(quill, value);
     setEditor(quill);
 
     return () => {
@@ -96,10 +110,10 @@ const QuillEditor = ({
 
     // Convert Delta back to HTML
     const textChangeHandler = () => {
-      const html =
-        editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
+      const html = getHTML(editor);
 
-      onChange?.(html);
+      htmlRef.current = html;
+      onChangeRef.current?.(html);
     };
 
     const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
@@ -108,10 +122,10 @@ const QuillEditor = ({
     const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
       if (range === null && oldRange !== null) {
         setFocussed(false);
-        onBlur?.();
+        onBlurRef.current?.();
       } else if (range !== null && oldRange === null) {
         setFocussed(true);
-        onFocus?.();
+        onFocusRef.current?.();
       }
     };
 
@@ -125,13 +139,26 @@ const QuillEditor = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
+  // Synchronize the editor content with the value prop
+  useEffect(() => {
+    if (!editor) return;
+
+    if (value !== htmlRef.current) {
+      setHTML(editor, value);
+      const html = getHTML(editor);
+      htmlRef.current = html;
+    }
+  }, [value, editor]);
+
   // Function to save the latest state of the content.
   // We call this when the mouse leaves the editor, to ensure the
   // latest content (and image size + alt text) is properly saved.
   const saveLatestContent = () => {
     if (!editor) return;
-    const html = editor.root.innerHTML;
-    onChange?.(html);
+    const html = getHTML(editor);
+
+    htmlRef.current = html;
+    onChangeRef.current?.(html);
   };
 
   const handleLabelOnClick = useCallback(() => {
