@@ -2,10 +2,8 @@ import React from 'react';
 
 import {
   colors,
-  media,
-  defaultStyles,
-  quillEditedContent,
   isRtl,
+  quillEditedContent,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -158,28 +156,6 @@ const Container = styled.div<{
     transition: box-shadow 100ms ease-out;
   }
 
-  .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.black};
-    box-shadow: inset ${defaultStyles.boxShadowFocused};
-  }
-
-  .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    width: 100%;
-    height: 100%;
-    cursor: text;
-    border-radius: 0 0 ${({ theme }) => theme.borderRadius}
-      ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${colors.borderDark};
-    box-shadow: none;
-    overflow-y: auto;
-    ${(props) => quillEditedContent(props.theme.colors.tenantPrimary)};
-
-    ${media.tablet`
-      max-height: ${({ theme: { mobileMenuHeight } }) =>
-        `calc(80vh - ${mobileMenuHeight}px)`};
-    `}
-  }
-
   div.ql-container {
     border: 1px solid ${colors.borderDark};
   }
@@ -189,6 +165,7 @@ const Container = styled.div<{
     max-height: ${({ maxHeight, theme }) =>
       maxHeight ?? `calc(80vh - ${theme.menuHeight}px)`};
     cursor: text;
+    ${(props) => quillEditedContent(props.theme.colors.tenantPrimary)};
 
     ${isRtl`
       direction: rtl;
