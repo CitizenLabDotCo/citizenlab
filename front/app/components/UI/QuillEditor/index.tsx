@@ -77,6 +77,7 @@ const QuillEditor = ({
   // Initialize Quill
   // https://quilljs.com/playground/react
   useEffect(() => {
+    if (editor) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -101,8 +102,17 @@ const QuillEditor = ({
     return () => {
       container.innerHTML = '';
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    editor,
+    id,
+    toolbarId,
+    noImages,
+    noVideos,
+    noAlign,
+    limitedTextFormatting,
+    value,
+    withCTAButton,
+  ]);
 
   // Handle text and focus changes
   useEffect(() => {
@@ -136,7 +146,6 @@ const QuillEditor = ({
       editor.off('text-change', debouncedTextChangeHandler);
       editor.off('selection-change', focusHandler);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   // Synchronize the editor content with the value prop
