@@ -12,11 +12,14 @@ import Quill, { RangeStatic } from 'quill';
 
 import 'quill/dist/quill.snow.css';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
+import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
-import { getHTML, setHTML } from './utils';
+import { getHTML, setHTML, syncPlaceHolder } from './utils';
 
 export interface Props {
   id: string;
@@ -55,6 +58,7 @@ const QuillEditor = ({
   onBlur,
   onFocus,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
 
@@ -148,6 +152,12 @@ const QuillEditor = ({
       htmlRef.current = html;
     }
   }, [value, editor]);
+
+  // Hack to get correct placeholder for image alt text input
+  const altTextPlaceHolder = formatMessage(messages.altTextPlaceholder);
+  useEffect(() => {
+    syncPlaceHolder(altTextPlaceHolder);
+  }, [altTextPlaceHolder]);
 
   // Function to save the latest state of the content.
   // We call this when the mouse leaves the editor, to ensure the
