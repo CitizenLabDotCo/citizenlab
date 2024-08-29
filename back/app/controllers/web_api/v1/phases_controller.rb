@@ -126,7 +126,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
-      :reviewing_enabled,
+      :prescreening_enabled,
       :reacting_threshold,
       :expire_days_limit,
       {

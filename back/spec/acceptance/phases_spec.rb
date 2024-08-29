@@ -150,7 +150,7 @@ resource 'Phases' do
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
-        parameter :reviewing_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -431,7 +431,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :reviewing_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -448,7 +448,7 @@ resource 'Phases' do
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
-      let(:reviewing_enabled) { true }
+      let(:prescreening_enabled) { true }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
@@ -461,7 +461,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
-        expect(json_response.dig(:data, :attributes, :reviewing_enabled)).to eq reviewing_enabled
+        expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
       end
 
       describe do
