@@ -312,4 +312,14 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.cosponsors',
     defaultMessage: 'Cosponsors',
   },
+  prescreeningTooltipUpsell: {
+    id: 'app.components.admin.PostManager.prescreeningTooltip',
+    defaultMessage:
+      'Pre-screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  prescreeningTooltipPhaseDisabled: {
+    id: 'app.components.admin.PostManager.prescreeningTooltipPhaseDisabled',
+    defaultMessage:
+      'Pre-screening is turned off for this phase. Go to phase setup to enable it',
+  },
 });
