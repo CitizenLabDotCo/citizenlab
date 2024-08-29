@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
+import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
 import 'quill/dist/quill.snow.css';
@@ -101,6 +102,8 @@ const QuillEditor = ({
       onChange?.(html);
     };
 
+    const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
+
     // Not sure why we handle focus like this, but seems to work
     const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
       if (range === null && oldRange !== null) {
@@ -112,11 +115,11 @@ const QuillEditor = ({
       }
     };
 
-    editor.on('text-change', textChangeHandler);
+    editor.on('text-change', debouncedTextChangeHandler);
     editor.on('selection-change', focusHandler);
 
     return () => {
-      editor.off('text-change', textChangeHandler);
+      editor.off('text-change', debouncedTextChangeHandler);
       editor.off('selection-change', focusHandler);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
