@@ -1,7 +1,6 @@
 import React, { MouseEvent } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-import { Popup } from 'semantic-ui-react';
+import { Text, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -49,17 +48,8 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
     return (
       <Container>
         {statuses.map((status) => (
-          <Popup
+          <Tooltip
             key={status.id}
-            basic
-            trigger={
-              <ColorIndicator
-                color={status.attributes.color}
-                active={this.isActive(status.id)}
-                onClick={this.handleStatusClick(status.id)}
-                disabled={!status.attributes.can_manually_transition_to}
-              />
-            }
             content={
               <div>
                 <Text fontWeight="bold" m="0px">
@@ -68,8 +58,14 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
                 <FormattedMessage {...messages.automatedStatusTooltipText} />
               </div>
             }
-            position="top center"
-          />
+          >
+            <ColorIndicator
+              color={status.attributes.color}
+              active={this.isActive(status.id)}
+              onClick={this.handleStatusClick(status.id)}
+              disabled={!status.attributes.can_manually_transition_to}
+            />
+          </Tooltip>
         ))}
       </Container>
     );
