@@ -567,4 +567,3 @@
 // );
 
 // export default QuillEditor;
-export default null;

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-import Quill from 'quill';
+import Quill, { RangeStatic } from 'quill';
 
 import 'quill/dist/quill.snow.css';
 import { useIntl } from 'utils/cl-intl';
@@ -49,6 +49,7 @@ const QuillEditor = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const { formatMessage } = useIntl();
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
+  const [focussed, setFocussed] = useState(false);
 
   const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
 
@@ -87,21 +88,33 @@ const QuillEditor = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Handle text changes
+  // Handle text and focus changes
   useEffect(() => {
     if (!editor) return;
 
-    const handler = () => {
+    // Convert Delta back to HTML
+    const textChangeHandler = () => {
       const html =
         editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
 
       onChange?.(html);
     };
 
-    editor.on('text-change', handler);
+    // Not sure why we handle focus like this, but seems to work
+    const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
+      if (range === null && oldRange !== null) {
+        setFocussed(false);
+      } else if (range !== null && oldRange === null) {
+        setFocussed(true);
+      }
+    };
+
+    editor.on('text-change', textChangeHandler);
+    editor.on('selection-change', focusHandler);
 
     return () => {
-      editor.off('text-change', handler);
+      editor.off('text-change', textChangeHandler);
+      editor.off('selection-change', focusHandler);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
@@ -133,11 +146,13 @@ const QuillEditor = ({
     setIsButtonsMenuVisible(false);
   }, [editor]);
 
+  const className = focussed ? 'focus' : '';
+
   return (
     <StyleContainer
       maxHeight={maxHeight}
       minHeight={minHeight}
-      className="" // TODO
+      className={className}
       onMouseLeave={() => {}} // TOOD
     >
       {toolbarId && (
