@@ -59,8 +59,8 @@ interface Props {
   ) => void;
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
-  reviewing_enabled: boolean | null | undefined;
-  toggleReviewingEnabled: (reviewing_enabled: boolean) => void;
+  prescreening_enabled: boolean | null | undefined;
+  toggleReviewingEnabled: (prescreening_enabled: boolean) => void;
 }
 
 const ProposalsInputs = ({
@@ -90,7 +90,7 @@ const ProposalsInputs = ({
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
   handleReactingThresholdChange,
-  reviewing_enabled,
+  prescreening_enabled,
   toggleReviewingEnabled,
 }: Props) => {
   const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
@@ -151,9 +151,9 @@ const ProposalsInputs = ({
         >
           <Toggle
             disabled={!prescreeningEnabled}
-            checked={reviewing_enabled || false}
+            checked={prescreening_enabled || false}
             onChange={() => {
-              toggleReviewingEnabled(!reviewing_enabled);
+              toggleReviewingEnabled(!prescreening_enabled);
             }}
             label={
               <Box ml="8px" id="e2e-participation-options-toggle">

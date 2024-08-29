@@ -48,7 +48,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
   const phasePrescreeningEnabled =
-    phase?.data.attributes.reviewing_enabled === true;
+    phase?.data.attributes.prescreening_enabled === true;
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',

@@ -34,7 +34,7 @@ export interface IPhaseParticipationConfig {
   document_annotation_embed_url?: string | null;
   expire_days_limit?: number | null;
   reacting_threshold?: number | null;
-  reviewing_enabled?: boolean | null;
+  prescreening_enabled?: boolean | null;
 }
 
 export const defaultParticipationConfig: IPhaseParticipationConfig = {
@@ -63,7 +63,7 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   survey_embed_url: null,
   expire_days_limit: undefined,
   reacting_threshold: undefined,
-  reviewing_enabled: undefined,
+  prescreening_enabled: undefined,
 };
 
 export const ideationDefaultConfig: IPhaseParticipationConfig = {
@@ -129,5 +129,5 @@ export const proposalsDefaultConfig: IPhaseParticipationConfig = {
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,
-  reviewing_enabled: false,
+  prescreening_enabled: false,
 };
