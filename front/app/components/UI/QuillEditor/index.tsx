@@ -4,7 +4,6 @@ import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
 import 'quill/dist/quill.snow.css';
-import { useIntl } from 'utils/cl-intl';
 
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
@@ -48,7 +47,6 @@ const QuillEditor = ({
 }: Props) => {
   const [editor, setEditor] = useState<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { formatMessage } = useIntl();
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
   const [focussed, setFocussed] = useState(false);
 
