@@ -20,26 +20,6 @@ module IdNemlogIn
       }
     }.freeze
 
-    def profile_to_user_attrs(auth)
-      custom_field_values = {}
-
-      birthdate = auth.extra.raw_info['https://data.gov.dk/model/core/eid/dateOfBirth']
-      if (birthday_key = config[:birthday_custom_field_key]) && birthdate
-        custom_field_values[birthday_key] = birthdate
-      end
-      if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
-        custom_field_values[birthyear_key] = Date.parse(birthdate).year
-      end
-
-      # puts auth.extra['response_object'].decrypted_document
-      cpr_number = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
-      custom_field_values[:municipality_code] = fetch_municipality_code(cpr_number)
-
-      {
-        custom_field_values: custom_field_values
-      }
-    end
-
     ## TODO: JS- new version
     def profile_to_user_attrs(auth)
       puts 'Decrypted auth document:'
