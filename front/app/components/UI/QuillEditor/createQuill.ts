@@ -68,19 +68,14 @@ export const createQuill = (
     },
   });
 
-  editorContainer
-    .getElementsByClassName('ql-editor')[0]
-    .setAttribute('name', id);
-  editorContainer.getElementsByClassName('ql-editor')[0].setAttribute('id', id);
-  editorContainer
-    .getElementsByClassName('ql-editor')[0]
-    .setAttribute('aria-labelledby', id);
-  editorContainer
-    .getElementsByClassName('ql-editor')[0]
-    .setAttribute('aria-multiline', 'true');
-  editorContainer
-    .getElementsByClassName('ql-editor')[0]
-    .setAttribute('role', 'textbox');
+  // Apply correct attributes for a11y
+  const editor = editorContainer.getElementsByClassName('ql-editor')[0];
+
+  editor.setAttribute('name', id);
+  editor.setAttribute('id', id);
+  editor.setAttribute('aria-labelledby', id);
+  editor.setAttribute('aria-multiline', 'true');
+  editor.setAttribute('role', 'textbox');
 
   return quill;
 };
