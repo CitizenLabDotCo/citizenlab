@@ -44,6 +44,7 @@ const QuillEditor = ({
   withCTAButton,
   onChange,
   onBlur,
+  onFocus,
 }: Props) => {
   const [editor, setEditor] = useState<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -104,8 +105,10 @@ const QuillEditor = ({
     const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
       if (range === null && oldRange !== null) {
         setFocussed(false);
+        onBlur?.();
       } else if (range !== null && oldRange === null) {
         setFocussed(true);
+        onFocus?.();
       }
     };
 
