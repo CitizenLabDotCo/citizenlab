@@ -600,4 +600,9 @@ export default defineMessages({
     defaultMessage:
       'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
   },
+  prescreeningTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningTooltip',
+    defaultMessage:
+      'Pre-screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });
