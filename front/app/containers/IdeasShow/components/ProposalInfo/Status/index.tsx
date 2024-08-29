@@ -5,6 +5,7 @@ import {
   colors,
   fontSizes,
   stylingConsts,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
@@ -23,8 +24,7 @@ import CountDown from './components/CountDown';
 import ReactionCounter from './components/ReactionCounter';
 import ReadAnswerButton from './components/ReadAnswerButton';
 
-export const StatusHeading = styled.h2`
-  display: flex;
+export const StatusHeading = styled(Text)`
   font-size: ${fontSizes.base}px;
   font-weight: bold;
   text-transform: capitalize;
@@ -80,12 +80,22 @@ const Status = ({
           )}
         </Box>
       )}
-      <Box display="flex" mb="16px" alignItems="center">
+      <Box display="flex" alignItems="center">
+        <Box
+          width="16px"
+          height="16px"
+          borderRadius={stylingConsts.borderRadius}
+          bg={ideaStatus.attributes.color}
+          mr="8px"
+        />
         <StatusHeading>
           <T value={ideaStatus.attributes.title_multiloc} />
         </StatusHeading>
       </Box>
       <Box mb="24px" aria-live="polite">
+        <Text>
+          <T value={ideaStatus.attributes.description_multiloc} />
+        </Text>
         {/* <StatusExplanation>{statusExplanation}</StatusExplanation> */}
       </Box>
       {showProgressBar && (
