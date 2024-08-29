@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdea } from 'api/ideas/types';
@@ -36,9 +35,6 @@ const ProposalInfo = ({ idea, compact }: Props) => {
     };
   }, [a11y_pronounceLatestOfficialFeedbackPost]);
 
-  const { data: appConfiguration } = useAppConfiguration();
-  if (!ideaStatus || !appConfiguration) return null;
-
   const onScrollToOfficialFeedback = () => {
     const feedbackElement = document.getElementById('official-feedback-feed');
     if (feedbackElement) {
@@ -55,6 +51,8 @@ const ProposalInfo = ({ idea, compact }: Props) => {
       setA11y_pronounceLatestOfficialFeedbackPost(true);
     }
   };
+
+  if (!ideaStatus) return null;
 
   return (
     <Status
