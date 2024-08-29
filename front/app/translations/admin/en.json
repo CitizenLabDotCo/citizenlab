@@ -236,6 +236,8 @@
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Picks",
   "app.components.admin.PostManager.pbItemCountTooltip": "The number of times this has been included in other participants' participatory budgets",
   "app.components.admin.PostManager.postedIn": "Posted in {projectLink}",
+  "app.components.admin.PostManager.prescreeningTooltip": "Pre-screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
+  "app.components.admin.PostManager.prescreeningTooltipPhaseDisabled": "Pre-screening is turned off for this phase. Go to phase setup to enable it",
   "app.components.admin.PostManager.projectFormTitle": "Edit project",
   "app.components.admin.PostManager.projectsTab": "Projects",
   "app.components.admin.PostManager.projectsTabTooltipContent": "You can drag and drop posts to move them from one project to another. Note that for timeline projects, you will still need to add the post to a specific phase.",
