@@ -36,28 +36,28 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
-    prescreening: Vorab-Screening
+    prescreening: Vorabprüfung
     prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
     proposed_description: Dieser Beitrag wurde eingereicht und steht nun zur öffentlichen Abstimmung. Sammeln Sie Stimmen und helfen Sie mit, die nächste Phase einzuleiten.
     viewed: angesehen
-    viewed_description: Diese Eingabe wurde vom Projektleiter gesehen.
+    viewed_description: Dieser Beitrag wurde vom Projektmanager gesehen.
     under_consideration: unter Berücksichtigung
-    under_consideration_description: Dieser Beitrag wurde vom Projektleiter berücksichtigt.
+    under_consideration_description: Dieser Beitrag wurde vom Projektmanager berücksichtigt.
     accepted: akzeptiert
-    accepted_description: Dieser Beitrag wurde angenommen und wird vom Projektleiter umgesetzt.
+    accepted_description: Dieser Beitrag wurde angenommen und wird vom Projektmanager umgesetzt.
     implemented: umgesetzt
-    implemented_description: Dieser Input wurde vom Projektleiter umgesetzt.
+    implemented_description: Dieser Beitrag wurde vom Projektmanager umgesetzt.
     rejected: abgelehnt
-    rejected_description: Diese Eingabe wurde abgelehnt.
+    rejected_description: Dieser Beitrag wurde abgelehnt.
     expired: abgelaufen
-    expired_description: Diese Eingabe ist nicht mehr aktiv und wurde aus Zeitgründen oder wegen Inaktivität geschlossen.
+    expired_description: Dieser Beitrag ist nicht mehr aktiv und wurde aus Zeitgründen oder wegen Inaktivität geschlossen.
     threshold_reached: Schwelle erreicht
-    threshold_reached_description: Diese Eingabe hat die erforderliche Unterstützungsschwelle erreicht und wird nun für weitere Maßnahmen in Betracht gezogen.
+    threshold_reached_description: Dieser Beitrag hat die erforderliche Unterstützungsschwelle erreicht und wird nun für weitere Maßnahmen in Betracht gezogen.
     answered: beantwortet
-    answered_description: Für diese Eingabe wurde eine Antwort bereitgestellt. Sehen Sie sich die Details für weitere Informationen an.
+    answered_description: Für diesen Beitrag wurde eine Antwort bereitgestellt. Sehen Sie sich die Details für weitere Informationen an.
     ineligible: unzulässig
-    ineligible_description: Diese Eingabe wurde geprüft und leider abgelehnt. Es wurde ein offizielles Update mit weiteren Details bereitgestellt.
+    ineligible_description: Dieser Beitrag wurde geprüft und leider abgelehnt. Es wurde ein offizielles Update mit weiteren Einzelheiten bereitgestellt.
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
