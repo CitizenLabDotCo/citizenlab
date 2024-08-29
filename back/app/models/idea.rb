@@ -178,6 +178,13 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  def just_submitted?
+    # It would be better to foresee separate endpoints for submission,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    SUBMISSION_STATUSES.exclude?(from) && SUBMISSION_STATUSES.include?(to)
+  end
+
   def just_published?
     # It would be better to foresee separate endpoints for publication,
     # rather than relying on Rails dirty to detect publication.

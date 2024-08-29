@@ -49,20 +49,15 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Idea' => { 'published' => true } }
+      { 'Idea' => { 'submitted' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
-      idea = activity.item
-      initiator = idea.author
+      input = activity.item
+      initiator = input.author
+      return users_scope.none if UserRoleService.new.moderates_something? initiator
 
-      recipient_ids = if initiator&.admin? || initiator&.project_moderator?(idea.project_id)
-        []
-      else
-        User.admin.or(User.project_moderator(idea.project_id)).ids
-      end
-
-      users_scope.where(id: recipient_ids)
+      UserRoleService.new.moderators_for(input, scope: users_scope)
     end
 
     def self.recipient_role_multiloc_key
