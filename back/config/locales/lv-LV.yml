@@ -36,26 +36,28 @@ lv:
   symbols:
     outside: kaut kur citur
   idea_statuses:
+    prescreening: pirmskontrole
+    prescreening_description: Šos ievaddatus pašlaik izskata projekta vadītājs, un tie vēl nav publiski pieejami.
     proposed: ierosinātais
-    proposed_description: Šī ideja ir ierosināta pilsētai
+    proposed_description: Šis ieguldījums ir iesniegts, un tagad ir pieejams sabiedrības atbalstam. Savāciet balsis, lai palīdzētu to virzīt uz nākamo posmu.
     viewed: skatīts
-    viewed_description: Šo ideju ir redzējis kāds no pilsētas
+    viewed_description: Ar šo ieguldījumu ir iepazinies projekta vadītājs.
     under_consideration: izskatīšanas stadijā
-    under_consideration_description: Pilsēta ir ņēmusi vērā šo ideju.
+    under_consideration_description: Projekta vadītājs ir ņēmis vērā šo ieguldījumu.
     accepted: pieņemts
-    accepted_description: Šī ideja ir pieņemta, un pilsēta to īstenos.
+    accepted_description: Šis ieguldījums ir pieņemts, un projekta vadītājs to īstenos.
     implemented: īstenots
-    implemented_description: Šo ideju ir īstenojusi pilsēta
+    implemented_description: Šo ieguldījumu ir īstenojis projekta vadītājs.
     rejected: noraidīts
-    rejected_description: Šī ideja ir noraidīta
+    rejected_description: Šis ievades ziņojums ir noraidīts.
     expired: beidzās
-    expired_description: beidzās
+    expired_description: Šis ievads vairs nav aktīvs un ir slēgts laika ierobežojumu vai neaktivitātes dēļ.
     threshold_reached: sasniegts slieksnis
-    threshold_reached_description: sasniegts slieksnis
+    threshold_reached_description: Šis ieguldījums ir sasniedzis vajadzīgo atbalsta slieksni, un tagad tiks izskatīts, vai ar to jārīkojas tālāk.
     answered: atbildēja
-    answered_description: atbildēja
+    answered_description: Par šo ieguldījumu ir sniegta atbilde. Lai iegūtu vairāk informācijas, skatiet sīkāku informāciju.
     ineligible: neatbilstoši
-    ineligible_description: neatbilstoši
+    ineligible_description: Šis ieguldījums ir pārskatīts un diemžēl noraidīts. Ir sniegts oficiāls atjauninājums ar sīkāku informāciju.
   initiative_statuses:
     review_pending: pārskatīšana vēl nav pabeigta
     review_pending_description: pārskatīšana vēl nav pabeigta
