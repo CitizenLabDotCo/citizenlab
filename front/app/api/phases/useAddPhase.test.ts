@@ -1,14 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPhase from './useAddPhase';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { phasesData } from './__mocks__/usePhases';
 
+import { phasesData } from './__mocks__/_mockServer';
 import { IUpdatedPhaseProperties } from './types';
+import useAddPhase from './useAddPhase';
 
 const phasesMutationData: IUpdatedPhaseProperties = {
   commenting_enabled: false,
@@ -31,8 +29,8 @@ const phasesMutationData: IUpdatedPhaseProperties = {
 const apiPath = '*projects/:projectId/phases';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: phasesData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: phasesData[0] }, { status: 200 });
   })
 );
 
@@ -58,8 +56,8 @@ describe('useAddPhase', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

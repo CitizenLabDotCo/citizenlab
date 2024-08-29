@@ -1,36 +1,79 @@
-import React, { lazy } from 'react';
+import React, { useState } from 'react';
 
-// components
-import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
-
-// hooks
-import useFormCustomFields from 'hooks/useFormCustomFields';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
-// utils
-import { ideationConfig } from '../utils';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
-const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
+import useLocale from 'hooks/useLocale';
+
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
+
+import FormBuilder from 'components/FormBuilder/edit';
+
+import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
+import { ideationConfig, proposalsConfig } from '../utils';
+
+const configs = {
+  ideation: ideationConfig,
+  proposals: proposalsConfig,
+};
 
 const IdeaFormBuilder = () => {
-  const { projectId } = useParams() as {
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
-  const formCustomFields = useFormCustomFields({
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
+
+  const participation_method =
+    phase?.data.attributes.participation_method || 'ideation';
+  const config = configs[participation_method] || ideationConfig;
+
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
+    // Only use phaseId for proposals
+    phaseId: participation_method !== 'ideation' ? phaseId : undefined,
   });
 
-  const goBackUrl = `/admin/projects/${projectId}/ideaform`;
+  const locale = useLocale();
+
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
+
+  const handleDownloadPDF = () => setExportModalOpen(true);
+
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
+    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
+  };
+
+  if (!project || !phase) return null;
 
   return (
-    <FormBuilder
-      builderConfig={getUpdatedConfiguration(
-        ideationConfig,
-        formCustomFields,
-        goBackUrl
-      )}
-    />
+    <>
+      <FormBuilder
+        builderConfig={{
+          ...config,
+          formCustomFields,
+          goBackUrl,
+          onDownloadPDF: handleDownloadPDF,
+        }}
+        viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+      />
+      <PDFExportModal
+        open={exportModalOpen}
+        formType="idea_form"
+        onClose={() => setExportModalOpen(false)}
+        onExport={handleExportPDF}
+      />
+    </>
   );
 };
 

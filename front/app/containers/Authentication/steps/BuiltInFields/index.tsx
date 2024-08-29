@@ -1,47 +1,40 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DEFAULT_VALUES, getSchema } from './form';
-import Input from 'components/HookForm/Input';
-import PasswordInput from 'components/HookForm/PasswordInput';
+import { useForm, FormProvider } from 'react-hook-form';
 
-// errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import useAuthUser from 'api/me/useAuthUser';
 
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
+import useLocale from 'hooks/useLocale';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// constants
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
-
-// typings
-import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import {
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
-import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+
+import Input from 'components/HookForm/Input';
+import PasswordInput from 'components/HookForm/PasswordInput';
+import Button from 'components/UI/Button';
+import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import tracks from '../../tracks';
+import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
+import sharedMessages from '../messages';
+
+import { DEFAULT_VALUES, getSchema } from './form';
+import messages from './messages';
 
 interface BaseProps {
   loading: boolean;
@@ -90,17 +83,19 @@ const BuiltInFields = ({
   const handleSubmit = async ({
     first_name,
     last_name,
+    email,
     password,
   }: BuiltInFieldsUpdate) => {
     try {
       await onSubmit(authUser.data.id, {
         first_name,
         last_name,
+        email,
         password,
       });
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
@@ -108,11 +103,14 @@ const BuiltInFields = ({
     }
   };
 
-  const builtIn = authenticationRequirements.requirements.built_in;
-  const askFirstName = builtIn.first_name === 'require';
-  const askLastName = builtIn.last_name === 'require';
-  const askPassword =
-    authenticationRequirements.requirements.special.password === 'require';
+  const missingAttributes = new Set(
+    authenticationRequirements.requirements.authentication.missing_user_attributes
+  );
+
+  const askFirstName = missingAttributes.has('first_name');
+  const askLastName = missingAttributes.has('last_name');
+  const askEmail = missingAttributes.has('email');
+  const askPassword = missingAttributes.has('password');
 
   return (
     <Box id="e2e-built-in-fields-container">
@@ -140,6 +138,17 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+              />
+            </Box>
+          )}
+          {askEmail && (
+            <Box id="e2e-email-container" mt="16px">
+              <Input
+                name="email"
+                id="email"
+                type="email"
+                autocomplete="email"
+                label={formatMessage(sharedMessages.email)}
               />
             </Box>
           )}
@@ -186,7 +195,7 @@ const BuiltInFieldsWrapper = ({
     <BuiltInFields
       {...otherProps}
       authenticationRequirements={
-        authenticationRequirementsResponse.data.attributes.requirements
+        authenticationRequirementsResponse.data.attributes
       }
     />
   );

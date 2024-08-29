@@ -1,6 +1,8 @@
 import React from 'react';
-import NewCustomPage from './NewCustomPage';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
+import NewCustomPage from './NewCustomPage';
 
 jest.mock('api/topics/useTopics');
 jest.mock('api/areas/useAreas');

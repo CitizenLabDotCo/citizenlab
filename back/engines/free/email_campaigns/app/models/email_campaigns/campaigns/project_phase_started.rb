@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -57,7 +59,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_who_engaged_with_the_project'
+      'email_campaigns.admin_labels.recipient_segment.users_who_follow_the_project'
     end
 
     def self.content_type_multiloc_key
@@ -79,14 +81,19 @@ module EmailCampaigns
             phase_title_multiloc: notification.phase.title_multiloc,
             phase_description_multiloc: notification.phase.description_multiloc,
             phase_start_at: notification.phase.start_at.iso8601,
-            phase_end_at: notification.phase.end_at.iso8601,
-            phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
+            phase_end_at: notification.phase.end_at&.iso8601,
+            phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
             project_title_multiloc: notification.project.title_multiloc,
-            project_description_preview_multiloc: notification.project.description_preview_multiloc
+            project_description_preview_multiloc: notification.project.description_preview_multiloc,
+            unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.project, user: recipient))
           },
           delay: 8.hours.to_i
         }]
       end
+    end
+
+    def manageable_by_project_moderator?
+      true
     end
 
     private

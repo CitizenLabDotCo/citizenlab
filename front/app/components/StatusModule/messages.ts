@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   submittedUntil: {
-    id: 'app.components.StatusModule.submittedUntil2',
-    defaultMessage: 'may be submitted until',
+    id: 'app.components.StatusModule.submittedUntil3',
+    defaultMessage: 'Your vote may be submitted until',
   },
   modifyYourSubmission: {
     id: 'app.components.StatusModule.modifyYourSubmission',

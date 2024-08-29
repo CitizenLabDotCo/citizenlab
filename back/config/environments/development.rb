@@ -16,6 +16,11 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # [] => Cross-origin requests are NOT allowed from any origin.
+  # ['*'] => Cross-origin requests from any origin are allowed.
+  # ['http://some-domain.com', 'https://other-domain.com'] => Cross-origin requests are allowed from specified origins.
+  config.allowed_cors_origins = ['*']
+
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -130,7 +135,8 @@ Rails.application.configure do
     puts
     puts 'Available methods:'
     puts '  `switch(tenant_name)`: switch to given tenant.'
-    puts '  `localhost`: switch to localhost.'
+    puts '  `localhost`: switch to localhost (used by default if exists).'
+    ActiveRecord::Base.logger.silence { Tenant.find_by(host: 'localhost')&.switch! }
     puts
   end
   # rubocop:enable Rails/Output

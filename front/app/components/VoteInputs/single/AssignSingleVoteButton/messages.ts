@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  vote: {
-    id: 'app.components.AssignVoteControl.vote',
-    defaultMessage: 'Vote',
+  select: {
+    id: 'app.components.AssignVoteControl.select',
+    defaultMessage: 'Select',
   },
-  voted: {
-    id: 'app.components.AssignVoteControl.voted',
-    defaultMessage: 'Voted',
+  selected: {
+    id: 'app.components.AssignVoteControl.selected2',
+    defaultMessage: 'Selected',
   },
   votesSubmitted: {
     id: 'app.components.AssignVoteControl.votesSubmitted',
@@ -18,5 +18,10 @@ export default defineMessages({
     id: 'app.components.AssignVoteControl.votesSubmittedIdeaPage',
     defaultMessage:
       'You have already submitted your {votes, plural, one {vote} other {votes}}. To change your {votes, plural, one {vote} other {votes}}, go back to the project page and click "Modify your vote".',
+  },
+  maxVotesReached: {
+    id: 'app.components.AssignVoteControl.maxVotesReached',
+    defaultMessage:
+      'You have reached the maximum number of votes you can submit.',
   },
 });

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+
+import { isNil } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
+
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
-import { isNil } from 'lodash-es';
-import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 type Props = {
   customField: IIdeaCustomField;
@@ -19,8 +25,12 @@ const SelectOptionText = ({
   selectedOptionKey: string;
 }) => {
   const { data: options } = useUserCustomFieldsOptions(customFieldId);
-  const option = options?.data.find(
-    (option) => option.attributes.key === selectedOptionKey
+  const option = useMemo(
+    () =>
+      options?.data.find(
+        (option) => option.attributes.key === selectedOptionKey
+      ),
+    [options, selectedOptionKey]
   );
   return option ? <T value={option.attributes.title_multiloc} /> : null;
 };
@@ -32,12 +42,13 @@ const SelectOptionText = ({
  * custom fields
  */
 const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
+  const { formatMessage } = useIntl();
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
   if (customField.data.attributes.code) return null;
 
   if (isNil(rawValue)) {
-    return <>No answer</>;
+    return <>{formatMessage(messages.noAnswer)}</>;
   }
 
   switch (customField.data.attributes.input_type) {
@@ -46,11 +57,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'number':
     case 'checkbox':
     case 'linear_scale': {
-      if (
-        rawValue === null ||
-        typeof rawValue === undefined ||
-        rawValue === ''
-      ) {
+      if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
       } else {
         return <>{rawValue}</>;
@@ -85,6 +92,19 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     }
     case 'file_upload': {
       // We don't support file upload fields in an analysis at the moment
+      return null;
+    }
+    case 'shapefile_upload': {
+      // We don't support shapefile upload fields in an analysis at the moment
+      return null;
+    }
+    case 'point': {
+      return null;
+    }
+    case 'line': {
+      return null;
+    }
+    case 'polygon': {
       return null;
     }
     default: {

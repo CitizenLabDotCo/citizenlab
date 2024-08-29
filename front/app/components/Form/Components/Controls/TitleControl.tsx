@@ -1,15 +1,20 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useCallback, useState } from 'react';
+
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
-import React, { useCallback, useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { FormLabel } from 'components/UI/FormComponents';
+
+import { isString } from 'utils/helperUtils';
 import {
   sanitizeForClassname,
   getFieldNameFromPath,
 } from 'utils/JSONFormUtils';
-import { isString } from 'utils/helperUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
+
 import { getSubtextElement } from './controlUtils';
 
 export const TitleControl = ({
@@ -67,7 +72,12 @@ export const TitleControl = ({
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

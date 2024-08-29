@@ -31,7 +31,7 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows a back button to navigate to the projects page', () => {
-    cy.get('#e2e-idea-other-link').click();
+    cy.get('#e2e-go-back-link').click();
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'
@@ -89,7 +89,7 @@ describe('Idea new page for continuous project', () => {
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Check that the geocoder has autofilled the location
-    cy.get('.e2e-idea-form-location-input-field input').should(
+    cy.get('.e2e-idea-form-location-input-field [class^=singleValue]').should(
       'contain.value',
       geocodedLocation
     );
@@ -130,18 +130,10 @@ describe('Idea new page for continuous project', () => {
 
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels{enter}'
+      'Boulevard Anspach Brussels'
     );
-    cy.get(
-      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-    cy.wait(500);
-    cy.get('.e2e-idea-form-location-input-field input').should(
-      'contain.value',
-      'Belgium'
-    );
+    cy.wait(5000);
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -162,9 +154,7 @@ describe('Idea new page for continuous project', () => {
       .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-map-popup')
-      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show')
       .find('.e2e-author-link .e2e-username')
       .contains(`${firstName} ${lastName}`);
@@ -194,7 +184,6 @@ describe('Idea new page for timeline project', () => {
 
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -249,17 +238,10 @@ describe('Idea new page for timeline project', () => {
 
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels{enter}'
+      'Boulevard Anspach Brussels'
     );
-    cy.get(
-      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-    cy.get('.e2e-idea-form-location-input-field input').should(
-      'contain.value',
-      'Belgium'
-    );
+    cy.wait(5000);
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -279,9 +261,7 @@ describe('Idea new page for timeline project', () => {
       .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-map-popup')
-      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show')
       .find('.e2e-author-link .e2e-username')
       .contains(`${firstName} ${lastName}`);

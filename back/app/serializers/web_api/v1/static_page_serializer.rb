@@ -32,13 +32,13 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   attribute :top_info_section_multiloc, if: proc { |object, _|
     object.top_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :top_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: object
   end
 
   attribute :bottom_info_section_multiloc, if: proc { |object, _|
     object.bottom_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :bottom_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: object
   end
 
   # This is used to keep supporting default titles for
@@ -53,8 +53,6 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     current_navbaritem_title || NavBarItem.new(code: 'custom', static_page: object).title_multiloc_with_fallback
   end
 
-  has_many :pins, serializer: :base
-  has_many :pinned_admin_publications, serializer: :admin_publication
   has_one :nav_bar_item
   has_many :static_page_files, serializer: :file
   has_many :text_images, serializer: :image

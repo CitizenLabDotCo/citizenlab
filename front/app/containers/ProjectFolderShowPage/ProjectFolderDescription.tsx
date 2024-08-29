@@ -1,29 +1,30 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
+import {
+  useWindowSize,
+  Box,
+  media,
+  fontSizes,
+  isRtl,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import ReactResizeDetector from 'react-resize-detector';
+import styled, { useTheme } from 'styled-components';
+
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
+import { IProjectFolderData } from 'api/project_folders/types';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ReactResizeDetector from 'react-resize-detector';
-import Button from 'components/UI/Button';
 
-// services
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
-
-// i18n
-import T from 'components/T';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { IProjectFolderData } from 'api/project_folders/types';
+import messages from './messages';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;
@@ -145,6 +146,12 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const showReadMoreButton = !!(
+      descriptionHeight &&
+      descriptionHeight > collapsedDescriptionMaxHeight &&
+      !expanded
+    );
+
     if (!isNilOrError(projectFolder)) {
       return (
         <Container className={className || ''}>
@@ -164,7 +171,7 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                   textColor={theme.colors.tenantText}
                   fontSize="m"
                   className="e2e-folder-description"
-                  disableTabbing={!expanded}
+                  disableTabbing={showReadMoreButton}
                 >
                   <T
                     value={projectFolder.attributes.description_multiloc}
@@ -173,28 +180,26 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
                 </QuillEditedContent>
               </div>
             </ReactResizeDetector>
-            {descriptionHeight &&
-              descriptionHeight > collapsedDescriptionMaxHeight &&
-              !expanded && (
-                <ReadMoreOuterWrapper>
-                  <ReadMoreInnerWrapper>
-                    <ReadMoreButton
-                      id="e2e-project-description-read-more-button"
-                      buttonStyle="text"
-                      onClick={toggleExpandCollapse}
-                      textDecoration="underline"
-                      textDecorationHover="underline"
-                      textColor={colors.textSecondary}
-                      textHoverColor={theme.colors.tenantText}
-                      fontWeight="500"
-                      fontSize={`${fontSizes.m}px`}
-                      padding="0"
-                    >
-                      <FormattedMessage {...messages.readMore} />
-                    </ReadMoreButton>
-                  </ReadMoreInnerWrapper>
-                </ReadMoreOuterWrapper>
-              )}
+            {showReadMoreButton && (
+              <ReadMoreOuterWrapper>
+                <ReadMoreInnerWrapper>
+                  <ReadMoreButton
+                    id="e2e-project-description-read-more-button"
+                    buttonStyle="text"
+                    onClick={toggleExpandCollapse}
+                    textDecoration="underline"
+                    textDecorationHover="underline"
+                    textColor={colors.textSecondary}
+                    textHoverColor={theme.colors.tenantText}
+                    fontWeight="500"
+                    fontSize={`${fontSizes.m}px`}
+                    padding="0"
+                  >
+                    <FormattedMessage {...messages.readMore} />
+                  </ReadMoreButton>
+                </ReadMoreInnerWrapper>
+              </ReadMoreOuterWrapper>
+            )}
 
             {descriptionHeight &&
               descriptionHeight > collapsedDescriptionMaxHeight &&

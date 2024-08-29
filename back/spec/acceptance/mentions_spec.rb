@@ -7,7 +7,8 @@ resource 'Mentions' do
   explanation 'Part of a text that explicitly references a user.'
 
   before do
-    resident_header_token
+    @current_user = create(:user)
+    header_token_for(@current_user)
     header 'Content-Type', 'application/json'
   end
 
@@ -47,6 +48,34 @@ resource 'Mentions' do
       expect(json_response[:data].size).to eq idea_related.size
       expect(json_response[:data].pluck(:id)).to match_array idea_related.map(&:id)
       expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..(first_name.size)] == first_name }).to be true
+    end
+
+    context 'when current user is author of post' do
+      let(:initiative) { create(:initiative, author: @current_user) }
+      let(:base_query_params) do
+        { post_id: initiative.id, post_type: 'Initiative', mention: @current_user.first_name[0..3] }
+      end
+
+      example 'does not return current user' do
+        do_request base_query_params
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include @current_user.id
+      end
+    end
+
+    context 'when current user is not author of post' do
+      let(:initiative) { create(:initiative, author: create(:user)) }
+      let(:base_query_params) do
+        { post_id: initiative.id, post_type: 'Initiative', mention: @current_user.first_name[0..3] }
+      end
+
+      example 'does not return current user' do
+        do_request base_query_params
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include @current_user.id
+      end
     end
 
     example 'Does not return unregistered user by (partial) mention', document: false do

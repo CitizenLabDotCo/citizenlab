@@ -1,9 +1,13 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import ContentContainer from 'components/ContentContainer';
+
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+
+import ContentContainer from 'components/ContentContainer';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   min-height: calc(
@@ -36,15 +40,19 @@ const Title = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
-  <Container>
-    <ContentContainer>
-      <Title>
-        <FormattedMessage {...messages.accessDenied} />
-      </Title>
-      <div>
-        <FormattedMessage {...messages.subscriptionEnded} />
-      </div>
-    </ContentContainer>
-  </Container>
-));
+const SubscriptionEndedPage = () => (
+  <main>
+    <Container>
+      <ContentContainer>
+        <Title>
+          <FormattedMessage {...messages.accessDenied} />
+        </Title>
+        <div>
+          <FormattedMessage {...messages.subscriptionEnded} />
+        </div>
+      </ContentContainer>
+    </Container>
+  </main>
+);
+
+export default SubscriptionEndedPage;

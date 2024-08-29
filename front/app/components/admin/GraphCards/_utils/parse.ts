@@ -1,6 +1,7 @@
-import { roundPercentage } from 'utils/math';
 import { TimeSeriesTotalRow } from 'components/admin/GraphCards/typings';
+
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { roundPercentage } from 'utils/math';
 
 // Replace zeroes with '-' by convention & return strings
 export const formatCountValue = (count: number): string => {
@@ -10,7 +11,11 @@ export const formatCountValue = (count: number): string => {
 
 export const getConversionRate = (from: number, to: number) => {
   if (to <= 0) return `0%`;
-  return `${Math.min(100, roundPercentage(from, to))}%`;
+  return `${calculateConversionRate(from, to)}%`;
+};
+
+export const calculateConversionRate = (from: number, to: number) => {
+  return Math.min(100, roundPercentage(from, to));
 };
 
 const formatSerieChange = (serieChange: number) => {

@@ -3,6 +3,11 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # [] => Cross-origin requests are NOT allowed from any origin.
+  # ['*'] => Cross-origin requests from any origin are allowed.
+  # ['http://some-domain.com', 'https://other-domain.com'] => Cross-origin requests are allowed from specified origins.
+  config.allowed_cors_origins = []
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

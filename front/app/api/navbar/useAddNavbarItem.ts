@@ -1,22 +1,31 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import customPagesKeys from 'api/custom_pages/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { IItemNotInNavbar } from 'utils/navbar';
+
 import navbarKeys from './keys';
 import { INavbarItemResponse, INavbarItemAdd } from './types';
-import { IItemNotInNavbar } from 'utils/navbar';
-import customPagesKeys from 'api/custom_pages/keys';
 
 const addNavbarItem = (item: IItemNotInNavbar) => {
   const navbarItem: INavbarItemAdd =
     item.type === 'default_item'
       ? {
           code: item.navbarCode,
-          title_multiloc: item.navbarTitleMultiloc,
+          title_multiloc: item.titleMultiloc,
+        }
+      : 'pageId' in item
+      ? {
+          code: 'custom',
+          static_page_id: item.pageId, // static page
+          title_multiloc: item.titleMultiloc,
         }
       : {
           code: 'custom',
-          static_page_id: item.pageId,
-          title_multiloc: item.pageTitleMultiloc,
+          project_id: item.projectId, // project
+          title_multiloc: item.titleMultiloc,
         };
   return fetcher<INavbarItemResponse>({
     path: '/nav_bar_items',

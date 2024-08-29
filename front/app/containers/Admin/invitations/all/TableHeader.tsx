@@ -1,18 +1,13 @@
 import React from 'react';
 
-// components
-import { Thead, Tr, Th, Text } from '@citizenlab/cl2-component-library';
+import { Thead, Tr, Th, Text, colors } from '@citizenlab/cl2-component-library';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// typings
 import { SortAttribute } from 'api/invites/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { SortDirection } from 'utils/paginationUtils';
+
+import messages from '../messages';
 
 interface ClickableCellProps {
   width: string;

@@ -1,9 +1,15 @@
 import React from 'react';
-import { TRule } from '../rules';
+
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import useLocalize from 'hooks/useLocalize';
+
 import useIdeas from 'api/ideas/useIdeas';
+
+import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { TRule } from '../rules';
+
 import { generateOptions } from './utils';
 
 export interface Props {
@@ -13,7 +19,7 @@ export interface Props {
 }
 
 const IdeaValuesSelector = ({ value, onChange }: Props) => {
-  const { data: ideas } = useIdeas({ sort: 'random' });
+  const { data: ideas } = useIdeas({ sort: 'random', transitive: true });
   const localize = useLocalize();
 
   const handleOnChange = (options: IOption[]) => {
@@ -22,6 +28,7 @@ const IdeaValuesSelector = ({ value, onChange }: Props) => {
   };
 
   return (
+    // TODO: use front/app/components/UI/IdeaSelect/index.tsx to show all ideas.
     <MultipleSelect
       value={value}
       options={generateOptions(localize, ideas?.data)}

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { ICustomFieldParams } from './types';
 
 const baseKey = { type: 'users_by_custom_field' };

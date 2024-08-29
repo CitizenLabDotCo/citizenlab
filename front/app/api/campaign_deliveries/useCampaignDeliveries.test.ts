@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCampaignDeliveries from './useCampaignDeliveries';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IDeliveryData } from './types';
+import useCampaignDeliveries from './useCampaignDeliveries';
 
 const apiPath = '*campaigns/:id/deliveries';
 
@@ -29,8 +29,8 @@ const campaignDeliveriesData: IDeliveryData = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignDeliveriesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: campaignDeliveriesData }, { status: 200 });
   })
 );
 
@@ -59,8 +59,8 @@ describe('useCampaignDeliveries', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

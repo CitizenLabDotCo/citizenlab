@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { LocationInput } from '@citizenlab/cl2-component-library';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import Error from 'components/UI/Error';
-import { injectIntl } from 'utils/cl-intl';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { WrappedComponentProps } from 'react-intl';
-import { getLabel } from 'utils/JSONFormUtils';
-import messages from '../../messages';
+
+import { FormLabel } from 'components/UI/FormComponents';
+import LocationInput, { Option } from 'components/UI/LocationInput';
+
+import { useIntl } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const LocationControl = ({
   uischema,
@@ -25,9 +29,10 @@ const LocationControl = ({
   path,
   errors,
   required,
-  intl: { formatMessage },
   visible,
+  id,
 }: ControlProps & WrappedComponentProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
 
   if (!visible) {
@@ -36,32 +41,54 @@ const LocationControl = ({
 
   return (
     <>
-      <FormLabel
-        labelValue={getLabel(uischema, schema, path)}
-        optional={!required}
-        subtextValue={getSubtextElement(uischema.options?.description)}
-        subtextSupportsHtml
-      />
-      {window.google ? (
-        <LocationInput
-          value={data}
-          onChange={(location) =>
-            handleChange(path, location === '' ? undefined : location)
+      <Box display="flex">
+        <FormLabel
+          labelValue={
+            <Box display="flex">
+              <Box mr="8px">{getLabel(uischema, schema, path)}</Box>
+              <IconTooltip
+                content={
+                  <Text m="0px" fontSize="s" color="white">
+                    {formatMessage(messages.validCordinatesTooltip)}
+                  </Text>
+                }
+              />
+            </Box>
           }
-          placeholder={''}
-          onBlur={() => setDidBlur(true)}
-          aria-label={getLabel(uischema, schema, path)}
-          className="e2e-idea-form-location-input-field"
+          optional={!required}
+          subtextValue={getSubtextElement(uischema.options?.description)}
+          subtextSupportsHtml
         />
-      ) : (
-        <Error text={formatMessage(messages.locationGoogleUnavailable)} />
-      )}
-      <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
+      </Box>
+      <LocationInput
+        value={
+          data
+            ? {
+                value: data,
+                label: data,
+              }
+            : null
+        }
+        onChange={(location: Option) => {
+          handleChange(path, location?.value ? location.value : undefined);
+        }}
+        placeholder={''}
+        onBlur={() => setDidBlur(true)}
+        aria-label={getLabel(uischema, schema, path)}
+        className="e2e-idea-form-location-input-field"
+      />
+
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        didBlur={didBlur}
+        ajvErrors={errors}
+        fieldPath={path}
+      />
     </>
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(LocationControl));
+export default withJsonFormsControlProps(LocationControl);
 
 export const locationControlTester: RankedTester = rankWith(
   1000,

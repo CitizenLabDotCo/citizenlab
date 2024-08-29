@@ -3,7 +3,7 @@ export const projectDescriptionBuilderLayoutData = {
   type: 'content_builder_layout',
   attributes: {
     enabled: true,
-    craftjs_jsonmultiloc: { en: {} },
+    craftjs_json: {},
     code: 'test',
   },
 };

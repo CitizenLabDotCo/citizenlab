@@ -12,15 +12,13 @@ class ApplicationMailer < ActionMailer::Base
   delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
-    :text_direction
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing
 
-  helper_method :organization_name, :recipient_name,
-    :url_service, :multiloc_service, :organization_name,
-    :loc, :localize_for_recipient, :recipient_first_name
+  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
-  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
+    :home_url, :tenant_logo_url, :show_terms_link?, :show_privacy_policy_link?, :format_message,
     :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
@@ -35,7 +33,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def locale
-    @locale ||= recipient.locale
+    @locale ||= recipient&.locale ? Locale.new(recipient.locale) : Locale.default
   end
 
   def subject
@@ -68,7 +66,19 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, recipient).html_safe if multiloc
+    multiloc_service.t(multiloc, locale.to_s).html_safe if multiloc
+  end
+
+  # Truncates localized multiloc string, avoiding cutting string in the middle of HTML link and breaking the mail view.
+  def localize_for_recipient_and_truncate(multiloc_or_struct, length)
+    string = localize_for_recipient(multiloc_or_struct)
+
+    service = SanitizationService.new
+    sanitized = service.sanitize string, %i[default] # replace HTML links with text version of URL
+    truncated = sanitized.truncate(length, separator: ' ') # truncate the string without cutting the middle of a word.
+    linkified = service.linkify truncated # turn any remaining URLs back into HTML links
+
+    linkified.html_safe
   end
 
   def count_from(value)
@@ -123,7 +133,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def raw_from_email
-    app_settings.core.from_email.presence || default_from_email
+    app_settings.core['from_email'].presence || default_from_email
   end
 
   def to_email
@@ -131,7 +141,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def reply_to_email
-    app_settings.core.reply_to_email.presence || default_from_email
+    app_settings.core['reply_to_email'].presence || default_from_email
   end
 
   def domain
@@ -140,10 +150,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def app_settings
     to_deep_struct(app_configuration.settings)
-  end
-
-  def show_unsubscribe_link?
-    true
   end
 
   def show_terms_link?
@@ -170,10 +176,16 @@ class ApplicationMailer < ActionMailer::Base
     @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
   end
 
-  def logo_url
-    @logo_url ||= app_configuration.logo.versions.then do |versions|
+  def tenant_logo_url
+    @tenant_logo_url ||= app_configuration.logo.versions.then do |versions|
       versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
+  end
+
+  def gv_gray_logo_url
+    logo_languages = %i[en nl fr es da de]
+    lang_part = (locale.fallback_languages & logo_languages).first.to_s
+    "https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_#{lang_part}.png"
   end
 
   def formatted_todays_date
@@ -186,15 +198,15 @@ class ApplicationMailer < ActionMailer::Base
     (Time.zone.today - resource.published_at.to_date).to_i
   end
 
-  def text_direction
-    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
-  end
-
   def to_deep_struct(obj)
     case obj
-    when Hash  then OpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
-    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
-    else            obj
+    when Hash
+      struct_obj = obj.transform_values { |nested_object| to_deep_struct(nested_object) }
+      WhinyOpenStruct.new(struct_obj, raise_exception: false)
+    when Array
+      obj.map { |nested_object| to_deep_struct(nested_object) }
+    else
+      obj
     end
   end
 end

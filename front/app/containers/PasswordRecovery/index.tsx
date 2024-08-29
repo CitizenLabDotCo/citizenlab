@@ -1,9 +1,11 @@
 import React from 'react';
 
-// components
-import { Success, Box } from '@citizenlab/cl2-component-library';
+import { Success } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
+import { WrappedComponentProps } from 'react-intl';
+
+import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
+
 import {
   StyledContentContainer,
   Title,
@@ -12,20 +14,12 @@ import {
   Subtitle,
   StyledInput,
 } from 'components/smallForm';
+import { FormLabel } from 'components/UI/FormComponents';
 
-// services
-import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
-
-// utils
+import { injectIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
-// style
 import messages from './messages';
-import { stylingConsts } from 'utils/styleUtils';
 
 interface Props {}
 
@@ -130,12 +124,7 @@ class PasswordRecovery extends React.PureComponent<
     }
 
     return (
-      <Box
-        width="100%"
-        minHeight={`calc(100vh - ${
-          stylingConsts.menuHeight + stylingConsts.footerHeight
-        }px)`}
-      >
+      <>
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -143,9 +132,7 @@ class PasswordRecovery extends React.PureComponent<
         <main>
           <StyledContentContainer>
             <Title style={{ marginBottom: '15px' }}>{title}</Title>
-
             <Subtitle>{subtitle}</Subtitle>
-
             <Form onSubmit={this.handleOnSubmit}>
               <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput
@@ -174,7 +161,7 @@ class PasswordRecovery extends React.PureComponent<
             </Form>
           </StyledContentContainer>
         </main>
-      </Box>
+      </>
     );
   }
 }

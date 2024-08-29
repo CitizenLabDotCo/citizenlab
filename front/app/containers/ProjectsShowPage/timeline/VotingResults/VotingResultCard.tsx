@@ -1,42 +1,36 @@
 import React from 'react';
-import bowser from 'bowser';
 
-// api
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-
-// i18n
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-import ImagePlaceholder from './ImagePlaceholder';
-import Rank from './Rank';
-import Results from './Results';
-import Footer from 'components/IdeaCard/Footer';
-
-// styling
-import styled from 'styled-components';
 import {
+  useBreakpoint,
+  Box,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
-} from 'utils/styleUtils';
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-// router
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import useIdeaImage from 'api/idea_images/useIdeaImage';
+import { IIdeaData } from 'api/ideas/types';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Footer from 'components/IdeaCard/Footer';
+import Image from 'components/UI/Image';
+
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
-// utils
-import { roundPercentage } from 'utils/math';
-
-// typings
-import { IIdeaData } from 'api/ideas/types';
+import ImagePlaceholder from './ImagePlaceholder';
+import messages from './messages';
+import ProgressBar from './ProgressBar';
+import Rank from './Rank';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';
@@ -51,10 +45,10 @@ const Container = styled(Link)`
   ${defaultCardStyle};
   cursor: pointer;
 
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
     transform: translate(0px, -2px);
-  }
+  `}
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -124,23 +118,6 @@ const Header = styled.header`
   `}
 `;
 
-const Title = styled.h3`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: 21px;
-  font-weight: 500;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  line-height: 26px;
-  max-height: 78px;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
 const Body = styled.div`
   flex-grow: 1;
 
@@ -157,34 +134,28 @@ interface Props {
 
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
-  const { data: project } = useProjectById(idea.relationships.project.data.id);
   const { data: ideaImage } = useIdeaImage(
     idea.id,
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
 
+  if (!phase) return null;
+
+  const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
-  const { slug } = idea.attributes;
-  const params = '?go_back=true';
-  const votingMethod = phase?.data.attributes.voting_method;
-
-  const ideaVotes = idea.attributes.votes_count ?? 0;
-  const totalVotes = phase?.data.attributes.votes_count;
-
-  const votesPercentage = totalVotes
-    ? roundPercentage(ideaVotes, totalVotes)
-    : 0;
-
-  const baskets = idea.attributes.baskets_count;
+  const votingMethod = phase.data.attributes.voting_method;
+  const url: RouteType = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}`);
+    clHistory.push(url, {
+      scrollToTop: true,
+    });
   };
 
   const image = ideaImage?.data.attributes.versions.medium;
@@ -192,11 +163,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   return (
     <Container
       id={idea.id}
-      to={`/ideas/${slug}${params}`}
+      to={url}
       onClick={handleClick}
-      className={`e2e-card ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
+      className={'e2e-card'}
     >
       {image && (
         <IdeaCardImageWrapper>
@@ -217,8 +186,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         <IdeaCardImageWrapper>
           <Box w="100%" h="100%" flex="1" position="relative">
             <ImagePlaceholder
-              participationMethod="voting"
-              votingMethod={votingMethod}
+              placeholderIconName={
+                votingMethod === 'budgeting' ? 'money-bag' : 'idea'
+              }
             />
             <Box position="absolute" mt="12px" ml="12px">
               <Rank rank={rank} />
@@ -234,28 +204,31 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
           </Box>
         )}
 
-        <Header className="e2e-card-title">
-          <Title title={ideaTitle}>{ideaTitle}</Title>
+        <Header>
+          <Title title={ideaTitle} color="tenantText" variant="h5" my="0px">
+            {ideaTitle}
+          </Title>
+          {phase.data.attributes.voting_method === 'budgeting' &&
+            typeof budget === 'number' && (
+              <Text
+                mb="8px"
+                mt="8px"
+                color="textPrimary"
+                variant="bodyS"
+                fontWeight="bold"
+              >
+                {formatMessage(messages.cost)}{' '}
+                <FormattedBudget value={budget} />
+              </Text>
+            )}
         </Header>
 
         <Body>
-          <Results
-            phaseId={phaseId}
-            budget={idea.attributes.budget ?? undefined}
-            votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
-            votesPercentage={votesPercentage}
-            baskets={
-              votingMethod === 'single_voting' ? undefined : baskets ?? 0
-            }
-            tooltip={
-              votingMethod === 'budgeting'
-                ? formatMessage(messages.budgetingTooltip)
-                : undefined
-            }
-          />
+          <Box h="100%" display="flex" alignItems="flex-end">
+            <ProgressBar idea={idea} phase={phase} />
+          </Box>
         </Body>
         <Footer
-          project={project}
           idea={idea}
           hideIdeaStatus={true}
           participationMethod="voting"

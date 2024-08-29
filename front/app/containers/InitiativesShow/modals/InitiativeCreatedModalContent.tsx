@@ -1,7 +1,10 @@
 import React from 'react';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const InitiativeCreatedModalContent = () => {
   const { formatMessage } = useIntl();

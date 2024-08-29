@@ -1,22 +1,28 @@
 import React from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Menu, Divider } from 'semantic-ui-react';
+
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
+import useAuthUser from 'api/me/useAuthUser';
+
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import useAuthUser from 'api/me/useAuthUser';
-import messages from '../../messages';
+import { isAdmin } from 'utils/permissions/roles';
+
 import { ManagerType } from '../..';
-import { isAdmin } from 'services/permissions/roles';
+import messages from '../../messages';
+
+import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
 interface Props {
   type: ManagerType;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
   selectedStatus?: string | null;
-  onChangeStatusFilter?: (status: string | null) => void;
+  onChangeStatusFilter: (status: string | null) => void;
 }
 
 const FilterSidebarStatuses = ({
@@ -32,16 +38,21 @@ const FilterSidebarStatuses = ({
   }
 
   const handleItemClick = (id: string) => () => {
-    onChangeStatusFilter && onChangeStatusFilter(id);
+    onChangeStatusFilter(id);
   };
 
   const clearFilter = () => {
-    onChangeStatusFilter && onChangeStatusFilter(null);
+    onChangeStatusFilter(null);
   };
 
   const isActive = (id: string) => {
     return selectedStatus === id;
   };
+
+  const linkToStatusSettings =
+    type === 'AllIdeas' || type === 'ProjectIdeas'
+      ? '/admin/settings/ideation/statuses'
+      : '/admin/settings/proposals/statuses';
 
   if (!isNilOrError(statuses)) {
     return (
@@ -50,30 +61,26 @@ const FilterSidebarStatuses = ({
           <FormattedMessage {...messages.allStatuses} />
         </Menu.Item>
         <Divider />
-        {/* Only input statuses can be edited and only admins can do this */}
-        {isAdmin({ data: authUser.data }) &&
+        {/* Input statuses can be edited and only admins can do this */}
+        {isAdmin(authUser) &&
           (type === 'AllIdeas' ||
-            (type === 'ProjectIdeas' && (
-              <Box display="inline-flex">
-                <Button
-                  buttonStyle="text"
-                  icon="edit"
-                  pl="12px"
-                  linkTo="/admin/settings/statuses"
-                  iconPos="right"
-                  iconSize="14px"
-                >
-                  <Text
-                    m="0px"
-                    color="coolGrey600"
-                    fontSize="s"
-                    textAlign="left"
-                  >
-                    <FormattedMessage {...messages.editStatuses} />
-                  </Text>
-                </Button>
-              </Box>
-            )))}
+            type === 'ProjectIdeas' ||
+            type === 'ProjectProposals') && (
+            <Box display="inline-flex">
+              <Button
+                buttonStyle="text"
+                icon="edit"
+                pl="12px"
+                linkTo={linkToStatusSettings}
+                iconPos="right"
+                iconSize="14px"
+              >
+                <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+                  <FormattedMessage {...messages.editStatuses} />
+                </Text>
+              </Button>
+            </Box>
+          )}
         {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
           (status) => (
             <FilterSidebarStatusesItem

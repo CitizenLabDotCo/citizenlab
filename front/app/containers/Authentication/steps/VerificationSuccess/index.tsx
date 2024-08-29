@@ -1,24 +1,21 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// components
-import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
-import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
-
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// style
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
+
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 // svg
 import illustration from './illustration.svg';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

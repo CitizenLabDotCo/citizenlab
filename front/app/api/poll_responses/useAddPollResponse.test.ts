@@ -1,18 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPollResponse from './useAddPollResponse';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath =
-  '*/:participationContextType/:participationContextId/poll_responses';
+import useAddPollResponse from './useAddPollResponse';
+
+const apiPath = '*/phases/:phaseId/poll_responses';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.post(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -27,8 +25,7 @@ describe('useAddPollResponse', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: 'id',
-        participationContextType: 'project',
+        phaseId: 'id',
         optionIds: ['optionId'],
       });
     });
@@ -38,8 +35,8 @@ describe('useAddPollResponse', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -48,8 +45,7 @@ describe('useAddPollResponse', () => {
     });
     act(() => {
       result.current.mutate({
-        participationContextId: 'id',
-        participationContextType: 'project',
+        phaseId: 'id',
         optionIds: ['optionId'],
       });
     });

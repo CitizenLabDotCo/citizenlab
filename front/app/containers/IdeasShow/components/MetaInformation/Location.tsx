@@ -1,31 +1,30 @@
-import React, { memo, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { isNilOrError } from 'utils/helperUtils';
-import { isNil } from 'lodash-es';
+import React, { memo } from 'react';
 
-// components
-import { Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Map, { Point } from 'components/Map';
+import {
+  Box,
+  Icon,
+  Text,
+  colors,
+  isRtl,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-// utils
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import IdeaLocationMap from './IdeaLocationMap';
 import messages from './messages';
-
-// styling
-import { isRtl, fontSizes, media } from 'utils/styleUtils';
-
-// typings
-import { LatLngTuple } from 'leaflet';
 
 const Container = styled.div`
   display: flex;
@@ -46,39 +45,6 @@ const StyledIcon = styled(Icon)`
     margin-left: 8px;
   `}
 `;
-
-const OpenMapModalButton = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  line-height: 22px;
-  text-decoration: underline;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  border: none;
-  appearance: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.2, colors.textSecondary)};
-  }
-`;
-
-const Address = styled.div`
-  width: calc(100% - 35px);
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
-const MapContainer = styled.div`
-  padding: 30px;
-
-  ${media.phone`
-    padding: 20px;
-  `}
-`;
-
 export interface Props {
   projectId: string;
   ideaId: string;
@@ -86,16 +52,13 @@ export interface Props {
   className?: string;
 }
 
-const Location = memo<Props>(({ projectId, ideaId, compact, className }) => {
+const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { formatMessage } = useIntl();
-  const [isOpened, setIsOpened] = useState(false);
   const { data: idea } = useIdeaById(ideaId);
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const point =
-    (!isNilOrError(idea) && idea.data.attributes?.location_point_geojson) ||
-    null;
-  const lat = point?.coordinates?.[1] || null;
-  const lng = point?.coordinates?.[0] || null;
+  const point = idea?.data.attributes?.location_point_geojson;
+
   const address = !isNilOrError(idea)
     ? getAddressOrFallbackDMS(
         idea.data.attributes.location_description,
@@ -103,36 +66,51 @@ const Location = memo<Props>(({ projectId, ideaId, compact, className }) => {
       )
     : null;
 
-  const points = useMemo(() => {
-    return point ? ([point] as Point[]) : undefined;
-  }, [point]);
-
-  const centerLatLng = useMemo(() => {
-    if (!isNil(lat) && !isNil(lng)) {
-      return [lat, lng] as LatLngTuple;
-    }
-    return;
-  }, [lat, lng]);
-
-  const closeModal = () => {
-    setIsOpened(false);
-  };
-
-  const openModal = () => {
-    setIsOpened(true);
-  };
-
   if (address) {
     return (
       <Item className={className || ''} compact={compact}>
         <Header>{formatMessage(messages.location)}</Header>
         <Container>
-          <StyledIcon name="position" ariaHidden />
           {point && (
-            <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-              {address}
-            </OpenMapModalButton>
+            <Box display="block" width="100%">
+              <Box display="flex">
+                <StyledIcon name="position" ariaHidden />
+                <Button
+                  m="0px"
+                  p="0px"
+                  fontSize="m"
+                  buttonStyle="text"
+                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
+                  openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
+                  pl="0px"
+                  style={{
+                    textDecoration: 'underline',
+                    justifyContent: 'left',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Text
+                    mt="4px"
+                    color="coolGrey600"
+                    m="0px"
+                    p="0px"
+                    fontSize="s"
+                  >
+                    {address}
+                  </Text>
+                </Button>
+              </Box>
+
+              {!compact && (
+                <Box width="100%" mt="8px" id="e2e-location-map">
+                  <IdeaLocationMap
+                    location={idea?.data.attributes?.location_point_geojson}
+                  />
+                </Box>
+              )}
+            </Box>
           )}
+
           {!point && (
             <Text
               m="0px"
@@ -145,21 +123,6 @@ const Location = memo<Props>(({ projectId, ideaId, compact, className }) => {
             </Text>
           )}
         </Container>
-        <Modal
-          opened={isOpened}
-          close={closeModal}
-          header={<Address>{address}</Address>}
-          width={1150}
-        >
-          <MapContainer>
-            <Map
-              projectId={projectId}
-              points={points}
-              centerLatLng={centerLatLng}
-              zoomLevel={15}
-            />
-          </MapContainer>
-        </Modal>
       </Item>
     );
   }

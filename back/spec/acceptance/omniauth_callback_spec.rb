@@ -22,10 +22,10 @@ resource 'Omniauth Callback', document: false do
 
     let(:user_id) { @user.id }
 
-    get '/auth/clave_unica/logout' do
-      example_request 'Redirect to ClaveUnica URL' do
-        expect(status).to eq(302)
-        expect(response_headers['Location']).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
+    get '/auth/clave_unica/logout_data' do
+      example_request 'Returns ClaveUnica redirect URL' do
+        expect(status).to eq(200)
+        expect(json_response_body[:url]).to start_with('https://accounts.claveunica.gob.cl/api/v1/accounts/app/logout')
       end
     end
   end

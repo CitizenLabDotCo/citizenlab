@@ -1,24 +1,22 @@
-/*
- * This component is invisible to screen readers, if you ever need to show it to
- * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
- */
-
 import React, { memo } from 'react';
 
-// components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import Link from 'utils/cl-router/Link';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import BoringAvatar from 'boring-avatars';
+import { lighten } from 'polished';
+import { RouteType } from 'routes';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 
-// styles
-import styled, { useTheme } from 'styled-components';
-import { lighten } from 'polished';
-import { colors } from 'utils/styleUtils';
-import BoringAvatar from 'boring-avatars';
+import FeatureFlag from 'components/FeatureFlag';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -115,10 +113,9 @@ export interface Props {
   borderColor?: string;
   bgColor?: string;
   className?: string;
-  moderator?: boolean | null;
+  showModeratorStyles?: boolean | null;
   addVerificationBadge?: boolean | null;
   padding?: number;
-  hideIfNoAvatar?: boolean;
   authorHash?: string;
 }
 
@@ -137,12 +134,18 @@ const Avatar = memo(
     }
 
     const slug = user?.data.attributes.slug;
-    const profileLink = `/profile/${slug}`;
+    const profileLink: RouteType = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink}>
+        <Link to={profileLink} scrollToTop>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.titleForAccessibility}
+              values={{ fullName: getFullName(user.data) }}
+            />
+          </ScreenReaderOnly>
           <AvatarInner
             userId={userId}
             isLinkToProfile={isLinkToProfile}
@@ -164,11 +167,10 @@ const Avatar = memo(
 
 const AvatarInner = ({
   isLinkToProfile,
-  moderator,
+  showModeratorStyles,
   className,
   addVerificationBadge,
   userId,
-  hideIfNoAvatar,
   authorHash,
   ...props
 }: Props) => {
@@ -222,7 +224,7 @@ const AvatarInner = ({
 
   return (
     <Container aria-hidden className={className} size={containerSize}>
-      {avatarSrc && (
+      {avatarSrc ? (
         <AvatarImage
           className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           src={avatarSrc}
@@ -230,13 +232,13 @@ const AvatarInner = ({
           size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          borderHoverColor={
+            showModeratorStyles ? colors.red600 : borderHoverColor
+          }
           bgColor={bgColor}
           padding={paddingValue}
         />
-      )}
-
-      {!avatarSrc && !hideIfNoAvatar && (
+      ) : (
         <AvatarIcon
           className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           name="user-circle"
@@ -245,13 +247,15 @@ const AvatarInner = ({
           fillHoverColor={fillHoverColor}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          borderHoverColor={
+            showModeratorStyles ? colors.red600 : borderHoverColor
+          }
           bgColor={bgColor}
           paddingValue={paddingValue}
         />
       )}
 
-      {moderator && (
+      {showModeratorStyles && (
         <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
       )}
 

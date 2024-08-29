@@ -1,75 +1,47 @@
-import React, { useState } from 'react';
-import moment, { Moment } from 'moment';
+import React from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import moment from 'moment';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
-import Charts from './Charts';
+import { Query } from 'api/analytics/types';
+import useAnalytics from 'api/analytics/useAnalytics';
 
-// utils
-import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
+import VisitorsOverview from './VisitorsOverview';
 
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { IOption } from 'typings';
+type Response = {
+  data: {
+    type: 'analytics';
+    attributes: [
+      {
+        count: number;
+        min_dimension_date_created_date: string | null;
+      }
+    ];
+  };
+};
+
+const query: Query = {
+  query: {
+    fact: 'session',
+    aggregations: {
+      all: 'count',
+      'dimension_date_created.date': 'min',
+    },
+  },
+};
 
 const Visitors = () => {
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
-    undefined
-  );
-  const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
-  const [projectId, setProjectId] = useState<string | undefined>();
-  const [resolution, setResolution] = useState<IResolution>('month');
+  const { data: analytics } = useAnalytics<Response>(query, undefined, true);
 
-  const handleChangeTimeRange = (
-    startAtMoment: Moment | null,
-    endAtMoment: Moment | null
-  ) => {
-    const resolution = getSensibleResolution(startAtMoment, endAtMoment);
-    setStartAtMoment(startAtMoment);
-    setEndAtMoment(endAtMoment);
-    setResolution(resolution);
-  };
+  if (!analytics) {
+    return null;
+  }
 
-  const handleProjectFilter = ({ value }: IOption) => {
-    setProjectId(value);
-  };
+  const [countData] = analytics.data.attributes;
+  const firstDate = countData.min_dimension_date_created_date;
+  const uniqueVisitorDataDate =
+    typeof firstDate === 'string' ? moment(firstDate) : undefined;
 
-  return (
-    <>
-      <Box width="100%">
-        <ChartFilters
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          currentProjectFilter={projectId}
-          resolution={resolution}
-          onChangeTimeRange={handleChangeTimeRange}
-          onProjectFilter={handleProjectFilter}
-          onChangeResolution={setResolution}
-        />
-      </Box>
-
-      <Charts
-        projectId={projectId}
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        resolution={resolution}
-      />
-    </>
-  );
+  return <VisitorsOverview uniqueVisitorDataDate={uniqueVisitorDataDate} />;
 };
 
-const FeatureFlagWrapper = () => {
-  const visitorsDashboardEnabled = useFeatureFlag({
-    name: 'visitors_dashboard',
-  });
-
-  if (!visitorsDashboardEnabled) return null;
-
-  return <Visitors />;
-};
-
-export default FeatureFlagWrapper;
+export default Visitors;

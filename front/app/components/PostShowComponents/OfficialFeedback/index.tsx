@@ -1,12 +1,9 @@
 import React, { memo } from 'react';
-import { isBoolean } from 'lodash-es';
 
-// components
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import OfficialFeedbackFeed from './OfficialFeedbackFeed';
-
-// stylings
 import styled from 'styled-components';
+
+import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 interface Props {
   postId: string;
@@ -26,7 +23,7 @@ const OfficialFeedback = memo<Props>(
     a11y_pronounceLatestOfficialFeedbackPost,
     className,
   }) => {
-    if (isBoolean(permissionToPost)) {
+    if (typeof permissionToPost === 'boolean') {
       return (
         <Container className={className || ''}>
           {permissionToPost && (

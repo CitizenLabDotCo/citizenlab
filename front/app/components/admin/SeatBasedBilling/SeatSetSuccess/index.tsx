@@ -1,25 +1,22 @@
 import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
 import {
   Title,
   Text,
   Box,
   Icon,
   Button,
+  colors,
 } from '@citizenlab/cl2-component-library';
+
 import {
   SeatTypeMessageDescriptor,
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
-// Styling
-import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 type SeatChangeSuccessModalProps = {
   closeModal: () => void;
@@ -33,23 +30,18 @@ const SeatSetSuccess = ({
   hasExceededPlanSeatLimit,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
     moderator: messages.manager,
   };
-  const descriptionMessage =
-    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
-      ? formatMessage(messages.reflectedMessage)
-      : formatMessage(messages.rightsGranted, {
-          seatType: formatMessage(seatTypeMessages[seatType]),
-        });
-  const titleMessage =
-    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
-      ? messages.orderCompleted
-      : messages.allDone;
+  const descriptionMessage = hasExceededPlanSeatLimit
+    ? formatMessage(messages.reflectedMessage)
+    : formatMessage(messages.rightsGranted, {
+        seatType: formatMessage(seatTypeMessages[seatType]),
+      });
+  const titleMessage = hasExceededPlanSeatLimit
+    ? messages.orderCompleted
+    : messages.allDone;
 
   return (
     <Box p="30px" data-cy="e2e-seat-set-success-body">

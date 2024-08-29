@@ -1,18 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// Components
+import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import { Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Row, TextCell } from 'components/admin/ResourceList';
-import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
-// Typings
-import { Multiloc } from 'typings';
+import messages from '../messages';
 
 const StyledButton = styled(Button)`
   display: inline-block;
@@ -46,7 +44,7 @@ const OptionRow = ({
     <StyledButton
       className="e2e-edit-option"
       onClick={editOption}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       icon="edit"
     >
       <FormattedMessage {...messages.editOption} />

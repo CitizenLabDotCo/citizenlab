@@ -8,7 +8,7 @@ describe Invites::Service do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = %w[fr en nl]
+    settings['core']['locales'] = %w[fr-BE en nl-BE]
     AppConfiguration.instance.update(settings: settings)
   end
 
@@ -71,7 +71,6 @@ describe Invites::Service do
         config.settings['core']['maximum_moderators_number'] = 1
         config.settings['core']['additional_admins_number'] = 0
         config.settings['core']['additional_moderators_number'] = 0
-        config.settings['seat_based_billing'] = { enabled: true, allowed: true }
         config.save!
       end
 

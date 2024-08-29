@@ -29,17 +29,12 @@ describe('Idea edit page', () => {
   });
 
   beforeEach(() => {
-    cy.apiCreateIdea(
-      projectId,
-      ideaTitle,
-      ideaContent,
-      undefined,
-      undefined,
-      jwt
-    ).then((idea) => {
-      ideaId = idea.body.data.id;
-      ideaSlug = idea.body.data.attributes.slug;
-    });
+    cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt }).then(
+      (idea) => {
+        ideaId = idea.body.data.id;
+        ideaSlug = idea.body.data.attributes.slug;
+      }
+    );
   });
 
   afterEach(() => {
@@ -92,18 +87,10 @@ describe('Idea edit page', () => {
 
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels{enter}'
+      'Boulevard Anspach Brussels'
     );
-    cy.get(
-      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-    cy.wait(500);
-    cy.get('.e2e-idea-form-location-input-field input').should(
-      'contain.value',
-      'Belgium'
-    );
+    cy.wait(5000);
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -117,14 +104,12 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
+    cy.get('#e2e-accept-disclaimer').click();
     cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
     cy.wait('@ideaPostRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
-
-    cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
-    cy.wait('@ideaRequest');
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
@@ -133,7 +118,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-topics').should('exist');
     cy.get('.e2e-idea-topic').should('exist');
     cy.get('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
     );

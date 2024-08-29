@@ -1,141 +1,48 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useSteps from './useSteps';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-// components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import AuthProviders from './steps/AuthProviders';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPassword from './steps/EmailAndPassword';
-import EmailConfirmation from './steps/EmailConfirmation';
-import Verification from './steps/Verification';
-import CustomFields from './steps/CustomFields';
-import Invitation from './steps/Invitation';
-import ChangeEmail from './steps/ChangeEmail';
-import LightFlowStart from './steps/LightFlowStart';
-import EmailPolicies from './steps/Policies/EmailPolicies';
-import GooglePolicies from './steps/Policies/GooglePolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import BuiltInFields from './steps/BuiltInFields';
-import Password from './steps/Password';
-import Success from './steps/Success';
-import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import T from 'components/T';
 import Error from 'components/UI/Error';
+import Modal from 'components/UI/Modal';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// i18n
-import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import errorMessages from 'components/UI/Error/messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
-// typings
-import { ErrorCode } from './typings';
+import {
+  getHeaderMessage,
+  HELPER_TEXT_KEYS,
+  ERROR_CODE_MESSAGES,
+} from './messageUtils';
+import AuthProviders from './steps/AuthProviders';
+import BuiltInFields from './steps/BuiltInFields';
+import ChangeEmail from './steps/ChangeEmail';
+import CustomFields from './steps/CustomFields';
+import EmailAndPassword from './steps/EmailAndPassword';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
+import EmailConfirmation from './steps/EmailConfirmation';
+import Invitation from './steps/Invitation';
+import LightFlowStart from './steps/LightFlowStart';
+import Onboarding from './steps/Onboarding';
+import Password from './steps/Password';
+import EmailPolicies from './steps/Policies/EmailPolicies';
+import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
+import SSOPolicies from './steps/Policies/SSOPolicies';
+import SSOVerification from './steps/SSOVerification';
+import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
+import Success from './steps/Success';
+import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
-import T from 'components/T';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+import { ModalProps } from './typings';
+import useSteps from './useSteps';
 
-type Step = ReturnType<typeof useSteps>['currentStep'];
-
-const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
-  // shared
-  closed: null,
-  success: null,
-
-  // old sign in flow
-  'sign-in:auth-providers': messages.logIn,
-  'sign-in:email-password': messages.logIn,
-
-  // old sign up flow
-  'sign-up:auth-providers': messages.signUp,
-  'sign-up:email-password': messages.signUp,
-  'sign-up:email-confirmation': messages.signUp,
-  'sign-up:change-email': messages.signUp,
-  'sign-up:verification': messages.verifyYourIdentity,
-  'sign-up:custom-fields': messages.completeYourProfile,
-  'sign-up:invite': messages.signUp,
-  'clave-unica:email': messages.signUp,
-  'clave-unica:email-confirmation': messages.confirmYourEmail,
-
-  // light flow
-  'light-flow:email': messages.beforeYouParticipate,
-  'light-flow:email-policies': messages.beforeYouParticipate,
-  'light-flow:google-policies': messages.beforeYouParticipate,
-  'light-flow:facebook-policies': messages.beforeYouParticipate,
-  'light-flow:azure-ad-policies': messages.beforeYouParticipate,
-  'light-flow:france-connect-login': messages.beforeYouParticipate,
-  'light-flow:email-confirmation': messages.confirmYourEmail,
-  'light-flow:password': messages.logIn,
-
-  // missing data flow
-  'missing-data:built-in': messages.completeYourProfile,
-  'missing-data:email-confirmation': messages.confirmYourEmail,
-  'missing-data:change-email': messages.confirmYourEmail,
-  'missing-data:verification': messages.verifyYourIdentity,
-  'missing-data:custom-fields': messages.completeYourProfile,
-
-  // verification only
-  'verification-only': messages.verifyYourIdentity,
-  'verification-success': null,
-};
-
-const getHeaderMessage = (
-  step: Step,
-  action:
-    | 'visiting'
-    | IInitiativeAction
-    | IParticipationContextPermissionAction
-    | IFollowingAction
-) => {
-  if (
-    action === 'following' &&
-    [
-      'light-flow:email',
-      'light-flow:email-policies',
-      'light-flow:google-policies',
-      'light-flow:facebook-policies',
-      'light-flow:azure-ad-policies',
-      'light-flow:france-connect-login',
-    ].includes(step)
-  ) {
-    return messages.beforeYouFollow;
-  }
-  return HEADER_MESSAGES[step];
-};
-
-export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
-  account_creation_failed: messages.unknownError,
-  wrong_confirmation_code: errorMessages.confirmation_code_invalid,
-  sign_in_failed: messages.signInError,
-  requirements_fetching_failed: messages.unknownError,
-  unknown: messages.unknownError,
-  invitation_error: messages.invitationError,
-  franceconnect_merging_failed: messages.franceConnectMergingFailed,
-  email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
-};
-
-type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
-
-const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'sign-up:auth-providers': 'signup_helper_text',
-  'sign-up:email-password': 'signup_helper_text',
-  'sign-up:custom-fields': 'custom_fields_signup_helper_text',
-  'missing-data:custom-fields': 'custom_fields_signup_helper_text',
-};
-
-interface Props {
-  setModalOpen: (bool: boolean) => void;
-}
-
-const AuthModal = ({ setModalOpen }: Props) => {
+const AuthModal = ({ setModalOpen }: ModalProps) => {
   const {
     currentStep,
     state,
@@ -150,7 +57,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   const theme = useTheme();
 
   useEffect(() => {
-    setModalOpen(currentStep !== 'closed');
+    setModalOpen?.(currentStep !== 'closed');
   }, [currentStep, setModalOpen]);
 
   const smallerThanPhone = useBreakpoint('phone');
@@ -160,10 +67,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   });
   const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
-  const closable =
-    currentStep !== 'closed' &&
-    currentStep !== 'success' &&
-    currentStep !== 'clave-unica:email';
+  const closable = currentStep !== 'closed' && currentStep !== 'success';
 
   const {
     context: { action },
@@ -230,7 +134,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             />
           </Box>
         )}
-
         {helperText && (
           <Box mb="16px">
             <QuillEditedContent
@@ -242,14 +145,12 @@ const AuthModal = ({ setModalOpen }: Props) => {
             </QuillEditedContent>
           </Box>
         )}
-
         {currentStep === 'success' && (
           <Success
             loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
-
         {/* old sign in flow */}
         {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
@@ -262,7 +163,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             )}
           />
         )}
-
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
             loading={loading}
@@ -273,7 +173,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
-
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
@@ -286,7 +185,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             )}
           />
         )}
-
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
             state={state}
@@ -297,44 +195,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
-        {currentStep === 'sign-up:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'sign-up:change-email' && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:verification' && (
-          <Verification
-            authenticationData={authenticationData}
-            setError={setError}
-            onCompleted={transition(currentStep, 'CONTINUE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:custom-fields' && (
-          <CustomFields
-            authenticationData={authenticationData}
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
-
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -342,25 +202,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
-        {currentStep === 'clave-unica:email' && (
-          <ClaveUnicaEmail
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'clave-unica:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -370,7 +211,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />
         )}
-
         {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
@@ -379,42 +219,16 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
-        {currentStep === 'light-flow:google-policies' && (
-          <GooglePolicies
+        {currentStep === 'light-flow:sso-policies' && (
+          <SSOPolicies
+            state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
-        {currentStep === 'light-flow:facebook-policies' && (
-          <FacebookPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-
-        {currentStep === 'light-flow:azure-ad-policies' && (
-          <AzureAdPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-
         {currentStep === 'light-flow:france-connect-login' && (
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
-
-        {currentStep === 'light-flow:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
@@ -424,7 +238,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {/* missing data flow */}
+        {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
@@ -433,8 +247,8 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
-        {currentStep === 'missing-data:email-confirmation' && (
+        {(currentStep === 'light-flow:email-confirmation' ||
+          currentStep === 'missing-data:email-confirmation') && (
           <EmailConfirmation
             state={state}
             loading={loading}
@@ -453,14 +267,14 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'missing-data:verification' && (
+        {(currentStep === 'missing-data:verification' ||
+          currentStep === 'verification-only') && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
+            authenticationData={authenticationData}
           />
         )}
-
         {currentStep === 'missing-data:custom-fields' && (
           <CustomFields
             authenticationData={authenticationData}
@@ -471,17 +285,42 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {/* verification only */}
-        {currentStep === 'verification-only' && (
-          <Verification
+        {currentStep === 'missing-data:onboarding' && (
+          <Onboarding
             authenticationData={authenticationData}
-            setError={setError}
-            onCompleted={transition(currentStep, 'CONTINUE')}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 
         {currentStep === 'verification-success' && (
           <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
+        )}
+
+        {/* sso verification flow */}
+        {currentStep === 'sso-verification:sso-providers' && (
+          <SSOVerification
+            onClickSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onClickLogin={transition(currentStep, 'GO_TO_LOGIN')}
+          />
+        )}
+
+        {currentStep === 'sso-verification:sso-providers-policies' && (
+          <SSOVerificationPolicies
+            state={state}
+            loading={loading}
+            onAccept={transition(currentStep, 'ACCEPT')}
+          />
+        )}
+
+        {currentStep === 'sso-verification:email-password' && (
+          <EmailAndPasswordVerifiedActions
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SIGN_IN')}
+            onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
+            closeModal={transition(currentStep, 'CLOSE')}
+          />
         )}
       </Box>
     </Modal>

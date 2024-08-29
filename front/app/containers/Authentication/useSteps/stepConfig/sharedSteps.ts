@@ -1,35 +1,24 @@
 import { parse } from 'qs';
 
-// api
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
-// cache
-import streams from 'utils/streams';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// utils
-import {
-  requiredCustomFields,
-  requiredBuiltInFields,
-  askCustomFields,
-} from './utils';
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-// typings
+import tracks from '../../tracks';
 import {
   GetRequirements,
   SetError,
   UpdateState,
   AuthenticationData,
   SignUpInError,
+  VerificationError,
 } from '../../typings';
+
 import { Step } from './typings';
+import { confirmationRequired, checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -59,7 +48,7 @@ export const sharedSteps = (
             updateState({ token, prefilledBuiltInFields });
             setCurrentStep('sign-up:email-password');
           } catch {
-            setCurrentStep('sign-up:invite');
+            setCurrentStep('sign-up:email-password');
             setError('invitation_error');
           }
         } else {
@@ -68,55 +57,54 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterClaveUnicaEmail: boolean) => {
-        if (enterClaveUnicaEmail) {
-          setCurrentStep('clave-unica:email');
+      RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        const { flow } = getAuthenticationData();
-        const { requirements } = await getRequirements();
-
         if (flow === 'signup') {
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
           setCurrentStep('success');
         }
 
-        if (flow === 'signin') {
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
         }
       },
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async () => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
           email: null,
           token: null,
           prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        const isLightFlow = requirements.special.password === 'dont_ask';
-        const signedIn = requirements.built_in.email === 'satisfied';
+        const { permitted_by } = requirements.authentication;
+        const isLightFlow = permitted_by === 'everyone_confirmed_email';
+
+        // This `disabled_reason === null` is a bit of a weird check,
+        // because most of the times if there is no disabled reason,
+        // you would never get into the authentication flow.
+        // There are however some weird exceptions related to onboarding,
+        // so we need to check for this.
+        const signedIn =
+          disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (isLightFlow) {
           if (!signedIn) {
@@ -124,37 +112,37 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
         }
 
-        if (signedIn) {
-          if (requirements.special.confirmation === 'require') {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+        const isVerifiedActionFlow = permitted_by === 'verified';
 
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
+        const userNotSignedIn = !signedIn;
+        const userRequiresVerification = requirements.verification;
 
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
+        if (
+          isVerifiedActionFlow &&
+          (userNotSignedIn || userRequiresVerification)
+        ) {
+          setCurrentStep('sso-verification:sso-providers');
           return;
         }
 
-        const { flow } = getAuthenticationData();
+        if (signedIn) {
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            flow
+          );
+
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
+            return;
+          }
+        }
 
         if (flow === 'signin') {
           anySSOEnabled
@@ -175,8 +163,14 @@ export const sharedSteps = (
         setCurrentStep('verification-only');
       },
 
-      REOPEN_CLAVE_UNICA: () => {
-        setCurrentStep('clave-unica:email');
+      TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
+        if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_minimum_age');
+        } else {
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
+        }
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
@@ -192,12 +186,12 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        await Promise.all([streams.reset(), invalidateQueryCache()]);
+        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
-
         const { successAction } = getAuthenticationData();
+
         if (successAction) {
           triggerSuccessAction(successAction);
         }

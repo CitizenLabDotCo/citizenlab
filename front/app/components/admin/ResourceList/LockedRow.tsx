@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react';
+
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
 import { Row } from 'components/admin/ResourceList';
-import { Icon } from '@citizenlab/cl2-component-library';
 
 const LockedDragHandle = styled.div`
   cursor: not-allowed;
@@ -30,7 +32,12 @@ export default ({
   <div className={className} data-testid={dataTestId}>
     <Row isLastItem={isLastItem}>
       <LockedDragHandle className="sortablerow-draghandle">
-        <LockIcon name="lock" />
+        <LockIcon
+          name="lock"
+          width="20px"
+          height="20px"
+          fill={colors.textSecondary}
+        />
       </LockedDragHandle>
       {children}
     </Row>

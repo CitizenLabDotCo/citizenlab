@@ -1,16 +1,18 @@
 import React from 'react';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// styling
+import {
+  Icon,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+import { classNames } from 'utils/helperUtils';
+
+import messages from '../../messages';
 
 const Container = styled.li`
   display: flex;
@@ -99,8 +101,7 @@ const LikeButton = ({
 
   return (
     <Container
-      id="e2e-comment-like-button"
-      className={`reaction ${className || ''}`}
+      className={classNames('reaction', 'e2e-comment-like-button', className)}
     >
       <ButtonWrapper
         onClick={onClick}

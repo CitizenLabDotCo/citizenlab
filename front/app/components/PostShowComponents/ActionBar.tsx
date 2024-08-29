@@ -1,15 +1,13 @@
 import React, { memo } from 'react';
 
-// styles
+import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-import { postPageContentMaxWidth } from './styleConstants';
-import { GetLocaleChildProps } from 'resources/GetLocale';
+
+import { IInitiativeData } from 'api/initiatives/types';
 
 import Outlet from 'components/Outlet';
 
-// types
-import { IInitiativeData } from 'api/initiatives/types';
+import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
   width: 100%;
@@ -59,7 +57,6 @@ interface Props {
   leftContent: JSX.Element | null;
   translateButtonClicked: boolean;
   onTranslate: () => void;
-  locale: GetLocaleChildProps;
   initiative: IInitiativeData;
 }
 
@@ -70,7 +67,6 @@ export default memo<Props>(
     translateButtonClicked,
     onTranslate,
     initiative,
-    locale,
   }) => {
     return (
       <Container>
@@ -82,7 +78,6 @@ export default memo<Props>(
               translateButtonClicked={translateButtonClicked}
               onClick={onTranslate}
               initiative={initiative}
-              locale={locale}
             />
             {rightContent}
           </Right>

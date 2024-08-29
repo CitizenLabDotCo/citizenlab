@@ -257,8 +257,8 @@ describe Surveys::TypeformApiParser do
   end
 
   describe 'get_responses' do
-    it "generates valid Surveys::Response's, participation_context excluded" do
-      pc = create(:project)
+    it "generates valid Surveys::Response's, phase excluded" do
+      phase = create(:single_phase_typeform_survey_project).phases.first
 
       expect(tf_api)
         .to receive(:form)
@@ -273,8 +273,34 @@ describe Surveys::TypeformApiParser do
       responses = service.get_responses(form_id)
       expect(responses).to all(be_a(Surveys::Response))
 
-      responses.each { |r| r.participation_context = pc }
+      responses.each { |r| r.phase = phase }
       expect(responses).to all(be_valid)
+    end
+  end
+
+  describe 'parse_answers' do
+    it 'encodes hidden fields and their values as answers' do
+      response = all_responses_return_value[0]
+      response['hidden'] = { 'email' => 'testemail@g.com', 'user_id' => '1234' }
+
+      class_instance = described_class.new
+
+      field_id_to_title = class_instance.send(:extract_field_titles, form_response_return_value)
+      answers = class_instance.send(:parse_answers, response, field_id_to_title)
+
+      expect(answers.find { |answer| answer[:question_id] == 'email_hidden_field' })
+        .to eq({
+          question_id: 'email_hidden_field',
+          question_text: 'email (hidden field)',
+          value: 'testemail@g.com'
+        })
+
+      expect(answers.find { |answer| answer[:question_id] == 'user_id_hidden_field' })
+        .to eq({
+          question_id: 'user_id_hidden_field',
+          question_text: 'user_id (hidden field)',
+          value: '1234'
+        })
     end
   end
 end

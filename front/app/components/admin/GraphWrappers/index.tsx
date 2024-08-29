@@ -1,5 +1,9 @@
+import {
+  media,
+  fontSizes,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 export const GraphsContainer = styled.div`
   display: flex;
@@ -14,8 +18,12 @@ export const GraphsContainer = styled.div`
   }
 `;
 
-export const Column = styled.div`
-  width: 50%;
+interface ColumnProps {
+  fullWidth?: boolean;
+}
+
+export const Column = styled.div<ColumnProps>`
+  width: ${(props) => (props.fullWidth ? '100%' : '50%')};
   display: flex;
   align-items: flex-start;
   flex-direction: column;

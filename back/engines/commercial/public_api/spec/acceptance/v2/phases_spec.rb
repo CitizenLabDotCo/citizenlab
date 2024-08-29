@@ -6,8 +6,7 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Phases' do
   explanation <<~DESC.squish
-    Phases represent the steps in a timeline project. Only timeline projects have phases,
-    continuous projects do not.
+    Phases represent the steps in a timeline project.
   DESC
 
   include_context 'common_auth'
@@ -62,6 +61,7 @@ resource 'Phases' do
     include_examples 'filtering_by_date', :phase, :created_at
     include_examples 'filtering_by_date', :phase, :updated_at
     include_examples 'filtering_by_date', :phase, :start_at
+    include_examples 'filtering_by_date', :phase, :end_at
   end
 
   get '/api/v2/projects/:project_id/phases' do

@@ -18,7 +18,7 @@ module ProcessableUriDownloader
   #      https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/documents/vision_2028_de_metro_plan_estrategico.pdf
   #   2. Do not change the file name!
   #   3. Upload it as an attachment of an idea, on a real
-  #      Citizenlab platform (not localhost).
+  #      Go Vocal platform (not localhost).
   #   4. Get the corresponding file URL (e.g.
   #      my_idea_file.file_url). Do not use the Cloudinary
   #      URL instead (the issue is not reproducible with

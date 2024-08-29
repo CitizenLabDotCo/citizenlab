@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
           invitee_first_name: recipient.first_name,
           invitee_last_name: recipient.last_name,
           invite_text: "<p>#{invite_text}</p>",
-          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: Locale.new(recipient.locale))
         }
       }
     end
@@ -29,6 +29,13 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You are invited to')
+    end
+
+    it 'renders the expiry message' do
+      expiry_days = described_class.new.send(:invite_expiry_days)
+
+      expect(mail.body.encoded)
+        .to match("This invitation expires in #{expiry_days} days")
     end
 
     it 'renders the receiver email' do

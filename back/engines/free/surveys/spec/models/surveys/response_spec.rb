@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Surveys::Response do
   describe 'Default factory' do
     it 'is valid' do
-      expect(build(:survey_response)).to be_valid
+      expect(build(:typeform_survey_response)).to be_valid
     end
   end
 

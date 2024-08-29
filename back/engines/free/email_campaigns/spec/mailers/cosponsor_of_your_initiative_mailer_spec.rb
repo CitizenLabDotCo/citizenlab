@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::CosponsorOfYourInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
@@ -11,8 +12,8 @@ RSpec.describe EmailCampaigns::CosponsorOfYourInitiativeMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CosponsorOfYourInitiative.create! }
     let_it_be(:cosponsor_name) { UserDisplayNameService.new(AppConfiguration.instance, cosponsor).display_name!(cosponsor) }
     let_it_be(:command) do
-      item = Notifications::CosponsorOfYourInitiative.new(post: initiative)
-      activity = Activity.new(item: item, user: cosponsor)
+      item = Notifications::CosponsorOfYourInitiative.new(post: initiative, initiating_user: cosponsor)
+      activity = Activity.new(item: item, user: author)
       commands = EmailCampaigns::Campaigns::CosponsorOfYourInitiative.new.generate_commands(recipient: recipient, activity: activity)
       commands[0].merge({ recipient: recipient })
     end
@@ -38,7 +39,7 @@ RSpec.describe EmailCampaigns::CosponsorOfYourInitiativeMailer do
     end
 
     it 'assigns cta url' do
-      post_url = Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
+      post_url = Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(post_url)
     end
   end

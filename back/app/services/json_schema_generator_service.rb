@@ -72,22 +72,31 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'string'
     }.tap do |json|
-      options = field.options.order(:ordering)
+      options = field.ordered_options
+
       unless options.empty?
         json[:enum] = options.map(&:key)
       end
     end
   end
 
+  # Fallback to basic visit_select. Only multi select image currently fully implemented.
+  # Field type not used in native surveys, nor in idea forms.
+  # To support single select images oneOf will be needed instead of Enum for returning options.
+  def visit_select_image(field)
+    visit_select(field)
+  end
+
   def visit_multiselect(field)
     {
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled? && field.required? ? 1 : 0,
+      minItems: field.enabled? && field.required? && !field.minimum_select_count? ? 1 : field.minimum_select_count || 0,
+      maxItems: field.maximum_select_count || field.options.size,
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.ordered_options
         unless options.empty?
           items[:oneOf] = options.map do |option|
             {
@@ -98,6 +107,23 @@ class JsonSchemaGeneratorService < FieldVisitorService
         end
       end
     }
+  end
+
+  def visit_multiselect_image(field)
+    select = visit_multiselect(field)
+    select[:items].tap do |items|
+      options = field.ordered_options
+      unless options.empty?
+        items[:oneOf] = options.map do |option|
+          {
+            const: option.key,
+            title: multiloc_service.t(option.title_multiloc),
+            image: option.image&.image&.versions&.transform_values(&:url)
+          }
+        end
+      end
+    end
+    select
   end
 
   def visit_checkbox(_field)
@@ -156,14 +182,65 @@ class JsonSchemaGeneratorService < FieldVisitorService
       type: 'object',
       properties: {
         type: {
-          type: 'string',
-          enum: ['Point']
+          const: 'Point'
+        },
+        coordinates: {
+          type: 'array',
+          minItems: 2,
+          maxItems: 2,
+          items: {
+            type: 'number'
+          }
+        }
+      }
+    }
+  end
+
+  def visit_line(_field)
+    {
+      required: %w[type coordinates],
+      type: 'object',
+      properties: {
+        type: {
+          const: 'LineString'
         },
         coordinates: {
           type: 'array',
           minItems: 2,
           items: {
-            type: 'number'
+            type: 'array',
+            minItems: 2,
+            maxItems: 2,
+            items: {
+              type: 'number'
+            }
+          }
+        }
+      }
+    }
+  end
+
+  def visit_polygon(_field)
+    {
+      required: %w[type coordinates],
+      type: 'object',
+      properties: {
+        type: {
+          const: 'Polygon'
+        },
+        coordinates: {
+          type: 'array',
+          items: {
+            type: 'array',
+            minItems: 4,
+            items: {
+              type: 'array',
+              minItems: 2,
+              maxItems: 2,
+              items: {
+                type: 'number'
+              }
+            }
           }
         }
       }
@@ -182,6 +259,9 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'object',
       properties: {
+        id: {
+          type: 'string'
+        },
         content: {
           type: 'string'
         },
@@ -190,6 +270,10 @@ class JsonSchemaGeneratorService < FieldVisitorService
         }
       }
     }
+  end
+
+  def visit_shapefile_upload(field)
+    visit_file_upload(field)
   end
 
   private
@@ -202,6 +286,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       next unless field_schema
 
       accu[field.key] = field_schema
+      accu[field.other_option_text_field.key] = visit(field.other_option_text_field) if field.other_option_text_field
     end
     {
       type: 'object',

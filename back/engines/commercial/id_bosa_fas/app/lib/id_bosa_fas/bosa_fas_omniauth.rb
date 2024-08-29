@@ -64,7 +64,7 @@ module IdBosaFas
     end
 
     def updateable_user_attrs
-      %i[first_name last_name]
+      super + %i[first_name last_name]
     end
   end
 end

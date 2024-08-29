@@ -8,12 +8,16 @@ namespace :email_campaigns do
 
   desc 'Makes sure that campaign records exist for all built-in campaigns. Should run on deployment through CI'
   task assure_campaign_records: :environment do |_t, _args|
+    Rails.logger.info 'email_campaigns:assure_campaign_records started'
     EmailCampaigns::TasksService.new.assure_campaign_records
+    Rails.logger.info 'email_campaigns:assure_campaign_records finished'
   end
 
   desc 'Removes campaigns with a type that no longer exists in `EmailCampaigns::DeliveryService.new.campaign_classes`'
   task remove_deprecated: :environment do |_t, _args|
+    Rails.logger.info 'email_campaigns:remove_deprecated started'
     EmailCampaigns::TasksService.new.remove_deprecated
+    Rails.logger.info 'email_campaigns:remove_deprecated finished'
   end
 
   desc "Given a list of email addresses, remove these users' consent from all consentable campaigns"

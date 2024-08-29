@@ -16,7 +16,7 @@ module Surveys
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         scope
-          .where(participation_context: moderatable_projects + moderatable_phases)
+          .where(phase: moderatable_phases)
       end
     end
 

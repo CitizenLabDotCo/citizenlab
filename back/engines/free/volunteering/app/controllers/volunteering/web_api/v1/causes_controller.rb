@@ -4,13 +4,13 @@ module Volunteering
   module WebApi
     module V1
       class CausesController < VolunteeringController
-        before_action :set_participation_context, only: :index
+        before_action :set_phase, only: :index
         before_action :set_cause, only: %i[show update destroy reorder]
         skip_before_action :authenticate_user
 
         def index
           @causes = policy_scope(Cause)
-            .where(participation_context: @participation_context)
+            .where(phase: @phase)
             .order(:ordering)
           @causes = paginate @causes
 
@@ -91,11 +91,9 @@ module Volunteering
 
         private
 
-        def set_participation_context
-          if params[:project_id]
-            @participation_context = Project.find(params[:project_id])
-          elsif params[:phase_id]
-            @participation_context = Phase.find(params[:phase_id])
+        def set_phase
+          if params[:phase_id]
+            @phase = Phase.find(params[:phase_id])
           else
             head :not_found
           end
@@ -114,8 +112,7 @@ module Volunteering
 
         def cause_params
           params.require(:cause).permit(
-            :participation_context_type,
-            :participation_context_id,
+            :phase_id,
             :image,
             title_multiloc: CL2_SUPPORTED_LOCALES,
             description_multiloc: CL2_SUPPORTED_LOCALES

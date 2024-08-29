@@ -1,20 +1,20 @@
 import React from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
-import PoliciesMarkup from './PoliciesMarkup';
-import Button from 'components/UI/Button';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { object, boolean } from 'yup';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean } from 'yup';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import sharedMessages from '../messages';
+
+import messages from './messages';
+import PoliciesMarkup from './PoliciesMarkup';
 
 const DEFAULT_VALUES = {
   termsAndConditionsAccepted: false,
@@ -25,10 +25,11 @@ const isTruthy = (value?: boolean) => !!value;
 
 interface Props {
   loading: boolean;
+  showByContinuingText?: boolean;
   onSubmit: () => void;
 }
 
-const PoliciesForm = ({ loading, onSubmit }: Props) => {
+const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -56,7 +57,7 @@ const PoliciesForm = ({ loading, onSubmit }: Props) => {
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>
-        <PoliciesMarkup />
+        <PoliciesMarkup showByContinuingText={showByContinuingText} />
         <Button
           id="e2e-policies-continue"
           mt="32px"

@@ -1,32 +1,34 @@
 import React from 'react';
 
-// components
-import ContentContainer from 'components/ContentContainer';
-import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import { Container, Content } from 'components/LandingPages/citizen';
+import {
+  Box,
+  fontSizes,
+  isRtl,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
-import CustomPageHeader from './CustomPageHeader';
-import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
-import InfoSection from 'components/LandingPages/citizen/InfoSection';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import PageNotFound from 'components/PageNotFound';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import usePageFiles from 'api/page_files/usePageFiles';
-import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import usePageFiles from 'api/page_files/usePageFiles';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+import { Container, Content } from 'components/LandingPages/citizen';
+import InfoSection from 'components/LandingPages/citizen/InfoSection';
+import PageNotFound from 'components/PageNotFound';
+import FileAttachments from 'components/UI/FileAttachments';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes, isRtl, media } from 'utils/styleUtils';
+import CustomPageHeader from './CustomPageHeader';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -76,21 +78,16 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const { data: appConfiguration, isLoading: isLoadingAppConfiguration } =
-    useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const {
-    data: page,
-    isError,
-    isLoading: isLoadingPage,
-  } = useCustomPageBySlug(slug);
+  const { data: page, isError } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );
 
   // when neither have loaded
-  if (isLoadingAppConfiguration || isLoadingPage) {
+  if (!appConfiguration || !page) {
     return null;
   }
 
@@ -110,54 +107,56 @@ const CustomPageShow = () => {
     appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (
-    <Container className={`e2e-page-${slug}`}>
+    <>
       <Helmet
         title={`${localize(
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      {pageAttributes.banner_enabled ? (
-        <Box background="#fff" width="100%">
-          <CustomPageHeader pageData={page.data} />
-        </Box>
-      ) : (
-        <NoBannerContainer>
-          {/* show page text title if the banner is disabled */}
-          <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-          <Box zIndex="40000">
-            <AdminCustomPageEditButton pageId={page.data.id} />
-          </Box>
-        </NoBannerContainer>
-      )}
-      <Content>
-        <Fragment
-          name={
-            !isNilOrError(page) ? `pages/${page && page.data.id}/content` : ''
-          }
-        />
-        {pageAttributes.top_info_section_enabled && (
-          <InfoSection
-            multilocContent={pageAttributes.top_info_section_multiloc}
-          />
-        )}
-        {pageAttributes.files_section_enabled &&
-          !isNilOrError(remotePageFiles) &&
-          remotePageFiles.data.length > 0 && (
-            <AttachmentsContainer
-              topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
-            >
-              <FileAttachments files={remotePageFiles.data} />
-            </AttachmentsContainer>
+      <main className={`e2e-page-${slug}`}>
+        <Container>
+          {pageAttributes.banner_enabled ? (
+            <Box background="#fff" width="100%">
+              <CustomPageHeader pageData={page.data} />
+            </Box>
+          ) : (
+            <NoBannerContainer>
+              {/* show page text title if the banner is disabled */}
+              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+              <Box zIndex="40000">
+                <AdminCustomPageEditButton pageId={page.data.id} />
+              </Box>
+            </NoBannerContainer>
           )}
-        <CustomPageProjectsAndEvents page={page.data} />
-        {pageAttributes.bottom_info_section_enabled &&
-          pageAttributes.bottom_info_section_multiloc && (
-            <InfoSection
-              multilocContent={pageAttributes.bottom_info_section_multiloc}
-            />
-          )}
-      </Content>
-    </Container>
+          <Content>
+            <Fragment name={`pages/${page.data.id}/content`} />
+            {pageAttributes.top_info_section_enabled && (
+              <InfoSection
+                multilocContent={pageAttributes.top_info_section_multiloc}
+              />
+            )}
+            {pageAttributes.files_section_enabled &&
+              !isNilOrError(remotePageFiles) &&
+              remotePageFiles.data.length > 0 && (
+                <AttachmentsContainer
+                  topInfoSectionEnabled={
+                    pageAttributes.top_info_section_enabled
+                  }
+                >
+                  <FileAttachments files={remotePageFiles.data} />
+                </AttachmentsContainer>
+              )}
+            <CustomPageProjectsAndEvents page={page.data} />
+            {pageAttributes.bottom_info_section_enabled &&
+              pageAttributes.bottom_info_section_multiloc && (
+                <InfoSection
+                  multilocContent={pageAttributes.bottom_info_section_multiloc}
+                />
+              )}
+          </Content>
+        </Container>
+      </main>
+    </>
   );
 };
 

@@ -2,14 +2,17 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import Button from 'components/UI/Button';
-import T from 'components/T';
-import Outlet from 'components/Outlet';
+
 import { MembershipType } from 'api/groups/types';
+
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { FirstRow, TextAndButtons } from './UsersHeader';
 import messages from './messages';
+import { FirstRow, TextAndButtons } from './UsersHeader';
 
 const OnlyRow = styled(FirstRow)`
   min-height: 105px;
@@ -48,7 +51,7 @@ const UsersGroupHeader = memo(
               hiddenText={<FormattedMessage {...messages.editGroup} />}
               padding=".65em"
               icon="edit"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={onEdit}
             />
             <Button

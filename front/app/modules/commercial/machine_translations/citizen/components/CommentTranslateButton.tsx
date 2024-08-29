@@ -1,26 +1,21 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'components/PostShowComponents/Comments/messages';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// events
+import useComment from 'api/comments/useComment';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 import { commentTranslateButtonClicked } from 'components/PostShowComponents/Comments/events';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
+import messages from 'components/PostShowComponents/Comments/messages';
 import tracks from 'components/PostShowComponents/Comments/tracks';
 
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// types
-import useComment from 'api/comments/useComment';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.li`
   display: flex;

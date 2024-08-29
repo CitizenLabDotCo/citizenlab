@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateCampaignConsents from './useUpdateCampaignConsents';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUpdateCampaignConsents from './useUpdateCampaignConsents';
 
 const campaignConsentData = {
   data: {
@@ -21,8 +20,8 @@ const campaignConsentData = {
 
 const apiPath = '*consents/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignConsentData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: campaignConsentData }, { status: 200 });
   })
 );
 
@@ -53,8 +52,8 @@ describe('useUpdateCampaignConsents', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

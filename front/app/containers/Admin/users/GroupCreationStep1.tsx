@@ -1,20 +1,19 @@
-// Libraries
 import React, { memo } from 'react';
 
-// Components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { darken, transparentize } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import { IGroupData, MembershipType } from 'api/groups/types';
+
+import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-// Styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken, transparentize } from 'polished';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -85,10 +84,6 @@ export const MoreInfoLink = styled.a`
 
 export const Step2Button = styled(Button)``;
 
-// Typings
-import { IGroupData, MembershipType } from 'api/groups/types';
-import Outlet from 'components/Outlet';
-
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
 }
@@ -120,7 +115,7 @@ const GroupCreationStep1 = memo(
           </GroupDescription>
           <Step2Button
             className="e2e-create-normal-group-button"
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             onClick={createStep2Handler('manual')}
           >
             <FormattedMessage {...messages.step1CreateButtonNormal} />

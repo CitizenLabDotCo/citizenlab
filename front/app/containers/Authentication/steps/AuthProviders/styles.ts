@@ -1,7 +1,12 @@
-import { Label, Image } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import {
+  Label,
+  Image,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+
+import Button from 'components/UI/Button';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -31,13 +36,6 @@ export const Title = styled.h1`
     font-size: ${fontSizes.xl}px;
     margin-bottom: 20px;
   `}
-`;
-
-export const Subtitle = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.l}px;
-  font-weight: 600;
-  line-height: normal;
 `;
 
 export const Form = styled.form<{ inModal: boolean }>`

@@ -1,27 +1,24 @@
 import React from 'react';
 
-// utils
+import { fontSizes } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import FormattedAnchor from 'components/FormattedAnchor';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// styles
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Button from 'components/UI/Button';
-import FormattedAnchor from 'components/FormattedAnchor';
-import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import eventEmitter from 'utils/eventEmitter';
-import useLocalize from 'hooks/useLocalize';
-import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -74,6 +71,8 @@ const DeletionDialog = ({
     closeDialog();
   };
 
+  const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
+
   if (!isNilOrError(appConfiguration)) {
     const logo = appConfiguration.data.attributes.logo?.medium;
     // just the org's name works fine as alt text for a11y purposes
@@ -93,6 +92,13 @@ const DeletionDialog = ({
           <FormattedMessage {...messages.reasonsToStayListTitle} />
         </Styledh2>
         <ul>
+          {isProposalsEnabled && (
+            <li>
+              <FormattedMessage
+                {...messages.activeProposalVotesWillBeDeleted}
+              />
+            </li>
+          )}
           <li>
             <FormattedMessage {...messages.tooManyEmails} />
           </li>

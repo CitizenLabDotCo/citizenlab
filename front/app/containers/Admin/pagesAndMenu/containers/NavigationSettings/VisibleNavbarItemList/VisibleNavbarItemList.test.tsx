@@ -1,11 +1,14 @@
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import { navbarItemsData as navbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
-import clHistory from 'utils/cl-router/history';
-import { fireEvent, render, screen } from 'utils/testUtils/rtl';
-import VisibleNavbarItemList from '.';
 
+import { navbarItemsData as navbarItems } from 'api/navbar/__mocks__/useNavbarItems';
+
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
+import clHistory from 'utils/cl-router/history';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
+import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+
+import VisibleNavbarItemList from '.';
 
 jest.mock('api/navbar/useNavbarItems');
 jest.mock('api/custom_pages/useCustomPageSlugById');

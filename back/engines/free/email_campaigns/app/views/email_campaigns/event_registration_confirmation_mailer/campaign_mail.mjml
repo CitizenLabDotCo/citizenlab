@@ -1,0 +1,45 @@
+<%= render partial: 'custom_header' %>
+
+<% if event.image_url.present? %>
+  <mj-section padding="24px 25px 0">
+    <mj-column>
+      <mj-image
+              padding-top="0"
+              src="<%= event.image_url %>"
+              alt="Event image"
+      />
+    </mj-column>
+  </mj-section>
+<% end %>
+
+<mj-section padding="24px 25px 0">
+  <mj-column>
+    <%= render partial: 'event_details_generic_item', locals: {
+      label: format_message('event_details.labels.date'),
+      text: event_time,
+      color: "#dc143c"
+    } %>
+
+    <% if event_location.present? %>
+      <%= render partial: 'event_details_generic_item', locals: {
+        label: format_message('event_details.labels.location'),
+        text: event_location,
+      } %>
+    <% end %>
+
+    <% if event_description.present? %>
+      <%= render partial: 'event_details_generic_item', locals: {
+        label: format_message('event_details.labels.description'),
+        text: event_description,
+        color: "#892FD3"
+      } %>
+    <% end %>
+
+    <%= render partial: 'event_details_project_item' %>
+  </mj-column>
+</mj-section>
+
+<%= render partial: 'custom_cta_section', locals: {
+  href: event.event_url,
+  message: format_message('cta_go_to_event')
+} %>

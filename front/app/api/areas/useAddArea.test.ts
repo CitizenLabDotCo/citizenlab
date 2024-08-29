@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddArea from './useAddArea';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { areasData } from './__mocks__/useAreas';
+import useAddArea from './useAddArea';
 
 const apiPath = '*areas';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: areasData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: areasData[0] }, { status: 200 });
   })
 );
 
@@ -39,8 +38,8 @@ describe('useAddArea', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

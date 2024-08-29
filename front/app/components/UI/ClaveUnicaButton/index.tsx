@@ -1,14 +1,15 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'services/locale';
-import { getJwt } from 'utils/auth/jwt';
 
-// style
 import styled from 'styled-components';
-import icon from './clave-unica-icon.svg';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
+
+import { AUTH_PATH } from 'containers/App/constants';
+
+import { getJwt } from 'utils/auth/jwt';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
+
+import icon from './clave-unica-icon.svg';
 
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view
@@ -83,7 +84,7 @@ const ClaveUnicaButton = ({
   const handleOnClick = () => {
     onClick(method);
     // Probably, it doesn't affect the functionality. The actual location change happens in
-    // setHref of front/app/services/singleSignOn.ts
+    // setHref of front/app/api/authentication/singleSignOn.ts
     // TODO: remove.
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&pathname=${removeUrlLocale(

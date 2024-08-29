@@ -11,11 +11,11 @@ module CustomMaps
     end
 
     def self.feature_title
-      'Custom Map Configuration'
+      'GeoJSON Map Layers'
     end
 
     def self.feature_description
-      'Adds an extra tab to the project settings where admins can customize the project map.'
+      'Adds the ability to use GeoJSON layers on maps.'
     end
   end
 end

@@ -2,16 +2,19 @@
 // https://github.com/facebook/react/issues/10474
 
 import React, { Component } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { withScope, showReportDialog } from '@sentry/react';
-import messages from './messages';
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { WrappedComponentProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import styled from 'styled-components';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

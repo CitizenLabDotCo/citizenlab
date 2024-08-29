@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe AdminApi::Schema do
   let(:context) { {} }
   let(:variables) { {} }

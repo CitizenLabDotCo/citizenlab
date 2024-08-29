@@ -13,6 +13,7 @@ module Analysis
       inputs = analysis.inputs
 
       inputs = filter_tags(inputs)
+      inputs = filter_input_custom_field_no_empty_values(inputs)
       inputs = filter_published_at(inputs)
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
@@ -21,6 +22,7 @@ module Analysis
       inputs = filter_author_custom_field_range(inputs)
       inputs = filter_input_custom_field_in(inputs)
       inputs = filter_input_custom_field_range(inputs)
+      inputs = filter_limit(inputs)
       search(inputs)
     end
 
@@ -42,6 +44,14 @@ module Analysis
         subquery = inputs.select(:id).joins(:taggings).where(taggings: { tag_id: params[:tag_ids] })
         inputs.where(id: subquery)
       end
+    end
+
+    def filter_input_custom_field_no_empty_values(inputs)
+      scope = inputs
+      if params[:input_custom_field_no_empty_values] && analysis.main_custom_field_id
+        scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
+      end
+      scope
     end
 
     def filter_published_at(inputs)
@@ -94,6 +104,10 @@ module Analysis
 
         cf = CustomField.find(custom_field_id)
 
+        # domcile custom_field is stored differently, so we need to convert
+        # custom_field_option keys to area ids
+        value = convert_domicile_value(value) if cf.domicile?
+
         case cf.input_type
         when 'select', 'date'
           scope = if value.include?(nil)
@@ -127,9 +141,9 @@ module Analysis
         cf = CustomField.find(custom_field_id)
 
         scope = if predicate == 'from'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric >= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (-99999)::text)::numeric >= ?", value)
         elsif predicate == 'to'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric <= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (99999)::text)::numeric <= ?", value)
         else
           raise ArgumentError, "invalid predicate #{predicate}"
         end
@@ -204,6 +218,13 @@ module Analysis
       scope
     end
 
+    def filter_limit(inputs)
+      return inputs unless params[:limit]
+      raise ArgumentError, 'limit must be a positive integer' unless params[:limit].to_i.positive?
+
+      inputs.where(id: inputs.limit(params[:limit]))
+    end
+
     def decode_input_in_custom_keys
       params.filter_map do |key, value|
         matches = key.to_s.match(/^input_custom_([a-f0-9-]+)$/)
@@ -218,6 +239,28 @@ module Analysis
         # return triplet [custom_field_id, predicate, value]
         matches && [matches[1], matches[2], value]
       end
+    end
+
+    # Domicile is a special user custom_field, which stores the area.id as the
+    # value in user.custom_field_values, instead of the key value of the
+    # custom_field option. Historically, the domicile custom_field did not have
+    # any custom_field_option database records. At some point, we added a
+    # mechanism to sync areas to custom_field_options for domicile. But the work
+    # to change the actual value stored in custom_field_values was not
+    # completed. This means that the front-end can treat the domicile field as
+    # any other field, but we need to convert the option_key to the right
+    # area_id in order for the filter to work. Also see
+    # back/engines/commercial/user_custom_fields/app/services/user_custom_fields/field_value_counter.rb:37
+    def convert_domicile_value(option_keys)
+      return [nil] if option_keys == [nil]
+
+      area_ids = CustomFieldOption.where(key: option_keys).filter_map do |option|
+        option&.area&.id
+      end
+
+      area_ids << 'outside' if option_keys.include? 'somewhere_else'
+
+      area_ids
     end
   end
 end

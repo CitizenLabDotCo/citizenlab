@@ -14,7 +14,7 @@ module FlagInappropriateContent
           @flag.deleted_at = Time.now
           if @flag.save
             SideFxInappropriateContentFlagService.new.after_mark_as_deleted @flag, current_user
-            head :ok
+            head :accepted
           else
             render json: { errors: @flag.errors.details }, status: :unprocessable_entity
           end

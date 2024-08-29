@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// types
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import { DEFAULT_PADDING } from '../constants';
 
 interface Props {
-  onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
-  onUpdateLocale?: (locale: Locale) => void;
+  onUpdateDraftData?: (serializedNodes: SerializedNodes | undefined) => void;
+  onUpdateLocale?: (locale: SupportedLocale) => void;
   children: React.ReactNode;
+  padding?: string;
 }
 
-export const StyledPreviewBox = styled(Box)`
+export const StyledPreviewBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -34,12 +34,13 @@ export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
   onUpdateLocale,
   children,
+  padding,
 }: Props) => {
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       // Make sure there is a root node in the draft data
       if (e.origin === window.location.origin && e.data.ROOT) {
-        onUpdateDraftData(e.data);
+        onUpdateDraftData?.(e.data);
       }
       if (
         onUpdateLocale &&
@@ -58,7 +59,7 @@ export const FullScreenPreviewWrapper = ({
   return (
     <FocusOn>
       <StyledPreviewBox data-testid="contentBuilderEditModePreviewContent">
-        <Box p="20px">{children}</Box>
+        <Box p={padding || DEFAULT_PADDING}>{children}</Box>
       </StyledPreviewBox>
     </FocusOn>
   );

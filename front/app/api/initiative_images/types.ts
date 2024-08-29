@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import initiativeImagesKeys from './keys';
 import { ImageSizes } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import initiativeImagesKeys from './keys';
 
 export type InitiativeImagesKeys = Keys<typeof initiativeImagesKeys>;
 

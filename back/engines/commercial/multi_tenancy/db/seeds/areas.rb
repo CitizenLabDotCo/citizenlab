@@ -9,7 +9,7 @@ module MultiTenancy
         12.times do
           Area.create!({
             title_multiloc: runner.create_for_tenant_locales { Faker::Address.city },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join }
+            description_multiloc: runner.rand_description_multiloc
           })
         end
 

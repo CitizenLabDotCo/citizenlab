@@ -46,7 +46,7 @@ namespace :fix_existing_tenants do
         html_attributes.map do |claz, atrs|
           claz.all.map do |instance|
             atrs.each do |atr|
-              instance.send("sanitize_#{atr}")
+              instance.send(:"sanitize_#{atr}")
               instance.update_columns(atr => instance.send(atr))
             end
           end
@@ -65,8 +65,8 @@ namespace :fix_existing_tenants do
             attributes.each do |attribute|
               instance.send attribute
               begin
-                multiloc = TextImageService.new.swap_data_images instance, attribute
-                instance.send "#{attribute}=", multiloc
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
+                instance.send :"#{attribute}=", multiloc
                 instance.save!
               rescue Exception => e
                 errors += [e.message]
@@ -92,7 +92,7 @@ namespace :fix_existing_tenants do
         clazzes.each do |claz, instances|
           instances.each do |id, attributes|
             object = claz.constantize.find id
-            attributes.each do |attribute, _|
+            attributes.each_key do |attribute|
               multiloc = object.send attribute
               multiloc.each_key do |k|
                 text = multiloc[k]
@@ -107,8 +107,8 @@ namespace :fix_existing_tenants do
                 end
                 multiloc[k] = doc.to_s
               end
-              multiloc = TextImageService.new.swap_data_images object, attribute
-              object.send "#{attribute}=", multiloc
+              multiloc = TextImageService.new.swap_data_images_multiloc object[attribute], field: attribute, imageable: object
+              object.send :"#{attribute}=", multiloc
               object.save!
             end
           end
@@ -126,15 +126,14 @@ namespace :fix_existing_tenants do
           claz.all.map do |instance|
             attributes.each do |attribute|
               multiloc = instance.send attribute
-              multiloc&.keys&.each do |k|
+              multiloc&.each_key do |k|
                 text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
                 allowed_images = doc.css('img').select do |img|
-                  (img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
+                  img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
                     img.attr('src').exclude?("#{tenant.host}/uploads/") &&
                     img.attr('src').exclude?('s3.amazonaws.com') &&
                     img.attr('src').exclude?('res.cloudinary.com')
-                  )
                 end
                 allowed_images.each do |img|
                   results[tenant.host] ||= {}
@@ -205,8 +204,8 @@ namespace :fix_existing_tenants do
 
               instance.update_column(attribute, multiloc)
               begin
-                multiloc = TextImageService.new.swap_data_images instance, attribute
-                instance.send "#{attribute}=", multiloc
+                multiloc = TextImageService.new.swap_data_images_multiloc instance[attribute], field: attribute, imageable: instance
+                instance.send :"#{attribute}=", multiloc
                 instance.save!
               rescue Exception => e
                 errors += [e.message]

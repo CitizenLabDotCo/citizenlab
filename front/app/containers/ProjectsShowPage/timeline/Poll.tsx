@@ -1,24 +1,21 @@
 import React, { memo } from 'react';
 
-// components
-import Poll from '../shared/poll';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import styled from 'styled-components';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
-// styling
-import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import Poll from '../shared/poll';
 
 const Container = styled.div``;
 
 interface Props {
   projectId: string;
-  phaseId: string | null;
+  phaseId: string;
   className?: string;
 }
 
@@ -33,7 +30,7 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.navPoll} />
         </ProjectPageSectionTitle>
-        <Poll phaseId={phaseId} projectId={projectId} type="phase" />
+        <Poll phaseId={phaseId} projectId={projectId} />
       </Container>
     );
   }

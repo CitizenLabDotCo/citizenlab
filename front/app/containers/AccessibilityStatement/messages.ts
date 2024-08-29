@@ -1,7 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Cookie policy
+  headTitle: {
+    id: 'app.containers.AccessibilityStatement.headTitle',
+    defaultMessage: 'Accessibility Statement | {orgName}',
+  },
   title: {
     id: 'app.containers.AccessibilityStatement.title',
     defaultMessage: 'Accessibility Statement',
@@ -90,8 +93,8 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.postalAddress',
     defaultMessage: 'Postal address:',
   },
-  citizenLabAddress2022: {
-    id: 'app.containers.AccessibilityStatement.citizenLabAddress2022',
+  govocalAddress2022: {
+    id: 'app.containers.AccessibilityStatement.govocalAddress2022',
     defaultMessage: 'Boulevard Pachéco 34, 1000 Brussels, Belgium',
   },
   responsiveness: {
@@ -145,6 +148,15 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.mapviewIdeasException',
     defaultMessage:
       'Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
+  },
+  mapLinePolygonInputs: {
+    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputs',
+    defaultMessage: 'Map line and polygon drawing in surveys',
+  },
+  mapLinePolygonInputsException: {
+    id: 'app.containers.AccessibilityStatement.mapLinePolygonInputsException3',
+    defaultMessage:
+      'Line and polygon drawing on maps in surveys does not meet the Accessibility WCAG 2.1 AA standard as shapes cannot be drawn on the map using a keyboard. An alternative input is not provided at this time due to technical complexity. Maps are not fully accessible for screen reader users as map extent and layer information are not audibly presented to provide context. Fully accessible maps would need to audibly present the map layers and describe any trends in the data. Text-based "drawing" would also need to be made available, which is technically complex and difficult to make user-friendly. To make these methods more accessible we recommend explaining in the question description or page description what the map is showing and providing an alternative short or long answer text question where residents can describe their answer in plain terms (rather than clicking on the map). Lastly, we recommend including contact information for the project manager so residents who cannot fill in a map question can contact the manager and set up an alternative method to answer the question (E.g. Video meeting).',
   },
   screenReaderSearchResults: {
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',

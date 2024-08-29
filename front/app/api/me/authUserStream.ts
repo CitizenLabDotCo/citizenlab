@@ -1,11 +1,14 @@
 import { QueryObserver } from '@tanstack/react-query';
+import { BehaviorSubject } from 'rxjs';
 import { CLErrors } from 'typings';
+
+import { IUser } from 'api/users/types';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
+
 import meKeys from './keys';
 import { MeKeys } from './types';
-import { BehaviorSubject } from 'rxjs';
 import { fetchMe } from './useAuthUser';
-import { IUser } from 'api/users/types';
 
 const authUserStream = new BehaviorSubject<IUser | undefined>(undefined);
 

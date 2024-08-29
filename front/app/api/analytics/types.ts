@@ -12,7 +12,8 @@ export interface QuerySchema {
     | 'registration'
     | 'event'
     | 'project_status'
-    | 'email_delivery';
+    | 'email_delivery'
+    | 'session';
   filters?: {
     [k: string]:
       | string
@@ -24,7 +25,7 @@ export interface QuerySchema {
         };
   };
   groups?: string | string[];
-  aggregations?: AggregationsConfig;
+  aggregations?: AggregationsConfig | AggregationsConfig[];
   sort?: {
     [k: string]: 'ASC' | 'DESC';
   };

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { PhasePermissionsProps } from './usePhasePermissions';
 
 const baseKey = { type: 'permission', variant: 'phase' };

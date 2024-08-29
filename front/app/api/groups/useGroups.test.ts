@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useGroups from './useGroups';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { groupsData } from './__mocks__/useGroups';
 import { GroupsQueryParameters } from './types';
+import useGroups from './useGroups';
 
 const apiPath = '*groups';
 
@@ -17,8 +16,8 @@ const params: GroupsQueryParameters = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: groupsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: groupsData }, { status: 200 });
   })
 );
 
@@ -41,8 +40,8 @@ describe('useGroups', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

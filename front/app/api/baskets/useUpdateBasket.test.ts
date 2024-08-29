@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateBasket from './useUpdateBasket';
-import { basketData } from './__mocks__/useBasket';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { basketData } from './__mocks__/_mockServer';
+import useUpdateBasket from './useUpdateBasket';
+
 const apiPath = '*baskets/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: basketData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: basketData }, { status: 200 });
   })
 );
 
@@ -27,7 +26,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        participation_context_type: 'Phase',
       });
     });
 
@@ -37,8 +35,8 @@ describe('useUpdateBasket', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -48,7 +46,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        participation_context_type: 'Phase',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

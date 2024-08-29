@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
+
 import moduleConfiguration from 'modules';
 
 export const OutletsContext = createContext({});

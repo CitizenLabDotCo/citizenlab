@@ -7,7 +7,7 @@ module SmartGroups::Rules
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: 'date').map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.registration.where(input_type: 'date').map(&:id) } }
     validates :value, absence: true, unless: :needs_value?
     validates :value, presence: true, if: :needs_value?
 

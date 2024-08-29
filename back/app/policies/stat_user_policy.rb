@@ -31,46 +31,8 @@ class StatUserPolicy < ApplicationPolicy
   end
 
   def users_count?
-    show_stats?
-  end
-
-  def users_by_time?
-    show_stats?
-  end
-
-  def users_by_time_cumulative?
-    show_stats?
-  end
-
-  def active_users_by_time?
-    show_stats?
-  end
-
-  def active_users_by_time_cumulative?
-    show_stats?
-  end
-
-  def users_by_time_as_xlsx?
-    show_stats?
-  end
-
-  def users_by_time_cumulative_as_xlsx?
-    show_stats?
-  end
-
-  def active_users_by_time_as_xlsx?
-    show_stats?
-  end
-
-  private
-
-  def show_stats?
     return unless active?
 
-    show_stats_to_active?
-  end
-
-  def show_stats_to_active?
     admin? || user.project_moderator?
   end
 end

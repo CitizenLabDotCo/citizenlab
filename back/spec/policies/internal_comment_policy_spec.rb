@@ -9,7 +9,7 @@ describe InternalCommentPolicy do
     let(:scope) { InternalCommentPolicy::Scope.new(user, idea.internal_comments) }
 
     context 'on internal comment by an admin on idea in a public project' do
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:idea) { create(:idea, project: project) }
       let(:author) { create(:admin) }
       let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }
@@ -64,7 +64,7 @@ describe InternalCommentPolicy do
     end
 
     context 'on internal comment by a moderator on idea in a public project' do
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:idea) { create(:idea, project: project) }
       let(:author) { create(:project_moderator, projects: [project]) }
       let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }

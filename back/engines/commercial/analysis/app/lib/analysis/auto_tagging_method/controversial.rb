@@ -11,11 +11,11 @@ module Analysis
     def run
       tag = Tag.find_or_create_by!(name: 'Controversial', tag_type: TAG_TYPE, analysis: analysis)
 
-      @analysis.inputs
+      filtered_inputs
         .order(published_at: :asc)
         .each.with_index do |input, _i|
         score = controversy_score(input)
-        Tagging.find_or_create_by!(input_id: input.id, tag: tag) if score > THRESHOLD
+        find_or_create_tagging!(input_id: input.id, tag_id: tag.id) if score > THRESHOLD
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e

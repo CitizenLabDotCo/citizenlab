@@ -1,13 +1,17 @@
 import React, { PureComponent, createRef } from 'react';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+
+import { colors } from '@citizenlab/cl2-component-library';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 const CodeSnippet = styled.textarea`
   word-wrap: break-word;
@@ -88,7 +92,8 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
         />
         <Button
           onClick={this.copy(this.snippetRef)}
-          buttonStyle={this.state.copied ? 'success' : 'admin-dark'}
+          buttonStyle={'admin-dark'}
+          bgColor={this.state.copied ? colors.success : colors.primary}
         >
           {this.state.copied ? (
             <FormattedMessage {...messages.copied} />

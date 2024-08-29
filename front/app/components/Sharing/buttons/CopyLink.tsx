@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import { Button, Box, fontSizes } from '@citizenlab/cl2-component-library';
 
-// style
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 interface Props {
   copyLink: string;
 }
@@ -31,7 +31,7 @@ const CopyLink = ({ copyLink }: Props) => {
   return (
     <Box display="flex" flexGrow={setFullWidth ? 1 : 0}>
       <Button
-        buttonStyle="secondary"
+        buttonStyle="primary-outlined"
         minWidth="154px"
         height="40px"
         onClick={handleClick()}

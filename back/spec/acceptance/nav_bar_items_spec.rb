@@ -76,7 +76,9 @@ resource 'NavBarItems' do
                      'Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc, required: false
         parameter :static_page_id, 'The ID of the static page for custom NavBarItems.', required: false
+        parameter :project_id, 'The ID of the project for custom NavBarItems.', required: false
       end
+
       ValidationErrorHelper.new.error_fields self, NavBarItem
       ValidationErrorHelper.new.error_fields self, StaticPage
 
@@ -104,7 +106,7 @@ resource 'NavBarItems' do
         let(:title_multiloc) { build(:nav_bar_item).title_multiloc }
         let(:static_page_id) { create(:static_page).id }
 
-        example_request 'Add a custom NavBarItem' do
+        example_request 'Add a custom page NavBarItem' do
           expect(response_status).to eq 201
           json_response = json_parse response_body
 
@@ -126,6 +128,20 @@ resource 'NavBarItems' do
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page_title_multiloc
           expect(json_response.dig(:data, :relationships, :static_page, :data, :id)).to eq static_page_id
+        end
+      end
+
+      describe do
+        let(:code) { 'custom' }
+        let(:project_title_multiloc) { { 'en' => 'Referenda' } }
+        let(:project_id) { create(:project, title_multiloc: project_title_multiloc).id }
+
+        example_request 'Adding a custom project NavBarItem without title, will use the project title instead' do
+          expect(response_status).to eq 201
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match project_title_multiloc
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
     end

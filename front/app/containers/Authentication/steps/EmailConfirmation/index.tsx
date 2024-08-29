@@ -1,29 +1,26 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
-// services
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
+
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+
+import { State, SetError } from '../../typings';
+
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import Input from 'components/HookForm/Input';
-
-// errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
-
-// typings
-import { State, SetError } from '../../typings';
 
 interface Props {
   state: State;
@@ -81,8 +78,8 @@ const EmailConfirmation = ({
     try {
       await onConfirm(code);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
@@ -105,6 +102,7 @@ const EmailConfirmation = ({
         setCodeResent(true);
       })
       .catch((_errors) => {
+        setError('resending_code_failed');
         setResendingCode(false);
       });
   };
@@ -118,13 +116,17 @@ const EmailConfirmation = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage email={state.email ?? undefined} />
+          <CodeSentMessage
+            email={state.email ?? undefined}
+            codeResent={codeResent}
+          />
         </Box>
         <Box>
           <Input
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
+            maxCharCount={4}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

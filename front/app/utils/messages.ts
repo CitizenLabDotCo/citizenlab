@@ -90,7 +90,6 @@ export default defineMessages({
     id: 'app.utils.errors.default.api_error_even',
     defaultMessage: 'Must be even',
   },
-
   ajv_error_minItems: {
     id: 'app.utils.errors.default.ajv_error_minItems',
     defaultMessage:
@@ -110,8 +109,8 @@ export default defineMessages({
     defaultMessage: 'This field expects a number',
   },
   ajv_error_required: {
-    id: 'app.utils.errors.default.ajv_error_required',
-    defaultMessage: 'This field is required',
+    id: 'app.utils.errors.default.ajv_error_required3',
+    defaultMessage: 'Field is required: "{fieldName}"',
   },
   ajv_error_invalid: {
     id: 'app.utils.errors.default.ajv_error_invalid',
@@ -146,9 +145,9 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.questionFormTitle',
     defaultMessage: 'Add new question',
   },
-  issueFormTitle: {
-    id: 'app.utils.IdeasNewPage.issueFormTitle',
-    defaultMessage: 'Add new issue',
+  issueFormTitle1: {
+    id: 'app.utils.IdeasNewPage.issueFormTitle1',
+    defaultMessage: 'Add new comment',
   },
   surveyTitle: {
     id: 'app.utils.IdeasNewPage.surveyTitle',
@@ -222,39 +221,5 @@ export default defineMessages({
   noPastEvents: {
     id: 'app.containers.Projects.noPastEvents',
     defaultMessage: 'No past events to display',
-  },
-  // Action descriptor utils
-  notInGroup: {
-    id: 'app.utils.notInGroup',
-    defaultMessage: 'You do not meet the requirements to participate.',
-  },
-  // Date utils
-  sunday: {
-    id: 'app.utils.date.sunday',
-    defaultMessage: 'Sunday',
-  },
-  monday: {
-    id: 'app.utils.date.monday',
-    defaultMessage: 'Monday',
-  },
-  tuesday: {
-    id: 'app.utils.date.tuesday',
-    defaultMessage: 'Tuesday',
-  },
-  wednesday: {
-    id: 'app.utils.date.wednesday',
-    defaultMessage: 'Wednesday',
-  },
-  thursday: {
-    id: 'app.utils.date.thursday',
-    defaultMessage: 'Thursday',
-  },
-  friday: {
-    id: 'app.utils.date.friday',
-    defaultMessage: 'Friday',
-  },
-  saturday: {
-    id: 'app.utils.date.saturday',
-    defaultMessage: 'Saturday',
   },
 });

@@ -1,21 +1,26 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   optionIs,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import TextArea from 'components/UI/TextArea';
-import { isString } from 'utils/helperUtils';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
-import VerificationIcon from '../VerificationIcon';
-import { getSubtextElement } from './controlUtils';
+
+import { FormLabel } from 'components/UI/FormComponents';
+import TextArea from 'components/UI/TextArea';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
 const StyledTextArea = styled(TextArea)`
@@ -70,7 +75,12 @@ const TextAreaControl = ({
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

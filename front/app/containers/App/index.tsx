@@ -1,78 +1,75 @@
 import 'focus-visible';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+
+import {
+  Box,
+  Spinner,
+  useBreakpoint,
+  colors,
+  getTheme,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+import { configureScope } from '@sentry/react';
+import { PreviousPathnameContext } from 'context';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
-import moment from 'moment';
 import 'moment-timezone';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { endsWith, isPage } from 'utils/helperUtils';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
+import styled, { ThemeProvider } from 'styled-components';
+import { SupportedLocale } from 'typings';
 
-// constants
+import { IAppConfigurationStyle } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteSelf from 'api/users/useDeleteSelf';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-
-// context
-import { PreviousPathnameContext } from 'context';
-import { trackPage } from 'utils/analytics';
-
-// analytics
-const ConsentManager = lazy(() => import('components/ConsentManager'));
-
-// components
-import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
-import ErrorBoundary from 'components/ErrorBoundary';
-import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
-import MobileNavbar from 'containers/MobileNavbar';
+
+import ErrorBoundary from 'components/ErrorBoundary';
+
+import { trackPage } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import Navigate from 'utils/cl-router/Navigate';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import eventEmitter from 'utils/eventEmitter';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
+import { localeStream } from 'utils/localeStream';
+import { usePermission } from 'utils/permissions';
+import { isAdmin, isModerator } from 'utils/permissions/roles';
+
+import messages from './messages';
 import Meta from './Meta';
+import UserSessionRecordingModal from './UserSessionRecordingModal';
+
+const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
-// auth
-import HasPermission from 'components/HasPermission';
-
-// services
-import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import useDeleteSelf from 'api/users/useDeleteSelf';
-import { localeStream } from 'services/locale';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useLocation } from 'react-router-dom';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-
-// style
-import styled, { ThemeProvider } from 'styled-components';
-import { getTheme, stylingConsts } from 'utils/styleUtils';
-
-// typings
-import { Locale } from 'typings';
-
-// utils
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import useAuthUser from 'api/me/useAuthUser';
-import { configureScope } from '@sentry/react';
-
-const Container = styled.div<{
-  disableScroll?: boolean;
-}>`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  background: #fff;
-
-  // for instances with e.g. a fullscreen modal, we want to
-  // be able to disable scrolling on the page behind the modal
-  ${(props) =>
-    props.disableScroll &&
-    `
-      height: 100%;
-      overflow: hidden;
-    `};
+const SkipLinkStyled = styled.a`
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: ${colors.black};
+  color: ${colors.white};
+  padding: 8px;
+  z-index: 1000;
+  text-align: center;
+  text-decoration: none;
+  &:focus {
+    top: 0;
+  }
 `;
 
 interface Props {
@@ -82,20 +79,26 @@ interface Props {
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
+  const { formatMessage } = useIntl();
+
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [previousPathname, setPreviousPathname] = useState<string | null>(null);
+  const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
+    null
+  );
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser, isLoading } = useAuthUser();
-
+  const { data: authUser } = useAuthUser();
+  const appContainerClassName =
+    isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  const [locale, setLocale] = useState<Locale | null>(null);
+  const [locale, setLocale] = useState<SupportedLocale | null>(null);
   const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
@@ -196,7 +199,7 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname;
+    const newPreviousPathname = location.pathname as RouteType;
     const pathsToIgnore = [
       'sign-up',
       'sign-in',
@@ -273,7 +276,7 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -281,120 +284,140 @@ const App = ({ children }: Props) => {
     !isIdeaFormPage &&
     !isInitiativeFormPage &&
     !isIdeaEditPage &&
-    !isInitiativeEditPage;
-  const showMobileNav =
-    isSmallerThanTablet &&
-    !isAdminPage &&
-    !isIdeaFormPage &&
-    !isInitiativeFormPage &&
-    !isIdeaEditPage &&
-    !isInitiativeEditPage;
+    !isInitiativeEditPage &&
+    !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const showFrontOfficeNavbar =
-    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
-    (!isAdminPage && !isEventPage) ||
-    isPagesAndMenuPage;
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+  const isAuthenticationPending = authUser === undefined;
+  const canAccessRoute = usePermission({
+    item: {
+      type: 'route',
+      path: pathname,
+    },
+    action: 'access',
+  });
 
-  // Ensure authUser is loaded before rendering the app
-  if (!authUser && isLoading) {
-    return (
-      <Box
-        display="flex"
-        w="100%"
-        h="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
+  const showFrontOfficeNavbar = () => {
+    if (isAdminPage) {
+      if (!isPagesAndMenuPage) return false;
+    }
+
+    // citizen
+    if (isNativeSurveyPage) return false;
+
+    if (isSmallerThanTablet) {
+      if (
+        isEventPage ||
+        isIdeaShowPage(urlSegments) ||
+        isInitiativeShowPage(urlSegments)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   return (
     <>
-      {appConfiguration && (
-        <PreviousPathnameContext.Provider value={previousPathname}>
-          <ThemeProvider
-            theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
+      {!isAuthenticationPending && (
+        <SkipLinkStyled href="#main-content">
+          {formatMessage(messages.skipLinkText)}
+        </SkipLinkStyled>
+      )}
+      {isAuthenticationPending && (
+        <Box
+          display="flex"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner />
+        </Box>
+      )}
+      <PreviousPathnameContext.Provider value={previousPathname}>
+        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+          <GlobalStyle />
+          <Box
+            className={appContainerClassName}
+            display="flex"
+            flexDirection="column"
+            alignItems="stretch"
+            position="relative"
+            background={colors.white}
+            /* When the fullscreen modal is enabled on a platform and
+             * is currently open, we want to disable scrolling on the
+             * app sitting below it (CL-1101).
+             * For instance, with a fullscreen modal, we want to
+             * be able to disable scrolling on the page behind the modal
+             */
+            overflow={disableScroll ? 'hidden' : undefined}
+            minHeight="100vh"
           >
-            <GlobalStyle />
-            <Container
-              // when the fullscreen modal is enabled on a platform and
-              // is currently open, we want to disable scrolling on the
-              // app sitting below it (CL-1101)
-              disableScroll={fullscreenModalEnabled && signUpInModalOpened}
-            >
-              <Meta />
+            <Meta />
+            <UserSessionRecordingModal />
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <UserDeletedModal
+                  modalOpened={userDeletedSuccessfullyModalOpened}
+                  closeUserDeletedModal={closeUserDeletedModal}
+                  userSuccessfullyDeleted={userSuccessfullyDeleted}
+                />
+              </Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Authentication setModalOpen={setSignUpInModalOpened} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div id="modal-portal" />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div id="topbar-portal" />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <ConsentManager />
+              </Suspense>
+            </ErrorBoundary>
+            {showFrontOfficeNavbar() && (
               <ErrorBoundary>
-                <Suspense fallback={null}>
-                  <UserDeletedModal
-                    modalOpened={userDeletedSuccessfullyModalOpened}
-                    closeUserDeletedModal={closeUserDeletedModal}
-                    userSuccessfullyDeleted={userSuccessfullyDeleted}
-                  />
-                </Suspense>
+                <MainHeader />
               </ErrorBoundary>
-              <ErrorBoundary>
-                <Authentication setModalOpen={setSignUpInModalOpened} />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <div id="modal-portal" />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <div id="topbar-portal" />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <Suspense fallback={null}>
-                  <ConsentManager />
-                </Suspense>
-              </ErrorBoundary>
-              {showFrontOfficeNavbar && (
-                <ErrorBoundary>
-                  <MainHeader />
-                </ErrorBoundary>
-              )}
+            )}
+            {!isAuthenticationPending && (
               <Box
-                width="100vw"
                 display="flex"
                 flexDirection="column"
                 alignItems="stretch"
+                flex="1"
+                overflowY="auto"
+                id="main-content"
                 pt={
-                  showFrontOfficeNavbar
+                  showFrontOfficeNavbar()
                     ? `${stylingConsts.menuHeight}px`
                     : undefined
                 }
-                minHeight={
-                  isSmallerThanTablet
-                    ? `calc(100vh - ${stylingConsts.menuHeight}px - ${stylingConsts.mobileMenuHeight}px)`
-                    : `calc(100vh - ${stylingConsts.menuHeight}px)`
-                }
               >
-                <HasPermission
-                  item={{
-                    type: 'route',
-                    path: pathname,
-                  }}
-                  action="access"
-                >
+                {canAccessRoute ? (
                   <ErrorBoundary>{children}</ErrorBoundary>
-                  <HasPermission.No>
-                    <Navigate to="/" />
-                  </HasPermission.No>
-                </HasPermission>
+                ) : (
+                  <Navigate to="/" />
+                )}
               </Box>
-              {showFooter && (
-                <Suspense fallback={null}>
-                  <PlatformFooter />
-                </Suspense>
-              )}
-              {showMobileNav && <MobileNavbar />}
-              <ErrorBoundary>
-                <div id="mobile-nav-portal" />
-              </ErrorBoundary>
-            </Container>
-          </ThemeProvider>
-        </PreviousPathnameContext.Provider>
-      )}
+            )}
+            {showFooter && (
+              <Suspense fallback={null}>
+                <PlatformFooter />
+              </Suspense>
+            )}
+            <ErrorBoundary>
+              <div id="mobile-nav-portal" />
+            </ErrorBoundary>
+          </Box>
+        </ThemeProvider>
+      </PreviousPathnameContext.Provider>
     </>
   );
 };

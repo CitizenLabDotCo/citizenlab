@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import navbarKeys from './keys';
 import { IRelationship, Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import navbarKeys from './keys';
 
 export type NavbarKeys = Keys<typeof navbarKeys>;
 
@@ -32,6 +34,9 @@ export interface INavbarItem {
     static_page: {
       data: IRelationship | null;
     };
+    project: {
+      data: IRelationship | null;
+    };
   };
 }
 
@@ -47,6 +52,7 @@ export interface INavbarItemAdd {
   code: TNavbarItemCode;
   static_page_id?: string;
   title_multiloc?: Multiloc;
+  project_id?: string;
 }
 
 export interface INavbarItemUpdate {

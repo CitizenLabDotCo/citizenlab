@@ -1,22 +1,16 @@
 import React, { memo } from 'react';
 
-// components
-import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
+import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { IProjectFolderData } from 'api/project_folders/types';
+
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import FollowUnfollow from 'components/FollowUnfollow';
 
-// hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
-
-// style
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-// typings
-import { IProjectFolderData } from 'api/project_folders/types';
+import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
 
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   ${media.tablet`
@@ -53,17 +47,6 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           display="flex"
           justifyContent="center"
         >
-          <Box mr="8px">
-            <FollowUnfollow
-              followableType="project_folders"
-              followableId={projectFolder.id}
-              followersCount={projectFolder.attributes.followers_count}
-              followerId={projectFolder.relationships.user_follower?.data?.id}
-              followableSlug={projectFolder.attributes.slug}
-              padding="6px 13px"
-              buttonStyle="white"
-            />
-          </Box>
           <StyledProjectFolderShareButton
             projectFolder={projectFolder}
             buttonStyle="white"

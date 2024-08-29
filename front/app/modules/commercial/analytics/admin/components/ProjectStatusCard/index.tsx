@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { StatCardProps } from '../StatCard/useStatCard/typings';
-import StatCard from '../StatCard';
-import { projectStatusConfig } from './config';
 import { Box } from '@citizenlab/cl2-component-library';
+
+import StatCard from '../StatCard';
+import { StatCardProps } from '../StatCard/useStatCard/typings';
+
+import { projectStatusConfig } from './config';
 
 const ProjectStatusCard = ({
   projectId,

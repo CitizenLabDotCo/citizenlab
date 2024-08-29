@@ -30,7 +30,7 @@ pipeline {
       steps {
         echo 'Generating templates'
         sshagent (credentials: ['local-ssh-user']) {
-          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/.env-production-benelux citizenlabdotco/cl2-back:production rake templates:generate[true]"'
+          sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 52.57.74.84 "docker run --env-file cl2-deployment/.env-web citizenlabdotco/cl2-back:production rake templates:generate[true]"'
         }
       }
     }

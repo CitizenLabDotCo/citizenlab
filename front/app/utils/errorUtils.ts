@@ -1,28 +1,9 @@
-import { CLErrorsJSON, CLErrors, CLErrorsWrapper } from 'typings';
-import messages from './messages';
-import { isArray } from 'lodash-es';
-import { isObject } from './helperUtils';
+import { CLErrors, CLErrorsWrapper } from 'typings';
+
 import clHistory from 'utils/cl-router/history';
 
-export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
-  let objectToCheck = value;
-  for (const prop of ['json', 'errors']) {
-    if (
-      // value is an object
-      typeof objectToCheck === 'object' &&
-      !Array.isArray(objectToCheck) &&
-      objectToCheck !== null &&
-      // value object has prop as key
-      Object.prototype.hasOwnProperty.call(objectToCheck, prop)
-    ) {
-      objectToCheck = objectToCheck[prop];
-    } else {
-      return false;
-    }
-  }
-
-  return true;
-}
+import { isObject } from './helperUtils';
+import messages from './messages';
 
 // NB: initially I wated to pass in a translated field name to the generic error message but in most languages that won't work, not without hacky phrase building.
 
@@ -51,13 +32,13 @@ const genericErrors = [
   'even',
 ] as const;
 
-export type GenericErrorKey = (typeof genericErrors)[number];
+type GenericErrorKey = (typeof genericErrors)[number];
 // Here are all custom validations I could find in the back-end and that could make some sense to the end user
 
 // NB : (sometimes it'd be clearly better the user doesn't see that error,
 // it's probably our system that's at fault. Decided to add them either way, they can contact us with a bit more info in that case)
 
-export type CustomErrorKey = 'includes_banned_words';
+type CustomErrorKey = 'includes_banned_words';
 // | 'already_liked'
 // | 'already_disliked'
 // | 'children_not_allowed'
@@ -147,27 +128,11 @@ export function getDefaultAjvErrorMessage({
   );
 }
 
-// There's a similar function above but it's kind of insane, so
-// I'm creating a new one
-export const isCLErrorsJSON = (value: unknown): value is CLErrorsJSON => {
-  return isObject(value) && 'json' in value && isObject(value.json.errors);
-};
-
-// This is to check if it's not the JSON wrapper but the normal response
 export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
   return isObject(value) && isObject(value.errors);
 };
 
-// This one checks both. Needed because right now the 'old' utils/request
-// and the new fetcher deal with errors differently (the former wraps it in json)
-// attribute, the latter doesn't)
-export const isCLErrorsIsh = (
-  value: unknown
-): value is CLErrorsJSON | CLErrorsWrapper => {
-  return isCLErrorJSON(value) || isCLErrorsWrapper(value);
-};
-
-export const handleCLErrorWrapper = (
+const handleCLErrorWrapper = (
   error: CLErrorsWrapper,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
@@ -177,13 +142,19 @@ export const handleCLErrorWrapper = (
         if (fieldArrayKey) {
           Object.keys(error.errors[key]).forEach((errorKey) => {
             const errorValue = error.errors[key][errorKey][0];
+            // handleError is (nearly) always methods.setError from what I can see. The format of error (2nd argument)
+            // we pass doesn't match setError's types but it works somehow.
             handleError(
               `${fieldArrayKey}.${key}.${errorKey}`,
-              errorValue === 'string' ? { error: errorValue } : errorValue
+              typeof errorValue === 'string'
+                ? { error: errorValue }
+                : errorValue
             );
           });
         } else {
           const errorValue = error.errors[key][0];
+          // handleError is (nearly) always methods.setError from what I can see. The format of error (2nd argument)
+          // we pass doesn't match setError's types but it works somehow.
           handleError(
             key,
             typeof errorValue === 'string' ? { error: errorValue } : errorValue
@@ -195,34 +166,13 @@ export const handleCLErrorWrapper = (
       });
 };
 
-export const handleCLErrorsJSON = (
-  error: CLErrorsJSON,
-  handleError: (error: string, options: Record<string, any>) => void,
-  fieldArrayKey?: string
-) => {
-  handleCLErrorWrapper(error.json, handleError, fieldArrayKey);
-};
-
-// This one handles both. Needed because right now the 'old' utils/request
-// and the new fetcher deal with errors differently (the former wraps it in json
-// attribute, the latter doesn't)
-export const handleCLErrorsIsh = (
-  error: CLErrorsJSON | CLErrorsWrapper,
-  handleError: (error: string, options: Record<string, any>) => void,
-  fieldArrayKey?: string
-) => {
-  isCLErrorJSON(error)
-    ? handleCLErrorsJSON(error, handleError, fieldArrayKey)
-    : handleCLErrorWrapper(error, handleError, fieldArrayKey);
-};
-
 export const handleHookFormSubmissionError = (
-  error: Error | CLErrorsJSON,
+  error: Error | CLErrorsWrapper,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
-  if (isCLErrorsJSON(error)) {
-    handleCLErrorsJSON(error, handleError, fieldArrayKey);
+  if (isCLErrorsWrapper(error)) {
+    handleCLErrorWrapper(error, handleError, fieldArrayKey);
   } else {
     handleError('submissionError', {
       type: 'server',
@@ -236,7 +186,7 @@ export const handleBlockedUserError = (status: number, data: CLErrors) => {
     isObject(data) &&
     isObject(data.errors) &&
     'base' in data.errors &&
-    isArray(data.errors.base) &&
+    Array.isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
     'error' in data.errors.base[0] &&
     data.errors.base[0].error === 'blocked' &&
@@ -253,7 +203,7 @@ export const isUnauthorizedRQ = (obj: unknown): obj is CLErrors => {
     isObject(obj) &&
     'errors' in obj &&
     'base' in obj.errors &&
-    isArray(obj.errors.base) &&
+    Array.isArray(obj.errors.base) &&
     obj.errors.base.length >= 0 &&
     'error' in obj.errors.base[0] &&
     obj.errors.base[0].error === 'Unauthorized!'

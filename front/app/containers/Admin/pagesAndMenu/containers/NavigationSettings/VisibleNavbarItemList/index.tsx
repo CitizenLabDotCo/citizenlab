@@ -1,34 +1,30 @@
 import React from 'react';
 
-// services
+import { WrappedComponentProps } from 'react-intl';
+
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
+import { getNavbarItemSlug } from 'api/navbar/util';
+import useProjectSlugById from 'api/projects/useProjectSlugById';
 
-// components
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
 import {
   LockedRow,
   SortableList,
   SortableRow,
 } from 'components/admin/ResourceList';
-import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
-
-// hooks
-import useNavbarItems from 'api/navbar/useNavbarItems';
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// utils
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { Item } from 'components/admin/ResourceList/SortableList';
-import { getNavbarItemSlug } from 'api/navbar/util';
-import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
+import { SubSectionTitle } from 'components/admin/Section';
+
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -38,15 +34,19 @@ const VisibleNavbarItemList = ({
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const projectSlugById = useProjectSlugById();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
+  if (!navbarItems) {
     return null;
   }
 
   const handleClickEdit = (navbarItem: Item) => () => {
-    // redirect to homepage toggle page
+    // redirect to homepage edit page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
-      clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
+      clHistory.push(
+        `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`
+      );
+
       return;
     }
 
@@ -64,7 +64,9 @@ const VisibleNavbarItemList = ({
       getNavbarItemSlug(
         navbarItem.attributes.code,
         pageSlugById,
-        navbarItem.relationships.static_page.data?.id
+        navbarItem.relationships.static_page.data?.id,
+        projectSlugById,
+        navbarItem.relationships.project.data?.id
       ) || '/'
     );
   };
@@ -80,7 +82,9 @@ const VisibleNavbarItemList = ({
       deleteCustomPage(pageId);
     }
   };
-
+  const isProjectItem = (navbarItem: Item) => {
+    return navbarItem.relationships.project.data !== null;
+  };
   return (
     <>
       <SubSectionTitle>
@@ -127,9 +131,14 @@ const VisibleNavbarItemList = ({
                   viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
-                  onClickDeleteButton={handleClickDelete(
-                    navbarItem.relationships.static_page.data?.id
-                  )}
+                  onClickDeleteButton={
+                    // Only show delete button for custom pages
+                    !isProjectItem(navbarItem)
+                      ? handleClickDelete(
+                          navbarItem.relationships.static_page.data?.id
+                        )
+                      : undefined
+                  }
                 />
               </SortableRow>
             ))}

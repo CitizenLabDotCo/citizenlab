@@ -21,7 +21,6 @@ namespace :fix_existing_tenants do
                                 end,
           internal_role: 'open_idea_box',
           presentation_mode: 'card',
-          process_type: 'continuous',
           participation_method: 'ideation',
           remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg',
           posting_enabled: true,

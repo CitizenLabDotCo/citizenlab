@@ -10,7 +10,7 @@ RSpec.describe ConfirmUser do
 
   before do
     SettingsService.new.activate_feature! 'user_confirmation'
-    SendConfirmationCode.call(user: user)
+    RequestConfirmationCodeJob.perform_now user
   end
 
   context 'when the user is nil' do

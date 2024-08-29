@@ -14,7 +14,7 @@ describe MultiTenancy::Templates::ApplyService do
   end
 
   describe '#apply' do
-    MultiTenancy::Templates::Utils.new.available_internal_templates.map do |template_name|
+    MultiTenancy::Templates::Utils.new.internal_template_names.map do |template_name|
       it "successfully applies '#{template_name}' template" do
         template_utils = MultiTenancy::Templates::Utils.new
         locales = template_utils.required_locales(template_name)

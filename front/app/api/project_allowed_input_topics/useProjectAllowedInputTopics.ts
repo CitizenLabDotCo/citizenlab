@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import projectAllowedInputKeys from './keys';
 import {
   IProjectAllowedTopicsParams,
@@ -16,15 +18,18 @@ const fetchProjectAllowedInputTopics = ({
     action: 'get',
   });
 
-const useProjectAllowedInputTopics = (params: IProjectAllowedTopicsParams) => {
+const useProjectAllowedInputTopics = ({
+  projectId,
+}: IProjectAllowedTopicsParams) => {
   return useQuery<
     IProjectAllowedInputTopics,
     CLErrors,
     IProjectAllowedInputTopics,
     ProjectAllowedInputTopicsKeys
   >({
-    queryKey: projectAllowedInputKeys.list(params),
-    queryFn: () => fetchProjectAllowedInputTopics(params),
+    queryKey: projectAllowedInputKeys.list({ projectId }),
+    queryFn: () => fetchProjectAllowedInputTopics({ projectId }),
+    enabled: !!projectId,
   });
 };
 

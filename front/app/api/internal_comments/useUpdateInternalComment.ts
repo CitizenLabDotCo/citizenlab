@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrorsWrapper } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import internalCommentKeys from './keys';
 import { IInternalComment, IUpdatedInternalComment } from './types';
 
@@ -22,7 +24,11 @@ const useUpdateInternalComment = ({
   initiativeId?: string;
 }) => {
   const queryClient = useQueryClient();
-  return useMutation<IInternalComment, CLErrors, IUpdatedInternalComment>({
+  return useMutation<
+    IInternalComment,
+    CLErrorsWrapper,
+    IUpdatedInternalComment
+  >({
     mutationFn: updateInternalComment,
     onSuccess: () => {
       if (ideaId) {

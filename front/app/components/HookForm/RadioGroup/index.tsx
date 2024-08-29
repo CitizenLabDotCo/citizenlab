@@ -1,19 +1,18 @@
 import React from 'react';
 
-import Error, { TFieldName } from 'components/UI/Error';
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Radio from './Radio';
-import { Box } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
+import Error, { TFieldName } from 'components/UI/Error';
 
 interface Props {
   name: string;
   children?: React.ReactNode;
 }
 
-const RadioGroup = ({ name, children }: Props) => {
+const RadioGroup = ({ name, children, ...props }: Props & BoxProps) => {
   const {
     formState: { errors: formContextErrors },
   } = useFormContext();
@@ -25,7 +24,7 @@ const RadioGroup = ({ name, children }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Box border="none" as="fieldset">
+    <Box border="none" as="fieldset" p={props.padding}>
       {children}
       {validationError && (
         <Error
@@ -50,5 +49,4 @@ const RadioGroup = ({ name, children }: Props) => {
   );
 };
 
-export { Radio };
 export default RadioGroup;

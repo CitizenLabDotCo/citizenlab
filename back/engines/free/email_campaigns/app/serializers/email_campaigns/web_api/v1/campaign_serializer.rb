@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     extend GroupOrderingHelper
-    attributes :created_at, :updated_at
+    attributes :created_at, :updated_at, :context_id
 
     attribute :campaign_name do |object|
       object.class.campaign_name
@@ -70,6 +70,12 @@ module EmailCampaigns
       end
     end
 
+    attribute :delivery_stats, if: proc { |object|
+      object.manual? && object.sent?
+    } do |object|
+      Delivery.status_counts(object.id)
+    end
+
     attribute :sender, if: proc { |object|
       sender_configurable? object
     }
@@ -82,7 +88,7 @@ module EmailCampaigns
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
-      TextImageService.new.render_data_images object, :body_multiloc
+      TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
     end
     attribute :deliveries_count, if: proc { |object|
       trackable? object

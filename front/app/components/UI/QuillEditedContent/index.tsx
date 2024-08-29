@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import styled, { withTheme } from 'styled-components';
-import { quillEditedContent } from 'utils/styleUtils';
+
+import { quillEditedContent } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 const Container = styled.div<{
   linkColor: Props['linkColor'];
@@ -29,7 +30,6 @@ interface Props {
   fontWeight?: 300 | 400;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
-  theme: any;
 }
 
 const QuillEditedContent = ({
@@ -40,10 +40,10 @@ const QuillEditedContent = ({
   fontWeight,
   children,
   className,
-  theme,
   disableTabbing,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const theme = useTheme();
 
   const tabbableElements = containerRef.current?.querySelectorAll(
     'a, iframe, button, input, select, textarea'
@@ -72,4 +72,4 @@ const QuillEditedContent = ({
   );
 };
 
-export default withTheme(QuillEditedContent);
+export default QuillEditedContent;

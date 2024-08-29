@@ -1,19 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useApiClients from './useApiClients';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { data } from './__mocks__/useApiClients';
+import useApiClients from './useApiClients';
 
 const apiPath = '*api_clients';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -36,8 +34,8 @@ describe('useApiClients', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

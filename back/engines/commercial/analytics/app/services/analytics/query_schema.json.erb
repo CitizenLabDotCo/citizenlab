@@ -7,7 +7,7 @@
         {
           "type" : "string",
           "pattern" : "^[a-z_]*\.[a-z_]*$"
-        }, 
+        },
         {
           "type": "array",
           "items" : {
@@ -24,7 +24,7 @@
     },
     "filters" : {
       "type" : "object",
-      "minProperties" : 1,
+      "minProperties" : 0,
       "patternProperties" : {
         "^[a-z_]*\.[a-z_]*$" : {
           "type" : ["string", "integer", "null", "array", "object", "boolean"],
@@ -33,7 +33,6 @@
             "from" : {"type": ["string"]},
             "to" : {"type": ["string"]}
           },
-          "required" : ["from", "to"],
           "minLength" : 1,
           "additionalProperties": false
         }
@@ -45,7 +44,7 @@
         {
           "type" : "string",
           "pattern" : "^[a-z_]*\.[a-z_]*$"
-        }, 
+        },
         {
           "type": "array",
           "items" : {
@@ -65,7 +64,7 @@
             {
               "type" : "string",
               "enum" : ["min", "max", "avg", "sum", "count", "first"]
-            }, 
+            },
             {
               "type": "array",
               "items" : {

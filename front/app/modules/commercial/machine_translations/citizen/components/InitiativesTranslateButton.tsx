@@ -1,10 +1,15 @@
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { IInitiativeData } from 'api/initiatives/types';
-import TranslateButton from 'components/UI/TranslateButton';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import React from 'react';
-import { GetLocaleChildProps } from 'resources/GetLocale';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { IInitiativeData } from 'api/initiatives/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import TranslateButton from 'components/UI/TranslateButton';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
@@ -16,19 +21,16 @@ interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   initiative: IInitiativeData;
-  locale: GetLocaleChildProps;
 }
 
 const InitiativesTranslateButton = ({
   translateButtonClicked,
   onClick,
   initiative,
-  locale,
 }: Props) => {
+  const locale = useLocale();
   const showTranslateButton =
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale) &&
-    !initiative.attributes.title_multiloc[locale];
+    !isNilOrError(initiative) && !initiative.attributes.title_multiloc[locale];
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const machineTranslationsEnabled = useFeatureFlag({

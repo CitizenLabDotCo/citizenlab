@@ -76,6 +76,7 @@ describe JsonFormsService do
               {
                 type: 'array',
                 uniqueItems: true,
+                maxItems: 2,
                 minItems: 0,
                 items: { type: 'string',
                          oneOf: [
@@ -97,6 +98,7 @@ describe JsonFormsService do
                           'field8' =>
               { type: 'array',
                 uniqueItems: true,
+                maxItems: 2,
                 minItems: 1,
                 items: { type: 'string',
                          oneOf: [
@@ -211,7 +213,7 @@ describe JsonFormsService do
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
       let(:input_term) { 'question' }
-      let(:project) { create(:continuous_budgeting_project, input_term: input_term) }
+      let(:project) { create(:single_phase_budgeting_project, phase_attrs: { input_term: input_term }) }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:section) do
         create(
@@ -242,7 +244,8 @@ describe JsonFormsService do
         end
       end
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
-      let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, input_term }
+      let(:participation_method) { project.pmethod }
+      let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, participation_method, input_term }
 
       context 'when resident' do
         let(:user) { create(:user) }
@@ -372,10 +375,10 @@ describe JsonFormsService do
           }
           field = create(:custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
-            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+            receive(:render_data_images_multiloc).with(field.description_multiloc, field: :description_multiloc, imageable: field).and_return({ 'en' => 'Description with text images' })
           )
 
-          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
+          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, participation_method, 'option')[:ui_schema_multiloc]
           expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
         end
 
@@ -383,12 +386,12 @@ describe JsonFormsService do
           description_multiloc = {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
           }
-          field = create(:custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc)
+          field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
-            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+            receive(:render_data_images_multiloc).with(field.description_multiloc, field: :description_multiloc, imageable: field).and_return({ 'en' => 'Description with text images' })
           )
 
-          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
+          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, participation_method, 'question')[:ui_schema_multiloc]
           expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
         end
       end

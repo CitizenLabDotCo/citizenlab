@@ -1,17 +1,22 @@
 import React, { useState, useMemo } from 'react';
-import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
   ColorPickerInput,
   Label,
   Toggle,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { colors } from 'utils/styleUtils';
+import styled, { useTheme } from 'styled-components';
+
 import RangeInput from 'components/UI/RangeInput';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import { Props as BannerImageFieldsProps } from '.';
 
 const StyledBox = styled(Box)`
@@ -51,6 +56,8 @@ interface Props {
   ) => void;
 }
 
+const defaultOverlayOpacity = 90;
+
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
@@ -67,7 +74,7 @@ const OverlayControls = ({
       onOverlayChange(null, null);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+        bannerOverlayOpacity || defaultOverlayOpacity,
         bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
@@ -82,10 +89,7 @@ const OverlayControls = ({
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
-    onOverlayChange(
-      bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
-      color
-    );
+    onOverlayChange(bannerOverlayOpacity || defaultOverlayOpacity, color);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(

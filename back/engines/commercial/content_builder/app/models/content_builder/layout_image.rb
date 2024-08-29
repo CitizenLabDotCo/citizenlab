@@ -24,6 +24,18 @@ module ContentBuilder
       SecureRandom.uuid
     end
 
+    # Creates a copy of the image, but with a different code.
+    # @return [LayoutImage] the duplicated image.
+    def duplicate
+      dup.tap { |image| image.code = self.class.generate_code }
+    end
+
+    # Creates and persists a copy of the image, but with a different code.
+    # @return [LayoutImage] the duplicated image.
+    def duplicate!
+      duplicate.tap(&:save!)
+    end
+
     private
 
     def generate_code

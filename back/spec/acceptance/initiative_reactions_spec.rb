@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Reactions' do
   explanation 'Reactions are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most reactiond initiatives.'
 
@@ -52,7 +53,7 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:initiative_id) { @initiative.id }
@@ -66,6 +67,7 @@ resource 'Reactions' do
       expect(@initiative.reload.likes_count).to eq 3
     end
 
+    # TODO: cleanup-after-proposals-migration
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
       settings['initiatives']['reacting_threshold'] = 3
@@ -87,7 +89,7 @@ resource 'Reactions' do
   post 'web_api/v1/initiatives/:initiative_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:initiative_id) { @initiative.id }
@@ -120,7 +122,7 @@ resource 'Reactions' do
   post 'web_api/v1/initiatives/:initiative_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:initiative_id) { @initiative.id }

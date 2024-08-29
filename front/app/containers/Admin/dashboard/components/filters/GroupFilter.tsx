@@ -1,21 +1,21 @@
 import React from 'react';
 
-// components
 import { Select } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-
-// typings
 import { FormatMessage, IOption } from 'typings';
 
-import useGroups from 'api/groups/useGroups';
 import { IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   currentGroupFilter?: string | null;
+  placeholder?: string;
+  label?: string | JSX.Element;
   onGroupFilter: (filter: IOption) => void;
 }
 
@@ -35,7 +35,12 @@ const generateGroupOptions = (
   ];
 };
 
-const GroupFilter = ({ currentGroupFilter, onGroupFilter }: Props) => {
+const GroupFilter = ({
+  currentGroupFilter,
+  placeholder,
+  label,
+  onGroupFilter,
+}: Props) => {
   const { data: groups } = useGroups({});
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -50,7 +55,8 @@ const GroupFilter = ({ currentGroupFilter, onGroupFilter }: Props) => {
     <Select
       id="groupFilter"
       onChange={onGroupFilter}
-      placeholder={formatMessage(messages.labelGroupFilter)}
+      placeholder={placeholder}
+      label={label}
       value={currentGroupFilter || ''}
       options={groupFilterOptions}
     />

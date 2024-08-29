@@ -1,22 +1,16 @@
-// services
 import { Query, QuerySchema } from 'api/analytics/types';
+import useAnalytics from 'api/analytics/useAnalytics';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parsePieData, parseExcelData } from './parse';
-
-// typings
-import { Response, QueryParameters } from './typings';
-
-// utils
 import {
   getProjectFilter,
   getDateFilter,
 } from 'components/admin/GraphCards/_utils/query';
-import useAnalytics from 'api/analytics/useAnalytics';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { parsePieData, parseExcelData } from './parse';
+import { getTranslations } from './translations';
+import { Response, QueryParameters } from './typings';
 
 const query = ({
   projectId,
@@ -26,7 +20,6 @@ const query = ({
   const visitorTypesCountQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',

@@ -1,17 +1,14 @@
-// libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { isError } from 'lodash-es';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
+import { isError } from 'lodash-es';
+import { Helmet } from 'react-helmet';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
+import { injectIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
@@ -46,8 +43,8 @@ const PageMeta = React.memo<Props & WrappedComponentProps>(
         {getAlternateLinks(tenantLocales)}
         {getCanonicalLink()}
         <meta name="title" content={ideasIndexTitle} />
-        <meta name="description" content={ideasIndexDescription} />
         <meta property="og:title" content={ideasIndexTitle} />
+        <meta name="description" content={ideasIndexDescription} />
         <meta property="og:description" content={ideasIndexDescription} />
         <meta property="og:url" content={location.href} />
       </Helmet>

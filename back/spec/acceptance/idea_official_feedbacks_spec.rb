@@ -10,7 +10,7 @@ resource 'OfficialFeedback' do
 
   before do
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
+    @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project)
     @feedbacks = create_list(:official_feedback, 2, post: @idea)
   end

@@ -1,27 +1,30 @@
+import React from 'react';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
-const CTA = ({ buttonStyle }: Props) => {
+const CTA = ({ buttonStyle, homepageSettings }: Props) => {
   const localize = useLocalize();
-  const { data: homepageSettings } = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const ctaType = homepageSettings.data.attributes.banner_cta_signed_in_type;
+    const ctaType = homepageSettings.banner_cta_signed_in_type;
 
     const customButtonText =
-      homepageSettings.data.attributes.banner_cta_signed_in_text_multiloc;
+      homepageSettings.banner_cta_signed_in_text_multiloc;
 
-    const customButtonUrl =
-      homepageSettings.data.attributes.banner_cta_signed_in_url;
+    const customButtonUrl = homepageSettings.banner_cta_signed_in_url;
 
     switch (ctaType) {
       case 'customized_button':

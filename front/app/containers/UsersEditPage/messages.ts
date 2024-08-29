@@ -101,7 +101,7 @@ export default defineMessages({
   deletionSubtitle: {
     id: 'app.containers.UsersEditPage.deletionSubtitle',
     defaultMessage:
-      'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
+      'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@govocal.com.',
   },
   deleteMyAccount: {
     id: 'app.containers.UsersEditPage.deleteMyAccount',
@@ -118,6 +118,11 @@ export default defineMessages({
   reasonsToStayListTitle: {
     id: 'app.containers.UsersEditPage.reasonsToStayListTitle',
     defaultMessage: 'Before you go...',
+  },
+  activeProposalVotesWillBeDeleted: {
+    id: 'app.containers.UsersEditPage.activeProposalVotesWillBeDeleted',
+    defaultMessage:
+      'Your votes on proposals that are still open for voting will be deleted. Votes on proposals where the voting period has closed will not be deleted.',
   },
   tooManyEmails: {
     id: 'app.containers.UsersEditPage.tooManyEmails',
@@ -273,10 +278,10 @@ export default defineMessages({
   /*
    * Meta
    */
-  metaTitle: {
-    id: 'app.containers.UsersEditPage.metaTitle',
+  metaTitle1: {
+    id: 'app.containers.UsersEditPage.metaTitle1',
     defaultMessage:
-      'Profile settings page of {firstName} {lastName} | CitizenLab',
+      'Profile settings page of {firstName} {lastName} | {orgName}',
   },
   metaDescription: {
     id: 'app.containers.UsersEditPage.metaDescription',

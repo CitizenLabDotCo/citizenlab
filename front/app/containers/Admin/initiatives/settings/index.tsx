@@ -1,45 +1,34 @@
 import React, { useState, useMemo, useEffect } from 'react';
+
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useNavbarItems from 'api/navbar/useNavbarItems';
-import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-
-// services
-import { ProposalsSettings } from 'api/app_configuration/types';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
-
-// components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
-import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import Thresholds from './Thresholds';
-import ThresholdReachedMessage from './ThresholdReachedMessage';
-import EligibilityCriteria from './EligibilityCriteria';
-import PageBody from './PageBody';
-import SubmitButton from './SubmitButton';
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import RequireReviewToggle from './RequireReviewToggle';
-import Cosponsors from './Cosponsors';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// typings
 import { Multiloc } from 'typings';
 
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 7px;
-`;
+import { ProposalsSettings } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import Cosponsors from './Cosponsors';
+import EligibilityCriteria from './EligibilityCriteria';
+import PageBody from './PageBody';
+import PostingTips from './PostingTips';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
+import RequireReviewToggle from './RequireReviewToggle';
+import SubmitButton from './SubmitButton';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
+import Thresholds from './Thresholds';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 10px;
@@ -74,10 +63,7 @@ const InitiativesSettingsPage = () => {
   const { data: proposalsPage } = useCustomPageBySlug('initiatives');
 
   const remoteProposalsSettings = useMemo(() => {
-    if (
-      isNilOrError(appConfiguration) ||
-      !appConfiguration.data.attributes.settings.initiatives
-    ) {
+    if (isNilOrError(appConfiguration)) {
       return null;
     }
 
@@ -273,6 +259,10 @@ const InitiativesSettingsPage = () => {
           <EligibilityCriteria
             value={localProposalsSettings.eligibility_criteria}
             onChange={updateProposalsSetting('eligibility_criteria')}
+          />
+          <PostingTips
+            postingTips={localProposalsSettings.posting_tips}
+            onChangePostingTips={updateProposalsSetting('posting_tips')}
           />
           <ThresholdReachedMessage
             value={localProposalsSettings.threshold_reached_message}

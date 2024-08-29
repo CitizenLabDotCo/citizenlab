@@ -1,0 +1,13 @@
+fi:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Idean antaminen minulle
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Idean antaminen - järjestelmänvalvojat ja projektipäälliköt
+    idea_assigned_to_you:
+      by_author: 'kirjoittaja %{authorName}'
+      cta_reply_to: 'Anna palautetta %{authorName}'
+      event_description_idea: 'Sinulle on annettu idea. Anna palautetta kirjoittamalla virallinen päivitys tai muuttamalla sen tilaa.'
+      main_header: '%{firstName}, sinulla on uusi tehtävä'
+      subject: 'Sinulla on tehtävä alustalla %{organizationName}'
+      preheader_idea: 'Idea %{authorName} on annettu sinulle'

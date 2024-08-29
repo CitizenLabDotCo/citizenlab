@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+
 import useExceedsSeats from './useExceedsSeats';
 
 jest.mock('api/seats/useSeats', () =>

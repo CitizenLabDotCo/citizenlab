@@ -1,0 +1,3 @@
+nl-BE:
+  analysis:
+    example_tag_n: Voorbeeld tag %{n}

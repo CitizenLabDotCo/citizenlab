@@ -1,48 +1,52 @@
 import React from 'react';
 
-// components
-import IdeaCardFooter from './IdeaCardFooter';
-import FooterWithReactionControl from './FooterWithReactionControl';
-
-// typings
-import { IProject } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import IdeaFooter from './IdeaFooter';
+import ProposalFooter from './ProposalFooter';
+import VotingFooter from './VotingFooter';
 
 interface Props {
-  project?: IProject;
   idea: IIdeaData;
   hideIdeaStatus: boolean;
   participationMethod: ParticipationMethod | undefined;
 }
 
-const Footer = ({
-  project,
-  idea,
-  hideIdeaStatus,
-  participationMethod,
-}: Props) => {
+const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
+  const { data: project } = useProjectById(idea.relationships.project.data.id);
+
   if (!project) return null;
 
   const commentingEnabled =
-    project.data.attributes.action_descriptor.commenting_idea.enabled;
-  const projectHasComments = project.data.attributes.comments_count > 0;
-  const showCommentCount = commentingEnabled || projectHasComments;
+    project.data.attributes.action_descriptors.commenting_idea.enabled;
+  const ideaHasComments = idea.attributes.comments_count > 0;
+  const showCommentCount = commentingEnabled || ideaHasComments;
 
   // the participationMethod checks ensure that the footer is not shown on
   // e.g. /ideas index page because there's no participationMethod
   // passed through to the IdeaCards from there.
   // Should probably have better solution in future.
   if (participationMethod === 'voting') {
-    return <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />;
+    return <VotingFooter idea={idea} showCommentCount={showCommentCount} />;
   }
 
   if (participationMethod === 'ideation') {
     return (
-      <FooterWithReactionControl
+      <IdeaFooter
         idea={idea}
         hideIdeaStatus={hideIdeaStatus}
         showCommentCount={showCommentCount}
+      />
+    );
+  }
+  if (participationMethod === 'proposals') {
+    return (
+      <ProposalFooter
+        showCommentCount={showCommentCount}
+        idea={idea}
+        hideIdeaStatus={hideIdeaStatus}
       />
     );
   }

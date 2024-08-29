@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
-    let!(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
-    let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
+    let_it_be(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
+    let_it_be(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
 
     before do
       SettingsService.new.activate_feature! 'user_confirmation'
@@ -19,9 +19,14 @@ RSpec.describe ConfirmationsMailer do
       expect(message.to).to eq(['some_email@email.com'])
     end
 
-    it "renders the receiver's new email address when present" do
-      user.update!(new_email: 'new@email.com')
-      expect(message.to).to eq(['new@email.com'])
+    context "when receiver's email address changes" do
+      let(:user) { create(:user_with_confirmation, email: 'just_some_email@email.com') }
+      let(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
+
+      it "renders the receiver's new email address when present" do
+        user.update!(new_email: 'new@email.com')
+        expect(message.to).to eq(['new@email.com'])
+      end
     end
 
     it 'renders the sender address' do

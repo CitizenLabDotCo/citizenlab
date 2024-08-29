@@ -1,21 +1,20 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
-// router
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
-// styling
-import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
-
-// typings
-import { IProjectData } from 'api/projects/types';
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -28,26 +27,41 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
+  event: IEventData;
 }
 
-const TopBar = ({ project }: Props) => {
-  const localize = useLocalize();
-
-  const handleGoBack = useCallback(() => {
-    if (project) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  }, [project]);
+const TopBar = ({ project, event }: Props) => {
+  const location = useLocation();
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
 
   return (
     <Bar>
-      <Box mb="40px">
+      <Box display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
-          text={localize(project.attributes.title_multiloc)}
-          onClick={handleGoBack}
+          text={formatMessage(messages.goBack)}
+          onClick={() => {
+            const hasGoBackLink = location.key !== 'default';
+            hasGoBackLink
+              ? clHistory.goBack()
+              : clHistory.push(`/projects/${project.attributes.slug}`);
+          }}
         />
+        {canModerateProject(project, authUser) && (
+          <Button
+            buttonStyle="secondary-outlined"
+            m="0px"
+            icon="edit"
+            px="8px"
+            py="4px"
+            text={formatMessage(messages.editEvent)}
+            onClick={() => {
+              clHistory.push(
+                `/admin/projects/${project.id}/events/${event.id}`
+              );
+            }}
+          />
+        )}
       </Box>
     </Bar>
   );

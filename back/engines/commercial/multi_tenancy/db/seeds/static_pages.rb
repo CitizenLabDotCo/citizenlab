@@ -9,7 +9,7 @@ module MultiTenancy
         8.times do
           StaticPage.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
-            top_info_section_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            top_info_section_multiloc: runner.rand_description_multiloc,
             top_info_section_enabled: true,
             files_section_enabled: true
           })

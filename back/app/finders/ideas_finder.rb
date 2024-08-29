@@ -5,7 +5,7 @@ class IdeasFinder < ApplicationFinder
     scope ||= _base_scope
     super(
       params,
-      scope: only_idea_inputs_scope(scope),
+      scope: scope.publicly_visible,
       includes: includes,
       current_user: current_user
     )
@@ -13,16 +13,12 @@ class IdeasFinder < ApplicationFinder
 
   private
 
-  def only_idea_inputs_scope(scope)
-    phase_ideas = scope.where(project: Project.where(process_type: 'timeline'), creation_phase: nil)
-    project_ideas = scope.where(
-      project: Project.where(process_type: 'continuous', participation_method: %w[ideation voting])
-    )
-    phase_ideas.or(project_ideas)
-  end
-
   def ideas_condition(ids)
     where(id: ids)
+  end
+
+  def transitive_condition(transitive)
+    transitive ? records.transitive : records
   end
 
   def projects_condition(project_ids)

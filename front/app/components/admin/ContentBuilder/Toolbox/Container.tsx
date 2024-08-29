@@ -1,21 +1,22 @@
 import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  stylingConsts,
+  colors,
+  BoxProps,
+} from '@citizenlab/cl2-component-library';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
-interface Props {
+type Props = {
   children: React.ReactNode;
-}
+} & BoxProps;
 
-const Container = ({ children }: Props) => (
+const Container = ({ children, ...rest }: Props) => (
   <Box
     position="fixed"
     zIndex="99999"
     flex="0 0 auto"
-    h="100%"
+    h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
     w="210px"
     display="flex"
     flexDirection="column"
@@ -23,8 +24,9 @@ const Container = ({ children }: Props) => (
     bgColor="#ffffff"
     overflowY="auto"
     borderRight={`1px solid ${colors.grey500}`}
+    {...rest}
   >
-    <Box w="100%" display="inline">
+    <Box w="100%" display="inline" pb="20px">
       {children}
     </Box>
   </Box>

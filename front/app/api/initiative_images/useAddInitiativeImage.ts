@@ -1,18 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import initiativeImagesKeys from './keys';
 import { IInitiativeImage, AddInitiativeImageObject } from './types';
 
 const addInitiativeImage = async ({
   initiativeId,
   ...requestBody
-}: AddInitiativeImageObject) =>
-  fetcher<IInitiativeImage>({
+}: AddInitiativeImageObject) => {
+  return fetcher<IInitiativeImage>({
     path: `/initiatives/${initiativeId}/images`,
     action: 'post',
     body: requestBody,
   });
+};
 
 const useAddInitiativeImage = () => {
   const queryClient = useQueryClient();

@@ -1,20 +1,19 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useUserCustomFieldsOptions from './useUserCustomFieldsOptions';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
+import useUserCustomFieldsOptions from './useUserCustomFieldsOptions';
 
 const apiPath = '*/users/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: userCustomFieldsOptionsData })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: userCustomFieldsOptionsData },
+      { status: 200 }
     );
   })
 );
@@ -41,8 +40,8 @@ describe('useUserCustomFieldsOptions', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

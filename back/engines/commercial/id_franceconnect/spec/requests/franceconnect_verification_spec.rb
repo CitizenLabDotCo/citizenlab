@@ -52,7 +52,8 @@ describe 'franceconnect verification' do
       enabled: true,
       environment: 'integration',
       identifier: 'fakeid',
-      secret: 'fakesecret'
+      secret: 'fakesecret',
+      scope: %w[given_name family_name email]
     }
     settings['verification'] = {
       allowed: true,

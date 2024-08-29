@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisBackgroundTasks from './useAnalysisBackgroundTasks';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useAnalysisBackgroundTasks from './useAnalysisBackgroundTasks';
 
 const apiPath = '*analyses/:analysisId/background_tasks';
 
@@ -25,10 +24,10 @@ const analysesBackgroundTasksData = [
 ];
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: analysesBackgroundTasksData })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: analysesBackgroundTasksData },
+      { status: 200 }
     );
   })
 );
@@ -55,8 +54,8 @@ describe('useAnalysisBackgroundTasks', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

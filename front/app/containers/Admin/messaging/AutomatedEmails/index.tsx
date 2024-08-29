@@ -1,20 +1,25 @@
 import React, { useState, useMemo } from 'react';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { colors } from 'utils/styleUtils';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import CampaignRow from './CampaignRow';
 import ExampleModal from './ExampleModal';
-import { groupBy, sortBy, stringifyCampaignFields } from './utils';
 import {
   CampaignData,
   GroupedCampaignsEntry,
   SubGroupedCampaignsEntry,
 } from './types';
-import CampaignRow from './CampaignRow';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { internalCommentNotificationTypes } from 'api/campaigns/types';
+import { groupBy, sortBy, stringifyCampaignFields } from './utils';
 
 const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({

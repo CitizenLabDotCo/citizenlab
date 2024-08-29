@@ -1,5 +1,6 @@
-import { IQueryParameters } from './types';
 import { QueryKeys } from 'utils/cl-react-query/types';
+
+import { IQueryParameters } from './types';
 
 const baseKey = { type: 'custom_field' };
 
@@ -11,7 +12,7 @@ const userCustomFieldsKeys = {
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ customFieldId }: { customFieldId?: string }) => [
-    { ...baseKey, operation: 'item', parameters: { customFieldId } },
+    { ...baseKey, operation: 'item', parameters: { id: customFieldId } },
   ],
 } satisfies QueryKeys;
 

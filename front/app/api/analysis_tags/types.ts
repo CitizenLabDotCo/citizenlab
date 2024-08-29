@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import tagsKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import tagsKeys from './keys';
 
 export type TagsKeys = Keys<typeof tagsKeys>;
 
@@ -11,6 +13,7 @@ export interface ITagParams {
 
 export const tagTypes = [
   'custom',
+  'onboarding_example',
   'language',
   'platform_topic',
   'nlp_topic',

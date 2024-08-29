@@ -6,13 +6,11 @@ module PublicApi
 
     def index
       ideas = IdeasFinder.new(
-        Idea.includes(:idea_images, :project, :idea_status).order(created_at: :desc),
+        Idea.order(created_at: :desc),
         **finder_params
       ).execute
 
-      # TODO: Only return ideas, separate endpoint for survey responses
-
-      list_items(ideas, V2::IdeaSerializer)
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status])
     end
 
     def show
@@ -23,7 +21,7 @@ module PublicApi
 
     def finder_params
       params
-        .permit(:author_id, :project_id, topic_ids: [])
+        .permit(:author_id, :project_id, :type, topic_ids: [])
         .to_h
         .symbolize_keys
     end

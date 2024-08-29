@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderPollQuestion from './useReorderPollQuestion';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
+import useReorderPollQuestion from './useReorderPollQuestion';
 
 const apiPath = '*/poll_questions/:questionId/reorder';
 
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: pollQuestionsData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: pollQuestionsData[0] }, { status: 200 });
   })
 );
 
@@ -29,8 +28,7 @@ describe('useReorderPollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         ordering: 1,
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 
@@ -40,8 +38,8 @@ describe('useReorderPollQuestion', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -53,8 +51,7 @@ describe('useReorderPollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         ordering: 1,
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 

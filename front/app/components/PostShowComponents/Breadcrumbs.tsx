@@ -1,24 +1,23 @@
 import React from 'react';
 
-// i18n
-import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-
-// styles
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import {
+  Icon,
+  fontSizes,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-
-// typings
+import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
+
+import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -70,7 +69,7 @@ const LinkText = styled.span``;
 type Message = { message: MessageDescriptor };
 
 interface ILink {
-  to: string;
+  to: RouteType;
   text: Multiloc | Message;
 }
 

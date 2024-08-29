@@ -1,28 +1,22 @@
 import React from 'react';
-import { Row } from 'components/admin/ResourceList';
 
-// components
-import Button from 'components/UI/Button';
-import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-
-// resources
-import useCustomPages from 'api/custom_pages/useCustomPages';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// types
+import useCustomPages from 'api/custom_pages/useCustomPages';
 import { ITopicData } from 'api/topics/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { Row } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 
 const Buttons = styled.div`
   display: flex;
@@ -98,7 +92,7 @@ const CustomTopicRow = (props: Props) => {
 
         <Button
           linkTo={`/admin/settings/topics/${topic.id}/edit`}
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="edit"
           id="e2e-custom-topic-edit-button"
         >

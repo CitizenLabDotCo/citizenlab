@@ -17,7 +17,6 @@ class WebApi::V1::InitiativesController < ApplicationController
       includes: %i[author assignee topics areas]
     ).find_records
     initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
-
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
@@ -68,7 +67,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
       .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string is used
       .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
         attributes.each do |attribute|
@@ -76,7 +75,7 @@ class WebApi::V1::InitiativesController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = initiatives.count
+    counts['total'] = initiatives.reorder(nil).distinct.count # reorder(nil) avoids SQL error on SELECT DISTINCT when a search string is used
     render json: raw_json(counts)
   end
 
@@ -112,7 +111,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @initiative.save save_options
+      if @initiative.save(**save_options)
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
@@ -146,7 +145,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     saved = nil
     ActiveRecord::Base.transaction do
-      saved = @initiative.save save_options
+      saved = @initiative.save(**save_options)
       if saved
         service.after_update(@initiative, current_user, cosponsor_ids)
       end
@@ -202,13 +201,19 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   private
 
+  # renders errors in the new HookForm format
+  def render_profanity_blocked(exception)
+    errors = exception.violating_attributes.index_with { [{ error: :includes_banned_words }] }
+    render json: { errors: errors }, status: :unprocessable_entity
+  end
+
   def set_initiative
     @initiative = Initiative.find params[:id]
     authorize @initiative
   end
 
   def serialization_options_for(initiatives)
-    default_params = jsonapi_serializer_params(pcs: ParticipationContextService.new)
+    default_params = jsonapi_serializer_params
 
     if current_user
       reactions = current_user.reactions.where(

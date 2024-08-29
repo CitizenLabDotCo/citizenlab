@@ -46,5 +46,12 @@ module IdHoplr
       type: 'string',
       private: true
     }
+
+    add_setting 'neighbourhood_custom_field_key', required: false, schema: {
+      private: true,
+      type: 'string',
+      title: 'Neighbourhood custom field key',
+      description: 'The `key` attribute of the custom field where the neighbourhood should be stored. Leave empty to not store the neighbourhood.'
+    }
   end
 end

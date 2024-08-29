@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+
+import adminPublicationsKeys from 'api/admin_publications/keys';
+import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
+import areasKeys from 'api/areas/keys';
+import meKeys from 'api/me/keys';
+import topicsKeys from 'api/topics/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import projectsKeys from './keys';
 import { IProject, IUpdatedProjectProperties } from './types';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { CLErrors } from 'typings';
-import topicsKeys from 'api/topics/keys';
-import areasKeys from 'api/areas/keys';
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import meKeys from 'api/me/keys';
-import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 
 const addProject = async (project: IUpdatedProjectProperties) =>
   fetcher<IProject>({

@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::InvitationToCosponsorInitiativeMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
@@ -37,7 +38,7 @@ RSpec.describe EmailCampaigns::InvitationToCosponsorInitiativeMailer do
     end
 
     it 'assigns cta url' do
-      post_url = Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
+      post_url = Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(post_url)
     end
   end

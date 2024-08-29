@@ -14,6 +14,7 @@ resource 'Initiatives' do
     header_token_for @user
   end
 
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives' do
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -175,6 +176,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/as_markers' do
     before do
       locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
@@ -209,6 +211,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/as_xlsx' do
     before { admin_header_token }
 
@@ -242,6 +245,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   get 'web_api/v1/initiatives/filter_counts' do
     before do
       Initiative.all.each(&:destroy!)
@@ -295,6 +299,11 @@ resource 'Initiatives' do
       do_request areas: [@a1.id]
       assert_status 200
     end
+
+    example 'List initiative counts when also using search filtering AND sort', document: false do
+      do_request(search: 'uniqque', sort: 'new')
+      assert_status 200
+    end
   end
 
   get 'web_api/v1/initiatives/:id' do
@@ -330,6 +339,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   post 'web_api/v1/initiatives' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -347,6 +357,7 @@ resource 'Initiatives' do
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.'
       parameter :anonymous, 'Post this initiative anonymously - true/false'
+      parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -394,13 +405,13 @@ resource 'Initiatives' do
       end
     end
 
-    example_group 'with granular permissions' do
+    example_group 'with permissions on phase' do
       let(:group) { create(:group) }
 
       before do
-        PermissionsService.new.update_global_permissions
+        Permissions::PermissionsUpdateService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
-          .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'users', groups: [group])
       end
 
       example '[error] Not authorized to create an initiative', document: false do
@@ -418,14 +429,18 @@ resource 'Initiatives' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
-      let(:location_description) { 'fuck' }
+      let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
+      let(:body_multiloc) { { 'fr-FR' => 'Fuck' } }
 
       example_request '[error] Create an initiative with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
-        expect(blocked_error).to be_present
-        expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['location_description'])
+        title_multiloc_error = json_response
+          .dig(:errors, :title_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+        body_multiloc_error = json_response
+          .dig(:errors, :body_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+        expect(title_multiloc_error).to be_present
+        expect(body_multiloc_error).to be_present
       end
     end
 
@@ -450,6 +465,12 @@ resource 'Initiatives' do
         expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
       end
 
+      example 'Does not add the author as a follower of the initiative', document: false do
+        expect { do_request }.not_to change(Follower, :count)
+        initiative_id = response_data[:id]
+        expect(Follower.where(followable_id: initiative_id, user: @user)).not_to exist
+      end
+
       describe 'when anonymous posting is not allowed' do
         let(:allow_anonymous_participation) { false }
 
@@ -460,8 +481,26 @@ resource 'Initiatives' do
         end
       end
     end
+
+    describe 'cosponsor_ids' do
+      let(:cosponsor) { create(:user) }
+      let(:cosponsor_ids) { [cosponsor.id] }
+
+      example 'Update the cosponsors of an initiative' do
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(instance_of(CosponsorsInitiative), 'created', @user, instance_of(Integer))
+          .exactly(1).times
+
+        assert_status 201
+        json_response = json_parse(response_body)
+
+        expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
+      end
+    end
   end
 
+  # TODO: cleanup-after-proposals-migration
   patch 'web_api/v1/initiatives/:id' do
     before do
       create(:initiative_status, code: 'proposed')
@@ -503,17 +542,6 @@ resource 'Initiatives' do
           expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-        end
-
-        example 'Check for the automatic creation of a like by the author when the publication status of an initiative is updated from draft to published', document: false do
-          @initiative.update!(publication_status: 'draft')
-          do_request initiative: { publication_status: 'published' }
-          json_response = json_parse(response_body)
-          new_initiative = Initiative.find(json_response.dig(:data, :id))
-          expect(new_initiative.reactions.size).to eq 1
-          expect(new_initiative.reactions[0].mode).to eq 'up'
-          expect(new_initiative.reactions[0].user.id).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
         end
       end
 
@@ -698,6 +726,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   patch 'web_api/v1/initiatives/:id/accept_cosponsorship_invite' do
     before do
       @initiative = create(:initiative)
@@ -716,6 +745,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: move-old-proposals-test
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
@@ -729,6 +759,7 @@ resource 'Initiatives' do
     end
   end
 
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
       admin_header_token

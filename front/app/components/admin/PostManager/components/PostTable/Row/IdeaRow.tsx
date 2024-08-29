@@ -1,46 +1,40 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
+
+import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-// services
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaData } from 'api/ideas/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-
-// components
-import { TitleLink } from '.';
-import { Box, colors, Td } from '@citizenlab/cl2-component-library';
-import StyledRow from './StyledRow';
-import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Outlet from 'components/Outlet';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
+import { CellConfiguration, SupportedLocale, Override } from 'typings';
 
-// utils
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
+import { IPhaseData } from 'api/phases/types';
+
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
+import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
+import FeatureFlag from 'components/FeatureFlag';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
 import { TFilterMenu, ManagerType } from '../../..';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Locale,
-  Override,
-} from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
-
-// hooks
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+
+import PhaseDeselectModal from './PhaseDeselectModal';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
+import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
+
+import { TitleLink } from '.';
 
 type Props = {
   type: ManagerType;
@@ -55,7 +49,7 @@ type Props = {
   className?: string;
   onClickCheckbox: (event) => void;
   onClickTitle: (event: MouseEvent) => void;
-  locale: Locale;
+  locale: SupportedLocale;
 };
 
 export type IdeaCellComponentProps = {
@@ -73,15 +67,30 @@ const IdeaRow = ({
   phases,
   statuses,
   selectedPhaseId,
-  selectedProjectId,
   idea,
   selection,
   locale,
+  type,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [cells, setCells] = useState<
-    CellConfiguration<IdeaCellComponentProps>[]
-  >([
+  const ideasPhases = useIdeasPhases(
+    idea.relationships.ideas_phases.data.map((relation) => relation.id)
+  );
+  const [phasesToBeSelected, setPhasesToBeSeselected] = useState<
+    string[] | null
+  >(null);
+
+  const phaseDeselectModalOpen = !!phasesToBeSelected;
+  const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
+
+  const { mutate: updateIdea, isLoading: updatingIdea } = useUpdateIdea();
+
+  const handleConfirmDeselectPhase = () => {
+    updateIdea({ id: idea.id, requestBody: { phase_ids: phasesToBeSelected } });
+    closePhaseDeselectModal();
+  };
+
+  const cells = [
     {
       name: 'selection',
       cellProps: { collapsing: true },
@@ -108,14 +117,65 @@ const IdeaRow = ({
     {
       name: 'title',
       onClick: onClickTitle,
-      Component: ({ idea, onClick }) => {
+      Component: ({ idea, onClick }: IdeaCellComponentProps) => {
+        const wasImported = !!idea.relationships.idea_import?.data;
+
         return (
-          <TitleLink
-            className="e2e-idea-manager-idea-title intercom-admin-input-manager-title"
-            onClick={onClick}
-          >
-            <T value={idea.attributes.title_multiloc} />
-          </TitleLink>
+          <>
+            <TitleLink
+              className="e2e-idea-manager-idea-title intercom-admin-input-manager-title"
+              onClick={onClick}
+            >
+              <T value={idea.attributes.title_multiloc} />
+            </TitleLink>
+            {wasImported && (
+              <Badge color={colors.coolGrey700}>
+                {formatMessage(messages.imported)}
+              </Badge>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      name: 'assignee',
+      cellProps: {
+        onClick: (event: Event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        singleLine: true,
+      },
+      onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
+        const ideaId = idea.id;
+
+        updateIdea({
+          id: ideaId,
+          requestBody: { assignee_id: assigneeId || null },
+        });
+
+        trackEventByName(tracks.changeIdeaAssignment, {
+          location: 'Idea Manager',
+          method: 'Changed through the dropdown n the table overview',
+          idea: ideaId,
+        });
+      },
+      Component: ({
+        idea,
+        onChange,
+      }: Override<
+        IdeaCellComponentProps,
+        {
+          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
+        }
+      >) => {
+        const projectId = idea.relationships.project.data.id;
+        return (
+          <AssigneeSelect
+            onAssigneeChange={onChange(idea)}
+            projectId={projectId}
+            assigneeId={idea.relationships.assignee?.data?.id}
+          />
         );
       },
     },
@@ -160,17 +220,21 @@ const IdeaRow = ({
         );
       },
     },
-    {
-      name: 'down',
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return (
-          <>
-            <Icon name="thumbs down" />
-            {idea.attributes.dislikes_count}
-          </>
-        );
-      },
-    },
+    ...(type !== 'ProjectProposals'
+      ? [
+          {
+            name: 'down',
+            Component: ({ idea }: IdeaCellComponentProps) => {
+              return (
+                <>
+                  <Icon name="thumbs down" />
+                  {idea.attributes.dislikes_count}
+                </>
+              );
+            },
+          },
+        ]
+      : []),
     {
       name: 'published_on',
       Component: ({ idea }) => {
@@ -180,9 +244,10 @@ const IdeaRow = ({
         return null;
       },
     },
-  ]);
+  ];
 
-  const { mutate: updateIdea } = useUpdateIdea();
+  const currentPhases = idea.relationships.phases.data.map((d) => d.id);
+
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
@@ -241,7 +306,6 @@ const IdeaRow = ({
         }
 
         if (dropResult.type === 'phase') {
-          const currentPhases = idea.relationships.phases.data.map((d) => d.id);
           const newPhases = uniq(currentPhases.concat(dropResult.id));
 
           ideaIds.forEach((ideaId) => {
@@ -280,23 +344,12 @@ const IdeaRow = ({
     },
   });
 
-  const handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaCellComponentProps>
-    >
-  ) => {
-    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
-  };
-
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
-  const selectedStatus = idea.relationships.idea_status.data.id;
-  const displayColumns = usePostManagerColumnFilter(
-    selectedProjectId,
-    selectedPhaseId
-  );
+  const selectedStatus = idea.relationships.idea_status.data?.id;
+  const displayColumns = usePostManagerColumnFilter(selectedPhaseId);
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,
@@ -335,7 +388,13 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
+    const removedPhaseId = getRemovedPhase(selectedPhases, currentPhases);
+
+    if (removedPhaseId && ideaHasVotesInPhase(removedPhaseId, ideasPhases)) {
+      setPhasesToBeSeselected(selectedPhases);
+    } else {
+      updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
+    }
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
@@ -356,10 +415,6 @@ const IdeaRow = ({
 
   return (
     <>
-      <Outlet
-        id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
-        onData={handleData}
-      />
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
         undraggable={false}
@@ -387,6 +442,12 @@ const IdeaRow = ({
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
         postType="idea"
+      />
+      <PhaseDeselectModal
+        open={phaseDeselectModalOpen}
+        isLoading={updatingIdea}
+        onClose={closePhaseDeselectModal}
+        onConfirm={handleConfirmDeselectPhase}
       />
     </>
   );

@@ -1,6 +1,6 @@
-import { IStreamParams } from 'utils/streams';
-import projectFolderFilesKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectFolderFilesKeys from './keys';
 
 export type ProjectFolderFilesKeys = Keys<typeof projectFolderFilesKeys>;
 
@@ -28,7 +28,6 @@ export interface AddProjectFolderObject {
 
 export interface IQueryParameters {
   projectFolderId: string;
-  streamParams?: IStreamParams | null;
 }
 
 export interface IProjectFolderFile {

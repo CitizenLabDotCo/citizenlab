@@ -1,7 +1,9 @@
-// typings
 import { RefObject } from 'react';
+
 import { Percentage } from 'typings';
+
 import { NilOrError } from 'utils/helperUtils';
+
 import { Position, LegendItem } from './_components/Legend/typings';
 
 // PROPS
@@ -47,6 +49,14 @@ export interface AxisProps {
   tickLine?: boolean;
   hide?: boolean;
   domain?: Domain;
+}
+
+export interface XAxisProps extends AxisProps {
+  orientation?: 'top' | 'bottom';
+}
+
+export interface YAxisProps extends AxisProps {
+  orientation?: 'left' | 'right';
 }
 
 type Domain = [d1: DomainBound, d2: DomainBound];

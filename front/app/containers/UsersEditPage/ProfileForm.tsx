@@ -1,48 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useState, useEffect, FormEvent } from 'react';
 
-// services
+import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { isEmpty } from 'lodash-es';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { IOption, UploadFile, Multiloc } from 'typings';
+import { string, object, mixed } from 'yup';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthUser from 'api/me/useAuthUser';
+import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
+import useUpdateUser from 'api/users/useUpdateUser';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { appLocalePairs } from 'containers/App/constants';
+
+import { SectionField } from 'components/admin/Section';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Feedback from 'components/HookForm/Feedback';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import Input from 'components/HookForm/Input';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+import UserCustomFieldsForm from 'components/UserCustomFields';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import Select from 'components/HookForm/Select';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// i18n
-import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// typings
-import { IOption, UploadFile, Multiloc } from 'typings';
-
-import eventEmitter from 'utils/eventEmitter';
-import useUpdateUser from 'api/users/useUpdateUser';
-import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
-import useAuthUser from 'api/me/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -53,8 +45,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
-export type ExtraFormDataKey = 'custom_field_values';
 
 type FormValues = {
   first_name?: string;
@@ -67,17 +57,17 @@ type FormValues = {
 const ProfileForm = () => {
   const tenantLocales = useAppConfigurationLocales();
   const disableBio = useFeatureFlag({ name: 'disable_user_bios' });
+  const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { mutateAsync: updateUser } = useUpdateUser();
   const { data: authUser } = useAuthUser();
   const { data: lockedAttributes } = useUserLockedAttributes();
-
   const { formatMessage } = useIntl();
-  const [extraFormData, setExtraFormData] = useState<{
-    [field in ExtraFormDataKey]?: Record<string, any>;
-  }>({});
+  const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
+  const [showAllErrors, setShowAllErrors] = useState(false);
 
   const schema = object({
-    first_name: string().when('last_name', ([last_name], schema) => {
+    first_name: string().when('last_name', (last_name, schema) => {
       return last_name
         ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
         : schema;
@@ -87,7 +77,7 @@ const ProfileForm = () => {
       bio_multiloc: object(),
     }),
     locale: string(),
-    avatar: mixed().nullable(),
+    ...(userAvatarsEnabled ? { avatar: mixed().nullable() } : {}),
   });
 
   const methods = useForm<FormValues>({
@@ -106,9 +96,10 @@ const ProfileForm = () => {
   });
 
   useEffect(() => {
-    if (isNilOrError(authUser)) return;
-    const avatarUrl =
-      authUser.data.attributes.avatar && authUser.data.attributes.avatar.medium;
+    if (!userAvatarsEnabled) return;
+
+    const avatarUrl = authUser?.data.attributes.avatar?.medium;
+
     if (avatarUrl) {
       convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
         if (fileAvatar) {
@@ -118,7 +109,7 @@ const ProfileForm = () => {
     } else {
       methods.setValue('avatar', null);
     }
-  }, [authUser, methods]);
+  }, [authUser, methods, userAvatarsEnabled]);
 
   if (!authUser || !tenantLocales) return null;
 
@@ -127,23 +118,38 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
+  const handleDisclaimer = (event: FormEvent) => {
+    // Prevent page from reloading
+    event.preventDefault();
+
+    if (
+      methods.formState.dirtyFields.avatar &&
+      methods.getValues('avatar') &&
+      isEmpty(methods.formState.errors)
+    ) {
+      setIsDisclaimerOpened(true);
+    } else {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  };
+
+  const onAcceptDisclaimer = () => {
+    methods.handleSubmit(onFormSubmit)();
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
-    // Add custom fields values to form
-    const newFormValues = Object.entries(extraFormData).reduce(
-      (acc, [key, extraFormDataConfiguration]) => {
-        return {
-          ...acc,
-          [key]: extraFormDataConfiguration?.formData,
-        };
-      },
-      formValues
-    );
 
-    eventEmitter.emit('customFieldsSubmitEvent');
-    Object.values(extraFormData).forEach((configuration) => {
-      configuration?.submit?.();
-    });
+    // Add custom fields values to form
+    const newFormValues = {
+      custom_field_values: extraFormData,
+      ...formValues,
+    };
 
     try {
       await updateUser({ userId: authUser.data.id, ...newFormValues, avatar });
@@ -159,23 +165,10 @@ const ProfileForm = () => {
     ? []
     : lockedAttributes.data.map((field) => field.attributes.name);
 
-  const handleCustomFieldsChange = ({
-    key,
-    formData,
-  }: {
-    key: ExtraFormDataKey;
-    formData: Record<string, any>;
-  }) => {
-    setExtraFormData({
-      ...extraFormData,
-      [key]: { ...(extraFormData?.[key] ?? {}), formData },
-    });
-  };
-
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form>
+        <form onSubmit={handleDisclaimer}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
@@ -183,22 +176,24 @@ const ProfileForm = () => {
           <SectionField>
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           </SectionField>
-          <SectionField>
-            <ImagesDropzone
-              name="avatar"
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="170px"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              label={formatMessage(messages.imageDropzonePlaceholder)}
-              inputLabel={formatMessage(messages.image)}
-              removeIconAriaTitle={formatMessage(
-                messages.a11y_imageDropzoneRemoveIconAriaTitle
-              )}
-              borderRadius="50%"
-            />
-          </SectionField>
+          {userAvatarsEnabled && (
+            <SectionField>
+              <ImagesDropzone
+                name="avatar"
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="170px"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
+                label={formatMessage(messages.imageDropzonePlaceholder)}
+                inputLabel={formatMessage(messages.image)}
+                removeIconAriaTitle={formatMessage(
+                  messages.a11y_imageDropzoneRemoveIconAriaTitle
+                )}
+                borderRadius="50%"
+              />
+            </SectionField>
+          )}
 
           <SectionField>
             <InputContainer>
@@ -254,22 +249,24 @@ const ProfileForm = () => {
               label={formatMessage(messages.language)}
             />
           </SectionField>
+          <UserCustomFieldsForm
+            authenticationContext={GLOBAL_CONTEXT}
+            showAllErrors={showAllErrors}
+            setShowAllErrors={setShowAllErrors}
+            onChange={setExtraFormData}
+          />
+          <Box display="flex">
+            <Button processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.submit)}
+            </Button>
+          </Box>
         </form>
-        <UserCustomFieldsForm
-          authUser={authUser.data}
-          authenticationContext={GLOBAL_CONTEXT}
-          onChange={handleCustomFieldsChange}
-        />
-        <Box display="flex">
-          <Button
-            type="submit"
-            processing={methods.formState.isSubmitting}
-            onClick={methods.handleSubmit(onFormSubmit)}
-          >
-            {formatMessage(messages.submit)}
-          </Button>
-        </Box>
       </FormProvider>
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={onAcceptDisclaimer}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </FormSection>
   );
 };

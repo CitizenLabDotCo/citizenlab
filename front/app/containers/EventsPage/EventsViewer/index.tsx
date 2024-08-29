@@ -1,39 +1,62 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
-import EventCard from 'components/EventCard';
-import Pagination from 'components/Pagination';
-
-// i18n
-import messages from '../messages';
+import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-// hooks
-import useEvents from 'api/events/useEvents';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// other
-import { isNilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
 
-interface IStyledEventCard {
-  last: boolean;
-}
+import EventCards from 'components/EventCards';
+import Pagination from 'components/Pagination';
 
-const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  margin-bottom: ${({ last }) => (last ? 0 : 39)}px;
-`;
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import messages from '../messages';
+
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+import TopBar from './TopBar';
 
 const StyledPagination = styled(Pagination)`
   justify-content: center;
   margin: 36px auto 0px;
 `;
+
+export type dateFilterKey = 'today' | 'week' | 'month' | 'all';
+
+// Gets a time period from a given key (today, week, month) and
+// returns it as a range of two values stored in an array
+const getDatesFromKey = (dateFilter: dateFilterKey[] | undefined) => {
+  if (!dateFilter) {
+    return undefined;
+  }
+
+  if (dateFilter[0] === 'today') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('1', 'day').format('YYYY-MM-DD'),
+    ];
+  } else if (dateFilter[0] === 'week') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('8', 'day').format('YYYY-MM-DD'),
+    ];
+  } else if (dateFilter[0] === 'month') {
+    return [
+      moment().format('YYYY-MM-DD'),
+      moment().add('1', 'month').add('1', 'day').format('YYYY-MM-DD'),
+    ];
+  }
+
+  return undefined;
+};
 
 interface Props {
   title: string;
@@ -41,10 +64,10 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  onClickTitleGoToProjectAndScrollToEvent?: boolean;
-  hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
+  showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
+  attendeeId?: string;
 }
 
 const EventsViewer = ({
@@ -53,21 +76,46 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  onClickTitleGoToProjectAndScrollToEvent,
-  hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
+  attendeeId,
+  showDateFilter = true,
 }: Props) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams] = useSearchParams();
+  const { formatMessage } = useIntl();
+
+  // Get any URL params
+  const projectIdsParam = searchParams.get(
+    eventsTime === 'past'
+      ? 'past_events_project_ids'
+      : 'ongoing_events_project_ids'
+  );
+  const pageNumberParam = searchParams.get(
+    eventsTime === 'past' ? 'past_page' : 'ongoing_page'
+  );
+  const dateParam =
+    eventsTime === 'currentAndFuture' ? searchParams.get('time_period') : null;
+  const projectIdsFromUrl: string[] = projectIdsParam
+    ? JSON.parse(projectIdsParam)
+    : null;
+  const dateFilterFromUrl: dateFilterKey[] = dateParam
+    ? JSON.parse(dateParam)
+    : null;
+  const pageNumberFromUrl: number | null = pageNumberParam
+    ? JSON.parse(pageNumberParam)
+    : null;
+
+  // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
-    projectId ? [projectId] : []
+    projectIdsFromUrl || (projectId ? [projectId] : [])
+  );
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
+    dateFilterFromUrl || []
   );
 
-  useEffect(() => {
-    if (projectId) {
-      setProjectIdList([projectId]);
-    }
-  }, [projectId]);
+  const [currentPage, setCurrentPage] = useState(pageNumberFromUrl || 1);
+
+  const ongoingDuringDates = getDatesFromKey(dateFilter);
 
   const {
     data: events,
@@ -80,52 +128,78 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    pageSize: 15,
+    attendeeId,
+    ongoing_during: ongoingDuringDates,
   });
-  const lastPageNumber =
-    (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
-  const shouldHideSection =
-    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
-    (isLoading && hideSectionIfNoEvents) ||
-    (isNilOrError(events) && hideSectionIfNoEvents);
+  useEffect(() => {
+    if (projectId) {
+      setProjectIdList([projectId]);
+    }
+  }, [projectId]);
 
-  if (shouldHideSection) {
-    return null;
-  }
+  // Update projectIds URL params based on state, events time will not change after initial render
+  useEffect(() => {
+    const hasProjectFilter = projectIdList?.length;
+    const eventParam =
+      eventsTime === 'past'
+        ? 'past_events_project_ids'
+        : 'ongoing_events_project_ids';
+    if (!location.pathname.includes('/projects')) {
+      updateSearchParams({
+        [eventParam]: hasProjectFilter ? projectIdList : null,
+      });
+    }
+  }, [eventsTime, projectIdList]);
+
+  // Update pageNumber URL param based on state, events time will not change after initial render
+  useEffect(() => {
+    const eventParam = eventsTime === 'past' ? 'past_page' : 'ongoing_page';
+    updateSearchParams({
+      [eventParam]: currentPage > 1 ? currentPage : null,
+    });
+  }, [eventsTime, currentPage]);
+
+  // Update date filter URL params based on state, events time will not change after initial render
+  useEffect(() => {
+    const hasDateFilter =
+      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
+    if (eventsTime === 'currentAndFuture') {
+      updateSearchParams({
+        time_period: hasDateFilter ? dateFilter : null,
+      });
+    }
+  }, [eventsTime, dateFilter]);
+
   const onCurrentPageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
+  const lastPageNumber =
+    (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
+
   return (
-    <div className={className} id="project-events">
+    <Box className={className}>
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
         setProjectIds={setProjectIdList}
+        eventsTime={eventsTime}
+        setDateFilter={setDateFilter}
+        showDateFilter={showDateFilter}
       />
-
       {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}
-
       {isLoading && <EventsSpinner />}
-
       {!isNilOrError(events) && (
         <>
-          {events.data.length > 0 &&
-            events.data.map((event, i) => (
-              <StyledEventCard
-                id={event.id}
-                event={event}
-                showProjectTitle
-                onClickTitleGoToProjectAndScrollToEvent={
-                  onClickTitleGoToProjectAndScrollToEvent
-                }
-                showLocation
-                showDescription
-                showAttachments
-                last={events.data.length - 1 === i}
-                key={event.id}
-              />
-            ))}
+          <EventCards events={events} />
+
+          <ScreenReaderOnly aria-live="assertive">
+            {formatMessage(messages.a11y_eventsHaveChanged1, {
+              numberOfEvents: events.data.length,
+            })}
+          </ScreenReaderOnly>
 
           {events.data.length === 0 && (
             <EventsMessage message={fallbackMessage} />
@@ -139,7 +213,7 @@ const EventsViewer = ({
           />
         </>
       )}
-    </div>
+    </Box>
   );
 };
 

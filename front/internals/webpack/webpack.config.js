@@ -7,16 +7,16 @@ const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
 
 const webpack = require('webpack');
 
+const { EsbuildPlugin } = require('esbuild-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 
 const dotenv = require('dotenv');
 dotenv.config({
@@ -29,7 +29,7 @@ dotenv.config({
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
   process.cwd(),
-  'app/containers/App/constants'
+  'app/containers/App/constants-commonjs'
 )).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -42,7 +42,6 @@ const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
-
   output: {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
@@ -58,8 +57,8 @@ const config = {
   devtool: isDev
     ? 'eval-cheap-module-source-map'
     : !isTestBuild
-    ? 'hidden-source-map'
-    : false,
+      ? 'hidden-source-map'
+      : false,
 
   devServer: {
     port: 3000,
@@ -84,41 +83,28 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      minimizer: ['...', new CssMinimizerPlugin()],
+      minimizer: [new EsbuildPlugin()],
     },
   }),
 
   module: {
     rules: [
       {
-        test: /\.(tsx?)|(js)$/,
+        test: /\.[tj]sx?$/,
         include: path.join(process.cwd(), 'app'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
-        },
+        loader: 'esbuild-loader',
       },
       {
-        test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
+        test: /\.css$/i,
         use: [
+          'style-loader',
+          'css-loader',
           {
-            loader: require.resolve('babel-loader'),
+            loader: 'esbuild-loader',
             options: {
-              plugins: [isDev && require.resolve('react-refresh/babel')].filter(
-                Boolean
-              ),
+              minify: true,
             },
           },
-        ],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          { loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader },
-          { loader: 'css-loader' },
         ],
       },
       {
@@ -151,7 +137,6 @@ const config = {
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
         CIRCLE_SHA1: JSON.stringify(process.env.CIRCLE_SHA1),
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
-        GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
         MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
         POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
       },
@@ -184,27 +169,25 @@ const config = {
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
-      new MomentLocalesPlugin({
-        localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
-      }),
+    new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
+    }),
 
     !isDev &&
-      new MomentTimezoneDataPlugin({
-        startYear: 2014,
-        endYear: currentYear + 8,
-      }),
-
-    !isDev &&
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].min.css',
-        chunkFilename: '[name].[contenthash].chunk.min.css',
-      }),
+    new MomentTimezoneDataPlugin({
+      startYear: 2014,
+      endYear: currentYear + 8,
+    }),
 
     sourceMapToSentry &&
-      new SentryCliPlugin({
-        include: path.join(process.cwd(), 'build'),
-        release: process.env.CIRCLE_BUILD_NUM,
-      }),
+    new SentryCliPlugin({
+      include: path.join(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    }),
+
+    new CopyPlugin({
+      patterns: [{ from: './security.txt', to: '.well-known/security.txt' }],
+    }),
   ].filter(Boolean),
 
   resolve: {
@@ -218,6 +201,7 @@ const config = {
       'react-transition-group': path.resolve(
         './node_modules/react-transition-group'
       ),
+      '@citizenlab/cl2-component-library': path.resolve('./app/component-library'),
     },
     fallback: {
       util: require.resolve('util/'),

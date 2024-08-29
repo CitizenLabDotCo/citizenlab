@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
-import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
-import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
-import { ActionPermission } from 'services/actionTakingRules';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import {
+  IInitiativeActionDescriptorName,
+  InitiativeDisabledReason,
+} from 'api/initiative_action_descriptors/types';
+import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import useAuthUser from 'api/me/useAuthUser';
 
-export type IInitiativeDisabledReason = 'notPermitted';
+import { ActionPermission } from 'utils/actionTakingRules';
 
 export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
 ) {
-  const [actionPermission, setActionPermission] = useState<
-    ActionPermission<IInitiativeDisabledReason> | null | undefined
-  >(undefined);
+  const [actionPermission, setActionPermission] =
+    useState<ActionPermission<InitiativeDisabledReason> | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const { data: authUser } = useAuthUser();
@@ -21,7 +23,7 @@ export default function useInitiativesPermissions(
 
   useEffect(() => {
     if (appConfiguration && actionDescriptor) {
-      if (actionDescriptor?.enabled) {
+      if (actionDescriptor.enabled) {
         setActionPermission({
           show: true,
           enabled: true,
@@ -29,8 +31,8 @@ export default function useInitiativesPermissions(
           authenticationRequirements: null,
         });
       } else {
-        switch (actionDescriptor?.disabled_reason) {
-          case 'missing_data': {
+        switch (actionDescriptor.disabled_reason) {
+          case 'user_missing_requirements': {
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -39,7 +41,7 @@ export default function useInitiativesPermissions(
             });
             break;
           }
-          case 'not_verified':
+          case 'user_not_verified':
             if (!authUser) {
               setActionPermission({
                 show: true,
@@ -56,7 +58,7 @@ export default function useInitiativesPermissions(
               });
             }
             break;
-          case 'not_signed_in':
+          case 'user_not_signed_in':
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -64,7 +66,7 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'sign_in_up',
             });
             break;
-          case 'not_active':
+          case 'user_not_active':
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -72,11 +74,19 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'complete_registration',
             });
             break;
+          case 'user_not_in_group':
+            setActionPermission({
+              show: true,
+              enabled: false,
+              disabledReason: 'user_not_in_group',
+              authenticationRequirements: null,
+            });
+            break;
           default:
             setActionPermission({
               show: true,
               enabled: false,
-              disabledReason: 'notPermitted',
+              disabledReason: 'user_not_permitted',
               authenticationRequirements: null,
             });
         }

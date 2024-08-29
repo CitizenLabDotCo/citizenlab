@@ -1,21 +1,18 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Modal from 'components/UI/Modal';
-import SharingButtons from 'components/Sharing/SharingButtons';
+import { Box } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
-import { useIntl } from 'utils/cl-intl';
 
-// i18n
+import SharingButtons from 'components/Sharing/SharingButtons';
 import T from 'components/T';
-import messages from './messages';
+import Modal from 'components/UI/Modal';
 
-// style
-import { Box } from '@citizenlab/cl2-component-library';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 interface Props {
   projectFolderId: string;
@@ -74,12 +71,6 @@ const ProjectFolderSharingModal = memo<Props>(
                       <SharingButtons
                         context="folder"
                         url={folderUrl}
-                        facebookMessage={formatMessage(
-                          messages.facebookMessage,
-                          {
-                            projectFolderName,
-                          }
-                        )}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           projectFolderName,
                         })}

@@ -25,7 +25,7 @@ class SettingsService
 
   def add_missing_settings(settings, schema)
     res = settings.deep_dup
-    settings.each do |feature, _feature_settings|
+    settings.each_key do |feature|
       required_settings = schema.dig('properties', feature, 'required-settings') || []
       required_settings.each do |setting|
         if settings.dig(feature, setting).nil?
@@ -77,10 +77,11 @@ class SettingsService
     res
   end
 
-  def activate_feature!(feature, config: nil)
+  def activate_feature!(feature, config: nil, settings: {})
     config ||= AppConfiguration.instance
     feature_settings = config.settings[feature] || {}
     config.settings[feature] = feature_settings.merge({ 'allowed' => true, 'enabled' => true })
+    config.settings[feature].merge!(settings)
     config.save!
   end
 

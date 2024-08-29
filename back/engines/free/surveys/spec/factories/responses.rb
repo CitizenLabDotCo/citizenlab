@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :survey_response, class: 'Surveys::Response' do
-    association :participation_context, factory: :continuous_survey_project
+  factory :typeform_survey_response, class: 'Surveys::Response' do
+    association :phase, factory: :typeform_survey_phase
     survey_service { 'typeform' }
     external_survey_id { 'ABCDE12' }
     external_response_id { 'a3a12ec67a1365927098a606107fac15' }

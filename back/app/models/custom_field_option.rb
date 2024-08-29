@@ -11,6 +11,7 @@
 #  ordering        :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  other           :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -22,6 +23,9 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  # non-persisted attribute to enable form copying
+  attribute :temp_id, :string, default: nil
+
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   belongs_to :custom_field
@@ -39,6 +43,8 @@ class CustomFieldOption < ApplicationRecord
   # area are reflected in the option, and vice versa.
   has_one :area, dependent: :nullify
   after_update :update_area
+
+  has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
 
   delegate :project_id, to: :custom_field
 
@@ -70,7 +76,7 @@ class CustomFieldOption < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, other) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
   end

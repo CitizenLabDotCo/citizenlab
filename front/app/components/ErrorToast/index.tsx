@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -8,20 +7,17 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// utils
-import styled from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
-// events
 import {
   BUDGET_EXCEEDED_ERROR_EVENT,
   VOTES_EXCEEDED_ERROR_EVENT,
 } from './events';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const StyledBox = styled(Box)`
@@ -93,6 +89,10 @@ const ErrorToast = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  if (!error) {
+    return null;
+  }
 
   return (
     <StyledBox

@@ -1,48 +1,40 @@
 import React, { useCallback } from 'react';
 
-// api
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// components
-import Image from 'components/UI/Image';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// styling
-import styled, { useTheme } from 'styled-components';
 import {
+  Icon,
+  useWindowSize,
   fontSizes,
   colors,
   media,
   viewportWidths,
   defaultCardStyle,
   isRtl,
-} from 'utils/styleUtils';
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+import { IProject } from 'api/projects/types';
 
-// typings
-import { ICauseData } from 'api/causes/types';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Image from 'components/UI/Image';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isEmptyMultiloc } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   padding: 20px;
@@ -177,14 +169,14 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
-  disabled?: boolean;
+  project: IProject;
 }
 
-const CauseCard = ({ cause, className, disabled }: Props) => {
+const CauseCard = ({ cause, className, project }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
-  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
@@ -203,34 +195,34 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     params: { cause },
   } as const;
 
-  const handleOnVolunteerButtonClick = async () => {
-    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
-    const { requirements } = response.data.attributes;
+  const { disabled_reason } =
+    project.data.attributes.action_descriptors.volunteering;
 
-    if (requirements.permitted) {
+  const blocked = !!disabled_reason;
+  const blockedAndUnfixable =
+    blocked && !isFixableByAuthentication(disabled_reason);
+
+  const handleOnVolunteerButtonClick = async () => {
+    const phaseId = cause.relationships.phase.data.id;
+
+    const context: AuthenticationContext = {
+      type: 'phase',
+      action: 'volunteering',
+      id: phaseId,
+    };
+
+    if (!blocked) {
       volunteer();
-    } else {
-      triggerAuthenticationFlow({ successAction });
+    } else if (!blockedAndUnfixable) {
+      triggerAuthenticationFlow({
+        successAction,
+        context,
+      });
     }
   };
 
-  const signIn = () =>
-    triggerAuthenticationFlow({ flow: 'signin', successAction });
-  const signUp = () =>
-    triggerAuthenticationFlow({ flow: 'signup', successAction });
-
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
-  const signUpLink = (
-    <button onClick={signUp}>
-      <FormattedMessage {...messages.signUpLinkText} />
-    </button>
-  );
-  const signInLink = (
-    <button onClick={signIn}>
-      <FormattedMessage {...messages.signInLinkText} />
-    </button>
-  );
 
   return (
     <Container className={className}>
@@ -285,28 +277,30 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? (
-            <Warning>
-              <FormattedMessage
-                {...messages.notLoggedIn}
-                values={{ signUpLink, signInLink }}
-              />
-            </Warning>
-          ) : (
-            <Button
-              onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-              disabled={!authUser || disabled}
-              buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
-              fullWidth={smallerThanSmallTablet}
-            >
-              {isVolunteer ? (
-                <FormattedMessage {...messages.withdrawVolunteerButton} />
-              ) : (
-                <FormattedMessage {...messages.becomeVolunteerButton} />
-              )}
-            </Button>
-          )}
+          <Tooltip
+            disabled={!blockedAndUnfixable}
+            placement="bottom"
+            content={formatMessage(
+              getPermissionsDisabledMessage('volunteering', disabled_reason) ??
+                messages.notOpenParticipation
+            )}
+          >
+            <div>
+              <Button
+                onClick={handleOnVolunteerButtonClick}
+                icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
+                fullWidth={smallerThanSmallTablet}
+                disabled={blockedAndUnfixable}
+              >
+                {isVolunteer ? (
+                  <FormattedMessage {...messages.withdrawVolunteerButton} />
+                ) : (
+                  <FormattedMessage {...messages.becomeVolunteerButton} />
+                )}
+              </Button>
+            </div>
+          </Tooltip>
         </ActionWrapper>
       </Right>
     </Container>

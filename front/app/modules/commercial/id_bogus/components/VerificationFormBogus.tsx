@@ -1,10 +1,13 @@
 import React, { memo, useCallback, useState } from 'react';
-import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Input } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { useQueryClient } from '@tanstack/react-query';
+import { get } from 'lodash-es';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import usersKeys from 'api/users/keys';
+
 import {
   FormContainer,
   Form,
@@ -16,15 +19,11 @@ import {
   CancelButton,
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
+import Error from 'components/UI/Error';
 
-// services
+import { isNilOrError } from 'utils/helperUtils';
+
 import { verifyBogus } from '../api/verification_methods/verify';
-
-import meKeys from 'api/me/keys';
-import { useQueryClient } from '@tanstack/react-query';
-import usersKeys from 'api/users/keys';
 
 interface Props {
   onCancel: () => void;
@@ -121,7 +120,7 @@ const VerificationFormBogus = memo<Props>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
             >
               Cancel
             </CancelButton>

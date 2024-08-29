@@ -1,8 +1,12 @@
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
+
+import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
+
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+
 import HiddenNavbarItemList from '.';
 
 let mockNavbarItems = allNavbarItems;
@@ -86,7 +90,7 @@ describe('<HiddenNavbarItemList />', () => {
     const faqItem = {
       pageCode: 'faq',
       pageId: '793d56cc-c8b3-4422-b393-972b71f82aa2',
-      pageTitleMultiloc: { en: 'FAQ' },
+      titleMultiloc: { en: 'FAQ' },
       type: 'page',
     };
 
@@ -96,7 +100,7 @@ describe('<HiddenNavbarItemList />', () => {
     const aboutItem = {
       pageCode: 'about',
       pageId: 'e7854e94-3074-4607-b66e-0422aa3d8359',
-      pageTitleMultiloc: { en: 'About' },
+      titleMultiloc: { en: 'About' },
       type: 'page',
     };
 

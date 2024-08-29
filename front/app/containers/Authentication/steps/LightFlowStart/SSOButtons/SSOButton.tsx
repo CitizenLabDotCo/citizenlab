@@ -1,27 +1,22 @@
 import React from 'react';
-import FranceConnectImage from './franceconnect.png';
 
-// hooks
+import { Image, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
-import { Image } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
-
-// typings
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
-const Container = styled.div`
-  margin-top: 12px;
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import FranceConnectImage from './franceconnect.png';
+import messages from './messages';
+
+const Container = styled.div<{ marginTop: string }>`
+  margin-top: ${({ marginTop }) => marginTop};
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -38,6 +33,7 @@ const Container = styled.div`
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
+  marginTop?: string;
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
@@ -45,11 +41,13 @@ const ICON_MAP = {
   facebook: 'facebook',
   google: 'google',
   azureactivedirectory: 'microsoft-windows',
+  azureactivedirectory_b2c: 'microsoft-windows',
 } as const;
 
 const COLOR_MAP = {
   facebook: colors.facebook,
   azureactivedirectory: colors.teal400,
+  azureactivedirectory_b2c: colors.teal400,
 };
 
 const MESSAGE_MAP = {
@@ -57,7 +55,7 @@ const MESSAGE_MAP = {
   google: oldMessages.continueWithGoogle,
 } as const;
 
-const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
+const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -67,7 +65,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
 
   if (ssoProvider === 'franceconnect') {
     return (
-      <Container>
+      <Container marginTop={marginTop}>
         <Button
           buttonStyle="white"
           iconSize="22px"
@@ -88,8 +86,27 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
     appConfiguration.data.attributes.settings.azure_ad_login
       ?.login_mechanism_name ?? 'Azure Active Directory';
 
+  const azureB2cProviderName =
+    appConfiguration.data.attributes.settings.azure_ad_b2c_login
+      ?.login_mechanism_name ?? 'Azure Active Directory B2C';
+
+  const getButtonText = () => {
+    switch (ssoProvider) {
+      case 'azureactivedirectory':
+        return formatMessage(oldMessages.continueWithAzure, {
+          azureProviderName,
+        });
+      case 'azureactivedirectory_b2c':
+        return formatMessage(oldMessages.continueWithAzure, {
+          azureProviderName: azureB2cProviderName,
+        });
+      default:
+        return formatMessage(MESSAGE_MAP[ssoProvider]);
+    }
+  };
+
   return (
-    <Container>
+    <Container marginTop={marginTop}>
       <Button
         icon={ICON_MAP[ssoProvider]}
         iconColor={COLOR_MAP[ssoProvider]}
@@ -102,9 +119,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
         padding="10px 18px"
         onClick={handleClickSSO}
       >
-        {ssoProvider === 'azureactivedirectory'
-          ? formatMessage(oldMessages.continueWithAzure, { azureProviderName })
-          : formatMessage(MESSAGE_MAP[ssoProvider])}
+        {getButtonText()}
       </Button>
     </Container>
   );

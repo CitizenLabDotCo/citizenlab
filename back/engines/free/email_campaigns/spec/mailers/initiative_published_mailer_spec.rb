@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::InitiativePublishedMailer do
           post_id: initiative.id,
           post_title_multiloc: initiative.title_multiloc,
           post_body_multiloc: initiative.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
+          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale)),
           post_images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
@@ -51,7 +51,7 @@ RSpec.describe EmailCampaigns::InitiativePublishedMailer do
     end
 
     it 'assigns go to initiative CTA' do
-      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
+      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(initiative_url)
     end
   end

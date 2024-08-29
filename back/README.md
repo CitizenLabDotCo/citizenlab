@@ -19,7 +19,6 @@ docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
 ```
 
 Mac or Windows:
-
 ```
 docker-compose run --rm web /bin/bash
 ```
@@ -52,30 +51,17 @@ make reset-dev-env
 ## Testing
 
 ### Unit and integration tests
-Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
+To run the tests:
 
-```
-docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
-```
+- If you're on Linux, use this command:
+  ```bash
+  docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
+  ```
 
-Mac or Windows:
-
-```
-docker-compose run --rm -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
-```
-
-To actually run the tests:
-```
-docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
-
-```
-
-Mac or Windows:
-
-```
-docker-compose run --rm web rspec
-
-```
+- If you're on Mac or Windows, run:
+  ```bash
+  docker-compose run --rm web rspec
+  ```
 
 For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as one of the test runs fails (for Mac or Windows):
 
@@ -138,7 +124,7 @@ In order to have more fake data in your localhost tenant, set the `SEED_SIZE` en
 
 If you would like to access another tenant than the `localhost` tenant, created through e.d. cl2-admin, you can set the `OVERRIDE_HOST` environment variable in `.env` prior to starting the container. This makes cl2-back believe that all requests are coming from that tenants host, letting you access the tenant at localhost:3000 through cl2-front.
 
-NOTE: Watch out that you don't accidently commit these changes!
+NOTE: Watch out that you don't accidentally commit these changes!
 
 
 ## Using S3 storage in development
@@ -148,7 +134,7 @@ Set `USE_AWS_S3_IN_DEV=true` in `env_files/back-safe.env`.
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Go Vocal employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 

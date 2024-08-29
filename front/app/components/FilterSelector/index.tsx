@@ -1,4 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { useState, KeyboardEvent, useMemo } from 'react';
+
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
   isArray,
   find,
@@ -8,16 +10,12 @@ import {
   includes,
   without,
 } from 'lodash-es';
-
-// components
-import Title from './title';
-import ValuesList from './valuesList';
-
-// style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 
-const Container = styled.div`
+import Combobox from './Combobox';
+import MultiSelectDropdown from './MultiSelectDropdown';
+
+const Container = styled(Box)`
   display: inline-block;
   position: relative;
 
@@ -88,36 +86,37 @@ interface Props extends DefaultProps {
   multipleSelectionAllowed: boolean;
   selected: string[];
   className?: string;
+  filterSelectorStyle?: 'button' | 'text';
+  minWidth?: string;
 }
 
-interface State {
-  opened: boolean;
-}
+const FilterSelector = ({
+  width,
+  onChange,
+  multipleSelectionAllowed,
+  selected,
+  mobileWidth,
+  maxHeight,
+  mobileMaxHeight,
+  top,
+  left,
+  mobileLeft,
+  minWidth,
+  right,
+  mobileRight,
+  name,
+  title,
+  values,
+  id,
+  className,
+  textColor,
+  last,
+  filterSelectorStyle = 'text',
+}: Props) => {
+  const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
+  const [opened, setOpened] = useState(false);
 
-export default class FilterSelector extends PureComponent<Props, State> {
-  baseID: string;
-
-  static defaultProps: DefaultProps = {
-    width: undefined,
-    mobileWidth: undefined,
-    maxHeight: undefined,
-    mobileMaxHeight: undefined,
-    top: undefined,
-    left: undefined,
-    mobileLeft: undefined,
-    right: undefined,
-    mobileRight: undefined,
-  };
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      opened: false,
-    };
-    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
-  }
-
-  getTitle = (
+  const getTitle = (
     selection: string[],
     values: IFilterSelectorValue[],
     multipleSelectionAllowed: boolean,
@@ -149,18 +148,18 @@ export default class FilterSelector extends PureComponent<Props, State> {
     return newTitle;
   };
 
-  toggleExpanded = () => {
-    this.setState((state) => ({ opened: !state.opened }));
+  const toggleValuesList = () => {
+    setOpened((current) => !current);
   };
 
-  closeExpanded = () => {
-    this.setState({ opened: false });
+  const closeExpanded = () => {
+    setOpened(false);
   };
 
-  selectionChange = (value: string) => {
-    let newSelection = cloneDeep(this.props.selected);
+  const selectionChange = (value: string) => {
+    let newSelection = cloneDeep(selected);
 
-    if (!this.props.multipleSelectionAllowed) {
+    if (!multipleSelectionAllowed) {
       newSelection = [value];
     } else if (includes(newSelection, value)) {
       newSelection = without(newSelection, value);
@@ -168,83 +167,79 @@ export default class FilterSelector extends PureComponent<Props, State> {
       newSelection.push(value);
     }
 
-    if (this.props.onChange) {
-      this.props.onChange(newSelection);
+    if (onChange) {
+      onChange(newSelection);
     }
 
-    if (!this.props.multipleSelectionAllowed) {
-      this.closeExpanded();
+    if (!multipleSelectionAllowed) {
+      closeExpanded();
     }
   };
 
-  handleClickOutside = () => {
-    this.closeExpanded();
+  const handleClickOutside = () => {
+    closeExpanded();
   };
 
-  render() {
-    const { className, textColor } = this.props;
-    const { opened } = this.state;
-    const {
-      id,
-      values,
-      multipleSelectionAllowed,
-      selected,
-      title,
-      width,
-      mobileWidth,
-      maxHeight,
-      mobileMaxHeight,
-      top,
-      left,
-      mobileLeft,
-      right,
-      mobileRight,
-      last,
-      name,
-    } = this.props;
-    const currentTitle = this.getTitle(
-      selected,
-      values,
-      multipleSelectionAllowed,
-      title
-    );
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown' && !opened) {
+      event.preventDefault();
+      toggleValuesList();
+    }
+  };
 
-    return (
-      <Container
-        id={id}
-        className={`e2e-filter-selector-${this.props.name} ${className} ${
-          last ? 'last' : ''
-        }`}
-      >
-        <Title
-          key={this.baseID}
-          title={currentTitle}
-          opened={opened}
-          onClick={this.toggleExpanded}
-          baseID={this.baseID}
-          textColor={textColor}
-        />
-        <ValuesList
-          title={currentTitle}
-          opened={opened}
+  // We use a random id for the selectorId to ensure it doesn't conflict if multiple
+  // instances of the same filter selector are rendered on the same page.
+  const selectorId = useMemo(
+    () => `id-${name}-${Math.random().toString(36).slice(2, 11)}`,
+    [name]
+  );
+
+  const sharedProps = {
+    opened,
+    selected,
+    onClickOutside: handleClickOutside,
+    baseID,
+    width,
+    mobileWidth,
+    maxHeight,
+    mobileMaxHeight,
+    top,
+    left,
+    mobileLeft,
+    right,
+    mobileRight,
+    filterSelectorStyle,
+    minWidth,
+    toggleValuesList,
+    textColor,
+    currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
+    handleKeyDown,
+  };
+
+  return (
+    <Container
+      id={id}
+      className={`e2e-filter-selector-${name} ${className} ${
+        last ? 'last' : ''
+      }`}
+    >
+      {multipleSelectionAllowed ? (
+        <MultiSelectDropdown
           values={values}
-          selected={selected}
-          onChange={this.selectionChange}
-          onClickOutside={this.handleClickOutside}
-          multipleSelectionAllowed={multipleSelectionAllowed}
-          baseID={this.baseID}
-          width={width}
-          mobileWidth={mobileWidth}
-          maxHeight={maxHeight}
-          mobileMaxHeight={mobileMaxHeight}
-          top={top}
-          left={left}
-          mobileLeft={mobileLeft}
-          right={right}
-          mobileRight={mobileRight}
+          onChange={selectionChange}
+          selectorId={selectorId}
           name={name}
+          {...sharedProps}
         />
-      </Container>
-    );
-  }
-}
+      ) : (
+        <Combobox
+          options={values}
+          onChange={selectionChange}
+          {...sharedProps}
+        />
+      )}
+    </Container>
+  );
+};
+
+export default FilterSelector;

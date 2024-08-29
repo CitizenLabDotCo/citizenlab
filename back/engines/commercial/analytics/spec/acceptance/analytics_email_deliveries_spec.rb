@@ -14,8 +14,8 @@ resource 'Analytics - FactEmailDeliveries model' do
   post 'web_api/v1/analytics' do
     before_all do
       create(:delivery)
-      campaign1 = create(:comment_on_your_idea_campaign)
-      campaign2 = create(:comment_on_your_idea_campaign)
+      campaign1 = create(:comment_on_idea_you_follow_campaign)
+      campaign2 = create(:comment_on_idea_you_follow_campaign)
       create(:delivery, campaign: campaign1)
       create(:delivery, campaign: campaign1)
       create(:delivery, campaign: campaign2)

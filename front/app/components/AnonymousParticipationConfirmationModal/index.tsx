@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -9,34 +8,23 @@ import {
   colors,
   Button,
 } from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
-// intl
-import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-type AnonymousParticipationConfirmationModalProps = {
-  showAnonymousConfirmationModal: boolean;
-  setShowAnonymousConfirmationModal: (show: boolean) => void;
-  onConfirmAnonymousParticipation: () => void;
+import messages from './messages';
+
+type Props = {
+  onCloseModal: () => void;
 };
 
-const AnonymousParticipationConfirmationModal = ({
-  showAnonymousConfirmationModal,
-  setShowAnonymousConfirmationModal,
-  onConfirmAnonymousParticipation,
-}: AnonymousParticipationConfirmationModalProps) => {
+const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Modal
-      width="460px"
-      opened={showAnonymousConfirmationModal}
-      close={() => {
-        setShowAnonymousConfirmationModal(false);
-      }}
-    >
+    <Modal width="460px" opened close={onCloseModal}>
       <Box
         display="flex"
         height="64px"
@@ -72,13 +60,11 @@ const AnonymousParticipationConfirmationModal = ({
               {...messages.participateAnonymouslyModalTextSection2}
             />
           </Text>
-          <Warning
-            text={
-              <Text color="primary" m="0px" fontSize="s">
-                {formatMessage(messages.anonymousParticipationWarning)}
-              </Text>
-            }
-          />
+          <Warning>
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.anonymousParticipationWarning)}
+            </Text>
+          </Warning>
         </Box>
         <Box
           display="flex"
@@ -89,18 +75,9 @@ const AnonymousParticipationConfirmationModal = ({
           gap="16px"
         >
           <Button
-            width="100%"
-            buttonStyle="secondary-outlined"
-            onClick={() => {
-              setShowAnonymousConfirmationModal(false);
-            }}
-          >
-            {formatMessage(messages.cancel)}
-          </Button>
-          <Button
             id="e2e-continue-anonymous-participation-btn"
             width="100%"
-            onClick={onConfirmAnonymousParticipation}
+            onClick={onCloseModal}
           >
             {formatMessage(messages.continue)}
           </Button>

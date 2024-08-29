@@ -5,23 +5,18 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle',
     defaultMessage: 'Create your first project report',
   },
-  emptyStateDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateDescription',
+  customizeReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport',
     defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
+      'Customise your report and share it with internal stakeholders or community as a PDF file.',
   },
   emptyStateButtonText: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText',
     defaultMessage: 'Create a report',
   },
   createReportModalTitle: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle',
-    defaultMessage: 'Create a project report',
-  },
-  createReportModalDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription',
-    defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle2',
+    defaultMessage: 'Create a report',
   },
   createReportModalInputLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
@@ -39,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate',
     defaultMessage: 'Start with a project template',
   },
+  platformTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate',
+    defaultMessage: 'Start with a platform template',
+  },
   shareReportTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle',
     defaultMessage: 'Share',
@@ -50,10 +49,6 @@ export default defineMessages({
   shareAsWebLinkDesc: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc',
     defaultMessage: 'This web link is only accessible to admin users.',
-  },
-  copyLink: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.copyLink',
-    defaultMessage: 'Copy link',
   },
   shareAsPdf: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsPdf',
@@ -76,5 +71,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred',
     defaultMessage:
       'An error occurred when trying to create this report. Please try again later.',
+  },
+  noProjectSelected: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected',
+    defaultMessage: 'No project selected',
   },
 });

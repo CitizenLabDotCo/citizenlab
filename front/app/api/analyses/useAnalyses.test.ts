@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalyses from './useAnalyses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { analysesData } from './__mocks__/useAnalyses';
 import { IAnalysesQueryParams } from './types';
+import useAnalyses from './useAnalyses';
 
 const apiPath = '*analyses';
 
@@ -17,8 +16,8 @@ const params: IAnalysesQueryParams = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: analysesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: analysesData }, { status: 200 });
   })
 );
 
@@ -41,8 +40,8 @@ describe('useAnalyses', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

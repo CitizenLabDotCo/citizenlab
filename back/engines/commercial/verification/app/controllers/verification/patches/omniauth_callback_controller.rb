@@ -20,20 +20,21 @@ module Verification
         omniauth_params = request.env['omniauth.params'].except('token')
 
         begin
-          @user = verification_method.fetch_user(request)
+          @user = AuthToken::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
           if @user&.invite_not_pending?
             begin
               handle_verification(auth, @user)
               update_user!(auth, @user, verification_method)
               url = add_uri_params(
-                Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
+                Frontend::UrlService.new.verification_success_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
                 omniauth_params.merge(verification_success: true).except('pathname')
               )
               redirect_to url
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
-            rescue VerificationService::NotEntitledError
-              fail_verification('not_entitled')
+            rescue VerificationService::NotEntitledError => e
+              message = e.why ? "not_entitled_#{e.why}" : 'not_entitled'
+              fail_verification(message)
             end
           end
         rescue ActiveRecord::RecordNotFound
@@ -43,6 +44,7 @@ module Verification
 
       def fail_verification(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
+
         url = add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
           omniauth_params.merge(verification_error: true, error: error)

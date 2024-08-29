@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update participation_conditions requirements schema]
+  before_action :set_permission, only: %i[show update reset requirements schema]
   skip_before_action :authenticate_user
 
   def index
     @permissions = policy_scope(Permission)
-      .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
       .where(permission_scope: permission_scope)
       .filter_enabled_actions(permission_scope)
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
+    @permissions = @permissions.includes(:permission_scope, :custom_fields, :groups, permissions_custom_fields: [custom_field: [:options]])
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
@@ -29,20 +29,34 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
-  def participation_conditions
-    render json: raw_json({ participation_conditions: @permission.participation_conditions }), status: :ok
+  def reset
+    authorize @permission
+    @permission.global_custom_fields = true
+    if @permission.save
+      @permission.permissions_custom_fields.destroy_all
+      @permission.groups_permissions.destroy_all
+      render json: serialize(@permission), status: :ok
+    else
+      render json: { errors: @permission.errors.details }, status: :unprocessable_entity
+    end
   end
 
   def requirements
     authorize @permission
-    json_requirements = permissions_service.requirements @permission, current_user
-    render json: raw_json({ requirements: json_requirements }), status: :ok
+    permissions_service = Permissions::BasePermissionsService.new(current_user, user_requirements_service: user_requirements_service)
+    requirements = user_requirements_service.requirements @permission, current_user
+    json_requirements = {
+      permitted: user_requirements_service.permitted?(requirements),
+      disabled_reason: permissions_service.denied_reason_for_action(permission_action, scope: permission_scope),
+      requirements: requirements
+    }
+    render json: raw_json(json_requirements), status: :ok
   end
 
   def schema
     authorize @permission
-    fields = permissions_service.requirements_fields @permission
-    render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
+    fields = user_requirements_service.requirements_custom_fields @permission
+    render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
   end
 
   private
@@ -55,8 +69,17 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
-  def permissions_service
-    @permissions_service ||= PermissionsService.new
+  # NOTE: Extended by verification
+  def user_ui_and_json_multiloc_schemas(fields)
+    JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
+  end
+
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
+  end
+
+  def user_requirements_service
+    @user_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
   def set_permission
@@ -64,7 +87,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_scope
-    permissions_service.permission_scope_from_permissions_params(params)
+    permissions_update_service.permission_scope_from_permissions_params(params)
   end
 
   def permission_action
@@ -72,6 +95,8 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_params
-    params.require(:permission).permit(:permitted_by, :global_custom_fields, group_ids: [])
+    params.require(:permission).permit(:permitted_by, :global_custom_fields, :verification_expiry, group_ids: [])
   end
 end
+
+WebApi::V1::PermissionsController.prepend(Verification::Patches::WebApi::V1::PermissionsController)

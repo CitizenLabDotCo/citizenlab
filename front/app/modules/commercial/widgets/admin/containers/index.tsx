@@ -1,13 +1,17 @@
 import React from 'react';
-import IdeasWidget from './IdeasWidget';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
+
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from '../messages';
+
+import IdeasWidget from './IdeasWidget';
 
 const AdminSettingsWidgets = () => {
   const location = useLocation();

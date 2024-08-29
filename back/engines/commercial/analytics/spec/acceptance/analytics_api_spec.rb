@@ -13,8 +13,11 @@ resource 'Analytics', use_transactional_fixtures: false do
   post 'web_api/v1/analytics' do
     parameter :query, 'The query object.', required: true
 
+    let(:date) { Date.new(2022, 9, 1) }
+
     before do
-      create(:idea)
+      create(:dimension_date, date: date)
+      create(:idea, created_at: date)
       create(:dimension_type)
     end
 
@@ -77,6 +80,38 @@ resource 'Analytics', use_transactional_fixtures: false do
         expect(json_response_body[:links][:next]).to be_nil
         expect(json_response_body[:links][:prev]).to be_nil
         expect(json_response_body[:links][:self]).to eq(expected_pagination)
+      end
+
+      context 'when filtering by date' do
+        example 'returns data if it gets into date range' do
+          query = {
+            fact: 'post',
+            filters: {
+              'dimension_date_created.date': {
+                from: date - 1.day
+              }
+            },
+            aggregations: { all: 'count' }
+          }
+          do_request(query: query)
+          assert_status 200
+          expect(response_data[:attributes]).to eq([{ count: 1 }])
+        end
+
+        example 'returns no data if it does not get into date range' do
+          query = {
+            fact: 'post',
+            filters: {
+              'dimension_date_created.date': {
+                from: date + 1.day
+              }
+            },
+            aggregations: { all: 'count' }
+          }
+          do_request(query: query)
+          assert_status 200
+          expect(response_data[:attributes]).to eq([{ count: 0 }])
+        end
       end
     end
 

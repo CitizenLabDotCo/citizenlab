@@ -5,28 +5,28 @@
       <% if show_unsubscribe_link? %>
         <a
           href="<%= unsubscribe_url(app_configuration, campaign.id, user.id) %>"
-          style="color: #84939E; text-decoration: none; margin-right: 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_unsubscribe', component: 'footer') %>
         </a>
-        |
+        <span style="margin: 0 10px;">|</span>
       <% end %>
 
       <% if show_terms_link? %>
         <a
           href="<%= terms_conditions_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin: 0 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_terms_conditions', component: 'footer') %>
         </a>
-        |
+      <span style="margin: 0 10px;">|</span>
       <% end %>
 
 
       <% if show_privacy_policy_link? %>
         <a
           href="<%= privacy_policy_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin-left: 10px;"
+          style="color: #84939E; text-decoration: none;"
         >
           <%= format_message('link_privacy_policy', component: 'footer') %>
         </a>
@@ -36,13 +36,19 @@
 
     <mj-text color="#84939E" padding-bottom="20px">
       <p style="font-size: 12px;">
-        <%= format_message('statement', component: 'footer', escape_html: false, values: {
+        <%= format_message('recipient_statement', component: 'footer', escape_html: false, values: {
           organizationName: organization_name,
-          organizationLink: "<a href='#{home_url}' style='color: #84939E; text-decoration: underline;'>#{app_configuration.host}</a>",
-          unsubscribeLink: "<a href='#{unsubscribe_url(app_configuration, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
+          organizationLink: "<a href='#{home_url}' style='color: #84939E; text-decoration: underline;'>#{app_configuration.host}</a>"
         }) %>
+
+        <% if show_unsubscribe_link? %>
+          <%= format_message('unsubscribe_statement', component: 'footer', escape_html: false, values: {
+            unsubscribeLink: "<a href='#{unsubscribe_url(app_configuration, campaign.id, user.id)}' style='color: #84939E; text-decoration: underline;'>#{format_message('unsubscribe_text', component: 'footer')}</a>"
+          }) %>
+        <% end %>
       </p>
     </mj-text>
+
     <% unless remove_vendor_branding? %>
       <mj-text color="#84939E">
         <span style="font-style: italic;
@@ -51,8 +57,8 @@
                       display: inline-block;
                       margin-bottom: 10px"><%= format_message('powered_by', component: 'footer') %></span>
       </mj-text>
-      <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
-        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_email_logo.png" alt="CitizenLab logo" />
+      <mj-image align="left" width="155px" padding-top="0" href="https://govocal.com/"
+        src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
     <% end %>
   </mj-column>
 </mj-section>

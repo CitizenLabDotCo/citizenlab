@@ -1,81 +1,79 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
-import { useEditor, SerializedNodes } from '@craftjs/core';
-import useReport from 'api/reports/useReport';
+import {
+  Box,
+  Text,
+  colors,
+  IconButton,
+  TooltipContentWrapper,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
+import { RouteType } from 'routes';
+import { SupportedLocale } from 'typings';
 
-// components
-import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
-import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import { fontSizes, colors, stylingConsts } from 'utils/styleUtils';
-import styled from 'styled-components';
-
-// routing
-import clHistory from 'utils/cl-router/history';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEqual } from 'lodash-es';
-
-// types
-import { Locale } from 'typings';
-
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
-const LocaleBadge = styled(Box)`
-  display: inline-block;
-  color: ${colors.textSecondary};
-  background-color: ${colors.grey200};
-  font-weight: bold;
-  font-size: ${fontSizes.xs}px;
-  padding: 0px 6px;
-  margin-left: 15px;
-  border-radius: ${stylingConsts.borderRadius};
-`;
+import useLocalize from 'hooks/useLocalize';
+
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
+import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
+import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
+import { View } from '../ViewContainer/typings';
+import ViewPicker from '../ViewContainer/ViewPicker';
+
+import LocaleSelect from './LocaleSelect';
+import messages from './messages';
+import QuitModal from './QuitModal';
+import ReportTitle from './ReportTitle';
 
 type ContentBuilderTopBarProps = {
-  hasPendingState?: boolean;
-  localesWithError: Locale[];
-  previewEnabled: boolean;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
-  initialData: SerializedNodes | undefined;
+  hasPendingState: boolean;
+  selectedLocale: SupportedLocale;
   reportId: string;
-  projectId?: string;
+  isTemplate: boolean;
+  saved: boolean;
+  view: View;
+  setView: (view: View) => void;
+  setSaved: () => void;
+  setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
 const ContentBuilderTopBar = ({
-  previewEnabled,
-  setPreviewEnabled,
   selectedLocale,
-  draftEditorData,
-  initialData,
-  localesWithError,
   hasPendingState,
   reportId,
-  projectId,
+  isTemplate,
+  saved,
+  view,
+  setView,
+  setSaved,
+  setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
-  const [hasChange, setHasChange] = useState(false);
   const { query } = useEditor();
-  const { data: report } = useReport(reportId);
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
+  const { projectId, phaseId } = useReportContext();
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  const disableSave = localesWithError.length > 0;
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const disableSave = hasPendingState || saved;
+  const disablePrint = hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -84,41 +82,38 @@ const ContentBuilderTopBar = ({
     setShowQuitModal(true);
   };
   const goBack = () => {
-    if (hasChange) {
+    if (!saved) {
       openModal();
     } else {
       doGoBack();
     }
   };
   const doGoBack = () => {
-    clHistory.push('/admin/reporting/report-builder');
+    const goBackUrl: RouteType =
+      projectId && phaseId
+        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
+        : '/admin/reporting/report-builder';
+
+    clHistory.push(goBackUrl);
   };
+
   const handleSave = () => {
-    if (selectedLocale) {
-      setHasChange(false);
-
-      updateReportLayout({
+    updateReportLayout(
+      {
         id: reportId,
-        craftMultiloc: {
-          ...draftEditorData,
-          [selectedLocale]: query.getSerializedNodes(),
+        craftjs_json: query.getSerializedNodes(),
+        projectId,
+      },
+      {
+        onSuccess: () => {
+          setSaved();
         },
-      });
-    }
+      }
+    );
   };
 
   useEffect(() => {
-    if (!selectedLocale || !draftEditorData) return;
-    setHasChange(
-      !isEqual(
-        JSON.parse(JSON.stringify(initialData ?? {})),
-        JSON.parse(JSON.stringify(draftEditorData[selectedLocale] ?? {}))
-      )
-    );
-  }, [initialData, draftEditorData, selectedLocale]);
-
-  useEffect(() => {
-    if (hasChange) {
+    if (!saved) {
       window.onbeforeunload = () => true;
     } else {
       window.onbeforeunload = null;
@@ -126,107 +121,158 @@ const ContentBuilderTopBar = ({
     return () => {
       window.onbeforeunload = null;
     };
-  }, [hasChange]);
+  }, [saved]);
 
+  // This useEffect handles autosave for templates
   useEffect(() => {
     if (initialized) return;
 
-    if (!projectId) {
+    if (!isTemplate) {
       setInitialized(true);
       return;
     }
 
-    const nodes = query.getSerializedNodes();
-    const firstNode = nodes.ROOT?.nodes[0];
-    const numberOfNodes = Object.keys(nodes).length;
+    const interval = setInterval(() => {
+      const nodes = query.getSerializedNodes();
+      const firstNode = nodes.ROOT?.nodes[0];
+      if (!firstNode) return;
 
-    if (!firstNode || !selectedLocale || numberOfNodes < 5) return;
+      const displayName = nodes?.[firstNode].displayName;
 
-    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
-      setTimeout(() => {
-        updateReportLayout({
+      if (
+        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
+          displayName
+        )
+      ) {
+        // In theory this should not be possible, but handling
+        // it gracefully just in case
+        setInitialized(true);
+        clearInterval(interval);
+        return;
+      }
+
+      // Nodes take some time to load. We don't want to save if not
+      // all nodes are loaded yet. That's why we add these checks-
+      // if we early return here, we basically wait for the next interval and check
+      // again if the number of nodes is already correct.
+      const numberOfNodes = Object.keys(nodes).length;
+
+      if (
+        displayName === 'ProjectTemplate' &&
+        numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
+      if (
+        displayName === 'PlatformTemplate' &&
+        numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
+
+      updateReportLayout(
+        {
           id: reportId,
-          craftMultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
+          craftjs_json: nodes,
+          projectId,
+        },
+        {
+          onSuccess: () => {
+            setSaved();
           },
-        });
-      }, 5000);
-    }
+        }
+      );
 
-    setInitialized(true);
+      setInitialized(true);
+      clearInterval(interval);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [
-    projectId,
+    isTemplate,
     query,
-    draftEditorData,
     initialized,
     reportId,
-    selectedLocale,
     updateReportLayout,
+    projectId,
+    setSaved,
   ]);
 
-  const handleTogglePreview = () => {
-    setPreviewEnabled((previewEnabled) => !previewEnabled);
-  };
-
   return (
-    <Container>
-      <Modal opened={showQuitModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              <FormattedMessage {...messages.quitReportConfirmationQuestion} />
-            </Title>
-            <Text color="primary" fontSize="l">
-              <FormattedMessage {...messages.quitReportInfo} />
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={doGoBack}
-            >
-              <FormattedMessage {...messages.confirmQuitButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelQuitButtonText} />
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-      <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+    <Container id="e2e-report-builder-topbar">
+      <QuitModal
+        open={showQuitModal}
+        onCloseModal={closeModal}
+        onGoBack={doGoBack}
+      />
+      <IconButton
+        iconName="arrow-left"
+        onClick={goBack}
+        buttonType="button"
+        iconColor={colors.textSecondary}
+        iconColorOnHover={colors.primary}
+        iconWidth="20px"
+        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
+        ml="8px"
+      />
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Text mb="0px" color="textSecondary">
-            <FormattedMessage {...messages.reportBuilder} />
-          </Text>
-          <Title variant="h4" as="h1" color="primary">
-            {isNilOrError(report) ? <></> : report.data.attributes.name}
-            <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
-          </Title>
+          <ReportTitle reportId={reportId} />
+
+          {project && phase && (
+            <Text m="0" color="textSecondary">
+              {localize(project.data.attributes.title_multiloc)}{' '}
+              <span style={{ color: colors.black, fontWeight: '700' }}>
+                ({localize(phase.data.attributes.title_multiloc)})
+              </span>
+            </Text>
+          )}
         </Box>
-        <Box mx="24px">
-          <PreviewToggle
-            checked={previewEnabled}
-            onChange={handleTogglePreview}
-          />
+        <Box>
+          <LocaleSelect locale={selectedLocale} setLocale={setSelectedLocale} />
         </Box>
-        <Box mr="20px">
-          <ShareReportButton reportId={reportId} />
+        {!!phaseId && (
+          <Box ml="32px">
+            <ViewPicker view={view} setView={setView} />
+          </Box>
+        )}
+        <Box ml="32px">
+          <Tooltip
+            placement="bottom"
+            disabled={!disablePrint}
+            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
+            content={
+              <TooltipContentWrapper tippytheme="light">
+                {formatMessage(messages.cannotPrint)}
+              </TooltipContentWrapper>
+            }
+          >
+            <div>
+              <Button
+                icon="print"
+                buttonStyle="secondary-outlined"
+                iconColor={colors.textPrimary}
+                iconSize="16px"
+                px="12px"
+                py="8px"
+                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                openLinkInNewTab
+                disabled={disablePrint}
+              />
+            </div>
+          </Tooltip>
         </Box>
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
+          disabled={disableSave}
           processing={isLoading}
+          bgColor={saved ? colors.success : undefined}
+          icon={saved ? 'check' : undefined}
           onClick={handleSave}
+          fontSize="14px"
+          ml="8px"
+          px="12px"
+          pb="3px"
+          pt="4px"
         />
       </Box>
     </Container>

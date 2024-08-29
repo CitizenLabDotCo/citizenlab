@@ -59,11 +59,19 @@ class ApplicationPolicy
     user&.admin?
   end
 
+  def active_admin_or_moderator?
+    active? && (admin? || user&.project_or_folder_moderator?)
+  end
+
   def owner?
     user && record.user_id == user.id
   end
 
   def active?
     user&.active?
+  end
+
+  def active_admin?
+    admin? && active?
   end
 end

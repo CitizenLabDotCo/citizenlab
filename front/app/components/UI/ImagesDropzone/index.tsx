@@ -1,27 +1,26 @@
 import React, { PureComponent } from 'react';
-import Dropzone, { Accept } from 'react-dropzone';
-import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  fontSizes,
+  defaultOutline,
+} from '@citizenlab/cl2-component-library';
+import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
+import Dropzone, { Accept } from 'react-dropzone';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
+
 import Error from 'components/UI/Error';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { getBase64FromFile } from 'utils/fileUtils';
+import { reportError } from 'utils/loggingUtils';
 
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
-
-// typings
-import { UploadFile } from 'typings';
 import RemoveImageButton from '../RemoveImageButton';
+
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

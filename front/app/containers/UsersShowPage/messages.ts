@@ -26,21 +26,33 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
-  following: {
-    id: 'app.containers.UsersShowPage.following',
-    defaultMessage: 'Following',
+  eventsWithCount: {
+    id: 'app.containers.UsersShowPage.eventsWithCount',
+    defaultMessage: 'Events ({eventsCount})',
   },
-  ideas: {
-    id: 'app.containers.UsersShowPage.ideas',
-    defaultMessage: 'Ideas',
+  followingWithCount: {
+    id: 'app.containers.UsersShowPage.followingWithCount',
+    defaultMessage: 'Following ({followingCount})',
+  },
+  inputs: {
+    id: 'app.containers.UsersShowPage.inputs',
+    defaultMessage: 'Inputs',
   },
   projects: {
     id: 'app.containers.UsersShowPage.projects',
     defaultMessage: 'Projects',
   },
-  initiatives: {
-    id: 'app.containers.UsersShowPage.initiatives',
-    defaultMessage: 'Initiatives',
+  proposals: {
+    id: 'app.containers.UsersShowPage.proposals',
+    defaultMessage: 'Proposals',
+  },
+  topics: {
+    id: 'app.containers.UsersShowPage.topics',
+    defaultMessage: 'Topics',
+  },
+  areas: {
+    id: 'app.containers.UsersShowPage.areas',
+    defaultMessage: 'Areas',
   },
   projectFolders: {
     id: 'app.containers.UsersShowPage.projectFolders',
@@ -55,6 +67,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
   },
+  loadingEvents: {
+    id: 'app.containers.UsersShowPage.loadingEvents',
+    defaultMessage: 'Loading events...',
+  },
   tryAgain: {
     id: 'app.containers.UsersShowPage.tryAgain',
     defaultMessage: 'An error has occured, please try again later.',
@@ -67,6 +83,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
   },
+  noEvents: {
+    id: 'app.containers.UsersShowPage.noEventsForUser',
+    defaultMessage: 'You have not attended any events yet.',
+  },
   seePost: {
     id: 'app.containers.UsersShowPage.seePost',
     defaultMessage: 'See post',
@@ -75,26 +95,21 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  user404NotFound: {
-    id: 'app.containers.UsersShowPage.user404NotFound',
-    defaultMessage:
-      "We couldn't find this user's profile. If it was here before, it may have been deleted.",
-  },
-  goBackToPreviousPage: {
-    id: 'app.containers.UsersShowPage.goBackToPreviousPage',
-    defaultMessage: 'Go back to the previous page',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
+  },
+  loadMore: {
+    id: 'app.containers.UsersShowPage.loadMore',
+    defaultMessage: 'Load more',
   },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',
     defaultMessage: 'Member since {date}',
   },
-  metaTitle: {
-    id: 'app.containers.UsersShowPage.metaTitle',
-    defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
+  metaTitle1: {
+    id: 'app.containers.UsersShowPage.metaTitle1',
+    defaultMessage: 'Profile page of {firstName} {lastName} | {orgName}',
   },
   userShowPageMetaDescription: {
     id: 'app.containers.UsersShowPage.userShowPageMetaDescription',

@@ -1,44 +1,39 @@
 import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
+
+import { Td, colors } from '@citizenlab/cl2-component-library';
 import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-
-// services
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-// components
-import { TitleLink } from '.';
-import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Checkbox from 'components/UI/Checkbox';
-import { Td } from '@citizenlab/cl2-component-library';
-import SubRow from './SubRow';
-import AssigneeSelect from '../AssigneeSelect';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-
-// typings
-import { TFilterMenu, ManagerType } from '../../..';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-import events, {
-  StatusChangeModalOpen,
-} from 'components/admin/PostManager/events';
-
-// hooks
+import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativeData } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
-// types
-import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
-import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import useLocale from 'hooks/useLocale';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
+import events, {
+  StatusChangeModalOpen,
+} from 'components/admin/PostManager/events';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+
+import { trackEventByName } from 'utils/analytics';
+import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { TFilterMenu, ManagerType } from '../../..';
+import tracks from '../../../tracks';
+import AssigneeSelect from '../AssigneeSelect';
+
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
+
+import { TitleLink } from '.';
 
 interface Props {
   type: ManagerType;
@@ -79,6 +74,7 @@ const InitiativeRow = ({
   const { data: allowedTransitions } = useInitiativeAllowedTransitions(
     initiative.id
   );
+  const locale = useLocale();
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
 
   const [_collected, drag] = useDrag({
@@ -124,15 +120,6 @@ const InitiativeRow = ({
   });
 
   if (!allowedTransitions) return null;
-
-  const onUpdateInitiativePhases = (selectedPhases: string[]) => {
-    updateInitiative({
-      initiativeId: initiative.id,
-      requestBody: {
-        phase_ids: selectedPhases,
-      },
-    });
-  };
 
   const onUpdateInitiativeTopics = (selectedTopics: string[]) => {
     updateInitiative({
@@ -211,7 +198,16 @@ const InitiativeRow = ({
           {attrs.likes_count}
         </Cell>
         <Cell>{attrs.comments_count}</Cell>
-        {cosponsorsRequired && <Cell>{attrs.cosponsorships.length}</Cell>}
+        {cosponsorsRequired && (
+          <Cell>
+            {attrs.cosponsorships.filter((c) => c.status === 'accepted').length}
+          </Cell>
+        )}
+        {!isNilOrError(locale) && (
+          <Cell>
+            {timeAgo(Date.parse(initiative.attributes.created_at), locale)}
+          </Cell>
+        )}
       </StyledRow>
       <SubRow
         {...{
@@ -223,7 +219,6 @@ const InitiativeRow = ({
           selectedStatus,
           allowedTransitions,
         }}
-        onUpdatePhases={onUpdateInitiativePhases}
         onUpdateTopics={onUpdateInitiativeTopics}
         onUpdateStatus={onUpdateInitiativeStatus}
         postType="initiative"

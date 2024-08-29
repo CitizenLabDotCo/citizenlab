@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPollQuestion from './useAddPollQuestion';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
+import useAddPollQuestion from './useAddPollQuestion';
 
 const apiPath = '*/poll_questions';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: pollQuestionsData }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: pollQuestionsData }, { status: 200 });
   })
 );
 
@@ -27,8 +26,7 @@ describe('useAddPollQuestion', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
         title_multiloc: { en: 'mock title' },
       });
     });
@@ -39,8 +37,8 @@ describe('useAddPollQuestion', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -50,8 +48,7 @@ describe('useAddPollQuestion', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
         title_multiloc: { en: 'mock title' },
       });
     });

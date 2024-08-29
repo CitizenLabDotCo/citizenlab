@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { ICustomPageData } from 'api/custom_pages/types';
+
+import FixedRatioLayout from './FixedRatioLayout';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
-import FixedRatioLayout from './FixedRatioLayout';
 
 interface Props {
   pageData: ICustomPageData;

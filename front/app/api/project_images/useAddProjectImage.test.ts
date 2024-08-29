@@ -1,20 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddProjectImage from './useAddProjectImage';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { projectImagesData } from './__mocks__/useProjectImages';
 
-const apiPath = '*projects/:projectId/images';
+import endpoints, {
+  projectImagesPath,
+  projectImagesData,
+} from './__mocks__/_mockServer';
+import useAddProjectImage from './useAddProjectImage';
 
-const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectImagesData[0] }));
-  })
-);
+const server = setupServer(endpoints['POST projects/:projectId/images']);
 
 describe('useAddProjectImage', () => {
   beforeAll(() => server.listen());
@@ -38,8 +34,8 @@ describe('useAddProjectImage', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(projectImagesPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

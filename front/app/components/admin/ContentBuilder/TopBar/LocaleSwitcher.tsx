@@ -1,27 +1,20 @@
 import React from 'react';
 
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// components
 import {
   Box,
   LocaleSwitcher as LocaleSwitcherComponent,
+  colors,
 } from '@citizenlab/cl2-component-library';
+import { SupportedLocale } from 'typings';
 
-// styling
-import { colors } from 'utils/styleUtils';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { Locale } from 'typings';
-
 interface Props {
-  selectedLocale: Locale | undefined;
-  localesWithError: Locale[];
-  onSelectLocale: (locale: Locale) => void;
+  selectedLocale: SupportedLocale | undefined;
+  localesWithError?: SupportedLocale[];
+  onSelectLocale: (locale: SupportedLocale) => void;
 }
 
 const LocaleSwitcher = ({
@@ -38,7 +31,7 @@ const LocaleSwitcher = ({
   const localesValues = locales.reduce((acc, locale) => {
     return {
       ...acc,
-      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
+      [locale]: localesWithError?.includes(locale) ? '' : 'NON-EMPTY-VALUE',
     };
   }, {});
 

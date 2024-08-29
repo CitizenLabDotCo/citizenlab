@@ -2,6 +2,6 @@
 
 class TestJob < ApplicationJob
   def run
-    raise
+    sleep 3
   end
 end

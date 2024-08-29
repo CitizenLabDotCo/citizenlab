@@ -2,15 +2,15 @@
 
 module VotingMethod
   class Base
-    def initialize(participation_context)
-      @participation_context = participation_context
+    def initialize(phase)
+      @phase = phase
     end
 
-    def assign_defaults_for_participation_context
+    def assign_defaults_for_phase
       # Default is to do nothing.
     end
 
-    def validate_participation_context
+    def validate_phase
       # Default is to do nothing.
     end
 
@@ -36,6 +36,6 @@ module VotingMethod
 
     private
 
-    attr_reader :participation_context
+    attr_reader :phase
   end
 end

@@ -1,7 +1,10 @@
 import React from 'react';
-import injectIntl from './injectIntl';
-import { screen, render } from 'utils/testUtils/rtl';
+
 import { defineMessages } from 'react-intl';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import injectIntl from './injectIntl';
 
 const messages = defineMessages({
   regular: {

@@ -1,45 +1,39 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import { Box, Text, Label } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
+
 import useLocale from 'hooks/useLocale';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextButton from '../_components/TextButton';
-import PoliciesMarkup from '../Policies/PoliciesMarkup';
+import { SetError, State } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
-import containerMessages from '../../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-
-// errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// constants
+import { StyledPasswordIconTooltip } from 'components/smallForm';
+import Button from 'components/UI/Button';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
-// typings
-import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
-import { SetError, State } from 'containers/Authentication/typings';
+import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import containerMessages from '../../messages';
+import tracks from '../../tracks';
+import TextButton from '../_components/TextButton';
+import sharedMessages from '../messages';
+import PoliciesMarkup from '../Policies/PoliciesMarkup';
+
+import { DEFAULT_VALUES, getSchema, FormValues } from './form';
+import messages from './messages';
 
 interface Props {
   state: State;
@@ -64,16 +58,11 @@ const EmailAndPasswordSignUp = ({
   const { formatMessage } = useIntl();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
-  const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
-  const schema = getSchema(
-    phoneLoginEnabled,
-    minimumPasswordLength,
-    formatMessage
-  );
+  const schema = getSchema(minimumPasswordLength, formatMessage);
 
   const methods = useForm({
     mode: 'onSubmit',
@@ -104,8 +93,8 @@ const EmailAndPasswordSignUp = ({
         token: state.token,
       });
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
@@ -141,18 +130,23 @@ const EmailAndPasswordSignUp = ({
               id="email"
               type="email"
               autocomplete="email"
-              label={
-                phoneLoginEnabled
-                  ? formatMessage(sharedMessages.emailOrPhone)
-                  : formatMessage(sharedMessages.email)
-              }
+              label={formatMessage(sharedMessages.email)}
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Label>
+                <span>{formatMessage(sharedMessages.password)}</span>
+              </Label>
+              <StyledPasswordIconTooltip />
+            </Box>
             <PasswordInput
               name="password"
               id="password"
-              label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
             />
           </Box>

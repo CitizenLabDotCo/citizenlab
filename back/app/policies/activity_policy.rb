@@ -10,7 +10,11 @@ class ActivityPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user&.admin? && user&.active?
+        scope.management
+      else
+        scope.none
+      end
     end
   end
 end

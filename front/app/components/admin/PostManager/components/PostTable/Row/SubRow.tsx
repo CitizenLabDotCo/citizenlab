@@ -1,22 +1,19 @@
 import React from 'react';
 
-// components
-import { Tr, Td } from '@citizenlab/cl2-component-library';
-import PhasesSelector from './selectors/PhasesSelector';
-import TopicsSelector from './selectors/TopicsSelector';
-import ProjectSelector from './selectors/ProjectSelector';
+import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
+
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IPhaseData } from 'api/phases/types';
+
+import { TFilterMenu } from '../../..';
+
 import IdeasStatusSelector from './selectors/IdeasStatusSelector';
 import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { TFilterMenu } from '../../..';
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
+import PhasesSelector from './selectors/PhasesSelector';
+import ProjectSelector from './selectors/ProjectSelector';
+import TopicsSelector from './selectors/TopicsSelector';
 
 interface Props {
   active: boolean;
@@ -28,7 +25,8 @@ interface Props {
   projectId?: string;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
   selectedStatus: string | undefined;
-  onUpdatePhases: (id: string[]) => void;
+  // Only ideas can have phases, hence optional
+  onUpdatePhases?: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
   allowedTransitions: IInitiativeAllowedTransitions | null;
@@ -56,7 +54,7 @@ const SubRow = ({
     <Tr className={className} background={active ? colors.grey300 : undefined}>
       <Td />
       <Td colSpan={6}>
-        {activeFilterMenu === 'phases' && phases && (
+        {activeFilterMenu === 'phases' && phases && onUpdatePhases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}
             phases={phases}

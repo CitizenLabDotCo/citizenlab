@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderCause from './useReorderCause';
-import { causesData } from './__mocks__/useCauses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { causesData } from './__mocks__/useCauses';
+import useReorderCause from './useReorderCause';
+
 const apiPath = '*causes/:id/reorder';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: causesData[0] }, { status: 200 });
   })
 );
 
@@ -37,8 +36,8 @@ describe('useReorderCause', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import initiativesCountKeys from './keys';
 import {
   InitiativesCountKeys,
@@ -15,7 +17,7 @@ const fetchInitiativesCount = (queryParams: IQueryParameters) =>
     queryParams,
   });
 
-const useInitiativesCount = (queryParams: IQueryParameters) => {
+const useInitiativesCount = (queryParams: IQueryParameters, enabled = true) => {
   return useQuery<
     IInitiativesCount,
     CLErrors,
@@ -24,6 +26,7 @@ const useInitiativesCount = (queryParams: IQueryParameters) => {
   >({
     queryKey: initiativesCountKeys.item(queryParams),
     queryFn: () => fetchInitiativesCount(queryParams),
+    enabled,
   });
 };
 

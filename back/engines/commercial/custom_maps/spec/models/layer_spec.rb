@@ -9,6 +9,23 @@ RSpec.describe CustomMaps::Layer do
     end
   end
 
+  describe 'type validation' do
+    it 'invalidates a nil type' do
+      layer = build(:layer, type: nil)
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates an empty type' do
+      layer = build(:layer, type: '')
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates an invalid type' do
+      layer = build(:layer, type: 'CustomMaps::Layer')
+      expect(layer).to be_invalid
+    end
+  end
+
   describe 'marker_svg_url https:// validation' do
     it 'validates a url starting with https://' do
       layer = build(:layer, marker_svg_url: 'https://some.icon.svg')

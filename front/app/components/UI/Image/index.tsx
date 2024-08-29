@@ -1,12 +1,7 @@
-// Libraries
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 
-// Lazy Images observer
-import Observer from '@researchgate/react-intersection-observer';
-
-// Stylings
+import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const ImageElement = styled.img<{
   cover: boolean;
@@ -32,13 +27,6 @@ const ImageElement = styled.img<{
     `};
 `;
 
-const Fallback = styled.div<{ src: string | undefined }>`
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${({ src }) => src});
-`;
-
 interface Props {
   id?: string;
   src: HTMLImageElement['src'];
@@ -52,84 +40,40 @@ interface Props {
   className?: string;
 }
 
-interface State {
-  visible: boolean;
-  loaded: boolean;
-}
+const Image: React.FC<Props> = ({
+  id,
+  src,
+  alt,
+  role,
+  cover = false,
+  fadeIn = true,
+  fadeInDuration,
+  placeholderBg = colors.background,
+  isLazy = true,
+  className,
+}) => {
+  const [loaded, setLoaded] = useState(false);
 
-export default class Image extends PureComponent<Props, State> {
-  static defaultProps = {
-    alt: '',
-    fadeIn: true,
-    placeholderBg: colors.background,
-    isLazy: true,
+  const handleImageLoaded = () => {
+    setLoaded(true);
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      visible: props.isLazy ? false : true,
-      loaded: false,
-    };
-  }
+  return (
+    <ImageElement
+      src={src}
+      alt={alt}
+      role={role}
+      cover={cover}
+      fadeIn={fadeIn}
+      fadeInDuration={fadeInDuration}
+      placeholderBg={placeholderBg}
+      loaded={loaded}
+      onLoad={handleImageLoaded}
+      id={id}
+      className={className || ''}
+      loading={isLazy ? 'lazy' : 'eager'}
+    />
+  );
+};
 
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
-
-  handleImageLoaded = () => {
-    this.setState({ loaded: true });
-  };
-
-  render() {
-    const {
-      id,
-      src,
-      alt,
-      role,
-      cover,
-      fadeIn,
-      fadeInDuration,
-      placeholderBg,
-      className,
-    } = this.props;
-    const { isLazy } = this.props;
-    const { visible, loaded } = this.state;
-
-    let image = (
-      <ImageElement
-        src={visible ? src : undefined}
-        alt={alt}
-        role={role}
-        cover={!!cover}
-        fadeIn={!!fadeIn}
-        fadeInDuration={fadeInDuration}
-        placeholderBg={placeholderBg}
-        loaded={loaded}
-        onLoad={this.handleImageLoaded}
-        id={id}
-        className={className || ''}
-      />
-    );
-
-    if (cover) {
-      image = <Fallback src={src} className={className} />;
-    }
-
-    if (isLazy) {
-      return (
-        <Observer rootMargin="200px" onChange={this.handleIntersection}>
-          {image}
-        </Observer>
-      );
-    }
-
-    return image;
-  }
-}
+export default Image;

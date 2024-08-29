@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Title } from '@citizenlab/cl2-component-library';
 
 interface Props {

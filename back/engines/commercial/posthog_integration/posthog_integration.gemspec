@@ -10,11 +10,12 @@ Gem::Specification.new do |s|
   s.name        = 'posthog_integration'
   s.version     = PosthogIntegration::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.summary     = 'Sending usage events to PostHog, a product analytics tools. Only for admins.'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
+  s.add_dependency 'http', '~> 5.1'
   s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'posthog-ruby', '~> 2.1'
 

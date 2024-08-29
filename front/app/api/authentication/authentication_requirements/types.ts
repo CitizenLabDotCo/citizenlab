@@ -1,8 +1,14 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import keys from './keys';
+import {
+  IPhasePermissionAction,
+  PermittedBy,
+} from 'api/phase_permissions/types';
+
+import { DisabledReason } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
+
 import { GLOBAL_CONTEXT } from './constants';
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import keys from './keys';
 
 interface InitiativeContext {
   type: 'initiative';
@@ -16,54 +22,53 @@ interface IFollowContext {
   action: IFollowingAction;
 }
 
-export interface ProjectContext {
-  type: 'project' | 'phase';
-  action: IParticipationContextPermissionAction;
-  id: string /* project or phase id, depending on type attribute */;
+export interface PhaseContext {
+  type: 'phase';
+  action: IPhasePermissionAction;
+  id: string /* phase id */;
 }
 
 interface IdeaContext {
   type: 'idea';
-  action: IParticipationContextPermissionAction;
+  action: IPhasePermissionAction;
   id: string /* idea id */;
 }
 
 export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
   | InitiativeContext
-  | ProjectContext
+  | PhaseContext
   | IdeaContext
   | IFollowContext;
+
+type UserAttribute =
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'password'
+  | 'confirmation';
 
 export interface AuthenticationRequirementsResponse {
   data: {
     type: 'requirements';
     attributes: {
-      requirements: AuthenticationRequirements;
-    };
-  };
-}
-
-type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
-
-export interface AuthenticationRequirements {
-  permitted: boolean;
-  requirements: {
-    built_in: {
-      first_name: RequirementStatus;
-      last_name: RequirementStatus;
-      email: RequirementStatus;
-    };
-
-    custom_fields: Record<string, RequirementStatus>;
-
-    special: {
-      password: RequirementStatus;
-      confirmation: RequirementStatus;
-      verification: RequirementStatus;
-      group_membership: RequirementStatus;
+      permitted: boolean;
+      disabled_reason: DisabledReason | null;
+      requirements: {
+        authentication: {
+          permitted_by: PermittedBy;
+          missing_user_attributes: UserAttribute[];
+        };
+        verification: boolean;
+        custom_fields: Record<string, 'required' | 'optional'>;
+        onboarding: boolean;
+        group_membership: boolean;
+      };
     };
   };
 }
 
 export type AuthenticationRequirementKeys = Keys<typeof keys>;
+
+export type AuthenticationRequirements =
+  AuthenticationRequirementsResponse['data']['attributes'];

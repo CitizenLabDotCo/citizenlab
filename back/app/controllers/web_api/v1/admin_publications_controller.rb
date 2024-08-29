@@ -7,11 +7,20 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params)
+    publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
 
-    @publications = publications.includes(:publication, :children)
-      .order(:ordering)
-    @publications = paginate @publications
+    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
+    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
+    publications = publications.select(
+      'admin_publications.*',
+      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
+      AS root_ordering'
+    )
+      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
+      .order('root_ordering, admin_publications.ordering')
+
+    @publications = paginate publications
+    @publications = @publications.includes(:publication, :children)
 
     render json: linked_json(
       @publications,

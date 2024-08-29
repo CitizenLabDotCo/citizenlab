@@ -1,30 +1,33 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { ICommentData } from 'api/comments/types';
-
-// style
-import styled from 'styled-components';
-import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import {
+  colors,
+  media,
+  fontSizes,
+  defaultCardStyle,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
-// Components
-import { Icon } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
+import { ICommentData } from 'api/comments/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
+
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
-
-// intl
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
 import T from 'components/T';
 
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -128,6 +131,9 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
   const { data: user } = useUserById(userId);
   const post = initiative || idea;
 
@@ -136,10 +142,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
   }
 
   const { slug, title_multiloc } = post.data.attributes;
-  const projectId: string | null =
-    postType === 'idea' && 'project' in post.data.relationships
-      ? post.data.relationships.project.data.id
-      : null;
+  const userCanModerate = {
+    idea: project ? canModerateProject(project.data, user) : false,
+    initiative: canModerateInitiative(user),
+  }[postType];
 
   return (
     <Container>
@@ -173,10 +179,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
           return (
             <CommentContainer key={comment.id}>
               <CommentHeader
-                projectId={projectId}
                 authorId={userId}
                 commentType="parent"
                 commentAttributes={comment.attributes}
+                userCanModerate={userCanModerate}
               />
               <CommentBody
                 commentId={comment.id}

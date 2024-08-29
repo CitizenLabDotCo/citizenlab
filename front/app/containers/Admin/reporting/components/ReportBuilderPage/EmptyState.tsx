@@ -1,24 +1,24 @@
 import React from 'react';
 
-// images
+import {
+  Box,
+  Image,
+  Title,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-
-// components
-import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-
-// styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
-// i18n
-import messages from './messages';
-import sharedMessages from '../../messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import sharedMessages from '../../messages';
+
+import messages from './messages';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -52,9 +52,9 @@ const EmptyState = ({ onOpenModal }: Props) => {
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.emptyStateDescription} />
+            <FormattedMessage {...messages.customizeReport} />
           </Text>
-          <Tippy
+          <Tooltip
             maxWidth="250px"
             placement="right-start"
             content={<FormattedMessage {...sharedMessages.contactToAccess} />}
@@ -63,16 +63,16 @@ const EmptyState = ({ onOpenModal }: Props) => {
           >
             <div>
               <Button
-                mt="8px"
-                py="6px"
-                bgColor={colors.primary}
                 onClick={onOpenModal}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
                 disabled={!isReportBuilderAllowed}
+                id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

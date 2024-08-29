@@ -1,25 +1,27 @@
 import React from 'react';
 
-// components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-import ProjectsListContent from './ProjectsListContent';
-import HelmetIntl from 'components/HelmetIntl';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
+
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
-// utils
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-import { adminCustomPageContentPath } from '../../routes';
+import useLocalize from 'hooks/useLocalize';
+
+import HelmetIntl from 'components/HelmetIntl';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import { adminCustomPageContentPath } from '../../routes';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+
 import messages from './messages';
+import ProjectsListContent from './ProjectsListContent';
 
 const ProjectList = () => {
   const localize = useLocalize();
@@ -45,7 +47,7 @@ const ProjectList = () => {
         breadcrumbs={[
           {
             label: formatMessage(pagesAndMenuBreadcrumb.label),
-            linkTo: pagesAndMenuBreadcrumb.linkTo,
+            linkTo: pagesAndMenuBreadcrumbLinkTo,
           },
           {
             label: localize(customPage.data.attributes.title_multiloc),

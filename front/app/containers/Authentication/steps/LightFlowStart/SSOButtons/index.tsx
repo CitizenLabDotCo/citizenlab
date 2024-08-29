@@ -1,20 +1,18 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import SSOButton from './SSOButton';
-import Or from 'components/UI/Or';
-import Error from 'components/UI/Error';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
+
+import Error from 'components/UI/Error';
+import Or from 'components/UI/Or';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+import SSOButton from './SSOButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
@@ -26,16 +24,30 @@ const SSOButtons = (props: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const azureB2cProviderName = useFeatureFlag({ name: 'azure_ad_b2c_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const claveUnicaLoginEnabled = useFeatureFlag({
+    name: 'clave_unica_login',
+  });
+  const hoplrLoginEnabled = useFeatureFlag({
+    name: 'hoplr_login',
+  });
+  const criiptoLoginEnabled = useFeatureFlag({
+    name: 'criipto_login',
+  });
 
   if (
     !googleLoginEnabled &&
     !facebookLoginEnabled &&
+    !azureAdLoginEnabled &&
+    !azureB2cProviderName &&
     !franceconnectLoginEnabled &&
-    !azureAdLoginEnabled
+    !claveUnicaLoginEnabled &&
+    !hoplrLoginEnabled &&
+    !criiptoLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;
@@ -64,6 +76,9 @@ const SSOButtons = (props: Props) => {
         )}
         {azureAdLoginEnabled && (
           <SSOButton ssoProvider="azureactivedirectory" {...props} />
+        )}
+        {azureB2cProviderName && (
+          <SSOButton ssoProvider="azureactivedirectory_b2c" {...props} />
         )}
       </Box>
     </>

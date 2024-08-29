@@ -58,36 +58,6 @@ export default defineMessages({
     id: 'app.containers.Comments.cancelCommentEdit',
     defaultMessage: 'Cancel',
   },
-  commentingDisabledInactiveProject: {
-    id: 'app.components.Comments.commentingDisabledInactiveProject',
-    defaultMessage:
-      'Commenting is not possible because this project is currently not active.',
-  },
-  commentingDisabledProject: {
-    id: 'app.components.Comments.commentingDisabledProject',
-    defaultMessage: 'Commenting in this project is currently disabled.',
-  },
-  commentingDisabledInCurrentPhase: {
-    id: 'app.components.Comments.commentingDisabledInCurrentPhase',
-    defaultMessage: 'Commenting is not possible in the current phase.',
-  },
-  commentingDisabledUnverified: {
-    id: 'app.components.Comments.commentingDisabledUnverified',
-    defaultMessage: '{verifyIdentityLink} to comment.',
-  },
-  commentingMaybeNotPermitted: {
-    id: 'app.components.Comments.commentingMaybeNotPermitted',
-    defaultMessage:
-      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
-  },
-  signInToComment: {
-    id: 'app.containers.Comments.signInToComment',
-    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
-  },
-  completeProfileToComment: {
-    id: 'app.containers.Comments.completeProfileToComment',
-    defaultMessage: 'Please {completeRegistrationLink} to comment.',
-  },
   commentingInitiativeNotPermitted: {
     id: 'app.components.Comments.commentingInitiativeNotPermitted',
     defaultMessage: "You don't have the rights to comment.",
@@ -288,5 +258,13 @@ export default defineMessages({
   visibleToUsersPlaceholder: {
     id: 'app.containers.Comments.visibleToUsersPlaceholder',
     defaultMessage: 'This comment is visible to regular users',
+  },
+  a11y_commentsHaveChanged: {
+    id: 'app.containers.SearchInput.a11y_commentsHaveChanged',
+    defaultMessage: '{sortOder} comments have loaded.',
+  },
+  a11y_cancelledPostingComment: {
+    id: 'app.containers.SearchInput.a11y_cancelledPostingComment',
+    defaultMessage: 'Cancelled posting comment.',
   },
 });

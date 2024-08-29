@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddProjectGroup from './useAddProjectGroup';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectGroups } from './__mocks__/useProjectGroups';
+import useAddProjectGroup from './useAddProjectGroup';
 
 const apiPath = '*projects/:projectId/groups_projects';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectGroups[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: projectGroups[0] }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useAddProjectGroup', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

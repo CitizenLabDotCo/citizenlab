@@ -8,7 +8,7 @@ describe IdeaImagePolicy do
   let(:scope) { IdeaImagePolicy::Scope.new(user, idea.idea_images) }
 
   context 'on an image of an idea in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:idea) { create(:idea, project: project) }
     let!(:image) { create(:idea_image, idea: idea) }
 

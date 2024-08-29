@@ -1,5 +1,7 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideaOfficialFeedbackKeys from './keys';
 
 export type IdeaOfficialFeedbackKeys = Keys<typeof ideaOfficialFeedbackKeys>;

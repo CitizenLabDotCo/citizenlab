@@ -16,26 +16,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesNewPage.tipsTitle',
     defaultMessage: 'Tips and tricks for a successful initiative',
   },
-  elaborate: {
-    id: 'app.containers.InitiativesNewPage.elaborate',
-    defaultMessage:
-      'Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.',
-  },
-  meaningfulTitle: {
-    id: 'app.containers.InitiativesNewPage.meaningfulTitle',
-    defaultMessage:
-      'Choose a meaningful title that explains clearly what your proposal entails.',
-  },
-  visualise: {
-    id: 'app.containers.InitiativesNewPage.visualise',
-    defaultMessage:
-      'Make sure to visualise your proposal with a fitting image, so that it stands out more.',
-  },
-  relevantAttachments: {
-    id: 'app.containers.InitiativesNewPage.relevantAttachments',
-    defaultMessage:
-      'Add relevant attachments, such as videos, inspiring examples, technical details or plans.',
-  },
   makeSureReadyToBePublic: {
     id: 'app.containers.InitiativesNewPage.makeSureReadyToBePublic',
     defaultMessage: 'Make sure the proposal is ready to be published.',
@@ -50,11 +30,6 @@ export default defineMessages({
     defaultMessage:
       "It won't be possible to edit it once somebody votes for it.",
   },
-  shareSocialMedia: {
-    id: 'app.containers.InitiativesNewPage.shareSocialMedia',
-    defaultMessage:
-      'Share your idea on social media and other channels to gather support from others.',
-  },
   // Form Messages
   formGeneralSectionTitle: {
     id: 'app.components.InitiativeForm.formGeneralSectionTitle',
@@ -68,11 +43,6 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.titleMinLengthError',
     defaultMessage:
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.',
-  },
-  titleMaxLengthError: {
-    id: 'app.components.InitiativeForm.titleMaxLengthError',
-    defaultMessage:
-      'The provided title is too long. Please add a title that is between 10 and 72 characters long.',
   },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
@@ -107,6 +77,14 @@ export default defineMessages({
   topicEmptyError: {
     id: 'app.components.InitiativeForm.topicEmptyError',
     defaultMessage: 'Please provide a topic',
+  },
+  cosponsorsEmptyError: {
+    id: 'app.components.InitiativeForm.cosponsorsEmptyError',
+    defaultMessage: 'Please add the required number of cosponsors',
+  },
+  cosponsorsMaxError: {
+    id: 'app.components.InitiativeForm.cosponsorsMaxError',
+    defaultMessage: 'You can only add {maxNumberOfCosponsors} cosponsors',
   },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',

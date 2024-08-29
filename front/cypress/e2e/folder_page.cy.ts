@@ -12,25 +12,20 @@ describe('Project selection page', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectOneTitle,
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'poll',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTwoTitle,
         descriptionPreview: randomString(),
         description: randomString(),
         publicationStatus: 'published',
-        participationMethod: 'poll',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
-          type: 'continuous',
           title: folderTitle,
           descriptionPreview: randomString(30),
           description: folderDescription,
@@ -55,12 +50,6 @@ describe('Project selection page', () => {
 
   it('shows the page', () => {
     cy.get('#e2e-folder-page');
-  });
-
-  it('shows where you are', () => {
-    cy.get('.e2e-projects-dropdown-link')
-      .should('have.class', 'active')
-      .should('be.visible');
   });
 
   it('shows the folder title', () => {

@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useChangePassword from './useChangePassword';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { usersData } from './__mocks__/useUsers';
+
+import { usersData } from './__mocks__/_mockServer';
+import useChangePassword from './useChangePassword';
 
 const apiPath = '*users/update_password';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: usersData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: usersData[0] }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useChangePassword', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

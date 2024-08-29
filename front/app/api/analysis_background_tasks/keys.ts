@@ -1,11 +1,11 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'analysis_background_task' };
+const baseKey = { type: 'background_task' };
 
 const backgroundTasksKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ analysisId }: { analysisId: string }) => [
+  list: ({ analysisId }: { analysisId?: string }) => [
     { ...baseKey, operation: 'list', parameters: { analysisId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

@@ -73,7 +73,8 @@ resource 'Tags' do
 
       example_request 'lists all tags of an analysis' do
         assert_status 200
-        expect(response_data.pluck(:id)).to match_array(tags.pluck(:id))
+        # tags sorted by descending tag count, then by ascending creation time if equal
+        expect(response_data.pluck(:id)).to eq([tags[1].id, tags[0].id, tags[2].id])
         expect(json_response_body[:meta]).to eq({
           inputs_total: 3,
           filtered_inputs_total: 3,
@@ -182,7 +183,6 @@ resource 'Tags' do
     with_options scope: :tag do
       parameter :name, 'The name of the tag.', required: true
     end
-    ValidationErrorHelper.new.error_fields(self, Insights::Category)
 
     let(:tag) { create(:tag) }
     let(:analysis_id) { tag.analysis_id }

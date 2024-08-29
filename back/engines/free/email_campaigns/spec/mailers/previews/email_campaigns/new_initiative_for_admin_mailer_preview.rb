@@ -6,13 +6,14 @@ module EmailCampaigns
 
     def campaign_mail
       initiative = Initiative.first
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
           post_published_at: initiative.published_at.iso8601,
           post_title_multiloc: initiative.title_multiloc,
           post_author_name: initiative.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient_user.locale),
+          post_url: Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient_user.locale)),
           initiative_reactions_needed: initiative.reactions_needed,
           initiative_expires_at: initiative.expires_at.iso8601
         }

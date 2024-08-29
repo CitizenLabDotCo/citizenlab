@@ -10,6 +10,8 @@ pt:
       comment_author: '%{authorName} comentou:'
       idea_author: '%{authorName} submeteu uma postagem:'
       initiative_author: '%{authorName} apresentou uma proposta:'
-      this_post_was_flagged: >
-        <p>Esta postagem foi automaticamente detectada como potencial conteúdo inadequado. Enviamos esta notificação para que possa rever o post de acordo com as diretrizes de moderação.</p><p>Se o post não contém conteúdo impróprio, você pode remover o aviso através da sua plataforma na guia Atividade no painel de administração.</p>
+      automatically_flagged: >
+        Esta postagem foi detectada automaticamente como potencialmente contendo conteúdo inadequado. Estamos enviando esta notificação para que você possa analisar a publicação de acordo com suas próprias diretrizes de moderação.
+      how_to_review: >
+        Se a postagem não contiver conteúdo impróprio, você poderá remover o aviso por meio de sua plataforma na aba Atividade no painel de administração.
       cta_review_post: 'Rever post'

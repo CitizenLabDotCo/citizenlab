@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 
-// components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input, Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { StyledWarning } from '.';
+import Warning from 'components/UI/Warning';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 7px;
+`;
 
 interface Props {
   numberOfVotesThreshold: number;

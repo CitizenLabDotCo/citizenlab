@@ -19,16 +19,27 @@ module ActiveJobQueExtension
     self.class.should_retry ? super : expire
   end
 
-  # Removing the freeze step from
-  # https://github.com/que-rb/que/blob/77c6b92952b821898c393239ce0e4047b17d7dae/lib/que/active_job/extensions.rb#L14
+  def destroy_in(delay)
+    finish
+    DeleteQueJobJob.set(wait: delay).perform_later(job_id)
+  end
+
+  # For some reason, `Que` freezes the arguments and keyword arguments when the job
+  # loaded from the DB. We don't want that (the code base as it is today modify those
+  # arguments in place in many places), so we override the `Que::ActiveJob::JobExtensions#perform`
+  # method to skip the freezing step.
   def perform(*args)
-    Que.internal_log(:active_job_perform, self) { { args: args } }
+    args, kwargs = Que.split_out_ruby2_keywords(args)
+
+    Que.internal_log(:active_job_perform, self) do
+      { args: args, kwargs: kwargs }
+    end
 
     _run(
-      args: que_filter_args(
-        args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }
-      ),
+      args: que_filter_args(args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }),
+      kwargs: que_filter_args(kwargs.deep_symbolize_keys),
       reraise_errors: true
     )
   end
+  ruby2_keywords(:perform) if respond_to?(:ruby2_keywords, true)
 end

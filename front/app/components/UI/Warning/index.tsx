@@ -1,9 +1,14 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+
+import {
+  Icon,
+  IconNames,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { isPage } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -15,10 +20,6 @@ const Container = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  &.adminPage {
-    padding: 12px;
-  }
 `;
 
 const StyledIcon = styled(Icon)`
@@ -68,25 +69,19 @@ const Text = styled.div`
   }
 `;
 
-interface Props {
-  text?: string | JSX.Element;
-  children?: string | JSX.Element;
+export interface Props {
+  children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
 }
 
-export default class Warning extends PureComponent<Props> {
-  render() {
-    const { text, children, icon, className } = this.props;
-    const adminPage = isPage('admin', location.pathname);
+const Warning = ({ children, icon, className }: Props) => {
+  return (
+    <Container className={`${className || ''}`}>
+      <StyledIcon name={icon || 'info-outline'} />
+      <Text>{children}</Text>
+    </Container>
+  );
+};
 
-    return (
-      <Container
-        className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}
-      >
-        <StyledIcon name={icon || 'info-outline'} />
-        <Text>{text || children}</Text>
-      </Container>
-    );
-  }
-}
+export default Warning;

@@ -1,39 +1,31 @@
-// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// Services
-import useUpdateComment from 'api/comments/useUpdateComment';
-import { IUpdatedComment } from 'api/comments/types';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// Components
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// Styling
+import { Button } from '@citizenlab/cl2-component-library';
+import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
-
-// Typings
 import { CLErrors } from 'typings';
 
-import Outlet from 'components/Outlet';
+import { IUpdatedComment } from 'api/comments/types';
 import useComment from 'api/comments/useComment';
+import useUpdateComment from 'api/comments/useUpdateComment';
+
 import useLocale from 'hooks/useLocale';
-import { filter } from 'rxjs/operators';
-import { Button } from '@citizenlab/cl2-component-library';
-import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
+import Outlet from 'components/Outlet';
 import {
   getCommentContent,
   getEditableCommentContent,
 } from 'components/PostShowComponents/Comments/utils';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { commentTranslateButtonClicked$ } from '../events';
+import messages from '../messages';
 
 const Container = styled.div``;
 
@@ -223,7 +215,7 @@ const CommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary" onClick={cancelEditing}>
+            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
               <FormattedMessage {...messages.cancelCommentEdit} />
             </Button>
             <Button
@@ -246,7 +238,6 @@ const CommentBody = ({
                 id="app.components.PostShowComponents.CommentBody.translation"
                 translateButtonClicked={translateButtonClicked}
                 commentContent={commentContent}
-                locale={locale}
                 commentId={commentId}
               >
                 {(outletComponents) =>

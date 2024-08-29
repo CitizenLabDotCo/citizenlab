@@ -1,39 +1,17 @@
 import React, { memo } from 'react';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+
+import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-// components
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Icon } from '@citizenlab/cl2-component-library';
+import DateFilterDropdown from './DateFilterDropdown';
 
-// styling
-import styled, { useTheme } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 14px;
-  border-bottom: solid 1px #ccc;
-  margin-bottom: 29px;
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  padding-top: 0px;
-`;
+import { dateFilterKey } from '.';
 
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
@@ -41,40 +19,89 @@ const ProjectFilterDropdownPositioner = styled.div`
   align-items: center;
 `;
 
-const FilterIcon = styled(Icon)`
-  fill: ${({ theme }) => theme.colors.tenantText};
-  margin-right: 3px;
-`;
-
 interface Props {
   title: string;
   showProjectFilter: boolean;
+  showDateFilter?: boolean;
   setProjectIds: (projectIds: string[]) => void;
+  setDateFilter: (dateFilter: dateFilterKey[]) => void;
+  eventsTime?: 'past' | 'currentAndFuture';
 }
 
-const TopBar = memo<Props & WrappedComponentProps>(
-  ({ title, showProjectFilter, setProjectIds, intl }) => {
+const TopBar = memo<Props>(
+  ({
+    title,
+    showProjectFilter,
+    showDateFilter,
+    setProjectIds,
+    setDateFilter,
+    eventsTime,
+  }) => {
+    const { formatMessage } = useIntl();
     const theme = useTheme();
+    const isSmallerThanPhone = useBreakpoint('phone');
+
+    const mobileLeft = isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto';
 
     return (
-      <Container>
-        <Title>{title}</Title>
-
+      <Box
+        display={isSmallerThanPhone ? 'block' : 'flex'}
+        justifyContent="space-between"
+        pb="14px"
+        borderBottom="solid 1px #ccc"
+        mb="28px"
+        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+      >
+        <Title
+          color="tenantText"
+          m="0px"
+          my="auto"
+          as="h2"
+          variant={isSmallerThanPhone ? 'h3' : 'h2'}
+        >
+          {title}
+        </Title>
         <ProjectFilterDropdownPositioner>
-          {showProjectFilter && (
-            <>
-              <FilterIcon name="filter-2" />
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            flexDirection={isSmallerThanPhone ? 'row-reverse' : 'row'}
+            gap="8px"
+            mt="8px"
+            ml="auto"
+          >
+            {showDateFilter && (
+              <Box
+                width={isSmallerThanPhone ? '100%' : 'auto'}
+                flexShrink={0}
+                style={{ textAlign: 'right' }}
+              >
+                <DateFilterDropdown
+                  onChange={setDateFilter}
+                  textColor={theme.colors.tenantText}
+                  listTop="44px"
+                  mobileLeft={isSmallerThanPhone ? '-70px' : mobileLeft}
+                />
+              </Box>
+            )}
+            {showProjectFilter && (
               <ProjectFilterDropdown
-                title={intl.formatMessage(messages.filterDropdownTitle)}
+                title={formatMessage(messages.filterDropdownTitle)}
                 onChange={setProjectIds}
                 textColor={theme.colors.tenantText}
+                filterSelectorStyle="button"
+                listTop="44px"
+                mobileLeft={
+                  isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto'
+                }
+                eventsTime={eventsTime}
               />
-            </>
-          )}
+            )}
+          </Box>
         </ProjectFilterDropdownPositioner>
-      </Container>
+      </Box>
     );
   }
 );
 
-export default injectIntl(TopBar);
+export default TopBar;

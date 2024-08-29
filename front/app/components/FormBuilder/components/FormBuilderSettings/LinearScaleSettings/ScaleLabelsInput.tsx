@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-// react hook form
-import { Controller, useFormContext } from 'react-hook-form';
-
-// components
 import {
   Box,
   Label,
@@ -11,39 +7,38 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   margin-top: auto;
   margin-bottom: auto;
 `;
 interface Props {
-  minimumLabelName: string;
-  maximumLabelName: string;
+  labelBaseName: string;
   maximumName: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
-  platformLocale: Locale;
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
+  platformLocale: SupportedLocale;
 }
 
 const ScaleLabelsInput = ({
-  minimumLabelName,
-  maximumLabelName,
+  labelBaseName,
   maximumName,
   onSelectedLocaleChange,
   locales,
   platformLocale,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { control, setValue, getValues } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const { setValue, getValues } = useFormContext();
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
 
@@ -53,92 +48,78 @@ const ScaleLabelsInput = ({
     onSelectedLocaleChange?.(platformLocale);
   }, [platformLocale, onSelectedLocaleChange]);
 
-  const defaultValues = [{}];
-
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
     [onSelectedLocaleChange]
   );
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
+  const maxValue = getValues(maximumName);
+
   if (selectedLocale) {
     return (
-      <Controller
-        name={minimumLabelName}
-        control={control}
-        defaultValue={defaultValues}
-        render={({ field: { ref: _ref, value: minLabelMultiloc } }) => {
-          return (
-            <Controller
-              name={maximumLabelName}
-              control={control}
-              defaultValue={defaultValues}
-              render={({ field: { ref: _ref, value: maxLabelMultiloc } }) => {
-                return (
-                  <>
-                    <Box
-                      justifyContent="space-between"
-                      display="flex"
-                      flexWrap="wrap"
-                      gap="12px"
-                      mr="0px"
-                      my="16px"
-                    >
-                      <StyledLabel>
-                        {formatMessage(messages.labels)}
-                        <IconTooltip
-                          maxTooltipWidth={250}
-                          content={formatMessage(messages.labelsTooltipContent)}
-                        />
-                      </StyledLabel>
-                      <Box>
-                        <LocaleSwitcher
-                          onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                          locales={!isNilOrError(locales) ? locales : []}
-                          selectedLocale={selectedLocale}
-                          values={{
-                            input_field: minLabelMultiloc && maxLabelMultiloc,
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                    <Box display="flex" gap="36px" marginBottom="16px">
-                      <Box mt="12px">
-                        <Label value="1" />
-                      </Box>
-                      <Input
-                        type="text"
-                        value={minLabelMultiloc[selectedLocale]}
-                        onChange={(value) => {
-                          const updatedMultiloc = minLabelMultiloc;
-                          updatedMultiloc[selectedLocale] = value;
-                          setValue(minimumLabelName, updatedMultiloc);
-                        }}
-                      />
-                    </Box>
-                    <Box display="flex" gap="36px" marginBottom="16px">
-                      <Box mt="12px">
-                        <Label value={getValues(maximumName)} />
-                      </Box>
-                      <Input
-                        type="text"
-                        value={maxLabelMultiloc[selectedLocale]}
-                        onChange={(value) => {
-                          const updatedMultiloc = maxLabelMultiloc;
-                          updatedMultiloc[selectedLocale] = value;
-                          setValue(maximumLabelName, updatedMultiloc);
-                        }}
-                      />
-                    </Box>
-                  </>
-                );
-              }}
+      <>
+        <Box
+          justifyContent="space-between"
+          display="flex"
+          flexWrap="wrap"
+          gap="12px"
+          mr="0px"
+          my="16px"
+        >
+          <StyledLabel>
+            {formatMessage(messages.labels)}
+            <IconTooltip
+              maxTooltipWidth={250}
+              content={formatMessage(messages.labelsTooltipContent)}
             />
+          </StyledLabel>
+          <Box>
+            <LocaleSwitcher
+              onSelectedLocaleChange={handleOnSelectedLocaleChange}
+              locales={!isNilOrError(locales) ? locales : []}
+              selectedLocale={selectedLocale}
+            />
+          </Box>
+        </Box>
+        {Array.from({ length: maxValue }).map((_, index) => {
+          const labelMultiloc = getValues(
+            `${labelBaseName}.linear_scale_label_${index + 1}_multiloc`
           );
-        }}
-      />
+          return (
+            <Box display="flex" gap="36px" marginBottom="16px" key={index}>
+              <Box mt="12px">
+                <Label value={(index + 1).toString()} />
+              </Box>
+              <Input
+                type="text"
+                value={labelMultiloc?.[selectedLocale]}
+                onChange={(value) => {
+                  const updatedMultiloc = labelMultiloc;
+                  updatedMultiloc[selectedLocale] = value;
+                  setValue(
+                    `${labelBaseName}.linear_scale_label_${index + 1}_multiloc`,
+                    updatedMultiloc,
+                    {
+                      shouldDirty: true,
+                    }
+                  );
+                }}
+                onKeyDown={handleKeyDown}
+              />
+            </Box>
+          );
+        })}
+      </>
     );
   }
   return null;

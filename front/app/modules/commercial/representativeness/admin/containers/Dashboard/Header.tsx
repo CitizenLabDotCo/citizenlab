@@ -1,21 +1,17 @@
 import React from 'react';
 
-// components
 import {
   Title,
   Box,
   Text,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
-// import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
+import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-left: 8px;

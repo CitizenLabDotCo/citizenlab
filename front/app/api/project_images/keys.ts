@@ -8,12 +8,11 @@ const projectImagesKeys = {
   list: ({ projectId }: { projectId: string | null }) => [
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ projectId, imageId }: { projectId: string; imageId?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
-      ...baseKey,
+      type: 'image',
       operation: 'item',
-      parameters: { projectId, imageId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;

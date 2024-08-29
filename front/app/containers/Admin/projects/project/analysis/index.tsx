@@ -1,13 +1,15 @@
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import React from 'react';
+
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import TopBar from './TopBar';
-import Tags from './Tags';
-import InputsList from './InputsList';
+
 import InputPreview from './InputPreview';
+import InputsList from './InputsList';
 import Insights from './Insights';
 import SelectedInputContext from './SelectedInputContext';
+import Tags from './Tags';
+import TopBar from './TopBar';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -36,25 +38,17 @@ const Analysis = () => {
           >
             <Box
               w="300px"
-              overflow="auto"
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
               mt="12px"
               bg={colors.white}
             >
               <Tags />
             </Box>
 
-            <Box
-              flex="1"
-              overflow="auto"
-              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
-              mt="12px"
-              bg={colors.white}
-            >
+            <Box flex="1" mt="12px">
               <InputsList />
             </Box>
+
             <Box
               flex="1"
               overflow="auto"
@@ -73,7 +67,6 @@ const Analysis = () => {
               flex="1"
               p="12px"
               mt="12px"
-              overflow="auto"
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
               bg={colors.white}
             >

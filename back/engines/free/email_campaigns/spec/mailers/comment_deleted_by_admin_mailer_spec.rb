@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
           reason_code: 'other',
           other_reason: "I don't tolerate criticism",
           post_type: comment.post_type,
-          post_url: Frontend::UrlService.new.model_to_url(comment.post, locale: recipient.locale)
+          post_url: Frontend::UrlService.new.model_to_url(comment.post, locale: Locale.new(recipient.locale))
         }
       }
     end
@@ -46,7 +46,7 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
     end
 
     it 'assigns go to post CTA' do
-      post_url = Frontend::UrlService.new.model_to_url(comment.post, locale: recipient.locale)
+      post_url = Frontend::UrlService.new.model_to_url(comment.post, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(post_url)
     end
   end

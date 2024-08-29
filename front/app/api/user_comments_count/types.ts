@@ -1,10 +1,11 @@
-import userCommentsCountKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import userCommentsCountKeys from './keys';
 
 export type UserCommentsCountKeys = Keys<typeof userCommentsCountKeys>;
 
 export type IParameters = {
-  userId: string;
+  userId?: string;
 };
 
 export interface ICommentsCount {

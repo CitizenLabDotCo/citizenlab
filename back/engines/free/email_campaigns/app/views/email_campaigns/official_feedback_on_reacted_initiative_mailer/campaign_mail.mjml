@@ -1,3 +1,0 @@
-<%= render 'email_campaigns/official_feedbacks/card' %>
-
-<%= render partial: 'application/cta_button', locals: { href: event.official_feedback_url , message: format_message('cta_view') } %>

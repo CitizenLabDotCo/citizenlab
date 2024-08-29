@@ -1,32 +1,25 @@
 import React, { useRef } from 'react';
 
-// components
-import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
-import DonutChart from './DonutChart';
-import ProgressBars from './ProgressBars';
-import StackedBars from './StackedBars';
-import Button from 'components/UI/Button';
-
-// stylings
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
 
-// i18n
-import hookMessages from './usePostsFeedback/messages';
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import usePostsFeedback from './usePostsFeedback';
-
-// typings
-import { isNilOrError } from 'utils/helperUtils';
+import GraphCard from 'components/admin/GraphCard';
 import {
   ProjectId,
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import DonutChart from './DonutChart';
+import messages from './messages';
+import ProgressBars from './ProgressBars';
+import StackedBars from './StackedBars';
+import usePostsFeedback from './usePostsFeedback';
+import hookMessages from './usePostsFeedback/messages';
 
 type Props = ProjectId & Dates & Resolution;
 

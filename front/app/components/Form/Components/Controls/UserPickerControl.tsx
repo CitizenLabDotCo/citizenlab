@@ -1,20 +1,25 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React from 'react';
+
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React from 'react';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import ErrorDisplay from '../ErrorDisplay';
-import UserSelect from 'components/UI/UserSelect';
-import messages from '../../messages';
-import controlMessages from './messages';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { FormLabel } from 'components/UI/FormComponents';
+import UserSelect from 'components/UI/UserSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+
+import messages from '../../messages';
+import ErrorDisplay from '../ErrorDisplay';
+
 import { getSubtextElement } from './controlUtils';
+import controlMessages from './messages';
 
 const UserPickerControl = ({
   data,
@@ -66,7 +71,11 @@ const UserPickerControl = ({
         onChange={(userOption) => handleChange(path, userOption?.id)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+      />
     </>
   );
 };

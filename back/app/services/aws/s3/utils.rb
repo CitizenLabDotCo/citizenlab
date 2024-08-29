@@ -63,6 +63,39 @@ module Aws
         end.compact.to_h
       end
 
+      # Deletes all objects in an S3 bucket with a specified prefix.
+      #
+      # @param [String] bucket
+      # @param [Aws::S3::Client] s3_client
+      # @param [String] prefix
+      def delete_objects(
+        bucket,
+        s3_client,
+        prefix: ''
+      )
+        list_objects_v2_params = { bucket: bucket, prefix: prefix }
+        deleted_count = errors_count = 0
+
+        loop do
+          response = s3_client.list_objects_v2(list_objects_v2_params)
+          break if response.contents.empty?
+
+          objects_to_delete = response.contents.map { |object| { key: object.key } }
+
+          delete_resp = s3_client.delete_objects(
+            bucket: bucket,
+            delete: { objects: objects_to_delete }
+          )
+
+          deleted_count += delete_resp.deleted.size
+          errors_count += delete_resp.errors.size
+
+          break unless response.is_truncated
+        end
+
+        { deleted_count: deleted_count, errors_count: errors_count }
+      end
+
       private
 
       # Returns an enumerator that allows you to iterate over the responses returned by

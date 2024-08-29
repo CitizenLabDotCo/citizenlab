@@ -13,7 +13,7 @@ class SideFxCommentService
   def after_create(comment, user)
     LogActivityJob.perform_later(comment, 'created', user_for_activity_on_anonymizable_item(comment, user), comment.created_at.to_i)
     notify_mentioned_users(comment, user)
-    create_followers comment, user
+    create_followers(comment, user) unless comment.anonymous?
   end
 
   def before_update(comment, _user)
@@ -54,11 +54,10 @@ class SideFxCommentService
   private
 
   def check_participation_context(comment, user)
-    pcs = ParticipationContextService.new
     idea = comment.post if comment.post_type == 'Idea'
     return unless idea
 
-    disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
+    disallowed_reason = Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('commenting_idea')
     return unless disallowed_reason
 
     raise ClErrors::TransactionError.new(error_key: disallowed_reason)

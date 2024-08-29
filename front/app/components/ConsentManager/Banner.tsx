@@ -1,38 +1,36 @@
 import React from 'react';
 
-// styling
-import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import {
+  media,
+  fontSizes,
+  colors,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
+import styled from 'styled-components';
 
-// components
 import ContentContainer from 'components/ContentContainer';
-import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
 import messages from './messages';
 
 const Container = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   color: white;
   background: ${colors.primary};
   font-size: ${fontSizes.base}px;
-  z-index: 1001;
+  z-index: 1100;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  ${(props) =>
-    media.tablet`
-      bottom: ${props.theme.mobileMenuHeight}px;
-      padding-right: 40px;
-    `}
 `;
 
 const ContentContainerInner = styled.div`
@@ -72,25 +70,6 @@ const Left = styled.div`
   `}
 `;
 
-const Line = styled.div`
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  &.first {
-    margin-bottom: 4px;
-  }
-
-  ${media.phone`
-    &.second {
-      display: none;
-    }
-  `}
-`;
-
 const StyledLink = styled(Link)`
   color: white;
   text-decoration: underline;
@@ -104,34 +83,10 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
+  gap: 12px;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-`;
-
-const AcceptButton = styled(Button)`
-  margin-right: 10px;
-
-  ${media.phone`
-    margin-right: 0px;
-    order: 2;
-  `}
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 10px;
-
-    ${media.phone`
-      margin-left: 0px;
-    `}
-  `}
-`;
-
-const PreferencesButton = styled(Button)`
-  ${media.phone`
-    margin-right: 10px;
-    order: 1;
   `}
 `;
 
@@ -152,28 +107,31 @@ interface Props {
 
 const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
   return (
-    <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
+    <Container
+      tabIndex={0}
+      role="dialog"
+      id="e2e-cookie-banner"
+      // aria-labelledby helps screen readers find
+      // the title of the dialog
+      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
+      aria-labelledby="cookie-banner-title"
+    >
       <ContentContainer mode="page">
         <ContentContainerInner>
-          <Left>
-            <Line className="first">
-              <FormattedMessage
-                {...messages.mainText}
-                values={{
-                  policyLink: (
-                    <StyledLink to="/pages/cookie-policy">
-                      <FormattedMessage {...messages.policyLink} />
-                    </StyledLink>
-                  ),
-                }}
-              />
-            </Line>
-            <Line className="second">
-              <FormattedMessage {...messages.subText} />
-            </Line>
+          <Left id="cookie-banner-title">
+            <FormattedMessage
+              {...messages.mainText}
+              values={{
+                policyLink: (
+                  <StyledLink to="/pages/cookie-policy">
+                    <FormattedMessage {...messages.policyLink} />
+                  </StyledLink>
+                ),
+              }}
+            />
           </Left>
           <ButtonContainer>
-            <AcceptButton
+            <Button
               className="e2e-accept-cookies-btn"
               buttonStyle="primary-inverse"
               textColor={colors.primary}
@@ -181,16 +139,25 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
-            </AcceptButton>
-            <PreferencesButton
-              className="integration-open-modal"
+            </Button>
+            <Button
               buttonStyle="primary-inverse"
               textColor={colors.primary}
               textHoverColor={colors.primary}
+              onClick={onClose}
+            >
+              <FormattedMessage {...messages.reject} />
+            </Button>
+            <Button
+              className="integration-open-modal"
+              padding="0px"
+              buttonStyle="text"
+              textColor={colors.white}
+              textHoverColor={colors.white}
               onClick={onChangePreferences}
             >
               <FormattedMessage {...messages.manage} />
-            </PreferencesButton>
+            </Button>
           </ButtonContainer>
         </ContentContainerInner>
       </ContentContainer>

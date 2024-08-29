@@ -1,13 +1,13 @@
 import React from 'react';
-import Konveio from './Konveio';
-import { MessageDescriptor } from 'react-intl';
-import {
-  DocumentAnnotationDisabledReason,
-  IProjectData,
-} from 'api/projects/types';
-import messages from './messages';
-import globalMessages from 'utils/messages';
+
+import { IProjectData } from 'api/projects/types';
+
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
+
 import ParticipationPermission from '../ParticipationPermission';
+
+import Konveio from './Konveio';
 
 interface Props {
   project: IProjectData;
@@ -15,52 +15,37 @@ interface Props {
   documentUrl: string;
 }
 
-const disabledMessages: {
-  [key in DocumentAnnotationDisabledReason]: MessageDescriptor;
-} = {
-  project_inactive: messages.documentAnnotationDisabledProjectInactive,
-  not_active: messages.documentAnnotationDisabledNotActiveUser,
-  not_verified: messages.documentAnnotationDisabledNotVerified,
-  missing_data: messages.documentAnnotationDisabledNotActiveUser,
-  not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.documentAnnotationDisabledNotPermitted,
-  not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
-};
-
-const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
-  const reasonsToHideDocument: DocumentAnnotationDisabledReason[] = [
+const isEnabled = (
+  disabledReason: ProjectDocumentAnnotationDisabledReason | null
+) => {
+  const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
     'project_inactive',
-    'not_in_group',
-    'not_permitted',
+    'user_not_in_group',
+    'user_not_permitted',
     'not_document_annotation',
   ];
 
-  if (
-    disabledReason !== null &&
-    reasonsToHideDocument.includes(disabledReason)
-  ) {
-    return false;
-  }
-
-  return true;
+  return !(
+    disabledReason !== null && reasonsToHideDocument.includes(disabledReason)
+  );
 };
 
 const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
-  const { enabled: _enabled, disabled_reason } =
-    project.attributes.action_descriptor.annotating_document;
+  const disabledReason =
+    project.attributes.action_descriptors.annotating_document.disabled_reason;
+
+  const disabledMessage =
+    getPermissionsDisabledMessage('annotating_document', disabledReason) ||
+    null;
 
   if (documentUrl) {
     return (
       <ParticipationPermission
         id="document-annotation"
-        projectId={project.id}
         action="annotating_document"
-        enabled={isEnabled(disabled_reason)}
+        enabled={isEnabled(disabledReason)}
         phaseId={phaseId}
-        disabledMessage={
-          disabled_reason ? disabledMessages[disabled_reason] : null
-        }
+        disabledMessage={disabledMessage}
       >
         <Konveio documentUrl={documentUrl} />
       </ParticipationPermission>

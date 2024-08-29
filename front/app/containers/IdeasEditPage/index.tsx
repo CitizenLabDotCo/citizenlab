@@ -1,29 +1,21 @@
 import React from 'react';
 
-// hooks
+import { Spinner } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// components
-import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import IdeasEditForm from './IdeasEditForm';
 
-// router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
-interface Props {
-  params: {
-    ideaId: string;
-  };
-}
+import IdeasEditForm from './IdeasEditForm';
 
-const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
-  const { status, error } = useIdeaById(props.params.ideaId);
+const IdeasEditPage = () => {
+  const { ideaId } = useParams() as { ideaId: string };
+  const { status, error } = useIdeaById(ideaId);
 
   if (status === 'loading') {
     return (
@@ -41,7 +33,7 @@ const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
     return <PageNotFound />;
   }
 
-  return <IdeasEditForm {...props} />;
-});
+  return <IdeasEditForm ideaId={ideaId} />;
+};
 
 export default IdeasEditPage;

@@ -3,13 +3,8 @@
 module AdminApi
   class ProjectsController < AdminApiController
     def index
-      projects = Project.all.map do |project|
-        project_hash = project.as_json
-        project_hash['map_config_id'] = project.map_config_id
-        project_hash
-      end
-
-      render json: projects
+      projects = Project.includes({ admin_publication: { parent: [:publication] } })
+      render json: projects, adapter: :attributes
     end
 
     def template_export
@@ -21,14 +16,14 @@ module AdminApi
     end
 
     def template_import
-      template = YAML.load(template_import_params[:template_yaml])
-      folder = ProjectFolders::Folder.find template_import_params[:folder_id] if template_import_params[:folder_id]
-      ProjectCopyService.new.import(template, folder: folder)
+      folder_id = template_import_params[:folder_id]
+      template_yaml = template_import_params[:template_yaml]
+      job = CopyProjectJob.perform_later(template_yaml, folder_id)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
-      head :ok
+      render json: { job_id: job.job_id }, status: :accepted
     end
 
     def template_import_params

@@ -1,30 +1,35 @@
 import React from 'react';
 
-// styling
-import { BORDER } from '../constants';
+import {
+  Box,
+  Title,
+  IconTooltip,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
-// components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
+
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-interface ContainerProps {
+interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
-interface Props extends ContainerProps {
-  title?: string;
+interface ContainerProps extends SharedProps {
+  className?: string;
+  px?: string;
 }
 
-const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
-  const props = {
-    border: BORDER,
-    mt: '4px',
-    mb: '4px',
-    ...rest,
-  };
+interface Props extends SharedProps {
+  title?: Multiloc;
+  infoTooltipContent?: React.ReactNode;
+}
 
+const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
   return pagebreak ? (
     <PageBreakBox {...props}>{children}</PageBreakBox>
   ) : (
@@ -32,15 +37,33 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
   );
 };
 
-const Card = ({ title, children, ...rest }: Props) => (
-  <Container {...rest}>
-    <Box>
-      <Title variant="h3" color="primary" m="16px" mb="8px">
-        {title}
-      </Title>
-    </Box>
-    {children}
-  </Container>
-);
+const Card = ({ title, infoTooltipContent, children, ...rest }: Props) => {
+  const localize = useLocalize();
+
+  return (
+    <Container className="report-widget-card" {...rest}>
+      {title && (
+        <Box display="flex" flexDirection="row" alignItems="center" mb="16px">
+          <Title variant="h4" mt="0px" mb="0px">
+            {localize(title)}
+          </Title>
+          {infoTooltipContent && (
+            <IconTooltip
+              content={
+                <Text m="0px" mb="0px" fontSize="s">
+                  {infoTooltipContent}
+                </Text>
+              }
+              ml="8px"
+              theme="light"
+              transform="translate(0,1)"
+            />
+          )}
+        </Box>
+      )}
+      <Box>{children}</Box>
+    </Container>
+  );
+};
 
 export default Card;

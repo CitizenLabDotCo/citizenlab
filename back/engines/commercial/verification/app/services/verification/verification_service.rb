@@ -2,23 +2,12 @@
 
 module Verification
   class VerificationService
-    @all_methods = []
-
-    class << self
-      attr_reader :all_methods
-
-      def add_method(verification_method)
-        @all_methods.reject! { |m| m.id == verification_method.id }
-        @all_methods << verification_method
-      end
-    end
-
     def initialize(sfxv_service = SideFxVerificationService.new)
       @sfxv_service = sfxv_service
     end
 
     def all_methods
-      self.class.all_methods
+      ::Verification.all_methods
     end
 
     def method_by_name(name)
@@ -48,6 +37,21 @@ module Verification
       active_methods(configuration).include? method_by_name(method_name)
     end
 
+    # Not all verification methods are allowed at a permission/action level
+    # NOTE: for real platforms, you should never have
+    # more than one verification method enabled at a time.
+    def first_method_enabled_for_verified_actions
+      active_methods(AppConfiguration.instance).find do |method|
+        method.respond_to?(:enabled_for_verified_actions?) && method.enabled_for_verified_actions?
+      end
+    end
+
+    # NOTE: for real platforms, you should never have
+    # more than one verification method enabled at a time.
+    def first_method_enabled
+      active_methods(AppConfiguration.instance).first
+    end
+
     class NoMatchError < StandardError; end
 
     class NotEntitledError < StandardError
@@ -65,25 +69,21 @@ module Verification
 
     def verify_sync(user:, method_name:, verification_parameters:)
       method = method_by_name(method_name)
-      response = method.verify_sync verification_parameters
+      response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
       user.update_merging_custom_fields!(
         user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
       )
-      make_verification(user: user, method_name: method_name, uid: uid)
+      make_verification(user:, method:, uid:)
     end
 
     def verify_omniauth(user:, auth:)
       method = method_by_name(auth.provider)
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
-      uid = if method.respond_to?(:profile_to_uid)
-        method.profile_to_uid(auth)
-      else
-        auth['uid']
-      end
-      make_verification(user: user, method_name: method.name, uid: uid)
+      uid = method.profile_to_uid(auth)
+      make_verification(user:, method:, uid:)
     end
 
     def locked_attributes(user)
@@ -112,13 +112,72 @@ module Verification
       custom_fields.uniq
     end
 
+    # Return meta data for use in permission actions
+    def action_metadata(method: nil)
+      method ||= first_method_enabled_for_verified_actions
+      return { allowed: false } unless method.respond_to?(:enabled_for_verified_actions?) && method&.enabled_for_verified_actions?
+
+      name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
+
+      # Attributes
+      multiloc_service = MultilocService.new
+      locales = AppConfiguration.instance.settings('core', 'locales')
+
+      locked_attributes = if method.respond_to?(:locked_attributes)
+        method.locked_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
+        end
+      else
+        []
+      end
+
+      other_attributes = if method.respond_to?(:other_attributes)
+        method.other_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
+        end
+      else
+        []
+      end
+
+      # Custom fields
+      custom_fields = CustomField.registration
+      locked_custom_fields = if method.respond_to?(:locked_custom_fields)
+        method.locked_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
+      other_custom_fields = if method.respond_to?(:other_custom_fields)
+        method.other_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
+      {
+        allowed: true,
+        name: name,
+        locked_attributes: locked_attributes,
+        other_attributes: other_attributes,
+        locked_custom_fields: locked_custom_fields,
+        other_custom_fields: other_custom_fields
+      }
+    end
+
+    def verifications_by_uid(uid, method)
+      ::Verification::Verification.where(
+        active: true,
+        hashed_uid: hashed_uid(uid, method.name_for_hashing)
+      )
+    end
+
     private
 
-    def make_verification(user:, method_name:, uid:)
-      existing_users = existing_verified_users(user, uid, method_name)
+    def make_verification(user:, uid:, method:)
+      existing_users = existing_verified_users(user, uid, method)
       taken = existing_users.present?
 
       if taken
+        # it means sth went wrong and user wasn't fully created (e.g., they didn't enter email)
         if existing_users.all?(&:blank_and_can_be_deleted?)
           existing_users.each { |u| DeleteUserJob.perform_now(u) }
         else
@@ -127,8 +186,8 @@ module Verification
       end
 
       verification = ::Verification::Verification.new(
-        method_name: method_name,
-        hashed_uid: hashed_uid(uid, method_name),
+        method_name: method.name_for_hashing,
+        hashed_uid: hashed_uid(uid, method.name_for_hashing),
         user: user,
         active: true
       )
@@ -142,17 +201,14 @@ module Verification
       verification
     end
 
-    def existing_verified_users(user, uid, method_name)
-      ::Verification::Verification.where(
-        active: true,
-        hashed_uid: hashed_uid(uid, method_name)
-      )
+    def existing_verified_users(user, uid, method)
+      verifications_by_uid(uid, method)
         .where.not(user: user)
         .includes(:user).map(&:user)
     end
 
-    def hashed_uid(uid, method_name)
-      Digest::SHA256.hexdigest "#{method_name}-#{uid}"
+    def hashed_uid(uid, method_name_for_hashing)
+      Digest::SHA256.hexdigest "#{method_name_for_hashing}-#{uid}"
     end
   end
 end

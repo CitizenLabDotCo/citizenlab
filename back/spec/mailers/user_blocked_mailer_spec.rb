@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe UserBlockedMailer do
   describe 'send_email_to_blocked_user' do
-    let!(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:message) { described_class.with(user: user).send_user_blocked_email.deliver_now }
+    let_it_be(:user) { create(:user, block_end_at: 5.days.from_now) }
+    let_it_be(:message) { described_class.with(user: user).send_user_blocked_email.deliver_now }
 
     it 'renders the subject' do
       expect(message.subject).to start_with('Your account has been temporarily disabled')
@@ -29,6 +29,9 @@ RSpec.describe UserBlockedMailer do
     end
 
     context 'when reason for blocking is provided' do
+      let(:user) { create(:user, block_end_at: 5.days.from_now) }
+      let(:message) { described_class.with(user: user).send_user_blocked_email.deliver_now }
+
       it 'includes reason for being blocked' do
         user.update(block_reason: 'You were very naughty!')
 

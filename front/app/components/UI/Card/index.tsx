@@ -1,17 +1,17 @@
 import React, { memo, MouseEvent } from 'react';
-import bowser from 'bowser';
 
-// components
-import Link from 'utils/cl-router/Link';
-import Image from 'components/UI/Image';
-
-// styling
-import styled from 'styled-components';
 import {
+  useBreakpoint,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
+
+import Image from 'components/UI/Image';
+
+import Link from 'utils/cl-router/Link';
 
 const Container = styled(Link)`
   width: 100%;
@@ -92,7 +92,7 @@ const Footer = styled.div`
 `;
 
 interface Props {
-  to: string;
+  to: RouteType;
   imageUrl?: string | null;
   header?: JSX.Element;
   title: JSX.Element | string;
@@ -100,6 +100,7 @@ interface Props {
   footer?: JSX.Element | string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  scrollToTop?: boolean;
 }
 
 export const Card = ({
@@ -111,28 +112,34 @@ export const Card = ({
   body,
   footer,
   className,
-}: Props) => (
-  <Container
-    onClick={onClick}
-    to={to}
-    className={`e2e-card ${className} ${
-      !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-    }`}
-  >
-    {imageUrl && (
-      <CardImageWrapper>
-        <CardImage src={imageUrl} alt="" />
-      </CardImageWrapper>
-    )}
+  scrollToTop,
+}: Props) => {
+  const smallerThanTablet = useBreakpoint('tablet');
 
-    <Title className="e2e-card-title" hasHeader={!!header}>
-      {title}
-    </Title>
-    <HeaderContentWrapper>{header}</HeaderContentWrapper>
+  return (
+    <Container
+      onClick={onClick}
+      to={to}
+      scrollToTop={scrollToTop}
+      className={`e2e-card ${className} ${
+        !smallerThanTablet ? 'desktop' : 'mobile'
+      }`}
+    >
+      {imageUrl && (
+        <CardImageWrapper>
+          <CardImage src={imageUrl} alt="" />
+        </CardImageWrapper>
+      )}
 
-    <Body>{body}</Body>
-    <Footer aria-live="polite">{footer}</Footer>
-  </Container>
-);
+      <Title className="e2e-card-title" hasHeader={!!header}>
+        {title}
+      </Title>
+      <HeaderContentWrapper>{header}</HeaderContentWrapper>
+
+      <Body>{body}</Body>
+      <Footer aria-live="polite">{footer}</Footer>
+    </Container>
+  );
+};
 
 export default memo<Props>(Card);

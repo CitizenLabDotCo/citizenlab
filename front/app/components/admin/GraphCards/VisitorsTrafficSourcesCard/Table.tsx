@@ -1,9 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 
-// hooks
-import useVisitorReferrers from './useVisitorReferrers';
-
-// components
 import {
   Box,
   Table,
@@ -13,22 +9,20 @@ import {
   Tbody,
   Td,
   Text,
+  colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
+
 import Pagination from 'components/Pagination';
-import ReferrerListLink from './RefferListLink';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import { colors, stylingConsts } from 'utils/styleUtils';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ProjectId, Dates } from '../typings';
+
+import messages from './messages';
+import ReferrerListLink from './RefferListLink';
+import useVisitorReferrers from './useVisitorReferrers';
 
 interface PercentageProps {
   children: ReactNode;

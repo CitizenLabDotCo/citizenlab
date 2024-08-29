@@ -9,14 +9,6 @@ export default defineMessages({
     id: 'app.components.AuthProviders.logInWithEmail',
     defaultMessage: 'Log in with Email',
   },
-  signUpWithPhoneOrEmail: {
-    id: 'app.components.AuthProviders.signUpWithPhoneOrEmail',
-    defaultMessage: 'Sign up with Phone or Email',
-  },
-  logInWithPhoneOrEmail: {
-    id: 'app.components.AuthProviders.logInWithPhoneOrEmail',
-    defaultMessage: 'Log in with Phone or Email',
-  },
   continueWithGoogle: {
     id: 'app.components.AuthProviders.continueWithGoogle',
     defaultMessage: 'Continue with Google',
@@ -44,6 +36,10 @@ export default defineMessages({
   signUpButtonAltText: {
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
+  },
+  continueWithFakeSSO: {
+    id: 'app.components.AuthProviders.continueWithFakeSSO',
+    defaultMessage: 'Continue with Fake SSO',
   },
   goToLogIn: {
     id: 'app.components.AuthProviders.goToLogIn',
@@ -100,8 +96,12 @@ export default defineMessages({
     defaultMessage:
       'I accept that the data will be used on mitgestalten.wien.gv.at. Further information can befound {link}.',
   },
-  iHaveReadAndAgreeTo: {
-    id: 'app.containers.SignUp.iHaveReadAndAgreeTo',
+  iHaveReadAndAgreeToTerms: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToTerms',
+    defaultMessage: 'I have read and agree to {link}.',
+  },
+  iHaveReadAndAgreeToPrivacy: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToPrivacy',
     defaultMessage: 'I have read and agree to {link}.',
   },
   theTermsAndConditions: {

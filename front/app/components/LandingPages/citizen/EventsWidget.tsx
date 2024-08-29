@@ -1,59 +1,35 @@
 import React from 'react';
-import EventCard from 'components/EventCard';
+
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+  Box,
+} from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
-import VerticalCenterer from 'components/VerticalCenterer';
-import Link from 'utils/cl-router/Link';
-import useEvents from 'api/events/useEvents';
-import { useIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
-import { Box } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
+
+import EventCards from 'components/EventCards';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const NoEventsText = styled.div`
   margin: auto 0px;
   text-align: center;
   color: ${colors.textSecondary};
   font-size: ${fontSizes.xl}px;
-`;
-
-const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  > * {
-    margin: 0px 19px;
-  }
-  > :first-child {
-    margin-left: 0px;
-  }
-  > :last-child {
-    margin-right: 0px;
-  }
-
-  ${media.tablet`
-    flex-direction: column;
-
-    > * {
-      margin: 19px 0px;
-    }
-    > :first-child {
-      margin-top: 0px;
-    }
-    > :last-child {
-      margin-bottom: 0px;
-    }
-  `}
-`;
-
-const StyledEventCard = styled(EventCard)`
-  border-radius: 3px;
-  padding: 20px;
 `;
 
 const Header = styled.div`
@@ -107,7 +83,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
-    sort: 'start_at',
+    sort: '-start_at',
     ...(staticPageId && { staticPageId }),
   });
 
@@ -139,19 +115,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
               </VerticalCenterer>
             )}
 
-            {!isNilOrError(events) && events.data.length > 0 && (
-              <CardsContainer>
-                {events.data.map((event) => (
-                  <StyledEventCard
-                    event={event}
-                    key={event.id}
-                    titleFontSize={18}
-                    showProjectTitle
-                    onClickTitleGoToProjectAndScrollToEvent
-                  />
-                ))}
-              </CardsContainer>
-            )}
+            <EventCards events={events} />
           </Box>
 
           <Box alignSelf="center">

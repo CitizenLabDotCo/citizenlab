@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::UserDigestMailer do
   describe 'UserDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
@@ -40,7 +41,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
     end
 
     it 'assigns home url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
     end
 
     describe 'when sent to users with a different locale set for each' do

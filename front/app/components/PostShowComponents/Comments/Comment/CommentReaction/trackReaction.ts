@@ -1,5 +1,6 @@
-import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
+
+import tracks from '../../tracks';
 
 export const trackLike = (commentType: 'parent' | 'child' | undefined) => {
   if (commentType === 'parent') {

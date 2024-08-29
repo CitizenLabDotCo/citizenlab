@@ -1,34 +1,26 @@
 import React, { ReactNode } from 'react';
 
-// intl
-import { FormattedMessage } from '../../cl-intl';
-import messages from '../../messages';
-
-// services
-import {
-  ParticipationMethod,
-  getInputTerm,
-} from 'services/participationContexts';
-import { getCurrentParticipationContext } from 'api/phases/utils';
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
-
-// components
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
-import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import { VotingCTABar } from 'components/ParticipationCTABars/VotingCTABar';
-import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
-import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
-import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
-
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
-
-// utils
-import { isNilOrError, NilOrError } from '../../helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
+
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
+import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
+import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+
+import clHistory from 'utils/cl-router/history';
+
+import { FormattedMessage } from '../../cl-intl';
+import { isNilOrError, NilOrError } from '../../helperUtils';
+import messages from '../../messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -59,21 +51,19 @@ type FormTitleMethodProps = {
 
 type PostSortingOptionType = { text: JSX.Element; value: string };
 
-/* 
+/*
 Configuration Description
 ---------------------------------
 formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
 onFormSubmission: Called after input form submission.
 getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
-getMethodPickerMessage: Returns the message to be displayed in the admin participation method picker.
 showInputManager: Returns whether the input manager should be shown in the admin view.
-isMethodLocked: Returns whether a method can be selected in the participation method picker.
 postType: Returns the type of input that is being posted.
 renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
-useProjectClosedCTABarStyle?: Used to determine if the CTA bar should display "closed" styling.
+inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
 export type ParticipationMethodConfig = {
@@ -84,27 +74,22 @@ export type ParticipationMethodConfig = {
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
-  getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
-  isMethodLocked: boolean;
+  inputManagerName?: string;
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
   showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
-  useProjectClosedCTABarStyle?: (
-    participationContext: IPhaseData | IProjectData
-  ) => boolean;
+  inputsPageSize?: number;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.inputAndFeedback} />;
-  },
+  inputsPageSize: 24,
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -140,40 +125,79 @@ const ideationConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
   showInputManager: true,
-  isMethodLocked: false,
+  inputManagerName: 'ideas',
   renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
-  useProjectClosedCTABarStyle: (participationContext) => {
-    const { commenting_enabled, reacting_enabled, posting_enabled } =
-      participationContext.attributes;
+};
 
-    return !commenting_enabled && !reacting_enabled && !posting_enabled;
+const proposalsConfig: ParticipationMethodConfig = {
+  showInputCount: true,
+  showIdeaFilters: true,
+  formEditor: 'simpleFormEditor',
+  inputsPageSize: 24,
+  onFormSubmission: (props: FormSubmissionMethodProps) => {
+    if (props.ideaId && props.idea) {
+      const urlParameters = `?new_idea_id=${props.ideaId}`;
+      if (props.idea) {
+        clHistory.push({
+          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          search: urlParameters.concat(
+            props.phaseId ? `&phase_id=${props.phaseId}` : ''
+          ),
+        });
+      }
+    }
   },
+  postType: 'defaultInput',
+  getModalContent: (props: ModalContentMethodProps) => {
+    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+      return (
+        <SharingModalContent
+          postType="idea"
+          postId={props.ideaIdForSocialSharing}
+          title={props.title}
+          subtitle={props.subtitle}
+        />
+      );
+    }
+    return null;
+  },
+  getFormTitle: (props: FormTitleMethodProps) => {
+    return (
+      <FormattedMessage
+        {...{
+          idea: messages.ideaFormTitle,
+          option: messages.optionFormTitle,
+          project: messages.projectFormTitle,
+          question: messages.questionFormTitle,
+          issue: messages.issueFormTitle1,
+          contribution: messages.contributionFormTitle,
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
+      />
+    );
+  },
+  showInputManager: true,
+  inputManagerName: 'proposals',
+  renderCTABar: (props: CTABarProps) => {
+    return <IdeationCTABar project={props.project} phases={props.phases} />;
+  },
+  postSortingOptions: defaultSortingOptions,
+  hideAuthorOnIdeas: false,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createNativeSurvey} />;
-  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
@@ -194,28 +218,15 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       />
     );
   },
-  getFormTitle: (props: FormTitleMethodProps) => {
-    return <FormattedMessage {...messages.surveyTitle} {...props} />;
-  },
   showInputManager: false,
-  isMethodLocked: true,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
-  },
-  useProjectClosedCTABarStyle: (participationContext) => {
-    if (!participationContext.attributes.posting_enabled) {
-      return true;
-    }
-    return false;
   },
 };
 
 const informationConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.shareInformation} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -224,18 +235,14 @@ const informationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
-  renderCTABar: () => {
-    return null;
-  },
+  renderCTABar: (props: CTABarProps) => (
+    <EventsCTABar project={props.project} phases={props.phases} />
+  ),
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createSurveyText} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -244,7 +251,6 @@ const surveyConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return (
       <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
@@ -255,9 +261,6 @@ const surveyConfig: ParticipationMethodConfig = {
 const documentAnnotationConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createDocumentAnnotation} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -266,7 +269,6 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return (
       <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
@@ -278,9 +280,7 @@ const votingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
   showIdeaFilters: false,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
-  },
+  inputsPageSize: 100,
   getModalContent: () => {
     return null;
   },
@@ -306,21 +306,14 @@ const votingConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
   showInputManager: true,
-  isMethodLocked: false,
+  inputManagerName: 'ideas',
   renderCTABar: (props: CTABarProps) => {
     return <VotingCTABar project={props.project} phases={props.phases} />;
   },
@@ -333,9 +326,6 @@ const votingConfig: ParticipationMethodConfig = {
 const pollConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createPoll} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -344,7 +334,6 @@ const pollConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <PollCTABar project={props.project} phases={props.phases} />;
   },
@@ -353,9 +342,6 @@ const pollConfig: ParticipationMethodConfig = {
 const volunteeringConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.findVolunteers} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -364,7 +350,6 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
   },
@@ -374,6 +359,7 @@ const methodToConfig: {
   [method in ParticipationMethod]: ParticipationMethodConfig;
 } = {
   ideation: ideationConfig,
+  proposals: proposalsConfig,
   native_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,
@@ -391,29 +377,11 @@ export function getMethodConfig(
   return methodToConfig[participationMethod];
 }
 
-/** Given the project and its phases, returns an array of all participation methods
- * used in the project
- */
-export function getAllParticipationMethods(
-  project: IProjectData,
-  phases: IPhaseData[] | null
-): ParticipationMethod[] {
-  const { process_type, participation_method } = project.attributes;
-  if (process_type === 'continuous') {
-    return [participation_method];
-  } else if (process_type === 'timeline' && !phases) {
-    return [];
-  } else if (process_type === 'timeline' && phases) {
-    return phases.map((phase) => phase.attributes.participation_method);
-  } else {
-    throw `Unknown process_type ${project.attributes.process_type}`;
-  }
-}
-
 /** Given the project and its phases, it returns the participation method
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose
- * phaseId is the same as the provided phaseId
+ * phaseId is the same as the provided phaseId.
+ * Returns undefined when there is no currently active phase.
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
@@ -423,8 +391,7 @@ export const getParticipationMethod = (
   if (!project) return;
 
   const phaseFromId = phases?.find((phase) => phase.id === phaseId);
-  const participationContext =
-    phaseFromId ?? getCurrentParticipationContext(project, phases);
+  const participationContext = phaseFromId ?? getCurrentPhase(phases);
   return participationContext?.attributes.participation_method;
 };
 
@@ -440,24 +407,17 @@ export function getPhase(
  *  should be shown in the back office.
  */
 export function showInputManager(
-  project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
-  if (project.attributes.process_type === 'continuous') {
-    return getMethodConfig(project.attributes.participation_method)
-      .showInputManager;
-  }
-  if (project.attributes.process_type === 'timeline') {
-    if (!isNilOrError(phases)) {
-      if (
-        phases.some(
-          (phase) =>
-            getMethodConfig(phase.attributes.participation_method)
-              .showInputManager
-        )
-      ) {
-        return true;
-      }
+  if (!isNilOrError(phases)) {
+    if (
+      phases.some(
+        (phase) =>
+          getMethodConfig(phase.attributes.participation_method)
+            .showInputManager
+      )
+    ) {
+      return true;
     }
   }
   return false;

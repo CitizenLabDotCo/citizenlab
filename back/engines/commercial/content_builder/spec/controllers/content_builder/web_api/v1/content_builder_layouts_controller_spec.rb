@@ -22,83 +22,84 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
 
     context 'when saving is successful' do
       it 'triggers before_create and after_create hooks on the side fx service around saving the layout' do
-        swapped_multiloc = { 'en' => { 'swapped_data_images' => {} } }
-        not_swapped_multiloc = { 'en' => { 'not_swapped_data_images' => {} } }
+        swapped = { 'swapped_data_images' => {} }
+        not_swapped = { 'not_swapped_data_images' => {} }
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
           code: code,
           enabled: true,
-          craftjs_jsonmultiloc: not_swapped_multiloc
+          craftjs_json: not_swapped
         }
         layout = ContentBuilder::Layout.new(attributes)
-        expect(ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        layout.content_buildable = project
+        expect(ContentBuilder::Layout).to receive(:new).with(attributes).and_return layout
         service = controller.send(:side_fx_service)
 
         expect(service).to receive(:before_create).with(
           layout,
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:save).ordered.and_call_original
+        ).and_call_original
+        expect(layout).to receive(:save).and_call_original
         expect(service).to receive(:after_create).with(
           layout,
           user
-        ).ordered.and_call_original
+        ).and_call_original
         allow_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).and_return(
-          swapped_multiloc
+          swapped
         )
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
           content_builder_layout: {
             enabled: true,
-            craftjs_jsonmultiloc: not_swapped_multiloc
+            craftjs_json: not_swapped
           }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
-        expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
+        expect(layout.reload.craftjs_json).to eq swapped
       end
 
       it 'sanitizes HTML inside text elements' do
-        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
-        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
-          expected_multiloc
+        expected = { 'sanitized_craftjson' => {} }
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize).and_return(
+          expected
         )
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+          content_builder_layout: { craftjs_json: { 'unsanitized_craftjson' => {} } }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status :created
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_json')).to eq(expected)
       end
     end
 
     context 'when saving is unsuccessful' do
       it 'triggers the before_create hook before saving, but not the after_create hook after saving' do
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
           code: code,
           enabled: true
         }
         layout = ContentBuilder::Layout.new(attributes)
-        expect(ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        layout.content_buildable = project
+        expect(ContentBuilder::Layout).to receive(:new).with(attributes).and_return layout
         service = controller.send(:side_fx_service)
 
         expect(service).to receive(:before_create).with(
           an_instance_of(ContentBuilder::Layout),
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:save).ordered.and_return false
+        ).and_call_original
+        expect(layout).to receive(:save).and_return false
         expect(service).not_to receive(:after_create)
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
           content_builder_layout: { enabled: true }
@@ -118,77 +119,78 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
     context 'when saving is successful' do
       it 'triggers the before_update and after_update hooks on the side fx service around saving the layout' do
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
+          content_buildable: layout.content_buildable,
           code: code
         }
         service = controller.send(:side_fx_service)
 
-        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by).with(attributes).and_return layout
         expect(service).to receive(:before_update).with(
           layout,
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:save).ordered.and_call_original
+        ).and_call_original
+        expect(layout).to receive(:save).and_call_original
         expect(service).to receive(:after_update).with(
           layout,
           user
-        ).ordered.and_call_original
-        swapped_multiloc = { 'en' => { 'swapped_data_images' => {} } }
+        ).and_call_original
+        swapped = { 'swapped_data_images' => {} }
         allow_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).and_return(
-          swapped_multiloc
+          swapped
         )
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
           content_builder_layout: {
             enabled: false,
-            craftjs_jsonmultiloc: { 'en' => { 'not_swapped_data_images' => {} } }
+            craftjs_json: { 'not_swapped_data_images' => {} }
           }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
-        expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
+        expect(layout.reload.craftjs_json).to eq swapped
       end
 
       it 'sanitizes HTML inside text elements' do
-        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
-        layout # also calls sanitize_multiloc (to make the expectation below work)
-        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
-          expected_multiloc
+        expected = { 'sanitized_craftjson' => {} }
+        layout # also calls sanitize (to make the expectation below work)
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize).and_return(
+          expected
         )
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+          content_builder_layout: { craftjs_jso: { 'unsanitized_craftjson' => {} } }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status :ok
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_json')).to eq(expected)
       end
     end
 
     context 'when saving is unsuccessful' do
       it 'triggers the before_update hook before saving, but not the after_update hook after saving' do
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
+          content_buildable: layout.content_buildable,
           code: code
         }
         service = controller.send(:side_fx_service)
 
-        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by).with(attributes).and_return layout
         expect(service).to receive(:before_update).with(
           layout,
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:save).ordered.and_return false
+        ).and_call_original
+        expect(layout).to receive(:save).and_return false
         expect(service).not_to receive(:after_update)
 
         params = {
+          content_buildable: 'Project',
           project_id: project_id,
           code: code,
           content_builder_layout: { enabled: false }
@@ -202,31 +204,31 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
 
   describe 'destroy' do
     let(:layout) { create(:layout) }
-    let(:project_id) { layout.content_buildable_id }
+    let(:project) { layout.content_buildable }
     let(:code) { layout.code }
 
     context 'when destroying is successful' do
       it 'triggers before_destroy and after_destroy hooks on the side fx service around destroying the layout' do
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
+          content_buildable: project,
           code: code
         }
         service = controller.send(:side_fx_service)
-        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).and_return layout
 
         expect(service).to receive(:before_destroy).with(
           layout,
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:destroy).ordered.and_call_original
+        ).and_call_original
+        expect(layout).to receive(:destroy).and_call_original
         expect(service).to receive(:after_destroy).with(
           layout,
           user
-        ).ordered.and_call_original
+        ).and_call_original
 
         params = {
-          project_id: project_id,
+          content_buildable: 'Project',
+          project_id: project.id,
           code: code
         }
         delete :destroy, params: params, format: :json
@@ -238,23 +240,23 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
     context 'when destroying is unsuccessful' do
       it 'triggers the before_destroy hook before destroying, but not the after_destroy hook after destroying' do
         attributes = {
-          content_buildable_type: Project.name,
-          content_buildable_id: project_id,
+          content_buildable: project,
           code: code
         }
         service = controller.send(:side_fx_service)
-        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(ContentBuilder::Layout).to receive(:find_by!).with(attributes).and_return layout
 
         expect(service).to receive(:before_destroy).with(
           layout,
           user
-        ).ordered.and_call_original
-        expect(layout).to receive(:destroy).ordered.and_return layout
-        expect(layout).to receive(:destroyed?).ordered.and_return false
+        ).and_call_original
+        expect(layout).to receive(:destroy).and_return layout
+        expect(layout).to receive(:destroyed?).and_return false
         expect(service).not_to receive(:after_destroy)
 
         params = {
-          project_id: project_id,
+          content_buildable: 'Project',
+          project_id: project.id,
           code: code
         }
         delete :destroy, params: params, format: :json

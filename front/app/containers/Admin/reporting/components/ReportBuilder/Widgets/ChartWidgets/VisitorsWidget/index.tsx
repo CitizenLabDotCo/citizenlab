@@ -1,56 +1,47 @@
 import React from 'react';
 
-// components
+import visitorCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
+
+import { useIntl } from 'utils/cl-intl';
+
 import Card from '../../_shared/Card';
+import messages from '../messages';
+
+import ChartWidgetSettings from './ChartWidgetSettings';
+import { Props } from './typings';
 import VisitorsCard from './VisitorsCard';
 
-// utils
-import moment from 'moment';
-
-// settings
-import messages from '../messages';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// types
-import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetProps } from '../typings';
-
-const VisitorsWidget = ({
-  title,
-  projectId,
-  startAt,
-  endAt,
-}: ChartWidgetProps) => {
-  const resolution: IResolution = 'month';
-  const analyticsChartProps = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-    resolution,
-    title,
-  };
+const VisitorsWidget = ({ title, ...props }: Props) => {
+  const { formatMessage } = useIntl();
 
   return (
-    <Card title={title} pagebreak>
-      <VisitorsCard {...analyticsChartProps} />
+    <Card
+      title={title}
+      infoTooltipContent={formatMessage(
+        visitorCardMessages.cardTitleTooltipMessage
+      )}
+      pagebreak
+    >
+      <VisitorsCard {...props} />
     </Card>
   );
 };
 
 VisitorsWidget.craft = {
   props: {
-    title: '',
-    projectFilter: undefined,
+    title: {},
     startAt: undefined,
     endAt: undefined,
+    resolution: undefined,
+    compareStartAt: undefined,
+    compareEndAt: undefined,
+    hideStatistics: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    title: messages.visitorTimeline,
-    noPointerEvents: true,
-  },
 };
+
+export const visitorsTitle = messages.visitorTimeline;
 
 export default VisitorsWidget;

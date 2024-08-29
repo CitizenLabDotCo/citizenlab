@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'onboarding'
   s.version     = Onboarding::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.summary     = 'Show onboarding messages to citizens and track their state'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

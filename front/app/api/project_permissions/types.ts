@@ -1,12 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import projectPermissionKeys from './keys';
 import { IRelationship } from 'typings';
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+
+import { IPhasePermissionAction } from 'api/phase_permissions/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import projectPermissionKeys from './keys';
 
 export type ProjectPermissionKeys = Keys<typeof projectPermissionKeys>;
 
 export interface IPCPermissions {
-  data: IPCPermissionData[];
+  data: IPhasePermissionData[];
 }
 
 export type IUpdatePermissionObject = {
@@ -17,26 +20,26 @@ export type IUpdatePermissionObject = {
 };
 
 export interface IPCPermission {
-  data: IPCPermissionData;
+  data: IPhasePermissionData;
 }
 
 export interface IPermissionUpdate {
   group_ids: string[];
-  permitted_by?: IPCPermissionData['attributes']['permitted_by'];
-  global_custom_fields?: IPCPermissionData['attributes']['global_custom_fields'];
+  permitted_by?: IPhasePermissionData['attributes']['permitted_by'];
+  global_custom_fields?: IPhasePermissionData['attributes']['global_custom_fields'];
 }
 
-export interface IPCPermissionData {
+export interface IPhasePermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IParticipationContextPermissionAction;
+    action: IPhasePermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'
-      | 'groups'
       | 'admins_moderators'
-      | 'everyone_confirmed_email';
+      | 'everyone_confirmed_email'
+      | 'verified';
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;

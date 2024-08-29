@@ -1,35 +1,30 @@
-// libraries
 import React, { useEffect, useRef, useState } from 'react';
+
+import {
+  useBreakpoint,
+  colors,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
+import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-
-// components
-import Button from 'components/UI/Button';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// events
-import { commentReplyButtonClicked$, commentAdded } from './events';
-
-// style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
-import useAuthUser from 'api/me/useAuthUser';
+
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
+import useAuthUser from 'api/me/useAuthUser';
 
-// utils
+import Avatar from 'components/Avatar';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clickOutside from 'utils/containers/clickOutside';
+
+import { commentReplyButtonClicked$, commentAdded } from './events';
+import tracks from './tracks';
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`
@@ -281,7 +276,7 @@ const InternalChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator
+          showModeratorStyles
         />
         <FormContainer
           onClickOutside={onCancel}
@@ -318,7 +313,7 @@ const InternalChildCommentForm = ({
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
                   <FormattedMessage {...commentsMessages.cancel} />

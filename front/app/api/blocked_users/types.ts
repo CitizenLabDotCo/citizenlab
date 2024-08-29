@@ -1,5 +1,6 @@
-import blockedUsersCountKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import blockedUsersCountKeys from './keys';
 
 export type BlockedUsersCountKeys = Keys<typeof blockedUsersCountKeys>;
 

@@ -5,7 +5,7 @@ module MultiTenancy
     module Serializers
       module Polls
         class Question < Base
-          ref_attribute :participation_context
+          ref_attribute :phase
           attributes %i[max_options ordering question_type title_multiloc]
         end
       end

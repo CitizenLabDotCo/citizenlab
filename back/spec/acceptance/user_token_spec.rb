@@ -14,25 +14,23 @@ resource 'User Token' do
       parameter :password, 'Password'
     end
 
-    context 'with phone password_login turned off' do
-      before do
-        @user = create(:user, password: 'supersecret')
-      end
+    before do
+      @user = create(:user, password: 'supersecret')
+    end
 
-      let(:email) { @user.email }
-      let(:password) { 'supersecret' }
+    let(:email) { @user.email }
+    let(:password) { 'supersecret' }
 
-      example_request 'Authenticate a registered user' do
-        assert_status 201
-        json_response = json_parse(response_body)
-        expect(json_response[:jwt]).to be_present
-      end
+    example_request 'Authenticate a registered user' do
+      assert_status 201
+      json_response = json_parse(response_body)
+      expect(json_response[:jwt]).to be_present
+    end
 
-      example '[error] Authenticate an invited user' do
-        @user.update! invite_status: 'pending'
-        do_request
-        assert_status 404
-      end
+    example '[error] Authenticate an invited user' do
+      @user.update! invite_status: 'pending'
+      do_request
+      assert_status 404
     end
   end
 
@@ -99,45 +97,6 @@ resource 'User Token' do
 
       example_request 'no JWT token is returned' do
         expect(status).to eq(404)
-      end
-    end
-
-    context 'with phone password_login turned on' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['password_login'] = {
-          'allowed' => true,
-          'enabled' => true,
-          'enable_signup' => true,
-          'phone' => true,
-          'phone_email_pattern' => 'phone+__PHONE__@test.com',
-          'minimum_length' => 6
-        }
-        AppConfiguration.instance.update!(settings: settings)
-      end
-
-      describe 'authenticate with phone number' do
-        let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret') }
-        let(:email) { '+324 875 12 12' }
-        let(:password) { 'supersecret' }
-
-        example_request 'create JWT token using a phone number' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response[:jwt]).to be_present
-        end
-      end
-
-      describe 'authenticate with email' do
-        let!(:user) { create(:user, password: 'supersecret') }
-        let(:email) { user.email }
-        let(:password) { 'supersecret' }
-
-        example_request 'create JWT token using an email' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response[:jwt]).to be_present
-        end
       end
     end
 

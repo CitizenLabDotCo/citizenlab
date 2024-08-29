@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
+
 import analyticsKeys from './keys';
 import { Query } from './types';
-import { useEffect } from 'react';
 
 const fetchAnalytics = <Response extends BaseResponseData>(query: Query) =>
   fetcher<Response>({
@@ -14,7 +17,8 @@ const fetchAnalytics = <Response extends BaseResponseData>(query: Query) =>
 
 const useAnalytics = <Response extends BaseResponseData>(
   query: Query,
-  onSuccess?: () => void
+  onSuccess?: () => void,
+  enabled = true
 ) => {
   const queryClient = useQueryClient();
   const stringifiedQuery = JSON.stringify(query);
@@ -32,6 +36,7 @@ const useAnalytics = <Response extends BaseResponseData>(
     queryKey: analyticsKeys.item(query),
     queryFn: () => fetchAnalytics(query),
     onSuccess,
+    enabled,
   });
 };
 

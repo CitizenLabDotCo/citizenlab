@@ -13,6 +13,30 @@ module.exports = {
         pathNot: 'app/modules/index.ts',
       },
     },
+    {
+      name: 'no-import-to-component-library',
+      severity: 'error',
+      comment:
+        'Direct imports to the component library from the rest of the codebase are not allowed',
+      from: {
+        path: 'app/component-library/',
+      },
+      to: {
+        path: 'app/',
+        pathNot: 'app/component-library/',
+      },
+    },
+    {
+      name: 'no-imports-from-component-library-without-using-an-alias',
+      comment: 'Imports from the component library should use an alias',
+      severity: 'error',
+      from: { pathNot: 'app/component-library/' },
+      to: {
+        path: 'app/component-library/',
+        dependencyTypesNot: ['aliased-tsconfig'],
+      },
+    },
+
     /* rules from the 'recommended' preset: */
     {
       name: 'no-circular',
@@ -97,7 +121,7 @@ module.exports = {
         "That's problematic as the package either (1) won't be available on live (2 - worse) will be " +
         'available on live with an non-guaranteed version. Fix it by adding the package to the dependencies ' +
         'in your package.json.',
-      from: {},
+      from: { pathNot: 'app/component-library/' },
       to: {
         dependencyTypes: ['npm-no-pkg', 'npm-unknown'],
       },

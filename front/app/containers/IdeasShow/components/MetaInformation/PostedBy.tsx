@@ -1,25 +1,24 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-// i18n
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const UserWrapper = styled.div`
   display: flex;
@@ -56,16 +55,19 @@ const PostedBy = memo<Props>(
   ({ authorId, ideaId, compact, className, anonymous }) => {
     const { formatMessage } = useIntl();
     const { data: idea } = useIdeaById(ideaId);
+    const { data: user } = useUserById(authorId);
 
     if (!isNilOrError(idea)) {
       const ideaPublishedAtDate = idea.data.attributes.published_at;
       const authorHash = idea.data.attributes.author_hash;
+      const isLinkToProfile =
+        user?.data.attributes.registration_completed_at !== null;
 
       const userName = (
         <UserName
           userId={authorId}
-          isLinkToProfile={true}
-          underline={true}
+          isLinkToProfile={isLinkToProfile}
+          underline={isLinkToProfile}
           color={colors.textSecondary}
           fontSize={fontSizes.s}
           anonymous={anonymous}
@@ -87,7 +89,7 @@ const PostedBy = memo<Props>(
             <StyledAvatar
               userId={authorId}
               size={30}
-              isLinkToProfile={!!authorId}
+              isLinkToProfile={isLinkToProfile}
               authorHash={authorHash}
             />
             <FormattedMessage

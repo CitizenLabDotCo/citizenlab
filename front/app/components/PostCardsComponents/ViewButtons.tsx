@@ -4,37 +4,27 @@ import React, {
   useRef,
   KeyboardEvent,
   useEffect,
+  useState,
 } from 'react';
-import { trackEventByName } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   defaultStyles,
   fontSizes,
+  colors,
+  Box,
 } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracks
-import tracks from './tracks';
+import styled, { useTheme } from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-const Container = styled.div`
-  display: flex;
-  padding: 4px;
-  background: ${darken(0.06, colors.grey200)};
-  border-radius: ${(props) => props.theme.borderRadius};
-`;
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const StyledIcon = styled(Icon)`
   color: ${colors.textSecondary};
@@ -45,22 +35,44 @@ const ViewButton = styled.button<{ active: boolean }>`
   padding: 10px 12px;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
-  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
-  color: ${colors.textSecondary};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
   margin-right: 0;
   display: flex;
   align-items: center;
+  ${({ active, theme }) =>
+    active
+      ? {
+          backgroundColor: theme.colors.tenantSecondary,
+          color: colors.white,
+        }
+      : {
+          backgroundColor: 'transparent',
+          color: theme.colors.tenantText,
+        }};
+
+  ${StyledIcon} {
+    ${({ active, theme }) =>
+      active
+        ? {
+            fill: colors.white,
+          }
+        : {
+            fill: darken(0.2, theme.colors.tenantText),
+          }};
+  }
 
   &:hover {
-    background-color: ${(props) =>
-      props.active ? '#fff' : 'rgba(0,0,0,0.12)'};
-    color: ${darken(0.2, colors.textSecondary)};
-
-    ${StyledIcon} {
-      color: ${darken(0.2, colors.textSecondary)};
-    }
+    ${({ active, theme }) =>
+      active
+        ? {
+            backgroundColor: darken(0.15, theme.colors.tenantSecondary),
+            color: colors.white,
+          }
+        : {
+            backgroundColor: 'rgba(132, 147, 158, 0.15)',
+            color: darken(0.2, theme.colors.tenantText),
+          }};
   }
 `;
 
@@ -81,16 +93,21 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const isMapViewSelected = selectedView === 'map';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
   const locale = useLocale();
+  const theme = useTheme();
 
   useEffect(() => {
-    selectedView === 'map'
-      ? mapButtonRef.current?.focus()
-      : listButtonRef.current?.focus();
-  }, [selectedView]);
+    if (viewChanged) {
+      selectedView === 'map'
+        ? mapButtonRef.current?.focus()
+        : listButtonRef.current?.focus();
+    }
+  }, [selectedView, viewChanged]);
 
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
+      setViewChanged(true);
       event.preventDefault();
       onClick(selectedView);
       trackEventByName(tracks.toggleDisplay, {
@@ -104,15 +121,21 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
+      setViewChanged(true);
       onClick(selectedView === 'card' ? 'map' : 'card');
     }
   };
 
   if (!isNilOrError(locale)) {
     return (
-      <Container
+      <Box
+        display="flex"
+        p="4px"
+        borderRadius={theme.borderRadius}
+        w="fit-content"
         className={`e2e-list-map-viewbuttons ${className || ''}`}
         role="tablist"
+        background={colors.white}
       >
         <ListButton
           role="tab"
@@ -142,7 +165,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
           <StyledIcon name="map" />
           <FormattedMessage {...messages.map} />
         </MapButton>
-      </Container>
+      </Box>
     );
   }
 

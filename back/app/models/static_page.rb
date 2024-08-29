@@ -36,10 +36,11 @@
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+
+  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
+
   enum projects_filter_type: { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
-  has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
-  has_many :pinned_admin_publications, through: :pins, source: :admin_publication
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -54,7 +55,6 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
-  before_validation :generate_slug, on: :create
 
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
@@ -64,7 +64,6 @@ class StaticPage < ApplicationRecord
   before_destroy :confirm_is_custom, prepend: true
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
 
@@ -93,7 +92,17 @@ class StaticPage < ApplicationRecord
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
   validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }
-  validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:topics) }
+  validates(
+    :topics, length: { minimum: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of StaticPagesTopics records that are not created yet. (When loading a
+      # tenant template, StaticPagesTopics records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      projects_filter_type == self.class.projects_filter_types.fetch(:topics) && !Current.loading_tenant_template
+    end
+  )
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -133,10 +142,6 @@ class StaticPage < ApplicationRecord
 
   def set_code
     self.code ||= 'custom'
-  end
-
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
   end
 
   def strip_title

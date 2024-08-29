@@ -1,12 +1,9 @@
-// components
+import { Input, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
-import { Input } from '@citizenlab/cl2-component-library';
-
-// style
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 export const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;

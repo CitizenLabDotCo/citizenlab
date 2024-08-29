@@ -35,10 +35,10 @@ class BasketsIdea < ApplicationRecord
   private
 
   def assign_by_voting_method
-    Factory.instance.voting_method_for(basket.participation_context).assign_baskets_idea self
+    Factory.instance.voting_method_for(basket.phase).assign_baskets_idea self
   end
 
   def validate_by_voting_method
-    Factory.instance.voting_method_for(basket.participation_context).validate_baskets_idea(self)
+    Factory.instance.voting_method_for(basket.phase).validate_baskets_idea(self)
   end
 end

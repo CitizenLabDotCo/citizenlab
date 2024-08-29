@@ -13,8 +13,6 @@
 class AdditionalSeatsIncrementer
   class << self
     def increment_if_necessary(updated_user, current_user)
-      return unless AppConfiguration.instance.feature_activated?('seat_based_billing')
-
       roles = updated_user.roles - updated_user.roles_previously_was
       return if roles.blank?
 
@@ -45,7 +43,7 @@ class AdditionalSeatsIncrementer
         end
 
       ActiveRecord::Base.uncached do # to make it less likely that we'll use stale data for increment
-        config = AppConfiguration.first!
+        config = AppConfiguration.instance.reload
         config.settings['core'][field] ||= 0
         config.settings['core'][field] += 1
         config.save!

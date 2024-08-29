@@ -1,6 +1,7 @@
-import { scrollToElement } from 'utils/scroll';
-import clHistory from 'utils/cl-router/history';
 import { IPhaseData } from 'api/phases/types';
+
+import clHistory from 'utils/cl-router/history';
+import { scrollToElement } from 'utils/scroll';
 
 export interface ScrollToParams {
   elementId: string;

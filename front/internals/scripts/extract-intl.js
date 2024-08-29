@@ -4,12 +4,16 @@
  */
 
 const fs = require('fs');
-const glob = require('glob');
 const mkdir = require('shelljs').mkdir;
 const babel = require('babel-core');
+const {
+  globPromise,
+  readFilePromise,
+  writeFilePromise,
+} = require('./helpers/promisify');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
-const constants = require('../../app/containers/App/constants');
+const constants = require('../../app/containers/App/constants-commonjs.js');
 const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
 let progress;
@@ -26,39 +30,6 @@ const task = (message) => {
     return addCheckmark(() => newLine());
   };
 };
-
-const globPromise = (pattern, ignorePattern) =>
-  new Promise((resolve, reject) => {
-    glob(pattern, { ignore: ignorePattern || [] }, (error, data) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-
-const readFilePromise = (fileName) =>
-  new Promise((resolve, reject) => {
-    fs.readFile(fileName, 'utf8', (error, data) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-
-const writeFilePromise = (fileName, data) =>
-  new Promise((resolve, reject) => {
-    fs.writeFile(fileName, data, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(data);
-      }
-    });
-  });
 
 const generateLocaleMappings = (
   outputFolder,

@@ -8,16 +8,16 @@ module EmailCampaigns
       Campaigns::AssigneeDigest,
       Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
+      Campaigns::CommentOnIdeaYouFollow,
+      Campaigns::CommentOnInitiativeYouFollow,
       Campaigns::CommentOnYourComment,
-      Campaigns::CommentOnYourIdea,
-      Campaigns::CommentOnYourInitiative,
       Campaigns::CosponsorOfYourInitiative,
+      Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
       Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::InitiativePublished,
-      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InitiativeResubmittedForReview,
       Campaigns::InternalCommentOnIdeaAssignedToYou,
       Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn,
@@ -27,47 +27,48 @@ module EmailCampaigns
       Campaigns::InternalCommentOnUnassignedInitiative,
       Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
+      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
+      Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
+      Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
-      Campaigns::NewCommentOnCommentedIdea,
-      Campaigns::NewCommentOnCommentedInitiative,
-      Campaigns::NewCommentOnReactedIdea,
-      Campaigns::NewCommentOnReactedInitiative,
       Campaigns::NewIdeaForAdmin,
       Campaigns::NewInitiativeForAdmin,
-      Campaigns::OfficialFeedbackOnCommentedIdea,
-      Campaigns::OfficialFeedbackOnCommentedInitiative,
-      Campaigns::OfficialFeedbackOnReactedIdea,
-      Campaigns::OfficialFeedbackOnReactedInitiative,
-      Campaigns::OfficialFeedbackOnYourIdea,
-      Campaigns::OfficialFeedbackOnYourInitiative,
+      Campaigns::OfficialFeedbackOnIdeaYouFollow,
+      Campaigns::OfficialFeedbackOnInitiativeYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
-      Campaigns::StatusChangeOfCommentedIdea,
-      Campaigns::StatusChangeOfCommentedInitiative,
-      Campaigns::StatusChangeOfReactedIdea,
-      Campaigns::StatusChangeOfReactedInitiative,
-      Campaigns::StatusChangeOfYourIdea,
-      Campaigns::StatusChangeOfYourInitiative,
+      Campaigns::ProjectPublished,
+      Campaigns::StatusChangeOnIdeaYouFollow,
+      Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
+      Campaigns::VotingBasketNotSubmitted,
+      Campaigns::VotingBasketSubmitted,
+      Campaigns::VotingLastChance,
+      Campaigns::VotingPhaseStarted,
+      Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
+
+    def campaign_classes
+      CAMPAIGN_CLASSES
+    end
 
     def campaign_types
       campaign_classes.map(&:name)
     end
 
-    def campaign_classes
-      CAMPAIGN_CLASSES
+    def manual_campaign_types
+      campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)
@@ -129,12 +130,12 @@ module EmailCampaigns
     end
 
     def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(options) }
+      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
       campaigns.flat_map do |campaign|
-        recipients = campaign.apply_recipient_filters(options)
+        recipients = campaign.apply_recipient_filters(**options)
         recipients.zip([campaign].cycle)
       end
     end

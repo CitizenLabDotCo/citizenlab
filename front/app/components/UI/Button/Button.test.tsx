@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { RouteType } from 'routes';
 
 import Button from 'components/UI/Button';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 describe('Button', () => {
   it('should render correctly as button', () => {
@@ -20,7 +22,7 @@ describe('Button', () => {
     );
   });
   it('should render correctly as internal link', () => {
-    render(<Button linkTo="/test">Test</Button>);
+    render(<Button linkTo={'/test' as RouteType}>Test</Button>);
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveTextContent('Test');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/en/test');
@@ -28,12 +30,12 @@ describe('Button', () => {
 
   it('should not render a link when disabled', () => {
     render(
-      <Button linkTo="/test" disabled>
+      <Button linkTo={'/test' as RouteType} disabled>
         Test
       </Button>
     );
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true');
   });
 });

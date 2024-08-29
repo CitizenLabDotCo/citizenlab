@@ -1,31 +1,35 @@
 import React from 'react';
 
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import {
+  Container,
+  Header,
+} from 'components/LandingPages/citizen/FixedRatioLayout';
 import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import {
-  Container,
-  Header,
-} from 'components/LandingPages/citizen/FixedRatioLayout';
+
 import HeaderContent from './HeaderContent';
 
-import { IHomepageSettingsData } from 'api/home_page/types';
-
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FixedRatioLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
   const homepageSettingColor =
-    homepageSettings.attributes.banner_signed_out_header_overlay_color;
+    homepageSettings.banner_signed_out_header_overlay_color;
   const homepageSettingOpacity =
-    homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
+    homepageSettings.banner_signed_out_header_overlay_opacity;
 
   return (
-    <Container data-testid="fixed-ratio-layout">
+    <Container
+      data-testid="fixed-ratio-layout"
+      data-cy="e2e-fixed-ratio-layout-container"
+    >
       <Header>
         <HeaderImage data-cy="e2e-fixed-ratio-header-image">
           <HeaderImageBackground
@@ -41,7 +45,7 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
             )}
         </HeaderImage>
 
-        <HeaderContent fontColors="light" />
+        <HeaderContent fontColors="light" homepageSettings={homepageSettings} />
       </Header>
     </Container>
   );

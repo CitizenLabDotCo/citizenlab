@@ -1,69 +1,109 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 
-// react hook form
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
-// components
 import {
   Box,
   Label,
   Button,
   LocaleSwitcher,
-  Icon,
-  Input,
+  Toggle,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
+import { SupportedLocale, CLError, RHFErrors } from 'typings';
+
+import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+
+import usePrevious from 'hooks/usePrevious';
+
+import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import { SectionField } from 'components/admin/Section';
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// Typings
-import { Locale, CLError, RHFErrors } from 'typings';
-
-// utils
+import { useIntl } from 'utils/cl-intl';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from '../utils';
-import { get } from 'lodash-es';
+
+import messages from './messages';
+import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 
 interface Props {
   name: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
   allowDeletingAllOptions?: boolean;
-  platformLocale: Locale;
+  platformLocale: SupportedLocale;
+  inputType: ICustomFieldInputType;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
-  intl: { formatMessage },
   allowDeletingAllOptions = false,
   platformLocale,
-}: Props & WrappedComponentProps) => {
+  inputType,
+}: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
-    setValue,
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
+  const { formatMessage } = useIntl();
+  const selectOptions = useWatch({ name });
+  const imageIds = selectOptions
+    .filter((selectOption) => selectOption.image_id)
+    .map((selectOption) => selectOption.image_id);
+  const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
+  const prevImageQueries = usePrevious(customFieldOptionImages);
+  const [optionImages, setOptionImages] = useState<OptionImageType>();
+
+  useEffect(() => {
+    if (
+      customFieldOptionImages &&
+      customFieldOptionImages.length !== prevImageQueries?.length
+    ) {
+      (async () => {
+        const promises = customFieldOptionImages.map(
+          async (customFieldOptionImage) => {
+            if (
+              !customFieldOptionImage?.data?.data.attributes.versions.medium
+            ) {
+              return;
+            }
+            const imageData = await convertUrlToUploadFile(
+              customFieldOptionImage?.data?.data.attributes.versions.medium
+            );
+            return { [customFieldOptionImage.data.data.id]: imageData };
+          }
+        );
+        const optionImageArray = await Promise.all(promises);
+        const optionImagesObject = Object.assign({}, ...optionImageArray);
+        setOptionImages(optionImagesObject);
+      })();
+    }
+  }, [customFieldOptionImages, prevImageQueries]);
 
   // Handles locale change
   useEffect(() => {
     setSelectedLocale(platformLocale);
     onSelectedLocaleChange?.(platformLocale);
   }, [platformLocale, onSelectedLocaleChange]);
+
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
@@ -71,170 +111,234 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
 
   // Handles drag and drop
-  const { move } = useFieldArray({
+  const { move, update, append, remove, insert } = useFieldArray({
     name,
   });
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-  };
 
-  // Handles add and remove options
-  const addOption = (value, name) => {
-    const newValues = value;
-    newValues.push({
+  const handleDragRow = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      move(fromIndex, toIndex);
+    },
+    [move]
+  );
+
+  const addOption = useCallback(() => {
+    const otherOptionIndex = selectOptions.findIndex(
+      (choice) => choice.other === true
+    );
+    const hasOtherOption = otherOptionIndex !== -1;
+
+    const insertIndex = hasOtherOption
+      ? otherOptionIndex
+      : selectOptions.length;
+
+    const newOption = {
       title_multiloc: {},
+      ...(inputType === 'multiselect_image' && { image_id: '' }),
+    };
+
+    insert(insertIndex, newOption);
+  }, [insert, inputType, selectOptions]);
+
+  const removeOption = useCallback(
+    (index: number) => {
+      remove(index);
+      trigger();
+    },
+    [remove, trigger]
+  );
+
+  const addOtherOption = useCallback(() => {
+    append({
+      title_multiloc: { [platformLocale]: formatMessage(messages.other) },
+      other: true,
     });
-    setValue(name, newValues);
-  };
-  const removeOption = (value, name, index) => {
-    const newValues = value;
-    newValues.splice(index, 1);
-    setValue(name, newValues);
-  };
+  }, [append, platformLocale, formatMessage]);
+
+  const updateChoice = useCallback(
+    (choice: IOptionsType, index: number) => {
+      update(index, {
+        ...choice,
+        ...(!choice.id && !choice.temp_id ? { temp_id: generateTempId() } : {}),
+      });
+    },
+    [update]
+  );
 
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
-  if (selectedLocale) {
-    return (
-      <>
-        <Controller
-          name={name}
-          control={control}
-          defaultValue={defaultOptionValues}
-          render={({ field: { ref: _ref, value: choices, onBlur } }) => {
-            const canDeleteLastOption =
-              allowDeletingAllOptions || choices.length > 1;
-            const validatedValues = choices.map((choice) => ({
-              title_multiloc: choice.title_multiloc,
-            }));
+  const toggleOtherOption = useCallback(() => {
+    const hasOtherOption = selectOptions.some(
+      (choice) => choice.other === true
+    );
+    if (hasOtherOption) {
+      removeOption(selectOptions.length - 1);
+    } else {
+      addOtherOption();
+    }
+  }, [selectOptions, addOtherOption, removeOption]);
 
-            return (
-              <Box
-                as="fieldset"
-                border="none"
-                p="0"
-                m="0"
-                onBlur={() => {
-                  onBlur();
-                  trigger();
-                }}
-              >
-                <SectionField>
-                  <Box
-                    display="flex"
-                    flexWrap="wrap"
-                    justifyContent="space-between"
-                    marginBottom="12px"
-                  >
-                    <Box marginTop="4px" marginRight="8px">
-                      <Label>{formatMessage(messages.fieldLabel)}</Label>
-                    </Box>
-                    <Box>
-                      <LocaleSwitcher
-                        onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                        locales={!isNilOrError(locales) ? locales : []}
-                        selectedLocale={selectedLocale}
-                        values={validatedValues}
-                      />
-                    </Box>
+  if (!selectedLocale) {
+    return null;
+  }
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultOptionValues}
+        render={({ field: { ref: _ref, value: options, onBlur } }) => {
+          const choices: IOptionsType[] = options;
+          const hasOtherOption = choices.some(
+            (choice) => choice.other === true
+          );
+
+          const canDeleteLastOption =
+            allowDeletingAllOptions || choices.length > 1;
+          const validatedValues = choices.map((choice) => ({
+            title_multiloc: choice.title_multiloc,
+          }));
+
+          return (
+            <Box
+              as="fieldset"
+              border="none"
+              p="0"
+              m="0"
+              onBlur={() => {
+                onBlur();
+                trigger();
+              }}
+            >
+              <SectionField>
+                <Box
+                  display="flex"
+                  flexWrap="wrap"
+                  justifyContent="space-between"
+                  marginBottom="12px"
+                >
+                  <Box marginTop="4px" marginRight="8px">
+                    <Label>{formatMessage(messages.fieldLabel)}</Label>
                   </Box>
-                  <DndProvider backend={HTML5Backend}>
-                    <List key={choices?.length}>
-                      {choices?.map((choice, index) => {
+                  <Box>
+                    <LocaleSwitcher
+                      onSelectedLocaleChange={handleOnSelectedLocaleChange}
+                      locales={!isNilOrError(locales) ? locales : []}
+                      selectedLocale={selectedLocale}
+                      values={validatedValues}
+                    />
+                  </Box>
+                </Box>
+                <DndProvider backend={HTML5Backend}>
+                  <List key={choices?.length}>
+                    {choices
+                      ?.sort((a, b) => {
+                        const aValue = a.other ? 1 : 0;
+                        const bValue = b.other ? 1 : 0;
+
+                        return aValue - bValue;
+                      })
+                      .map((choice, index) => {
                         return (
-                          <Box key={choice.id}>
-                            <SortableRow
-                              id={choice.id}
-                              index={index}
-                              moveRow={handleDragRow}
-                              dropRow={() => {
-                                // Do nothing, no need to handle dropping a row for now
-                              }}
-                            >
-                              <Box width="100%">
-                                <Input
-                                  id={`e2e-option-input-${index}`}
-                                  size="small"
-                                  type="text"
-                                  value={choice.title_multiloc[selectedLocale]}
-                                  onChange={(value) => {
-                                    const updatedChoices = choices;
-                                    updatedChoices[index].title_multiloc[
-                                      selectedLocale
-                                    ] = value;
-                                    if (
-                                      !updatedChoices[index].id &&
-                                      !updatedChoices[index].temp_id
-                                    ) {
-                                      updatedChoices[index].temp_id =
-                                        generateTempId();
-                                    }
-                                    setValue(name, updatedChoices);
-                                  }}
+                          <Box key={index}>
+                            {choice.other === true ? (
+                              <Row
+                                key={choice.id || choice.temp_id}
+                                isLastItem={true}
+                              >
+                                <SelectFieldOption
+                                  choice={choice}
+                                  index={index}
+                                  locale={selectedLocale}
+                                  inputType={inputType}
+                                  canDeleteLastOption={canDeleteLastOption}
+                                  removeOption={removeOption}
+                                  onChoiceUpdate={updateChoice}
+                                  optionImages={optionImages}
                                 />
-                              </Box>
-                              {canDeleteLastOption && (
-                                <Button
-                                  margin="0px"
-                                  padding="0px"
-                                  buttonStyle="text"
-                                  aria-label={formatMessage(
-                                    messages.removeAnswer
-                                  )}
-                                  onClick={() => {
-                                    removeOption(choices, name, index);
-                                    trigger();
-                                  }}
-                                >
-                                  <Icon
-                                    name="delete"
-                                    fill="coolGrey600"
-                                    padding="0px"
-                                  />
-                                </Button>
-                              )}
-                            </SortableRow>
+                              </Row>
+                            ) : (
+                              <SortableRow
+                                id={
+                                  choice.temp_id
+                                    ? `${choice.temp_id}-${index}`
+                                    : `${choice.id}-${index}`
+                                }
+                                index={index}
+                                moveRow={handleDragRow}
+                                dragByHandle
+                              >
+                                <SelectFieldOption
+                                  choice={choice}
+                                  index={index}
+                                  locale={selectedLocale}
+                                  inputType={inputType}
+                                  canDeleteLastOption={canDeleteLastOption}
+                                  removeOption={removeOption}
+                                  onChoiceUpdate={updateChoice}
+                                  optionImages={optionImages}
+                                />
+                              </SortableRow>
+                            )}
                           </Box>
                         );
                       })}
-                    </List>
-                  </DndProvider>
-                  <Button
-                    icon="plus-circle"
-                    buttonStyle="secondary"
-                    data-cy="e2e-add-answer"
-                    onClick={() => addOption(choices, name)}
-                    text={formatMessage(messages.addAnswer)}
+                  </List>
+                </DndProvider>
+                <Button
+                  icon="plus-circle"
+                  buttonStyle="secondary-outlined"
+                  data-cy="e2e-add-answer"
+                  onClick={addOption}
+                  text={formatMessage(messages.addAnswer)}
+                />
+
+                <Box mt="24px" data-cy="e2e-other-option-toggle">
+                  <Toggle
+                    label={
+                      <Box display="flex">
+                        {formatMessage(messages.otherOption)}
+                        <Box pl="4px">
+                          <IconTooltip
+                            placement="top-start"
+                            content={formatMessage(messages.otherOptionTooltip)}
+                          />
+                        </Box>
+                      </Box>
+                    }
+                    checked={hasOtherOption}
+                    onChange={toggleOtherOption}
                   />
-                  {validationError && (
-                    <Error
-                      marginTop="8px"
-                      marginBottom="8px"
-                      text={validationError}
-                      scrollIntoView={false}
-                    />
-                  )}
-                  {apiError && (
-                    <Error
-                      fieldName={name as TFieldName}
-                      apiErrors={apiError}
-                      marginTop="8px"
-                      marginBottom="8px"
-                      scrollIntoView={false}
-                    />
-                  )}
-                </SectionField>
-              </Box>
-            );
-          }}
-        />
-      </>
-    );
-  }
-  return null;
+                </Box>
+
+                {validationError && (
+                  <Error
+                    marginTop="8px"
+                    marginBottom="8px"
+                    text={validationError}
+                    scrollIntoView={false}
+                  />
+                )}
+                {apiError && (
+                  <Error
+                    fieldName={name as TFieldName}
+                    apiErrors={apiError}
+                    marginTop="8px"
+                    marginBottom="8px"
+                    scrollIntoView={false}
+                  />
+                )}
+              </SectionField>
+            </Box>
+          );
+        }}
+      />
+    </>
+  );
 };
 
-export default injectIntl(ConfigSelectWithLocaleSwitcher);
+export default ConfigSelectWithLocaleSwitcher;

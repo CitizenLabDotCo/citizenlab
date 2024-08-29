@@ -12,11 +12,11 @@ require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
 require_relative 'email_campaign_examples'
+require_relative 'events'
 require_relative 'followers'
 require_relative 'groups'
-require_relative 'home_pages'
 require_relative 'ideas'
-require_relative 'iniatives'
+require_relative 'initiatives'
 require_relative 'internal_comments'
 require_relative 'invites'
 require_relative 'permissions'
@@ -103,7 +103,6 @@ module MultiTenancy
 
         MultiTenancy::Templates::ApplyService.new.apply_internal_template('base')
 
-        MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run
         MultiTenancy::Seeds::ApiClients.new(runner: self).run
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
@@ -112,7 +111,7 @@ module MultiTenancy
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
-        MultiTenancy::Seeds::Iniatives.new(runner: self).run
+        MultiTenancy::Seeds::Initiatives.new(runner: self).run
         MultiTenancy::Seeds::InternalComments.new(runner: self).run
 
         InitiativeStatusService.new.automated_transitions!
@@ -128,6 +127,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
         MultiTenancy::Seeds::Analytics.new(runner: self).run
         MultiTenancy::Seeds::Followers.new(runner: self).run
+        MultiTenancy::Seeds::Events.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales
@@ -177,6 +177,10 @@ module MultiTenancy
       # @return [ActiveRecord::Base] the random record
       def rand_instance(scope)
         scope.order(Arel.sql('RANDOM()')).first
+      end
+
+      def rand_description_multiloc
+        create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join }
       end
 
       # Creates nested comments for a given post

@@ -1,36 +1,36 @@
 import React from 'react';
-import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
 
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
-import GoBackButton from 'components/UI/GoBackButton';
 import { Box } from '@citizenlab/cl2-component-library';
+import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
+import { ITab } from 'typings';
 
-// i18n
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
+import GoBackButton from 'components/UI/GoBackButton';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-const InvitationsPage = (props: WrappedComponentProps) => {
+import messages from './messages';
+
+const InvitationsPage = () => {
+  const { formatMessage } = useIntl();
   const location = useLocation();
-  const tabs = [
+  const tabs: ITab[] = [
     {
-      label: props.intl.formatMessage(messages.tabInviteUsers),
+      label: formatMessage(messages.tabInviteUsers),
       url: '/admin/users/invitations',
       name: 'index',
     },
     {
-      label: props.intl.formatMessage(messages.tabAllInvitations),
+      label: formatMessage(messages.tabAllInvitations),
       url: '/admin/users/invitations/all',
       name: 'all',
     },
   ];
   const resource = {
-    title: props.intl.formatMessage(messages.invitePeople),
-    subtitle: props.intl.formatMessage(messages.invitationSubtitle),
+    title: formatMessage(messages.invitePeople),
+    subtitle: formatMessage(messages.invitationSubtitle),
   };
 
   const goBack = () => {
@@ -50,12 +50,10 @@ const InvitationsPage = (props: WrappedComponentProps) => {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div>
-          <RouterOutlet />
-        </div>
+        <RouterOutlet />
       </TabbedResource>
     </>
   );
 };
 
-export default injectIntl(InvitationsPage);
+export default InvitationsPage;

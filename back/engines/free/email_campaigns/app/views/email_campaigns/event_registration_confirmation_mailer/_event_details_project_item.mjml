@@ -1,0 +1,11 @@
+<mj-text font-size="16px" font-weight="700" padding="0">
+  <div>
+    <%= format_message('event_details.labels.project') %>
+  </div>
+
+  <div style="font-weight: 400">
+    <a href="<%= event.project_url %>" style="text-decoration-line: underline;">
+      <%= project_title %>
+    </a>
+  </div>
+</mj-text>

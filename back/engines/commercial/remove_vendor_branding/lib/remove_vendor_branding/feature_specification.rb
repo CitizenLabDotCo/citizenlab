@@ -9,12 +9,12 @@ module RemoveVendorBranding
     end
 
     def self.feature_title
-      'Remove CitizenLab Branding'
+      'Remove Go Vocal Branding'
     end
 
     def self.feature_description
       <<~DESC
-        Remove CitizenLab logo from the bottom of the platform and the emails.
+        Remove Go Vocal logo from the bottom of the platform and the emails.
       DESC
     end
   end

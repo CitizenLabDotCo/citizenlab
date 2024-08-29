@@ -19,7 +19,8 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     :anonymous,
     :author_hash,
     :editing_locked,
-    :public
+    :public,
+    :proposed_at
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -27,7 +28,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :body_multiloc do |object|
-    TextImageService.new.render_data_images object, :body_multiloc
+    TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
   end
 
   attribute :header_bg do |object|

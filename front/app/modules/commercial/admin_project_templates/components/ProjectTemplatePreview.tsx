@@ -1,33 +1,32 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import * as clipboard from 'clipboard-polyfill';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-
-// graphql
 import { gql, useQuery } from '@apollo/client';
+import {
+  Icon,
+  Spinner,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
+import * as clipboard from 'clipboard-polyfill';
+import { lighten } from 'polished';
+import styled from 'styled-components';
+
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Centerer from 'components/UI/Centerer';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import tracks from '../tracks';
 import { client } from '../utils/apolloUtils';
 
-// components
-import Button from 'components/UI/Button';
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import T from 'components/T';
-import Centerer from 'components/UI/Centerer';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -413,7 +412,7 @@ const ProjectTemplatePreview = memo<Props>(
                 <CopyLinkButton
                   onClick={copyLink}
                   icon="link"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.copyLink} />
                 </CopyLinkButton>

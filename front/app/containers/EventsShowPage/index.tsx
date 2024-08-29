@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Spinner,
@@ -8,32 +7,37 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import Container from './components/Container';
-import RightColumnDesktop from './components/RightColumnDesktop';
-import DesktopTopBar from './components/DesktopTopBar';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
-import EventTopBarMobile from './components/EventTopBarMobile';
-import EventDescription from './components/EventDescription';
-import InformationSectionMobile from './components/InformationSectionMobile';
-
-// styling
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// router
-import { useParams } from 'react-router-dom';
-
-// api
+import useEventImage from 'api/event_images/useEventImage';
 import useEvent from 'api/events/useEvent';
-import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import useLocalize from 'hooks/useLocalize';
+
+import PageNotFound from 'components/PageNotFound';
+import Image from 'components/UI/Image';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import DesktopTopBar from './components/DesktopTopBar';
+import EventDescription from './components/EventDescription';
+import InformationColumnDesktop from './components/InformationColumnDesktop';
+import InformationSectionMobile from './components/InformationSectionMobile';
+import MobileTopBar from './components/MobileTopBar';
+import ProjectLink from './components/ProjectLink';
+import { pageContentMaxWidth } from './styleConstants';
+
 const InnerContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: ${pageContentMaxWidth}px;
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -54,9 +58,17 @@ const InnerContainer = styled(Box)`
     padding-right: 15px;
   `}
 `;
+
+const EventImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  margin-bottom: 24px;
+`;
+
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const locale = useLocale();
+  const localize = useLocalize();
   const { eventId } = useParams() as {
     eventId: string;
   };
@@ -64,6 +76,8 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
+  const { data: eventImage } = useEventImage(event?.data);
+  const largeImage = eventImage?.data.attributes?.versions?.large;
 
   if (status === 'loading') {
     return (
@@ -80,39 +94,45 @@ const EventsShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (isNilOrError(locale) || !project) {
+  if (!project) {
     return null;
   }
 
   return (
     <>
-      {isSmallerThanTablet && (
-        <EventTopBarMobile
-          projectId={event?.data.relationships.project.data.id}
-        />
+      {isSmallerThanTablet ? (
+        <MobileTopBar projectId={event.data.relationships.project.data.id} />
+      ) : (
+        <Box p="32px" pb="0">
+          <DesktopTopBar event={event.data} project={project.data} />
+        </Box>
       )}
-      <Container>
+      <main>
         <InnerContainer>
-          {!isSmallerThanTablet && <DesktopTopBar project={project.data} />}
-
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {event?.data.attributes.title_multiloc[locale]}
+                {localize(event.data.attributes.title_multiloc)}
               </Title>
+              <ProjectLink project={project.data} />
+              {largeImage && (
+                <Box aria-hidden="true">
+                  <EventImage src={largeImage} alt="" />
+                </Box>
+              )}
               <Box mb="40px">
-                {event && <EventDescription event={event?.data} />}
-                {isSmallerThanTablet && event && (
+                <EventDescription event={event.data} />
+                {isSmallerThanTablet && (
                   <InformationSectionMobile event={event.data} />
                 )}
               </Box>
             </Box>
-            {!isSmallerThanTablet && event && (
-              <RightColumnDesktop event={event.data} />
+            {!isSmallerThanTablet && (
+              <InformationColumnDesktop event={event.data} />
             )}
           </Box>
         </InnerContainer>
-      </Container>
+      </main>
     </>
   );
 };

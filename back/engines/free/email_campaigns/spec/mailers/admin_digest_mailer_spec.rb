@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::AdminDigestMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
@@ -84,7 +85,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
 
     it 'assigns home url' do
       expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
+        .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
     end
   end
 end

@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCustomPageBySlug from './useCustomPageBySlug';
-import { customPagesData } from './__mocks__/useCustomPages';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { customPagesData } from './__mocks__/useCustomPages';
+import useCustomPageBySlug from './useCustomPageBySlug';
 
 const apiPath = '*static_pages/by_slug/:slug';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: customPagesData[0] }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: customPagesData[0] }, { status: 200 });
   })
 );
 
@@ -35,8 +34,8 @@ describe('useCustomPageBySlug', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

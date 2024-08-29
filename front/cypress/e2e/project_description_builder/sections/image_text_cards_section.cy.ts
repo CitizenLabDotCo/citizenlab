@@ -13,12 +13,10 @@ describe('Project description builder Image Text Cards section', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
@@ -51,22 +49,22 @@ describe('Project description builder Image Text Cards section', () => {
     );
 
     // Edit a text component
-    cy.get('#e2e-text-box').first().click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('div.e2e-text-box').first().click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     // Edit image components
-    cy.get('div#e2e-image').eq(0).parent().click();
+    cy.get('div.e2e-image').eq(0).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
-    cy.get('div#e2e-image').eq(1).parent().click();
+    cy.get('div.e2e-image').eq(1).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
 
-    cy.get('div#e2e-image').eq(2).parent().click();
+    cy.get('div.e2e-image').eq(2).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
@@ -88,11 +86,11 @@ describe('Project description builder Image Text Cards section', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
-    cy.get('#e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
-    cy.get('#e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

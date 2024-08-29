@@ -1,27 +1,31 @@
-import React, { memo } from 'react';
+import React, { memo, KeyboardEvent, useRef } from 'react';
 
+import {
+  fontSizes,
+  media,
+  Icon,
+  useBreakpoint,
+  IconNames,
+} from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { ITab } from 'typings';
+
+import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAuthUser from 'api/me/useAuthUser';
+import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import { IUserData } from 'api/users/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// styles
-import { fontSizes, media } from 'utils/styleUtils';
-import styled from 'styled-components';
-import { rgba } from 'polished';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-import { UserTab } from './';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// api
-import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'api/me/useAuthUser';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -105,71 +109,127 @@ const TabIcon = styled(Icon)`
 `;
 
 interface Props {
-  currentTab: UserTab;
-  selectTab: (tab: UserTab) => () => void;
-  userId: string;
+  user: IUserData;
 }
 
-const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
-  const { data: ideasCount } = useUserIdeasCount({ userId });
+interface TabData
+  extends Omit<ITab, 'name' | 'url' | 'feature' | 'statusLabel' | 'active'> {
+  path: 'submissions' | 'comments' | 'following' | 'events';
+  className?: string;
+  icon: IconNames;
+  active: boolean;
+}
+
+const UserNavbar = memo<Props>(({ user }) => {
+  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
+  const tabsRef = useRef({});
+  const { formatMessage } = useIntl();
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const { pathname } = useLocation();
   const { data: commentsCount } = useUserCommentsCount({
-    userId,
+    userId: user.id,
   });
+  const { data: events } = useEventsByUserId(user.id);
+  const { data: authUser } = useAuthUser();
+
+  const eventsCount = events?.data.length;
+  const showEventTab = authUser?.data?.id === user.id;
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const { data: authUser } = useAuthUser();
-  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
+
+  const followingTab: TabData = {
+    label: formatMessage(messages.followingWithCount, {
+      followingCount: authUser?.data.attributes.followings_count || 0,
+    }),
+    active: pathname.endsWith('following'),
+    path: 'following',
+    icon: 'notification-outline',
+    className: 'e2e-following-tab',
+  };
+  const eventsTab: TabData = {
+    label: formatMessage(messages.eventsWithCount, {
+      eventsCount: eventsCount || 0,
+    }),
+    active: pathname.endsWith('events'),
+    path: 'events',
+    icon: 'calendar',
+    className: 'e2e-events-nav',
+  };
+
+  const tabs: TabData[] = [
+    {
+      label: formatMessage(messages.postsWithCount, {
+        ideasCount: ideasCount?.data.attributes.count || 0,
+      }),
+      active: pathname.endsWith('submissions'),
+      path: 'submissions',
+      icon: 'idea',
+    },
+    {
+      label: formatMessage(messages.commentsWithCount, {
+        commentsCount: commentsCount?.data.attributes.count || 0,
+      }),
+      active: pathname.endsWith('comments'),
+      path: 'comments',
+      icon: 'comments',
+      className: 'e2e-comment-section-nav',
+    },
+    ...(showFollowingTab ? [followingTab] : []),
+    ...(showEventTab ? [eventsTab] : []),
+  ];
+
+  const handleKeyDownTab = (
+    { key }: KeyboardEvent<HTMLButtonElement>,
+    path: string
+  ) => {
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
+
+    const currentTabIndex = tabs.findIndex((tabData) => tabData.path === path);
+    let nextTabIndex: number;
+
+    if (key === 'ArrowLeft') {
+      nextTabIndex =
+        currentTabIndex === 0 ? tabs.length - 1 : currentTabIndex - 1;
+    } else {
+      nextTabIndex =
+        currentTabIndex === tabs.length - 1 ? 0 : currentTabIndex + 1;
+    }
+    const nextTab = tabs[nextTabIndex];
+
+    clHistory.push(`/profile/${user.attributes.slug}/${nextTab.path}`);
+    tabsRef.current[nextTab.path].focus();
+  };
 
   return (
     <UserNavbarWrapper role="tablist">
-      <UserNavbarButton
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={selectTab('ideas')}
-        className={currentTab === 'ideas' ? 'active' : ''}
-        role="tab"
-        aria-selected={currentTab === 'ideas'}
-      >
-        <Border aria-hidden />
-        <TabIcon name="idea" ariaHidden />
-        {ideasCount && (
-          <FormattedMessage
-            {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount.data.attributes.count }}
-          />
-        )}
-      </UserNavbarButton>
-      <UserNavbarButton
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={selectTab('comments')}
-        className={`e2e-comment-section-nav ${
-          currentTab === 'comments' ? 'active' : ''
-        }`}
-        role="tab"
-        aria-selected={currentTab === 'comments'}
-      >
-        <Border aria-hidden />
-        <TabIcon name="comments" ariaHidden />
-        {commentsCount && (
-          <FormattedMessage
-            {...messages.commentsWithCount}
-            values={{ commentsCount: commentsCount.data.attributes.count }}
-          />
-        )}
-      </UserNavbarButton>
-      {showFollowingTab && (
+      {tabs.map((tab) => (
         <UserNavbarButton
+          key={tab.path}
           onMouseDown={removeFocusAfterMouseClick}
-          onClick={selectTab('following')}
-          className={currentTab === 'following' ? 'active' : ''}
+          onClick={() =>
+            clHistory.push(`/profile/${user.attributes.slug}/${tab.path}`)
+          }
+          className={`${tab.className || ''} ${tab.active ? 'active' : ''}`}
           role="tab"
-          aria-selected={currentTab === 'following'}
+          aria-selected={tab.active}
+          data-cy={tab.className}
+          // Allow tabbing to active tab. The other tabs can be accessed with the arrow keys.
+          tabIndex={tab.active ? 0 : -1}
+          onKeyDown={(event) => handleKeyDownTab(event, tab.path)}
+          ref={(el) => el && (tabsRef.current[tab.path] = el)}
+          aria-controls={`tab-${tab.path}`}
         >
           <Border aria-hidden />
-          <TabIcon name="notification-outline" ariaHidden />
-          <FormattedMessage {...messages.following} />
+          <TabIcon name={tab.icon} ariaHidden />
+          {isSmallerThanPhone ? (
+            <ScreenReaderOnly>{tab.label}</ScreenReaderOnly>
+          ) : (
+            tab.label
+          )}
         </UserNavbarButton>
-      )}
+      ))}
     </UserNavbarWrapper>
   );
 });

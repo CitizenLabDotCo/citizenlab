@@ -1,7 +1,9 @@
 import React from 'react';
-import Link, { Props } from 'utils/cl-router/Link';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+
+import Link, { Props } from 'utils/cl-router/Link';
 
 export const ClickableTextStyles = `
   font-size: ${fontSizes.base}px;

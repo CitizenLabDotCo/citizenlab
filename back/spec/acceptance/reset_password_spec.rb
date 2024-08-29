@@ -28,18 +28,18 @@ resource 'Users' do
 
         example 'does not use underscores in a special manner' do
           do_request(user: { email: 's_hoorens@gmail.com' })
-          expect(status).to eq 404
+          expect(status).to eq 202
         end
 
         example 'does not use percentages in a special manner' do
           do_request(user: { email: '%hoorens@gmail.com%' })
-          expect(status).to eq 404
+          expect(status).to eq 202
         end
       end
 
       example '[error] Request password reset of an invitee' do
         do_request(user: { email: create(:invited_user).email })
-        expect(status).to eq 404
+        expect(status).to eq 202
       end
     end
 

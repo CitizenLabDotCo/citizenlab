@@ -1,27 +1,23 @@
 import React from 'react';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import { pick } from 'lodash-es';
+import { Multiloc, SupportedLocale } from 'typings';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// components
 import {
   SectionFieldPageContent,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { StyledSectionDescription } from '.';
-import Link from 'utils/cl-router/Link';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from '../messages';
 
-// typings
-import { Multiloc, Locale } from 'typings';
+import { StyledSectionDescription } from '.';
 
 interface Props {
   value: Multiloc;
@@ -34,7 +30,7 @@ export default ({ value, onChange }: Props) => {
 
   const handleBodyOnChange = (
     valueMultiloc: Multiloc,
-    locale: Locale | undefined
+    locale: SupportedLocale | undefined
   ) => {
     if (locale) {
       onChange(pick(valueMultiloc, appConfigurationLocales));

@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, act, fireEvent } from 'utils/testUtils/rtl';
+
 import eventEmitter from 'utils/eventEmitter';
+import { render, act, fireEvent } from 'utils/testUtils/rtl';
 
 // component to test
 import Container from './Container';

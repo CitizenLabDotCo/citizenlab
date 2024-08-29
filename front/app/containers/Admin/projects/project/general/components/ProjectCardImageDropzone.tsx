@@ -1,7 +1,10 @@
 import React from 'react';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+
 import { UploadFile } from 'typings';
+
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
+
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 interface Props {
   images: UploadFile[] | null;

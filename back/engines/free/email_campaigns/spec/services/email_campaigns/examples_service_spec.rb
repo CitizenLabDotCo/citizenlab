@@ -67,7 +67,14 @@ describe EmailCampaigns::ExamplesService do
       recipient = create(:admin)
       command = {
         recipient: recipient,
-        event_payload: {}
+        event_payload: {
+          comment_created_at: Time.now.iso8601,
+          comment_body_multiloc: { en: 'comment body' },
+          reason_code: 'inappropriate',
+          other_reason: nil,
+          post_type: 'Comment',
+          post_url: 'http://example.com/posts/1'
+        }
       }
 
       expect { service.save_examples([[command, campaign2]]) }.not_to change { EmailCampaigns::Example.where(campaign: campaign1).count }

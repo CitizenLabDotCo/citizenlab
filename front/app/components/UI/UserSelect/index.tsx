@@ -1,161 +1,87 @@
-import React from 'react';
-import { adopt } from 'react-adopt';
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import ReactSelect, { OptionTypeBase } from 'react-select';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Box } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+
 import { IUserData } from 'api/users/types';
-import Button from 'components/UI/Button';
+import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';
 
-interface DataProps {
-  users: GetUsersChildProps;
-}
+import BaseUserSelect from './BaseUserSelect';
+import OptionLabel from './OptionLabel';
+import { Option } from './typings';
+import { optionIsUser } from './utils';
 
-export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
-  // If the option is 'load more' instead of a user, we don't have IUserData
-  // but { value: 'loadMore' }
-  value?: string;
-}
-
-interface InputProps {
-  onChange: (user?: UserOptionTypeBase) => void;
+interface Props {
   selectedUserId: string | null;
-  placeholder: string;
-  className?: string;
-  id: string;
-  inputId: string;
+  placeholder?: string;
+  id?: string;
+  inputId?: string;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;
   // Exclude users that can moderate the folder from selectable users.
   // We pass the folderId here.
   isNotFolderModeratorOfFolderId?: string;
+  onChange: (user?: IUserData) => void;
 }
 
-interface Props extends DataProps, InputProps {}
-
-const UserOption = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const UserSelect = ({
-  users,
-  onChange,
   selectedUserId,
   placeholder,
-  className,
   id,
   inputId,
-}: DataProps & Props) => {
-  const canLoadMore = users.hasNextPage;
-  const usersList = Array.isArray(users.usersList) ? users.usersList : [];
+  isNotFolderModeratorOfFolderId,
+  isNotProjectModeratorOfProjectId,
+  onChange,
+}: Props) => {
+  const [searchValue, setSearchValue] = useState('');
+  const {
+    data: users,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteUsers({
+    pageSize: 5,
+    sort: 'last_name',
+    is_not_folder_moderator: isNotFolderModeratorOfFolderId,
+    is_not_project_moderator: isNotProjectModeratorOfProjectId,
+    search: searchValue,
+  });
+
+  const usersList = users?.pages.flatMap((page) => page.data) ?? [];
+
   const { data: selectedUser } = useUserById(selectedUserId);
 
-  const handleChange = (option: UserOptionTypeBase, { action }) => {
-    if (action === 'clear') {
-      handleClear();
-    } else if (action === 'select-option' && option.value !== 'loadMore') {
-      onChange(option);
-    } else if (action === 'select-option' && option.value === 'loadMore') {
-      handleLoadMore();
-    }
-  };
-
-  const handleInputChange = debounce((searchTerm) => {
-    users.onChangeSearchTerm(searchTerm);
-  }, 500);
-
-  const handleMenuScrollToBottom = () => {
-    handleLoadMore();
-  };
-
-  const handleLoadMore = () => {
-    users.onLoadMore();
-  };
-
-  const handleClear = () => {
-    onChange();
-  };
-
-  const getOptionLabel = (option: UserOptionTypeBase) => {
-    if (option.value === 'loadMore' && canLoadMore) {
-      return (
-        <Button
-          onClick={handleLoadMore}
-          processing={users.isLoading}
-          icon="refresh"
-          buttonStyle="text"
-          padding="0px"
-        />
-      );
-    } else if (option.attributes) {
-      return (
-        <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
-          {option.attributes.last_name}, {option.attributes.first_name} (
-          {option.attributes.email})
-        </UserOption>
-      );
+  const handleChange = (option?: Option) => {
+    if (!option) {
+      onChange(undefined);
+      return;
     }
 
-    return null;
+    if (optionIsUser(option)) onChange(option);
   };
-
-  const getOptionId = (option: UserOptionTypeBase) => option.id;
 
   return (
-    <Box data-cy="e2e-user-select">
-      <ReactSelect
-        id={id}
-        inputId={inputId}
-        className={className}
-        isSearchable
-        blurInputOnSelect
-        backspaceRemovesValue={false}
-        menuShouldScrollIntoView={false}
-        isClearable
-        // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data. I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
-        value={(selectedUserId && selectedUser?.data) || null}
-        placeholder={placeholder}
-        options={
-          canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
-        }
-        getOptionValue={getOptionId}
-        getOptionLabel={getOptionLabel}
-        onChange={handleChange}
-        onInputChange={handleInputChange}
-        menuPlacement="auto"
-        styles={selectStyles}
-        onMenuScrollToBottom={handleMenuScrollToBottom}
-        filterOption={() => true}
-        onMenuOpen={handleClear}
-      />
-    </Box>
+    <BaseUserSelect
+      id={id}
+      inputId={inputId}
+      // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data.
+      // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
+      value={(selectedUserId && selectedUser?.data) || null}
+      placeholder={placeholder}
+      options={hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList}
+      getOptionLabel={(option) => (
+        <OptionLabel
+          option={option}
+          hasNextPage={hasNextPage}
+          isLoading={isLoading}
+          fetchNextPage={() => fetchNextPage()}
+        />
+      )}
+      onInputChange={setSearchValue}
+      onMenuScrollToBottom={() => fetchNextPage()}
+      onChange={handleChange}
+      onMenuOpen={handleChange}
+    />
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  users: ({
-    isNotProjectModeratorOfProjectId,
-    isNotFolderModeratorOfFolderId,
-    render,
-  }) => (
-    <GetUsers
-      pageSize={5}
-      sort="last_name"
-      is_not_project_moderator={isNotProjectModeratorOfProjectId}
-      is_not_folder_moderator={isNotFolderModeratorOfFolderId}
-    >
-      {render}
-    </GetUsers>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <UserSelect {...dataProps} {...inputProps} />}
-  </Data>
-);
+export default UserSelect;

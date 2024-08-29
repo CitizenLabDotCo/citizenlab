@@ -1,22 +1,16 @@
 import React, { useMemo } from 'react';
 
-// components
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+
 import ProgressBarsGraph from 'components/admin/Graphs/ProgressBars';
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
-// i18n
-import hookMessages from '../usePostsFeedback/messages';
 import { useIntl } from 'utils/cl-intl';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { generateEmptyData } from './generateEmptyData';
 
-// typings
+import hookMessages from '../usePostsFeedback/messages';
 import { PostFeedback } from '../usePostsFeedback/typings';
+
+import { generateEmptyData } from './generateEmptyData';
 
 interface Props {
   data: PostFeedback | NilOrError;

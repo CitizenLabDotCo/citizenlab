@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 
-// hooks
-import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+import { omitBy } from 'lodash-es';
+import { Multiloc } from 'typings';
 
-// components
-import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
-
-// utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// typings
-import { PublicationStatus } from 'api/projects/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
+import { PublicationStatus } from 'api/projects/types';
+
+import { trackEventByName } from 'utils/analytics';
+import { isNil } from 'utils/helperUtils';
+
+import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
+import tracks from './tracks';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -24,6 +23,7 @@ export interface Props {
   layout: TLayout;
   publicationStatusFilter: PublicationStatus[];
   showSearch?: boolean;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const ProjectAndFolderCards = ({
@@ -43,14 +43,24 @@ const ProjectAndFolderCards = ({
   // if no search string exists, do not return projects in folders
   const rootLevelOnly = !search || search.length === 0;
 
-  const { data: counts } = useAdminPublicationsStatusCounts({
-    publicationStatusFilter,
-    rootLevelOnly,
-    removeNotAllowedParents: true,
-    topicIds,
-    areaIds,
-    search,
-  });
+  // On initial load, the params for counts and statusCountsWithoutFilters
+  // are functionally the same, but without omitting the nil parameters
+  // the caching keys were not matching. As a result, we were making two
+  // identical requests for no reason. With this nil omission logic, we
+  // only make one request.
+  const { data: counts } = useAdminPublicationsStatusCounts(
+    omitBy(
+      {
+        publicationStatusFilter,
+        rootLevelOnly,
+        removeNotAllowedParents: true,
+        topicIds,
+        areaIds,
+        search,
+      },
+      isNil
+    )
+  );
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
@@ -98,7 +108,7 @@ const ProjectAndFolderCards = ({
     setSearch(search);
     // pass search term to useAdminPublicationsStatusCount hook
 
-    // analytics event for the updated search term
+    // event for the updated search term
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   }, []);
 

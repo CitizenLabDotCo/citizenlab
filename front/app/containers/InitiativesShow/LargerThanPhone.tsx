@@ -1,60 +1,53 @@
 import React, { useRef } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import FileAttachments from 'components/UI/FileAttachments';
 import { Box, media } from '@citizenlab/cl2-component-library';
-import SharingButtons from 'components/Sharing/SharingButtons';
-import Topics from 'components/PostShowComponents/Topics';
-import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Body from 'components/PostShowComponents/Body';
-import Image from 'components/PostShowComponents/Image';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedBy from './PostedBy';
-import ActionBar from './ActionBar';
-import ReactionControl from './ReactionControl';
-import Outlet from 'components/Outlet';
+import styled from 'styled-components';
 
-// utils
-import { getAddressOrFallbackDMS } from 'utils/map';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
-// style
-import styled from 'styled-components';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+
+import Outlet from 'components/Outlet';
+import Body from 'components/PostShowComponents/Body';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import Topics from 'components/PostShowComponents/Topics';
+import SharingButtons from 'components/Sharing/SharingButtons';
+import FileAttachments from 'components/UI/FileAttachments';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getAddressOrFallbackDMS } from 'utils/map';
+import { usePermission } from 'utils/permissions';
+
+import ActionBar from './ActionBar';
+import CosponsorShipReminder from './CosponsorShipReminder';
+import CosponsorsSection from './CosponsorsSection';
+import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
+import InitiativeBanner from './InitiativeBanner';
+import messages from './messages';
+import PostedBy from './PostedBy';
+import ReactionControl from './ReactionControl';
 import {
   columnsGapDesktop,
   columnsGapTablet,
   rightColumnWidthDesktop,
   pageContentMaxWidth,
-} from './styleConstants';
-
-// hooks
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-// types
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
-import RequestToCosponsor from './RequestToCosponsor';
-import Cosponsors from './Cosponsors';
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'services/permissions';
-import {
   contentFadeInDelay,
   contentFadeInDuration,
   contentFadeInEasing,
-} from '.';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import InitiativeBanner from './InitiativeBanner';
+} from './styleConstants';
 
-const Container = styled.main`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -136,6 +129,7 @@ const MetaContent = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
@@ -144,7 +138,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 
 interface Props {
   initiativeId: string;
-  className?: string;
   translateButtonClicked: boolean;
   onScrollToOfficialFeedback: () => void;
   onTranslateInitiative: () => void;
@@ -152,7 +145,6 @@ interface Props {
 }
 
 const LargerThanPhone = ({
-  className,
   initiativeId,
   translateButtonClicked,
   onScrollToOfficialFeedback,
@@ -161,11 +153,11 @@ const LargerThanPhone = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const showCosponsorshipReminder = useShowCosponsorshipReminder(initiativeId);
   const postOfficialFeedbackPermission = usePermission({
     item: !isNilOrError(initiative) ? initiative.data : null,
     action: 'moderate',
@@ -183,7 +175,9 @@ const LargerThanPhone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) return null;
+  if (!initiative || !initiativeImages) {
+    return null;
+  }
 
   const initiativeHeaderImageLarge = initiative.data.attributes.header_bg.large;
   const authorId = initiative.data.relationships.author.data?.id;
@@ -197,19 +191,9 @@ const LargerThanPhone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const utmParams = !isNilOrError(authUser)
-    ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.data.id,
-      }
-    : {
-        source: 'share_initiative',
-        campaign: 'share_content',
-      };
 
   return (
-    <Container className={className}>
+    <Container>
       {initiativeHeaderImageLarge && (
         <InitiativeBanner
           initiativeHeaderImageLarge={initiativeHeaderImageLarge}
@@ -223,18 +207,24 @@ const LargerThanPhone = ({
       <InitiativeContainer>
         <Content>
           <LeftColumn>
-            <StyledTopics
-              postType="initiative"
-              topicIds={initiative.data.relationships.topics.data.map(
-                (topic) => topic.id
-              )}
-            />
+            {showCosponsorshipReminder && (
+              <Box mb="28px">
+                <CosponsorShipReminder initiativeId={initiativeId} />
+              </Box>
+            )}
+            {initiative.data.relationships.topics.data.length > 0 && (
+              <StyledTopics
+                postType="initiative"
+                postTopicIds={initiative.data.relationships.topics.data.map(
+                  (topic) => topic.id
+                )}
+              />
+            )}
             <InitiativeHeader>
               <Title
                 postType="initiative"
                 postId={initiativeId}
                 title={initiativeTitle}
-                locale={locale}
                 translateButtonClicked={translateButtonClicked}
               />
             </InitiativeHeader>
@@ -255,7 +245,6 @@ const LargerThanPhone = ({
               translateButtonClicked={translateButtonClicked}
               onClick={onTranslateInitiative}
               initiative={initiative.data}
-              locale={locale}
             />
             {initiativeGeoPosition && initiativeAddress && (
               <StyledDropdownMap
@@ -283,7 +272,7 @@ const LargerThanPhone = ({
               </Box>
             )}
             <Box
-              mb={hasOfficialFeedback ? '80px' : '0'}
+              mb={hasOfficialFeedback ? '48px' : '0'}
               ref={officialFeedbackElement}
             >
               <StyledOfficialFeedback
@@ -302,21 +291,17 @@ const LargerThanPhone = ({
                 <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
               </ScreenReaderOnly>
               <ReactionControl
-                initiativeId={initiativeId}
+                initiative={initiative}
                 onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                 id="e2e-initiative-reaction-control"
               />
-              <RequestToCosponsor initiativeId={initiativeId} />
-              <Cosponsors initiativeId={initiativeId} />
+              <CosponsorsSection initiativeId={initiativeId} />
               {showSharingOptions && (
                 <SharingWrapper>
                   <SharingButtons
                     id="e2e-initiative-sharing-component"
                     context="initiative"
                     url={initiativeUrl}
-                    facebookMessage={formatMessage(messages.facebookMessage, {
-                      initiativeTitle,
-                    })}
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}
@@ -330,7 +315,18 @@ const LargerThanPhone = ({
                       initiativeUrl,
                       initiativeTitle,
                     })}
-                    utmParams={utmParams}
+                    utmParams={
+                      !isNilOrError(authUser)
+                        ? {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                            content: authUser.data.id,
+                          }
+                        : {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                          }
+                    }
                   />
                 </SharingWrapper>
               )}

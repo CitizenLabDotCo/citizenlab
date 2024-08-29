@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import Konveio from './Konveio';
+
 import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import Konveio from './Konveio';
 
 const mockAuthUserData: IUserData = {
   id: 'userId',
@@ -21,6 +24,7 @@ const mockAuthUserData: IUserData = {
     invite_status: null,
     confirmation_required: false,
     email: 'test@mail.com',
+    followings_count: 2,
   },
 };
 

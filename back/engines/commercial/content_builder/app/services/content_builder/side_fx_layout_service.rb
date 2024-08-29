@@ -5,7 +5,7 @@ module ContentBuilder
     include SideFxHelper
 
     def before_create(layout, _user)
-      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+      layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
     def after_create(layout, user)
@@ -13,7 +13,7 @@ module ContentBuilder
     end
 
     def before_update(layout, _user)
-      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+      layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
     def after_update(layout, user)

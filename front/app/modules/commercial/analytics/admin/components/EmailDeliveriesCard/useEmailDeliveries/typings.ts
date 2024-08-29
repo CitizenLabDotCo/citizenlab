@@ -28,7 +28,9 @@ interface StatRow {
 export type TimeSeriesResponse = TimeSeriesResponseRow[];
 
 export interface TimeSeriesResponseRow extends BaseRow {
-  first_dimension_date_sent_date: string;
+  first_dimension_date_sent_date?: string;
+  first_dimension_date_sent_week?: string;
+  first_dimension_date_sent_month?: string;
 }
 
 interface PreparedBaseRow {
@@ -38,7 +40,9 @@ interface PreparedBaseRow {
 
 export type PreparedTimeSeriesResponse = PreparedTimeSeriesResponseRow[];
 export interface PreparedTimeSeriesResponseRow extends PreparedBaseRow {
-  first_dimension_date_sent_date: string;
+  first_dimension_date_sent_date?: string;
+  first_dimension_date_sent_week?: string;
+  first_dimension_date_sent_month?: string;
 }
 
 // Hook return value

@@ -11,11 +11,12 @@ Gem::Specification.new do |s|
   s.version     = IdClaveUnica::VERSION
   s.summary     = 'Authentication and verification using the Chilean Clave Unica'
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 7.0'
   s.add_dependency 'verification'
+  s.add_dependency 'id_id_card_lookup'
   s.add_dependency 'omniauth_openid_connect'
 
   s.add_development_dependency 'rspec_api_documentation'

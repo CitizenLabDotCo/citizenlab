@@ -1,18 +1,21 @@
+import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
+
 import {
   Container,
+  HeaderImageWrapper,
   HeaderImage,
+  TextWrapper,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
-import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
-import React from 'react';
-import { IHomepageSettingsData } from 'api/home_page/types';
-import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const TwoColumnLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
 
   return (
     <Container
@@ -20,10 +23,7 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
       data-cy="e2e-two-column-layout-container"
     >
       {headerImage && (
-        <Box
-          minWidth="50%"
-          data-testid="homepage-two-column-layout-header-image"
-        >
+        <HeaderImageWrapper data-testid="homepage-two-column-layout-header-image">
           <HeaderImage
             src={headerImage}
             cover={true}
@@ -32,9 +32,15 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
             placeholderBg="transparent"
             alt=""
           />
-        </Box>
+        </HeaderImageWrapper>
       )}
-      <HeaderContent fontColors="dark" align="left" />
+      <TextWrapper>
+        <HeaderContent
+          fontColors="dark"
+          align="left"
+          homepageSettings={homepageSettings}
+        />
+      </TextWrapper>
     </Container>
   );
 };

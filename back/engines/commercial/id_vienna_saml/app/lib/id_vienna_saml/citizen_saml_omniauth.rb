@@ -15,6 +15,8 @@ module IdViennaSaml
       }
     }.freeze
 
+    USERID_KEY = 'urn:oid:0.9.2342.19200300.100.1.1'
+
     # Extracts user attributes from the Omniauth response auth.
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The user attributes
@@ -34,6 +36,10 @@ module IdViennaSaml
       }
     end
 
+    def profile_to_uid(auth)
+      auth.dig(:extra, :raw_info).to_h[USERID_KEY].first
+    end
+
     # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
     # if the feature is enabled.
     # Most of the settings are read from the XML file that Vienna shared with us.
@@ -50,16 +56,6 @@ module IdViennaSaml
       metadata = idp_metadata.merge({ issuer: issuer })
 
       env['omniauth.strategy'].options.merge!(metadata)
-    end
-
-    # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
-    def updateable_user_attrs
-      %i[first_name last_name]
-    end
-
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      false
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON

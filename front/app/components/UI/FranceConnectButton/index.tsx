@@ -1,10 +1,13 @@
 import React, { ReactElement, FormEvent } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import messages from './messages';
-import FranceConnectLogo from './FranceConnectLogo';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import FranceConnectLogo from './FranceConnectLogo';
+import messages from './messages';
 
 const FranceConnectButtonWrapper = styled.div`
   display: flex;
@@ -49,8 +52,10 @@ const FranceConnectButtonLink = styled.button`
     cursor: not-allowed;
   }
 
-  &:hover #Fond {
-    fill: #2183f0;
+  // colors are copied from https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect/
+  color: #000091;
+  &:hover {
+    color: #1212ff;
   }
 `;
 

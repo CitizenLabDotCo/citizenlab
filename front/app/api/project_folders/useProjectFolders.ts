@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import projectFoldersKeys from './keys';
 import { IProjectFolders, IQueryParameters, ProjectFoldersKeys } from './types';
 

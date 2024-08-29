@@ -1,41 +1,32 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'api/me/useAuthUser';
+import {
+  Box,
+  useBreakpoint,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { isIdeaInParticipationContext } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import ReactionControl from 'components/ReactionControl';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// routing
-import clHistory from 'utils/cl-router/history';
-import { useSearchParams } from 'react-router-dom';
+import ReactionControl from 'components/ReactionControl';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
-// styling
-import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
-// utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { isIdeaInParticipationContext } from 'api/phases/utils';
-
-// typings
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
@@ -72,7 +63,7 @@ interface Props {
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  participationContext?: IProjectData | IPhaseData;
+  phase?: IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
@@ -80,7 +71,7 @@ const IdeaShowPageTopBar = ({
   projectId,
   className,
   deselectIdeaOnMap,
-  participationContext,
+  phase,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -90,20 +81,14 @@ const IdeaShowPageTopBar = ({
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
 
-  const votingConfig = getVotingMethodConfig(
-    participationContext?.attributes.voting_method
-  );
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
-    participationContext && idea
-      ? isIdeaInParticipationContext(idea, participationContext)
-      : undefined;
+    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   useEffect(() => {
     removeSearchParams(['go_back']);
   }, []);
-
-  const localize = useLocalize();
 
   const onDisabledReactClick = (
     disabled_reason: IdeaReactingDisabledReason
@@ -113,18 +98,13 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
-      const pcType =
-        project.data.attributes.process_type === 'continuous'
-          ? 'project'
-          : 'phase';
-      const pcId =
-        project.data.relationships?.current_phase?.data?.id || project.data.id;
-      if (pcId && pcType) {
+      const phaseId = project.data.relationships?.current_phase?.data?.id;
+      if (phaseId) {
         triggerAuthenticationFlow({
           context: {
             action: 'reacting_idea',
-            id: pcId,
-            type: pcType,
+            id: phaseId,
+            type: 'phase',
           },
         });
       }
@@ -148,17 +128,13 @@ const IdeaShowPageTopBar = ({
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
-            text={
-              project ? localize(project.data.attributes.title_multiloc) : ''
-            }
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
         </Left>
         <Right>
           {/* Only visible if not voting */}
-          {participationContext?.attributes.participation_method !==
-            'voting' && (
+          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
               styleType="border"
@@ -167,11 +143,11 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId && participationContext && ideaIsInParticipationContext && (
+          {ideaId && phase && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
-                participationContext,
+                phase,
                 compact: true,
               })}
             </Box>

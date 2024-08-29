@@ -1,6 +1,6 @@
 import {
   AuthenticationContext,
-  ProjectContext,
+  PhaseContext,
 } from 'api/authentication/authentication_requirements/types';
 
 // search for verification_error in back to find these
@@ -52,6 +52,6 @@ export type TVerificationStep =
 
 export function isProjectContext(
   obj?: AuthenticationContext
-): obj is ProjectContext {
-  return (obj as ProjectContext)?.id !== undefined;
+): obj is PhaseContext {
+  return (obj as PhaseContext)?.id !== undefined;
 }

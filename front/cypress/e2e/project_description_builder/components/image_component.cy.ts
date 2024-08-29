@@ -13,12 +13,10 @@ describe('Project description builder Image component', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
@@ -47,7 +45,7 @@ describe('Project description builder Image component', () => {
       position: 'inside',
     });
 
-    cy.get('#e2e-image').parent().click();
+    cy.get('.e2e-image').parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput')
       .click()
@@ -71,7 +69,7 @@ describe('Project description builder Image component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-image').parent().click();
+    cy.get('.e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

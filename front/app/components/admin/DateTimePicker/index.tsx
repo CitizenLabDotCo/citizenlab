@@ -1,22 +1,62 @@
-// must be at the top, before other imports!
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
-// libraries
 import React from 'react';
-import moment from 'moment';
-import { SingleDatePicker } from 'react-dates';
+import 'react-datepicker/dist/react-datepicker.css';
 
-// styling
+import {
+  Icon,
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+
+import useLocale from 'hooks/useLocale';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
-  width: 245px;
   display: flex;
   position: relative;
+  padding: 0 16px;
+  align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ccc;
+
+  .react-datepicker-wrapper {
+    width: 100%;
+    padding: 12px;
+
+    input {
+      width: 100%;
+    }
+
+    .react-datepicker-popper {
+      z-index: 1;
+    }
+  }
+
+  /*
+    Added to ensure the color contrast required to meet WCAG AA standards.
+  */
+  .react-datepicker__day--today {
+    background-color: ${colors.white};
+    color: ${colors.black};
+    border: 1px solid ${colors.black};
+    border-radius: ${stylingConsts.borderRadius};
+  }
+
+  /*
+    If today's date is 20/5 and you go back to the previous month, 20/4 receives the "...keyboard-selected" class,
+    also resulting in the default light-blue background that the "...today" class receives.
+    No border is needed here because on focus, the browser adds a border
+  */
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${colors.white};
+  }
 
   input {
     font-size: ${fontSizes.base}px;
@@ -25,67 +65,7 @@ const Container = styled.div`
     box-shadow: none;
     border: none;
     border-radius: 0;
-    background: transparent;
   }
-
-  .SingleDatePickerInput {
-    outline: none;
-    box-shadow: none;
-    border: none;
-    border-right: solid 1px #ccc;
-    border-radius: 0;
-    background: transparent;
-
-    .DateInput {
-      background: transparent;
-
-      .DateInput_fang {
-        z-index: 1000 !important;
-      }
-
-      input {
-        border-bottom: solid 2px transparent;
-
-        &.DateInput_input__focused {
-          border-bottom: solid 2px #00a699;
-        }
-      }
-    }
-    .DateInput_input {
-      color: inherit;
-    }
-  }
-
-  .SingleDatePicker_picker {
-    top: 69px !important;
-    left: -1px !important;
-  }
-
-  .CalendarMonth_caption {
-    color: inherit;
-  }
-`;
-
-const TimeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
-
-  input {
-    width: 40px;
-  }
-
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
-    opacity: 1;
-  }
-`;
-
-const TimeSeparator = styled.div`
-  padding-left: 5px;
-  padding-right: 5px;
 `;
 
 interface Props {
@@ -93,102 +73,35 @@ interface Props {
   onChange: (arg: moment.Moment) => void;
 }
 
-interface State {
-  focused: boolean;
-  selectedMoment: moment.Moment;
-}
+const DateTimePicker = ({ value, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
 
-class DateTimePicker extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      focused: false,
-      selectedMoment: props.value ? moment(props.value) : moment().second(0),
-    };
-  }
+  if (isNilOrError(locale)) return null;
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.value !== this.props.value) {
-      this.setState({ selectedMoment: moment(this.props.value) });
-    }
-  }
+  const handleDateChange = (date: Date | null) => {
+    const momentDate = date ? moment(date) : null;
 
-  componentDidMount() {
-    // Update the parent component value, useful when initializing a new picker
-    this.updateDateTime(this.state.selectedMoment);
-  }
-
-  updateDateTime = (newMoment: moment.Moment) => {
-    this.setState({ selectedMoment: newMoment });
-    this.props.onChange(newMoment);
-  };
-
-  handleDateChange = (dateMoment: moment.Moment | null) => {
-    if (dateMoment) {
-      this.updateDateTime(
-        dateMoment.set({
-          hour: this.state.selectedMoment.get('hour'),
-          minute: this.state.selectedMoment.get('minute'),
-          second: this.state.selectedMoment.get('second'),
-        })
-      );
+    if (momentDate) {
+      onChange(momentDate);
     }
   };
 
-  createTimeChangeHandler = (unit: 'hour' | 'minute') => (event) => {
-    const { value } = event.target;
-    const newMoment = this.state.selectedMoment.clone();
-    newMoment.set(unit, value);
-    this.updateDateTime(newMoment);
-  };
-
-  handleFocusChange = ({ focused }) => {
-    this.setState({ focused });
-  };
-
-  isOutsideRange = () => {
-    return false;
-  };
-
-  render() {
-    const { selectedMoment, focused } = this.state;
-    const hours = parseInt(selectedMoment.format('HH'), 10);
-    const minutes = parseInt(selectedMoment.format('mm'), 10);
-
-    return (
-      <Container>
-        <SingleDatePicker
-          id="singledatepicker"
-          date={selectedMoment}
-          onDateChange={this.handleDateChange}
-          focused={focused}
-          onFocusChange={this.handleFocusChange}
-          numberOfMonths={1}
-          firstDayOfWeek={1}
-          isOutsideRange={this.isOutsideRange}
-        />
-        <TimeWrapper>
-          <input
-            type="number"
-            min="0"
-            max="23"
-            step="1"
-            value={hours}
-            onChange={this.createTimeChangeHandler('hour')}
-          />
-          <TimeSeparator>:</TimeSeparator>
-          <input
-            type="number"
-            min="0"
-            max="59"
-            step="1"
-            value={minutes}
-            onChange={this.createTimeChangeHandler('minute')}
-          />
-        </TimeWrapper>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <Icon name="calendar" fill={colors.blue500} />
+      <DatePicker
+        selected={value ? new Date(value) : new Date()}
+        onChange={handleDateChange}
+        showTimeSelect
+        timeIntervals={15}
+        // This makes sure we adjust date + time based on the passed locale.
+        dateFormat="Pp"
+        locale={locale}
+        timeCaption={formatMessage(messages.time)}
+      />
+    </Container>
+  );
+};
 
 export default DateTimePicker;

@@ -49,8 +49,10 @@ RSpec.describe AdminApi::Schema do
       expect(edges&.size).to eq 3
       expect(edges&.first&.dig('node', 'id')).to eq p1.id
       expect(edges&.first&.dig('node', 'href')).to eq "#{AppConfiguration.instance.base_frontend_uri}/pages/#{p1.slug}"
-      expect(edges&.first&.dig('node', 'titleMultiloc', 'en')).to eq p1.title_multiloc['en']
-      expect(edges&.first&.dig('node', 'topInfoSectionMultiloc', 'en')).to eq p1.top_info_section_multiloc['en']
+
+      # 'nlBe' because field names are camelized for the GraphQL API.
+      expect(edges&.first&.dig('node', 'titleMultiloc', 'nlBe')).to eq p1.title_multiloc['nl-BE']
+      expect(edges&.first&.dig('node', 'topInfoSectionMultiloc', 'nlBe')).to eq p1.top_info_section_multiloc['nl-BE']
       expect(edges&.first&.dig('node', 'slug')).to eq p1.slug
     end
   end

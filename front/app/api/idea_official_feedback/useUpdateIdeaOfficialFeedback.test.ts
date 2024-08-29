@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateIdeaOfficialFeedback from './useUpdateIdeaOfficialFeedback';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { data } from './useIdeaOfficialFeedback.test';
+import useUpdateIdeaOfficialFeedback from './useUpdateIdeaOfficialFeedback';
 
 const apiPath = '*official_feedback/:id';
 
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: data[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: data[0] }, { status: 200 });
   })
 );
 
@@ -48,8 +47,8 @@ describe('useUpdateIdeaOfficialFeedback', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

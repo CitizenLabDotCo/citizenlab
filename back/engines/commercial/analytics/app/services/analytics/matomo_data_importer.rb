@@ -9,10 +9,10 @@ module Analytics
     }
 
     # @param [Matomo::Client] matomo_client
-    # @param [String] timezone
+    # @param [ActiveSupport::TimeZone] timezone
     def initialize(matomo_client: nil, timezone: nil)
       @matomo_client = matomo_client || Matomo::Client.new
-      @timezone = timezone || AppConfiguration.instance.settings.dig('core', 'timezone')
+      @timezone = timezone || AppConfiguration.timezone
     end
 
     # @param [String] site_id Matomo site id
@@ -211,7 +211,7 @@ module Analytics
     end
 
     def timestamp_to_date(timestamp)
-      Time.at(timestamp).in_time_zone(@timezone).to_date
+      @timezone.at(timestamp).to_date
     end
   end
 end

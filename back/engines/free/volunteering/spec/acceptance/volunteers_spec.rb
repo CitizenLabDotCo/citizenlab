@@ -16,7 +16,17 @@ resource 'Volunteering Volunteers' do
     post 'web_api/v1/causes/:cause_id/volunteers' do
       ValidationErrorHelper.new.error_fields(self, Volunteering::Volunteer)
 
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
 
       example_request 'Create a volunteer with the current user' do
@@ -31,10 +41,52 @@ resource 'Volunteering Volunteers' do
         do_request
         assert_status 422
       end
+
+      context 'when the phase has granular permissions' do
+        let(:group) { create(:group) }
+
+        let(:project) do
+          create(
+            :single_phase_volunteering_project,
+            phase_attrs: { with_permissions: true }
+          )
+        end
+
+        let(:cause) do
+          cause = create(:cause, phase: project.phases.first)
+          permission = cause.phase.permissions.find_by(action: 'volunteering')
+          permission.update!(permitted_by: 'users', groups: [group])
+
+          cause
+        end
+
+        let(:cause_id) { cause.id }
+
+        example 'Try to volunteer for a cause, not as a group member', document: false do
+          do_request
+          assert_status 401
+        end
+
+        example 'Try to volunteer for a cause, as a group member', document: false do
+          group.add_member(@user).save!
+          do_request
+          assert_status 201
+        end
+      end
     end
 
     delete 'web_api/v1/causes/:cause_id/volunteers' do
-      let(:cause) { create(:cause) }
+      let(:cause) do
+        create(
+          :cause,
+          phase: create(
+            :volunteering_phase,
+            start_at: 6.months.ago,
+            end_at: nil
+          )
+        )
+      end
+
       let(:cause_id) { cause.id }
       let!(:volunteer) { create(:volunteer, user: @user, cause: cause) }
 
@@ -74,18 +126,22 @@ resource 'Volunteering Volunteers' do
       end
     end
 
-    get 'web_api/v1/projects/:participation_context_id/volunteers/as_xlsx' do
+    get 'web_api/v1/phases/:phase_id/volunteers/as_xlsx' do
       before do
-        @project = create(:continuous_volunteering_project)
-        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, participation_context: @project)
-        @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
-        @cause2 = create(:cause, participation_context: @project)
+        @phase = create(:volunteering_phase)
+        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
+        create(:custom_field_domicile)
+        area = create(:area, title_multiloc: { 'en' => 'Center' })
+        user = create(:user, custom_field_values: { 'domicile' => area.id })
+        @volunteer1 = create(:volunteer, cause: @cause1, user: user)
+        @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
+        @cause2 = create(:cause, phase: @phase)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
         create(:cause)
         create(:volunteer)
       end
 
-      let(:participation_context_id) { @project.id }
+      let(:phase_id) { @phase.id }
 
       example_request 'XLSX export all volunteers of a project' do
         assert_status 200
@@ -96,10 +152,11 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[1].sheet_name).to eq @cause2.title_multiloc['en']
 
         expect(worksheets[0].count).to eq 4
-        expect(worksheets[0][1][0].value).to eq @volunteers1[0].user.first_name
-        expect(worksheets[0][1][1].value).to eq @volunteers1[0].user.last_name
-        expect(worksheets[0][1][2].value).to eq @volunteers1[0].user.email
-        expect(worksheets[0][1][3].value.to_i).to eq @volunteers1[0].created_at.to_i
+        expect(worksheets[0][1][0].value).to eq @volunteer1.user.first_name
+        expect(worksheets[0][1][1].value).to eq @volunteer1.user.last_name
+        expect(worksheets[0][1][2].value).to eq @volunteer1.user.email
+        expect(worksheets[0][1][3].value.to_i).to eq @volunteer1.created_at.to_i
+        expect(worksheets[0][1][4].value).to eq 'Center'
       end
 
       describe 'when resident' do

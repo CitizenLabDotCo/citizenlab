@@ -1,22 +1,34 @@
 import React from 'react';
 
-import { IInputsData } from 'api/analysis_inputs/types';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-
 import {
   Box,
   Title,
   Text,
   Checkbox,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
+
+import { IInputsData } from 'api/analysis_inputs/types';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import { xor } from 'lodash-es';
+import messages from '../messages';
+import tracks from '../tracks';
+
+import LineMapPreview from './MapPreview/LineMapPreview';
+import PointMapPreview from './MapPreview/PointMapPreview';
+import PolygonMapPreview from './MapPreview/PolygonMapPreview';
+import ShapefilePreview from './ShapefilePreview';
 
 type Props = {
   customFieldId: string;
@@ -44,6 +56,7 @@ const SelectOptionText = ({
 };
 
 const FilterToggleButton = ({ customFieldId, value }) => {
+  const { formatMessage } = useIntl();
   const filters = useAnalysisFilterParams();
   const filterValue = filters[`input_custom_${customFieldId}`];
   const isFilterSet = filterValue?.includes(value);
@@ -55,18 +68,28 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         ? newFilterValue
         : undefined,
     });
+    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
   };
 
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      icon={isFilterSet ? 'close' : 'filter-2'}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       size="s"
       margin="0"
       padding="1px"
-      iconSize="18px"
-    />
+    >
+      <IconTooltip
+        icon={isFilterSet ? 'close' : 'filter-2'}
+        content={
+          <Box minWidth="150px">
+            {isFilterSet
+              ? formatMessage(messages.removeFilter)
+              : formatMessage(messages.filter)}
+          </Box>
+        }
+      />
+    </Button>
   );
 };
 
@@ -75,6 +98,8 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
+  const { formatMessage } = useIntl();
+
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -92,7 +117,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
     case 'title_multiloc':
       return (
         <Box>
-          <Title variant="h3">
+          <Title variant="h3" my="0px">
             <T
               value={input.attributes[customField.data.attributes.key]}
               supportHtml={true}
@@ -113,7 +138,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       if (input.attributes.location_description) {
         return (
           <Box>
-            <Title variant="h5">
+            <Title variant="h5" m="0px">
               <T value={customField.data.attributes.title_multiloc} />
             </Title>
             <Text>{input.attributes.location_description}</Text>
@@ -129,13 +154,13 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'text':
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text m="0">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(messages.noAnswer)}
               </Text>
             </Box>
           );
@@ -143,7 +168,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'linear_scale': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -154,7 +179,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <Text m="0">
                   {input.attributes.custom_field_values[
                     customField.data.attributes.key
-                  ] || 'No answer'}
+                  ] || formatMessage(messages.noAnswer)}
                 </Text>
                 <Box ml="8px">
                   <FilterToggleButton
@@ -169,13 +194,13 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiline_text': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text whiteSpace="pre-line">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(messages.noAnswer)}
               </Text>
             </Box>
           );
@@ -183,7 +208,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'select': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -210,11 +235,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiselect': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {(rawValue as string[]).map((optionKey) => (
+                {(rawValue as string[] | undefined)?.map((optionKey) => (
                   <Box
                     key={optionKey}
                     display="flex"
@@ -240,14 +265,14 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'checkbox': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
                 {rawValue === true || rawValue === false ? (
                   <Checkbox disabled checked={rawValue} onChange={() => {}} />
                 ) : (
-                  'No answer'
+                  formatMessage(messages.noAnswer)
                 )}
               </Text>
             </Box>
@@ -256,12 +281,56 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'date': {
           return (
             <Box>
-              <Title variant="h5">
+              <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {rawValue ? <FormattedDate value={rawValue} /> : 'No answer'}
+                {rawValue ? (
+                  <FormattedDate value={rawValue} />
+                ) : (
+                  formatMessage(messages.noAnswer)
+                )}
               </Text>
+            </Box>
+          );
+        }
+        case 'shapefile_upload': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <ShapefilePreview inputId={input.id} file={rawValue} />
+            </Box>
+          );
+        }
+        case 'point': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PointMapPreview rawValue={rawValue} />
+            </Box>
+          );
+        }
+        case 'line': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <LineMapPreview rawValue={rawValue} />
+            </Box>
+          );
+        }
+        case 'polygon': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PolygonMapPreview rawValue={rawValue} />
             </Box>
           );
         }

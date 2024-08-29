@@ -10,7 +10,7 @@ describe FollowerPolicy do
   let(:scope) { FollowerPolicy::Scope.new(user, followable.followers) }
 
   context 'in a public project' do
-    let(:followable) { create(:continuous_project) }
+    let(:followable) { create(:single_phase_ideation_project) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -198,6 +198,86 @@ describe FollowerPolicy do
 
   context 'for an initiative' do
     let(:followable) { create(:initiative) }
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'does not index the follower' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for the following user' do
+      let(:user) { following_user }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the follower' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'does not index the follower' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+  end
+
+  context 'for a topic' do
+    let(:followable) { create(:topic) }
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'does not index the follower' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for the following user' do
+      let(:user) { following_user }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the follower' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'does not index the follower' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+  end
+
+  context 'for an area' do
+    let(:followable) { create(:area) }
 
     context 'for a resident' do
       let(:user) { create(:user) }

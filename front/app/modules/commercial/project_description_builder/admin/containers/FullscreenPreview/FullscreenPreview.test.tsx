@@ -1,16 +1,22 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
 import FullScreenPreview from '.';
 
 let mockLocale = 'en';
 
-jest.mock('hooks/useLocale', () => jest.fn(() => mockLocale));
+jest.mock('hooks/useLocale');
+jest.mock(
+  'hooks/useLocalize',
+  () => () => jest.fn((multiloc) => multiloc[mockLocale])
+);
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: true,
-      craftjs_jsonmultiloc: { en: {} },
+      craftjs_json: {},
     },
   },
 };
@@ -36,6 +42,11 @@ jest.mock('react-router-dom', () => {
     useParams: () => ({
       projectId: 'id',
     }),
+    useSearchParams: () => [
+      {
+        get: () => mockLocale,
+      },
+    ],
   };
 });
 
@@ -66,25 +77,31 @@ document.getElementById = (id, ...args) => {
 };
 
 describe('Preview Content', () => {
-  it('should render', () => {
+  it('should render', async () => {
     render(<FullScreenPreview />);
-    expect(
-      screen.getByTestId('contentBuilderEditModePreviewContent')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByTestId('contentBuilderEditModePreviewContent')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Test Project')).toBeInTheDocument();
+    });
   });
 
-  it('should show correct title with a different locale', () => {
+  it('should show correct title with a different locale', async () => {
     mockLocale = 'fr-FR';
     render(<FullScreenPreview />);
 
-    expect(screen.getByText('Test Projet')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Test Projet')).toBeInTheDocument();
+    });
   });
 
-  it('shows loading state correctly', () => {
+  it('shows loading state correctly', async () => {
     mockProjectDescriptionBuilderLayoutData = undefined;
     render(<FullScreenPreview />);
 
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    });
   });
 });

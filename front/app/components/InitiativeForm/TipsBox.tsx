@@ -1,16 +1,17 @@
 import React, { memo } from 'react';
 
-// components
-import TipsContent from './TipsContent';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import TipsContent from './TipsContent';
 
 interface Props {
   className?: string;
@@ -33,6 +34,15 @@ const TipsTitle = styled.h2`
 `;
 
 const TipsBox = memo(({ className }: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const localize = useLocalize();
+
+  const postingTips = localize(
+    appConfiguration?.data.attributes.settings.initiatives.posting_tips
+  );
+
+  if (postingTips.length === 0) return null;
+
   return (
     <Container className={`${className} e2e-tips`}>
       <TipsTitle>

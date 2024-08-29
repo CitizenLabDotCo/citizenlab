@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { isUndefined } from 'lodash-es';
+
 import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { isUndefined } from 'lodash-es';
+
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import { CampaignData } from './types';
+
 import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import CampaignDescription from './CampaignDescription';
-import NewProjectPhaseModal from './NewProjectPhaseModal';
+import PhaseEmailSettingsModal from './PhaseEmailSettingsModal';
+import { CampaignData } from './types';
 
 type Props = {
   campaign: CampaignData;
@@ -39,7 +45,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
 
   return (
     <>
-      <NewProjectPhaseModal
+      <PhaseEmailSettingsModal
         open={isNewPhaseModalOpen}
         close={closeNewPhaseModal}
         onConfirm={toggleEnabled}
@@ -61,7 +67,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
               <Button
                 icon="eye"
                 onClick={onClickViewExample}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.viewExample} />
               </Button>

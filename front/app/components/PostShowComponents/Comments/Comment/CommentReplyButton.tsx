@@ -1,31 +1,25 @@
 import React from 'react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { commentReplyButtonClicked } from '../events';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// style
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
-// utils
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// types
-import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserById from 'api/users/useUserById';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { commentReplyButtonClicked } from '../events';
+import messages from '../messages';
+import tracks from '../tracks';
 
 const Container = styled.li`
   display: flex;
@@ -117,7 +111,7 @@ const CommentReplyButton = ({
 
     if (idea) {
       const actionDescriptor =
-        idea.attributes.action_descriptor.commenting_idea;
+        idea.attributes.action_descriptors.commenting_idea;
 
       if (actionDescriptor.enabled) {
         reply();
@@ -155,7 +149,7 @@ const CommentReplyButton = ({
   };
 
   const ideaCommentingDisabledReason =
-    idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
+    idea?.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
   const disabled =

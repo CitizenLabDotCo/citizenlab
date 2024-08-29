@@ -11,6 +11,7 @@
 #  toxicity_label :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  ai_reason      :string
 #
 # Indexes
 #
@@ -18,15 +19,24 @@
 #
 module FlagInappropriateContent
   class InappropriateContentFlag < ApplicationRecord
+    TOXICITY_LABELS = %w[insult harmful sexually_explicit spam].freeze
+
     belongs_to :flaggable, polymorphic: true
 
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, dependent: :nullify
 
     validates :flaggable, presence: true
+    validates :toxicity_label, inclusion: { in: TOXICITY_LABELS }, allow_nil: true
 
     def deleted?
       !!deleted_at
+    end
+
+    # We use `toxicity_label` as a proxy to determine whether the flag was automatically
+    # detected as it's currently only set when using NLP detection.
+    def automatically_detected?
+      toxicity_label.present?
     end
 
     def reason_code

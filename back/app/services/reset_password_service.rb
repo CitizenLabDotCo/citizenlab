@@ -55,7 +55,7 @@ class ResetPasswordService
   private
 
   def url_for(user, token)
-    Frontend::UrlService.new.reset_password_url(token, locale: user.locale)
+    Frontend::UrlService.new.reset_password_url(token, locale: Locale.new(user.locale))
   end
 
   def secret

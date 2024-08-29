@@ -170,13 +170,7 @@ button,
 html [type='button'] {
   -webkit-appearance: button;
 }
-::-moz-focus-inner {
-  border-style: none;
-  padding: 0;
-}
-:-moz-focusring {
-  outline: ButtonText dotted 1px;
-}
+
 fieldset {
   border: 1px solid silver;
   margin: 0 2px;

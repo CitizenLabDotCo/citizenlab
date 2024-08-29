@@ -1,16 +1,13 @@
-// i18n
-import sharedMessages from '../messages';
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
-
-// form
+import { FormatMessage } from 'typings';
 import { string, object, boolean } from 'yup';
 
-// utils
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-// typings
-import { FormatMessage } from 'typings';
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
+
+import { isValidEmail } from 'utils/validate';
+
+import sharedMessages from '../messages';
 
 export interface FormValues {
   first_name: string;
@@ -32,26 +29,35 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
 
 const isTruthy = (value?: boolean) => !!value;
 
+export const getEmailSchema = (formatMessage: FormatMessage) =>
+  string()
+    .required(formatMessage(sharedMessages.emailMissingError))
+    .email(formatMessage(sharedMessages.emailFormatError))
+    .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+
+export const getPasswordSchema = (
+  minimumPasswordLength: number,
+  formatMessage: FormatMessage
+) =>
+  string()
+    .required(formatMessage(sharedMessages.noPasswordError))
+    .test(
+      '',
+      formatMessage(passwordInputMessages.minimumPasswordLengthError, {
+        minimumPasswordLength,
+      }),
+      (value) => !!(value && value.length >= minimumPasswordLength)
+    );
+
 export const getSchema = (
-  phoneLoginEnabled: boolean,
   minimumPasswordLength: number,
   formatMessage: FormatMessage
 ) => {
-  const emailSchema = phoneLoginEnabled
-    ? string()
-        .required(formatMessage(sharedMessages.emailOrPhoneMissingError))
-        .test(
-          '',
-          formatMessage(sharedMessages.emailOrPhoneNumberError),
-          (value) => {
-            if (value === undefined) return false;
-            return isValidEmail(value) || isValidPhoneNumber(value);
-          }
-        )
-    : string()
-        .required(formatMessage(sharedMessages.emailMissingError))
-        .email(formatMessage(sharedMessages.emailFormatError))
-        .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+  const emailSchema = getEmailSchema(formatMessage);
+  const passwordSchema = getPasswordSchema(
+    minimumPasswordLength,
+    formatMessage
+  );
 
   const schema = object({
     first_name: string().required(
@@ -61,15 +67,7 @@ export const getSchema = (
       formatMessage(sharedMessages.emptyLastNameError)
     ),
     email: emailSchema,
-    password: string()
-      .required(formatMessage(sharedMessages.noPasswordError))
-      .test(
-        '',
-        formatMessage(passwordInputMessages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        }),
-        (value) => !!(value && value.length >= minimumPasswordLength)
-      ),
+    password: passwordSchema,
     termsAndConditionsAccepted: boolean().test(
       '',
       formatMessage(authProvidersMessages.tacError),

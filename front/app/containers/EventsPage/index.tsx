@@ -1,34 +1,40 @@
 import React from 'react';
 
-// components
-import EventsPageMeta from './EventsPageMeta';
-import SectionContainer from 'components/SectionContainer';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+
 import ContentContainer from 'components/ContentContainer';
+
+import { useIntl } from 'utils/cl-intl';
+
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
+import EventsPageMeta from './EventsPageMeta';
+import messages from './messages';
 import PastEvents from './PastEvents';
-import { Box } from '@citizenlab/cl2-component-library';
 
-// styling
-import styled from 'styled-components';
+const EventsPage = () => {
+  const { formatMessage } = useIntl();
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
-const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const EventsPage = () => (
-  <>
-    <EventsPageMeta />
-    <Box as="main">
-      <SectionContainer>
-        <StyledContentContainer id="e2e-events-container">
-          <CurrentAndUpcomingEvents />
-          <PastEvents />
-        </StyledContentContainer>
-      </SectionContainer>
-    </Box>
-  </>
-);
+  return (
+    <>
+      <EventsPageMeta />
+      <main id="e2e-events-container">
+        <Box pb={isTabletOrSmaller ? '80px' : '160px'}>
+          <ContentContainer mode="page">
+            <Title
+              color="tenantPrimary"
+              style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
+              as="h1"
+            >
+              {formatMessage(messages.events)}
+            </Title>
+            <CurrentAndUpcomingEvents />
+            <PastEvents />
+          </ContentContainer>
+        </Box>
+      </main>
+    </>
+  );
+};
 
 export default EventsPage;

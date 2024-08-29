@@ -1,26 +1,26 @@
 import React, { useRef } from 'react';
 
-// hooks
-import useGenderSerie from './useGenderSerie';
+import moment from 'moment';
 
-// components
+import { useDemographicsLive } from 'api/graph_data_units';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+
+import messages from 'containers/Admin/dashboard/messages';
+
 import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
-import Chart from './Chart';
 
-// i18n
-import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
-
-// utils
+import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
+import Chart from './Chart';
+import convertToGraphFormat from './convertToGraphFormat';
 import { QueryParameters } from './typings';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string;
+  customFieldId: string;
 }
 
 const GenderChart = ({
@@ -28,9 +28,21 @@ const GenderChart = ({
   endAt,
   currentGroupFilter,
   currentGroupFilterLabel,
+  customFieldId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const serie = useGenderSerie({ startAt, endAt, currentGroupFilter });
+
+  const { data: usersByGender } = useDemographicsLive({
+    custom_field_id: customFieldId,
+    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
+    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
+    group_id: currentGroupFilter,
+  });
+
+  const serie = convertToGraphFormat(
+    usersByGender?.data.attributes.series,
+    formatMessage
+  );
   const graphRef = useRef();
   const cardTitle = formatMessage(messages.usersByGenderTitle);
 
@@ -40,7 +52,7 @@ const GenderChart = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: { endpoint: usersByGenderXlsxEndpoint },
+        xlsx: { endpoint: usersByCustomFieldXlsxEndpoint(customFieldId) },
         currentGroupFilterLabel,
         currentGroupFilter,
         startAt,

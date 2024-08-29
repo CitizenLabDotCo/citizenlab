@@ -2,19 +2,19 @@
 
 module VotingMethod
   class Budgeting < Base
-    def assign_defaults_for_participation_context
-      participation_context.voting_max_votes_per_idea = nil
+    def assign_defaults_for_phase
+      phase.voting_max_votes_per_idea = nil
     end
 
-    def validate_participation_context
-      assign_defaults_for_participation_context if !participation_context.voting_max_votes_per_idea.nil?
+    def validate_phase
+      assign_defaults_for_phase if !phase.voting_max_votes_per_idea.nil?
 
-      if participation_context.voting_max_total.blank?
-        participation_context.errors.add :voting_max_total, :blank, message: 'voting max total is blank'
+      if phase.voting_max_total.blank?
+        phase.errors.add :voting_max_total, :blank, message: 'voting max total is blank'
       end
 
-      if participation_context.voting_min_total.blank?
-        participation_context.errors.add :voting_min_total, :blank, message: 'voting min total is blank'
+      if phase.voting_min_total.blank?
+        phase.errors.add :voting_min_total, :blank, message: 'voting min total is blank'
       end
     end
 
@@ -25,7 +25,7 @@ module VotingMethod
     end
 
     def budget_in_form?(user)
-      !!user && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+      !!user && UserRoleService.new.can_moderate_project?(phase.project, user)
     end
 
     def assign_baskets_idea(baskets_idea)

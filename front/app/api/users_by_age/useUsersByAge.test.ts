@@ -1,10 +1,11 @@
-import useUsersByAge from './useUsersByAge';
-
 import { renderHook } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IUsersByAge } from './types';
+import useUsersByAge from './useUsersByAge';
 
 const apiPath = `*stats/users_by_age`;
 
@@ -16,7 +17,6 @@ const data: IUsersByAge = {
       unknown_age_count: 10,
       series: {
         user_counts: [20, 30, 40],
-        expected_user_counts: [20, 30, 40],
         reference_population: [10, 20, 30, 40],
         bins: [10, 20, 30, 40],
       },
@@ -25,8 +25,8 @@ const data: IUsersByAge = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -56,8 +56,8 @@ describe('useUsersByAge', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -59,7 +59,7 @@ resource 'Moderations' do
         example_request 'Count only moderations that are flagged' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 1
+          expect(json_response[:data][:attributes][:count]).to eq 1
         end
       end
     end

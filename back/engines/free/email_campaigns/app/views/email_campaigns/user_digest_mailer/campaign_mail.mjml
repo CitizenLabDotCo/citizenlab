@@ -70,13 +70,13 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.likes_count %></span>
             </td>
             <td>
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_down.png" alt="Thumbs down">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.downvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= top_idea.dislikes_count %></span>
             </td>
             <td>
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
@@ -98,7 +98,7 @@
                           escape_html: false
                     ) %>
                     <p style="margin: 15px 0 0;">
-                      <%= localize_for_recipient(top_comment.body_multiloc).first(140) %>
+                      <%= localize_for_recipient_and_truncate(top_comment.body_multiloc, 140) %>
                     </p>
                   </mj-text>
                 </td>
@@ -132,7 +132,7 @@
           <% @diff_days = ((Time.now - Time.parse(new_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= new_initiative.images.first&.versions&.small %>">
               </span>
@@ -156,7 +156,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
@@ -192,7 +192,7 @@
           <% @diff_days = ((Time.now - Time.parse(succesful_initiative.published_at)) / 1.day) %>
 
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= succesful_initiative.images.first&.versions&.small %>">
               </span>
@@ -216,7 +216,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">

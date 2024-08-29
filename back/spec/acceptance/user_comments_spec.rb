@@ -8,7 +8,7 @@ resource 'Comments' do
 
   before do
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
+    @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project)
   end
 
@@ -35,6 +35,7 @@ resource 'Comments' do
       let(:user_id) { @user.id }
       let(:size) { 2 }
 
+      # TODO: move-old-proposals-test
       example_request 'List the comments of a user' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)

@@ -1,5 +1,6 @@
+import { colors as mainColors } from '@citizenlab/cl2-component-library';
+
 import { Margin } from './typings';
-import { colors as mainColors } from 'utils/styleUtils';
 
 // MARGIN
 export const DEFAULT_BAR_CHART_MARGIN: Margin = {
@@ -44,7 +45,7 @@ export const colors = {
   gridHoverColor: mainColors.grey500,
 };
 
-const DEFAULT_CATEGORICAL_COLORS = [
+export const DEFAULT_CATEGORICAL_COLORS = [
   colors.categorical01,
   colors.categorical02,
   colors.categorical03,

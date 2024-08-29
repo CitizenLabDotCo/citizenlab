@@ -1,13 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useMemberships from './useMemberships';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { IParameters } from './types';
+import useMemberships from './useMemberships';
 
 const apiPath = '*groups/:groupId/memberships';
 
@@ -47,8 +45,8 @@ export const membershipsData = [
 ];
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: membershipsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: membershipsData }, { status: 200 });
   })
 );
 
@@ -71,8 +69,8 @@ describe('useMemberships', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

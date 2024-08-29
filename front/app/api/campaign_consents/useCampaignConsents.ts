@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import campaignConsentKeys from './keys';
 import {
   CampaignConsentKeys,
@@ -10,14 +12,11 @@ import {
 
 const fetchCampaignConsents = (consentsRequestData?: IConsentsRequestData) => {
   return fetcher<ICampaignConsents>({
-    path: `/consents${
-      typeof consentsRequestData?.unsubscriptionToken === 'string'
-        ? `?unsubscription_token=${consentsRequestData.unsubscriptionToken}`
-        : ''
-    }`,
+    path: `/consents`,
     action: 'get',
     queryParams: {
       without_campaign_names: consentsRequestData?.withoutCampaignNames,
+      unsubscription_token: consentsRequestData?.unsubscriptionToken,
     },
   });
 };

@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePollOptions from './usePollOptions';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pollOptionsData } from './__mocks__/usePollOptions';
+import usePollOptions from './usePollOptions';
 
 const apiPath = '*poll_questions/:questionId/poll_options';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: pollOptionsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: pollOptionsData }, { status: 200 });
   })
 );
 
@@ -35,8 +34,8 @@ describe('usePollOptions', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

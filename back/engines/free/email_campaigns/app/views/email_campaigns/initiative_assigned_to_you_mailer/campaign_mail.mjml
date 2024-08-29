@@ -8,7 +8,7 @@
       <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
         <%= localize_for_recipient(event.post_title_multiloc) %>
       </h2>
-        <%= format_message('by_author', values: { authorName: event.post_author_name }) %>
+        <%= format_message('by_author', component: 'general', values: { authorName: event.post_author_name }) %>
       </p>
       <p style="margin-top: 10px; color: #84939E;">
         <%= localize_for_recipient(event.post_body_multiloc).html_safe %>

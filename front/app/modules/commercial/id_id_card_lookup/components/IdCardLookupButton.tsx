@@ -1,16 +1,11 @@
 import React from 'react';
 
-// typings
 import {
   IDLookupMethod,
   TVerificationMethod,
 } from 'api/verification_methods/types';
 
-// components
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
-
-// i18n
-import T from 'components/T';
 
 interface Props {
   method: IDLookupMethod;
@@ -29,7 +24,7 @@ const IdCardLookupButton = ({ method, last, onClick }: Props) => {
       onClick={handleOnClick}
       last={last}
     >
-      <T value={method.attributes.method_name_multiloc} />
+      {method.attributes.ui_method_name}
     </VerificationMethodButton>
   );
 };

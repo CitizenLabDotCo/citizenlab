@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Typings
-import { Locale, Multiloc } from 'typings';
-
-// Style
-import styled from 'styled-components';
-
-// Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import {
+  Toggle,
+  IconTooltip,
+  Box,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
+import { SupportedLocale, Multiloc } from 'typings';
 
-// Utils
-import Link from 'utils/cl-router/Link';
-import { fontSizes } from 'utils/styleUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// Components
-import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import { injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Messages
 import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
-  onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+  onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   label: string;
   labelTooltipText: string;
   onMount: () => void;
@@ -63,7 +62,7 @@ const ProjectDescriptionBuilderToggle = ({
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(params.projectId);
 
-  const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
+  const route: RouteType = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,

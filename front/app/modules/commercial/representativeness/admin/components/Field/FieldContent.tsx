@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 
-// hooks
-import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
+import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
-import Options from './Options';
-import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import BinModal from './BinModal';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
+import { Bins } from '../../api/reference_distribution/types';
+import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
 import { isSubmittingAllowed, FormValues } from '../../utils/form';
 
-// typings
-import { Bins } from '../../api/reference_distribution/types';
+import BinModal from './BinModal';
+import Header from './Header';
+import messages from './messages';
+import Options from './Options';
 
 interface Props {
   userCustomFieldId: string;
@@ -117,7 +108,7 @@ const FieldContent = ({
           )}
         </Box>
 
-        <Tippy
+        <Tooltip
           content={<FormattedMessage {...messages.disallowSaveMessage} />}
           disabled={allowSubmit}
           placement="top"
@@ -134,7 +125,7 @@ const FieldContent = ({
               onClick={onSubmit}
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
 
       <BinModal

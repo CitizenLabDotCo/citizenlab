@@ -1,20 +1,15 @@
-import useUserById from './useUserById';
-
 import { renderHook } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { usersData } from './__mocks__/useUsers';
+
+import endpoints, { usersData, apiPath } from './__mocks__/_mockServer';
+import useUserById from './useUserById';
 
 const userId = 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b';
 
-const apiPath = `*users/${userId}`;
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: usersData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET users/:id']);
 
 describe('useUserById', () => {
   beforeAll(() => server.listen());
@@ -35,8 +30,8 @@ describe('useUserById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

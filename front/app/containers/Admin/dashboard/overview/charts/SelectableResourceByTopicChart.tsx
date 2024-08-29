@@ -1,24 +1,22 @@
-// libraries
 import React from 'react';
+
 import { map, orderBy } from 'lodash-es';
+import { IOption } from 'typings';
 
-// components
-import SelectableResourceChart from './SelectableResourceChart';
+import { ICommentsByTopic } from 'api/comments_by_topic/types';
+import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
+import { IIdeasByTopic } from 'api/ideas_by_topic/types';
+import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
+import { IReactionsByTopic } from 'api/reactions_by_topic/types';
+import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
-// typings
+import { IResolution } from 'components/admin/ResolutionControl';
 
 import { IResource } from '..';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { IOption } from 'typings';
-import { IIdeasByTopic } from 'api/ideas_by_topic/types';
-import { IReactionsByTopic } from 'api/reactions_by_topic/types';
-import { ICommentsByTopic } from 'api/comments_by_topic/types';
-import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
-import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
-import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
+
+import SelectableResourceChart from './SelectableResourceChart';
 
 interface QueryProps {
   startAt: string | null | undefined;

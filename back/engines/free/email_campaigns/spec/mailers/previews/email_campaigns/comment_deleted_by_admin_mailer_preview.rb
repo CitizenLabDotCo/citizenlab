@@ -6,6 +6,7 @@ module EmailCampaigns
 
     def campaign_mail
       comment = Comment.first
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
@@ -14,7 +15,7 @@ module EmailCampaigns
           reason_code: 'other',
           other_reason: "I don't tolerate criticism",
           post_type: comment.post_type,
-          post_url: Frontend::UrlService.new.model_to_url(comment.post, locale: recipient_user.locale)
+          post_url: Frontend::UrlService.new.model_to_url(comment.post, locale: Locale.new(recipient_user.locale))
         }
       }
       campaign = EmailCampaigns::Campaigns::CommentDeletedByAdmin.first

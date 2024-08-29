@@ -62,6 +62,29 @@ module Cl2Back
 
     config.action_dispatch.perform_deep_munge = false
     config.session_store :cookie_store, key: '_interslice_session'
+
+    # https://github.com/AzureAD/omniauth-azure-activedirectory/issues/22#issuecomment-1259340380
+    # It's weird that returning nil in `cookies_same_site_protection` works because `lax` is default
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#lax
+    # And this config creates this header: `Set-Cookie: _interslice_session=...; path=/; HttpOnly`
+    # So, lax should be used by default in most browsers. But it works both in Chrome and Firefox.
+    #
+    # If it stops working, we can change `session_store` config to sth like this:
+    # config.session_store :cookie_store, key: '_interslice_session', same_site: :none, secure: true
+    # (same_site also accepts a lambda)
+    config.action_dispatch.cookies_same_site_protection = lambda { |request|
+      # We use `none` SameSite attribute for SSO providers that send response using form post (and don't support redirect).
+      # Omniauth uses session cookie to send a nonce and verify it on the callback.
+      # If SameSite attribute is set to `lax` or `strict`, the session cookie is not sent
+      # with the form post. But it's sent if redirect is used instead of form post (all other SSO providers).
+      # When the cookie is not sent, the nonce verification fails.
+
+      sso_providers_with_form_post = %w[azureactivedirectory nemlog_in azureactivedirectory_b2c]
+      return if sso_providers_with_form_post.any? { request.path.starts_with?("/auth/#{_1}") }
+
+      :lax
+    }
+
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
@@ -70,6 +93,16 @@ module Cl2Back
     # opt-in to the new behavior. In Rails 7.0, the legacy connection handling has been
     # deprecated.
     config.active_record.legacy_connection_handling = false
+
+    # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
+    config.active_record.schema_format = :sql
+    # Extra flags to pass to `pg_dump` when dumping the database schema. With these
+    # flags, the resulting `structure.sql` file will contain commands to drop the
+    # database objects before creating them. This fixes the error:
+    #   ERROR: schema "public" already exists
+    # (The public schema is already created because it is part of the search path
+    # defined in `config/database.yml`.)
+    ActiveRecord::Tasks::DatabaseTasks.structure_dump_flags = %w[--clean --if-exists]
 
     case ENV.fetch('ACTION_MAILER_DELIVERY_METHOD')
     when 'mailgun'

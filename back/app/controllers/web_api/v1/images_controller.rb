@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ImagesController < ApplicationController
+  include CarrierwaveErrorDetailsTransformation
+
   CONSTANTIZER = {
     'Idea' => {
       container_class: Idea,
@@ -8,6 +10,13 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: IdeaImagePolicy::Scope,
       image_relationship: :idea_images,
       container_id: :idea_id
+    },
+    'Event' => {
+      container_class: Event,
+      image_class: EventImage,
+      policy_scope_class: EventImagePolicy::Scope,
+      image_relationship: :event_images,
+      container_id: :event_id
     },
     'Initiative' => {
       container_class: Initiative,
@@ -29,6 +38,13 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: ProjectFolders::ImagePolicy::Scope,
       image_relationship: :images,
       container_id: :project_folder_id
+    },
+    'CustomFieldOption' => {
+      container_class: CustomFieldOption,
+      image_class: CustomFieldOptionImage,
+      policy_scope_class: CustomFieldOptionImagePolicy::Scope,
+      image_relationship: :image,
+      container_id: :custom_field_option_id
     }
   }
 
@@ -48,7 +64,11 @@ class WebApi::V1::ImagesController < ApplicationController
   end
 
   def create
-    @image = @container.send(secure_constantize(:image_relationship)).create(image_params)
+    @image = if @container
+      @container.send(secure_constantize(:image_relationship)).create(image_params)
+    else
+      secure_constantize(:image_class).new(image_params)
+    end
     authorize @image
     if @image.save
       render json: WebApi::V1::ImageSerializer.new(
@@ -59,7 +79,7 @@ class WebApi::V1::ImagesController < ApplicationController
       if @image.errors.details[:image].include?({ error: 'processing_error' })
         ErrorReporter.report_msg(@image.errors.details.to_s)
       end
-      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
+      render json: { errors: transform_carrierwave_error_details(@image.errors, :image) }, status: :unprocessable_entity
     end
   end
 
@@ -70,7 +90,7 @@ class WebApi::V1::ImagesController < ApplicationController
         params: jsonapi_serializer_params
       ).serializable_hash, status: :ok
     else
-      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
+      render json: { errors: transform_carrierwave_error_details(@image.errors, :image) }, status: :unprocessable_entity
     end
   end
 
@@ -99,14 +119,7 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def set_container
     container_id = params[secure_constantize(:container_id)]
-    @container = secure_constantize(:container_class).find(container_id)
-  end
-
-  def transform_errors_details!(error_details)
-    # carrierwave does not return the error code symbols by default
-    error_details = error_details.dup
-    error_details[:image] = error_details[:image]&.uniq { |e| e[:error] }
-    error_details
+    @container = container_id ? secure_constantize(:container_class).find(container_id) : nil
   end
 
   def secure_constantize(key)

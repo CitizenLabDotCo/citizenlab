@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IQueryParameters } from './types';
 
 const baseKey = {
@@ -12,7 +13,13 @@ const projectFolderImagesKeys = {
   list: (parameters: IQueryParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
-  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id }: { id?: string }) => [
+    {
+      type: 'image',
+      operation: 'item',
+      parameters: { id },
+    },
+  ],
 } satisfies QueryKeys;
 
 export default projectFolderImagesKeys;

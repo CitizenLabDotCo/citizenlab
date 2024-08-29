@@ -1,12 +1,15 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
 import { getTheme } from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 
-import ProjectAndFolderCards from '.';
-import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
+import ProjectAndFolderCards from '.';
 
 // Mock external libraries
 let mockSmallerThanMinTablet = false;
@@ -90,7 +93,6 @@ jest.mock('api/app_configuration/useAppConfiguration', () =>
         attributes: {
           settings: {
             core: {
-              currently_working_on_text: { en: 'Working on text' },
               area_term: { en: 'Area' },
               topic_term: { en: 'Topic' },
             },
@@ -335,7 +337,7 @@ describe('<ProjectAndFolderCards />', () => {
     debug();
 
     const filterSelectorButton = container.querySelector(
-      '.e2e-filter-selector-areas > .e2e-filter-selector-button'
+      '.e2e-filter-selector-areas .e2e-filter-selector-button'
     );
 
     // Open filter selector
@@ -439,7 +441,7 @@ describe('<ProjectAndFolderCards />', () => {
     );
 
     const filterSelector = container.querySelector(
-      '.e2e-filter-selector-topics > .e2e-filter-selector-button'
+      '.e2e-filter-selector-topics .e2e-filter-selector-button'
     );
 
     // Open filter selector

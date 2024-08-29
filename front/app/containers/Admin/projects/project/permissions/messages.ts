@@ -9,27 +9,9 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsAnyoneLabelDescription',
     defaultMessage: 'Anyone including unregistered users can participate.',
   },
-  permissionsEmailConfirmLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabel',
-    defaultMessage: 'Users with confirmed email',
-  },
-  permissionsEmailConfirmLabelDescription: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription',
-    defaultMessage:
-      'Anyone can participate after submitting and confirming their email address.',
-  },
-  permissionsAdministrators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdministrators',
-    defaultMessage: 'Administrators',
-  },
-  permissionsAdminsAndCollaborators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
-    defaultMessage: 'Admins and collaborators only',
-  },
-  permissionsAdminsAndCollaboratorsTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
-    defaultMessage:
-      'Only platform admins, folder managers and project managers can take the action',
+  permissionsAdministratorsAndManagers: {
+    id: 'app.containers.admin.project.permissions.permissionsAdministratorsAndManagers',
+    defaultMessage: 'Administrators and the managers of this project',
   },
   permissionsSelectionLabel: {
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
@@ -56,9 +38,5 @@ export default defineMessages({
   projectVisibilitySubtitle: {
     id: 'app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle',
     defaultMessage: 'You can set the project to be invisible to certain users.',
-  },
-  betaLabel: {
-    id: 'app.containers.AdminPage.permissions.betaLabel',
-    defaultMessage: 'Beta',
   },
 });

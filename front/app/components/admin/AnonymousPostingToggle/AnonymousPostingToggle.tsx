@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Toggle,
   Text,
@@ -6,11 +8,14 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import React from 'react';
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface AnonymousPostingToggleProps {
   allow_anonymous_participation: boolean | null | undefined;

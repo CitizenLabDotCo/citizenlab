@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import ideaCustomFieldsKeys from './keys';
 import { IRelationship, Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideaCustomFieldsKeys from './keys';
 
 export type IdeaCustomFieldsKeys = Keys<typeof ideaCustomFieldsKeys>;
 
@@ -13,7 +15,11 @@ export type IIdeaCustomFieldInputType =
   | 'checkbox'
   | 'date'
   | 'linear_scale'
-  | 'file_upload';
+  | 'file_upload'
+  | 'shapefile_upload'
+  | 'point'
+  | 'line'
+  | 'polygon';
 
 export type TCustomFieldCode =
   | 'gender'

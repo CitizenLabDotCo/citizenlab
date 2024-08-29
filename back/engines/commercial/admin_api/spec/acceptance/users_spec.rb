@@ -9,7 +9,7 @@ resource 'User', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
-  let!(:user) { create(:user, email: 'moderator@citizenlab.co') }
+  let!(:user) { create(:user, email: 'moderator@govocal.com') }
 
   get 'admin_api/users' do
     with_options scope: :page do
@@ -39,12 +39,12 @@ resource 'User', admin_api: true do
   get 'admin_api/users/by_email' do
     parameter :email, 'The email of the user'
 
-    let(:email) { 'moderator@citizenlab.co' }
+    let(:email) { 'moderator@govocal.com' }
 
     example_request 'Get one user by email' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response[:email]).to eq 'moderator@citizenlab.co'
+      expect(json_response[:email]).to eq 'moderator@govocal.com'
     end
   end
 
@@ -88,7 +88,7 @@ resource 'User', admin_api: true do
 
     let(:first_name) { 'Jaak' }
     let(:last_name) { 'Brijl' }
-    let(:email) { 'admin@citizenlab.co' }
+    let(:email) { 'admin@govocal.com' }
     let(:password) { 'nmQuiteP4s' }
     let(:roles) { [{ type: 'admin' }] }
 
@@ -133,6 +133,8 @@ resource 'User', admin_api: true do
       parameter :remote_avatar_url, 'The user avatar'
       parameter :custom_field_values, 'All custom field values, if given overwrites the existing values'
     end
+    parameter :confirm_email, 'Should the email already be verified?', required: false, default: false
+
     ValidationErrorHelper.new.error_fields(self, User)
 
     let(:id) { user.id }
@@ -147,6 +149,27 @@ resource 'User', admin_api: true do
         json_response = json_parse(response_body)
         expect(json_response[:first_name]).to eq 'Jacqueline'
         expect(json_response[:custom_field_values]).to eq({ favourite_drink: 'wine' })
+      end
+    end
+
+    describe do
+      before do
+        SettingsService.new.activate_feature!('user_confirmation')
+      end
+
+      let(:confirm_email) { true }
+      let(:password) { 'new-password' }
+      let(:roles) { [{ type: 'admin' }] }
+
+      example 'Update a user and confirm email' do
+        expect { do_request }.to change { user.reload.password_digest }
+
+        expect(status).to be 200
+
+        user.reload
+        expect(user.email_confirmed_at).to be_present
+        expect(user.confirmation_required?).to be false
+        expect(user.roles).to eq [{ 'type' => 'admin' }]
       end
     end
   end

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateAppConfiguration from './useUpdateAppConfiguration';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUpdateAppConfiguration from './useUpdateAppConfiguration';
 
 const appConfigurationData = {
   data: {
@@ -17,8 +16,8 @@ const appConfigurationData = {
 
 const apiPath = '*app_configuration';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: appConfigurationData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: appConfigurationData }, { status: 200 });
   })
 );
 
@@ -47,8 +46,8 @@ describe('useUpdateAppConfiguration', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

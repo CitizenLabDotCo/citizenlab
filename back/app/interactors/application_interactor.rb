@@ -12,7 +12,7 @@ class ApplicationInteractor
     if resource_or_errors.is_a? ActiveModel::Errors
       @errors.merge!(resource_or_errors)
     else
-      @errors.add(resource_or_errors, error_key, options)
+      @errors.add(resource_or_errors, error_key, **options)
     end
     fail! errors: @errors
   end

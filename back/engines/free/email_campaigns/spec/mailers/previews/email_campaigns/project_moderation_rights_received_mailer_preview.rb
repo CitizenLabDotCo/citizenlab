@@ -12,7 +12,7 @@ module EmailCampaigns
           project_id: project.id,
           project_title_multiloc: project.title_multiloc,
           project_ideas_count: project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale)
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient_user.locale))
         }
       }
       campaign = EmailCampaigns::Campaigns::ProjectModerationRightsReceived.first

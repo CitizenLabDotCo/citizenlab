@@ -1,22 +1,21 @@
-import React, { memo } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-// styles
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import React, { memo, MouseEvent } from 'react';
+
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { darken, lighten } from 'polished';
+import styled from 'styled-components';
 
-// types
 import { ITopicData } from 'api/topics/types';
-
-// intl
-import T from 'components/T';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// hooks
 import useTopics from 'api/topics/useTopics';
+
+import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const TopicsContainer = styled.div`
   display: flex;
@@ -44,7 +43,7 @@ const TopicSwitch = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.divider};
+  border: solid 1px ${colors.borderDark};
   border-radius: 5px;
   transition: all 80ms ease-out;
 
@@ -74,40 +73,30 @@ const TopicSwitch = styled.button`
   }
 `;
 
-export interface InputProps {
-  onChange: (tocisIds: string[]) => void;
-  onBlur?: () => void;
+export interface Props {
+  onClick: (tocisIds: string[]) => void;
   selectedTopicIds: string[];
   id?: string;
   className?: string;
-  setRef?: (element: HTMLButtonElement) => void;
   availableTopics: ITopicData[] | { const: string; title: string }[];
 }
 
-interface Props extends InputProps {}
-
 const TopicsPicker = memo(
-  ({
-    onChange,
-    onBlur,
-    selectedTopicIds,
-    localize,
-    availableTopics,
-    className,
-    setRef,
-  }: Props & InjectedLocalized) => {
+  ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
     const { data: topics } = useTopics();
+    const localize = useLocalize();
 
     const filteredTopics = topics?.data.filter((topic) =>
       selectedTopicIds.includes(topic.id)
     );
-    const handleOnChange = (topicId: string) => (event) => {
+
+    const handleOnChange = (topicId: string) => (event: MouseEvent) => {
       event.stopPropagation();
       event.preventDefault();
       const newTopics = [...selectedTopicIds];
 
       if (!selectedTopicIds) {
-        onChange([topicId]);
+        onClick([topicId]);
       } else {
         const i = newTopics.lastIndexOf(topicId);
         const topicNotSelectedYet = i === -1;
@@ -118,7 +107,7 @@ const TopicsPicker = memo(
           newTopics.splice(i, 1);
         }
 
-        onChange(newTopics);
+        onClick(newTopics);
       }
     };
 
@@ -133,11 +122,8 @@ const TopicsPicker = memo(
         : '';
       return (
         <>
-          <TopicsContainer
-            onBlur={onBlur}
-            className={`${className} e2e-topics-picker`}
-          >
-            {availableTopics.map((topic, index) => {
+          <TopicsContainer className={`${className} e2e-topics-picker`}>
+            {availableTopics.map((topic) => {
               const topicId = topic.id || topic.const;
               const topicTitle = topic?.attributes?.title_multiloc ? (
                 <T value={topic.attributes.title_multiloc} />
@@ -157,7 +143,6 @@ const TopicsPicker = memo(
                     .filter((item) => item)
                     .join(' ')}
                   onMouseDown={removeFocusAfterMouseClick}
-                  ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >
                   {topicTitle}
@@ -179,4 +164,4 @@ const TopicsPicker = memo(
   }
 );
 
-export default injectLocalize(TopicsPicker);
+export default TopicsPicker;

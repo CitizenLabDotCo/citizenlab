@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+
 import { appConfigurationData } from './useAppConfiguration';
 
 const currentAppConfigurationStream = new BehaviorSubject({

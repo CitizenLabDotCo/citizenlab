@@ -1,10 +1,15 @@
-import { getStepConfig } from './useSteps/stepConfig';
 import {
   AuthenticationRequirements,
   AuthenticationContext,
 } from 'api/authentication/authentication_requirements/types';
-import { SSOProvider } from 'services/singleSignOn';
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
 import { SuccessAction } from './SuccessActions/actions';
+import { getStepConfig } from './useSteps/stepConfig';
+
+export interface ModalProps {
+  setModalOpen?: (bool: boolean) => void;
+}
 
 export type ErrorCode =
   | 'account_creation_failed'
@@ -14,9 +19,12 @@ export type ErrorCode =
   | 'invitation_error'
   | 'unknown'
   | 'franceconnect_merging_failed'
-  | 'email_taken_and_user_can_be_verified';
+  | 'email_taken_and_user_can_be_verified'
+  | 'not_entitled_under_minimum_age'
+  | 'resending_code_failed';
 
 export interface State {
+  flow: 'signup' | 'signin';
   email: string | null;
   token: string | null;
   prefilledBuiltInFields: {
@@ -24,6 +32,7 @@ export interface State {
     last_name?: string;
     email?: string;
   } | null;
+  ssoProvider: SSOProvider | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;
@@ -37,9 +46,9 @@ export type SetError = (errorCode: ErrorCode) => void;
 
 export type SignUpInFlow = 'signup' | 'signin';
 export type SignUpInError = 'general' | 'franceconnect_merging_failed';
+export type VerificationError = 'not_entitled_under_minimum_age';
 
 export interface AuthenticationData {
-  flow: SignUpInFlow;
   context: AuthenticationContext;
   successAction?: SuccessAction;
 }

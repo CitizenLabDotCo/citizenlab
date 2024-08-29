@@ -24,7 +24,7 @@ namespace :complex_migrations do
   task :migrate_topic_codes, [:url] => [:environment] do |_t, args|
     errors = []
     puts 'Processing topic mapping'
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     is_mapping = {}
     conditions = ['is', 'synonym of']
     data.each do |d|
@@ -44,8 +44,10 @@ namespace :complex_migrations do
       errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] unless code
       sub_mapping[d['tenant_id']][d['id']] = { 'code' => code, 'merge' => (d['Merge'] == 'TRUE') }
     end
-    base_topics = YAML.load(open(Rails.root.join('config/tenant_templates/base.yml')).read).dig('models',
-      'topic')
+
+    base_topics = MultiTenancy::Templates::Utils
+      .parse_yml_file(Rails.root.join('config/tenant_templates/base.yml'))
+      .dig('models', 'topic')
 
     if errors.present?
       puts 'Errors occured:'

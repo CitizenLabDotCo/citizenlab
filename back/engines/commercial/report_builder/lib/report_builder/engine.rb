@@ -16,8 +16,11 @@ module ReportBuilder
     end
 
     config.to_prepare do
-      require 'report_builder/feature_specification'
-      AppConfiguration::Settings.add_feature(ReportBuilder::FeatureSpecification)
+      require 'report_builder/feature_specifications/report_builder'
+      AppConfiguration::Settings.add_feature(ReportBuilder::FeatureSpecifications::ReportBuilder)
+
+      require 'report_builder/feature_specifications/report_data_grouping'
+      AppConfiguration::Settings.add_feature(ReportBuilder::FeatureSpecifications::ReportDataGrouping)
     end
   end
 end

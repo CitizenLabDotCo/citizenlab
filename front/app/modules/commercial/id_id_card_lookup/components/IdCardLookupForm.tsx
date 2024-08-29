@@ -1,12 +1,15 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isEmpty, get } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Collapse from 'components/UI/Collapse';
+import { useQueryClient } from '@tanstack/react-query';
+import { isEmpty, get } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import usersKeys from 'api/users/keys';
+import { IDLookupMethod } from 'api/verification_methods/types';
+
 import {
   FormContainer,
   Form,
@@ -19,23 +22,15 @@ import {
   HelpImage,
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
+import Collapse from 'components/UI/Collapse';
+import Error from 'components/UI/Error';
 
-// services
-import { verifyIDLookup } from '../api/verification_methods/verify';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import T from 'components/T';
+import { isNilOrError } from 'utils/helperUtils';
+import { reportError } from 'utils/loggingUtils';
 
-// typings
-import { IDLookupMethod } from 'api/verification_methods/types';
-import meKeys from 'api/me/keys';
-import usersKeys from 'api/users/keys';
-import { useQueryClient } from '@tanstack/react-query';
+import { verifyIDLookup } from '../api/verification_methods/verify';
+import messages from '../messages';
 
 interface Props {
   onCancel: () => void;
@@ -120,12 +115,10 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           <FormField>
             <StyledLabel htmlFor="cardId">
               <LabelTextContainer>
-                <T value={method.attributes.card_id_multiloc} />
+                {method.attributes.card_id}
                 <IconTooltip
                   maxTooltipWidth={200}
-                  content={
-                    <T value={method.attributes.card_id_tooltip_multiloc} />
-                  }
+                  content={method.attributes.card_id_tooltip}
                 />
               </LabelTextContainer>
               <Input
@@ -157,7 +150,7 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
             >
               <FormattedMessage {...messages.cancel} />
             </CancelButton>

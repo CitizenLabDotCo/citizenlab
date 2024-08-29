@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import projectDescriptionBuilderKeys from './keys';
+
 import projectsKeys from 'api/projects/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import projectDescriptionBuilderKeys from './keys';
 import {
   IProjectDescriptionBuilderLayout,
   IAddProjectDescriptionBuilderLayout,
@@ -10,13 +13,13 @@ import {
 
 const addProjectDescriptionBuilderLayout = async ({
   projectId,
-  craftjs_jsonmultiloc,
+  craftjs_json,
   enabled,
 }: IAddProjectDescriptionBuilderLayout) =>
   fetcher<IProjectDescriptionBuilderLayout>({
     path: `/projects/${projectId}/content_builder_layouts/project_description/upsert`,
     action: 'post',
-    body: { content_builder_layout: { craftjs_jsonmultiloc, enabled } },
+    body: { content_builder_layout: { craftjs_json, enabled } },
   });
 
 const useAddProjectDescriptionBuilderLayout = () => {

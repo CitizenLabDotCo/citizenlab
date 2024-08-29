@@ -61,14 +61,33 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_point(_field)
-    nil
+  def visit_point(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
+  end
+
+  def visit_line(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
+  end
+
+  def visit_polygon(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
   end
 
   def visit_linear_scale(field)
     default(field).tap do |ui_field|
-      ui_field[:options][:minimum_label] = multiloc_service.t(field.minimum_label_multiloc)
-      ui_field[:options][:maximum_label] = multiloc_service.t(field.maximum_label_multiloc)
+      ui_field[:options][:linear_scale_label1] = multiloc_service.t(field.linear_scale_label_1_multiloc)
+      ui_field[:options][:linear_scale_label2] = multiloc_service.t(field.linear_scale_label_2_multiloc)
+      ui_field[:options][:linear_scale_label3] = multiloc_service.t(field.linear_scale_label_3_multiloc)
+      ui_field[:options][:linear_scale_label4] = multiloc_service.t(field.linear_scale_label_4_multiloc)
+      ui_field[:options][:linear_scale_label5] = multiloc_service.t(field.linear_scale_label_5_multiloc)
+      ui_field[:options][:linear_scale_label6] = multiloc_service.t(field.linear_scale_label_6_multiloc)
+      ui_field[:options][:linear_scale_label7] = multiloc_service.t(field.linear_scale_label_7_multiloc)
     end
   end
 
@@ -97,9 +116,9 @@ class UiSchemaGeneratorService < FieldVisitorService
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type
-        field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+        field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         if field.input_type == 'select'
-          options[:enumNames] = field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+          options[:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         end
       end
     end
@@ -109,7 +128,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     @descriptions ||= {}
     locale = I18n.locale.to_s
     @descriptions[locale] ||= {}
-    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
+    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
   end
 
   private

@@ -1,7 +1,11 @@
+import lv from 'date-fns/locale/lv';
+import { registerLocale } from 'react-datepicker';
+
 import { formatTranslationMessages } from './';
 
-const lvLVTranslationMessages = require('translations/lv-LV.json');
+registerLocale('lv-LV', lv);
 const lvLVAdminTranslationMessages = require('translations/admin/lv-LV.json');
+const lvLVTranslationMessages = require('translations/lv-LV.json');
 const translationMessages = formatTranslationMessages('lv-LV', {
   ...lvLVTranslationMessages,
   ...lvLVAdminTranslationMessages,

@@ -14,7 +14,7 @@ module Carrierwave
 
         bytes = ::Base64.decode64 encoded_bytes
 
-        super bytes
+        super(bytes)
       end
 
       def original_filename

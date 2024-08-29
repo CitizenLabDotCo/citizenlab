@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::EventsController < ApplicationController
+  include ActionController::MimeResponds
+
   before_action :set_event, only: %i[show update destroy]
   skip_before_action :authenticate_user
 
@@ -11,8 +13,14 @@ class WebApi::V1::EventsController < ApplicationController
     skip_policy_scope
 
     events = EventsFinder
-      .new(finder_params, scope: scope, current_user: current_user)
-      .find_records
+      .new(
+        finder_params,
+        scope: scope,
+        current_user: current_user,
+        includes: [
+          :event_images
+        ]
+      ).find_records
 
     events = paginate SortByParamsService.new.sort_events(events, params)
 
@@ -26,23 +34,50 @@ class WebApi::V1::EventsController < ApplicationController
     )
   end
 
+  # GET events/:event_id/attendees_xlsx
+  def attendees_xlsx
+    event = Event.find(params[:id])
+    authorize(event)
+
+    attendees = User.where(id: event.attendances.pluck(:attendee_id))
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees, view_private_attributes: true
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
+    end
+
+    sidefx.after_attendees_xlsx(event, current_user)
+  end
+
   def show
-    render json: WebApi::V1::EventSerializer
-      .new(@event, params: jsonapi_serializer_params)
-      .serializable_hash
+    respond_to do |format|
+      format.json do
+        render json: WebApi::V1::EventSerializer
+          .new(
+            @event,
+            params: jsonapi_serializer_params,
+            include: %i[event_images]
+          ).serializable_hash
+      end
+
+      format.ics do
+        preferred_locale = current_user&.locale
+        render plain: Events::IcsGenerator.new.generate_ics(@event, preferred_locale)
+      end
+    end
   end
 
   def create
     event = Event.new(event_params)
     event.project_id = params[:project_id]
 
-    SideFxEventService.new.before_create(event, current_user)
+    sidefx.before_create(event, current_user)
 
     authorize(event)
 
     if event.save
-      SideFxEventService.new.after_create(event, current_user)
-      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params).serializable_hash, status: :created
+      sidefx.after_create(event, current_user)
+      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
     else
       render json: { errors: event.errors.details }, status: :unprocessable_entity
     end
@@ -51,10 +86,10 @@ class WebApi::V1::EventsController < ApplicationController
   def update
     @event.assign_attributes event_params
     authorize @event
-    SideFxEventService.new.before_update(@event, current_user)
+    sidefx.before_update(@event, current_user)
     if @event.save
-      SideFxEventService.new.after_update(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :ok
+      sidefx.after_update(@event, current_user)
+      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end
@@ -63,7 +98,7 @@ class WebApi::V1::EventsController < ApplicationController
   def destroy
     event = @event.destroy
     if event.destroyed?
-      SideFxEventService.new.after_destroy(@event, current_user)
+      sidefx.after_destroy(@event, current_user)
       head :ok
     else
       head :internal_server_error
@@ -97,11 +132,14 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
+      :online_link,
       :address_1,
+      :using_url,
       address_2_multiloc: CL2_SUPPORTED_LOCALES,
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
+      attend_button_multiloc: CL2_SUPPORTED_LOCALES,
       location_point_geojson: [:type, { coordinates: [] }]
     ).tap do |p|
       # Allow removing the location point.
@@ -143,15 +181,14 @@ class WebApi::V1::EventsController < ApplicationController
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
-    config_timezone.parse(date_str)
-  end
-
-  def config_timezone
-    timezone_str = AppConfiguration.instance.settings('core', 'timezone')
-    ActiveSupport::TimeZone[timezone_str] || (raise KeyError, timezone_str)
+    AppConfiguration.timezone.parse(date_str)
   end
 
   def default_locale
     AppConfiguration.instance.settings('core', 'locales').first
+  end
+
+  def sidefx
+    @sidefx ||= SideFxEventService.new
   end
 end

@@ -1,23 +1,17 @@
 import React from 'react';
-import { TwitterShareButton } from 'react-share';
-import { Medium } from '../utils';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-
-// style
-import { colors } from 'utils/styleUtils';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import { TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 import tracks from '../tracks';
+import { Medium } from '../utils';
 
 interface Props {
   url: string;

@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from 'react';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 const StyledInput = styled.input`
   background-color: rgba(0, 0, 0, 0);

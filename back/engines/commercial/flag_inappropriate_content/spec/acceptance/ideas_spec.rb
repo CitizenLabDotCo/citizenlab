@@ -12,10 +12,10 @@ resource 'Ideas' do
 
   post 'web_api/v1/ideas' do
     before do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @project = create(:continuous_project)
+      @project = create(:single_phase_ideation_project)
     end
 
     with_options scope: :idea do

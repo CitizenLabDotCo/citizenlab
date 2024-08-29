@@ -1,0 +1,11 @@
+# Translations for continuous to timeline migration
+nl-NL:
+  phase_title_default:
+    ideation: Collect input - NL
+    voting: Voting - NL
+    poll: Poll - NL
+    native_survey: Survey - NL
+    survey: Survey - NL
+    document_annotation: Document feedback - NL
+    volunteering: Find volunteers - NL
+    information: Information - NL

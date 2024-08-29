@@ -1,7 +1,10 @@
 import React from 'react';
+
+import { media } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
+
 import Button from 'components/UI/Button';
-import { media } from 'utils/styleUtils';
 
 const StyledButton = styled(Button)`
   ${media.tablet`
@@ -17,7 +20,7 @@ const StyledButton = styled(Button)`
 
 interface Props {
   onClick?: () => void;
-  linkTo?: string;
+  linkTo?: RouteType;
   className?: string;
   text: string;
 }

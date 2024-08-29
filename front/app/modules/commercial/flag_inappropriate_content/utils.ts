@@ -1,4 +1,4 @@
-import { IInappropriateContentFlagData } from './services/inappropriateContentFlags';
+import { IInappropriateContentFlagData } from 'api/inappropriate_content_flags/types';
 
 export function getFlagType(flag: IInappropriateContentFlagData) {
   // A flag could be both user and NLP flagged at the same time

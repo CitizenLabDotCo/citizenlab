@@ -20,6 +20,8 @@
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 
+  slug from: proc { |group| group.title_multiloc.values.find(&:present?) }
+
   has_many :groups_projects, dependent: :destroy
   has_many :projects, through: :groups_projects
   has_many :memberships, dependent: :destroy
@@ -30,15 +32,14 @@ class Group < ApplicationRecord
   has_many :permissions, through: :groups_permissions
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :slug, uniqueness: true, presence: true
   validates :membership_type, presence: true, inclusion: { in: proc { membership_types } }
 
-  before_validation :generate_slug, on: :create
   before_validation :set_membership_type, on: :create
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
   scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.
+  scope :by_custom_field, ->(custom_field_id) { where('rules::text ~ ?', custom_field_id) }
 
   def self._with_user(groups, user)
     groups.left_outer_joins(:users).where(users: { id: user.id })
@@ -83,10 +84,6 @@ class Group < ApplicationRecord
   end
 
   private
-
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
-  end
 
   def set_membership_type
     self.membership_type ||= 'manual'

@@ -1,3 +1,7 @@
 import React from 'react';
 
-export const PreviousPathnameContext = React.createContext<string | null>(null);
+import { RouteType } from 'routes';
+
+export const PreviousPathnameContext = React.createContext<RouteType | null>(
+  null
+);

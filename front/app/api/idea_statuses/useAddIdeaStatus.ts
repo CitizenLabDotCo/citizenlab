@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import ideaStatusKeys from './keys';
 import { IIdeaStatus, IIdeaStatusAdd } from './types';
 
@@ -8,7 +10,7 @@ const addIdeaStatus = async (requestBody: IIdeaStatusAdd) =>
   fetcher<IIdeaStatus>({
     path: '/idea_statuses',
     action: 'post',
-    body: requestBody,
+    body: { idea_status: requestBody },
   });
 
 const useAddIdeaStatus = () => {

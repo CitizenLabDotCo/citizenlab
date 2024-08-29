@@ -56,14 +56,6 @@ export default defineMessages({
     defaultMessage:
       'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
-  continuous: {
-    id: 'app.containers.AdminPage.ProjectEdit.continuous',
-    defaultMessage: 'Continuous',
-  },
-  timeline: {
-    id: 'app.containers.AdminPage.ProjectEdit.timeline',
-    defaultMessage: 'Timeline',
-  },
   areasLabelHint: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelHint',
     defaultMessage: 'Area filter',

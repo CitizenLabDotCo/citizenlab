@@ -17,6 +17,7 @@ class WebApi::V1::MentionsController < ApplicationController
 
     nb_missing_users = limit - @users.size
     @users += find_users_by_query(query, post).limit(nb_missing_users) if nb_missing_users.positive?
+    @users = @users.excluding(current_user)
 
     render json: WebApi::V1::UserSerializer.new(
       @users,

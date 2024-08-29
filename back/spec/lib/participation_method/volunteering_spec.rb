@@ -3,31 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Volunteering do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new phase }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project) }
+  let(:phase) { create(:volunteering_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
-
-    it 'does not change the posting_method' do
-      expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :posting_method)
-    end
-
-    it 'does not change the ideas_order' do
-      expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :ideas_order)
+  describe '#method_str' do
+    it 'returns volunteering' do
+      expect(described_class.method_str).to eq 'volunteering'
     end
   end
 
-  describe '#assign_slug' do
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:volunteering_phase) }
+
+    it 'does not change the ideas_order' do
+      expect do
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
+    end
+  end
+
+  describe '#generate_slug' do
     it 'does not change the input' do
-      participation_method.assign_slug input
-      expect(input).not_to be_changed
+      expect(participation_method.generate_slug(input)).to be_nil
     end
   end
 
@@ -40,14 +39,8 @@ RSpec.describe ParticipationMethod::Volunteering do
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq []
-    end
-  end
-
-  describe '#validate_built_in_fields?' do
-    it 'returns false' do
-      expect(participation_method.validate_built_in_fields?).to be false
     end
   end
 
@@ -71,83 +64,46 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  describe '#never_show?' do
-    it 'returns false' do
-      expect(participation_method.never_show?).to be false
-    end
-  end
-
-  describe '#posting_allowed?' do
-    it 'returns false' do
-      expect(participation_method.posting_allowed?).to be false
-    end
-  end
-
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
-    end
-  end
-
-  describe '#creation_phase?' do
-    it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
-    end
-  end
-
   describe '#custom_form' do
-    let(:project) { context.project }
-    let(:project_form) { create(:custom_form, participation_context: context.project) }
-    let(:context) { create(:volunteering_phase) }
+    let(:project) { phase.project }
+    let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
-      expect(participation_method.custom_form.participation_context_id).to eq project.id
+      expect(participation_method.custom_form.participation_context_id).to eq phase.id
     end
   end
 
-  describe '#edit_custom_form_allowed?' do
-    it 'returns true' do
-      expect(participation_method.edit_custom_form_allowed?).to be true
+  describe '#supports_serializing?' do
+    it 'returns false for all attributes' do
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+        native_survey_title_multiloc native_survey_button_multiloc
+      ].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be false
+      end
     end
   end
 
-  describe '#delete_inputs_on_pc_deletion?' do
-    it 'returns false' do
-      expect(participation_method.delete_inputs_on_pc_deletion?).to be false
-    end
-  end
-
-  describe '#sign_in_required_for_posting?' do
-    it 'returns false' do
-      expect(participation_method.sign_in_required_for_posting?).to be false
-    end
-  end
-
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
-  describe '#supports_toxicity_detection?' do
-    it 'returns true' do
-      expect(participation_method.supports_toxicity_detection?).to be true
-    end
-  end
-
-  describe '#include_data_in_email?' do
-    it 'returns true' do
-      expect(participation_method.include_data_in_email?).to be true
-    end
-  end
-
+  its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
-  its(:supports_exports?) { is_expected.to be false }
-  its(:supports_publication?) { is_expected.to be false }
+  its(:proposed_budget_in_form?) { is_expected.to be false }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_built_in_fields?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
+  its(:supports_exports?) { is_expected.to be false }
+  its(:supports_input_term?) { is_expected.to be false }
+  its(:supports_inputs_without_author?) { is_expected.to be true }
+  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
-  its(:supports_assignment?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
-  its(:additional_export_columns) { is_expected.to eq [] }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:use_reactions_as_votes?) { is_expected.to be false }
+  its(:transitive?) { is_expected.to be false }
 end

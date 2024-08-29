@@ -1,18 +1,17 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPageFile from './useAddPageFile';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pageFilesData } from './__mocks__/usePageFiles';
+import useAddPageFile from './useAddPageFile';
 
 const apiPath = '*static_pages/:pageId/files';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: pageFilesData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: pageFilesData[0] }, { status: 200 });
   })
 );
 
@@ -41,8 +40,8 @@ describe('useAddPageFile', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

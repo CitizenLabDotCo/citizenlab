@@ -10,7 +10,7 @@ module MultiTenancy
           User.all.shuffle.take(rand(1..20)).each do |some_user|
             basket = Basket.create!({
               user: rand(5) == 0 ? nil : some_user, # Ensure baskets work fine without users
-              participation_context: phase,
+              phase: phase,
               submitted_at: phase.end_at - rand(1..3).days
             })
             chosen_ideas = phase.project.ideas.select(&:budget).shuffle.take(rand(10))

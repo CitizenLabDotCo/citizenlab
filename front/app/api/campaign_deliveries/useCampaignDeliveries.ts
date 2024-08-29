@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import campaignDeliveriesKeys from './keys';
 import {
   ICampaignDeliveries,
@@ -22,15 +24,15 @@ const fetchCampaignDeliveries = ({
     },
   });
 
-const useCampaignDeliveries = ({ campaignId }: IParameters) => {
+const useCampaignDeliveries = (params: IParameters) => {
   return useQuery<
     ICampaignDeliveries,
     CLErrors,
     ICampaignDeliveries,
     CampaignDeliveriesKeys
   >({
-    queryKey: campaignDeliveriesKeys.list({ campaignId }),
-    queryFn: () => fetchCampaignDeliveries({ campaignId }),
+    queryKey: campaignDeliveriesKeys.list(params),
+    queryFn: () => fetchCampaignDeliveries(params),
   });
 };
 

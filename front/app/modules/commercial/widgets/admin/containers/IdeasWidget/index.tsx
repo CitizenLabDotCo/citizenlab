@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import { omitBy, isNil, isEmpty, isString, debounce } from 'lodash-es';
 import { stringify } from 'qs';
-
-import Form, { FormValues } from './Form';
 import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import styled from 'styled-components';
 import { string, object, number, boolean, array } from 'yup';
 
-import WidgetPreview from '../WidgetPreview';
-import Modal from 'components/UI/Modal';
-import WidgetCode from '../WidgetCode';
 import Button from 'components/UI/Button';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+import WidgetCode from '../WidgetCode';
+import WidgetPreview from '../WidgetPreview';
+
+import Form, { FormValues } from './Form';
 import tracks from './tracks';
 
 const Container = styled.div`
@@ -137,7 +138,11 @@ const IdeasWidget = () => {
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
-        <Button onClick={handleShowCodeClick} buttonStyle="cl-blue" icon="code">
+        <Button
+          onClick={handleShowCodeClick}
+          buttonStyle="admin-dark"
+          icon="code"
+        >
           <FormattedMessage {...messages.exportHtmlCodeButton} />
         </Button>
       </WidgetPreviewWrapper>

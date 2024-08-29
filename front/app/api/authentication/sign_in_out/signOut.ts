@@ -1,13 +1,15 @@
-import { AUTH_PATH } from 'containers/App/constants';
+import { RouteType } from 'routes';
+
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
-import { endsWith } from 'utils/helperUtils';
-import streams from 'utils/streams';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import {
   invalidateQueryCache,
   resetMeQuery,
 } from 'utils/cl-react-query/resetQueryCache';
+import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { endsWith } from 'utils/helperUtils';
+
+import logoutUrl from './logoutUrl';
 
 export default async function signOut() {
   const jwt = getJwt();
@@ -18,13 +20,11 @@ export default async function signOut() {
     removeJwt();
 
     if (decodedJwt.logout_supported) {
-      const { provider, sub } = decodedJwt;
-      const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
+      const url = await logoutUrl(decodedJwt);
       window.location.href = url;
     } else {
       await resetMeQuery();
       invalidateQueryCache();
-      await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -34,8 +34,12 @@ export default async function signOut() {
         clHistory.push('/');
       }
 
+      /*
+        TODO: Could probably be removed now that we have the Unauthorized component
+        that renders if the user is not authenticated
+      */
       if (pathname && endsWith(pathname, '/ideas/new')) {
-        clHistory.push(pathname.split('/ideas/new')[0]);
+        clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
       }
     }
   }

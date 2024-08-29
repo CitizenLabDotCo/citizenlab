@@ -10,7 +10,7 @@ resource 'IdeaImage' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     header_token_for @user
-    @project = create(:continuous_project)
+    @project = create(:single_phase_ideation_project)
     @idea = create(:idea, author: @user, project: @project)
     create_list(:idea_image, 2, idea: @idea)
   end

@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.twitterMessage',
     defaultMessage: 'Vote for {postTitle} on',
   },
-  facebookMessage: {
-    id: 'app.components.PostComponents.SharingModalContent.facebookMessage',
-    defaultMessage: 'Vote for {postTitle} on',
-  },
   ideaEmailSharingSubjectText: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText',
     defaultMessage: 'Support my idea: {postTitle}',

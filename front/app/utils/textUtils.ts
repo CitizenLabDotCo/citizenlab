@@ -1,8 +1,7 @@
-import { IUserData } from 'api/users/types';
 import { Multiloc } from 'typings';
 
 export function truncate(str: string, length?: number) {
-  if (length && str.length > length) {
+  if (typeof length === 'number' && str.length > length) {
     return `${str.substring(0, length - 3)}...`;
   }
   return str;
@@ -35,6 +34,40 @@ export function validateSlug(slug: string) {
   return slugRegEx.test(slug);
 }
 
-export function getFullName(user: IUserData) {
+interface IFullNameableUser {
+  attributes: {
+    first_name?: string | null;
+    last_name?: string | null;
+    [x: string]: any;
+    [x: number]: any;
+  };
+  [x: string]: any;
+  [x: number]: any;
+}
+
+export function getFullName(user: IFullNameableUser) {
   return `${user.attributes.first_name} ${user.attributes.last_name}`;
+}
+
+const removeSpace = (str: string) => str.replace(/\s/g, '');
+
+// For use with template strings. E.g.
+// withoutSpacing`<ul>  \n  <li>${'text with spaces'}    </li> \n   </ul>`
+// => '<ul><li>text with spaces</li></ul>'
+// See corresponding test
+export function withoutSpacing(
+  strings: TemplateStringsArray,
+  ...expressions: string[]
+) {
+  if (strings.length === 1) return removeSpace(strings[0]);
+
+  return strings.reduce((acc, str, i) => {
+    let newAcc = acc + removeSpace(str);
+
+    if (i < expressions.length) {
+      newAcc += expressions[i];
+    }
+
+    return newAcc;
+  }, '');
 }

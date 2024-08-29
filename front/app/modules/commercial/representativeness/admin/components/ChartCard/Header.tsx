@@ -1,19 +1,19 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Title,
   Text,
   // IconTooltip,
 } from '@citizenlab/cl2-component-library';
-// import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
-import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
 
-// i18n
-import messages from './messages';
+// import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
+import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   title: string;

@@ -44,15 +44,14 @@ RSpec.describe Area do
       subject { create(:area) }
 
       it 'defaults to the end of the list' do
-        last_area = described_class.last
-        expect(subject.ordering).to eq(last_area.ordering.to_i + 1)
+        expect(subject.ordering).to eq(described_class.maximum(:ordering))
       end
     end
 
     context 'when an ordering is given' do
       subject { create(:area, ordering: ordering) }
 
-      let(:ordering) { described_class.last.ordering + 1 }
+      let(:ordering) { described_class.maximum(:ordering) + 1 }
 
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)

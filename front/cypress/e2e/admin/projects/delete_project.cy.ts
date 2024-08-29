@@ -11,14 +11,13 @@ describe('Admin: delete project', () => {
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       const projectId = project.body.data.id;
-      cy.visit('/admin/projects/');
+      cy.visit('/admin/projects/all');
       cy.acceptCookies();
 
       cy.get('#e2e-admin-projects-list-unsortable')
@@ -49,7 +48,7 @@ describe('Admin: delete project', () => {
       const folderTitleToDelete =
         folder.body.data.attributes.title_multiloc['en'];
       const folderId = folder.body.data.id;
-      cy.visit('/admin/projects/');
+      cy.visit('/admin/projects/all');
       cy.acceptCookies();
 
       cy.contains(folderTitleToDelete).should('exist');

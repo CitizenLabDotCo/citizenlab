@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import invitesKeys from './keys';
 import { IInvites, INewBulkInviteEmails, IInviteError } from './types';
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const bulkInviteEmails = async (requestBody: INewBulkInviteEmails) =>
   fetcher<IInvites>({

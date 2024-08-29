@@ -1,54 +1,51 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// api
+import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
+import { isEmpty, isEqual } from 'lodash-es';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
+
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_folder_images/types';
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
-import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
-import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
-import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import useAdminPublication from 'api/admin_publications/useAdminPublication';
-import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
+import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// typing
-import { CLErrors, Multiloc, UploadFile } from 'typings';
-
-// utils
-import { validateSlug } from 'utils/textUtils';
-import { isNilOrError, isError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isEmpty, isEqual } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
-
-// components
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import FolderCardImageTooltip from './FolderCardImageTooltip';
-import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
-import SlugInput from 'components/admin/SlugInput';
-import FileUploader from 'components/UI/FileUploader';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
   SectionField,
   Section,
   SubSectionTitle,
 } from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
+
+import messages from '../../messages';
+
+import FolderCardImageTooltip from './FolderCardImageTooltip';
+import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
+import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -60,6 +57,7 @@ type IProjectFolderSubmitState =
 
 interface Props {
   mode: 'edit' | 'new';
+  // This is wrong. Can be undefined if mode is 'new'
   projectFolderId: string;
 }
 
@@ -337,6 +335,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 },
               }
             );
+            setSubmitState('success');
           }
         } catch (errors) {
           setErrors(errors.errors);
@@ -443,6 +442,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               );
             }
             setProjectFolderFilesToRemove([]);
+            setSubmitState('success');
           } else {
             setSubmitState('apiError');
           }
@@ -595,9 +595,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           ) : (
             <ProjectFolderCardImageDropzone
               images={folderCardImage && [folderCardImage]}
-              onAddImage={getHandler((cards: UploadFile[]) =>
-                setFolderCardImage(cards[0])
-              )}
+              onAddImage={getHandler((cards: UploadFile[]) => {
+                setFolderCardImage(cards[0]);
+                if (cards[0]?.base64) {
+                  setCroppedFolderCardBase64(cards[0].base64);
+                }
+              })}
               onRemoveImage={handleFolderCardImageOnRemove}
             />
           )}
@@ -634,7 +637,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             messageError:
               submitState === 'apiError'
                 ? messages.saveErrorMessage
-                : messages.multilocError,
+                : tenantLocales && tenantLocales.length > 1
+                ? messages.multilocError
+                : messages.textFieldsError,
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

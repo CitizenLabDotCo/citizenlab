@@ -10,7 +10,7 @@ resource 'InternalComments' do
 
   context 'when internal comments are on an idea' do
     before do
-      @project = create(:continuous_project)
+      @project = create(:single_phase_ideation_project)
       @idea = create(:idea, project: @project)
     end
 
@@ -295,6 +295,7 @@ resource 'InternalComments' do
     end
   end
 
+  # TODO: move-old-proposals-test
   context 'when internal comments are on an initiative' do
     before { @initiative = create(:initiative) }
 

@@ -6,16 +6,17 @@ module Analysis
       class InsightsController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_insight, only: [:destroy]
+        before_action :set_insight, only: %i[destroy rate]
 
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(:insightable)
+            .includes(insightable: [:background_task, { insight: [{ analysis: [{ phase: [:ideas] }, { project: [:ideas] }] }] }])
+
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
-            include: [:insightable]
+            include: %i[insightable insightable.background_task]
           ).serializable_hash
         end
 
@@ -30,7 +31,17 @@ module Analysis
           end
         end
 
+        def rate
+          rating = params[:rating]
+          side_fx_service.after_rate(@insight, current_user, rating)
+          head :created
+        end
+
         private
+
+        def side_fx_service
+          @side_fx_service ||= SideFxInsightService.new
+        end
 
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])

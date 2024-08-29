@@ -1,24 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import FileUploader from 'components/UI/FileUploader';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { UploadFile } from 'typings';
-import ErrorDisplay from '../ErrorDisplay';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { FormContext } from 'components/Form/contexts';
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { Box } from '@citizenlab/cl2-component-library';
-import { getSubtextElement } from './controlUtils';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
 import useAddIdeaFile from 'api/idea_files/useAddIdeaFile';
 import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
+import { FormContext } from 'components/Form/contexts';
+import FileUploader from 'components/UI/FileUploader';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+
+import { getSubtextElement } from './controlUtils';
 
 const AttachmentsControl = ({
   uischema,
@@ -137,7 +143,12 @@ const AttachmentsControl = ({
         onFileRemove={handleFileOnRemove}
         files={files}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

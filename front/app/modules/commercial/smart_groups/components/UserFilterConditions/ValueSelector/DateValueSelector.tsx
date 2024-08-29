@@ -1,32 +1,25 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+import React from 'react';
 
-import React, { useEffect } from 'react';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
-import { DateInput } from '@citizenlab/cl2-component-library';
+import DateSinglePicker from 'components/admin/DateSinglePicker';
 
 type Props = {
-  value: string;
-  onChange: (string: string) => void;
+  value?: string;
+  onChange: (dateStr: string) => void;
 };
 
 const DateValueSelector = ({ value, onChange }: Props) => {
-  useEffect(() => {
-    if (!value) {
-      onChange(moment().format('YYYY-MM-DD'));
+  const handleOnChange = (date: Date | null) => {
+    if (date) {
+      onChange(moment(date).format('YYYY-MM-DD'));
     }
-  }, [onChange, value]);
-
-  const handleOnChange = (moment: Moment) => {
-    onChange(moment.format('YYYY-MM-DD'));
   };
 
   return (
-    <DateInput
-      value={value ? moment(value) : null}
+    <DateSinglePicker
+      selectedDate={typeof value === 'string' ? new Date(value) : null}
       onChange={handleOnChange}
-      openOnLeft={true}
     />
   );
 };

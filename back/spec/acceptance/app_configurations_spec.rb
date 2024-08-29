@@ -33,6 +33,8 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({})
+      expect(json_response.with_indifferent_access.dig(:data, :attributes, :created_at))
+        .to eq(AppConfiguration.instance.created_at.iso8601(3))
     end
   end
 
@@ -73,7 +75,7 @@ resource 'AppConfigurations' do
 
     let(:logo) { png_image_as_base64 'logo.png' }
     let(:favicon) { png_image_as_base64 'favicon.png' }
-    let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
+    let(:style) { { navbarTextColor: '#db2577' } }
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -88,7 +90,7 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
+      expect(json_response.dig(:data, :attributes, :style, :navbarTextColor)).to eq '#db2577'
     end
 
     describe do

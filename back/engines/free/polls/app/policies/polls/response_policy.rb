@@ -15,9 +15,7 @@ module Polls
 
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
-        scope
-          .where(participation_context: moderatable_projects)
-          .or(scope.where(participation_context: moderatable_phases))
+        scope.where(phase: moderatable_phases)
       end
     end
 
@@ -30,19 +28,16 @@ module Polls
     end
 
     def create?
-      (
-        active? &&
+      active? &&
         (record.user_id == user.id) &&
-        ProjectPolicy.new(user, record.participation_context.project).show? &&
+        ProjectPolicy.new(user, record.phase.project).show? &&
         check_responding_allowed(record, user)
-      )
     end
 
     private
 
     def check_responding_allowed(response, user)
-      pcs = ParticipationContextService.new
-      !pcs.taking_poll_disabled_reason_for_context response.participation_context, user
+      !Permissions::PhasePermissionsService.new(response.phase, user).denied_reason_for_action 'taking_poll'
     end
   end
 end

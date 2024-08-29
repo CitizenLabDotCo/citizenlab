@@ -1,7 +1,8 @@
+import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Existing continuous project with poll', () => {
-  before(() => {
+describe('Existing single phase project with poll', () => {
+  beforeEach(() => {
     cy.visit('/projects/the-big-poll');
     cy.get('#e2e-project-page');
     cy.wait(1000);
@@ -14,82 +15,8 @@ describe('Existing continuous project with poll', () => {
   });
 
   it('shows the poll', () => {
-    cy.get('.e2e-continuous-project-poll-container');
+    cy.get('.e2e-timeline-project-poll-container');
     cy.get('.e2e-poll-form');
-  });
-});
-
-describe('New continuous project with poll', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
-
-  before(() => {
-    cy.apiCreateProject({
-      type: 'continuous',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-      participationMethod: 'poll',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-      cy.apiAddPoll(
-        'Project',
-        projectId,
-        [
-          {
-            title: 'What is your favourite ice cream flavour?',
-            type: 'multiple_options',
-          },
-          {
-            title: 'Are you in favour of car-free sundays ?',
-            type: 'single_option',
-          },
-        ],
-        [
-          ['Vanilla', 'Chocolate', 'Pistachio'],
-          ['Yes', 'No', 'I decline to answer'],
-        ]
-      );
-    });
-  });
-
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
-    cy.wait(2000);
-  });
-
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
-  });
-
-  it('shows the poll', () => {
-    cy.get('.e2e-continuous-project-poll-container');
-    cy.get('.e2e-poll-form');
-  });
-
-  it('lets user answer it', () => {
-    cy.get('.e2e-continuous-project-poll-container')
-      .get('.e2e-poll-question')
-      .each((question) => question.find('.e2e-poll-option').first().click());
-    cy.get('.e2e-send-poll').click();
-    cy.get('.e2e-form-completed');
-  });
-
-  it('shows the CTA button on visting the project page of an active poll project', () => {
-    cy.get('#e2e-participation-cta-poll').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectId);
   });
 });
 
@@ -111,7 +38,6 @@ describe('Timeline project with poll phase', () => {
     cy.apiSignup(firstName, lastName, email, password);
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -136,7 +62,6 @@ describe('Timeline project with poll phase', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
         cy.apiAddPoll(
-          'Phase',
           phaseId,
           [
             {
@@ -191,7 +116,7 @@ describe('Timeline project with poll phase', () => {
   });
 });
 
-describe('poll submission for non-active users', () => {
+describe('poll submission for users who have not met all the registration requirements', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -211,11 +136,14 @@ describe('poll submission for non-active users', () => {
     });
   });
 
-  it("doesn't let non-active users submit a poll response", () => {
+  it("doesn't let users missing registration requirements submit a poll response", () => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/the-big-poll');
-    cy.get('#e2e-complete-registration-link').should('exist');
-    cy.get('#e2e-complete-registration-link').click();
+    cy.get('.e2e-timeline-project-poll-container')
+      .get('.e2e-poll-question')
+      .each((question) => question.find('.e2e-poll-option').first().click());
+    cy.wait(500);
+    cy.get('.e2e-send-poll').click();
     cy.get('#e2e-authentication-modal').should('exist');
   });
 

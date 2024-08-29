@@ -1,16 +1,15 @@
 import React from 'react';
 
-// components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField, StyledFileUploader } from './styling';
+import { UploadFile, CLErrors } from 'typings';
 
-// i18n
+import { SubSectionTitle } from 'components/admin/Section';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-// typings
-import { UploadFile, CLErrors } from 'typings';
+import { StyledSectionField, StyledFileUploader } from './styling';
 
 interface Props {
   projectFiles: UploadFile[];

@@ -1,15 +1,25 @@
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import React, { useEffect, useRef } from 'react';
+
+import {
+  Box,
+  Icon,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
-import React, { useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { IInviteError } from 'api/invites/types';
 import styled from 'styled-components';
-import { CLError, Message } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import messages from './messages';
+import { CLError } from 'typings';
+
+import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInviteError } from 'api/invites/types';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const timeout = 350;
 
@@ -116,7 +126,7 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-interface Props {
+export interface Props {
   marginTop?: string;
   marginBottom?: string;
   showIcon?: boolean;
@@ -178,14 +188,35 @@ export const findErrorMessage = (
   error: string
 ) => {
   if (fieldName && messages[`${fieldName}_${error}`]) {
-    return messages[`${fieldName}_${error}`] as Message;
+    return messages[`${fieldName}_${error}`] as MessageDescriptor;
   }
 
   if (messages[error]) {
-    return messages[error] as Message;
+    return messages[error] as MessageDescriptor;
   }
   // Return a empty error message
   return '';
+};
+
+// Get the variables to use inside API error messages
+export const getApiErrorValues = (
+  error: CLError | IInviteError,
+  appConfiguration?: IAppConfiguration
+) => {
+  const payload = error.payload ?? null;
+  const supportEmail =
+    (error as any)?.inviter_email ??
+    appConfiguration?.data.attributes.settings.core.reply_to_email;
+
+  const values = {
+    row: error.row ?? '',
+    rows: error.rows?.join(', ') ?? '',
+    value: error.value ?? '',
+    supportEmail: supportEmail ?? '',
+    ideasCount: (error as CLError).ideas_count ?? '',
+  };
+
+  return payload ? { ...payload, ...values } : values;
 };
 
 const Error = (props: Props) => {
@@ -272,28 +303,12 @@ const Error = (props: Props) => {
 
                       if (errorMessage) {
                         // Variables for inside messages.js
-                        const payload = error?.payload ?? null;
-                        const value = error?.value ?? null;
-                        const row = error?.row ?? null;
-                        const rows = error?.rows ?? null;
-                        const supportEmail =
-                          (error as any)?.inviter_email ??
-                          appConfiguration.data.attributes.settings.core
-                            .reply_to_email;
+                        const values = getApiErrorValues(
+                          error,
+                          appConfiguration
+                        );
 
-                        let values = {
-                          row: <strong>{row}</strong>,
-                          rows: rows ? (
-                            <strong>{rows.join(', ')}</strong>
-                          ) : null,
-                          // eslint-disable-next-line react/no-unescaped-entities
-                          value: <strong>'{value}'</strong>,
-                          supportEmail: <strong>{supportEmail}</strong>,
-                        };
-
-                        values = payload ? { ...payload, ...values } : values;
-
-                        if (value || row || rows) {
+                        if (values.value || values.row || values.rows) {
                           return (
                             <ErrorListItem key={index}>
                               {dedupApiErrors.length > 1 && (
@@ -315,9 +330,7 @@ const Error = (props: Props) => {
                             )}
                             <FormattedMessage
                               {...errorMessage}
-                              values={{
-                                ideasCount: (error as CLError).ideas_count,
-                              }}
+                              values={values}
                             />
                           </ErrorListItem>
                         );

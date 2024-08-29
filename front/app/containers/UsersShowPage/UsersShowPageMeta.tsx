@@ -1,122 +1,85 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
 
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
-// services
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getLocalized } from 'utils/i18n';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-interface InputProps {
+import messages from './messages';
+
+interface Props {
   user: IUserData;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-  tenant: GetAppConfigurationChildProps;
-  locale: GetLocaleChildProps;
-}
+const UsersShowPageMeta = ({ user }: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
+  const { data: tenant } = useAppConfiguration();
+  const tenantLocales = useAppConfigurationLocales();
 
-interface Props extends InputProps, DataProps {}
+  if (!tenantLocales || !tenant) {
+    return null;
+  }
 
-const UsersShowPageMeta: React.SFC<Props & WrappedComponentProps> = ({
-  intl,
-  authUser,
-  tenantLocales,
-  tenant,
-  locale,
-  user,
-}) => {
+  const { location } = window;
+  const firstName = user.attributes.first_name;
+  const lastName = user.attributes.last_name;
+  const organizationNameMultiLoc =
+    tenant.data.attributes.settings.core.organization_name;
+  const tenantName = localize(organizationNameMultiLoc);
+
   if (
-    !isNilOrError(tenantLocales) &&
-    !isNilOrError(locale) &&
-    !isNilOrError(tenant)
+    firstName === undefined ||
+    firstName === null ||
+    lastName === undefined ||
+    lastName === null
   ) {
-    const { formatMessage } = intl;
-    const { location } = window;
-    const firstName = user.attributes.first_name;
-    const lastName = user.attributes.last_name;
-    const organizationNameMultiLoc =
-      tenant.attributes.settings.core.organization_name;
-    const tenantName = getLocalized(
-      organizationNameMultiLoc,
-      locale,
-      tenantLocales
-    );
+    return null;
+  }
 
-    const usersShowPageIndexTitle = formatMessage(messages.metaTitle, {
+  const usersShowPageIndexTitle = formatMessage(messages.metaTitle1, {
+    firstName,
+    lastName,
+  });
+  const usersShowPageDescription = formatMessage(
+    messages.userShowPageMetaDescription,
+    {
       firstName,
       lastName,
-    });
-    const usersShowPageDescription = formatMessage(
-      messages.userShowPageMetaDescription,
-      {
-        firstName,
-        lastName,
-        tenantName,
-      }
-    );
+      tenantName,
+    }
+  );
 
-    return (
-      <Helmet>
-        <title>
-          {`
+  return (
+    <Helmet>
+      <title>
+        {`
             ${
-              authUser && authUser.attributes.unread_notifications
-                ? `(${authUser.attributes.unread_notifications}) `
+              authUser && authUser.data.attributes.unread_notifications
+                ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
             }
             ${usersShowPageIndexTitle}`}
-        </title>
-        {getCanonicalLink()}
-        {getAlternateLinks(tenantLocales)}
-        <meta name="title" content={usersShowPageIndexTitle} />
-        <meta name="description" content={usersShowPageDescription} />
-        <meta property="og:title" content={usersShowPageIndexTitle} />
-        <meta property="og:description" content={usersShowPageDescription} />
-        <meta property="og:url" content={location.href} />
-        <meta name="robots" content="noindex" />
-      </Helmet>
-    );
-  }
-
-  return null;
+      </title>
+      {getCanonicalLink()}
+      {getAlternateLinks(tenantLocales)}
+      <meta name="title" content={usersShowPageIndexTitle} />
+      <meta name="description" content={usersShowPageDescription} />
+      <meta property="og:title" content={usersShowPageIndexTitle} />
+      <meta property="og:description" content={usersShowPageDescription} />
+      <meta property="og:url" content={location.href} />
+      <meta name="robots" content="noindex" />
+    </Helmet>
+  );
 };
 
-const UsersShowPageMetaWithHoc = injectIntl(UsersShowPageMeta);
-
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-});
-
-const WrappedUsersShowPageMeta = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <UsersShowPageMetaWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
-
-export default WrappedUsersShowPageMeta;
+export default UsersShowPageMeta;

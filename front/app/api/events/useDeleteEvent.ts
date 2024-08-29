@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import eventsKeys from './keys';
 
 const deleteEvent = (id: string) =>

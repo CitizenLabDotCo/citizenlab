@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Moderations' do
   explanation 'Moderations are pieces of user-generated content that need to be moderated'
 
@@ -10,7 +11,7 @@ resource 'Moderations' do
     header 'Content-Type', 'application/json'
 
     @time = Time.now
-    IdeaStatus.create_defaults
+    create(:idea_status_proposed)
     @project = create(:project)
     @m3 = create(
       :idea,
@@ -39,7 +40,8 @@ resource 'Moderations' do
       body_multiloc: { 'en' => 'We must return that CO2 to our atmosphere at all cost' },
       published_at: @time - 1.minute
     )
-    create(:idea, project: create(:continuous_native_survey_project))
+    project = create(:single_phase_native_survey_project)
+    create(:idea, project: project, creation_phase: project.phases.first)
   end
 
   get 'web_api/v1/moderations' do
@@ -174,7 +176,7 @@ resource 'Moderations' do
           example_request 'Count only moderations for ideas or comments' do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
-            expect(json_response[:count]).to eq 3
+            expect(json_response[:data][:attributes][:count]).to eq 3
           end
         end
       end

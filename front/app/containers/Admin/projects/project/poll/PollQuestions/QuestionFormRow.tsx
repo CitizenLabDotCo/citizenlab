@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// Components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import { Multiloc, SupportedLocale } from 'typings';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from '../messages';
-
-// Typings
-import { Multiloc, Locale } from 'typings';
-
-// Hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -32,7 +29,9 @@ const QuestionFormRow = ({
 }: Props) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -40,11 +39,14 @@ const QuestionFormRow = ({
     }
   }, [locale]);
 
-  const onChangeLocale = (selectedLocale: Locale) => {
+  const onChangeLocale = (selectedLocale: SupportedLocale) => {
     setSelectedLocale(selectedLocale);
   };
 
-  const onChangeTitle = (value: string, locale: Locale | undefined) => {
+  const onChangeTitle = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       const newTitleMultiloc = {
         ...titleMultiloc,
@@ -89,7 +91,7 @@ const QuestionFormRow = ({
       </Button>
       <Button
         className="e2e-form-question-cancel"
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancelFormQuestion} />

@@ -1,5 +1,7 @@
 import { IRelationship, Multiloc, ILinks } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import initiativeOfficialFeedbackKeys from './keys';
 
 export type InitiativeOfficialFeedbackKeys = Keys<

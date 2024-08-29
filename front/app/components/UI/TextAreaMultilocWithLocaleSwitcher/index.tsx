@@ -1,24 +1,20 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
 import {
   IconTooltip,
   LocaleSwitcher,
   Label,
+  colors,
 } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { SupportedLocale, Multiloc } from 'typings';
 
-// typings
-import { Locale, Multiloc } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
+import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div``;
 
@@ -49,7 +45,7 @@ const LabelText = styled.span`
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
-  onChange: (value: Multiloc, locale: Locale) => void;
+  onChange: (value: Multiloc, locale: SupportedLocale) => void;
   labelTextElement?: JSX.Element;
 }
 
@@ -64,7 +60,9 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     ...textAreaProps
   } = props;
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -74,7 +72,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   }, [locale]);
 
   const handleValueOnChange = useCallback(
-    (value: string, locale: Locale) => {
+    (value: string, locale: SupportedLocale) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
         [locale]: value,
@@ -86,7 +84,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   );
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
     },
     []

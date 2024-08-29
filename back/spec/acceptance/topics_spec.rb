@@ -17,7 +17,7 @@ resource 'Topics' do
 
     before do
       @code1, @code2 = Topic::CODES.take(2)
-      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2)
+      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2, include_in_onboarding: true)
     end
 
     example_request 'List all topics' do
@@ -34,6 +34,12 @@ resource 'Topics' do
     example_request 'List all topics by code exclusion' do
       do_request exclude_code: @code1
       assert_status(200)
+      expect(response_data.size).to eq 3
+    end
+
+    example 'List all topics for onboarding' do
+      do_request for_onboarding: true
+      assert_status 200
       expect(response_data.size).to eq 3
     end
 
@@ -59,6 +65,21 @@ resource 'Topics' do
       expect(response_data.dig(6, :id)).to eq t2.id
     end
 
+    example 'List all topics sorted by project count' do
+      projects = create_list(:project, 5)
+      @topics[0].projects_topics.create!(project: projects[0])
+      @topics[0].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[4])
+      @topics[2].projects_topics.create!(project: projects[3])
+
+      do_request sort: 'projects_count'
+
+      assert_status 200
+      expect(response_data.size).to eq 5
+      expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[0].id, @topics[4].id, @topics[3].id, @topics[1].id]
+    end
+
     context 'when citizen' do
       it_behaves_like 'publication filtering model', 'topic'
     end
@@ -68,14 +89,34 @@ resource 'Topics' do
     let(:topic) { create(:topic) }
     let(:id) { topic.id }
 
-    example_request 'Get one topic by id' do
-      assert_status(200)
-      expect(response_data[:id]).to eq(id)
+    example_request 'Get one topic by ID' do
+      assert_status 200
+      expect(response_data[:id]).to eq id
     end
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before { header_token_for user }
+
+    let(:user) { create(:admin) }
+
+    get 'web_api/v1/topics/:id' do
+      let(:topic) { create(:topic) }
+      let!(:followers) do
+        [user, create(:user)].map do |user|
+          create(:follower, followable: topic, user: user)
+        end
+      end
+      let(:id) { topic.id }
+
+      example_request 'Get one topic by ID' do
+        assert_status 200
+
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :followers_count)).to eq 2
+        expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
+      end
+    end
 
     post 'web_api/v1/topics' do
       with_options scope: :topic do
@@ -97,6 +138,7 @@ resource 'Topics' do
       with_options scope: :topic do
         parameter :title_multiloc, 'The title of the topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the topic, as a multiloc string'
+        parameter :include_in_onboarding, 'Whether or not to include the topic in the list presented during onboarding, a boolean'
       end
       ValidationErrorHelper.new.error_fields(self, Topic)
 
@@ -104,11 +146,13 @@ resource 'Topics' do
       let(:id) { topic.id }
       let(:title_multiloc) { { 'en' => 'Comedy' } }
       let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
+      let(:include_in_onboarding) { true }
 
       example_request 'Update a topic' do
         assert_status(200)
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(response_data.dig(:attributes, :include_in_onboarding)).to be true
       end
 
       context do

@@ -102,7 +102,6 @@ resource 'Moderators' do
           config = AppConfiguration.instance
           config.settings['core']['maximum_moderators_number'] = 2
           config.settings['core']['additional_moderators_number'] = 0
-          config.settings['seat_based_billing'] = { enabled: true, allowed: true }
           config.save!
         end
 

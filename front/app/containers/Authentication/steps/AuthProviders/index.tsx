@@ -1,30 +1,26 @@
 import React, { memo, useCallback } from 'react';
 
-// components
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
 import { Text } from '@citizenlab/cl2-component-library';
-import TextButton from '../_components/TextButton';
-
-// resources
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
 import styled from 'styled-components';
 
-// typings
-import { SSOProvider } from 'services/singleSignOn';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { ErrorCode } from 'containers/Authentication/typings';
 
-// utils
+import Outlet from 'components/Outlet';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import TextButton from '../_components/TextButton';
+
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -63,6 +59,9 @@ const AuthProviders = memo<Props>(
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
     const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+    const azureAdB2cLoginEnabled = useFeatureFlag({
+      name: 'azure_ad_b2c_login',
+    });
     const franceconnectLoginEnabled = useFeatureFlag({
       name: 'franceconnect_login',
     });
@@ -75,12 +74,18 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const criiptoLoginEnabled = useFeatureFlag({
+      name: 'criipto_login',
+    });
+    const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
     const nemlogInLoginEnabled = useFeatureFlag({
       name: 'nemlog_in_login',
     });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
+    const azureB2cProviderName =
+      tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
 
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
@@ -98,8 +103,6 @@ const AuthProviders = memo<Props>(
       [onSwitchFlow]
     );
 
-    const phone = tenantSettings?.password_login?.phone;
-
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
       (flow === 'signin' ||
@@ -110,11 +113,14 @@ const AuthProviders = memo<Props>(
 
     const showMainAuthMethods =
       isPasswordSigninOrSignupAllowed ||
+      fakeSsoEnabled ||
       facebookLoginEnabled ||
       azureAdLoginEnabled ||
+      azureAdB2cLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
+      criiptoLoginEnabled ||
       nemlogInLoginEnabled;
 
     return (
@@ -134,6 +140,18 @@ const AuthProviders = memo<Props>(
         )}
 
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
+
+        {fakeSsoEnabled && (
+          <StyledAuthProviderButton
+            icon="bullseye"
+            flow={flow}
+            authProvider="fake_sso"
+            onContinue={onSelectAuthProvider}
+            id="e2e-login-with-fake-sso"
+          >
+            <FormattedMessage {...messages.continueWithFakeSSO} />
+          </StyledAuthProviderButton>
+        )}
 
         {claveUnicaLoginEnabled && (
           <StyledClaveUnicaExpandedAuthProviderButton
@@ -163,6 +181,25 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
+        {criiptoLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="mitid"
+            flow={flow}
+            authProvider="criipto"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName:
+                  process.env.NODE_ENV === 'development'
+                    ? 'MitID (Criipto)'
+                    : 'MitID',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
           flow={flow}
@@ -178,17 +215,9 @@ const AuthProviders = memo<Props>(
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
-              <FormattedMessage
-                {...(phone
-                  ? messages.signUpWithPhoneOrEmail
-                  : messages.signUpWithEmail)}
-              />
+              <FormattedMessage {...messages.signUpWithEmail} />
             ) : (
-              <FormattedMessage
-                {...(phone
-                  ? messages.logInWithPhoneOrEmail
-                  : messages.logInWithEmail)}
-              />
+              <FormattedMessage {...messages.logInWithEmail} />
             )}
           </StyledAuthProviderButton>
         )}
@@ -225,6 +254,20 @@ const AuthProviders = memo<Props>(
             <FormattedMessage
               {...messages.continueWithAzure}
               values={{ azureProviderName }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
+        {azureAdB2cLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="microsoft-windows"
+            flow={flow}
+            authProvider="azureactivedirectory_b2c"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithAzure}
+              values={{ azureProviderName: azureB2cProviderName }}
             />
           </StyledAuthProviderButton>
         )}

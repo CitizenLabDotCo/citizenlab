@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCampaignExamples from './useCampaignExamples';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { campaignExamplesData } from './__mocks__/useCampaignExamples';
 import { ICampaignExampleParameters } from './types';
+import useCampaignExamples from './useCampaignExamples';
 
 const apiPath = '*/campaigns/:id/examples';
 
@@ -16,8 +15,8 @@ const params: ICampaignExampleParameters = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignExamplesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: campaignExamplesData }, { status: 200 });
   })
 );
 
@@ -40,8 +39,8 @@ describe('useCampaignExamples', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

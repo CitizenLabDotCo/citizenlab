@@ -18,6 +18,16 @@ slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
         mentions: ":boom: FAILURE: Some data is likely invalid."
         template: basic_fail_1
 
+install-front-dependencies: &install-front-dependencies
+  - run:
+      name: Install front dependencies
+      command: |
+        # Install jq using apt-get (for Debian-based images)
+        apt-get update
+        apt-get install -y jq
+        cd ~/citizenlab/front
+        npm ci
+
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -48,6 +58,10 @@ parameters:
     type: boolean
     default: false
 
+  chromatic:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -62,10 +76,11 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:12-3.1"
+      - image: "postgis/postgis:16-3.4"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+        command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off
 
 commands:
   wait-for-postgres:
@@ -92,13 +107,11 @@ commands:
 
   copy_secrets_from_lastpass:
     steps:
-      - run: |
-          if command -v sudo &> /dev/null
-          then
-            sudo apt-get update && sudo apt-get install -y lastpass-cli
-          else
-            apt-get update && apt-get install -y lastpass-cli
-          fi
+      # Installing LastPass CLI from GitHub instead of using apt-get because the last
+      # version available in the source repositories is 1.3.3, which has been broken by
+      # a change of SSL certificate. For more information, see:
+      # https://github.com/lastpass/lastpass-cli/issues/653
+      - run: sudo .circleci/install_lpass.sh v1.5.0
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
@@ -169,7 +182,16 @@ jobs:
       # Solution: upgrade to '>= 2.0.0'
       # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
       # See https://github.com/rubysec/bundler-audit
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
+      #
+      # GHSA-xc9x-jj77-9p9j
+      # Solutions: upgrade Nokogiri (requires newer Ruby) or
+      # Compile and link Nokogiri against new libxml2
+      # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
+      #
+      # CVE-2023-51774
+      # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
+      # been updated yet. So we can safely ignore it.
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j CVE-2023-51774
 
   back-license-check:
     resource_class: small
@@ -220,9 +242,8 @@ jobs:
       - wait-for-postgres
       - run: bin/rails db:create db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+          circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" \
+            | circleci tests run --command="xargs bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml" --verbose --split-by=timings
       - store_test_results:
           path: spec/reports
 
@@ -316,6 +337,8 @@ jobs:
     parameters:
       ssh_host:
         type: string
+      cluster_name:
+        type: string
       ssh_user:
         type: string
         default: ubuntu
@@ -332,7 +355,7 @@ jobs:
       - run:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake db:migrate_if_pending cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth --prune"
 
   back-generate-tenant-templates:
     resource_class: small
@@ -346,7 +369,7 @@ jobs:
         default: ubuntu
       env_file:
         type: string
-        default: .env-production-benelux
+        default: .env-web
     steps:
       - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
@@ -393,7 +416,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -410,7 +433,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -427,7 +450,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -436,16 +459,18 @@ jobs:
 
   front-license-check:
     docker:
-      - image: licensefinder/license_finder
+      - image: cimg/ruby:3.3-node
     working_directory: ~/citizenlab/front
     resource_class: small
     steps:
       - shallow-clone
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
-      - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
+      - run:
+          name: Install dependencies and run license_finder
+          command: |
+            echo "Node version: $(node -v)"
+            npm ci
+            gem install license_finder -v 7.1.0
+            cd ~/citizenlab/front && license_finder
 
   front-build:
     docker:
@@ -458,7 +483,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -477,7 +502,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -516,7 +541,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
-      - run: cd citizenlab/front && npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -525,9 +550,7 @@ jobs:
           name: Run tests with JUnit as reporter
           command: |
             cd citizenlab/front
-            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
-            echo $TEST_FILES
-            npm run test:ci -- $TEST_FILES
+            npx jest --listTests | circleci tests run --command="JEST_JUNIT_ADD_FILE_ATTRIBUTE=true xargs npx jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --" --split-by=timings
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
@@ -560,14 +583,14 @@ jobs:
   front-deploy-staging:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: large
+    resource_class: medium+
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
@@ -586,20 +609,20 @@ jobs:
   front-deploy-production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: large
+    resource_class: medium+
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm ci
+      - <<: *install-front-dependencies
       - save_cache:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
@@ -622,10 +645,34 @@ jobs:
       - run:
           command: npm install lighthouse-ci@1.13.1
       - run:
-          command: npx lighthouse-ci@1.13.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.13.1 https://demo.stg.govocal.com --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse
+
+  front-chromatic:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium
+    working_directory: ~/citizenlab/front
+    steps:
+      # Non-shallow clone (required for chromatic)
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL"
+
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - <<: *install-front-dependencies
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm run chromatic
 
   # E2E TESTS
   e2e-tests:
@@ -662,18 +709,16 @@ jobs:
           docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
           cd front
+          mkdir -p reports
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # Uncomment to save XML reports
-      # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
-      # ToDo: fix it. Reporting doesn't work atm.
-      # - run: |
-      #     mkdir -p front/reports
-      #     docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+      - run: |
+          mkdir -p front/reports
+          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
@@ -808,8 +853,9 @@ workflows:
                 - master
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
           compose_file: docker-compose-staging.yml
-          stack_name: cl2-back-stg
-          env_file: ".env-staging"
+          stack_name: "cl2"
+          env_file: ".env-web"
+          cluster_name: "stg"
 
   back-deploy-production:
     when: << pipeline.parameters.back >>
@@ -836,7 +882,7 @@ workflows:
             branches:
               only: production
       - back-deploy-to-swarm:
-          name: Deploy to Europe
+          name: Deploy to Europe (Frankfurt)
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -844,9 +890,23 @@ workflows:
               only:
                 - production
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          compose_file: docker-compose-production-benelux.yml
+          compose_file: docker-compose-production.yml
           stack_name: cl2-prd-bnlx-stack
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
+          cluster_name: "eu"
+      - back-deploy-to-swarm:
+          name: Deploy to Europe (Paris)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "paris"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
@@ -859,6 +919,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "can"
       - back-deploy-to-swarm:
           name: Deploy to South-America
           requires:
@@ -871,6 +932,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "sam"
       - back-deploy-to-swarm:
           name: Deploy to US-West
           requires:
@@ -883,6 +945,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "usw"
       - back-deploy-to-swarm:
           name: Deploy to UK
           requires:
@@ -895,6 +958,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "uk"
 
   # FRONT-END
   front:
@@ -1032,14 +1096,23 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:
@@ -1084,7 +1157,8 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1123,14 +1197,23 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:
@@ -1175,7 +1258,8 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1205,6 +1289,13 @@ workflows:
               only:
                 - production
     jobs:
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Paris)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "South America"
@@ -1246,3 +1337,25 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
+
+  manual-chromatic:
+    when: << pipeline.parameters.chromatic >>
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic
+
+  weekly-chromatic:
+    triggers:
+      - schedule:
+          cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic

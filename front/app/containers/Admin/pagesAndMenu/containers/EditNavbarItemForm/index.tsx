@@ -1,38 +1,35 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// components
-import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { useParams } from 'react-router-dom';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-
 import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
-const EditNavbarItemForm = ({
-  params: { navbarItemId },
-  intl: { formatMessage },
-}: WithRouterProps & WrappedComponentProps) => {
-  const appConfigurationLocales = useAppConfigurationLocales();
+import useLocalize from 'hooks/useLocalize';
+
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
+
+import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
+
+const EditNavbarItemForm = () => {
+  const { navbarItemId } = useParams() as { navbarItemId: string };
+  const { formatMessage } = useIntl();
   const { data: navbarItems } = useNavbarItems();
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
 
   const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
   const localize = useLocalize();
 
-  if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {
+  if (isNilOrError(navbarItem)) {
     return null;
   }
 
@@ -50,7 +47,7 @@ const EditNavbarItemForm = ({
       breadcrumbs={[
         {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
+          linkTo: pagesAndMenuBreadcrumbLinkTo,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),
@@ -65,4 +62,4 @@ const EditNavbarItemForm = ({
   );
 };
 
-export default injectIntl(withRouter(EditNavbarItemForm));
+export default EditNavbarItemForm;

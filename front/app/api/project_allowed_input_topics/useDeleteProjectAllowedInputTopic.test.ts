@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectAllowedInputTopic from './useDeleteProjectAllowedInputTopic';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteProjectAllowedInputTopic from './useDeleteProjectAllowedInputTopic';
 const apiPath = '*projects_allowed_input_topics/:id';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.delete(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -35,8 +34,8 @@ describe('useDeleteProjectAllowedInputTopic', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.delete(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteInitiativeReaction from './useDeleteInitiativeReaction';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteInitiativeReaction from './useDeleteInitiativeReaction';
 const apiPath = '*reactions/:reactionId';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.delete(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -20,7 +19,7 @@ describe('useDeleteInitiativeReaction', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -28,7 +27,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });
@@ -38,13 +36,13 @@ describe('useDeleteInitiativeReaction', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.delete(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -52,7 +50,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });

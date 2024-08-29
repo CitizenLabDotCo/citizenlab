@@ -2,7 +2,7 @@
   <mj-column>
     <mj-raw>
       <%= link_to home_url do %>
-        <%= image_tag logo_url, alt: 'Organization logo' %>
+        <%= image_tag tenant_logo_url, alt: 'Organization logo' %>
       <% end %>
     </mj-raw>
   </mj-column>

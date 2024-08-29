@@ -1,10 +1,15 @@
 import React from 'react';
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { TextCell } from 'components/admin/ResourceList';
-import styled from 'styled-components';
-import usePollOptions from 'api/poll_options/usePollOptions';
+
 import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import usePollOptions from 'api/poll_options/usePollOptions';
+
+import { TextCell } from 'components/admin/ResourceList';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-right: 5px;
@@ -12,7 +17,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
   display: flex;
-  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
+  color: ${({ isWarning }) => (isWarning ? colors.orange500 : colors.error)};
   margin-right: 15px;
 `;
 

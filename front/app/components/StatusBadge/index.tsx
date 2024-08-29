@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-import T from 'components/T';
-import styled from 'styled-components';
+
+import { fontSizes } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+
+import T from 'components/T';
 
 const Container = styled.div<{ color: string }>`
   color: ${({ color }) => color};
@@ -26,9 +29,10 @@ interface Props {
   statusId: string;
   className?: string;
   id?: string;
+  maxLength?: number;
 }
 
-const StatusBadge = memo<Props>(({ statusId, id, className }) => {
+const StatusBadge = memo<Props>(({ statusId, id, className, maxLength }) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (ideaStatus) {
@@ -36,7 +40,10 @@ const StatusBadge = memo<Props>(({ statusId, id, className }) => {
 
     return (
       <Container id={id} className={className || ''} color={color}>
-        <T value={ideaStatus.data.attributes.title_multiloc} />
+        <T
+          value={ideaStatus.data.attributes.title_multiloc}
+          maxLength={maxLength}
+        />
       </Container>
     );
   }

@@ -13,14 +13,17 @@ module Analysis
           @inputs = InputsFinder.new(@analysis, filters).execute
           filtered_count = @inputs.count
           @inputs = @inputs.order(published_at: :asc)
-          @inputs = @inputs.includes(:author)
+          @inputs = @inputs.includes(:author, :idea_files)
           @inputs = paginate @inputs
 
           render json: linked_json(
             @inputs,
             InputSerializer,
-            params: jsonapi_serializer_params,
-            include: [:author],
+            params: {
+              app_configuration: AppConfiguration.instance,
+              **jsonapi_serializer_params
+            },
+            include: %i[author idea_files],
             meta: {
               filtered_count: filtered_count
             }
@@ -29,7 +32,14 @@ module Analysis
 
         def show
           @input = @analysis.inputs.find(params[:id])
-          render json: InputSerializer.new(@input, params: jsonapi_serializer_params, include: [:author]).serializable_hash
+          render json: InputSerializer.new(
+            @input,
+            params: {
+              app_configuration: AppConfiguration.instance,
+              **jsonapi_serializer_params
+            },
+            include: [:author]
+          ).serializable_hash
         end
 
         private

@@ -1,93 +1,89 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState } from 'react';
 
-// components
+import { useSearchParams } from 'react-router-dom';
+
+import useProjects from 'api/projects/useProjects';
+
+import useLocalize from 'hooks/useLocalize';
+
 import FilterSelector from 'components/FilterSelector';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { classNames } from 'utils/helperUtils';
 
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-type DataProps = {
-  projects: GetProjectsChildProps;
-};
-
-type InputProps = {
+type Props = {
   title: string | JSX.Element;
   onChange: (projectIds: string[]) => void;
   className?: string;
   textColor?: string;
+  filterSelectorStyle?: 'button' | 'text';
+  listTop?: string;
+  mobileLeft?: string;
+  eventsTime?: 'past' | 'currentAndFuture';
 };
 
-type Props = InputProps & DataProps;
+const ProjectFilterDropdown = ({
+  onChange,
+  title,
+  className,
+  textColor,
+  filterSelectorStyle,
+  listTop,
+  mobileLeft,
+  eventsTime,
+}: Props) => {
+  const { data: projects } = useProjects({
+    publicationStatuses: ['published'],
+    sort: 'new',
+  });
+  const [searchParams] = useSearchParams();
+  const projectIdsParam =
+    eventsTime === 'past'
+      ? searchParams.get('past_events_project_ids')
+      : searchParams.get('ongoing_events_project_ids');
 
-type State = {
-  selectedValues: string[];
-};
+  const projectIdsFromUrl: string[] = projectIdsParam
+    ? JSON.parse(projectIdsParam)
+    : null;
 
-class ProjectFilterDropdown extends PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  constructor(props: Props & InjectedLocalized) {
-    super(props);
-    this.state = {
-      selectedValues: [],
-    };
-  }
+  const [selectedValues, setSelectedValues] = useState<string[]>(
+    projectIdsFromUrl || []
+  );
+  const localize = useLocalize();
 
-  handleOnChange = (selectedValues) => {
-    this.setState({ selectedValues });
-    this.props.onChange(selectedValues);
+  const handleOnChange = (selectedValues: string[]) => {
+    setSelectedValues(selectedValues);
+    onChange(selectedValues);
   };
 
-  render() {
-    const { selectedValues } = this.state;
-    const { projects, localize, title, className, textColor } = this.props;
+  if (projects && projects.data.length > 0) {
+    const options = projects.data.map((project) => {
+      return {
+        text: localize(project.attributes.title_multiloc),
+        value: project.id,
+      };
+    });
 
-    if (projects && projects.length > 0) {
-      const options = projects.map((project) => {
-        return {
-          text: localize(project.attributes.title_multiloc),
-          value: project.id,
-        };
-      });
-
-      if (options && options.length > 0) {
-        return (
-          <FilterSelector
-            id="e2e-project-filter-selector"
-            className={className}
-            title={title}
-            name="projects"
-            selected={selectedValues}
-            values={options}
-            onChange={this.handleOnChange}
-            multipleSelectionAllowed={true}
-            right="-10px"
-            mobileLeft="-5px"
-            textColor={textColor}
-          />
-        );
-      }
+    if (options && options.length > 0) {
+      return (
+        <FilterSelector
+          className={classNames(className, 'e2e-project-filter-selector')}
+          title={title}
+          name="projects"
+          selected={selectedValues}
+          values={options}
+          onChange={handleOnChange}
+          multipleSelectionAllowed={true}
+          right="-10px"
+          mobileLeft={mobileLeft ? mobileLeft : '0px'}
+          textColor={textColor}
+          filterSelectorStyle={filterSelectorStyle}
+          top={listTop}
+        />
+      );
     }
-
-    return null;
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['published']} sort="new" />,
-});
+  return null;
+};
 
-const ProjectFilterDropdownWithLocalize = injectLocalize(ProjectFilterDropdown);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ProjectFilterDropdownWithLocalize {...dataProps} {...inputProps} />
-    )}
-  </Data>
-);
+export default ProjectFilterDropdown;

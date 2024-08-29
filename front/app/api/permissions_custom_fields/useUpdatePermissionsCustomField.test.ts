@@ -1,9 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePermissionsCustomField from './useUpdatePermissionsCustomField';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
+import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
@@ -33,8 +32,8 @@ const data = {
 
 const apiPath = '*/permissions_custom_fields/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -47,7 +46,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -64,8 +63,8 @@ describe('useUpdatePermissionsCustomField', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -73,7 +72,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),

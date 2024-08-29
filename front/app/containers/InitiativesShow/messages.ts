@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesShow.metaTitle',
-    defaultMessage: 'Initiative: {initiativeTitle}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesShow.metaTitle1',
+    defaultMessage: 'Proposal: {initiativeTitle} | {orgName}',
   },
   invisibleTitleContent: {
     id: 'app.containers.InitiativesShow.invisibleTitleContent',
@@ -32,10 +32,6 @@ export default defineMessages({
   },
   twitterMessage: {
     id: 'app.containers.InitiativesShow.twitterMessage',
-    defaultMessage: 'Vote for {initiativeTitle} on',
-  },
-  facebookMessage: {
-    id: 'app.containers.InitiativesShow.facebookMessage',
     defaultMessage: 'Vote for {initiativeTitle} on',
   },
   whatsAppMessage: {
@@ -71,10 +67,6 @@ export default defineMessages({
   deleteInitiative: {
     id: 'app.components.InitiativesShow.deleteInitiative',
     defaultMessage: 'Delete initiative',
-  },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.InitiativesShow.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
   },
   reportAsSpamModalTitle: {
     id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
@@ -131,5 +123,18 @@ export default defineMessages({
   cosponsorCTA: {
     id: 'app.containers.InitiativesShow.cosponsorCTA',
     defaultMessage: 'Cosponsor this proposal',
+  },
+  manageInvitationsLinkText: {
+    id: 'app.containers.InitiativesShow.manageInvitationsLinkText',
+    defaultMessage: 'Manage cosponsorship invitations',
+  },
+  numberOfCosponsorsNotYetMet: {
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}',
+  },
+  pending: {
+    id: 'app.containers.InitiativesShow.pending1',
+    defaultMessage: 'pending',
   },
 });

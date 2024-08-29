@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import {
   Input,
   Box,
@@ -5,13 +7,22 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
-import React, { useState } from 'react';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useParams } from 'react-router-dom';
+
+import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
+import messages from './messages';
 
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
+  const { formatMessage } = useIntl();
   const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
@@ -25,6 +36,9 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.questionCreated.name, {
+            extra: { analysisId },
+          });
           onClose();
         },
       }
@@ -56,7 +70,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
           disabled={!question}
           type="submit"
         >
-          Ask
+          {formatMessage(messages.ask)}
         </Button>
       </Box>
     </Box>

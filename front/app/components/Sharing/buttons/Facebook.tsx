@@ -1,25 +1,20 @@
 import React from 'react';
-import { Medium } from '../utils';
-import { FacebookShareButton } from 'react-share';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-
-// style
-import { colors } from 'utils/styleUtils';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import { FacebookShareButton } from 'react-share';
 import styled from 'styled-components';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 import tracks from '../tracks';
+import { Medium } from '../utils';
 
 interface Props {
   url: string;
-  facebookMessage: string;
 }
 
 const StyledBox = styled(Box)`
@@ -38,7 +33,6 @@ const StyledBox = styled(Box)`
 `;
 
 const Facebook = ({
-  facebookMessage,
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
@@ -53,7 +47,6 @@ const Facebook = ({
   return (
     <StyledBox onClick={handleClick}>
       <FacebookShareButton
-        quote={facebookMessage}
         url={url}
         aria-label={formatMessage(messages.shareOnFacebook)}
       >

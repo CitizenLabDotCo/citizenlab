@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
+
 import styled from 'styled-components';
+
 import InitiativeBannerImage from './InitiativeBannerImage';
 
 const InitiativeBannerContainer = styled.div`
@@ -36,7 +38,10 @@ const InitiativeBanner = ({ initiativeHeaderImageLarge, children }: Props) => {
     <InitiativeBannerContainer>
       {typeof initiativeHeaderImageLarge === 'string' && (
         <>
-          <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+          <InitiativeBannerImage
+            src={initiativeHeaderImageLarge}
+            data-cy="e2e-initiative-banner-image"
+          />
           <InitiativeHeaderOverlay />
         </>
       )}

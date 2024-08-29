@@ -6,26 +6,6 @@ import {
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
-// Response
-export type Response = {
-  data: {
-    type: 'analytics';
-    attributes: [TimeSeriesResponse | [], [ReactionsCountRow] | []];
-  };
-};
-
-type TimeSeriesResponse = TimeSeriesResponseRow[];
-
-export interface TimeSeriesResponseRow {
-  first_dimension_date_created_date: string;
-  sum_dislikes_count: number;
-  sum_likes_count: number;
-}
-
-interface ReactionsCountRow {
-  sum_reactions_count: number;
-}
-
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */

@@ -15,6 +15,8 @@ module IdViennaSaml
       }
     }.freeze
 
+    USERID_KEY = 'urn:oid:0.9.2342.19200300.100.1.1'
+
     # Extracts user attributes from the Omniauth response auth.
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The user attributes
@@ -27,6 +29,10 @@ module IdViennaSaml
         last_name: attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20').first,
         locale: AppConfiguration.instance.settings.dig('core', 'locales').first
       }
+    end
+
+    def profile_to_uid(auth)
+      auth.dig(:extra, :raw_info).to_h[USERID_KEY].first
     end
 
     # Configures the SAML endpoint to authenticate with Vienna's IdP for employees
@@ -49,7 +55,7 @@ module IdViennaSaml
 
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      %i[first_name last_name]
+      super + %i[first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON

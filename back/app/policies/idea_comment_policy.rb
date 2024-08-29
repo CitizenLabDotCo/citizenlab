@@ -52,7 +52,6 @@ class IdeaCommentPolicy < ApplicationPolicy
   private
 
   def check_commenting_allowed(comment, user)
-    pcs = ParticipationContextService.new
-    !pcs.commenting_disabled_reason_for_idea comment.post, user
+    !Permissions::IdeaPermissionsService.new(comment.post, user).denied_reason_for_action 'commenting_idea'
   end
 end

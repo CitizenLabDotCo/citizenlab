@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import { TRule, ruleTypeConstraints } from '../rules';
 
 type Props = {

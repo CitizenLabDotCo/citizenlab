@@ -9,7 +9,7 @@ module MultiTenancy
         2.times do
           folder = ::ProjectFolders::Folder.create!( # TODO: move to ProjectFolders engine
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
             admin_publication_attributes: {

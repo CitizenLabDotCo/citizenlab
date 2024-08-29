@@ -1,10 +1,12 @@
 import React from 'react';
-import NonSortableFolderRow, { Props } from './NonSortableFolderRow';
+
+import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
+
 import { render, screen } from 'utils/testUtils/rtl';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
-import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
+import NonSortableFolderRow, { Props } from './NonSortableFolderRow';
 const folderId = 'folderId';
 const folderPublication: IAdminPublicationData = {
   id: '1',
@@ -51,6 +53,20 @@ jest.mock('api/admin_publications/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;
 });
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
+
 const props: Props = {
   publication: folderPublication,
   isLastItem: true,
@@ -60,8 +76,9 @@ const props: Props = {
 describe('NonSortableFolderRow', () => {
   it('renders the project row inside', () => {
     render(<NonSortableFolderRow {...props} />);
-
+    screen.getByTestId('folder-row').click();
     const projectRows = screen.getAllByTestId('projectRow');
+
     expect(projectRows.length).toEqual(2);
   });
 });

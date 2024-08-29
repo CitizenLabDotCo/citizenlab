@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrorsJSON } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import blockedUsersCountKeys from './keys';
-import { IUser } from 'api/users/types';
+import { CLErrorsWrapper } from 'typings';
+
 import usersKeys from 'api/users/keys';
+import { IUser } from 'api/users/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import blockedUsersCountKeys from './keys';
 
 const unblockUser = async (userId: string) =>
   fetcher<IUser>({
@@ -14,7 +17,7 @@ const unblockUser = async (userId: string) =>
 
 const useUnblockUser = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUser, Error | CLErrorsJSON, string>({
+  return useMutation<IUser, Error | CLErrorsWrapper, string>({
     mutationFn: unblockUser,
     onSuccess: () => {
       queryClient.invalidateQueries({

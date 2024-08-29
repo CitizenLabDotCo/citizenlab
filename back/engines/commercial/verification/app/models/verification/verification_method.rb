@@ -2,6 +2,11 @@
 
 module Verification
   module VerificationMethod
+    # It allows to migrate from one provider to another. See how it's overridden.
+    def name_for_hashing
+      name
+    end
+
     # @return [Hash, nil]
     def config
       AppConfiguration.instance
@@ -11,16 +16,6 @@ module Verification
         .except('allowed', 'enabled')
         .symbolize_keys
         .presence
-    end
-
-    def fetch_user(request)
-      # `token` can be unusual here. See different `fetch_token` implementations.
-      token = fetch_token(request)
-      AuthToken::AuthToken.new(token: token).entity_for(::User)
-    end
-
-    def fetch_token(request)
-      request.env['omniauth.params']['token']
     end
   end
 end

@@ -1,44 +1,35 @@
-// authentication
-import { handleOnSSOClick } from 'services/singleSignOn';
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
-// tracks
-import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// utils
-import { askCustomFields } from './utils';
-
-// typings
+import tracks from '../../tracks';
 import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
   UpdateState,
 } from '../../typings';
+
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  anySSOProviderEnabled: boolean
 ) => {
   return {
     // old sign up flow
     'sign-up:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signin' });
         setCurrentStep('sign-in:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -48,13 +39,12 @@ export const signUpFlow = (
         }
 
         const { requirements } = await getRequirements();
-        const verificationRequired =
-          requirements.special.verification === 'require';
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          verificationRequired
+          getAuthenticationData(),
+          requirements.verification,
+          'signup'
         );
       },
     },
@@ -65,6 +55,7 @@ export const signUpFlow = (
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-in:email-password');
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
@@ -77,28 +68,22 @@ export const signUpFlow = (
       SUBMIT: async (params: CreateAccountParameters) => {
         try {
           await createAccountWithPassword(params);
-          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
 
           const { requirements } = await getRequirements();
-          const emailConfirmationRequired =
-            requirements.special.confirmation === 'require';
+          const authenticationData = getAuthenticationData();
 
-          if (emailConfirmationRequired) {
-            setCurrentStep('sign-up:email-confirmation');
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            'signup'
+          );
+
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             setCurrentStep('closed');
             return;
           }
@@ -108,105 +93,6 @@ export const signUpFlow = (
           trackEventByName(tracks.signInEmailPasswordFailed);
           throw e;
         }
-      },
-    },
-
-    'sign-up:email-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: () => {
-        setCurrentStep('sign-up:change-email');
-      },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmEmail({ code });
-
-        const { requirements } = await getRequirements();
-
-        if (requirements.special.verification === 'require') {
-          setCurrentStep('sign-up:verification');
-          return;
-        }
-
-        if (askCustomFields(requirements.custom_fields)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('sign-up:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        await resendEmailConfirmationCode(newEmail);
-        setCurrentStep('sign-up:email-confirmation');
-      },
-    },
-
-    'sign-up:verification': {
-      CLOSE: () => setCurrentStep('closed'),
-      CONTINUE: async () => {
-        const { requirements } = await getRequirements();
-
-        if (askCustomFields(requirements.custom_fields)) {
-          setCurrentStep('sign-up:custom-fields');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-    },
-
-    'sign-up:custom-fields': {
-      CLOSE: () => {
-        setCurrentStep('closed');
-        trackEventByName(tracks.signUpCustomFieldsStepExited);
-      },
-      SUBMIT: (userId: string, formData: FormData) => {
-        updateUser(
-          { userId, custom_field_values: formData },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
-
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
-
-              setCurrentStep('success');
-              trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-            },
-            onError: (e) => {
-              trackEventByName(tracks.signUpCustomFieldsStepFailed);
-              throw e;
-            },
-          }
-        );
-      },
-      SKIP: async () => {
-        const { requirements } = await getRequirements();
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
-          return;
-        }
-
-        setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       },
     },
 

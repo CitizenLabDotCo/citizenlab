@@ -13,12 +13,10 @@ describe('Project description builder White space component', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
@@ -56,8 +54,8 @@ describe('Project description builder White space component', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-white-space').should('be.visible');
-    cy.get('#e2e-white-space').within(() => {
+    cy.get('.e2e-white-space').should('be.visible');
+    cy.get('.e2e-white-space').within(() => {
       cy.get('hr').should('be.visible');
     });
   });
@@ -70,12 +68,12 @@ describe('Project description builder White space component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-white-space').click();
+    cy.get('.e2e-white-space').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-white-space').should('not.exist');
+    cy.get('.e2e-white-space').should('not.exist');
   });
 });

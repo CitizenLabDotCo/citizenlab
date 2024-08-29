@@ -1,46 +1,85 @@
 models:
-  home_page:
-    -
-      remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/header.jpg
-      banner_signed_out_header_overlay_color: '#0A5159'
-      banner_signed_out_header_overlay_opacity: 90
+  content_builder/layout:
+    - code: homepage
+      enabled: true
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
-      ordering: 100
+      ordering: 0
       code: proposed
       color: '#687782'
       description_multiloc: idea_statuses.proposed_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.viewed
-      ordering: 150
+      ordering: 1
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.under_consideration
-      ordering: 200
+      ordering: 2
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.accepted
-      ordering: 300
+      ordering: 3
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.rejected
-      ordering: 400
+      ordering: 4
       code: rejected
       color: '#E52516'
       description_multiloc: idea_statuses.rejected_description
+      participation_method: ideation
     -
       title_multiloc: idea_statuses.implemented
-      ordering: 500
+      ordering: 5
       code: implemented
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
+      participation_method: ideation
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 0
+      code: proposed
+      color: '#BEE7EB'
+      description_multiloc: idea_statuses.proposed_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.threshold_reached
+      ordering: 1
+      code: threshold_reached
+      color: '#40B8C5'
+      description_multiloc: idea_statuses.threshold_reached_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.expired
+      ordering: 2
+      code: expired
+      color: '#FF672F'
+      description_multiloc: idea_statuses.expired_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.answered
+      ordering: 3
+      code: answered
+      color: '#147985'
+      description_multiloc: idea_statuses.answered_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.ineligible
+      ordering: 4
+      code: ineligible
+      color: '#E52516'
+      description_multiloc: idea_statuses.ineligible_description
+      participation_method: proposals
   initiative_status:
     -
       title_multiloc: initiative_statuses.review_pending
@@ -90,81 +129,97 @@ models:
       description_multiloc: topics.nature_description
       code: nature
       ordering: 0
+      include_in_onboarding: true
     - &topic-waste
       title_multiloc: topics.waste
       description_multiloc: topics.waste_description
       code: waste
       ordering: 1
+      include_in_onboarding: true
     - &topic-sustainability
       title_multiloc: topics.sustainability
       description_multiloc: topics.sustainability_description
       code: sustainability
       ordering: 2
+      include_in_onboarding: true
     - &topic-mobility
       title_multiloc: topics.mobility
       description_multiloc: topics.mobility_description
       code: mobility
       ordering: 3
+      include_in_onboarding: true
     - &topic-technology
       title_multiloc: topics.technology
       description_multiloc: topics.technology_description
       code: technology
       ordering: 4
+      include_in_onboarding: true
     - &topic-economy
       title_multiloc: topics.economy
       description_multiloc: topics.economy_description
       code: economy
       ordering: 5
+      include_in_onboarding: true
     - &topic-housing
       title_multiloc: topics.housing
       description_multiloc: topics.housing_description
       code: housing
       ordering: 6
+      include_in_onboarding: true
     - &topic-public_space
       title_multiloc: topics.public_space
       description_multiloc: topics.public_space_description
       code: public_space
       ordering: 7
+      include_in_onboarding: true
     - &topic-safety
       title_multiloc: topics.safety
       description_multiloc: topics.safety_description
       code: safety
       ordering: 8
+      include_in_onboarding: true
     - &topic-education
       title_multiloc: topics.education
       description_multiloc: topics.education_description
       code: education
       ordering: 9
+      include_in_onboarding: true
     - &topic-culture
       title_multiloc: topics.culture
       description_multiloc: topics.culture_description
       code: culture
       ordering: 10
+      include_in_onboarding: true
     - &topic-health
       title_multiloc: topics.health
       description_multiloc: topics.health_description
       code: health
       ordering: 11
+      include_in_onboarding: true
     - &topic-inclusion
       title_multiloc: topics.inclusion
       description_multiloc: topics.inclusion_description
       code: inclusion
       ordering: 12
+      include_in_onboarding: true
     - &topic-community
       title_multiloc: topics.community
       description_multiloc: topics.community_description
       code: community
       ordering: 13
+      include_in_onboarding: true
     - &topic-services
       title_multiloc: topics.services
       description_multiloc: topics.services_description
       code: services
       ordering: 14
+      include_in_onboarding: true
     - &topic-other
       title_multiloc: topics.other
       description_multiloc: topics.other_description
       code: other
       ordering: 15
+      include_in_onboarding: true
   static_page:
     - &information-page
       code: about
@@ -276,13 +331,6 @@ models:
       description_multiloc: projects.open_idea_project_description
       description_preview_multiloc: projects.open_idea_project_description_preview
       internal_role: open_idea_box
-      presentation_mode: card
-      process_type: continuous
-      participation_method: ideation
-      posting_enabled: true
-      commenting_enabled: true
-      reacting_enabled: true
-      reacting_like_method: unlimited
       remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
       admin_publication_attributes: {}
   project_image:
@@ -337,6 +385,19 @@ models:
     - project_ref: *open_idea_project
       topic_ref: *topic-other
       ordering: 15
+  phase:
+    - &open_idea_project_current
+      title_multiloc: phases.open_idea_phase_title
+      project_ref: *open_idea_project
+      start_at_timediff: -1440
+      end_at: null
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
   event:
     - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title

@@ -1,10 +1,11 @@
-import useCommentsByTopic from './useCommentsByTopic';
-
 import { renderHook } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { ICommentsByTopic } from './types';
+import useCommentsByTopic from './useCommentsByTopic';
 
 const apiPath = `*stats/comments_by_topic`;
 
@@ -31,8 +32,8 @@ const data: ICommentsByTopic = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -62,8 +63,8 @@ describe('useCommentsByTopic', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

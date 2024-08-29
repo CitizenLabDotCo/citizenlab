@@ -1,13 +1,11 @@
-import { Locale } from 'typings';
 import { SerializedNode } from '@craftjs/core';
+import { SupportedLocale } from 'typings';
 
 export type ContentBuilderErrors = Record<
   string,
-  { hasError: boolean; selectedLocale: Locale }
+  { hasError: boolean; selectedLocale?: SupportedLocale }
 >;
 
-export type JsonMultiloc = {
-  [key in Locale]?: Record<string, SerializedNode>;
-};
+export type CraftJson = Record<string, SerializedNode>;
 
 export type ColumnLayout = '1-1' | '2-1' | '1-2';

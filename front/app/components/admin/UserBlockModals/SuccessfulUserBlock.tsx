@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 
-// components
+import {
+  Title,
+  Text,
+  Box,
+  Icon,
+  colors,
+} from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
-import { Title, Text, Box, Icon } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// Styling
-import { colors } from 'utils/styleUtils';
+import messages from './messages';
 
 type Props = {
   opened: boolean;

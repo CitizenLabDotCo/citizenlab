@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
+
+import schemaKeys from 'api/custom_fields_json_form_schema/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import userCustomFieldsKeys from './keys';
 import { IUserCustomFieldInputType, IUserCustomField } from './types';
-import schemaKeys from 'api/custom_fields_json_form_schema/keys';
 
 export type UpdateField = {
   customFieldId: string;
@@ -23,7 +26,7 @@ const updateField = async ({
     body: { custom_field: otherFieldProperties },
   });
 
-const useUpdateUserCustomFields = () => {
+const useUpdateUserCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<IUserCustomField, { errors: CLErrors }, UpdateField>({
     mutationFn: updateField,
@@ -41,4 +44,4 @@ const useUpdateUserCustomFields = () => {
   });
 };
 
-export default useUpdateUserCustomFields;
+export default useUpdateUserCustomField;

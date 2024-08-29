@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useMachineTranslationByIdeaId from './useMachineTranslationByIdeaId';
-import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
+import useMachineTranslationByIdeaId from './useMachineTranslationByIdeaId';
 
 const apiPath = '*ideas/:ideaId/machine_translation';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: machineTranslationData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: machineTranslationData }, { status: 200 });
   })
 );
 
@@ -46,8 +45,8 @@ describe('useMachineTranslationByIdeaId', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

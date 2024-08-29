@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+fi:
+  phase_title_default:
+    ideation: Kerää syöte
+    voting: Äänestäminen
+    poll: Poll
+    native_survey: Kysely
+    survey: Kysely
+    document_annotation: Asiakirjan palaute
+    volunteering: Etsi vapaaehtoisia
+    information: Tiedot

@@ -1,8 +1,9 @@
+import causeKeys from 'api/causes/keys';
 import { ICauseData } from 'api/causes/types';
 import { addVolunteer } from 'api/causes/useAddVolunteer';
 import { deleteVolunteer } from 'api/causes/useDeleteVolunteer';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import causeKeys from 'api/causes/keys';
 
 export interface VolunteerParams {
   cause: ICauseData;

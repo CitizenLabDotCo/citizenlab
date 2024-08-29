@@ -1,27 +1,27 @@
 import React from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
-import { getTranslatedFieldBadgeLabel } from './utils';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
 
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import useLocale from 'hooks/useLocale';
+
 import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
-import { FieldElement } from './FieldElement';
 
-// hooks and services
-import useLocale from 'hooks/useLocale';
-import {
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+import { isNilOrError } from 'utils/helperUtils';
 
+import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
+import { getFieldNumbers } from '../utils';
+
+import { FormField } from './FormField';
 
 export const pageDNDType = 'droppable-page';
 export const questionDNDType = 'droppable-question';
@@ -32,17 +32,17 @@ interface FormFieldsProps {
     result: DragAndDropResult,
     nestedGroupData: NestedGroupingStructure[]
   ) => void;
-  isEditingDisabled: boolean;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
+  closeSettings: () => void;
 }
 
 const FormFields = ({
   onEditField,
   selectedFieldId,
-  isEditingDisabled,
   handleDragEnd,
   builderConfig,
+  closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
   const locale = useLocale();
@@ -60,6 +60,7 @@ const FormFields = ({
   };
 
   const nestedGroupData: NestedGroupingStructure[] = [];
+
   formCustomFields.forEach((field) => {
     if (['page', 'section'].includes(field.input_type)) {
       nestedGroupData.push({
@@ -69,11 +70,13 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      lastGroupElement.questions.push({
+      lastGroupElement?.questions.push({
         ...field,
       });
     }
   });
+
+  const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
     <Box height="100%">
@@ -87,13 +90,13 @@ const FormFields = ({
           {nestedGroupData.map((grouping, pageIndex) => {
             return (
               <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
-                <FieldElement
+                <FormField
                   field={grouping.groupElement}
-                  isEditingDisabled={isEditingDisabled}
-                  getTranslatedFieldBadgeLabel={getTranslatedFieldBadgeLabel}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
                   builderConfig={builderConfig}
+                  fieldNumbers={fieldNumbers}
+                  closeSettings={closeSettings}
                 />
                 <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
@@ -108,20 +111,18 @@ const FormFields = ({
                               id={question.id}
                               index={index}
                             >
-                              <FieldElement
+                              <FormField
                                 key={question.id}
                                 field={question}
-                                isEditingDisabled={isEditingDisabled}
-                                getTranslatedFieldBadgeLabel={
-                                  getTranslatedFieldBadgeLabel
-                                }
                                 selectedFieldId={selectedFieldId}
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}
+                                fieldNumbers={fieldNumbers}
+                                closeSettings={closeSettings}
                               />
                             </Drag>
                           ) : (
-                            <Box height="1px" />
+                            <Box key={question.id} height="1px" />
                           );
                         })}
                       </>

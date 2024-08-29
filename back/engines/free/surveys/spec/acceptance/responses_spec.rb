@@ -133,12 +133,11 @@ resource 'Survey Responses' do
       .to_return(status: 200, headers: { 'Content-Type' => 'application/json' }, body: responses_body.to_json)
   end
 
-  get 'web_api/v1/projects/:participation_context_id/survey_responses/as_xlsx' do
-    let(:pc) { create(:continuous_survey_project) }
-    let(:participation_context_id) { pc.id }
-    # let!(:responses) { create_list(:survey_response, 3, participation_context: pc)}
+  get 'web_api/v1/phases/:phase_id/survey_responses/as_xlsx' do
+    let(:phase) { create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV') }
+    let(:phase_id) { phase.id }
 
-    example_request 'XLSX export survey responses from continuous project' do
+    example_request 'XLSX export survey responses from phase' do
       expect(status).to eq 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet.count).to eq 3
@@ -151,18 +150,6 @@ resource 'Survey Responses' do
         do_request
         expect(status).to eq 401
       end
-    end
-  end
-
-  get 'web_api/v1/phases/:participation_context_id/survey_responses/as_xlsx' do
-    let(:pc) { create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV') }
-    let(:participation_context_id) { pc.id }
-    # let!(:responses) { create_list(:survey_response, 2, participation_context: pc)}
-
-    example_request 'XLSX export survey responses from phase' do
-      expect(status).to eq 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet.count).to eq 3
     end
   end
 end

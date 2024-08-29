@@ -1,10 +1,14 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
+
+import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
-import { clamp } from 'lodash-es';
-import Observer from '@researchgate/react-intersection-observer';
+
 import warningPattern from './warning_pattern.svg';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  height: 8px;
+`;
 
 const ProgressBarOuter = styled.div<{ background: string }>`
   width: 100%;
@@ -27,7 +31,6 @@ const ProgressBarInner: any = styled.div<{ progress: number; color: string }>`
 `;
 
 interface Props {
-  /** Number between 0 and 1 */
   progress: number;
   color: string;
   bgColor: string;
@@ -36,50 +39,36 @@ interface Props {
   className?: string;
 }
 
-interface State {
-  visible: boolean;
-}
+const ProgressBar = ({
+  progress,
+  color,
+  bgColor,
+  className,
+  bgShaded,
+}: Props) => {
+  const [visible, setVisible] = useState(false);
+  const { ref: progressBarRef } = useInView({
+    onChange: (inView) => {
+      if (inView) {
+        setVisible(true);
+      }
+    },
+  });
 
-class ProgressBar extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      visible: false,
-    };
-  }
-
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
-
-  render() {
-    const { progress, color, bgColor, className, bgShaded } = this.props;
-    const { visible } = this.state;
-
-    return (
-      <Container className={className} aria-hidden>
-        <Observer onChange={this.handleIntersection}>
-          <ProgressBarOuter
-            background={
-              bgShaded === true ? `url("${warningPattern}")` : bgColor
-            }
-          >
-            <ProgressBarInner
-              progress={clamp(progress, 0, 1)}
-              className={visible ? 'visible' : ''}
-              color={color}
-            />
-          </ProgressBarOuter>
-        </Observer>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container className={className} aria-hidden>
+      <ProgressBarOuter
+        ref={progressBarRef}
+        background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
+      >
+        <ProgressBarInner
+          progress={progress > 1 ? 1 : progress}
+          className={visible ? 'visible' : ''}
+          color={color}
+        />
+      </ProgressBarOuter>
+    </Container>
+  );
+};
 
 export default ProgressBar;

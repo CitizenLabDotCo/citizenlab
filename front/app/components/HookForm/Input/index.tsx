@@ -1,19 +1,22 @@
 import React from 'react';
+
 import {
   Input as InputComponent,
   InputProps,
   Box,
 } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
-import { get } from 'lodash-es';
+
+import Error, { TFieldName } from 'components/UI/Error';
 
 interface Props extends InputProps {
   name: string;
+  fieldName?: TFieldName;
 }
 
-const Input = ({ name, type = 'text', ...rest }: Props) => {
+const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -44,7 +47,7 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
       )}
       {apiError && (
         <Error
-          fieldName={name as TFieldName}
+          fieldName={fieldName || (name as TFieldName)}
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"

@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { isRtl } from '@citizenlab/cl2-component-library';
 // eslint-disable-next-line no-restricted-imports
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
 
 type Props = {

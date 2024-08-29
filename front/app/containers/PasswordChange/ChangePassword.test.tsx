@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { IUserData } from 'api/users/types';
+
 import {
   screen,
   render,
@@ -6,8 +9,8 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
+
 import ChangePassword from '.';
-import { IUserData } from 'api/users/types';
 
 const mockUserData: IUserData = {
   id: 'userId',
@@ -26,6 +29,7 @@ const mockUserData: IUserData = {
     unread_notifications: 0,
     invite_status: null,
     confirmation_required: false,
+    followings_count: 2,
   },
 };
 

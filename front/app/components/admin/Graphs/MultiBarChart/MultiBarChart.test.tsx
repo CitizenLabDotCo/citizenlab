@@ -1,8 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
-import MultiBarChart from './';
+
 import { NilOrError } from 'utils/helperUtils';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
 import { legacyColors } from '../styling';
+
+import MultiBarChart from './';
 
 type Row = { name: string; value1: number; value2: number };
 

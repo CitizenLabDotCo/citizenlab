@@ -5,13 +5,17 @@ export default defineMessages({
     id: 'app.containers.App.loading',
     defaultMessage: 'Loading...',
   },
-  metaTitle: {
-    id: 'app.containers.App.metaTitle',
-    defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
+  metaTitle1: {
+    id: 'app.containers.App.metaTitle1',
+    defaultMessage: 'Citizen engagement platform | {orgName}',
   },
   appMetaDescription: {
     id: 'app.containers.App.appMetaDescription',
     defaultMessage:
       'Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!',
+  },
+  skipLinkText: {
+    id: 'app.containers.App.skipLinkText',
+    defaultMessage: 'Skip to main content',
   },
 });

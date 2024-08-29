@@ -1,7 +1,10 @@
-import fetcher from 'utils/cl-react-query/fetcher';
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import schemaKeys from './keys';
 import { SchemaKeys, SchemaResponse } from './types';
 

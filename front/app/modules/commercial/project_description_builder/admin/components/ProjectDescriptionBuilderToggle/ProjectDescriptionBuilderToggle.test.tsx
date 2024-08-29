@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { Multiloc } from 'typings';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import ProjectDescriptionBuilderToggle from '.';
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {

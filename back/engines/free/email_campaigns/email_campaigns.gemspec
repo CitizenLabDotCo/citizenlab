@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = EmailCampaigns::VERSION
   s.authors     = ['CitizenLab']
   s.summary     = 'Sends out the campaign emails as scheduled'
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'mailgun-ruby', '~>1.2.0'
   s.add_dependency 'liquid', '>= 4', '< 6'
 
+  s.add_development_dependency 'capybara', '~> 3.39'
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
 end

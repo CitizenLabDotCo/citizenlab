@@ -22,13 +22,14 @@ resource 'ActionDescriptors' do
       expect(json_attributes.values.pluck(:disabled_reason).none?).to be true
     end
 
-    context 'with granular permissions enabled', document: false do
+    context 'with permissions on a phase enabled', document: false do
       before do
-        PermissionsService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
-          .update!(permitted_by: 'groups', groups: create_list(:group, 2))
+          .update!(permitted_by: 'users', groups: create_list(:group, 2))
       end
 
+      # TODO: move-old-proposals-test
       example_request 'Get the global action descriptors for initiatives' do
         expect(json_response).to eq(
           {
@@ -41,7 +42,7 @@ resource 'ActionDescriptors' do
                 },
                 commenting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_in_group'
+                  disabled_reason: 'user_not_in_group'
                 },
                 reacting_initiative: {
                   enabled: true,
@@ -53,7 +54,7 @@ resource 'ActionDescriptors' do
                 },
                 comment_reacting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_in_group'
+                  disabled_reason: 'user_not_in_group'
                 }
               }
             }

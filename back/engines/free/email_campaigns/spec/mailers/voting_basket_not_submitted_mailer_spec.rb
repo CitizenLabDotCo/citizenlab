@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
       {
         recipient: recipient,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           context_title_multiloc: project.phases.first.title_multiloc
         }
       }
@@ -44,7 +44,7 @@ RSpec.describe EmailCampaigns::VotingBasketNotSubmittedMailer do
     end
 
     it "displays 'View options and vote' button with correct link" do
-      project_url = Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
+      project_url = Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match project_url
       expect(mail.body.encoded).to match 'Click the button below to submit your selected options'
       expect(mail.body.encoded).to match 'View options and vote'

@@ -1,38 +1,41 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { omit } from 'lodash-es';
-
-import { useParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Box,
-  Input,
   Button,
   colors,
   stylingConsts,
   Text,
   Icon,
   ListItem,
-  Checkbox,
   Spinner,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
-import Tag from './Tag';
-import AutotaggingModal from './AutotaggingModal';
-import TagCount from './TagCount';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
 import { useQueryClient } from '@tanstack/react-query';
+import { isEqual, omit, uniq } from 'lodash-es';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import inputsKeys from 'api/analysis_inputs/keys';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import Modal from 'components/UI/Modal';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import tracks from '../tracks';
+
+import AddTag from './AddTag';
+import AutotaggingModal from './AutoTaggingModal';
+import messages from './messages';
+import Tag from './Tag';
 import TagActions from './TagActions';
+import TagAssistance from './TagAssistance';
+import TagCount from './TagCount';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -68,13 +71,23 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
-  const [name, setName] = useState('');
-  const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
-    useState(false);
+  const [height, setHeight] = useState(0);
 
-  const filters = useAnalysisFilterParams();
+  const measuredRef = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
 
   const { formatMessage } = useIntl();
+  const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
+    useState(false);
+  const [createdTagId, setCreatedTagId] = useState<string | null>(null);
+  const [tagAssistanceTagId, setTagAssistanceTagId] = useState<string | null>(
+    null
+  );
+
+  const filters = useAnalysisFilterParams();
 
   const { analysisId } = useParams() as { analysisId: string };
 
@@ -83,7 +96,20 @@ const Tags = () => {
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
-  const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
+
+  useEffect(() => {
+    if (
+      createdTagId &&
+      tags?.data.map((tag) => tag.id).includes(createdTagId)
+    ) {
+      const tagElement = document.getElementById(`tag-${createdTagId}`);
+      if (tagElement) {
+        tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      setCreatedTagId(null);
+      setTagAssistanceTagId(createdTagId);
+    }
+  }, [createdTagId, tags]);
 
   if (isLoadingTags) {
     return (
@@ -98,27 +124,21 @@ const Tags = () => {
   const inputsWithoutTags = tags?.meta.inputs_without_tags;
   const filteredInputsWithoutTags = tags?.meta.filtered_inputs_without_tags;
 
-  const onChangeName = (name: string) => {
-    setName(name);
-  };
+  // We need `as any[] | undefined` due to known TS limitation in various places
+  // below of code using `selectedTags`
+  // https://github.com/microsoft/TypeScript/issues/44373
+  const selectedTags = filters.tag_ids as any[] | undefined;
 
-  const handleTagSubmit = () => {
-    addTag(
-      {
-        analysisId,
-        name,
-      },
-      {
-        onSuccess: () => {
-          setName('');
-        },
-      }
+  // We show the empty state in case the only tags there are the initial
+  // onboarding example tags
+  const emptyState =
+    tags?.data &&
+    isEqual(
+      ['onboarding_example'],
+      uniq(tags.data.map((tag) => tag.attributes.tag_type))
     );
-  };
 
-  const selectedTags = filters.tag_ids;
-
-  const toggleТаgClick = (id: string) => {
+  const toggleТаgCheckboxClick = (id: string) => {
     const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
       updateSearchParams({ tag_ids: [...(nonNullSelectedTags || []), id] });
@@ -128,125 +148,129 @@ const Tags = () => {
       });
     }
     queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed.name, {
+      extra: { tagId: id },
+    });
   };
 
-  const tagsAreSelected =
-    selectedTags && selectedTags?.length > 0 && selectedTags[0] !== null;
-
   return (
-    <Box>
-      <Box>
-        <Button
-          onClick={() => setAutotaggingModalIsOpened(true)}
-          icon="flash"
-          mb="12px"
-          size="s"
-          buttonStyle="secondary-outlined"
-        >
-          Auto-tag
-          {!tags?.data.length && (
-            <BlickingIcon
-              name={'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.primary}
-              ml="8px"
-            />
-          )}
-        </Button>
-
-        <Box display="flex" alignItems="center" mb="8px" as="form">
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            placeholder={formatMessage(messages.addTag)}
-            size="small"
-          />
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      overflow="auto"
+      pb="12px"
+      px="12px"
+    >
+      <TagAssistance
+        tagId={tagAssistanceTagId}
+        onHide={() => setTagAssistanceTagId(null)}
+      />
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+        width="1000px"
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
+      <Box
+        position="fixed"
+        bgColor={colors.white}
+        zIndex="2"
+        ref={measuredRef}
+        w="265px"
+        pt="12px"
+      >
+        <Box>
           <Button
-            ml="4px"
-            p="6px"
-            onClick={handleTagSubmit}
-            disabled={!name || isLoading}
-            icon="plus"
-          />
+            id="auto-tag-button"
+            onClick={() => setAutotaggingModalIsOpened(true)}
+            icon="stars"
+            mb="12px"
+            size="s"
+            buttonStyle="admin-dark"
+          >
+            {formatMessage(messages.autoTag)}
+            {emptyState && (
+              <BlickingIcon
+                name={'dot'}
+                width="16px"
+                height="16px"
+                fill={colors.white}
+                ml="8px"
+              />
+            )}
+          </Button>
+          <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
         </Box>
-        <div>
-          {error && (
-            <Error apiErrors={error.errors['name']} fieldName="tag_name" />
-          )}
-        </div>
+        <Box>
+          <TagContainer
+            tabIndex={0}
+            onClick={() => removeSearchParams(['tag_ids'])}
+            className={!selectedTags ? 'selected' : ''}
+            data-cy="e2e-analysis-all-tags"
+          >
+            {formatMessage(messages.allInputs)}
+            <TagCount
+              count={inputsTotal}
+              totalCount={inputsTotal}
+              filteredCount={filteredInputsTotal}
+            />
+          </TagContainer>
+          <TagContainer
+            tabIndex={0}
+            onClick={() => updateSearchParams({ tag_ids: [null] })}
+            className={
+              selectedTags && selectedTags[0] === null ? 'selected' : ''
+            }
+            data-cy="e2e-analysis-inputs-without-tags"
+          >
+            {formatMessage(messages.inputsWithoutTags)}
+            <TagCount
+              count={inputsWithoutTags}
+              totalCount={inputsTotal}
+              filteredCount={filteredInputsWithoutTags}
+            />
+          </TagContainer>
+        </Box>
       </Box>
-      <Box>
-        <TagContainer
-          tabIndex={0}
-          onClick={() => removeSearchParams(['tag_ids'])}
-          className={!selectedTags ? 'selected' : ''}
-        >
-          All inputs
-          <TagCount
-            count={inputsTotal}
-            totalCount={inputsTotal}
-            filteredCount={filteredInputsTotal}
-          />
-        </TagContainer>
-        <TagContainer
-          tabIndex={0}
-          onClick={() => updateSearchParams({ tag_ids: [null] })}
-          className={selectedTags && selectedTags[0] === null ? 'selected' : ''}
-        >
-          Inputs without tags
-          <TagCount
-            count={inputsWithoutTags}
-            totalCount={inputsTotal}
-            filteredCount={filteredInputsWithoutTags}
-          />
-        </TagContainer>
-        {!isLoading && tags?.data.length === 0 && (
-          <Text p="6px" color="grey400">
-            You do not have any tags yet.
-          </Text>
-        )}
+      <Box flex="1" mt={`${height - 1}px`} w="265px">
         {tags?.data.map((tag) => (
           <TagContainer
+            id={`tag-${tag.id}`}
             key={tag.id}
-            tabIndex={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleТаgClick(tag.id);
+            onClick={() => {
+              toggleТаgCheckboxClick(tag.id);
             }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                toggleТаgClick(tag.id);
-              }
-            }}
+            data-cy="e2e-analysis-tag-container"
           >
-            {tagsAreSelected && (
-              <Box position="absolute" top="20px">
-                <Checkbox
-                  checked={!!selectedTags?.includes(tag.id)}
-                  onChange={() => {
-                    toggleТаgClick(tag.id);
-                  }}
-                  size="20px"
-                />
-              </Box>
-            )}
-            <Box ml={tagsAreSelected ? '28px' : '0px'}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Tag
-                  name={tag.attributes.name}
-                  tagType={tag.attributes.tag_type}
-                />
-                <Box display="flex">
-                  <TagActions tag={tag} />
-                </Box>
-              </Box>
+            <Box
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <CheckboxWithLabel
+                checked={!!selectedTags?.includes(tag.id)}
+                onChange={() => {
+                  toggleТаgCheckboxClick(tag.id);
+                }}
+                size="20px"
+                label={
+                  <Tag
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                }
+              />
+              <TagActions tag={tag} />
+            </Box>
+            <Box ml={'28px'}>
               <TagCount
                 count={tag.attributes.total_input_count}
                 totalCount={inputsTotal}
@@ -255,15 +279,14 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {!isLoadingTags && emptyState && (
+          <Box>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(messages.noTags)}
+            </Text>
+          </Box>
+        )}
       </Box>
-      <Modal
-        opened={autotaggingModalIsOpened}
-        close={() => setAutotaggingModalIsOpened(false)}
-      >
-        <AutotaggingModal
-          onCloseModal={() => setAutotaggingModalIsOpened(false)}
-        />
-      </Modal>
     </Box>
   );
 };

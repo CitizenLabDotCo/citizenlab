@@ -10,6 +10,8 @@ nl-BE:
       comment_author: '%{authorName} schreef:'
       idea_author: '%{authorName} heeft een bijdrage geplaatst:'
       initiative_author: '%{authorName} heeft een voorstel ingediend:'
-      this_post_was_flagged: >
-        <p>Dit bericht werd automatisch gedetecteerd als mogelijk ongepaste inhoud. We sturen je deze melding zodat je het bericht kunt nakijken of het in overeenstemming is met je gebruiksvoorwaarden.</p><p>Als de post geen ongepaste inhoud bevat, kun je de waarschuwing verwijderen via je platform in het tabblad Activiteit in het admin-paneel.</p>
+      automatically_flagged: >
+        Dit bericht is automatisch gedetecteerd als een bericht met mogelijk ongepaste inhoud. We sturen je deze melding zodat je het bericht kunt beoordelen volgens je eigen moderatierichtlijnen.
+      how_to_review: >
+        Als het bericht geen ongepaste inhoud bevat, kun je de waarschuwing verwijderen via je platform onder het tabblad Dashboard - Activiteit in het beheerderspaneel.
       cta_review_post: 'Bijdrage nakijken'

@@ -1,36 +1,30 @@
 import React, { SyntheticEvent } from 'react';
-import { adopt } from 'react-adopt';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 // import { Select } from '@citizenlab/cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
 
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUsers } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { ManagerType } from 'components/admin/PostManager';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import { ManagerType } from 'components/admin/PostManager';
-import useAuthUser from 'api/me/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
-interface DataProps {
-  prospectAssignees: GetUsersChildProps;
-}
+import messages from './messages';
+import tracks from './tracks';
 
-interface InputProps {
+interface Props {
   handleAssigneeFilterChange: (value: string | undefined) => void;
   projectId?: string | null;
   assignee?: string | null;
   type: ManagerType;
   className?: string;
 }
-
-interface Props extends InputProps, DataProps {}
 
 type TAssigneeOption = {
   value: string;
@@ -41,18 +35,31 @@ type TAssigneeOption = {
 
 const AssigneeFilter = ({
   assignee,
-  prospectAssignees,
   className,
   handleAssigneeFilterChange,
+  type,
+  projectId,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const { data: prospectAssignees } = useUsers({
+    pageSize: 250,
+    ...((type === 'ProjectIdeas' || type === 'ProjectProposals') && projectId
+      ? {
+          can_moderate_project: projectId,
+        }
+      : type === 'AllIdeas'
+      ? {
+          can_moderate: true,
+        }
+      : { can_admin: true }),
+  });
 
-  if (isNilOrError(authUser)) {
+  if (!authUser || !prospectAssignees) {
     return null;
   }
 
-  const getAssigneeOptions = (prospectAssignees: GetUsersChildProps) => {
+  const getAssigneeOptions = (prospectAssignees: IUsers) => {
     // Order of assignee filter options:
     // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
     const assigneeOptions: TAssigneeOption[] = [
@@ -73,8 +80,8 @@ const AssigneeFilter = ({
       },
     ];
 
-    const dynamicOptions = !isNilOrError(prospectAssignees.usersList)
-      ? prospectAssignees.usersList
+    const dynamicOptions = !isNilOrError(prospectAssignees)
+      ? prospectAssignees.data
           .filter((assignee) => assignee.id !== authUser.data.id)
           .map((assignee) => ({
             value: assignee.id,
@@ -117,25 +124,4 @@ const AssigneeFilter = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: ({ type, projectId, render }) =>
-    type === 'ProjectIdeas' && projectId ? (
-      <GetUsers can_moderate_project={projectId} pageSize={250}>
-        {render}
-      </GetUsers>
-    ) : type === 'AllIdeas' ? (
-      <GetUsers can_moderate pageSize={250}>
-        {render}
-      </GetUsers>
-    ) : (
-      <GetUsers can_admin pageSize={250}>
-        {render}
-      </GetUsers>
-    ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <AssigneeFilter {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default AssigneeFilter;

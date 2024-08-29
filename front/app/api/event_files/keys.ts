@@ -1,6 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IDeleteEventFileProperties } from './types';
 
+const itemKey = { type: 'file' };
 const baseKey = { type: 'file', variant: 'event' };
 
 const eventFilesKeys = {
@@ -12,9 +14,9 @@ const eventFilesKeys = {
   items: () => [{ ...baseKey, operation: 'item' }],
   item: (properties: IDeleteEventFileProperties) => [
     {
-      ...baseKey,
+      ...itemKey,
       operation: 'item',
-      parameters: properties,
+      parameters: { id: properties.eventId },
     },
   ],
 } satisfies QueryKeys;

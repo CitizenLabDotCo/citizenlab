@@ -1,29 +1,28 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useEffect, useState } from 'react';
+
+import {
+  Icon,
+  useBreakpoint,
+  media,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-
-// utils
-import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
+import styled, { css } from 'styled-components';
 
-// services
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { TPolicyPage } from 'api/custom_pages/types';
 
-// style
-import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.footer`
   display: flex;
@@ -32,7 +31,6 @@ const Container = styled.footer`
   position: relative;
   ${media.tablet`
     margin-top: 0px;
-    padding-bottom: ${({ theme: { mobileMenuHeight } }) => mobileMenuHeight}px;
   `}
 `;
 
@@ -47,6 +45,7 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
+
   ${media.tablet`
     display: flex;
     flex-direction: column;
@@ -182,8 +181,8 @@ const PoweredByText = styled.span`
   `}
 `;
 
-const CitizenlabLink = styled.a`
-  width: 130px;
+const GoVocalLink = styled.a`
+  width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,8 +190,8 @@ const CitizenlabLink = styled.a`
   cursor: pointer;
 `;
 
-const CitizenLabLogo = styled(Icon)`
-  height: 28px;
+const GoVocalLogo = styled(Icon)`
+  height: 32px;
   fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
@@ -224,14 +223,29 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
 
 const PlatformFooter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const isTabletOrSmaller = useBreakpoint('tablet');
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
   });
+  const [paddingBottom, setPaddingBottom] = useState<string | undefined>(
+    undefined
+  );
 
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
+
+  const participationBar = document.getElementById('project-cta-bar');
+
+  useEffect(() => {
+    setPaddingBottom(
+      participationBar && isTabletOrSmaller
+        ? `${participationBar.offsetHeight}px`
+        : undefined
+    );
+  }, [participationBar, isTabletOrSmaller]);
 
   const getHasCustomizedA11yFooterLink = () => {
     return (
@@ -259,9 +273,30 @@ const PlatformFooter = ({ className }: Props) => {
     name: 'remove_vendor_branding',
   });
 
+  const getLocalizedLogoName = () => {
+    switch (locale) {
+      case 'es-CL':
+      case 'es-ES':
+      case 'ca-ES':
+        return 'gv-logo-es';
+      case 'nl-NL':
+      case 'nl-BE':
+        return 'gv-logo-nl';
+      case 'fr-FR':
+      case 'fr-BE':
+        return 'gv-logo-fr';
+      case 'da-DK':
+        return 'gv-logo-dk';
+      case 'de-DE':
+        return 'gv-logo-de';
+      default:
+        return 'gv-logo-en'; // Default is English
+    }
+  };
+
   return (
     <Container id="hook-footer" className={className}>
-      <FooterContainer>
+      <FooterContainer style={{ paddingBottom }}>
         <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {
@@ -303,18 +338,22 @@ const PlatformFooter = ({ className }: Props) => {
           </PagesNavList>
         </PagesNav>
 
-        <Right>
-          {!removeVendorBranding && (
+        {!removeVendorBranding && (
+          <Right>
             <PoweredBy>
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
-              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-                <CitizenLabLogo name="cl-logo" title="CitizenLab" />
-              </CitizenlabLink>
+              <GoVocalLink href="https://govocal.com/" target="_blank">
+                <GoVocalLogo
+                  ariaHidden={false}
+                  name={getLocalizedLogoName()}
+                  title="Go Vocal"
+                />
+              </GoVocalLink>
             </PoweredBy>
-          )}
-        </Right>
+          </Right>
+        )}
       </FooterContainer>
     </Container>
   );

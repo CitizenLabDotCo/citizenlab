@@ -16,10 +16,11 @@ RSpec.describe InputUiSchemaGeneratorService do
     context 'ideation form' do
       subject(:generator) { described_class.new input_term, true }
 
-      let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:ui_schema) { generator.generate_for fields }
 
-      context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+      context 'for a project with an ideation phase, a changed built-in field and an extra section and field' do
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
             form.custom_fields.find_by(code: 'title_multiloc').update!(
@@ -553,8 +554,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous ideation project with an empty custom section' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+      context 'for a project with an ideation phase and with an empty custom section' do
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:extra_section) do
           create(
@@ -583,9 +584,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous ideation project with the default form' do
+      context 'for a project with an ideation phase and with the default form' do
         let(:input_term) { 'option' }
-        let(:project) { create(:continuous_project, input_term: input_term) }
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         it 'returns the schema for the default fields' do
@@ -699,17 +700,16 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a timeline project' do
+      context 'for projects with multiple phases' do
         let(:input_term) { 'contribution' }
-        let(:timeline_fields) do
-          project_with_current_phase = create(:project_with_current_phase, input_term: 'issue')
+        let(:fields) do
+          project_with_current_phase = create(:project_with_current_phase)
           TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
           IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
         end
 
         it 'uses the right input_term' do
-          ui_schema = generator.generate_for(timeline_fields)['en']
-          expect(ui_schema.dig(:options, :inputTerm)).to eq 'contribution'
+          expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'contribution'
         end
       end
     end
@@ -719,9 +719,9 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
-      context 'for a continuous native survey project without pages' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase without pages' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:field) { create(:custom_field, resource: custom_form) }
 
         it 'has an empty extra category label, so that the category label is suppressed in the UI' do
@@ -753,9 +753,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous native survey project with pages' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase with pages' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:page1) do
           create(
             :custom_field_page,
@@ -780,7 +780,8 @@ RSpec.describe InputUiSchemaGeneratorService do
             resource: custom_form,
             key: 'about_your_cycling_habits',
             title_multiloc: { 'en' => 'About your cycling habits' },
-            description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' }
+            description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' },
+            page_layout: 'map'
           )
         end
         let!(:field_in_page2) do
@@ -816,7 +817,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: 'About you',
-                  description: 'Please fill in some <strong>personal details</strong>.'
+                  description: 'Please fill in some <strong>personal details</strong>.',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -837,7 +840,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: 'About your cycling habits',
-                  description: 'Please indicate how you use <strong>a bike</strong>.'
+                  description: 'Please indicate how you use <strong>a bike</strong>.',
+                  page_layout: 'map',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -858,7 +863,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: 'This is the end of the survey',
-                  description: 'Thank you for participating 🚀'
+                  description: 'Thank you for participating 🚀',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: []
               },
@@ -866,8 +873,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Survey end',
-                  description: "Please submit your answers by selecting 'Submit survey' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -876,9 +883,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous native survey project with pages and logic' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase with pages and logic' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:page1) do
           create(
             :custom_field_page,
@@ -932,6 +939,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         let!(:never_option) do
           create(:custom_field_option, custom_field: field_in_page2, key: 'never', title_multiloc: { 'en' => 'Never' })
         end
+        let!(:other_option) do
+          create(:custom_field_option, custom_field: field_in_page2, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+        end
         let!(:page3) do
           create(
             :custom_field_page,
@@ -962,8 +972,8 @@ RSpec.describe InputUiSchemaGeneratorService do
           })
         end
 
-        it 'includes rules for logic' do
-          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, page3] # TODO: Remove this line (include page 4)
+        it 'includes rules for logic & other field for "other" option' do
+          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, field_in_page2.other_option_text_field, page3]
           expect(ui_schema['en']).to eq({
             type: 'Categorization',
             options: {
@@ -977,7 +987,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -988,8 +1000,13 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    maximum_label: '',
-                    minimum_label: ''
+                    linear_scale_label1: '',
+                    linear_scale_label2: '',
+                    linear_scale_label3: '',
+                    linear_scale_label4: '',
+                    linear_scale_label5: '',
+                    linear_scale_label6: '',
+                    linear_scale_label7: ''
                   }
                 }]
               },
@@ -999,7 +1016,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -1008,9 +1027,22 @@ RSpec.describe InputUiSchemaGeneratorService do
                   options: {
                     input_type: field_in_page2.input_type,
                     description: '',
+                    dropdown_layout: false,
                     isAdminField: false,
                     hasRule: true,
-                    enumNames: ['Every day', 'Never']
+                    enumNames: ['Every day', 'Never', 'Other'],
+                    otherField: "#{field_in_page2.key}_other"
+                  }
+                }, {
+                  type: 'Control',
+                  scope: "#/properties/#{field_in_page2.key}_other",
+                  label: "If you picked 'Other', what are you thinking of?",
+                  options: {
+                    description: '',
+                    hasRule: false,
+                    input_type: 'text',
+                    isAdminField: false,
+                    transform: 'trim_on_blur'
                   }
                 }],
                 ruleArray: [
@@ -1031,7 +1063,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [],
                 ruleArray: [
@@ -1050,8 +1084,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Survey end',
-                  description: "Please submit your answers by selecting 'Submit survey' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -1079,16 +1113,16 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for author_id built-in field' do
-      let(:code) { 'author_id' }
+      let(:field) { JsonFormsService::AUTHOR_FIELD }
 
       it 'returns the schema for the author_id field with isAdminField set to true' do
         expect(generator.visit_text(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Text field title',
+          scope: '#/properties/author_id',
+          label: 'Author',
           options: {
             input_type: field.input_type,
-            description: 'Text field description',
+            description: '',
             transform: 'trim_on_blur',
             isAdminField: true,
             hasRule: false
@@ -1131,17 +1165,17 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
-    context 'for author_id built-in field' do
-      let(:code) { 'budget' }
+    context 'for budget built-in field' do
+      let(:field) { JsonFormsService::BUDGET_FIELD }
 
       it 'returns the schema for the budget field with isAdminField set to true' do
         expect(generator.visit_number(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Number field title',
+          scope: '#/properties/budget',
+          label: 'Budget',
           options: {
-            input_type: field.input_type,
-            description: 'Number field description',
+            input_type: 'number',
+            description: '',
             isAdminField: true,
             hasRule: false
           }
@@ -1394,13 +1428,14 @@ RSpec.describe InputUiSchemaGeneratorService do
     let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
     let(:field) do
       create(
-        :custom_field,
-        input_type: 'page',
+        :custom_field_page,
         key: field_key,
         title_multiloc: { 'en' => 'Page field title' },
         description_multiloc: { 'en' => 'Page field description' }
       )
     end
+
+    let!(:map_config) { create(:map_config, mappable: field) }
 
     it 'returns the schema for the given field, with id, and without elements' do
       expect(generator.visit_page(field)).to eq({
@@ -1409,7 +1444,9 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: field.input_type,
           id: field.id,
           title: 'Page field title',
-          description: 'Page field description'
+          description: 'Page field description',
+          page_layout: 'default',
+          map_config_id: map_config.id
         },
         elements: []
       })

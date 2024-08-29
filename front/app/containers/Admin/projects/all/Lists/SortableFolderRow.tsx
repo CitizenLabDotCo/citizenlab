@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+
+import styled from 'styled-components';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAuthUser from 'api/me/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
+
+import { SortableRow } from 'components/admin/ResourceList';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-import styled from 'styled-components';
-import { SortableRow } from 'components/admin/ResourceList';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { PublicationStatus } from 'api/projects/types';
-import useAuthUser from 'api/me/useAuthUser';
+
 import FolderChildProjects from './FolderChildProjects';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {
@@ -24,6 +28,7 @@ interface Props {
   dropRow: (itemId: string, toIndex: number) => void;
   isLastItem: boolean;
   publication: IAdminPublicationData;
+  search?: string;
 }
 
 const publicationStatuses: PublicationStatus[] = [
@@ -51,7 +56,7 @@ const SortableFolderRow = ({
     .map((page) => page.data)
     .flat();
 
-  const [folderOpen, setFolderOpen] = useState(true);
+  const [folderOpen, setFolderOpen] = useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
@@ -65,6 +70,11 @@ const SortableFolderRow = ({
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0;
   const showBottomBorder = isLastItem && !folderOpen;
+
+  const publicationRelation = publication.relationships.publication.data;
+
+  const folderId =
+    publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
 
   return (
     <>
@@ -85,6 +95,8 @@ const SortableFolderRow = ({
       {hasProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
+          folderId={folderId}
+          isLastFolder={isLastItem}
         />
       )}
     </>

@@ -1,18 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// Components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
+import styled from 'styled-components';
 
-// Hooks
-import { ICampaign } from 'api/campaigns/types';
-import { ICampaignExampleData } from 'api/campaign_examples/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { ICampaignExampleData } from 'api/campaign_examples/types';
+import { ICampaign } from 'api/campaigns/types';
 
-// i18n
 import T from 'components/T';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../../messages';
 
 const StyledFrame = styled(Frame)`

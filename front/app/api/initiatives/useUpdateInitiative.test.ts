@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateInitiative from './useUpdateInitiative';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IInitiativeData } from './types';
+import useUpdateInitiative from './useUpdateInitiative';
 
 export const data: IInitiativeData = {
   id: '1',
@@ -34,6 +33,7 @@ export const data: IInitiativeData = {
     location_description: 'Test location',
     created_at: '2021-03-01T12:00:00.000Z',
     updated_at: '2021-03-01T12:00:00.000Z',
+    proposed_at: '2021-03-01T12:00:00.000Z',
     expires_at: '2021-03-01T12:00:00.000Z',
     header_bg: {
       small: 'http://localhost:3000/system/images/1/small/test.jpg',
@@ -82,8 +82,8 @@ export const data: IInitiativeData = {
 
 const apiPath = '*initiatives/:initiativeId';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -109,8 +109,8 @@ describe('useUpdateInitiative', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

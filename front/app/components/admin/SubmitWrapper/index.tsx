@@ -1,20 +1,17 @@
 import React, { PureComponent, FormEvent } from 'react';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
-// styles
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
+import { Omit } from 'typings';
 
-// components
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
 
-// typings
-import { Omit } from 'typings';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 export type ISubmitState =
   | 'disabled'
@@ -121,7 +118,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
   };
 
   render() {
-    const style = this.props.buttonStyle || 'cl-blue';
+    const style = this.props.buttonStyle || 'admin-dark';
     const secondaryButtonStyle =
       this.props.secondaryButtonStyle || 'primary-outlined';
 

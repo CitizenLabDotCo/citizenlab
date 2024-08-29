@@ -1,29 +1,31 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaStatuses from './useIdeaStatuses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { ideaStatusesData } from './__mocks__/useIdeaStatuses';
 
-const apiPath = '*idea_statuses';
+import endpoints, {
+  apiPathStatuses,
+  ideaStatusesData,
+} from './__mocks__/_mockServer';
+import useIdeaStatuses from './useIdeaStatuses';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData }));
-  })
-);
+const server = setupServer(endpoints['GET idea_statuses']);
 
 describe('useIdeaStatuses', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -35,14 +37,20 @@ describe('useIdeaStatuses', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathStatuses, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -6,9 +6,13 @@ module AdminApi
     skip_around_action :switch_tenant
 
     def index
-      tenants = Tenant.not_deleted.order(name: :asc)
+      tenants = Tenant.not_deleted
       # Call #to_json explicitly, otherwise 'data' is added as root.
-      render json: serialize_tenants(tenants).to_json
+      tenants_json = Rails.cache.fetch(tenants.cache_key_with_version, expires_in: 1.hour) do
+        serialize_tenants(tenants).to_json
+      end
+
+      render json: tenants_json
     end
 
     def show
@@ -54,7 +58,7 @@ module AdminApi
     end
 
     def templates
-      render json: MultiTenancy::Templates::Utils.new.available_templates
+      render json: MultiTenancy::Templates::Utils.new.template_manifest
     end
 
     private
@@ -65,13 +69,10 @@ module AdminApi
     # keeping things simple for now.
     #
     # @param [Enumerable<Tenant>] tenants
-    def serialize_tenants(tenants = nil)
-      tenants ||= Tenant.not_deleted
-      tenants = tenants.sort_by(&:host)
-      configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
-
-      tenants.zip(configs).map do |tenant, config|
-        AdminApi::TenantSerializer.new(tenant, app_configuration: config)
+    def serialize_tenants(tenants)
+      configs = AppConfiguration.from_tenants(tenants).index_by(&:host)
+      tenants.sort_by(&:host).map do |tenant|
+        AdminApi::TenantSerializer.new(tenant, app_configuration: configs[tenant.host])
       end
     end
 

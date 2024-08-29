@@ -105,7 +105,7 @@ describe MentionService do
       expect(result).to match_array [@u1, @u2]
     end
 
-    it 'handles case gracefully' do
+    it 'handles character case gracefully' do
       result = service.users_from_post('Ja', @idea, 5)
       expect(result.size).to eq 2
       expect(result).to match_array [@u1, @u2]
@@ -121,7 +121,7 @@ describe MentionService do
     end
   end
 
-  context 'with shallow anonymization enabled' do  # aka abbreviated user names
+  context 'with shallow anonymization enabled' do # aka abbreviated user names
     before do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
       @jane = create(:user, first_name: 'Jane', last_name: 'Doe')

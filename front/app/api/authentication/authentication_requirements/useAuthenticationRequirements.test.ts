@@ -1,35 +1,19 @@
-import useAuthenticationRequirements from './useAuthenticationRequirements';
-
 import { renderHook } from '@testing-library/react-hooks';
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
-import {
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, {
   initiativeResponse,
-  projectResponse,
   phaseResponse,
   ideaResponse,
-} from './__mocks__/getAuthenticationRequirements';
-
-const initiativesPath = '*permissions/posting_initiative/requirements';
-const projectPath = '*projects/123/permissions/posting_idea/requirements';
-const phasePath = '*phases/456/permissions/posting_idea/requirements';
-const ideaPath = '*ideas/789/permissions/commenting_idea/requirements';
+} from './__mocks__/_mockServer';
+import useAuthenticationRequirements from './useAuthenticationRequirements';
 
 const server = setupServer(
-  rest.get(initiativesPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(initiativeResponse));
-  }),
-  rest.get(projectPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projectResponse));
-  }),
-  rest.get(phasePath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(phaseResponse));
-  }),
-  rest.get(ideaPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(ideaResponse));
-  })
+  endpoints['GET permissions/posting_initiative/requirements'],
+  endpoints['GET phases/:phaseId/permissions/posting_idea/requirements'],
+  endpoints['GET ideas/:ideaId/permissions/commenting_idea/requirements']
 );
 
 describe('useAuthenticationRequirements', () => {
@@ -54,28 +38,6 @@ describe('useAuthenticationRequirements', () => {
 
     expect(result.current.isLoading).toBe(false);
     expect(result.current.data).toEqual(initiativeResponse);
-  });
-
-  it('returns project data correctly', async () => {
-    const context = {
-      type: 'project',
-      action: 'posting_idea',
-      id: '123',
-    } as const;
-
-    const { result, waitFor } = renderHook(
-      () => useAuthenticationRequirements(context),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data).toEqual(projectResponse);
   });
 
   it('returns phase data correctly', async () => {
@@ -107,7 +69,6 @@ describe('useAuthenticationRequirements', () => {
       id: '789',
     } as const;
 
-    // expect(result).toEqual(ideaResponse);
     const { result, waitFor } = renderHook(
       () => useAuthenticationRequirements(context),
       {

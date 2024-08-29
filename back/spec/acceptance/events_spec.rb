@@ -11,7 +11,7 @@ resource 'Events' do
   before_all do
     @project = create(:project)
     @project2 = create(:project)
-    @events = create_list(:event, 2, project: @project, start_at: '2017-05-01', end_at: '2017-05-02')
+    @events = create_list(:event, 2, project: @project, online_link: 'https://example.com', start_at: '2017-05-01', end_at: '2017-05-02')
     @other_events = create_list(:event, 2, project: @project2, start_at: '2017-05-01', end_at: '2017-05-02')
   end
 
@@ -152,6 +152,70 @@ resource 'Events' do
     end
   end
 
+  get 'web_api/v1/events/:id/attendees_xlsx' do
+    let(:event) { @events.first }
+    let(:id) { event.id }
+
+    context 'as a regular user' do
+      before { header_token_for(create(:user)) }
+
+      example_request '[Unauthorized] Get xlsx of attendees of an event', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'as an admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      example_request 'Get xlsx of attendees of an event' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('attendees.xlsx')
+      end
+
+      example 'Get xlsx of attendees of an event successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
+        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'fr-FR')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row = workbook.worksheets[0][0].cells.map(&:value)
+
+        expect(header_row).to match_array([
+          french_column_headers['first_name'],
+          french_column_headers['last_name'],
+          french_column_headers['email'],
+          french_column_headers['registration_completed_at']
+        ])
+      end
+    end
+
+    context 'as a project moderator' do
+      before do
+        header 'Content-Type', 'application/json'
+        @user = create(:user, roles: [{ type: 'project_moderator', project_id: event.project.id }])
+        header_token_for @user
+      end
+
+      example_request 'Get xlsx of attendees of event in project the user moderates' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('attendees.xlsx')
+      end
+
+      example '[Unauthorized] Get xlsx of attendees of event in project the user does NOT moderate', document: false do
+        do_request(id: @other_events.first.id)
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/events/:id' do
     let(:event) { @events.first }
     let(:id) { event.id }
@@ -166,13 +230,16 @@ resource 'Events' do
           description_multiloc: event.description_multiloc,
           address_1: event.address_1,
           address_2_multiloc: event.address_2_multiloc,
+          attend_button_multiloc: event.attend_button_multiloc,
+          using_url: event.using_url,
           location_multiloc: event.location_multiloc,
           location_point_geojson: event.location_point_geojson,
           start_at: event.start_at.iso8601(3),
           end_at: event.end_at.iso8601(3),
           created_at: event.created_at.iso8601(3),
           updated_at: event.updated_at.iso8601(3),
-          attendees_count: event.attendees_count
+          attendees_count: event.attendees_count,
+          online_link: event.online_link
         }
       )
     end
@@ -195,6 +262,20 @@ resource 'Events' do
     end
   end
 
+  get 'web_api/v1/events/:id.ics' do
+    let(:event) { @events.first }
+    let(:id) { event.id }
+
+    example_request 'Get one event by id in ics format' do
+      expect(status).to eq 200
+      expect(response_headers['Content-Type']).to include('text/calendar')
+      expect(response_body.scan('BEGIN:VEVENT').count).to eq(1)
+      expect(response_body).to satisfy do |body|
+        event.title_multiloc.values.any? { |title| body.include?(title) }
+      end
+    end
+  end
+
   context 'when admin' do
     before { admin_header_token }
 
@@ -212,6 +293,9 @@ resource 'Events' do
         parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
         parameter :address_1, 'A human-readable primary address for the event location.'
         parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
+        parameter :using_url, 'A URL to an external website where the event is hosted.'
+        parameter :attend_button_multiloc, 'The text to display on the attend button, in multiple languages.'
+        parameter :online_link, 'Link to the online event'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)
@@ -225,6 +309,7 @@ resource 'Events' do
         let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
+        let(:online_link) { event.online_link }
 
         example_request 'Create an event for a project' do
           assert_status 201
@@ -233,6 +318,7 @@ resource 'Events' do
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.iso8601(3)
           expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data, :attributes, :online_link)).to eq online_link
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
@@ -242,12 +328,14 @@ resource 'Events' do
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.start_at - 1.day }
+        let(:online_link) { 'Invalid' }
 
         example_request '[error] Create an invalid event' do
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
+          expect(json_response).to include_response_error(:online_link, 'url')
         end
       end
 
@@ -333,6 +421,8 @@ resource 'Events' do
         parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
+        parameter :using_url, 'A URL to an external website where the event is hosted.'
+        parameter :attend_button_multiloc, 'The text to display on the attend button, in multiple languages.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)

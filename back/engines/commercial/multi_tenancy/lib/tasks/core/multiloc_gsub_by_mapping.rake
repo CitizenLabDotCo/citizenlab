@@ -12,7 +12,7 @@
 namespace :fix do
   desc 'Update multilocs according to mapping of old -> new substrings.'
   task :multiloc_gsub, %i[mapping] => [:environment] do |_t, args|
-    data = CSV.parse(File.read(args[:mapping]), { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(File.read(args[:mapping]), headers: true, col_sep: ',', converters: [])
     gsubs_performed = 0
     errors = []
 
@@ -40,7 +40,7 @@ namespace :fix do
               end
 
               if n_gsubs > 0
-                record.send("#{column}=", JSON.parse(multiloc_value))
+                record.send(:"#{column}=", JSON.parse(multiloc_value))
                 gsubs_performed += n_gsubs if record.save!
               end
             # rubocop:disable Lint/RescueException

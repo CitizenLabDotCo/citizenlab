@@ -1,23 +1,15 @@
 import React, { memo } from 'react';
 
-// components
-import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
-import InitiativeMoreActions from './InitiativeMoreActions';
+import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// styling
-import styled from 'styled-components';
-
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useLocale from 'hooks/useLocale';
-
-const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
+import InitiativeMoreActions from './InitiativeMoreActions';
 
 interface Props {
   initiativeId: string;
@@ -28,9 +20,8 @@ interface Props {
 const ActionBar = memo<Props>(
   ({ onTranslateInitiative, translateButtonClicked, initiativeId }) => {
     const { data: initiative } = useInitiativeById(initiativeId);
-    const locale = useLocale();
 
-    if (!initiative || isNilOrError(locale)) {
+    if (!initiative) {
       return null;
     }
 
@@ -51,14 +42,13 @@ const ActionBar = memo<Props>(
         }
         rightContent={
           isNilOrError(initiative) ? null : (
-            <StyledInitiativeMoreActions
+            <InitiativeMoreActions
               id="e2e-initiative-more-actions-desktop"
               initiative={initiative.data}
             />
           )
         }
         initiative={initiative.data}
-        locale={locale}
         onTranslate={onTranslateInitiative}
         translateButtonClicked={translateButtonClicked}
       />

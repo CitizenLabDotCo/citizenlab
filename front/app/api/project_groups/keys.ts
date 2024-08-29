@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IProjectGroupsParams } from './types';
 
 const baseKey = { type: 'groups_project' };

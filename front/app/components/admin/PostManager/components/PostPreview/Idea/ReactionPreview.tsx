@@ -1,19 +1,14 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// resources
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

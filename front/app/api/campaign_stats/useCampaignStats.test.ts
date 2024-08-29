@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCampaignStats from './useCampaignStats';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { ICampaignStats } from './types';
+import useCampaignStats from './useCampaignStats';
 
 const apiPath = '*campaigns/:id/stats';
 
@@ -26,8 +26,8 @@ const campaignStatsData: ICampaignStats = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: campaignStatsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: campaignStatsData }, { status: 200 });
   })
 );
 
@@ -53,8 +53,8 @@ describe('useCampaignStats', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

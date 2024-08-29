@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
+
 import { mapValues, reduce } from 'lodash-es';
-import { Multiloc } from 'typings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import { Multiloc } from 'typings';
+
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -32,23 +34,23 @@ class ResolveTextVariables extends PureComponent<Props> {
         orgName: localize(tenant.attributes.settings.core.organization_name),
       };
 
-      const initiatives = tenant.attributes.settings.initiatives;
-      if (initiatives) {
-        if (initiatives.eligibility_criteria) {
-          textVariables.initiativesEligibilityCriteria = localize(
-            initiatives.eligibility_criteria
-          );
-        }
-        if (initiatives.threshold_reached_message) {
-          textVariables.initiativesThresholdReachedMessage = localize(
-            initiatives.threshold_reached_message
-          );
-        }
+      const initiativeSettings = tenant.attributes.settings.initiatives;
 
-        textVariables.initiativesReactingThreshold =
-          initiatives.reacting_threshold.toString();
-        textVariables.initiativesDaysLimit = initiatives.days_limit.toString();
+      if (initiativeSettings.eligibility_criteria) {
+        textVariables.initiativesEligibilityCriteria = localize(
+          initiativeSettings.eligibility_criteria
+        );
       }
+      if (initiativeSettings.threshold_reached_message) {
+        textVariables.initiativesThresholdReachedMessage = localize(
+          initiativeSettings.threshold_reached_message
+        );
+      }
+
+      textVariables.initiativesVotingThreshold =
+        initiativeSettings.reacting_threshold.toString();
+      textVariables.initiativesDaysLimit =
+        initiativeSettings.days_limit.toString();
 
       return textVariables;
     }

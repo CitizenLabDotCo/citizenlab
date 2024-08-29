@@ -1,18 +1,20 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
+
+import PageWrapper from 'components/admin/PageWrapper';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
+import messages from '../messages';
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
-import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 
 const PageTitle = styled.h1`
   width: 100%;

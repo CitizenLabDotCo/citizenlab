@@ -10,8 +10,29 @@ export default defineMessages({
     defaultMessage:
       'Customise your report and share it with internal stakeholders or community with a web link.',
   },
-  viewReports: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports',
-    defaultMessage: 'View reports',
+  searchReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports',
+    defaultMessage: 'Search reports',
+  },
+  yourReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.yourReports',
+    defaultMessage: 'Your reports',
+  },
+  allReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.allReports',
+    defaultMessage: 'All reports',
+  },
+  serviceReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReports',
+    defaultMessage: 'Progress reports',
+  },
+  serviceReportsTooltip: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReportsTooltip',
+    defaultMessage:
+      'These are reports created by your Government Success Manager',
+  },
+  personalReportsPlaceholder: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder',
+    defaultMessage: 'Your reports will appear here.',
   },
 });

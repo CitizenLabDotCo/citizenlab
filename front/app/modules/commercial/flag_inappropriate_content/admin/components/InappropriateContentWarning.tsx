@@ -1,17 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
 
-// services
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
+
+import { injectIntl } from 'utils/cl-intl';
+
 import { getFlagType } from '../../utils';
 
-// hooks
-import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -35,13 +33,13 @@ const InappropriateContentWarning = ({
   inappropriateContentFlagId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const inappropriateContentFlag = useInappropriateContentFlag(
+  const { data: inappropriateContentFlag } = useInappropriateContentFlag(
     inappropriateContentFlagId
   );
 
-  if (!isNilOrError(inappropriateContentFlag)) {
-    const flagType = getFlagType(inappropriateContentFlag);
-    const reasonCode = inappropriateContentFlag.attributes.reason_code;
+  if (inappropriateContentFlag) {
+    const flagType = getFlagType(inappropriateContentFlag.data);
+    const reasonCode = inappropriateContentFlag.data.attributes.reason_code;
 
     // if reasonCode is null, it means the flag has been removed
     // and we shouldn't display anything

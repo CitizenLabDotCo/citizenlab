@@ -5,15 +5,7 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
-    descriptors = {
-      posting_initiative: { enabled: true, disabled_reason: nil },
-      commenting_initiative: { enabled: true, disabled_reason: nil },
-      reacting_initiative: { enabled: true, disabled_reason: nil },
-      comment_reacting_initiative: { enabled: true, disabled_reason: nil },
-      cancelling_initiative_reactions: { enabled: true, disabled_reason: nil }
-    }
-    render json: raw_json(descriptors)
+    descriptors = Permissions::InitiativePermissionsService.new(current_user).action_descriptors
+    render(json: raw_json(descriptors))
   end
 end
-
-WebApi::V1::ActionDescriptorsController.prepend(GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController)

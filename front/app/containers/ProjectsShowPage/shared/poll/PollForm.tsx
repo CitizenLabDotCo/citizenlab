@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
-import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
-import { IParticipationContextType } from 'typings';
+import {
+  Box,
+  fontSizes,
+  defaultCardStyle,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
-import { IPollQuestionData } from 'api/poll_questions/types';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
-import styled from 'styled-components';
-import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
-import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
+import PollSingleChoice from './PollSingleChoice';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -59,19 +66,28 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestionData[];
   projectId: string;
-  id: string | null;
-  type: IParticipationContextType;
+  phaseId: string;
   disabled: boolean;
+  disabledMessage?: MessageDescriptor | null;
+  actionDisabledAndNotFixable: boolean;
 }
 
 interface Answers {
   [questionId: string]: string[];
 }
 
-const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
+const PollForm = ({
+  questions,
+  phaseId,
+  disabled,
+  projectId,
+  disabledMessage,
+  actionDisabledAndNotFixable,
+}: Props) => {
   const [answers, setAnswers] = useState<Answers>({});
   const { mutate: addPollResponse } = useAddPollResponse();
-
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
@@ -85,10 +101,27 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
   };
 
   const sendAnswer = () => {
-    if (validate() && id) {
+    if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
+      if (!phaseId) return;
+
+      triggerAuthenticationFlow({
+        context: {
+          action: 'taking_poll',
+          id: phaseId,
+          type: 'phase',
+        },
+        successAction: {
+          name: 'submitPoll',
+          params: {
+            phaseId,
+            answers: Object.values(answers).flat(),
+            projectId,
+          },
+        },
+      });
+    } else {
       addPollResponse({
-        participationContextId: id,
-        participationContextType: type,
+        phaseId,
         optionIds: Object.values(answers).flat(),
         projectId,
       });
@@ -98,7 +131,6 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
   const validate = () => {
     // you can submit the form...
     return (
-      !disabled && // when it's not disabled and...
       // each question has at least one answer, and this answer is a string (representing the option) and...
       questions.every(
         (question) => typeof (answers[question.id] || [])[0] === 'string'
@@ -122,6 +154,13 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
 
     return (
       <>
+        {authUser &&
+          !isNilOrError(disabledMessage) &&
+          actionDisabledAndNotFixable && (
+            <Box mb="16px">
+              <Warning>{formatMessage(disabledMessage)}</Warning>
+            </Box>
+          )}
         <PollContainer id="project-poll" className="e2e-poll-form">
           {questions.map((question, questionIndex) =>
             question.attributes.question_type === 'single_option' ? (
@@ -130,7 +169,7 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
                 question={question}
                 index={questionIndex}
                 value={(answers[question.id] || [])[0]}
-                disabled={disabled}
+                disabled={actionDisabledAndNotFixable}
                 onChange={changeAnswerSingle}
               />
             ) : (
@@ -139,21 +178,29 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
                 question={question}
                 index={questionIndex}
                 value={answers[question.id]}
-                disabled={disabled}
+                disabled={actionDisabledAndNotFixable}
                 onChange={changeAnswerMultiple}
               />
             )
           )}
         </PollContainer>
-        <Button
-          onClick={sendAnswer}
-          size="m"
-          fullWidth={true}
-          disabled={!isValid}
-          className="e2e-send-poll"
+        <Tooltip
+          disabled={!actionDisabledAndNotFixable}
+          placement="bottom"
+          content={disabledMessage && formatMessage(disabledMessage)}
         >
-          <FormattedMessage {...messages.sendAnswer} />
-        </Button>
+          <div>
+            <Button
+              onClick={sendAnswer}
+              size="m"
+              fullWidth={true}
+              disabled={!isValid || actionDisabledAndNotFixable}
+              className="e2e-send-poll"
+            >
+              <FormattedMessage {...messages.sendAnswer} />
+            </Button>
+          </div>
+        </Tooltip>
       </>
     );
   }

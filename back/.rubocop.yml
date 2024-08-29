@@ -5,8 +5,10 @@ require:
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
+  - ./lib/rubocop/cop/forbidden_app_configuration_method.rb
 
 AllCops:
+  DisplayStyleGuide: true
   NewCops: enable
   Exclude:
     - "db/schema.rb"
@@ -42,9 +44,15 @@ Style/SymbolProc:
   Exclude:
     - "db/migrate/**/*"
 
+Style/FormatStringToken:
+  Enabled: false
+
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
   # are not the same if `something` is not a number.
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Layout/FirstArgumentIndentation:
@@ -92,6 +100,9 @@ RSpec/MultipleExpectations:
 Style/DoubleNegation:
   Enabled: false
 
+Performance/Casecmp:
+  Enabled: false
+
 Style/NegatedIf:
   Enabled: false
 
@@ -124,6 +135,10 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/SharedContext:
   Exclude:
     - "**/spec/acceptance/**/*"
+
+RSpec/ImplicitSubject:
+  Exclude:
+    - "**/spec/policies/**/*"
 
 Style/IfUnlessModifier:
   Enabled: false

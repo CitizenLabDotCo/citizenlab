@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import initiativeFilterCountsKeys from './keys';
 import { Sort, IQueryParameters } from 'api/initiatives/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import initiativeFilterCountsKeys from './keys';
 
 export type InitiativeFilterCountsKeys = Keys<
   typeof initiativeFilterCountsKeys
@@ -24,4 +26,4 @@ export interface IInitiativesFilterCounts {
   };
 }
 
-export { Sort, IQueryParameters };
+export type { Sort, IQueryParameters };

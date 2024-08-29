@@ -1,21 +1,66 @@
+import { uniq } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideaStatusesKeys from './keys';
 
 export type IdeaStatusesKeys = Keys<typeof ideaStatusesKeys>;
 
-export const ideaStatusCodes = [
-  'proposed',
-  'viewed',
-  'under_consideration',
-  'accepted',
-  'implemented',
-  'rejected',
-  'custom',
-] as const;
+export type IdeaStatusesQueryParams = {
+  participation_method?: 'ideation' | 'proposals';
+};
 
-export type TIdeaStatusCode = (typeof ideaStatusCodes)[number];
+type InputStatusCode =
+  | 'proposed'
+  | 'viewed'
+  | 'under_consideration'
+  | 'accepted'
+  | 'rejected'
+  | 'implemented'
+  | 'custom'
+  | 'threshold_reached'
+  | 'expired'
+  | 'answered'
+  | 'ineligible';
+
+export const inputStatusCodes: Record<
+  'ideation' | 'proposals',
+  InputStatusCode[]
+> = {
+  ideation: [
+    'proposed',
+    'viewed',
+    'under_consideration',
+    'accepted',
+    'rejected',
+    'implemented',
+    'custom',
+  ],
+  proposals: [
+    'proposed',
+    'threshold_reached',
+    'expired',
+    'answered',
+    'ineligible',
+    'custom',
+  ],
+};
+
+export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
+  'proposed',
+  'threshold_reached',
+  'expired',
+]);
+
+const allMergedInputStatusCodes = uniq(
+  Object.keys(inputStatusCodes)
+    .map(function (v) {
+      return inputStatusCodes[v];
+    })
+    .flat()
+);
+export type TIdeaStatusCode = (typeof allMergedInputStatusCodes)[number];
 
 export interface IIdeaStatusData {
   id: string;
@@ -27,6 +72,8 @@ export interface IIdeaStatusData {
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
+    can_reorder: boolean;
+    can_transition_manually: boolean;
   };
 }
 
@@ -36,6 +83,7 @@ export interface IIdeaStatusAdd {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
+  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatusUpdate {
@@ -44,6 +92,7 @@ export interface IIdeaStatusUpdate {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
+  participation_method: 'ideation' | 'proposals';
 }
 
 export interface IIdeaStatus {

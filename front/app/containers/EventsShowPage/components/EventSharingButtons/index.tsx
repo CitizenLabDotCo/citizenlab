@@ -1,25 +1,26 @@
 import React from 'react';
 
-// components
-import SharingButtons from 'components/Sharing/SharingButtons';
+import { BoxFlexProps } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
+import { IEventData } from 'api/events/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
+import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { IEventData } from 'api/events/types';
+
 import messages from './messages';
 
 interface Props {
   event: IEventData;
+  hideTitle?: boolean;
+  justifyContent?: BoxFlexProps['justifyContent'];
 }
 
-const EventSharingButtons = ({ event }: Props) => {
+const EventSharingButtons = ({ event, hideTitle, justifyContent }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: authUser } = useAuthUser();
@@ -28,7 +29,6 @@ const EventSharingButtons = ({ event }: Props) => {
   if (!isNilOrError(event)) {
     const eventUrl = `${location.origin}/events/${event.id}`;
     const eventTitle = localize(event.attributes.title_multiloc);
-    const eventLocation = localize(event.attributes.location_multiloc);
     const utmParams = authUser
       ? {
           source: 'share_event',
@@ -44,21 +44,24 @@ const EventSharingButtons = ({ event }: Props) => {
       eventTitle,
     });
 
-    return (
-      <SharingButtons
-        url={eventUrl}
-        facebookMessage={shareEventMessage}
-        whatsAppMessage={shareEventMessage}
-        twitterMessage={shareEventMessage}
-        emailSubject={shareEventMessage}
-        emailBody={formatMessage(messages.emailSharingBody, {
-          eventTitle,
-          eventLocation,
-        })}
-        utmParams={utmParams}
-        context={'event'}
-      />
-    );
+    if (eventTitle && eventUrl) {
+      return (
+        <SharingButtons
+          url={eventUrl}
+          whatsAppMessage={shareEventMessage}
+          twitterMessage={shareEventMessage}
+          emailSubject={shareEventMessage}
+          emailBody={formatMessage(messages.emailSharingBody, {
+            eventTitle,
+            eventUrl,
+          })}
+          utmParams={utmParams}
+          context={'event'}
+          hideTitle={hideTitle}
+          justifyContent={justifyContent}
+        />
+      );
+    }
   }
 
   return null;

@@ -1,21 +1,21 @@
-// libraries
 import React, { useState } from 'react';
 
-// components
-import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
-import CommentFooter from './CommentFooter';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// i18n
+import useComment from 'api/comments/useComment';
+import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
 import messages from '../messages';
 
-// style
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import useComment from 'api/comments/useComment';
-import useUserById from 'api/users/useUserById';
+import CommentBody from './CommentBody';
+import CommentFooter from './CommentFooter';
+import CommentHeader from './CommentHeader';
 
 const Container = styled.div``;
 
@@ -78,6 +78,7 @@ const Comment = ({
   const { data: author } = useUserById(
     comment?.data.relationships?.author?.data?.id
   );
+  const { data: project } = useProjectById(projectId);
 
   const [editing, setEditing] = useState(false);
 
@@ -92,6 +93,13 @@ const Comment = ({
   const onCommentSaved = () => {
     setEditing(false);
   };
+
+  const authorCanModerate = author
+    ? {
+        idea: project ? canModerateProject(project.data, author) : false,
+        initiative: canModerateInitiative(author),
+      }[postType]
+    : false;
 
   if (comment) {
     const commentId = comment.data.id;
@@ -116,11 +124,11 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
+                userCanModerate={authorCanModerate}
               />
 
               <Content>

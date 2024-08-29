@@ -1,20 +1,28 @@
+import React from 'react';
+
 import {
   Box,
   IconButton,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+
 import T from 'components/T';
+
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 import ShortUserFieldValue from '../components/ShortUserFieldValue';
+
 import ElipsisFilterValue from './EllipsisFilterValue';
+import messages from './messages';
 
 type Props = {
   customFieldId: string;
   filterKey: string;
-  filterValue: string | string[] | undefined | number;
+  filterValue: string | string[] | null[] | undefined | number | boolean;
   isEditable: boolean;
   predicate: '<' | '>' | '=';
 };
@@ -26,6 +34,7 @@ const AuthorFieldFilterItem = ({
   isEditable = true,
   predicate,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: customField } = useUserCustomField(customFieldId);
 
   if (!customField) return null;
@@ -78,7 +87,7 @@ const AuthorFieldFilterItem = ({
           onClick={() => {
             removeSearchParams([filterKey]);
           }}
-          a11y_buttonActionMessage="Remove filter"
+          a11y_buttonActionMessage={formatMessage(messages.removeFilter)}
         />
       )}
     </Box>

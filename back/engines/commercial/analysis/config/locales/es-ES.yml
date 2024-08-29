@@ -1,0 +1,3 @@
+es:
+  analysis:
+    example_tag_n: Ejemplo de etiqueta %{n}

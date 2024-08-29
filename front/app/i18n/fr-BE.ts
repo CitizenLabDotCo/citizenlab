@@ -1,7 +1,11 @@
+import frBE from 'date-fns/locale/fr';
+import { registerLocale } from 'react-datepicker';
+
 import { formatTranslationMessages } from './';
 
-const frBETranslationMessages = require('translations/fr-BE.json');
+registerLocale('fr-BE', frBE);
 const frBEAdminTranslationMessages = require('translations/admin/fr-BE.json');
+const frBETranslationMessages = require('translations/fr-BE.json');
 const translationMessages = formatTranslationMessages('fr-BE', {
   ...frBETranslationMessages,
   ...frBEAdminTranslationMessages,

@@ -1,10 +1,11 @@
-import useReactionsByTopic from './useReactionsByTopic';
-
 import { renderHook } from '@testing-library/react-hooks';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IReactionsByTopic } from './types';
+import useReactionsByTopic from './useReactionsByTopic';
 
 const apiPath = `*stats/reactions_by_topic`;
 
@@ -31,8 +32,8 @@ const data: IReactionsByTopic = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -62,8 +63,8 @@ describe('useReactionsByTopic', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

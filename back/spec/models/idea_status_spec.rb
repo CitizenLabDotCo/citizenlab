@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe IdeaStatus do
   subject { create(:idea_status) }
 
-  let(:code) { IdeaStatus::MINIMUM_REQUIRED_CODES.sample }
+  let(:code) { 'proposed' }
 
   context 'Default factory' do
     it 'is valid' do
@@ -15,18 +15,6 @@ RSpec.describe IdeaStatus do
 
   context 'when its code is required' do
     subject { create(:idea_status, code: code) }
-
-    describe 'if it is the only existing with this code' do
-      it 'cannot be destroyed' do
-        subject.destroy
-        expect(subject.destroyed?).to be false
-      end
-
-      it 'it\'s code cannot be updated' do
-        subject.update(code: :custom)
-        expect(subject.errors[:code]).not_to be_empty
-      end
-    end
 
     describe 'if others exist with this code' do
       before do

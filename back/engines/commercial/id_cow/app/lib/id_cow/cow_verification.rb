@@ -62,7 +62,7 @@ module IdCow
         }
       )
 
-      valid_response!(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo, :estado_respuesta))
+      valid_response!(**response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo, :estado_respuesta))
       {
         uid: response.body[:get_data_document_response][:num_serie]
       }

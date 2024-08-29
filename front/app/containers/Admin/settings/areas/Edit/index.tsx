@@ -1,18 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { useParams } from 'react-router-dom';
 
 import useArea from 'api/areas/useArea';
 import useUpdateArea from 'api/areas/useUpdateArea';
 
-import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import AreaForm, { FormValues } from '../AreaForm';
-import { useParams } from 'react-router-dom';
+import messages from '../messages';
 
 const Edit = () => {
   const { mutate: updateArea } = useUpdateArea();

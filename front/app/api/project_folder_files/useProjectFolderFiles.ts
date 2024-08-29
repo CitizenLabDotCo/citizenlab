@@ -1,20 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import projectFolderFilesKeys from './keys';
 import {
   IProjectFolderFiles,
   IQueryParameters,
   ProjectFolderFilesKeys,
 } from './types';
-import projectFolderFilesKeys from './keys';
 
 const fetchProjectFolderFiles = (queryParameters: IQueryParameters) =>
   fetcher<IProjectFolderFiles>({
     path: `/project_folders/${queryParameters.projectFolderId}/files`,
     action: 'get',
-    queryParams: {
-      ...queryParameters.streamParams,
-    },
   });
 
 const useProjectFolderFiles = (queryParams: IQueryParameters) => {

@@ -1,11 +1,20 @@
 import React from 'react';
-import IdeasList from './IdeasList';
-import IdeasMap from 'components/IdeasMap';
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
+
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
+import { IIdeaMarkers } from 'api/idea_markers/types';
 import { IIdeaData } from 'api/ideas/types';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
+
+import IdeasMap from 'components/IdeasMap';
+
+import IdeasList from './IdeasList';
 
 interface Props {
   view: 'card' | 'map';
+  // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
+  hasMoreThanOneView?: boolean;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
@@ -16,8 +25,8 @@ interface Props {
   querying: boolean;
   hasMore: boolean;
   loadingMore: boolean;
+  ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasView = ({
@@ -31,14 +40,23 @@ const IdeasView = ({
   querying,
   hasMore,
   loadingMore,
+  ideaMarkers,
   onLoadMore,
-  goBackMode,
+  hasMoreThanOneView = true,
 }: Props) => {
+  const { data: mapConfig, isLoading } = useProjectMapConfig(
+    projectId || undefined
+  );
+
+  if (projectId && isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       {view === 'card' && list && (
         <IdeasList
-          ariaLabelledBy={'view-tab-1'}
+          ariaLabelledBy={hasMoreThanOneView ? 'view-tab-1' : undefined}
           id={'view-panel-1'}
           querying={querying}
           onLoadMore={onLoadMore}
@@ -50,22 +68,18 @@ const IdeasView = ({
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
-          goBackMode={goBackMode}
           phaseId={phaseId}
         />
       )}
-      {/*
-        IdeasMap is only used in projects at the moment,
-        so I narrowed down the projectId type.
-      */}
       {view === 'map' && projectId && (
-        <IdeasMap
-          ariaLabelledBy={'view-tab-2'}
-          id={'view-panel-2'}
-          projectId={projectId}
-          phaseId={phaseId}
-          tabIndex={0}
-        />
+        <Box aria-label={'view-tab-2'} id={'view-panel-2'}>
+          <IdeasMap
+            projectId={projectId}
+            phaseId={phaseId}
+            mapConfig={mapConfig}
+            ideaMarkers={ideaMarkers}
+          />
+        </Box>
       )}
     </>
   );

@@ -18,12 +18,12 @@ export const getPlusButtonDisabledMessage = (
   maxVotesPerIdeaReached: boolean,
   onIdeaPage?: boolean
 ) => {
-  if (!userHasVotesLeft) return messages.maxVotesReached;
   if (basketSubmitted) {
     return onIdeaPage
       ? messages.votesSubmittedIdeaPage
       : messages.votesSubmitted;
   }
+  if (!userHasVotesLeft) return messages.maxVotesReached;
   if (maxVotesPerIdeaReached) return messages.maxVotesPerIdeaReached;
   return undefined;
 };

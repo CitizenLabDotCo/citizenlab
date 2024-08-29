@@ -69,4 +69,13 @@ RSpec.describe Group do
       group.update_memberships_count!
     end
   end
+
+  describe 'generate_slug' do
+    let(:group) { build(:group) }
+
+    it 'generates a slug based on the first non-empty locale' do
+      group.update!(title_multiloc: { 'nl-BE' => 'titel', 'fr-BE' => 'titlefrançais' })
+      expect(group.slug).to eq 'titel'
+    end
+  end
 end

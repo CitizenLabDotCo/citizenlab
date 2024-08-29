@@ -1,13 +1,12 @@
-// services
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+
+import { forEachBin } from '../../utils/bins';
+
 import {
   TReferenceDistributionData,
   IBinnedDistribution,
   TCategoricalDistribution,
 } from './types';
-
-// utils
-import { forEachBin } from '../../utils/bins';
-import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useReferenceDistribution from './useReferenceDistribution';
 
 /*

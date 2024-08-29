@@ -1,34 +1,28 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import usePrevious from 'hooks/usePrevious';
-import { debounce } from 'lodash-es';
 
-// quill
-import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
-import 'quill/dist/quill.snow.css';
-
-// components
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
-import styled from 'styled-components';
 import {
+  Label,
+  IconTooltip,
   colors,
   quillEditedContent,
   media,
   fontSizes,
   defaultStyles,
   isRtl,
-} from 'utils/styleUtils';
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
+import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
+import BlotFormatter from 'quill-blot-formatter';
+import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import usePrevious from 'hooks/usePrevious';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import 'quill/dist/quill.snow.css';
 
 import {
   ImageBlot,
@@ -36,9 +30,8 @@ import {
   KeepHTML,
   attributes,
 } from './altTextToImagesModule';
-// typings
-import { Locale } from 'typings';
-import Tippy from '@tippyjs/react';
+import messages from './messages';
+import tracks from './tracks';
 
 const DropdownList = styled.div`
   display: flex;
@@ -81,6 +74,7 @@ const Container = styled.div<{
   remove: string;
   maxHeight?: string;
   minHeight?: string;
+  scrollTop: number;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -168,6 +162,12 @@ const Container = styled.div<{
     color: ${colors.teal};
   }
 
+  .ql-tooltip {
+    top: ${(props) => props.scrollTop + 20}px !important;
+    left: 50% !important;
+    transform: translate(-50%);
+  }
+
   .ql-tooltip[data-mode='link']::before {
     content: '${(props) => props.linkPrompt}' !important;
   }
@@ -225,6 +225,14 @@ const Container = styled.div<{
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
+  // This fixes a wierd scroll to the top after pasting. See https://github.com/quilljs/quill/issues/1374
+  .ql-clipboard {
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
+  }
+
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
@@ -261,7 +269,7 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   noToolbar?: boolean;
   noImages?: boolean;
@@ -272,7 +280,7 @@ export interface Props {
   className?: string;
   maxHeight?: string;
   minHeight?: string;
-  onChange?: (html: string, locale: Locale | undefined) => void;
+  onChange?: (html: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
@@ -323,9 +331,14 @@ function isExternal(url: string) {
 const Link = Quill.import('formats/link');
 
 class CustomLink extends Link {
-  static create(url) {
+  static create(url: string) {
     const node = super.create(url);
     node.setAttribute('rel', 'noreferrer noopener nofollow');
+
+    // if the href of node starts with www., add https://
+    if (url.startsWith('www.')) {
+      node.setAttribute('href', `https://${url}`);
+    }
 
     // The default behavior of the Link is to add a target="_blank" attribute
     // So for internal urls we have to remove this
@@ -344,7 +357,7 @@ Quill.register('formats/link', CustomLink);
 const Inline = Quill.import('blots/inline');
 
 class CustomButton extends Inline {
-  static create(url) {
+  static create(url: string) {
     const node = super.create();
     node.setAttribute('href', url);
     node.setAttribute('rel', 'noorefferer');
@@ -378,7 +391,7 @@ Quill.register(
 
 Quill.register(KeepHTML);
 
-const QuillEditor = memo<Props & WrappedComponentProps>(
+const QuillEditor = memo<Props>(
   ({
     id,
     value,
@@ -400,18 +413,31 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
     onBlur,
     onFocus,
     withCTAButton,
-    intl: { formatMessage },
     children,
   }) => {
     const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : null;
-
+    const { formatMessage } = useIntl();
     const [editor, setEditor] = useState<Quill | null>(null);
+    const [scrollTop, setScrollTop] = useState<number>(0);
     const contentRef = useRef<string>(value || '');
     const prevEditor = usePrevious(editor);
     const [focussed, setFocussed] = useState(false);
     const prevFocussed = usePrevious(focussed);
     const editorRef = useRef<HTMLDivElement>(null);
     const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
+
+    useEffect(() => {
+      const eventListenerHandler = debounce(() => {
+        setScrollTop(editorRef.current?.scrollTop || 0);
+      }, 100);
+      const scrollContainer = editorRef.current;
+      if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', eventListenerHandler);
+      }
+      return () => {
+        scrollContainer?.removeEventListener('scroll', eventListenerHandler);
+      };
+    }, []);
 
     const toggleButtonsMenu = useCallback(
       () => setIsButtonsMenuVisible((value) => !value),
@@ -540,9 +566,7 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
           setFocussed(true);
         }
       };
-
       const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
-
       if (editor) {
         editor.on('text-change', debouncedTextChangeHandler);
         editor.on('selection-change', selectionChangeHandler);
@@ -590,7 +614,13 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
     }, [editor, formatMessage, value]);
 
     const trackAdvanced =
-      (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+      ({
+        type,
+        option,
+      }:
+        | { type: 'align'; option: 'left' | 'center' | 'right' }
+        | { type: 'list'; option: 'bullet' | 'ordered' }) =>
+      (_event: React.MouseEvent<HTMLElement>) => {
         trackEventByName(tracks.advancedEditing.name, {
           extra: {
             type,
@@ -605,7 +635,7 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
         event.currentTarget.classList.contains('ql-picker-item')
       ) {
         const value = event.currentTarget.getAttribute('data-value');
-        let option;
+        let option: string;
 
         if (value === '1') {
           option = 'title';
@@ -624,13 +654,15 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
       }
     };
 
-    const trackBasic = (type) => (_event: React.MouseEvent<HTMLElement>) => {
-      trackEventByName(tracks.basicEditing.name, {
-        extra: {
-          type,
-        },
-      });
-    };
+    const trackBasic =
+      (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
+      (_event: React.MouseEvent<HTMLElement>) => {
+        trackEventByName(tracks.basicEditing.name, {
+          extra: {
+            type,
+          },
+        });
+      };
 
     const trackImage = (_event: React.MouseEvent<HTMLElement>) => {
       trackEventByName(tracks.imageEditing.name);
@@ -680,6 +712,17 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
       .filter((className) => className)
       .join(' ');
 
+    // Function to save the latest state of the content.
+    // We call this when the mouse leaves the editor, to ensure the
+    // latest content (and image size + alt text) is properly saved.
+    const saveLatestContent = () => {
+      if (editor) {
+        const html = editor.root.innerHTML;
+        contentRef.current = html;
+        onChange?.(html, locale);
+      }
+    };
+
     return (
       <Container
         maxHeight={maxHeight}
@@ -691,6 +734,8 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
         save={formatMessage(messages.save)}
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
+        scrollTop={scrollTop}
+        onMouseLeave={saveLatestContent}
       >
         {label && (
           <Label htmlFor={id} onClick={handleLabelOnClick}>
@@ -732,16 +777,12 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
                 aria-label={formatMessage(messages.italic)}
               />
               {withCTAButton ? (
-                <Tippy
+                <Tooltip
                   placement="bottom"
                   theme="light"
-                  interactive={true}
                   visible={isButtonsMenuVisible}
                   onClickOutside={hideButtonsMenu}
                   duration={[200, 0]}
-                  popperOptions={{
-                    strategy: 'fixed',
-                  }}
                   content={
                     <DropdownList>
                       <DropdownListItem
@@ -779,7 +820,7 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
                       />
                     </svg>
                   </button>
-                </Tippy>
+                </Tooltip>
               ) : (
                 <button
                   className="ql-link"
@@ -794,19 +835,19 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
                 <button
                   className="ql-align"
                   value=""
-                  onClick={trackAdvanced('align', 'left')}
+                  onClick={trackAdvanced({ type: 'align', option: 'left' })}
                   aria-label={formatMessage(messages.alignLeft)}
                 />
                 <button
                   className="ql-align"
                   value="center"
-                  onClick={trackAdvanced('align', 'center')}
+                  onClick={trackAdvanced({ type: 'align', option: 'center' })}
                   aria-label={formatMessage(messages.alignCenter)}
                 />
                 <button
                   className="ql-align"
                   value="right"
-                  onClick={trackAdvanced('align', 'right')}
+                  onClick={trackAdvanced({ type: 'align', option: 'right' })}
                   aria-label={formatMessage(messages.alignRight)}
                 />
               </span>
@@ -817,13 +858,13 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
                 <button
                   className="ql-list"
                   value="ordered"
-                  onClick={trackAdvanced('list', 'ordered')}
+                  onClick={trackAdvanced({ type: 'list', option: 'ordered' })}
                   aria-label={formatMessage(messages.orderedList)}
                 />
                 <button
                   className="ql-list"
                   value="bullet"
-                  onClick={trackAdvanced('list', 'bullet')}
+                  onClick={trackAdvanced({ type: 'list', option: 'bullet' })}
                   aria-label={formatMessage(messages.unorderedList)}
                 />
               </span>
@@ -862,4 +903,4 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(QuillEditor);
+export default QuillEditor;

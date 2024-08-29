@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import SlugInput, { Props } from '.';
 
 jest.mock('api/app_configuration/useAppConfiguration', () => () => ({

@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::VotingPhaseStartedMailer do
       {
         recipient: recipient,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           project_title_multiloc: project.title_multiloc,
           phase_title_multiloc: project.phases.first.title_multiloc,
           ideas: [
@@ -85,7 +85,7 @@ RSpec.describe EmailCampaigns::VotingPhaseStartedMailer do
     end
 
     it "displays 'Go to the platform to vote' button with correct link" do
-      project_url = Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
+      project_url = Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match project_url
       expect(mail.body.encoded).to match 'Go to the platform to vote'
     end

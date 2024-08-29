@@ -1,8 +1,8 @@
 import { RuleEffect } from '@jsonforms/core';
-import Ajv from 'ajv';
-import { ExtendedUISchema, isVisible } from './visibilityUtils';
 
-const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
+import { customAjv } from 'components/Form/utils';
+
+import { ExtendedUISchema, isVisible } from './visibilityUtils';
 
 describe('isVisible', () => {
   it('should return true if no ruleArray is given', () => {

@@ -1,44 +1,40 @@
-// authentication
-import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
-import signIn from 'api/authentication/sign_in_out/signIn';
-import signOut from 'api/authentication/sign_in_out/signOut';
+import { SupportedLocale } from 'typings';
+
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import signIn from 'api/authentication/sign_in_out/signIn';
+import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
-// cache
-import streams from 'utils/streams';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// typings
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+import tracks from '../../tracks';
 import {
   GetRequirements,
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
+  State,
 } from '../../typings';
+
 import { Step } from './typings';
-import { Locale } from 'typings';
-import { askCustomFields, requiredCustomFields } from './utils';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateState: UpdateState
+  updateState: UpdateState,
+  state: State
 ) => {
   return {
     // light flow
     'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+      SUBMIT_EMAIL: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const response = await checkUser(email);
@@ -58,26 +54,18 @@ export const lightFlow = (
         }
       },
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        switch (ssoProvider) {
-          case 'google':
-            setCurrentStep('light-flow:google-policies');
-            break;
-          case 'facebook':
-            setCurrentStep('light-flow:facebook-policies');
-            break;
-          case 'azureactivedirectory':
-            setCurrentStep('light-flow:azure-ad-policies');
-            break;
-          case 'franceconnect':
-            setCurrentStep('light-flow:france-connect-login');
-            break;
+        if (ssoProvider === 'franceconnect') {
+          setCurrentStep('light-flow:france-connect-login');
+        } else {
+          updateState({ ssoProvider });
+          setCurrentStep('light-flow:sso-policies');
         }
       },
     },
 
     'light-flow:email-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async (email: string, locale: Locale) => {
+      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const result = await createEmailOnlyAccount({ email, locale });
@@ -92,50 +80,14 @@ export const lightFlow = (
       },
     },
 
-    'light-flow:google-policies': {
+    'light-flow:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
+      ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         handleOnSSOClick(
-          'google',
-          { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
-        );
-      },
-    },
-
-    'light-flow:facebook-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
-        handleOnSSOClick(
-          'facebook',
-          { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
-        );
-      },
-    },
-
-    'light-flow:azure-ad-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async () => {
-        const { requirements } = await getRequirements();
-
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
-        handleOnSSOClick(
-          'azureactivedirectory',
-          { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          ssoProvider,
+          getAuthenticationData(),
+          true,
+          state.flow
         );
       },
     },
@@ -145,13 +97,11 @@ export const lightFlow = (
       LOGIN: async () => {
         const { requirements } = await getRequirements();
 
-        const verificationRequired =
-          requirements.special.verification === 'require';
-
         handleOnSSOClick(
           'franceconnect',
-          { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
         );
       },
     },
@@ -159,22 +109,26 @@ export const lightFlow = (
     'light-flow:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        await signOut();
-
-        updateState({ email: null });
         setCurrentStep('light-flow:email');
       },
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
 
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (askCustomFields(requirements.custom_fields)) {
-          setCurrentStep('sign-up:custom-fields');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -194,23 +148,25 @@ export const lightFlow = (
         await signIn({ email, password, rememberMe, tokenLifetime });
 
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requirements.special.confirmation === 'require') {
-          setCurrentStep('missing-data:email-confirmation');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        await Promise.all([streams.reset(), invalidateQueryCache()]);
+        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           return;
         }
 

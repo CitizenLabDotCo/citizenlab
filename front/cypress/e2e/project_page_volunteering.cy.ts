@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Volunteering survey CTA', () => {
@@ -19,15 +20,31 @@ describe('Volunteering survey CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
           publicationStatus: 'published',
-          participationMethod: 'volunteering',
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
+          cy.apiCreatePhase({
+            projectId,
+            title: 'volunteerPhaseTitle',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'volunteering',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+          cy.apiCreateEvent({
+            projectId,
+            title: 'Event title',
+            location: 'Event location',
+            includeLocation: true,
+            description: 'Event description',
+            startDate: moment().subtract(1, 'day').toDate(),
+            endDate: moment().add(1, 'day').toDate(),
+          });
         });
       });
   });
@@ -36,6 +53,9 @@ describe('Volunteering survey CTA', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-participation-cta-volunteer').should('exist');
+
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   after(() => {

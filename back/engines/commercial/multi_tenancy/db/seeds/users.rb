@@ -9,7 +9,7 @@ module MultiTenancy
 
       ADMIN_1_ATTRS = {
         id: '386d255e-2ff1-4192-8e50-b3022576be50',
-        email: 'admin@citizenlab.co',
+        email: 'admin@govocal.com',
         password: 'democracy2.0',
         roles: [{ type: 'admin' }],
         locale: 'en'
@@ -22,14 +22,14 @@ module MultiTenancy
 
       MODERATOR_ATTRS = {
         id: '61caabce-f7e5-4804-b9df-36d7d7d73e4d',
-        email: 'moderator@citizenlab.co',
+        email: 'moderator@govocal.com',
         password: 'democracy2.0',
         roles: []
       }.freeze
 
       USER_ATTRS = {
         id: '546335a3-33b9-471c-a18a-d5b58ebf173a',
-        email: 'user@citizenlab.co',
+        email: 'user@govocal.com',
         password: 'democracy2.0',
         roles: []
       }.freeze
@@ -51,36 +51,23 @@ module MultiTenancy
       private
 
       def run_for_empty_localhost
-        random_user = anonymizer.anonymized_attributes(AppConfiguration.instance.settings('core', 'locales'))
-        User.create!(random_user.merge({ **admin_1_attrs, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
+        User.create!(build_attrs.merge({ **ADMIN_1_ATTRS, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
       end
 
       def run_for_localhost
-        locales = AppConfiguration.instance.settings('core', 'locales')
-        User.create! anonymizer.anonymized_attributes(locales).merge(admin_1_attrs)
-        User.create! anonymizer.anonymized_attributes(locales).merge(admin_2_attrs)
-        User.create! anonymizer.anonymized_attributes(locales).merge(moderator_attrs)
-        User.create! anonymizer.anonymized_attributes(locales).merge(user_attrs)
+        [ADMIN_1_ATTRS, ADMIN_2_ATTRS, MODERATOR_ATTRS, USER_ATTRS].each do |user_attrs|
+          UserService.create_in_tenant_template!(build_attrs.merge(user_attrs))
+        end
 
         runner.num_users.times do
-          User.create! anonymizer.anonymized_attributes(locales).merge({ password: 'democracy2.0' })
+          user_attrs = build_attrs.merge({ password: 'democracy2.0' })
+          UserService.create_in_tenant_template!(user_attrs)
         end
       end
 
-      def admin_1_attrs
-        ADMIN_1_ATTRS
-      end
-
-      def admin_2_attrs
-        ADMIN_2_ATTRS
-      end
-
-      def moderator_attrs
-        MODERATOR_ATTRS
-      end
-
-      def user_attrs
-        USER_ATTRS
+      def build_attrs
+        locales = AppConfiguration.instance.settings('core', 'locales')
+        anonymizer.anonymized_attributes(locales)
       end
     end
   end

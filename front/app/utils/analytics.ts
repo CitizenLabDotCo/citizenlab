@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash-es';
 import { Subject, Observable, concat, combineLatest } from 'rxjs';
 import {
   buffer,
@@ -8,18 +9,19 @@ import {
   distinctUntilChanged,
   map,
 } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
-import eventEmitter from 'utils/eventEmitter';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import authUserStream from 'api/me/authUserStream';
+
+import { ISavedDestinations } from 'components/ConsentManager/consent';
 import {
   getDestinationConfig,
   IDestination,
   isDestinationActive,
 } from 'components/ConsentManager/destinations';
-import { ISavedDestinations } from 'components/ConsentManager/consent';
-import authUserStream from 'api/me/authUserStream';
-import { IAppConfigurationData } from 'api/app_configuration/types';
+
+import eventEmitter from 'utils/eventEmitter';
 
 export interface IEvent {
   name: string;

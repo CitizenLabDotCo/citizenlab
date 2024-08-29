@@ -1,12 +1,17 @@
 import React, { memo } from 'react';
-import { TRule } from '../rules';
-import { IOption } from 'typings';
+
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { IOption } from 'typings';
+
 import useLocalize from 'hooks/useLocalize';
+
 import MultipleSelect from 'components/UI/MultipleSelect';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-interface InputProps {
+import { TRule } from '../rules';
+
+export interface InputProps {
   rule: TRule;
   value: string;
   onChange: (value: string[]) => void;

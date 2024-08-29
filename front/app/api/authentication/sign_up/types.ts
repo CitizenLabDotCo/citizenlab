@@ -1,15 +1,15 @@
-import { Locale } from '@citizenlab/cl2-component-library';
+import { SupportedLocale } from 'typings';
 
 export type CreateAccountWithPasswordProperties = {
   [x: string]: {
     email: string;
     password: string;
-    locale: Locale;
+    locale: SupportedLocale;
     first_name: string;
     last_name: string;
   };
 };
 
 export type CreateEmailOnlyAccountProperties = {
-  user: { email: string; locale: Locale };
+  user: { email: string; locale: SupportedLocale };
 };

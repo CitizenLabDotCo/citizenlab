@@ -32,6 +32,11 @@ en:
       not_ends_on: "%{property} doesn't end on %{value}"
     email:
       property: "e-mail"
+    event_attendances:
+      attends_something: "User is registered for at least one event"
+      attends_nothing: "User is not registered for any event"
+      attends_some_of: "User is registered for at least one of the following events: %{value}"
+      attends_none_of: "User is not registered for any of the following events: %{value}"
     follow:
       something: "Follows something"
       nothing: "Does not follow anything"
@@ -43,6 +48,10 @@ en:
       is_not_idea: "Does not follow idea %{value}"
       is_one_of_initiatives: "Follows one of the following initiatives %{value}"
       is_not_initiative: "Does not follow initiative %{value}"
+      is_one_of_topics: "Follows one of the following topics %{value}"
+      is_not_topic: "Does not follow topic %{value}"
+      is_one_of_areas: "Follows one of the following areas %{value}"
+      is_not_area: "Does not follow area %{value}"
     lives_in:
       has_value_outside: "%{property} is somewhere else"
       not_has_value_outside: "%{property} is not somewhere else"
@@ -58,6 +67,8 @@ en:
       reacted_comment_in: "Reacted to a comment on an idea with one of the following statuses: %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea with status %{value}"
     participated_in_project:
+      follows_something: "Follows something in one of the following projects %{value}"
+      not_follows_something: "Does not follow anything in the project %{value}"
       in: "Participation in an idea in one of the following projects %{value}"
       not_in: "No participation in an idea in the project %{value}"
       posted_in: "Posted an idea in one of the following projects %{value}"
@@ -68,6 +79,8 @@ en:
       not_reacted_idea_in: "Did not react to an idea in the project %{value}"
       reacted_comment_in: "Reacted to a comment on an idea in one of the following projects %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea in the project %{value}"
+      registered_to_an_event: "Registered to an event in one of the following projects %{value}"
+      not_registered_to_an_event: "Did not registered to an event in the project %{value}"
       voted_in: "Voted in one of the following projects %{value}"
       not_voted_in: "Did not vote in the project %{value}"
       volunteered_in: "Volunteered in one of the following projects %{value}"

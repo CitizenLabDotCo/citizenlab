@@ -64,13 +64,13 @@
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
               <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
             </span>
-            <span style="font-size: 14px; font-weight: 700;"><%= idea.upvotes_count %></span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.likes_count %></span>
           </td>
           <td style="width: 40px">
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
               <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_down.png" alt="Thumbs down">
             </span>
-            <span style="font-size: 14px; font-weight: 700;"><%= idea.downvotes_count %></span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.dislikes_count %></span>
 
           </td>
           <td style="width: 40px">
@@ -112,7 +112,7 @@
       <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= assigned_initiative.images.first&.versions&.small %>">
               </span>
@@ -136,7 +136,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
@@ -165,7 +165,7 @@
       <mj-table cellpadding="15" padding-top="20px">
           <% @diff_days = (Time.zone.today - succesful_assigned_initiative.published_at.to_date).to_i %>
           <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td style="width: 80px;">
+            <td class="hide-on-mobile" style="width: 80px;">
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="96px" src="<%= succesful_assigned_initiative.images.first&.versions&.small %>">
               </span>
@@ -189,7 +189,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">

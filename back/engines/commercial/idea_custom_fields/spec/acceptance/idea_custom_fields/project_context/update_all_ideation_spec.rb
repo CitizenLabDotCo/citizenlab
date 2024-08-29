@@ -26,9 +26,9 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
-    let(:context) { create(:continuous_project, participation_method: 'ideation') }
+    let(:context) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
-    let(:participation_method) { Factory.instance.participation_method_for context }
+    let(:participation_method) { context.pmethod }
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
       IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|
@@ -159,7 +159,7 @@ resource 'Idea Custom Fields' do
             hash_including(
               attributes: hash_including(
                 code: nil,
-                key: 'select_field_title',
+                key: Regexp.new('select_field_title'),
                 input_type: 'select',
                 ordering: 11,
                 title_multiloc: { en: 'Select field title' },
@@ -179,6 +179,30 @@ resource 'Idea Custom Fields' do
               ] } }
             )
           ])
+        end
+
+        example '[error] Add a field of unsupported input_type' do
+          fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
+          # Add extra field
+          fields_param += [
+            {
+              input_type: 'section',
+              title_multiloc: { 'en' => 'Extra fields' }
+            },
+            {
+              input_type: 'html_multiloc',
+              title_multiloc: { 'en' => 'HTML multliloc field title' },
+              description_multiloc: { 'en' => 'HTML multliloc field description' },
+              required: false,
+              enabled: true
+            }
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { '11': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
         example 'Updating custom fields when there are responses', document: false do

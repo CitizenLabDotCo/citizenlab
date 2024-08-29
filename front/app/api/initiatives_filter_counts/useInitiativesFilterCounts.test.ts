@@ -1,11 +1,11 @@
-import { IInitiativesFilterCounts } from './types';
-
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativesFilterCounts from './useInitiativesFilterCounts';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { IInitiativesFilterCounts } from './types';
+import useInitiativesFilterCounts from './useInitiativesFilterCounts';
 
 export const data: IInitiativesFilterCounts = {
   data: {
@@ -30,12 +30,11 @@ export const data: IInitiativesFilterCounts = {
     },
   },
 };
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const apiPath = '*initiatives/filter_counts';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -65,8 +64,8 @@ describe('useInitiativesFilterCounts', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

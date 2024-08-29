@@ -1,8 +1,9 @@
 import React from 'react';
+
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {
@@ -20,7 +21,7 @@ const RemoveFlagButton = ({
     return (
       <Button
         icon="alert-octagon-off"
-        buttonStyle="cl-blue"
+        buttonStyle="admin-dark"
         processing={processing}
         onClick={onRemoveFlags}
       >

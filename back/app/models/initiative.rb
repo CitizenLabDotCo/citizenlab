@@ -40,9 +40,12 @@
 #  fk_rails_...  (assignee_id => users.id)
 #  fk_rails_...  (author_id => users.id)
 #
+# TODO: cleanup-after-proposals-migration
 class Initiative < ApplicationRecord
   include Post
   include AnonymousParticipation
+
+  slug from: proc { |initiative| MultilocService.new.t(initiative.title_multiloc, initiative.author&.locale) }, if: proc(&:published?)
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 
@@ -54,7 +57,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :cosponsors_initiatives, dependent: :destroy
-  has_many :cosponsors, through: :cosponsors_initiatives, source: :user
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy # dependent: :destroy destroys the associated cosponsors_inititiatve records, not the users
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
@@ -70,10 +73,8 @@ class Initiative < ApplicationRecord
     post.validates :title_multiloc, presence: true, multiloc: { presence: true }
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
     post.validates :author, presence: true, if: :author_required_on_change?
-    post.validates :slug, uniqueness: true, presence: true
 
     post.before_validation :strip_title
-    post.before_validation :generate_slug
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
@@ -87,6 +88,10 @@ class Initiative < ApplicationRecord
     before_validation :initialize_initiative_status_changes
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
+
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc],
+    using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topic_ids|
     with_dups = joins(:initiatives_topics)
@@ -111,6 +116,7 @@ class Initiative < ApplicationRecord
   scope :feedback_needed, -> { with_status_code('threshold_reached') }
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
+  scope :voteable_status, -> { with_status_code(InitiativeStatus::REVIEW_CODES + ['proposed']) }
 
   scope :proposed_before, (proc do |time|
     with_proposed_status_changes.where('initiative_status_changes.created_at < ?', time)
@@ -123,6 +129,15 @@ class Initiative < ApplicationRecord
       .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
   end)
 
+  scope :activity_after, lambda { |time_ago|
+    joins(:initiative_status_changes)
+      .where(
+        'initiative_status_changes.initiative_status_id IN (?) AND initiative_status_changes.created_at > ?',
+        InitiativeStatus.where(code: %w[threshold_reached proposed]).ids,
+        time_ago
+      )
+  }
+
   def self.review_required?
     app_config = AppConfiguration.instance
     require_review = app_config.settings('initiatives', 'require_review')
@@ -131,14 +146,7 @@ class Initiative < ApplicationRecord
   end
 
   def cosponsor_ids=(ids)
-    return unless ids
-
-    ids = ids.uniq
-    current_ids = cosponsors.pluck(:id).uniq
-    return if current_ids.sort == ids.sort
-
-    cosponsors_initiatives.where.not(user_id: ids).destroy_all
-    (ids - current_ids).each { |id| cosponsors_initiatives.create(user_id: id) }
+    super(ids.uniq.excluding(author_id))
   end
 
   def reactions_needed(configuration = AppConfiguration.instance)
@@ -159,23 +167,16 @@ class Initiative < ApplicationRecord
     InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
-  private
-
   def proposed_at
     initiative_status_changed_at('proposed')
   end
+
+  private
 
   def initiative_status_changed_at(initiative_status_code)
     initiative_status_changes
       .where(initiative_status: InitiativeStatus.where(code: initiative_status_code))
       .order(:created_at).pluck(:created_at).last
-  end
-
-  def generate_slug
-    return if slug
-
-    title = MultilocService.new.t title_multiloc, author
-    self.slug ||= SlugService.new.generate_slug self, title
   end
 
   def sanitize_body_multiloc

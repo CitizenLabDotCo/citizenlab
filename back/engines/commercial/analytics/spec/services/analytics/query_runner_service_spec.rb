@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 require 'uri'
 
 describe Analytics::QueryRunnerService do
-  describe 'run' do
+  describe '#run' do
     before_all do
       create(:dimension_type)
       create(:dimension_type, name: 'initiative')
@@ -13,7 +12,7 @@ describe Analytics::QueryRunnerService do
 
     it 'return the ID field for each post' do
       ideas = create_list(:idea, 5)
-      query_param = ActionController::Parameters.new(fact: 'post', fields: 'id')
+      query_param = { fact: 'post', fields: 'id' }
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
@@ -28,13 +27,13 @@ describe Analytics::QueryRunnerService do
       create_list(:reaction, 2, reactable: idea)
       create_list(:reaction, 1, reactable: initiative)
 
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         groups: 'dimension_type.name',
         aggregations: {
           reactions_count: %w[sum]
         }
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
@@ -51,7 +50,7 @@ describe Analytics::QueryRunnerService do
       create(:idea)
       create(:initiative)
 
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         filters: {
           'dimension_type.name': 'idea'
@@ -59,7 +58,7 @@ describe Analytics::QueryRunnerService do
         aggregations: {
           all: 'count'
         }
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
@@ -71,11 +70,11 @@ describe Analytics::QueryRunnerService do
       ideas = create_list(:idea, 5)
       initiatives = create_list(:initiative, 5)
 
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         fields: 'id',
         sort: { id: 'ASC' }
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       runner = described_class.new
@@ -84,6 +83,21 @@ describe Analytics::QueryRunnerService do
         .sort_by { |p| p[:id] }
         .map { |p| { 'id' => p.id } }
       expect(results).to eq(posts)
+    end
+
+    it 'returns 0 when no data' do
+      query_param = {
+        aggregations: {
+          all: 'count',
+          'dimension_date_first_action.date': 'first'
+        },
+        fact: 'visit'
+      }
+
+      query = Analytics::Query.new(query_param)
+
+      results, * = described_class.new.run(query)
+      expect(results).to eq([{ 'count' => 0, 'first_dimension_date_first_action_date' => nil }])
     end
 
     context 'result limiting and paging' do
@@ -101,7 +115,7 @@ describe Analytics::QueryRunnerService do
       end
 
       it 'returns the first page of 2 items from 10 posts' do
-        query_param = ActionController::Parameters.new(build_query(2, 1))
+        query_param = build_query(2, 1)
         runner = described_class.new
         results, pagination = runner.run(Analytics::Query.new(query_param))
 
@@ -116,7 +130,7 @@ describe Analytics::QueryRunnerService do
       end
 
       it 'returns the second page of 3 items from 10 posts' do
-        query_param = ActionController::Parameters.new(build_query(3, 2))
+        query_param = build_query(3, 2)
         runner = described_class.new
         results, pagination = runner.run(Analytics::Query.new(query_param))
 
@@ -132,7 +146,7 @@ describe Analytics::QueryRunnerService do
       end
 
       it 'returns nothing if the page number is too high for the size' do
-        query_param = ActionController::Parameters.new(build_query(5, 3))
+        query_param = build_query(5, 3)
         runner = described_class.new
         results, pagination = runner.run(Analytics::Query.new(query_param))
 

@@ -15,7 +15,7 @@ class XlsxService
 
     wb.styles do |s|
       wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
+        sheet.add_row remove_duplicate_header_suffix(headers), style: header_style(s)
         hash_array.each do |hash|
           sheet.add_row(headers.map { |header| hash[header] })
         end
@@ -35,8 +35,12 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
+      xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+        if cell.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
+          [column_header, cell.value]
+        end
       end.to_h
     end
   end
@@ -66,7 +70,7 @@ class XlsxService
   end
 
   def generate_sheet(workbook, sheetname, columns, instances)
-    utils = XlsxExport::Utils.new
+    utils = Export::Xlsx::Utils.new
     sheetname = utils.sanitize_sheetname sheetname
     columns = columns.uniq { |c| c[:header] }
     workbook.styles do |s|
@@ -119,7 +123,7 @@ class XlsxService
       { header: 'email', f: ->(u) { u.email } },
       { header: 'first_name', f: ->(u) { u.first_name } },
       { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true, hyperlink: true },
+      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true }, # Not hyperlinked, as significantly faster without this style
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
@@ -134,7 +138,7 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'description',          f: ->(i) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -169,14 +173,14 @@ class XlsxService
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
+      { header: 'description',          f: ->(i) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
-      { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| ci.user.email }.join(',') }, skip_sanitization: true },
+      { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| "#{ci.user.email} - status: #{ci.status}" }.join("\n") }, skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
-      { header: 'likes', f: ->(i) { i.likes_count }, skip_sanitization: true },
+      { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
@@ -185,7 +189,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },               skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },              skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -197,7 +201,7 @@ class XlsxService
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.post.id } },
-      { header: 'comment',            f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'comment',            f: ->(c) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'likes_count', f: ->(c) { c.likes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { format_author_name c } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
@@ -216,7 +220,7 @@ class XlsxService
       { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'proposal', f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'proposal_id',         f: ->(c) { c.post.id } },
-      { header: 'comment', f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'comment', f: ->(c) { Export::Xlsx::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'likes_count', f: ->(c) { c.likes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { format_author_name c } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
@@ -247,12 +251,20 @@ class XlsxService
   def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
-    user_custom_fields = CustomField.with_resource_type('User').order(:ordering)
+    user_custom_fields = CustomField.registration.order(:ordering)
+
+    fields_to_columns = map_user_custom_fields_to_columns(user_custom_fields)
 
     user_custom_fields&.map do |field|
-      column_name = multiloc_service.t(field.title_multiloc)
+      column_name = fields_to_columns[field.id]
       { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
+  end
+
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
   end
 
   private
@@ -294,6 +306,20 @@ class XlsxService
     end
   end
 
+  def map_user_custom_fields_to_columns(user_custom_fields)
+    fields_to_columns = {}
+
+    user_custom_fields.group_by { |field| multiloc_service.t(field.title_multiloc) }.each do |title, fields|
+      if fields.size == 1
+        fields_to_columns[fields.first.id] = title
+      else # add suffix to titles to distinguish between fields with same title
+        fields.each_with_index { |field, i| fields_to_columns[field.id] = "#{title} (#{i + 1})" }
+      end
+    end
+
+    fields_to_columns
+  end
+
   def header_style(style)
     style.add_style b: true, alignment: { horizontal: :center, vertical: :top, wrap_text: true }
   end
@@ -302,12 +328,14 @@ class XlsxService
     "#{field_id}/#{option_key}"
   end
 
-  def format_author_name(input)
-    return input.author_name unless input.anonymous?
-
-    I18n.t 'xlsx_export.anonymous'
+  # Remove any suffixes added for duplicate column names
+  def remove_duplicate_header_suffix(headers)
+    headers.map do |header|
+      Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix header
+    end
   end
 end
 
 XlsxService.prepend(IdeaCustomFields::Patches::XlsxService)
+XlsxService.prepend(BulkImportIdeas::Patches::XlsxService)
 XlsxService.prepend(Verification::Patches::XlsxService)

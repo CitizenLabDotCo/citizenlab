@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import analysesKeys from './keys';
 import { IAnalysis, IAddAnalysis } from './types';
 
@@ -12,7 +14,8 @@ const addAnalysis = async (requestBody: IAddAnalysis) =>
       analysis: {
         project_id: requestBody.projectId,
         phase_id: requestBody.phaseId,
-        custom_field_ids: requestBody.customFieldIds,
+        additional_custom_field_ids: requestBody.additionalCustomFields,
+        main_custom_field_id: requestBody.mainCustomField,
       },
     },
   });

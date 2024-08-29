@@ -1,46 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-// libraries
-import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-// services
-import {
-  isAdmin,
-  isSuperAdmin,
-  isRegularUser,
-} from 'services/permissions/roles';
-
-// resources
-import HasPermission from 'components/HasPermission';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { Box, Spinner, colors, media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesEditMeta from './InitiativesEditMeta';
-import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-
-// style
-import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
-// types
-import { UploadFile } from 'typings';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import { IInitiative } from 'api/initiatives/types';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import PageLayout from 'components/InitiativeForm/PageLayout';
+import PageNotFound from 'components/PageNotFound';
+import GoBackButton from 'components/UI/GoBackButton';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import clHistory from 'utils/cl-router/history';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { usePermission } from 'utils/permissions';
+import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
+
+import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
+import InitiativesEditMeta from './InitiativesEditMeta';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
@@ -51,115 +37,92 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   `}
 `;
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
-  previousPathName: string | null;
+interface Props {
+  initiative: IInitiative;
 }
 
-interface Props extends DataProps {}
-
-const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
-  const { initiativeId } = useParams() as {
-    initiativeId: string;
-  };
-  const { data: initiative } = useInitiativeById(initiativeId);
+const InitiativesEditPage = ({ initiative }: Props) => {
+  const initiativeId = initiative.data.id;
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
-  const [files, setFiles] = useState<UploadFile[]>([]);
-
-  useEffect(() => {
-    async function getFiles() {
-      let files: UploadFile[] = [];
-
-      if (initiativeFiles) {
-        files = (await Promise.all(
-          initiativeFiles.data.map(async (file) => {
-            const uploadFile = convertUrlToUploadFile(
-              file.attributes.file.url,
-              file.id,
-              file.attributes.name
-            );
-            return uploadFile;
-          })
-        )) as UploadFile[];
-      }
-      setFiles(files);
-    }
-
-    getFiles();
-  }, [initiativeFiles]);
+  const { data: authUser } = useAuthUser();
+  const locale = useLocale();
+  const previousPathName = React.useContext(PreviousPathnameContext);
+  const canEditInitiative = usePermission({
+    action: 'edit',
+    item: initiative.data,
+    context: initiative,
+  });
 
   useEffect(() => {
     const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        !isRegularUser({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
+      isAdmin(authUser) || !isRegularUser(authUser) || isSuperAdmin(authUser);
 
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
     }
   }, [authUser, previousPathName]);
 
-  if (
-    isNilOrError(authUser) ||
-    isNilOrError(locale) ||
-    !initiative ||
-    initiativeImages === undefined
-  ) {
+  if (!canEditInitiative) return <Unauthorized />;
+
+  if (!authUser) {
     return null;
   }
-
   const onPublished = () => {
-    if (!isNilOrError(initiative)) {
-      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
-    }
+    clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
   };
 
   return (
-    <HasPermission item={initiative.data} action="edit" context={initiative}>
+    <>
       <InitiativesEditMeta />
-      <PageLayout
-        isAdmin={isAdmin({ data: authUser })}
-        className="e2e-initiative-edit-page"
-      >
-        <StyledInitiativesEditFormWrapper
-          locale={locale}
-          initiative={initiative.data}
-          initiativeImage={
-            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
-              ? null
-              : initiativeImages.data[0]
-          }
-          onPublished={onPublished}
-          initiativeFiles={files}
+      <Box background={colors.background} p="32px" pb="0">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
         />
-      </PageLayout>
-    </HasPermission>
+      </Box>
+      <main>
+        <PageLayout className="e2e-initiative-edit-page">
+          <StyledInitiativesEditFormWrapper
+            locale={locale}
+            initiative={initiative.data}
+            initiativeImage={initiativeImages?.data[0]}
+            onPublished={onPublished}
+            initiativeFiles={initiativeFiles}
+          />
+        </PageLayout>
+      </main>
+    </>
   );
 };
 
-const Data = adopt<DataProps, WithRouterProps>({
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-  previousPathName: ({ render }) => (
-    <PreviousPathnameContext.Consumer>
-      {render as any}
-    </PreviousPathnameContext.Consumer>
-  ),
-});
-
-export default withRouter((withRouterProps: WithRouterProps) => {
+export default () => {
+  const { initiativeId } = useParams() as {
+    initiativeId: string;
+  };
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+  const { data: initiative, status, error } = useInitiativeById(initiativeId);
+
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
+  }
 
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
 
-  return (
-    <Data {...withRouterProps}>
-      {(dataProps) => <InitiativesEditPage {...dataProps} />}
-    </Data>
-  );
-});
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
+    return <PageNotFound />;
+  }
+
+  return <InitiativesEditPage initiative={initiative} />;
+};

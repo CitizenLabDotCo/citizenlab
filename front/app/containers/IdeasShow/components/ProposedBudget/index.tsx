@@ -1,23 +1,19 @@
 import React from 'react';
 
-// api
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useLocale from 'hooks/useLocale';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import IdeaProposedBudget from './IdeaProposedBudget';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// styling
 import styled from 'styled-components';
 
-// utils
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import useLocale from 'hooks/useLocale';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isFieldEnabled } from 'utils/projectUtils';
+
+import messages from '../../messages';
+
+import IdeaProposedBudget from './IdeaProposedBudget';
 
 const BodySectionTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSizes.l}px;

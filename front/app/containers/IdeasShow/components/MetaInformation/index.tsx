@@ -1,28 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Status from './Status';
-import Location from './Location';
+import styled from 'styled-components';
+
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
+import Location from './Location';
 import PostedBy from './PostedBy';
-
-// hooks & services
-import useLocale from 'hooks/useLocale';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import Outlet from 'components/Outlet';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// utils
-import { isFieldEnabled } from 'utils/projectUtils';
-import {
-  getCurrentParticipationContext,
-  isIdeaInParticipationContext,
-} from 'api/phases/utils';
+import Status from './Status';
 
 const Container = styled.div`
   width: 100%;
@@ -54,24 +48,15 @@ const MetaInformation = ({
     projectId,
     inputId: ideaId,
   });
-  const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  const participationContext = getCurrentPhase(phases?.data);
 
-  if (
-    !isNilOrError(locale) &&
-    ideaCustomFieldsSchema &&
-    idea &&
-    participationContext
-  ) {
+  if (!isNilOrError(locale) && ideaCustomFieldsSchema && idea) {
     const { anonymous } = idea.data.attributes;
-    const isVoting =
-      participationContext.attributes.participation_method === 'voting';
+    const hideAuthor =
+      participationContext?.attributes.participation_method === 'voting';
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -90,13 +75,6 @@ const MetaInformation = ({
       ideaCustomFieldsSchema.data.attributes,
       locale
     );
-
-    const ideaIsInParticipationContext = isIdeaInParticipationContext(
-      idea,
-      participationContext
-    );
-
-    const hideAuthor = isVoting && ideaIsInParticipationContext;
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
@@ -118,11 +96,6 @@ const MetaInformation = ({
         {attachmentsEnabled && (
           <Attachments ideaId={ideaId} compact={compact} />
         )}
-        <Outlet
-          id="app.containers.IdeasShow.MetaInformation"
-          ideaId={ideaId}
-          compact={compact}
-        />
       </Container>
     );
   }

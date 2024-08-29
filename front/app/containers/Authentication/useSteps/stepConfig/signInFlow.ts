@@ -1,29 +1,26 @@
-// authentication
 import signIn from 'api/authentication/sign_in_out/signIn';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// tracks
-import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// utils
-import { requiredCustomFields } from './utils';
-
-// typings
+import tracks from '../../tracks';
 import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
+  UpdateState,
 } from '../../typings';
+
 import { Step } from './typings';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -31,6 +28,7 @@ export const signInFlow = (
     'sign-in:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -40,13 +38,12 @@ export const signInFlow = (
         }
 
         const { requirements } = await getRequirements();
-        const verificationRequired =
-          requirements.special.verification === 'require';
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signin' },
-          verificationRequired
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
         );
       },
     },
@@ -54,6 +51,7 @@ export const signInFlow = (
     'sign-in:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:email-password');
       },
       GO_BACK: () => {
@@ -76,25 +74,22 @@ export const signInFlow = (
           });
 
           const { requirements } = await getRequirements();
+          const authenticationData = getAuthenticationData();
 
-          if (requirements.special.confirmation === 'require') {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            'signin'
+          );
 
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 
           setCurrentStep('closed');
 
-          if (requirements.special.group_membership === 'require') {
+          if (doesNotMeetGroupCriteria(requirements)) {
             return;
           }
 

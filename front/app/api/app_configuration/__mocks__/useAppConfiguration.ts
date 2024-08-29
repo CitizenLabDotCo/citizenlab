@@ -1,14 +1,18 @@
-export const appConfigurationData = {
+import { IAppConfigurationData } from 'api/app_configuration/types';
+
+export const appConfigurationData: IAppConfigurationData = {
   id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
   type: 'app_configuration',
   attributes: {
     name: 'wonderville',
     host: 'wonderville.com',
+    created_at: '',
     settings: {
       core: {
         allowed: true,
         enabled: true,
         locales: ['en'],
+        population: 12500,
         weglot_api_key: null,
         timezone: 'Europe/Brussels',
         organization_name: {
@@ -24,6 +28,10 @@ export const appConfigurationData = {
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
         authentication_token_lifetime_in_days: 30,
+        maximum_admins_number: 4,
+        maximum_moderators_number: 4,
+        additional_admins_number: 4,
+        additional_moderators_number: 4,
       },
       advanced_custom_pages: {
         allowed: true,
@@ -38,6 +46,15 @@ export const appConfigurationData = {
         enabled: true,
         tenant_site_id: '13',
         product_site_id: '14',
+      },
+      initiatives: {
+        allowed: true,
+        enabled: true,
+        days_limit: 50,
+        eligibility_criteria: {},
+        posting_tips: {},
+        threshold_reached_message: {},
+        reacting_threshold: 5,
       },
     },
     logo: {

@@ -12,12 +12,15 @@ AdminApi::Engine.routes.draw do
     get :template_export, on: :member
     post :template_import, on: :collection
     resources :phases, only: [:index]
+    get :participants_count, controller: 'participants', on: :member
   end
 
   resources :users, only: %i[index create update show] do
     get :by_email, on: :collection
     delete :bulk_delete_by_emails, on: :collection
   end
+
+  resources :jobs, only: [:show]
 
   resources :areas, only: [:index]
 

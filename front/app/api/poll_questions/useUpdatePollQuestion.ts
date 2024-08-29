@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import {
   IPollQuestion,
   IPollQuestionAttributes,
@@ -15,8 +17,7 @@ type UpdatePollQuestion = {
 
 const updatePollQuestion = async ({
   questionId,
-  participationContextId: _id,
-  participationContextType: _type,
+  phaseId: _id,
   ...rest
 }: UpdatePollQuestion) =>
   fetcher<IPollQuestion>({

@@ -56,7 +56,7 @@ class Invites::Service
   private
 
   def custom_field_schema
-    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
+    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.registration)
   end
 
   # @return [Array<String>]
@@ -163,16 +163,7 @@ class Invites::Service
 
   def save_invitees(invitees)
     ActiveRecord::Base.transaction do
-      invitees.each do |invitee|
-        if @run_side_fx
-          if invitee.new_record?
-            SideFxUserService.new.before_create(invitee, @inviter)
-          else
-            SideFxUserService.new.before_update(invitee, @inviter)
-          end
-        end
-        invitee.save!
-      end
+      invitees.each(&:save!)
     end
 
     invitees.each do |invitee|

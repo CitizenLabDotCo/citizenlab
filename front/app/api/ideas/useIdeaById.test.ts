@@ -1,20 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaById from './useIdeaById';
-import { ideaData } from './__mocks__/useIdeaById';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*ideas/:id';
+import endpoints, { ideaData, apiPathById } from './__mocks__/_mockServer';
+import useIdeaById from './useIdeaById';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET ideas/:id']);
 
 describe('useIdeaById', () => {
   beforeAll(() => server.listen());
@@ -35,8 +28,8 @@ describe('useIdeaById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathById, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

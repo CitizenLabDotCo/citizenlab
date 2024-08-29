@@ -12,7 +12,7 @@
 namespace :demos do
   desc 'Update authors of comments or ideas'
   task :update_authors_of_comments_or_ideas, %i[type url host locale] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     count = 0
 
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do

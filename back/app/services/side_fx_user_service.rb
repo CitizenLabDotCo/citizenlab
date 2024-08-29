@@ -3,24 +3,22 @@
 class SideFxUserService
   include SideFxHelper
 
-  def before_create(user, current_user); end
-
   def after_create(user, current_user)
+    create_followers user
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
-    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
+    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i, payload: create_user_activity_payload(user))
     UpdateMemberCountJob.perform_later
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
     user.create_email_campaigns_unsubscription_token
-    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
+    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
   end
 
-  def before_update(user, current_user); end
-
   def after_update(user, current_user)
+    create_followers user
     TrackUserJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
     if user.registration_completed_at_previously_changed?
@@ -31,11 +29,23 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
-    SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
+    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
+  end
+
+  def before_destroy(user, _current_user)
+    # Remove all reactions by the user on initiatives that are in the active voting phase.
+    # We do this before the user is destroyed, as we nullify user_id in reactions when a user is destroyed.
+    # We use Initiative.voteable_status, as we include 'review_pending' and 'changes_requested' (as well as 'proposed')
+    # in the voting phase, because the author's vote will be automatically added to proposals in these statuses.
+    # Ensures 1 reaction per verified user per initiative, if verification (by a single method) is required to react,
+    # since it should not be possible to create more than one account (concurrently) for the same verification.
+    proposed_initiatives_reactions = user.reactions.where(reactable_id: [Initiative.voteable_status])
+    proposed_initiatives_reactions.destroy_all
   end
 
   def after_destroy(frozen_user, current_user)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
+    activity_user = current_user&.id == frozen_user&.id ? nil : current_user
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', activity_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
@@ -115,7 +125,28 @@ class SideFxUserService
 
     user.assigned_initiatives.update_all(assignee_id: nil)
   end
+
+  def create_followers(user)
+    area = Area.where(id: user.domicile).first
+    Follower.find_or_create_by(followable: area, user: user) if area
+  end
+
+  def should_send_confirmation_email?(user)
+    user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
+      (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
+  end
+
+  def create_user_activity_payload(user)
+    if user.sso?
+      { flow: 'sso', method: user.identities.first&.provider }
+    elsif user.password.nil?
+      { flow: 'email_confirmation' }
+    else
+      { flow: 'email_password' }
+    end
+  end
 end
 
 SideFxUserService.prepend(IdeaAssignment::Patches::SideFxUserService)
 SideFxUserService.prepend(Matomo::Patches::SideFxUserService)
+SideFxUserService.prepend(PosthogIntegration::Patches::SideFxUserService)

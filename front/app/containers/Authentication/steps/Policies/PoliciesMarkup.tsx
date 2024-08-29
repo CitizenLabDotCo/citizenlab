@@ -1,20 +1,16 @@
 import React from 'react';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-
-// styling
+import { Box, Text, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-// form
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
 
 export const ConsentText = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -39,18 +35,23 @@ export const ConsentText = styled.div`
   }
 `;
 
-const PoliciesMarkup = () => {
+interface Props {
+  showByContinuingText?: boolean;
+}
+
+const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <>
       <Box id="e2e-terms-conditions-container">
-        <Checkbox
+        <CheckboxWithLabel
           name="termsAndConditionsAccepted"
+          dataTestId="termsAndConditionsAccepted"
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeTo}
+                {...authProvidersMessages.iHaveReadAndAgreeToTerms}
                 values={{
                   link: (
                     <Link target="_blank" to="/pages/terms-and-conditions">
@@ -66,12 +67,13 @@ const PoliciesMarkup = () => {
         />
       </Box>
       <Box mt="8px" id="e2e-privacy-policy-container">
-        <Checkbox
+        <CheckboxWithLabel
           name="privacyPolicyAccepted"
+          dataTestId="privacyPolicyAccepted"
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeTo}
+                {...authProvidersMessages.iHaveReadAndAgreeToPrivacy}
                 values={{
                   link: (
                     <Link target="_blank" to="/pages/privacy-policy">
@@ -86,9 +88,11 @@ const PoliciesMarkup = () => {
           }
         />
       </Box>
-      <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
-        {formatMessage(messages.byContinuing)}
-      </Text>
+      {showByContinuingText && (
+        <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
+          {formatMessage(messages.byContinuing)}
+        </Text>
+      )}
     </>
   );
 };

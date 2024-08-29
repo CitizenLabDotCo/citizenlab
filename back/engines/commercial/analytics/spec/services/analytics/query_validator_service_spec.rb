@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 
 describe Analytics::QueryValidatorService do
   describe 'validate query object with json schema' do
     it 'fails on empty query' do
-      query_param = ActionController::Parameters.new({})
+      query_param = {}
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
@@ -21,11 +20,11 @@ describe Analytics::QueryValidatorService do
     end
 
     it 'fails on inexistent query attribute' do
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         fields: 'id',
         other: 'value'
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
@@ -35,7 +34,7 @@ describe Analytics::QueryValidatorService do
     end
 
     it 'fails on inexistent column reference' do
-      query_param = ActionController::Parameters.new(fact: 'post', fields: 'some_field')
+      query_param = { fact: 'post', fields: 'some_field' }
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
@@ -44,14 +43,14 @@ describe Analytics::QueryValidatorService do
     end
 
     it 'fails on invalid characters' do
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         fields: 'id',
         'A' => '',
         '%' => '',
         '//' => '',
         ' ' => ''
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
@@ -60,13 +59,13 @@ describe Analytics::QueryValidatorService do
     end
 
     it 'fails on invalid date' do
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         fields: 'id',
         filters: {
           'created_date.date': { from: 'xxxx', to: '2022-01-01' }
         }
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
@@ -75,13 +74,13 @@ describe Analytics::QueryValidatorService do
     end
 
     it 'pass on valid query' do
-      query_param = ActionController::Parameters.new(
+      query_param = {
         fact: 'post',
         fields: 'id',
         filters: {
           'dimension_date_created.date': { from: '2021-01-01', to: '2022-01-01' }
         }
-      )
+      }
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)

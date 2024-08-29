@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
-// utils
+import { Box, LocaleSwitcher, colors } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
+import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
+
+import { Top } from 'components/admin/PostManager/components/PostPreview';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
-import Button from 'components/UI/Button';
-import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { Top } from 'components/admin/PostManager/components/PostPreview';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { colors } from 'utils/styleUtils';
-
-// typings
-import { Locale, UploadFile } from 'typings';
-
-// hooks
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useTheme } from 'styled-components';
 
 export interface Props {
   initiativeId: string;
@@ -35,35 +30,14 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
-  const [files, setFiles] = useState<UploadFile[]>([]);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
 
-  useEffect(() => {
-    async function getFiles() {
-      let files: UploadFile[] = [];
-
-      if (initiativeFiles) {
-        files = (await Promise.all(
-          initiativeFiles.data.map(async (file) => {
-            const uploadFile = convertUrlToUploadFile(
-              file.attributes.file.url,
-              file.id,
-              file.attributes.name
-            );
-            return uploadFile;
-          })
-        )) as UploadFile[];
-      }
-      setFiles(files);
-    }
-
-    getFiles();
-  }, [initiativeFiles]);
-
-  const onLocaleChange = (locale: Locale) => {
+  const onLocaleChange = (locale: SupportedLocale) => {
     setSelectedLocale(locale);
   };
 
@@ -117,11 +91,9 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
         <InitiativesEditFormWrapper
           locale={selectedLocale}
           initiative={initiative.data}
-          initiativeImage={
-            initiativeImages.data.length === 0 ? null : initiativeImages.data[0]
-          }
+          initiativeImage={initiativeImages.data[0]}
           onPublished={goBack}
-          initiativeFiles={files}
+          initiativeFiles={initiativeFiles}
         />
       </Box>
     </Box>

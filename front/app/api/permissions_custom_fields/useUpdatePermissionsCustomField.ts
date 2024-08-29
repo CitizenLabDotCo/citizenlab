@@ -1,11 +1,8 @@
-/* PATCH web_api/v1/permissions_custom_fields/:id
-  {
-    required: boolean
-  } */
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import permissionsCustomFieldsKeys from './keys';
 import {
   IPermissionsCustomField,
@@ -15,18 +12,16 @@ import {
 
 const updatePermissionsCustomField = ({
   id,
-  required,
+  ...body
 }: IPermissionCustomFieldUpdate) =>
   fetcher<IPermissionsCustomField>({
     path: `/permissions_custom_fields/${id}`,
     action: 'patch',
-    body: { required },
+    body,
   });
 
 const useUpdatePermissionsCustomField = ({
   phaseId,
-  projectId,
-  initiativeContext,
   action,
 }: IListParameters) => {
   const queryClient = useQueryClient();
@@ -38,10 +33,8 @@ const useUpdatePermissionsCustomField = ({
     mutationFn: updatePermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.lists({
+        queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
-          projectId,
-          initiativeContext,
           action,
         }),
       });

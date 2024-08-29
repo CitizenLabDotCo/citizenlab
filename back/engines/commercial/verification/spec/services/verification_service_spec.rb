@@ -7,14 +7,14 @@ describe Verification::VerificationService do
   let(:service) { described_class.new sfxv_service }
 
   before do
-    configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings['verification'] = {
-      allowed: true,
-      enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
-    }
-    configuration.save!
+    SettingsService.new.activate_feature!(
+      'verification',
+      settings: {
+        verification_methods: [
+          { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+        ]
+      }
+    )
   end
 
   describe 'verify_sync' do
@@ -39,7 +39,7 @@ describe Verification::VerificationService do
         .to receive(:after_create)
         .with(instance_of(Verification::Verification), user)
 
-      service.verify_sync(params)
+      service.verify_sync(**params)
     end
 
     it 'updates the user with received attributes from verify_sync' do
@@ -59,7 +59,7 @@ describe Verification::VerificationService do
           attributes: { first_name: 'BOB' }
         })
 
-      service.verify_sync(params)
+      service.verify_sync(**params)
 
       expect(user.reload.first_name).to eq 'BOB'
     end
@@ -89,7 +89,7 @@ describe Verification::VerificationService do
           }
         })
 
-      service.verify_sync(params)
+      service.verify_sync(**params)
 
       expect(user.reload.custom_field_values).to eq({
         cf1.key => 'original',
@@ -114,7 +114,7 @@ describe Verification::VerificationService do
         .with(params[:verification_parameters])
         .and_return({ uid: '001529382' })
 
-      service.verify_sync(params)
+      service.verify_sync(**params)
 
       expect(Verification::Verification.count).to eq 1
       expect(Verification::Verification.first).to have_attributes({
@@ -140,7 +140,7 @@ describe Verification::VerificationService do
         .with(params1[:verification_parameters])
         .and_return({ uid: '001529382' })
 
-      service.verify_sync(params1)
+      service.verify_sync(**params1)
 
       params2 = {
         user: user,
@@ -153,7 +153,7 @@ describe Verification::VerificationService do
         .with(params2[:verification_parameters])
         .and_return({ uid: '001529382' })
 
-      expect { service.verify_sync(params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
+      expect { service.verify_sync(**params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
   end
 
@@ -189,19 +189,32 @@ describe Verification::VerificationService do
     end
   end
 
-  describe 'add_method' do
-    it 'adds methods that are exposed through #all_methods' do
-      mthd = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
-      service.class.add_method(mthd)
-      expect(service.class.all_methods).to include(mthd)
+  describe 'action_metadata' do
+    it 'returns an empty hash if no methods are allowed on action' do
+      expect(service.action_metadata).to eq({ allowed: false })
     end
 
-    it 'replaces duplicate methods with the same .id' do
-      mthd1 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
-      mthd2 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
-      service.class.add_method(mthd1)
-      service.class.add_method(mthd2)
-      expect(service.all_methods.select { |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
+    it 'returns information about the first enabled method enabled for actions' do
+      create(:custom_field_gender)
+      create(:custom_field_birthyear)
+
+      configuration = AppConfiguration.instance
+      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso' }
+      configuration.save!
+
+      metadata = service.action_metadata
+      expect(metadata[:name]).to eq 'Fake SSO'
+      expect(metadata[:locked_attributes]).to match_array [
+        { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
+        { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
+      ]
+      expect(metadata[:other_attributes]).to match_array [
+        { 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' }
+      ]
+      expect(metadata[:locked_custom_fields]).to match_array [
+        { 'en' => 'gender' }, { 'en' => 'birthyear' }
+      ]
+      expect(metadata[:other_custom_fields]).to be_empty
     end
   end
 end

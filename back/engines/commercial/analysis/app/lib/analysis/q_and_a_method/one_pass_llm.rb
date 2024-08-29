@@ -26,6 +26,12 @@ module Analysis
         prompt = prompt(@analysis.source_project, inputs_text)
         complete_token_count = token_count(prompt) + TOKENS_FOR_RESPONSE
 
+        # As a rule of thumb, 1 token corresponds to ~4 charachters in English.
+        # Since calculating the token_count is slow, as an optimization, we
+        # don't even bother calculating the token count for a safe worst case of
+        # 6 charachters/token
+        next if prompt.size > (max_context_window * 6)
+
         # Is there an LLM that can handle the prompt size?
         selected_llm = enabled_llms
           .sort_by { |llm| -llm.accuracy }
@@ -69,18 +75,7 @@ module Analysis
 
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      @prompt = <<~GPT_PROMPT
-        At the end of this message is a list of form responses filled out by citizens in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
-        
-        Your only goal is to answer the following question about these ideas, as accurately and as quantified as possible:"#{question.question}"
-        
-        You can refer to individual responses within the question where relevant as example, by adding their ID between square brackets. E.g. [52247442-b9a9-4a74-a6a1-898e9d6e2da7].
-        
-        Write your answer to the question in the same language as the question itself.
-        
-        #{inputs_text}
-
-      GPT_PROMPT
+      LLM::Prompt.new.fetch('q_and_a', project_title: project_title, question: question.question, inputs_text: inputs_text, language: Locale.monolingual&.language_copy)
     end
   end
 end

@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
-import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import React from 'react';
 
-// components
-import HelmetIntl from 'components/HelmetIntl';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { ITab } from 'typings';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
-// styles
-import { InsertConfigurationOptions, ITab } from 'typings';
-import Outlet from 'components/Outlet';
-import { insertConfiguration } from 'utils/moduleUtils';
-
-// utils
 import { isTopBarNavActive } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const InitiativesPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
-  const [tabs, setTabs] = useState<ITab[]>([
+  const tabs: ITab[] = [
     {
       label: formatMessage(messages.overviewTab),
       name: 'proposals',
@@ -35,18 +29,16 @@ const InitiativesPage = () => {
       name: 'settings',
       url: '/admin/initiatives/settings',
     },
-  ]);
-
-  const handleData = (data: InsertConfigurationOptions<ITab>) =>
-    setTabs(insertConfiguration<ITab>(data));
+    {
+      label: formatMessage(messages.permissions),
+      name: 'permissions',
+      url: '/admin/initiatives/permissions',
+      feature: 'granular_permissions',
+    },
+  ];
 
   return (
     <>
-      <Outlet
-        id="app.containers.Admin.initiatives.tabs"
-        onData={handleData}
-        formatMessage={formatMessage}
-      />
       <NavigationTabs>
         {tabs.map(({ url, label }) => (
           <Tab

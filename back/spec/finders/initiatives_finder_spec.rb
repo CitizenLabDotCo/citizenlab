@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 describe InitiativesFinder do
   subject(:finder) { described_class.new(params, **options) }
 
@@ -14,6 +15,26 @@ describe InitiativesFinder do
   context 'without passing params' do
     it 'returns all initiatives' do
       expect(finder.find_records.count).to eq Initiative.count
+    end
+  end
+
+  describe '#find_records' do
+    let(:normal_user) { create(:user) }
+
+    let(:options) do
+      {
+        scope: InitiativePolicy::Scope.new(normal_user, Initiative).resolve
+      }
+    end
+
+    before do
+      users = User.all
+      Initiative.first.cosponsors << users[0]
+      Initiative.first.cosponsors << users[1]
+    end
+
+    it 'does not return duplicate records' do
+      expect(record_ids).to match_array Initiative.all.pluck(:id).uniq
     end
   end
 
@@ -122,7 +143,7 @@ describe InitiativesFinder do
   end
 
   describe '#search_condition' do
-    let(:slug) { 'slug_1' }
+    let(:slug) { 'slug-1' }
     let(:expected_record_ids) { Initiative.search_by_all(slug).pluck(:id) }
 
     before do

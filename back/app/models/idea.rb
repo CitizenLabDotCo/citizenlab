@@ -57,6 +57,10 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   extend OrderAsSpecified
 
+  before_save :convert_wkt_geo_custom_field_values_to_geojson
+
+  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
@@ -82,7 +86,7 @@ class Idea < ApplicationRecord
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :ideas_topics
   has_many :ideas_phases, dependent: :destroy
-  has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
+  has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -100,11 +104,11 @@ class Idea < ApplicationRecord
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
 
-  with_options if: :validate_built_in_fields? do
+  with_options if: :supports_built_in_fields? do
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
+  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
 
@@ -119,8 +123,11 @@ class Idea < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug
   after_update :fix_comments_count_on_projects
+
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc custom_field_values slug],
+    using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
@@ -145,9 +152,27 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
+  scope :activity_after, lambda { |time_ago|
+    ideas = left_joins(:comments, :reactions)
+      .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+    where(id: ideas)
+  }
+
   scope :feedback_needed, lambda {
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+  }
+
+  scope :publicly_visible, lambda {
+    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
+    where(creation_phase: nil)
+      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+  }
+  scope :transitive, -> { where creation_phase: nil }
+
+  scope :native_survey, -> { where(creation_phase: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
+  scope :draft_surveys, lambda { # TODO: Delete
+    native_survey.where(publication_status: 'draft')
   }
 
   def just_published?
@@ -158,45 +183,27 @@ class Idea < ApplicationRecord
     publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
   end
 
+  def consultation_context
+    creation_phase || project
+  end
+
   def custom_form
-    participation_context = creation_phase || project
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end
 
   def input_term
-    return project.input_term if project.continuous?
-
-    return creation_phase.input_term if participation_method_on_creation.creation_phase?
-
-    participation_context = ParticipationContextService.new.get_participation_context(project)
-    return participation_context.input_term if participation_context&.can_contain_ideas?
-
-    case phases.size
-    when 0
-      ParticipationContext::DEFAULT_INPUT_TERM
-    when 1
-      phases[0].input_term
+    if participation_method_on_creation.transitive?
+      transitive_input_term
     else
-      now = Time.zone.now
-      phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
-      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at <= now }
-      if first_past_phase_with_ideas
-        first_past_phase_with_ideas.input_term
-      else # now is before the first phase with ideas
-        phases_with_ideas.first.input_term
-      end
+      creation_phase.input_term
     end
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for participation_context_on_creation
+    consultation_context.pmethod
   end
 
   private
-
-  def participation_context_on_creation
-    creation_phase || project
-  end
 
   def schema_for_validation
     fields = participation_method_on_creation.custom_form.custom_fields
@@ -204,14 +211,8 @@ class Idea < ApplicationRecord
     multiloc_schema.values.first
   end
 
-  def validate_built_in_fields?
-    !draft? && participation_method_on_creation.validate_built_in_fields?
-  end
-
-  def assign_slug
-    return if slug # Slugs never change.
-
-    participation_method_on_creation.assign_slug self
+  def supports_built_in_fields?
+    !draft? && participation_method_on_creation.supports_built_in_fields?
   end
 
   def assign_defaults
@@ -234,21 +235,16 @@ class Idea < ApplicationRecord
     Comment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
-  def update_phase_ideas_count(_)
+  def update_phase_counts(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+    phases.select { |p| p.participation_method == 'voting' }.each do |phase|
+      # NOTE: this does not get called when removing a phase - but phase counts are not actually used
+      Basket.update_counts(phase)
+    end
   end
 
   def validate_creation_phase
     return unless creation_phase
-
-    if project.continuous?
-      errors.add(
-        :creation_phase,
-        :not_in_timeline_project,
-        message: 'The creation phase cannot be set for inputs in a continuous project'
-      )
-      return
-    end
 
     if creation_phase.project_id != project_id
       errors.add(
@@ -259,7 +255,7 @@ class Idea < ApplicationRecord
       return
     end
 
-    if !participation_method_on_creation.creation_phase?
+    if participation_method_on_creation.transitive?
       errors.add(
         :creation_phase,
         :invalid_participation_method,
@@ -267,13 +263,57 @@ class Idea < ApplicationRecord
       )
     end
   end
+
+  # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
+  # which are not supported by Rails strong params.
+  # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
+  #
+  # RGeo gem & wkt strings:
+  # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
+  def convert_wkt_geo_custom_field_values_to_geojson
+    return if custom_field_values.blank?
+
+    geo_cf_keys = custom_form
+      &.custom_fields.to_a
+      .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
+      .map(&:key)
+
+    custom_field_values.slice(*geo_cf_keys).each do |key, value|
+      custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
+    end
+  end
+
+  def transitive_input_term
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+  end
+
+  def current_phase_input_term
+    current_phase = TimelineService.new.current_phase project
+    current_phase.input_term if current_phase&.pmethod&.supports_input_term?
+  end
+
+  def last_past_phase_input_term
+    past_phases = TimelineService.new.past_phases(project).select { |phase| phase_ids.include? phase.id }
+    past_phases_with_input_term = past_phases.select do |phase|
+      phase.pmethod.supports_input_term?
+    end
+    past_phases_with_input_term.last&.input_term
+  end
+
+  def first_future_phase_input_term
+    future_phases = TimelineService.new.future_phases(project).select { |phase| phase_ids.include? phase.id }
+    future_phases_with_input_term = future_phases.select do |phase|
+      phase.pmethod.supports_input_term?
+    end
+    future_phases_with_input_term.first&.input_term
+  end
 end
 
 Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
-Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
 Idea.include(IdeaCustomFields::Extensions::Idea)
 Idea.include(Analysis::Patches::Idea)
+Idea.include(BulkImportIdeas::Patches::Idea)

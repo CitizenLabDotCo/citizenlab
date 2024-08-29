@@ -1,45 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import getSubmitState from 'utils/getSubmitState';
-import { Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  TAppConfigurationSettingCore,
+} from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from 'containers/Admin/settings/messages';
+
 import {
   SectionTitle,
   SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import CustomFieldSettings from './CustomFieldSettings';
-import ToggleUserConfirmation from './ToggleUserConfirmation';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
+import Areas from 'components/Areas';
+import Topics from 'components/Topics';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// i18n
-import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import getSubmitState from 'utils/getSubmitState';
+import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  TAppConfigurationSettingCore,
-} from 'api/app_configuration/types';
+import CustomFieldSettings from './CustomFieldSettings';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
+import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
 
 export const LabelTooltip = styled.div`
   display: flex;
-`;
-
-const SignUpFieldsSection = styled.div`
-  margin-bottom: 60px;
 `;
 
 const SettingsRegistrationTab = () => {
@@ -51,9 +48,11 @@ const SettingsRegistrationTab = () => {
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
 
-  const userConfirmationIsAllowed = useFeatureFlag({
-    name: 'user_confirmation',
-    onlyCheckAllowed: true,
+  // Creating another instance to update follow preferences separately
+  const { mutate: updateFollowPreferences } = useUpdateAppConfiguration();
+
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
   });
 
   const [attributesDiff, setAttributesDiff] =
@@ -111,19 +110,16 @@ const SettingsRegistrationTab = () => {
     });
   };
 
-  const userConfirmationToggleIsEnabled =
-    !!latestAppConfigSettings?.user_confirmation?.enabled;
+  const isOnboardingEnabled = !!latestAppConfigSettings?.core.onboarding;
 
-  const handleUserConfirmationToggleChange = (value: boolean) => {
-    const newAttributesDiff = {
-      ...attributesDiff,
+  const handleOnboardingChange = (value: boolean) => {
+    updateFollowPreferences({
       settings: {
-        ...(attributesDiff.settings || {}),
-        user_confirmation: { enabled: value },
+        core: {
+          onboarding: value,
+        },
       },
-    };
-
-    setAttributesDiff(newAttributesDiff);
+    });
   };
 
   if (!isNilOrError(latestAppConfigSettings)) {
@@ -132,7 +128,7 @@ const SettingsRegistrationTab = () => {
         <SectionTitle>
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
-        <SignUpFieldsSection key={'signup_fields'}>
+        <Box mb="60px" key={'signup_fields'}>
           <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
           </SubSectionTitle>
@@ -157,12 +153,6 @@ const SettingsRegistrationTab = () => {
                 }
               />
             </SectionField>
-            {userConfirmationIsAllowed && (
-              <ToggleUserConfirmation
-                onChange={handleUserConfirmationToggleChange}
-                isEnabled={userConfirmationToggleIsEnabled}
-              />
-            )}
             <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
@@ -186,7 +176,29 @@ const SettingsRegistrationTab = () => {
               }}
             />
           </form>
-        </SignUpFieldsSection>
+          {isFollowingEnabled && (
+            <Box maxWidth="500px" mt="36px">
+              <ToggleShowFollowPreferences
+                onChange={handleOnboardingChange}
+                isEnabled={isOnboardingEnabled}
+              />
+              {isOnboardingEnabled && (
+                <>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.selectOnboardingTopics} />
+                  </SubSectionTitle>
+                  <Topics action="updateOnboardingPreferences" />
+                  <Box mt="36px">
+                    <SubSectionTitle>
+                      <FormattedMessage {...messages.selectOnboardingAreas} />
+                    </SubSectionTitle>
+                    <Areas action="updateOnboardingPreferences" />
+                  </Box>
+                </>
+              )}
+            </Box>
+          )}
+        </Box>
         <CustomFieldSettings />
       </>
     );

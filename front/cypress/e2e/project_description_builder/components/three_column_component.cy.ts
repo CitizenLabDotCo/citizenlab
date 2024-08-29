@@ -13,12 +13,10 @@ describe('Project description builder Three Column component', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
@@ -52,14 +50,14 @@ describe('Project description builder Three Column component', () => {
     );
 
     // Components added to all columns
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-about-box').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
-    cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-text').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
 
-    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('div.e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
 
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -67,8 +65,8 @@ describe('Project description builder Three Column component', () => {
 
     // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-three-column').should('exist');
-    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('.e2e-three-column').should('exist');
+    cy.get('div.e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
   });
 
@@ -79,14 +77,14 @@ describe('Project description builder Three Column component', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('#e2e-three-column').should('be.visible');
+    cy.get('.e2e-three-column').should('be.visible');
 
-    cy.get('#e2e-three-column').click('top');
+    cy.get('.e2e-three-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-three-column').should('not.exist');
+    cy.get('.e2e-three-column').should('not.exist');
   });
 });

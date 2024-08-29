@@ -1,22 +1,25 @@
 import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
-import styled from 'styled-components';
+
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { isNilOrError } from 'utils/helperUtils';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-import useCauses from 'api/causes/useCauses';
 import { ICauseData } from 'api/causes/types';
+import useCauses from 'api/causes/useCauses';
+import useDeleteCause from 'api/causes/useDeleteCause';
+import useReorderCause from 'api/causes/useReorderCause';
 
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-import T from 'components/T';
-import useDeleteCause from 'api/causes/useDeleteCause';
-import useReorderCause from 'api/causes/useReorderCause';
 
 const Container = styled.div``;
 
@@ -26,23 +29,17 @@ const Buttons = styled.div`
 `;
 
 interface Props {
-  participationContextType: 'project' | 'phase';
-  participationContextId: string;
+  phaseId: string;
   projectId: string;
 }
 
-const AllCauses = ({
-  participationContextType,
-  participationContextId,
-  projectId,
-}: Props) => {
+const AllCauses = ({ phaseId, projectId }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
 
   const { data: causes } = useCauses({
-    participationContextType,
-    participationContextId,
+    phaseId,
   });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     ICauseData[] | null
@@ -99,17 +96,18 @@ const AllCauses = ({
     }
   };
 
-  const newCauseLink =
-    participationContextType === 'phase'
-      ? `/admin/projects/${projectId}/volunteering/phases/${participationContextId}/causes/new`
-      : `/admin/projects/${projectId}/volunteering/causes/new`;
+  const newCauseLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 
   return (
     <Container>
       <ButtonWrapper>
-        <Button buttonStyle="cl-blue" icon="plus-circle" linkTo={newCauseLink}>
+        <Button
+          buttonStyle="admin-dark"
+          icon="plus-circle"
+          linkTo={newCauseLink}
+        >
           <FormattedMessage {...messages.addCauseButton} />
         </Button>
       </ButtonWrapper>
@@ -142,9 +140,9 @@ const AllCauses = ({
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
                 <Button
-                  linkTo={`/admin/projects/${projectId}/volunteering/causes/${cause.id}`}
+                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>

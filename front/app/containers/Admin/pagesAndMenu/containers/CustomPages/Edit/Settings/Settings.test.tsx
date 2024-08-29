@@ -1,7 +1,10 @@
 import React from 'react';
-import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
-import EditCustomPageSettings from './';
+
 import { ICustomPageData } from 'api/custom_pages/types';
+
+import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
+
+import EditCustomPageSettings from './';
 
 jest.mock('api/topics/useTopics');
 jest.mock('api/areas/useAreas');
@@ -56,8 +59,8 @@ describe('EditCustomPageSettings', () => {
       name: 'Save custom page',
     });
 
-    user.type(slugInput, '-');
-    user.click(submitButton);
+    await user.type(slugInput, '-');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();

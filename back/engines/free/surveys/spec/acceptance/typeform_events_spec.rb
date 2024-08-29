@@ -23,10 +23,10 @@ resource 'Typeform Events' do
 
   post '/hooks/typeform_events' do
     before do
-      @pc = create(:continuous_survey_project)
+      @phase = create(:typeform_survey_phase)
       url_params = {
-        pc_id: @pc.id,
-        pc_type: @pc.class.name
+        pc_id: @phase.id,
+        pc_type: @phase.class.name
       }
       # Hack from https://github.com/zipmark/rspec_api_documentation/issues/342
       example.metadata[:route] += "?#{url_params.to_query}"
@@ -260,7 +260,7 @@ resource 'Typeform Events' do
       expect(response_status).to eq 200
       expect(Surveys::Response.count).to eq 1
       expect(Surveys::Response.first).to have_attributes({
-        participation_context: @pc
+        phase: @phase
       })
     end
   end

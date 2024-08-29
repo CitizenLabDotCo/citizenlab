@@ -33,8 +33,8 @@ end
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('engines/**/spec/support/**/*.rb')].sort.each { |f| require f }
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('engines/**/spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -70,13 +70,13 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ActiveSupport::Testing::TimeHelpers
-  config.include GeneralHelper
-  config.include ApiHelper
   config.include ApiAuthenticationHelper
+  config.include ApiHelper
   config.include Base64Helper
+  config.include GeneralHelper
   config.include RakeHelper
+  config.include StubEnvHelper
   config.include XlsxHelper
-  config.include AppConfigurationHelper
 
   # If we do not include the following module, the controller tests do not reset the
   # `CurrentAttributes` before and after each test.

@@ -1,0 +1,3 @@
+sr-Cyrl:
+  analysis:
+    example_tag_n: Пример ознаке %{n}

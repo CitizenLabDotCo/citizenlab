@@ -7,7 +7,7 @@ RSpec.describe PublishActivityToRabbitJob do
 
   describe '#perform' do
     it 'generates an event with the desired content' do
-      user = create(:user)
+      user = create(:user, email: 'someone-chatty@example.com')
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
@@ -17,6 +17,7 @@ RSpec.describe PublishActivityToRabbitJob do
         expect(event).to include(
           event: 'Comment created',
           user_id: user.id,
+          user_email: 'someone-chatty@example.com',
           action: 'created',
           item_id: comment.id,
           item_type: 'Comment',

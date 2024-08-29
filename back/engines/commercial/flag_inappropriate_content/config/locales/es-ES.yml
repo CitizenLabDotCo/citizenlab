@@ -10,6 +10,8 @@ es:
       comment_author: '%{authorName} comentó:'
       idea_author: '%{authorName} ha enviado un mensaje:'
       initiative_author: '%{authorName} ha enviado una propuesta:'
-      this_post_was_flagged: >
-        <p>Este post fue detectado automáticamente con contenido potencialmente inapropiado. Te enviamos esta notificación para que puedas revisar el post de acuerdo con tus propias directrices de moderación.</p><p>Si la publicación no tiene contenido inapropiado, puedes eliminar la advertencia a través de tu plataforma en la pestaña Actividad del panel de administración.</p>
+      automatically_flagged: >
+        Se ha detectado automáticamente que esta publicación puede contener contenido inapropiado. Te enviamos esta notificación para que puedas revisar la publicación de acuerdo con tus propias directrices de moderación.
+      how_to_review: >
+        Si la publicación no tiene contenido inapropiado, puedes eliminar la advertencia a través de tu plataforma en la pestaña Actividad del panel de administración.
       cta_review_post: 'Revisar el aporte'

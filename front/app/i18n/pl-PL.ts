@@ -1,7 +1,11 @@
+import pl from 'date-fns/locale/pl';
+import { registerLocale } from 'react-datepicker';
+
 import { formatTranslationMessages } from './';
 
-const plPLTranslationMessages = require('translations/pl-PL.json');
+registerLocale('pl-PL', pl);
 const plPLAdminTranslationMessages = require('translations/admin/pl-PL.json');
+const plPLTranslationMessages = require('translations/pl-PL.json');
 const translationMessages = formatTranslationMessages('pl-PL', {
   ...plPLTranslationMessages,
   ...plPLAdminTranslationMessages,

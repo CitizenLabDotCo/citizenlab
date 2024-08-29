@@ -13,14 +13,13 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.policyLink',
     defaultMessage: 'Cookie Policy',
   },
-  subText: {
-    id: 'app.components.ConsentManager.Banner.subText',
-    defaultMessage:
-      'Access your preferences at any time by visiting "Cookie settings" at the bottom of the page',
-  },
   manage: {
     id: 'app.components.ConsentManager.Banner.manage',
     defaultMessage: 'Manage',
+  },
+  reject: {
+    id: 'app.components.ConsentManager.Banner.reject',
+    defaultMessage: 'Reject',
   },
   accept: {
     id: 'app.components.ConsentManager.Banner.accept',

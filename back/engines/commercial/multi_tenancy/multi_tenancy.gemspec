@@ -11,21 +11,18 @@ Gem::Specification.new do |spec|
   spec.version     = MultiTenancy::VERSION
   spec.required_ruby_version = '>= 2.7.6'
   spec.authors     = ['Adrien Dessy']
-  spec.licenses    = ['CitizenLab Commercial License V2']
+  spec.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   spec.email       = ['adrien@citizenlab.co']
   spec.summary     = 'Multi-tenancy support for CitizenLab participation platform'
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'README.md']
 
-  # CitizenLab engines
-  spec.add_dependency 'nlp'
-
   spec.add_dependency 'rails', '~> 7.0'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 
-  spec.add_development_dependency 'rubocop', '1.50.2'
-  spec.add_development_dependency 'rubocop-performance', '1.18.0'
-  spec.add_development_dependency 'rubocop-rails', '2.19.1'
-  spec.add_development_dependency 'rubocop-rspec', '2.12.1'
+  spec.add_development_dependency 'rubocop', '1.65.1'
+  spec.add_development_dependency 'rubocop-performance', '1.21.1'
+  spec.add_development_dependency 'rubocop-rails', '2.22.1'
+  spec.add_development_dependency 'rubocop-rspec', '2.29.2'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

@@ -1,4 +1,4 @@
-# cl2_front
+# cl2-front
 
 ## Prerequisites
 
@@ -9,20 +9,20 @@
 ## Setup
 
 1. `git clone` the repository
-2. Run `npm install` in the root of the repository
+2. Run `npm run install` in folder `front` of the repository
 
 ## Running
 
-If you have [citizenlab/back][cl2back] running on the same machine, with the default port (4000):
+If you have [citizenlab/back][cl2back] running on the same machine, with the default port (4000) run the following command in the folder `front` of the repository:
 
 ```
-npm start
+npm run start
 ```
 
 If [citizenlab/back][cl2back] runs on a different machine / port:
 
 ```
-API_HOST=XXX API_PORT=YYY npm start
+API_HOST=XXX API_PORT=YYY npm run start
 ```
 
 (replace `XXX` with the hostname or ip and `YYY` with the port of your instance of cl2-back)

@@ -1,17 +1,17 @@
 import React from 'react';
+
 import { useParams } from 'react-router-dom';
+
+import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
+import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+
+import { Section, SectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
-import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
-
-// components
-import { Section, SectionTitle } from 'components/admin/Section';
 import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';

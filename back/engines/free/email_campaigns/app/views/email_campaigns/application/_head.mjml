@@ -1,13 +1,25 @@
 <mj-head>
+  <mj-raw>
+    <style data-premailer="ignore">
+        /* Media query for mobile devices, aligned with front-end breakpoints */
+        @media (max-width: 769px) {
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+    </style>
+  </mj-raw>
+
   <mj-style inline="inline">
     h1 {
       font-size: 25px;
       margin-bottom: 25px;
     }
+    
     a {text-decoration: none;}
 
     <%# From https://github.com/mjmlio/mjml/issues/230 %>
-    <% if text_direction == "rtl" %>
+    <% if locale.text_direction == "rtl" %>
       * { direction: rtl; text-align: right !important; }
     <% end %>
 

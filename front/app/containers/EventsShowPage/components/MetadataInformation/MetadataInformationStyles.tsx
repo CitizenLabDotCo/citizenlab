@@ -1,9 +1,5 @@
-// components
-import { Icon, colors } from '@citizenlab/cl2-component-library';
-
-// styles
+import { Icon, colors, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
 
 export const Container = styled.div`
   display: flex;
@@ -19,7 +15,7 @@ export const StyledIcon = styled(Icon)`
   fill: ${colors.coolGrey600};
   margin-right: 8px;
   align-self: flex-start;
-  margin-top: 12px;
+  margin-top: 2px;
 
   ${isRtl`
     margin-right: 0;

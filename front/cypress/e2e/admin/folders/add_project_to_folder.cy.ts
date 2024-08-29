@@ -10,26 +10,22 @@ describe.skip('Admin: add projects to folder', async () => {
     let projectTitle2 = randomString();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle1,
       descriptionPreview: projectDescription,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     }).then((projectOneResponse) => {
       projectId1 = projectOneResponse.body.data.id;
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle2,
         descriptionPreview: projectDescription,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'native_survey',
       }).then((projectTwoResponse) => {
         projectId2 = projectTwoResponse.body.data.id;
 
         cy.setAdminLoginCookie();
-        cy.visit('/admin/projects/');
+        cy.visit('/admin/projects/all');
         cy.acceptCookies();
 
         cy.get('[data-cy="e2e-new-project-folder-button"]').click();
@@ -67,7 +63,7 @@ describe.skip('Admin: add projects to folder', async () => {
           });
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         // Wait for folder page to load
         cy.get('.e2e-resource-header').contains(folderTitle);

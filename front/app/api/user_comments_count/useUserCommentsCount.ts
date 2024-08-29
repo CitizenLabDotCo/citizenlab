@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import userCommentsCountKeys from './keys';
 import { UserCommentsCountKeys, IParameters, ICommentsCount } from './types';
 
@@ -19,6 +21,7 @@ const useUserCommentsCount = ({ userId }: IParameters) => {
   >({
     queryKey: userCommentsCountKeys.item({ userId }),
     queryFn: () => fetchUserCommentsCount({ userId }),
+    enabled: !!userId,
   });
 };
 

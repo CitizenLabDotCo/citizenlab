@@ -110,6 +110,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.cancelVote',
     defaultMessage: 'Cancel vote',
   },
+  voted: {
+    id: 'app.containers.InitiativesShow.VoteControl.voted',
+    defaultMessage: 'Voted',
+  },
   readAnswer: {
     id: 'app.containers.InitiativesShow.VoteControl.readAnswer',
     defaultMessage: 'Read answer',
@@ -128,29 +132,21 @@ export default defineMessages({
     defaultMessage:
       '{x, plural, =0 {less than a day} one {one day} other {# days}}',
   },
-  unvoteLink: {
-    id: 'app.containers.InitiativesShow.VoteControl.unvoteLink',
-    defaultMessage: 'Cancel my vote',
-  },
   a11y_xVotesOfRequiredY: {
     id: 'app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY',
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',
   },
-  xPeopleVoted: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',
-    defaultMessage: '{xPeople} voted for this initiative',
-  },
-  xPeople: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeople',
-    defaultMessage:
-      '{count, plural, =0 {No one} one {One person} other {# people}}',
-  },
-  or: {
-    id: 'app.containers.InitiativesShow.VoteControl.or',
-    defaultMessage: 'or',
-  },
   votingNotPermitted: {
-    id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
-    defaultMessage: "You don't have the rights to vote on this proposal.",
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted1',
+    defaultMessage:
+      'Unfortunately, you cannot vote on this proposal. Read why in {link}.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.InitiativesShow.VoteControl.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
+  },
+  a11y_timeLeft: {
+    id: 'app.containers.InitiativesShow.VoteControl.a11y_timeLeft',
+    defaultMessage: 'Time left to vote:',
   },
 });

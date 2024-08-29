@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :custom_field, aliases: [:custom_field_text] do
-    resource_type { 'User' }
+    for_registration
+
     sequence(:key) { |n| "field_#{n}" }
     title_multiloc do
       {
@@ -15,23 +16,86 @@ FactoryBot.define do
       }
     end
     required { false }
+    enabled { true }
+
     input_type { 'text' }
+
+    trait :for_registration do
+      resource_type { 'User' }
+    end
 
     trait :for_custom_form do
       association :resource, factory: :custom_form
     end
 
-    factory :custom_field_extra_custom_form do
+    factory :custom_field_point do
       title_multiloc do
         {
-          'en' => 'An extra question'
+          'en' => 'Where do you live?'
         }
       end
-      required { false }
-      key { 'extra_field' }
-      input_type { 'text' }
-      enabled { true }
-      resource { create(:custom_form) }
+      description_multiloc do
+        {
+          'en' => 'Please indicate where you live.'
+        }
+      end
+      input_type { 'point' }
+    end
+
+    factory :custom_field_line do
+      title_multiloc do
+        {
+          'en' => 'Where should we add the new cycle-path?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw a line to indicate the route of the new cycle-path.'
+        }
+      end
+      input_type { 'line' }
+    end
+
+    factory :custom_field_polygon do
+      title_multiloc do
+        {
+          'en' => 'Where should we build new housing?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw the area where you think we should build new housing.'
+        }
+      end
+      input_type { 'polygon' }
+    end
+
+    factory :custom_field_multiline_text do
+      title_multiloc do
+        {
+          'en' => 'Why would you want to join the army?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please explain why you want to join the army.'
+        }
+      end
+      input_type { 'multiline_text' }
+    end
+
+    factory :custom_field_html_multiloc do
+      title_multiloc do
+        {
+          'en' => 'Why would you want to join the army?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please explain why you want to join the army.'
+        }
+      end
+      input_type { 'html_multiloc' }
     end
 
     factory :custom_field_select do
@@ -45,9 +109,7 @@ FactoryBot.define do
           'en' => 'Which councils are you attending in our city?'
         }
       end
-      required { false }
       input_type { 'select' }
-      enabled { true }
 
       trait :with_options do
         after(:create) do |cf|
@@ -68,20 +130,35 @@ FactoryBot.define do
           'en' => 'Please indicate how strong you agree or disagree.'
         }
       end
-      required { false }
       input_type { 'linear_scale' }
-      enabled { true }
       maximum { 5 }
-      minimum_label_multiloc do
+      linear_scale_label_1_multiloc do
         {
           'en' => 'Strongly disagree'
         }
       end
-      maximum_label_multiloc do
+      linear_scale_label_2_multiloc do
+        {
+          'en' => 'Disagree'
+        }
+      end
+      linear_scale_label_3_multiloc do
+        {
+          'en' => 'Neutral'
+        }
+      end
+      linear_scale_label_4_multiloc do
+        {
+          'en' => 'Agree'
+        }
+      end
+      linear_scale_label_5_multiloc do
         {
           'en' => 'Strongly agree'
         }
       end
+      linear_scale_label_6_multiloc { {} }
+      linear_scale_label_7_multiloc { {} }
     end
 
     factory :custom_field_page do
@@ -95,9 +172,8 @@ FactoryBot.define do
           'en' => 'This is a survey on your cycling habits.'
         }
       end
-      required { false }
       input_type { 'page' }
-      enabled { true }
+      page_layout { 'default' }
     end
 
     factory :custom_field_section do
@@ -111,9 +187,7 @@ FactoryBot.define do
           'en' => 'This is a section.'
         }
       end
-      required { false }
       input_type { 'section' }
-      enabled { true }
     end
 
     factory :custom_field_multiselect do
@@ -122,9 +196,7 @@ FactoryBot.define do
           'en' => 'What languages do you speak?'
         }
       end
-      required { false }
       input_type { 'multiselect' }
-      enabled { true }
 
       trait :with_options do
         after(:create) do |cf|
@@ -134,15 +206,47 @@ FactoryBot.define do
       end
     end
 
+    factory :custom_field_multiselect_image do
+      title_multiloc do
+        {
+          'en' => 'Choose an image'
+        }
+      end
+      input_type { 'multiselect_image' }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'image1', image: create(:custom_field_option_image))
+          create(:custom_field_option, custom_field: cf, key: 'image2', image: create(:custom_field_option_image))
+        end
+      end
+    end
+
+    factory :custom_field_file_upload do
+      title_multiloc do
+        {
+          'en' => 'Upload your CV'
+        }
+      end
+      input_type { 'file_upload' }
+    end
+
+    factory :custom_field_shapefile_upload do
+      title_multiloc do
+        {
+          'en' => 'Upload a zipfile containing your shapefiles'
+        }
+      end
+      input_type { 'shapefile_upload' }
+    end
+
     factory :custom_field_checkbox do
       title_multiloc do
         {
           'en' => 'I want to join the army'
         }
       end
-      required { true } # default should be false, right?
       input_type { 'checkbox' }
-      enabled { true }
     end
 
     factory :custom_field_date do
@@ -151,9 +255,7 @@ FactoryBot.define do
           'en' => 'When did you last see a mermaid?'
         }
       end
-      required { false }
       input_type { 'date' }
-      enabled { true }
     end
 
     factory :custom_field_number do
@@ -162,9 +264,7 @@ FactoryBot.define do
           'en' => 'How many cheese burgers can you put in your mouth without swallowing?'
         }
       end
-      required { false }
       input_type { 'number' }
-      enabled { true }
     end
 
     factory :custom_field_birthyear do

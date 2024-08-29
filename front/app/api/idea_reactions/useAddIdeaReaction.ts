@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IIdeaReaction, INewReactionProperties } from './types';
+
 import ideasKeys from 'api/ideas/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { IIdeaReaction, INewReactionProperties } from './types';
 
 export const addIdeaReaction = async ({
   ideaId,

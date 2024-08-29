@@ -1,10 +1,11 @@
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import requirementsKeys from './keys';
 import {
   AuthenticationContext,
   AuthenticationRequirementsResponse,
 } from './types';
-import requirementsKeys from './keys';
 
 const getAuthenticationRequirements = (
   authenticationContext: AuthenticationContext

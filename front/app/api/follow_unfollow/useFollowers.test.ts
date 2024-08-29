@@ -1,15 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useFollowers from './useFollowers';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { followersData } from './__mocks__/useFollowers';
+
+import { followersData, links } from './__mocks__/useFollowers';
+import useFollowers from './useFollowers';
 
 const apiPath = '*followers';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: followersData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: followersData, links }, { status: 200 });
   })
 );
 
@@ -27,13 +29,13 @@ describe('useFollowers', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(followersData);
+    expect(result.current.data?.pages[0].data).toEqual(followersData);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

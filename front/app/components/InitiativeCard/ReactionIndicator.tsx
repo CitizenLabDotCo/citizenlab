@@ -1,23 +1,21 @@
 import React from 'react';
+
+import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import { Icon } from '@citizenlab/cl2-component-library';
-import ProposalProgressBar from 'containers/InitiativesShow/ReactionControl/ProposalProgressBar';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import ProposalProgressBar from 'containers/InitiativesShow/ReactionControl/Status/components/ProposalProgressBar';
 
 import T from 'components/T';
 
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div``;
 
@@ -39,13 +37,13 @@ const BadgeLabel = styled.div`
 `;
 
 const AnsweredBadgeIcon = styled(Icon)`
-  fill: ${colors.success};
+  fill: ${colors.green700};
   padding-right: 7px;
 `;
 
 const AnsweredStatusBadge = styled(StatusBadge)`
   background-color: ${colors.successLight};
-  color: ${colors.success};
+  color: ${colors.green700};
 `;
 
 const IneligibleBadgeIcon = styled(Icon)`
@@ -121,8 +119,8 @@ const ReactionIndicator = ({ initiativeId }: Props) => {
   const statusCode = initiativeStatus.data.attributes.code;
   const reactionCount = initiative?.data.attributes.likes_count || 0;
   const reactionLimit: number =
-    appConfiguration?.data?.attributes?.settings.initiatives
-      ?.reacting_threshold || 1;
+    appConfiguration?.data.attributes.settings.initiatives.reacting_threshold ||
+    1;
 
   return (
     <Container className="e2e-initiative-card-reaction-indicator">

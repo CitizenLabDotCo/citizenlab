@@ -1,27 +1,25 @@
-// libraries
 import React, { useState, useEffect } from 'react';
 
-// components
-import InternalCommentHeader from './InternalCommentHeader';
-import InternalCommentBody from './InternalCommentBody';
-import InternalCommentFooter from './InternalCommentFooter';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// style
+import {
+  Icon,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 import styled, { keyframes, css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
 
-// Utils
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 
-// hooks
-import { useLocation } from 'react-router-dom';
+import InternalCommentBody from './InternalCommentBody';
+import InternalCommentFooter from './InternalCommentFooter';
+import InternalCommentHeader from './InternalCommentHeader';
 
 const highlightAnimation = keyframes`
   0% {
@@ -172,7 +170,6 @@ const InternalComment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <InternalCommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}

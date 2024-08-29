@@ -2,14 +2,15 @@
 
 class WebApi::V1::PhasesController < ApplicationController
   before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
+  around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
   def index
     @phases = policy_scope(Phase)
-      .includes(:permissions)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
+    @phases = @phases.includes(:permissions, :report, :custom_form)
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
   end
@@ -23,6 +24,7 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
+
     if @phase.save
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
@@ -35,6 +37,7 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.assign_attributes phase_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
+
     if @phase.save
       sidefx.after_update(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
@@ -46,8 +49,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      participation_method = Factory.instance.participation_method_for @phase
-      @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
+      @phase.ideas.each(&:destroy!) if !@phase.pmethod.transitive?
 
       @phase.destroy
     end
@@ -61,18 +63,22 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def survey_results
     results = SurveyResultsGeneratorService.new(@phase).generate_results
-    render json: results
+    render json: raw_json(results)
   end
 
   def submission_count
-    count = SurveyResultsGeneratorService.new(@phase).generate_submission_count
-    render json: count
+    count = if @phase.native_survey?
+      @phase.ideas.native_survey.published.count
+    else
+      @phase.ideas.transitive.published.count
+    end
+
+    render json: raw_json({ totalSubmissions: count })
   end
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_phase @phase.id, include_private_attributes
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -104,8 +110,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :end_at,
       :participation_method,
       :posting_enabled,
-      :posting_method,
-      :posting_limited_max,
       :commenting_enabled,
       :reacting_enabled,
       :reacting_like_method,
@@ -122,11 +126,15 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
+      :reacting_threshold,
+      :expire_days_limit,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
+        native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
+        native_survey_button_multiloc: CL2_SUPPORTED_LOCALES,
         campaigns_settings: Phase::CAMPAIGNS
       }
     ]
@@ -134,5 +142,33 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
     params.require(:phase).permit(permitted)
+  end
+
+  def detect_invalid_timeline_changes
+    project = if params[:project_id]
+      Project.find(params[:project_id])
+    else
+      Phase.find(params[:id]).project
+    end
+
+    phases_before = project.phases.map(&:dup)
+    valid_before = project.phases.all?(&:valid?)
+
+    yield
+
+    project.reload
+    phases_after = project.phases
+    valid_after = phases_after.all?(&:valid?)
+
+    if valid_before && !valid_after
+      ErrorReporter.report_msg(
+        'request introduced invalid phases', extra: {
+          project_id: project.id,
+          phases_before: phases_before.sort_by(&:start_at).map(&:attributes),
+          phases_after: phases_after.sort_by(&:start_at).map(&:attributes),
+          params: params.to_unsafe_h
+        }
+      )
+    end
   end
 end

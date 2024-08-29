@@ -1,16 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteCampaign from './useDeleteCampaign';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteCampaign from './useDeleteCampaign';
 const apiPath = '*campaigns/:id';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
+  http.delete(apiPath, () => {
+    return HttpResponse.json(null, { status: 200 });
   })
 );
 
@@ -32,8 +31,8 @@ describe('useDeleteCampaign', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.delete(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

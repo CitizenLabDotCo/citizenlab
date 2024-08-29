@@ -1,20 +1,18 @@
 import React from 'react';
-// styles
 
-// intl
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// components
 import { Button, colors, Title, Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
 
 import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
-import { object, string } from 'yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { handleCLErrorsIsh } from 'utils/errorUtils';
-import Feedback from 'components/HookForm/Feedback';
+
 import Input from 'components/HookForm/Input';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import messages from './messages';
 
 type RenameTagProps = {
   closeRenameModal: () => void;
@@ -34,7 +32,7 @@ const RenameTag = ({
   analysisId,
 }: RenameTagProps) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateTag, isLoading } = useUpdateAnalysisTag();
+  const { mutateAsync: updateTag, isLoading } = useUpdateAnalysisTag();
 
   const schema = object({
     name: string().required(formatMessage(messages.emptyNameError)),
@@ -49,15 +47,12 @@ const RenameTag = ({
   });
 
   const onFormSubmit = async ({ name }: FormValues) => {
-    updateTag(
-      { analysisId, id, name },
-      {
-        onSuccess: closeRenameModal,
-        onError: (errors) => {
-          handleCLErrorsIsh({ errors }, methods.setError);
-        },
-      }
-    );
+    try {
+      await updateTag({ analysisId, id, name });
+      closeRenameModal();
+    } catch (errors) {
+      handleHookFormSubmissionError({ errors }, methods.setError);
+    }
   };
 
   return (
@@ -65,16 +60,16 @@ const RenameTag = ({
       <Title>{formatMessage(messages.renameTagModalTitle)}</Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
-          <Feedback />
           <Input
             type="text"
             name="name"
             label={formatMessage(messages.renameTagModalNameLabel)}
+            fieldName="tag_name"
           />
           <Box display="flex" justifyContent="flex-end" mt="40px" gap="24px">
             <Button
               onClick={closeRenameModal}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               type="button"
             >
               {formatMessage(messages.renameTagModalCancel)}

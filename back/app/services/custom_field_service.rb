@@ -35,7 +35,7 @@ class CustomFieldService
           elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
+            send(:"#{field.input_type}_to_json_schema_field", field, locale)
           end
       end
     }.tap do |output|
@@ -68,38 +68,37 @@ class CustomFieldService
         if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
-          send("#{field.input_type}_to_ui_schema_field", field, locale)
+          send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
     end
   end
 
-  def generate_key(_record, title)
-    key = keyify(title)
-    indexed_key = nil
-    i = 0
-    # while record.class.find_by(key: indexed_key || key)
-    while yield(indexed_key || key)
-      i += 1
-      indexed_key = [key, '_', i].join
-    end
-    indexed_key || key
+  def generate_key(title, other)
+    return 'other' if other == true
+
+    keyify(title)
   end
 
   def keyify(str)
-    str.parameterize.tr('-', '_').presence || '_'
+    key = str.parameterize.tr('-', '_').presence || '_'
+    generate_token(key)
   end
 
-  def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values.each_key do |key|
-      value = custom_field_values[key]
-      is_boolean = !!value == value
-      next if is_boolean || value.present?
+  def generate_token(str)
+    str.dup.concat('_', [*('a'..'z'), *('0'..'9')].sample(3).join)
+  end
 
-      custom_field_values.delete key
+  # Removes all blank values from the values hash in place, except for `false` values,
+  # and returns self.
+  # @example
+  #  compact_custom_field_values!({a: 1, b: '', c: false, d: nil})
+  #  # => {a: 1, c: false}
+  def compact_custom_field_values!(cf_values)
+    cf_values.keep_if do |_key, value|
+      value.present? || value == false
     end
-    custom_field_values
   end
 
   # @param [Hash<String, _>] custom_field_values
@@ -124,10 +123,11 @@ class CustomFieldService
 
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
-    custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
-    fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
+    return idea.custom_field_values if idea.draft?
+
+    fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
-      fields = IdeaCustomFieldsService.new(custom_form).enabled_fields
+      fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields
     end
     visible_keys = fields.pluck(:key)
     idea.custom_field_values.slice(*visible_keys)
@@ -218,7 +218,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.options.order(:ordering)
+      options = field.ordered_options
+
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -242,7 +243,8 @@ class CustomFieldService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.ordered_options
+
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -346,8 +348,42 @@ class CustomFieldService
     end
   end
 
-  def point_to_json_schema_field(_field, _locale)
+  def point_to_json_schema_field(field, locale)
     {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** line ***
+
+  def line_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def line_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** polygon ***
+
+  def polygon_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def polygon_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
       type: 'string'
     }
   end

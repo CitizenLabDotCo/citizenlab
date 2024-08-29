@@ -4,22 +4,22 @@ require 'rails_helper'
 
 RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer do
   describe 'campaign_mail' do
-    let(:project_folder) { create(:project_folder) }
-    let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:project_folder) { create(:project_folder) }
+    let_it_be(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
           project_folder_id: project_folder.id,
           project_folder_title_multiloc: project_folder.title_multiloc,
           project_folder_projects_count: project_folder.projects.count,
-          project_folder_url: Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale)
+          project_folder_url: 'https://admin.folder.url'
         }
       }
     end
+
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
@@ -43,7 +43,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
     end
 
     it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.admin_project_folder_url(project_folder.id, locale: recipient.locale))
+      expect(mail.body.encoded).to match('https://admin.folder.url')
     end
   end
 end

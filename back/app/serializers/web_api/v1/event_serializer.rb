@@ -4,9 +4,12 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
   attributes(
     :title_multiloc,
     :location_multiloc,
+    :online_link,
     :address_1,
     :address_2_multiloc,
     :location_point_geojson,
+    :using_url,
+    :attend_button_multiloc,
     :attendees_count,
     :start_at,
     :end_at,
@@ -15,8 +18,10 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
   )
 
   attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images object, :description_multiloc
+    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
+
+  has_many :event_images, serializer: WebApi::V1::ImageSerializer
 
   belongs_to :project
 

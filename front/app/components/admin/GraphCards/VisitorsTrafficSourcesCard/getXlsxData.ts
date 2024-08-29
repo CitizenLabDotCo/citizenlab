@@ -1,25 +1,55 @@
-// services
+import {
+  cloneDeep,
+  forOwn,
+  isUndefined,
+  isEmpty,
+  isObject,
+  isString,
+  isArray,
+} from 'lodash-es';
+import { FormatMessage } from 'typings';
+
 import { QuerySchema, Query } from 'api/analytics/types';
 
-// i18n
-import messages from './messages';
-import referrerTypeMessages from './useVisitorReferrerTypes/messages';
-import { getTranslations as getReferrerTranslations } from './useVisitorReferrers/translations';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
-// utils
-import { getProjectFilter, getDateFilter } from '../_utils/query';
+import fetcher from 'utils/cl-react-query/fetcher';
 import { reportError } from 'utils/loggingUtils';
-import { sanitizeQueryParameters } from 'utils/streams/utils';
 import { roundPercentages } from 'utils/math';
 
-// typings
+import { getProjectFilter, getDateFilter } from '../_utils/query';
 import { ProjectId, Dates } from '../typings';
+
+import messages from './messages';
+import { getTranslations as getReferrerTranslations } from './useVisitorReferrers/translations';
 import { ReferrerListResponse } from './useVisitorReferrers/typings';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { FormatMessage } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
+import referrerTypeMessages from './useVisitorReferrerTypes/messages';
 
 type QueryParameters = ProjectId & Dates;
+
+export const sanitizeQueryParameters = (
+  queryParameters: Record<string, any> | null,
+  skipSanitizationFor?: string[]
+) => {
+  const sanitizedQueryParameters = cloneDeep(queryParameters);
+
+  forOwn(queryParameters, (value, key) => {
+    if (
+      !skipSanitizationFor?.includes(key) &&
+      (isUndefined(value) ||
+        (isString(value) && isEmpty(value)) ||
+        (isArray(value) && isEmpty(value)) ||
+        (isObject(value) && isEmpty(value)))
+    ) {
+      delete (sanitizedQueryParameters as Record<string, any>)[key];
+    }
+  });
+
+  return isObject(sanitizedQueryParameters) &&
+    !isEmpty(sanitizedQueryParameters)
+    ? sanitizedQueryParameters
+    : null;
+};
 
 const query = ({
   projectId,
@@ -29,7 +59,6 @@ const query = ({
   const query: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',

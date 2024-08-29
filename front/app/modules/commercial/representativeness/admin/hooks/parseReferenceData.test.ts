@@ -1,4 +1,6 @@
+import { IUsersByAge } from 'api/users_by_age/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+
 import {
   regFieldToReferenceData,
   regFieldToIncludedUsers,
@@ -6,7 +8,6 @@ import {
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './parseReferenceData';
-import { IUsersByAge } from 'api/users_by_age/types';
 
 describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {
@@ -19,7 +20,6 @@ describe('regFieldToReferenceData', () => {
               id123: 100,
               id456: 300,
             },
-            expected_users: {},
             reference_population: {
               id123: 2000,
               id456: 3000,
@@ -69,7 +69,6 @@ describe('regFieldToReferenceData', () => {
               id123: 100,
               id456: 300,
             },
-            expected_users: {},
             reference_population: {
               id123: 2000,
               id456: 3000,
@@ -120,7 +119,6 @@ describe('regFieldToReferenceData', () => {
               id456: 300,
               id789: 200,
             },
-            expected_users: {},
             reference_population: {
               id123: 2000,
               id456: 3000,
@@ -174,7 +172,6 @@ describe('regFieldToReferenceData', () => {
               id789: 200,
               id000: 300,
             },
-            expected_users: {},
             reference_population: {
               id123: 2000,
               id456: 3000,
@@ -239,7 +236,6 @@ describe('regFieldToIncludedUsers', () => {
               id123: 2000,
               id456: 3000,
             },
-            expected_users: {},
           },
           options: {},
         },
@@ -271,7 +267,6 @@ describe('regFieldToIncludedUsers', () => {
               id123: 2000,
               id456: 3000,
             },
-            expected_users: {},
           },
           options: {},
         },
@@ -303,7 +298,6 @@ describe('regFieldToIncludedUsers', () => {
               id123: 2000,
               id456: 3000,
             },
-            expected_users: {},
           },
           options: {},
         },
@@ -335,7 +329,6 @@ describe('regFieldToIncludedUsers', () => {
               id123: 2000,
               id456: 3000,
             },
-            expected_users: {},
           },
           options: {},
         },
@@ -373,7 +366,6 @@ describe('regFieldToIncludedUsers', () => {
               west_sheridan: 100,
               west_orval: 100,
             },
-            expected_users: {},
           },
           options: {},
         },
@@ -398,7 +390,6 @@ const ageField: IUsersByAge = {
       unknown_age_count: 10,
       series: {
         user_counts: [100, 100, 100, 100, 100],
-        expected_user_counts: [100, 100, 100, 100, 100],
         reference_population: [1000, 500, 1500, 1000, 1000],
         bins: [18, 25, 35, 45, 65, null],
       },

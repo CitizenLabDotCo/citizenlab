@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import pollOptionsKeys from './keys';
 import {
   IPollQuestions,
@@ -8,26 +10,18 @@ import {
   IPollQuestionParameters,
 } from './types';
 
-const fetchQuestions = ({
-  participationContextId,
-  participationContextType,
-}: IPollQuestionParameters) =>
+const fetchQuestions = ({ phaseId }: IPollQuestionParameters) =>
   fetcher<IPollQuestions>({
-    path: `/${participationContextType}s/${participationContextId}/poll_questions`,
+    path: `/phases/${phaseId}/poll_questions`,
     action: 'get',
   });
 
-const usePollQuestions = ({
-  participationContextId,
-  participationContextType,
-}: IPollQuestionParameters) => {
+const usePollQuestions = ({ phaseId }: IPollQuestionParameters) => {
   return useQuery<IPollQuestions, CLErrors, IPollQuestions, PollQuestionsKeys>({
     queryKey: pollOptionsKeys.list({
-      participationContextId,
-      participationContextType,
+      phaseId,
     }),
-    queryFn: () =>
-      fetchQuestions({ participationContextId, participationContextType }),
+    queryFn: () => fetchQuestions({ phaseId }),
   });
 };
 

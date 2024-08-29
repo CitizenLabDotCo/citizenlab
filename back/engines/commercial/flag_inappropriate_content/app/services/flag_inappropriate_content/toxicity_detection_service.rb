@@ -2,6 +2,19 @@
 
 module FlagInappropriateContent
   class ToxicityDetectionService
+    MAP_TOXICITY_LABEL = {
+      'A' => 'insult',
+      'B' => 'harmful',
+      'C' => 'sexually_explicit',
+      'D' => 'spam',
+      'E' => nil
+    }
+
+    def initialize
+      region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
+      @llm = Analysis::LLM::ClaudeInstant1.new(region: region) if region
+    end
+
     def flag_toxicity!(flaggable, attributes: [])
       return unless AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
@@ -15,26 +28,12 @@ module FlagInappropriateContent
         end
         return
       end
-      res = request_toxicity_detection texts
-      if toxicity_detected? res
-        flag_service.introduce_flag! flaggable, toxicity_label: (extract_toxicity_label(res) || 'without_label')
+      toxicity_attrs = texts.filter_map { |text| classify_toxicity(text) }
+      if toxicity_attrs.present?
+        flag_service.introduce_flag! flaggable, toxicity_attrs.first
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
-      end
-    end
-
-    def extract_toxicity_label(res)
-      max_predictions = res.select do |re|
-        re['is_inappropriate']
-      end.to_h do |re|
-        max_label = re['predictions'].keys.max do |l1, l2|
-          re['predictions'][l1] <=> re['predictions'][l2]
-        end
-        [max_label, re['predictions'][max_label]]
-      end
-      max_predictions.keys.max do |l1, l2|
-        max_predictions[l1] <=> max_predictions[l2]
       end
     end
 
@@ -55,13 +54,18 @@ module FlagInappropriateContent
       texts
     end
 
-    def request_toxicity_detection(texts)
-      @api ||= NLP::Api.new
-      @api.toxicity_detection texts
-    end
+    def classify_toxicity(text)
+      return if !@llm # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
 
-    def toxicity_detected?(res)
-      res.any? { |h| h['is_inappropriate'] }
+      prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
+      response = @llm.chat(prompt, assistant_prefix: 'My answer is (').strip
+      toxicity_label = MAP_TOXICITY_LABEL.find do |class_id, _|
+        response.starts_with? "#{class_id})"
+      end&.last
+      if toxicity_label
+        ai_reason = response[2, response.length].strip
+        { toxicity_label: toxicity_label, ai_reason: ai_reason }
+      end
     end
   end
 end

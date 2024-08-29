@@ -1,30 +1,27 @@
 import React, { useEffect } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
+import { SupportedLocale } from 'typings';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
-import { Locale } from 'typings';
 import eventEmitter from 'utils/eventEmitter';
+
 import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
 
 type ContentBuilderErrors = Record<
   string,
-  { hasError: boolean; selectedLocale: Locale }
+  { hasError: boolean; selectedLocale?: SupportedLocale }
 >;
 
 interface Props {
-  onErrors: (errors: ContentBuilderErrors) => void;
-  onDeleteElement: (id: string) => void;
+  onErrors?: (errors: ContentBuilderErrors) => void;
+  onDeleteElement?: (id: string) => void;
   onUploadImage: (imageUploading: boolean) => void;
   children: React.ReactNode;
 }
@@ -36,6 +33,8 @@ export const ContentBuilder = ({
   children,
 }: Props) => {
   useEffect(() => {
+    if (!onErrors) return;
+
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_ERROR_EVENT)
       .subscribe(({ eventValue }) => {
@@ -47,6 +46,8 @@ export const ContentBuilder = ({
   }, [onErrors]);
 
   useEffect(() => {
+    if (!onDeleteElement) return;
+
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {
@@ -75,7 +76,7 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex="10000"
+      zIndex={String(CONTENT_BUILDER_Z_INDEX.main)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"
@@ -88,6 +89,7 @@ export const ContentBuilder = ({
 
 const FullscreenContentBuilder = (props: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
+
   return modalPortalElement
     ? createPortal(<ContentBuilder {...props} />, modalPortalElement)
     : null;

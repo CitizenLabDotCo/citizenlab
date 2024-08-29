@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Attend this event: {eventTitle}',
   },
   emailSharingBody: {
-    id: 'app.containers.EventsShow.emailSharingBody',
-    defaultMessage: 'Attend this event: {eventTitle} at {eventLocation}',
+    id: 'app.containers.EventsShow.emailSharingBody2',
+    defaultMessage: 'Attend this event: {eventTitle}. Read more at {eventUrl}',
   },
 });

@@ -1,39 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import Topbar from './components/Topbar';
-import EmptyContainer from './components/EmptyContainer';
-import PublicationStatusTabs from './components/PublicationStatusTabs';
-import LoadingBox from './components/LoadingBox';
-import Footer from './components/Footer';
+import { Box } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
-
-// i18n
-import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getAvailableTabs, getCurrentTab } from './utils';
-
-// typings
-import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+import { PublicationStatus } from 'api/projects/types';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
-const StyledTopbar = styled(Topbar)`
-  margin-bottom: 30px;
-`;
+import EmptyContainer from './components/EmptyContainer';
+import Footer from './components/Footer';
+import LoadingBox from './components/LoadingBox';
+import PublicationStatusTabs from './components/PublicationStatusTabs';
+import Topbar from './components/Topbar';
+import messages from './messages';
+import tracks from './tracks';
+import { getAvailableTabs, getCurrentTab } from './utils';
+
+import { PublicationTab, Props as BaseProps } from '.';
 
 interface Props extends BaseProps {
   statusCounts: IStatusCountsAll;
@@ -43,11 +31,12 @@ interface Props extends BaseProps {
   showFilters: boolean;
   adminPublications: IAdminPublicationData[];
   statusCountsWithoutFilters: IStatusCountsAll;
-  onChangePublicationStatus?: (publicationStatus: PublicationTab[]) => void;
+  onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
   onLoadMore?: () => void;
   loadingInitial?: boolean;
   loadingMore?: boolean;
   hasMore?: boolean;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -67,8 +56,10 @@ const ProjectAndFolderCardsInner = ({
   loadingInitial,
   loadingMore,
   hasMore,
+  currentlyWorkingOnText,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     if (currentTab) return;
@@ -129,21 +120,29 @@ const ProjectAndFolderCardsInner = ({
     !isNilOrError(adminPublications) && adminPublications.length > 0;
 
   return (
-    <Container id="e2e-projects-container">
-      <StyledTopbar
-        showTitle={showTitle}
-        showSearch={showSearch}
-        showFilters={showFilters}
-        currentTab={currentTab}
-        statusCounts={statusCounts}
-        noAdminPublicationsAtAll={noAdminPublicationsAtAll}
-        availableTabs={availableTabs}
-        hasPublications={hasPublications}
-        onChangeTopics={handleChangeTopics}
-        onChangeAreas={handleChangeAreas}
-        onChangeSearch={handleChangeSearch}
-        onChangeTab={onChangeTab}
-      />
+    <Box id="e2e-projects-container" display="flex" flexDirection="column">
+      <ScreenReaderOnly aria-live="assertive">
+        {formatMessage(messages.a11y_projectsHaveChanged1, {
+          numberOfFilteredResults: adminPublications.length,
+        })}
+      </ScreenReaderOnly>
+      <Box mb="30px">
+        <Topbar
+          showTitle={showTitle}
+          showSearch={showSearch}
+          showFilters={showFilters}
+          currentTab={currentTab}
+          statusCounts={statusCounts}
+          noAdminPublicationsAtAll={noAdminPublicationsAtAll}
+          availableTabs={availableTabs}
+          hasPublications={hasPublications}
+          onChangeTopics={handleChangeTopics}
+          onChangeAreas={handleChangeAreas}
+          onChangeSearch={handleChangeSearch}
+          onChangeTab={onChangeTab}
+          currentlyWorkingOnText={currentlyWorkingOnText}
+        />
+      </Box>
 
       {loadingInitial && <LoadingBox />}
 
@@ -174,7 +173,7 @@ const ProjectAndFolderCardsInner = ({
       {!loadingInitial && hasPublications && hasMore && (
         <Footer loadingMore={!!loadingMore} onShowMore={showMore} />
       )}
-    </Container>
+    </Box>
   );
 };
 

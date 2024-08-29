@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
 import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
-import { Section, SubSectionTitle } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
-import Form from './Form';
+import styled from 'styled-components';
 
-// services
 import {
-  TAppConfigurationSettingWithEnabled,
+  TAppConfigurationSetting,
   IAppConfigurationSettingsCore,
 } from 'api/app_configuration/types';
-
-// Utils
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import { Section, SubSectionTitle } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import Form from './Form';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -93,9 +91,7 @@ const SettingsGeneralTab = () => {
     }
   };
 
-  const handleSettingChange = (
-    settingName: TAppConfigurationSettingWithEnabled
-  ) => {
+  const handleSettingChange = (settingName: TAppConfigurationSetting) => {
     if (!isNilOrError(appConfiguration)) {
       const setting = appConfiguration.data.attributes.settings[settingName];
 
@@ -118,7 +114,7 @@ const SettingsGeneralTab = () => {
     const profanityBlockerSetting =
       appConfiguration.data.attributes.settings.blocking_profanity;
 
-    const { organization_name, organization_site, locales } =
+    const { organization_name, organization_site, locales, population } =
       appConfiguration.data.attributes.settings.core;
 
     return (
@@ -128,6 +124,7 @@ const SettingsGeneralTab = () => {
             organization_name,
             organization_site,
             locales,
+            population,
           }}
           onSubmit={handleOnSubmit}
         />

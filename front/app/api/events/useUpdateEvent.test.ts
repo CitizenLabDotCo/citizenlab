@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateEvent from './useUpdateEvent';
-import { eventsData } from './__mocks__/useEvents';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { eventsData } from './__mocks__/useEvents';
+import useUpdateEvent from './useUpdateEvent';
+
 const apiPath = '*events/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: eventsData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: eventsData[0] }, { status: 200 });
   })
 );
 
@@ -37,8 +36,8 @@ describe('useUpdateEvent', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

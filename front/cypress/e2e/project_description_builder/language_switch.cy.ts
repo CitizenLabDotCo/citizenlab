@@ -18,12 +18,11 @@ describe('Project description builder language switch', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
+        // participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectSlug = projectTitle;
@@ -57,20 +56,13 @@ describe('Project description builder language switch', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.get('#e2e-text-box').click('center');
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Language 1 text.', { force: true });
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveProjectDescriptionBuilder');
-
-    // NL-BE
-    switchLocale('nl-BE');
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
-    cy.get('#e2e-text-box').click('center');
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Language 2 text.', { force: true });
+    cy.get('.e2e-text-box').click('center');
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Language 1 text.', { force: true });
+    // NL
+    cy.get('.nl-BE').last().click();
+    cy.get('.ql-editor').clear().type('Language 2 text.', { force: true });
+    cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
@@ -91,19 +83,11 @@ describe('Project description builder language switch', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    // Delete content from languages
-    // EN
-    cy.get('.en').click();
-    cy.get('#e2e-text-box').click({ force: true });
-    cy.get('#e2e-delete-button').click({ force: true });
+    // Delete content
 
-    // NL-BE
-    cy.reload(); // without it, #e2e-text-box cannot be found. Cannot be reproduced manually.
-    cy.get('.nl-BE').click();
-    cy.get('#e2e-text-box').click({ force: true });
+    cy.get('.en').click();
+    cy.get('.e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
-    cy.get('#e2e-content-builder-topbar-save').click({ force: true });
-    cy.wait('@saveProjectDescriptionBuilder');
 
     // Confirm correct content on live page
     cy.visit(`/projects/${projectSlug}`);

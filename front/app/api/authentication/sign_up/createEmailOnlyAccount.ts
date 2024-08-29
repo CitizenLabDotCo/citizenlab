@@ -1,9 +1,12 @@
-import { getAndSetToken } from '../sign_in_out/signIn';
-import { Locale } from 'typings';
-import streams from 'utils/streams';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import fetcher from 'utils/cl-react-query/fetcher';
+import { SupportedLocale } from 'typings';
+
 import { IUser } from 'api/users/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+import { getAndSetToken } from '../sign_in_out/signIn';
+
 import { CreateEmailOnlyAccountProperties } from './types';
 
 const triggerCreateEmailOnlyAccount = (
@@ -23,7 +26,7 @@ const emailIsTaken = async (response: Response) => {
 
 export interface Parameters {
   email: string;
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 export default async function createEmailOnlyAccount({
@@ -38,7 +41,7 @@ export default async function createEmailOnlyAccount({
 
   if (response.data) {
     await getAndSetToken({ email });
-    await Promise.all([streams.reset(), invalidateQueryCache()]);
+    invalidateQueryCache();
     return 'account_created_successfully';
   }
 

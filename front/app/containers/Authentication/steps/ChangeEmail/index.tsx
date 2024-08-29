@@ -1,26 +1,27 @@
 import React, { useMemo } from 'react';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextButton from '../_components/TextButton';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
 
-// i18n
+import { SetError } from 'containers/Authentication/typings';
+
+import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
+
 import { useIntl } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+
+import TextButton from '../_components/TextButton';
 import sharedMessages from '../messages';
+
 import messages from './messages';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import Input from 'components/HookForm/Input';
-
 // errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
-
-// typings
-import { SetError } from 'containers/Authentication/typings';
 
 interface Props {
   loading: boolean;
@@ -60,8 +61,8 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
     try {
       await onChangeEmail(email);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
@@ -78,6 +79,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box>
             <Input
+              id="email"
               name="email"
               type="email"
               label={formatMessage(sharedMessages.email)}
@@ -85,6 +87,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
+              id="e2e-change-email-submit"
               type="submit"
               width="auto"
               processing={loading}

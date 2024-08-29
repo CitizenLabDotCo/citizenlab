@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version     = ReportBuilder::VERSION
   spec.authors     = ['CitizenLab']
   spec.email       = ['developers@citizenlab.co']
-  spec.license     = 'CitizenLab Commercial License V2'
+  spec.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   spec.summary     = 'Create customized reports.'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -17,5 +17,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile']
 
   spec.add_dependency 'content_builder'
+  spec.add_dependency 'analytics'
+  spec.add_dependency 'user_custom_fields'
   spec.add_dependency 'rails', '~> 7.0'
 end

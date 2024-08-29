@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useResizeDetector } from 'react-resize-detector';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import Icon from './Icon';
-
-// utils
-import { getJustifyContent, getLegendDimensions } from './utils';
 import { isEqual } from 'lodash-es';
-
-// typings
-import { Position, LegendItem, LegendDimensions } from './typings';
+import { useResizeDetector } from 'react-resize-detector';
 import { Percentage } from 'typings';
+
+import Icon from './Icon';
+import { Position, LegendItem, LegendDimensions } from './typings';
+import { getJustifyContent, getLegendDimensions } from './utils';
 
 interface Props {
   width?: number | Percentage;

@@ -1,7 +1,10 @@
-import { Query } from 'api/analytics/types';
 import moment from 'moment';
-import { ProjectStatusCardLabels, projectStatusConfig } from './config';
+
+import { Query } from 'api/analytics/types';
+
 import { StatCardData } from '../StatCard/useStatCard/typings';
+
+import { ProjectStatusCardLabels, projectStatusConfig } from './config';
 
 describe('Project status card data parsing', () => {
   beforeAll(() => {

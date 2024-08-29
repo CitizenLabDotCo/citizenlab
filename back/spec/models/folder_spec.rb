@@ -16,4 +16,13 @@ RSpec.describe ProjectFolders::Folder do
       expect(folder.reload).to be_invalid
     end
   end
+
+  describe 'generate_slug' do
+    let(:folder) { build(:project_folder, slug: nil) }
+
+    it 'generates a slug based on the first non-empty locale' do
+      folder.update!(title_multiloc: { 'en' => 'my folder', 'nl-BE' => 'mijn map', 'fr-BE' => 'mon dossier' })
+      expect(folder.slug).to eq 'my-folder'
+    end
+  end
 end

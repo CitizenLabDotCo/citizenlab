@@ -1,23 +1,24 @@
 import React from 'react';
 
-// components
+import {
+  Title,
+  Box,
+  useBreakpoint,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
+
 import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useProjectFiles from 'api/project_files/useProjectFiles';
-import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// i18n
 import T from 'components/T';
+import FileAttachments from 'components/UI/FileAttachments';
 
-// style
-import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import ProjectInfoSideBar from './ProjectInfoSideBar';
 
 const Container = styled.div`
   display: flex;

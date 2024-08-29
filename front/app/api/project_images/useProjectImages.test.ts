@@ -1,20 +1,16 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectImages from './useProjectImages';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { projectImagesData } from './__mocks__/useProjectImages';
 
-const apiPath = '*projects/:projectId/images';
+import endpoints, {
+  projectImagesPath,
+  projectImagesData,
+} from './__mocks__/_mockServer';
+import useProjectImages from './useProjectImages';
 
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectImagesData }));
-  })
-);
+const server = setupServer(endpoints['GET projects/:projectId/images']);
 
 describe('useProjectImages', () => {
   beforeAll(() => server.listen());
@@ -38,8 +34,8 @@ describe('useProjectImages', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(projectImagesPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

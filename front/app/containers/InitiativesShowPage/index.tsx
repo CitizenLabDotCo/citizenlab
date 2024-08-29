@@ -1,25 +1,23 @@
 import React from 'react';
 
-// components
-import PageNotFound from 'components/PageNotFound';
+import { Spinner, media } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import InitiativesShow from 'containers/InitiativesShow';
-import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+import InitiativeMeta from 'containers/InitiativesShow/InitiativeMeta';
+
+import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
-import { useParams } from 'react-router-dom';
-
-// style
-import styled from 'styled-components';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
-const Container = styled.div`
-  background: #fff;
-`;
+import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   position: fixed;
@@ -29,10 +27,15 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   z-index: 1000;
 `;
 
+const StyledInitiativesShow = styled(InitiativesShow)`
+  ${({ theme }) => media.tablet`
+    margin-top: ${theme.menuHeight}px;
+  `}
+`;
+
 const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
-
   const { data: initiative, status, error } = useInitiativeBySlug(slug);
 
   if (!initiativesEnabled) {
@@ -58,15 +61,16 @@ const InitiativesShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (!initiative) {
-    return null;
-  }
+  const initiativeId = initiative.data.id;
 
   return (
-    <Container>
-      <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />
-      <InitiativesShow initiativeId={initiative.data.id} />
-    </Container>
+    <>
+      <InitiativeMeta initiativeId={initiativeId} />
+      <>
+        <StyledInitiativeShowPageTopBar initiativeId={initiativeId} />
+        <StyledInitiativesShow initiativeId={initiativeId} />
+      </>
+    </>
   );
 };
 

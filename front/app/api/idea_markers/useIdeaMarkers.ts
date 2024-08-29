@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { QueryParameters, IIdeaMarkers, IdeaMarkersKeys } from './types';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import ideaMarkerKeys from './keys';
+import { QueryParameters, IIdeaMarkers, IdeaMarkersKeys } from './types';
 
 const fetchIdeaMarkers = ({
   projectIds,

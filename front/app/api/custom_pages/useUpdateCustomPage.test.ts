@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateCustomPage from './useUpdateCustomPage';
-import { customPagesData } from './__mocks__/useCustomPages';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
+import { customPagesData } from './__mocks__/useCustomPages';
+import useUpdateCustomPage from './useUpdateCustomPage';
+
 const apiPath = '*static_pages/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: customPagesData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: customPagesData[0] }, { status: 200 });
   })
 );
 
@@ -37,8 +36,8 @@ describe('useUpdateCustomPage', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

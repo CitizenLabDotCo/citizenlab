@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
-import FileUploaderComponent, {
-  FileUploaderProps,
-} from 'components/UI/FileUploader';
 
-import Error from 'components/UI/Error';
+import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
-import { get } from 'lodash-es';
+
+import Error from 'components/UI/Error';
+import FileUploaderComponent, {
+  Props as FileUploaderProps,
+} from 'components/UI/FileUploader';
 
 interface Props
   extends Omit<
     FileUploaderProps,
-    'onFileAdd' | 'onFileRemove' | 'files' | 'id'
+    'onFileAdd' | 'onFileRemove' | 'files' | 'id' | 'apiErrors'
   > {
   name: string;
   remoteFiles?: UploadFile[] | null;
@@ -22,6 +23,7 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
     setValue,
     formState: { errors },
     control,
+    trigger,
   } = useFormContext();
 
   useEffect(() => {
@@ -49,16 +51,18 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
                 setValue(name, field.value ? [...field.value, file] : [file], {
                   shouldDirty: true,
                 });
+                trigger(name);
               }}
-              onFileRemove={(fileToRemove) =>
+              onFileRemove={(fileToRemove) => {
                 setValue(
                   name,
                   field.value.filter(
                     (file: UploadFile) => file.base64 !== fileToRemove.base64
                   ),
                   { shouldDirty: true }
-                )
-              }
+                );
+                trigger(name);
+              }}
             />
           );
         }}

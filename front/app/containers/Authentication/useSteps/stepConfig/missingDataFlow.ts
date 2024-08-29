@@ -1,24 +1,35 @@
-// api
+import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
+import { OnboardingType } from 'api/users/types';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
 
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import {
+  AuthenticationData,
+  GetRequirements,
+  State,
+  UpdateState,
+} from 'containers/Authentication/typings';
 
-// utils
-import { requiredCustomFields, requiredBuiltInFields } from './utils';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
-// typings
-import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
+import {
+  showOnboarding,
+  doesNotMeetGroupCriteria,
+  checkMissingData,
+} from './utils';
 
 export const missingDataFlow = (
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  updateState: UpdateState,
+  state: State
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -36,23 +47,20 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredBuiltInFields(requirements)) {
-          setCurrentStep('missing-data:built-in');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requirements.special.verification === 'require') {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -67,6 +75,7 @@ export const missingDataFlow = (
         setCurrentStep('missing-data:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
+        updateState({ email: newEmail });
         await resendEmailConfirmationCode(newEmail);
         setCurrentStep('missing-data:email-confirmation');
       },
@@ -78,32 +87,27 @@ export const missingDataFlow = (
         userId: string,
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
-        updateUser(
-          {
-            userId,
-            ...builtInFieldUpdate,
-          },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+        await updateUser({ userId, ...builtInFieldUpdate });
+        invalidateCacheAfterUpdateUser(queryClient);
 
-              if (requirements.special.verification === 'require') {
-                setCurrentStep('missing-data:verification');
-                return;
-              }
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-              if (requiredCustomFields(requirements.custom_fields)) {
-                setCurrentStep('missing-data:custom-fields');
-                return;
-              }
-
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
-            },
-          }
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
         );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('closed');
+          return;
+        }
       },
     },
 
@@ -111,13 +115,20 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('closed');
           return;
         }
@@ -129,21 +140,49 @@ export const missingDataFlow = (
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
-        updateUser(
-          { userId, custom_field_values: formData },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+        await updateUser({ userId, custom_field_values: formData });
+        invalidateCacheAfterUpdateUser(queryClient);
 
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
+        const { requirements } = await getRequirements();
 
-              setCurrentStep('success');
-            },
-          }
-        );
+        if (showOnboarding(requirements)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      SKIP: async () => {
+        const { requirements } = await getRequirements();
+
+        if (showOnboarding(requirements)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+    },
+
+    'missing-data:onboarding': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (userId: string, onboarding: OnboardingType) => {
+        await updateUser({ userId, onboarding });
+        invalidateCacheAfterUpdateUser(queryClient);
+
+        const { requirements } = await getRequirements();
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
       },
       SKIP: async () => {
         setCurrentStep('success');

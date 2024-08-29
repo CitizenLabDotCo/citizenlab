@@ -10,10 +10,29 @@ RSpec.describe Tenant do
   end
 
   describe '#switch!' do
-    it 'switches successfully into the tenant' do
-      tenant = create(:tenant, host: 'unused.hostname.com')
+    let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
+
+    around do |example|
+      tenant = described_class.current
+      example.run
       tenant.switch!
-      expect(described_class.current).to eq(tenant)
+    end
+
+    it 'updates the current tenant and app configuration' do
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+
+      # Twice because of the second call in the :after hook defined in RSpec.configure
+      expect(Current).to receive(:reset_tenant).twice.and_call_original
+
+      other_tenant.switch!
+
+      expect(AppConfiguration.instance.name).to eq('other-tenant')
+      expect(described_class.current).to eq(other_tenant)
+    end
+
+    it 'switches successfully into the tenant' do
+      other_tenant.switch!
+      expect(described_class.current).to eq(other_tenant)
     end
 
     it 'fails when the tenant is not persisted' do
@@ -23,10 +42,21 @@ RSpec.describe Tenant do
   end
 
   describe '#switch' do
+    let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
+
+    it '...' do
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+
+      other_tenant.switch do
+        expect(AppConfiguration.instance.name).to eq('other-tenant')
+      end
+
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+    end
+
     it 'runs the block in the tenant context' do
-      tenant = create(:tenant, host: 'unused.hostname.com')
-      current_tenant = tenant.switch { described_class.current }
-      expect(current_tenant).to eq(tenant)
+      current_tenant = other_tenant.switch { described_class.current }
+      expect(current_tenant).to eq(other_tenant)
     end
 
     it 'fails if the tenant is not persisted' do
@@ -66,6 +96,20 @@ RSpec.describe Tenant do
 
     specify { expect(described_class.with_lifecycle('active').count).to eq(2) }
     specify { expect(described_class.churned.count).to eq(1) }
+  end
+
+  describe 'tenants prioritized by lifecycle importance' do
+    let!(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
+    let!(:expired_trial_tenant) { create(:tenant, lifecycle: 'expired_trial') }
+    let!(:demo_tenant) { create(:tenant, lifecycle: 'demo') }
+    let!(:active_tenant) { create(:tenant, lifecycle: 'active') } # 2 active tenants with the test-tenant
+    let!(:trial_tenant) { create(:tenant, lifecycle: 'trial') }
+
+    it 'returns tenants prioritized by lifecycle' do
+      prioritized = described_class.prioritize(described_class.all)
+      expect(prioritized.count).to eq(6)
+      expect(prioritized.map { |t| t[:settings]['core']['lifecycle_stage'] }).to eq %w[active active trial demo expired_trial churned]
+    end
   end
 
   describe 'Apartment tenant' do
@@ -110,6 +154,63 @@ RSpec.describe Tenant do
 
       expect(tenant.created_at).to eq(new_created_at)
       expect(AppConfiguration.instance.reload.created_at).to eq(new_created_at)
+    end
+  end
+
+  describe 'safe_switch_each' do
+    it 'switches to each tenant by priority (using current tenant)' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'expired_trial',
+        'tenant2.example.com' => 'active',
+        'tenant3.example.com' => 'demo'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      described_class.safe_switch_each { collected_hosts << described_class.current.host }
+      expect(collected_hosts).to eq(%w[tenant2.example.com tenant3.example.com tenant1.example.com])
+    end
+
+    it 'switches to each tenant by priority (using tenant param)' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'demo',
+        'tenant2.example.com' => 'active',
+        'tenant3.example.com' => 'expired_trial'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+      expect(collected_hosts).to eq(%w[tenant2.example.com tenant1.example.com tenant3.example.com])
+    end
+
+    it 'skips tenants that are marked as deleted or didn\'t finalize creation by default' do
+      described_class.find_by(host: 'example.org')
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now, deleted_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', creation_finalized_at: nil, deleted_at: nil)
+      collected_hosts = []
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+      expect(collected_hosts).to eq(%w[example.org])
+    end
+
+    it 'skips deleted tenants during iteration' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'active',
+        'tenant2.example.com' => 'demo'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      expect do
+        described_class.safe_switch_each do |tenant|
+          described_class.find_by(host: 'tenant2.example.com').destroy!
+          collected_hosts << tenant.host
+        end
+      end.not_to raise_error
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
   end
 end

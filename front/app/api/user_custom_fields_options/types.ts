@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import userCustomFieldsOptionsKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import userCustomFieldsOptionsKeys from './keys';
 
 export type UserCustomFieldsOptionsKeys = Keys<
   typeof userCustomFieldsOptionsKeys

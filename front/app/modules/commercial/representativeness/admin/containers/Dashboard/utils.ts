@@ -1,4 +1,3 @@
-// typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 export const isShown = ({

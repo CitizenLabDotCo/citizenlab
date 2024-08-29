@@ -4,10 +4,11 @@ module BlockingProfanity
   extend ActiveSupport::Concern
 
   class ProfanityBlockedError < StandardError
-    attr_reader :blocked_words
+    attr_reader :violating_attributes, :blocked_words
 
-    def initialize(blocked_words)
-      super
+    def initialize(violating_attributes, blocked_words)
+      super()
+      @violating_attributes = violating_attributes
       @blocked_words = blocked_words
     end
   end
@@ -25,7 +26,8 @@ module BlockingProfanity
   def verify_profanity(object)
     return unless AppConfiguration.instance.feature_activated? 'blocking_profanity'
 
-    blocked_words = []
+    all_blocked_words = []
+    violating_attributes = []
     service = ProfanityService.new
     attrs = SUPPORTED_CLASS_ATTRS[object.class.name]
     attrs&.each do |atr|
@@ -39,18 +41,24 @@ module BlockingProfanity
       values.each do |locale, text|
         next if text.blank?
 
-        service.search_blocked_words(text)&.each do |result|
-          result[:locale] = locale if locale
-          result[:attribute] = atr
-          blocked_words.push result
+        value_blocked_words = service.search_blocked_words(text)
+        if value_blocked_words.present?
+          violating_attributes << atr
+
+          value_blocked_words.each do |result|
+            result[:locale] = locale if locale
+            result[:attribute] = atr
+            all_blocked_words.push result
+          end
         end
       end
     end
-    raise ProfanityBlockedError, blocked_words if blocked_words.present?
+    raise ProfanityBlockedError.new(violating_attributes, all_blocked_words) if violating_attributes.present?
   end
 
   private
 
+  # renders errors in a custom format (opposed to the new HookForm format overridden in InitiativesController)
   def render_profanity_blocked(exception)
     render json: { errors: { base: [{ error: :includes_banned_words, blocked_words: exception.blocked_words }] } }, status: :unprocessable_entity
   end

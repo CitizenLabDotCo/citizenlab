@@ -1,19 +1,17 @@
 import React from 'react';
 
-// i18n
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import FormattedAnchor from 'components/FormattedAnchor';
+import Modal from 'components/UI/Modal';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 
-// style
-import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
-import FormattedAnchor from 'components/FormattedAnchor';
-
-// images
 import illustration from './illustration.png';
-import Modal from 'components/UI/Modal';
-import { WrappedComponentProps } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

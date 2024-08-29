@@ -9,12 +9,17 @@ module EmailCampaigns
     def before_update(campaign, user); end
 
     def after_update(campaign, _user)
-      # We currently only have one campaign that can be enabled/disabled at phase level,
-      # and we align the respective phase-level values with the campaign enabled when the campaign value is updated.
-      return unless campaign.saved_change_to_enabled? &&
-                    campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
-
-      toggle_project_phase_started(campaign)
+      # This is a special case for the project_phase_started campaign, the only
+      # campaign that's currently configurable on a phase level.
+      # We turn off all phase email toggles for this campaign when the platform-wide
+      # setting is turned off.
+      # attribute_before_last_save:
+      # https://apidock.com/rails/v6.0.0/ActiveRecord/AttributeMethods/Dirty/attribute_before_last_save
+      if campaign.enabled_before_last_save &&
+         !campaign.enabled &&
+         campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
+        toggle_project_phase_started(campaign)
+      end
     end
 
     def before_send(campaign, user); end

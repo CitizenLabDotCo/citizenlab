@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IUserCustomField } from './types';
-import userCustomFieldsKeys from './keys';
+
 import schemaKeys from 'api/custom_fields_json_form_schema/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import userCustomFieldsKeys from './keys';
+import { IUserCustomField } from './types';
 
 type IReorderCause = {
   customFieldId: string;

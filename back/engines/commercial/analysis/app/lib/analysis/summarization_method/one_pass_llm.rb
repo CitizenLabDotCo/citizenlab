@@ -24,9 +24,16 @@ module Analysis
         # Calculate the prompt size
         inputs_text = input_to_text.format_all(filtered_inputs, **input_to_text_options)
         prompt = prompt(@analysis.source_project, inputs_text)
+
+        # As a rule of thumb, 1 token corresponds to ~4 charachters in English.
+        # Since calculating the token_count is slow, as an optimization, we
+        # don't even bother calculating the token count for a safe worst case of
+        # 6 charachters/token
+        next if prompt.size > (max_context_window * 6)
+
         complete_token_count = token_count(prompt) + TOKENS_FOR_RESPONSE
 
-        # Is there an LLM that can handle the prompt size?
+        # Whcih LLM that can handle the prompt size?
         selected_llm = enabled_llms
           .sort_by { |llm| -llm.accuracy }
           .find { |llm| llm.context_window >= complete_token_count }
@@ -67,21 +74,11 @@ module Analysis
       raise SummarizationFailedError, e
     end
 
+    private
+
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      @prompt = <<~GPT_PROMPT
-        At the end of this message is a list of form responses filled out by citizens in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
-        
-        Summarize what citizens have proposed in a few paragraphs. Be as complete as possible and put the most emphasis on things that were mentioned most often.
-        The goal is for the reader to get an understanding of what citizens have been talking about, without having to read through it all. Focus more on the trends across the ideas, than on individual ideas.
-        
-        You can refer to individual responses within the summary where relevant as example, by adding their ID between square brackets. E.g. [52247442-b9a9-4a74-a6a1-898e9d6e2da7].
-        
-        Write the summary in the same language as the majority of the responses.
-        
-        #{inputs_text}
-
-      GPT_PROMPT
+      LLM::Prompt.new.fetch('summarization', project_title: project_title, inputs_text: inputs_text, language: Locale.monolingual&.language_copy)
     end
   end
 end

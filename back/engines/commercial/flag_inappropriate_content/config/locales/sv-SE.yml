@@ -10,6 +10,8 @@ sv:
       comment_author: '%{authorName} kommenterade:'
       idea_author: '%{authorName} skickade ett inlägg:'
       initiative_author: '%{authorName} skickade ett förslag:'
-      this_post_was_flagged: >
-        <p>Innehållet i det här inlägget identifierades automatiskt som potentiellt olämpligt. Vi skickar det här meddelandet till dig så att du kan granska inlägget i enlighet med dina egna modereringsriktlinjer.</p><p>Om inlägget inte innehåller olämpligt innehåll kan du ta bort varningen via din plattform på fliken Aktivitet i adminpanelen.</p>
+      automatically_flagged: >
+        Det här inlägget upptäcktes automatiskt som potentiellt innehållande olämpligt innehåll. Vi skickar det här meddelandet till dig så att du kan granska inlägget i enlighet med dina egna riktlinjer för moderering.
+      how_to_review: >
+        Om inlägget inte innehåller olämpligt innehåll kan du ta bort varningen via din plattform på fliken Aktivitet i adminpanelen.
       cta_review_post: 'Granska inlägget'

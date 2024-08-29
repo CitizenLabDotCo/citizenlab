@@ -1,13 +1,10 @@
-// Libraries
 import React, { ReactNode } from 'react';
 
-// Style
-import styled from 'styled-components';
+import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSizes, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 
-// Components
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';
 export { default as LockedRow } from './LockedRow';
@@ -20,7 +17,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-export const Container = styled.div`
+export const Container = styled.div<{ disableNestedStyles?: boolean }>`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
   justify-content: space-between !important;
@@ -31,6 +28,11 @@ export const Container = styled.div`
   padding-bottom: 10px;
   border-top: 1px solid ${colors.divider};
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  ${({ disableNestedStyles }) =>
+    disableNestedStyles
+      ? ''
+      : `
   &.last-item {
     border-bottom: 1px solid ${colors.divider};
   }
@@ -95,6 +97,7 @@ export const Container = styled.div`
     font-size: ${fontSizes.s}px;
     font-weight: 500;
   }
+  `}
 `;
 
 export const TextCell = styled.div`
@@ -125,12 +128,14 @@ export const Row = ({
   children,
   isLastItem,
   'data-testid': dataTestId,
+  disableNestedStyles,
 }: {
   id?: string;
   className?: string;
   children: ReactNode;
   isLastItem?: boolean;
   'data-testid'?: string;
+  disableNestedStyles?: boolean;
 }) => (
   <div data-testid={dataTestId}>
     <CSSTransition classNames="list-item" timeout={timeout}>
@@ -139,6 +144,7 @@ export const Row = ({
         className={`e2e-admin-list-row ${className || ''} ${
           isLastItem ? 'last-item' : ''
         }`}
+        disableNestedStyles={disableNestedStyles}
       >
         {children}
       </Container>

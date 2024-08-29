@@ -1,17 +1,15 @@
 import React from 'react';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// stying
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 interface Props {
+  id?: string;
   children: React.ReactNode;
 }
 
-const Container = ({ children }: Props) => (
+const Container = ({ id, children }: Props) => (
   <Box
+    id={id}
     position="fixed"
     zIndex="3"
     alignItems="center"

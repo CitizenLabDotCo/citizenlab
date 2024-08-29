@@ -1,7 +1,8 @@
-import { isNil } from 'utils/helperUtils';
 import { isString } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+
+import clHistory from 'utils/cl-router/history';
+import { isNil } from 'utils/helperUtils';
 
 export const updateSearchParams = (updatedParams: Record<string, any>) => {
   const searchString = window.location.search;

@@ -1,9 +1,11 @@
 import { QueryObserver } from '@tanstack/react-query';
+import { BehaviorSubject } from 'rxjs';
 import { CLErrors } from 'typings';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
+
 import appConfigurationKeys from './keys';
 import { AppConfigurationKeys, IAppConfiguration } from './types';
-import { BehaviorSubject } from 'rxjs';
 import { fetchAppConfiguration } from './useAppConfiguration';
 
 const appConfigurationStream = new BehaviorSubject<

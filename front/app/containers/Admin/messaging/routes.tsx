@@ -1,5 +1,10 @@
 import React, { lazy } from 'react';
+
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
 
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
@@ -7,13 +12,26 @@ const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
 const CustomEmailsEdit = lazy(() => import('./CustomEmails/Edit'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
-const CampaignList = lazy(() => import('./texting/CampaignList'));
-const NewSMS = lazy(() => import('./texting/NewSMSCampaign'));
-const PreviewSMS = lazy(() => import('./texting/SMSCampaignPreview'));
-const ExistingSMS = lazy(() => import('./texting/ExistingSMSCampaign'));
+
+export enum messagingRoutes {
+  messaging = 'messaging',
+  emailsCustom = `emails/custom`,
+  emailsCustomNew = `emails/custom/new`,
+  emailsCustomCampaignId = 'emails/custom/:campaignId',
+  emailsCustomCampaignIdEdit = 'emails/custom/:campaignId/edit',
+  emailsAutomated = 'emails/automated',
+}
+
+export type messagingRouteTypes =
+  | AdminRoute<messagingRoutes.messaging>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomNew}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}/edit`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>;
 
 const createAdminMessagingRoutes = () => ({
-  path: 'messaging',
+  path: messagingRoutes.messaging,
   element: (
     <PageLoading>
       <MessagingIndex />
@@ -21,7 +39,11 @@ const createAdminMessagingRoutes = () => ({
   ),
   children: [
     {
-      path: 'emails/custom',
+      path: '',
+      element: <Navigate to={messagingRoutes.emailsCustom} />,
+    },
+    {
+      path: messagingRoutes.emailsCustom,
       element: (
         <PageLoading>
           <CustomEmailsIndex />
@@ -29,7 +51,7 @@ const createAdminMessagingRoutes = () => ({
       ),
     },
     {
-      path: 'emails/custom/new',
+      path: messagingRoutes.emailsCustomNew,
       element: (
         <PageLoading>
           <CustomEmailsNew />
@@ -37,7 +59,7 @@ const createAdminMessagingRoutes = () => ({
       ),
     },
     {
-      path: 'emails/custom/:campaignId',
+      path: messagingRoutes.emailsCustomCampaignId,
       element: (
         <PageLoading>
           <CustomEmailsShow />
@@ -45,7 +67,7 @@ const createAdminMessagingRoutes = () => ({
       ),
     },
     {
-      path: 'emails/custom/:campaignId/edit',
+      path: messagingRoutes.emailsCustomCampaignIdEdit,
       element: (
         <PageLoading>
           <CustomEmailsEdit />
@@ -53,42 +75,10 @@ const createAdminMessagingRoutes = () => ({
       ),
     },
     {
-      path: 'emails/automated',
+      path: messagingRoutes.emailsAutomated,
       element: (
         <PageLoading>
           <AutomatedEmails />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'texting',
-      element: (
-        <PageLoading>
-          <CampaignList />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'texting/new',
-      element: (
-        <PageLoading>
-          <NewSMS />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'texting/:campaignId',
-      element: (
-        <PageLoading>
-          <ExistingSMS />
-        </PageLoading>
-      ),
-    },
-    {
-      path: 'texting/:campaignId/preview',
-      element: (
-        <PageLoading>
-          <PreviewSMS />
         </PageLoading>
       ),
     },

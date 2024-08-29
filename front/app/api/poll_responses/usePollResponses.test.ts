@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePollResponses from './usePollResponses';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*:contextType/:contextId/poll_responses/responses_count';
+import usePollResponses from './usePollResponses';
+
+const apiPath = '*phases/:phaseId/poll_responses/responses_count';
 
 const data = {
   data: {
@@ -26,8 +25,8 @@ const data = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data }, { status: 200 });
   })
 );
 
@@ -39,8 +38,7 @@ describe('usePollResponses', () => {
     const { result, waitFor } = renderHook(
       () =>
         usePollResponses({
-          participationContextId: 'id',
-          participationContextType: 'project',
+          phaseId: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -57,16 +55,15 @@ describe('usePollResponses', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
     const { result, waitFor } = renderHook(
       () =>
         usePollResponses({
-          participationContextId: 'id',
-          participationContextType: 'project',
+          phaseId: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),

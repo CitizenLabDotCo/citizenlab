@@ -1,22 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// components and theming
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { TBannerError } from './BannerImageFields';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { viewportWidths } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
 
-// types
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
-import { UploadFile } from 'typings';
+
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+import { TBannerError } from './BannerImageFields';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -32,24 +28,20 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  overlayOpacity:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPageAttributes['banner_overlay_opacity'];
-  overlayColor:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPageAttributes['banner_overlay_color'];
+  overlayOpacity: ICustomPageAttributes['banner_overlay_opacity'];
+  overlayColor: ICustomPageAttributes['banner_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: TBannerError;
   header_bg: UploadFile | null;
   previewDevice: TDevice;
-  layout: THomepageBannerLayout;
+  layout: TCustomPageBannerLayout;
 }
 
 // move this to homepage settings resource?
 export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 export const homepageBannerLayoutHeights: {
-  [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
+  [key in TCustomPageBannerLayout]: {
     [key in TDevice]: number;
   };
 } = {
@@ -72,7 +64,7 @@ export const homepageBannerLayoutHeights: {
     // On mobile min-height is 225.
     phone: 225,
     // We define a screen as tablet when width is between 769 and 1200 px.
-    // Height will start reducing from our max width of 1150px.
+    // Height will start reducing from our max width of 1200px.
     // We maintain the 3:1 aspect ratio until our min-height of 225px is reached.
     // At this point, the banner will start cutting of from the size to maintain
     // the min-height.
@@ -80,7 +72,7 @@ export const homepageBannerLayoutHeights: {
     // as for desktop
     tablet: 383,
     // Header image is saved as 1920x640px.
-    // Image is displayed with max width 1150px and 3:1 aspect ratio.
+    // Image is displayed with max width 1200px and 3:1 aspect ratio.
     // This means width of 383.33px.
     desktop: 383,
   },
@@ -109,7 +101,7 @@ const HeaderImageDropzone = ({
     const ratio = layoutHeightOnDevice / standardDeviceWidth;
 
     const ratioPerLayoutPerDevice: {
-      [key in THomepageBannerLayout]: {
+      [key in TCustomPageBannerLayout]: {
         [key in TDevice]: number;
       };
     } = {
@@ -147,11 +139,9 @@ const HeaderImageDropzone = ({
     return ratioPerLayoutPerDevice[layout][previewDevice];
   };
 
-  const showPreviewOverlayForLayout = (
-    layout: THomepageBannerLayout | TCustomPageBannerLayout
-  ) => {
+  const showPreviewOverlayForLayout = (layout: TCustomPageBannerLayout) => {
     const conditions: {
-      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+      [key in TCustomPageBannerLayout]: boolean;
     } = {
       full_width_banner_layout: true,
       two_row_layout: false,

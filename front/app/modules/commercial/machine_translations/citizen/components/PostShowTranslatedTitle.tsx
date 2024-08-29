@@ -1,20 +1,21 @@
 import React from 'react';
-import { Title } from 'components/PostShowComponents/Title';
-import { Locale } from 'typings';
+
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
+
+import useLocale from 'hooks/useLocale';
+
+import { Title } from 'components/PostShowComponents/Title';
 
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
   translateButtonClicked?: boolean;
   color?: string;
   align: 'left' | 'center';
 }
 
 const PostShowTranslatedTitle = ({
-  locale,
   translateButtonClicked,
   postId,
   postType,
@@ -22,11 +23,13 @@ const PostShowTranslatedTitle = ({
   align,
   title,
 }: Props) => {
+  const locale = useLocale();
   const translation = useTranslation({
     attributeName: 'title_multiloc',
     localeTo: locale,
     id: postId,
     context: postType,
+    machineTranslationButtonClicked: translateButtonClicked || false,
   });
   const showTranslatedContent = translateButtonClicked && translation && locale;
   const content = showTranslatedContent

@@ -1,31 +1,49 @@
 import React from 'react';
 
 // config
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
-// utils
-import { isCurrentPhase } from 'api/phases/utils';
-
-// types
+import useBasket from 'api/baskets/useBasket';
 import { IIdea } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
-type InteractionsProps = {
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
+type Props = {
   idea: IIdea;
-  participationContext?: IPhaseData | IProjectData | null;
+  phase: IPhaseData | null;
 };
 
-const Interactions = ({ participationContext, idea }: InteractionsProps) => {
-  const votingMethod = participationContext?.attributes.voting_method;
+const Interactions = ({ idea, phase }: Props) => {
+  const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
+  const votingMethod = phase?.attributes.voting_method;
   const config = getVotingMethodConfig(votingMethod);
+  const { data: basket } = useBasket(
+    phase?.relationships?.user_basket?.data?.id
+  );
 
-  if (!config || !participationContext) return null;
+  if (!config || !phase) return null;
 
   if (
-    participationContext.type === 'phase' &&
-    !isCurrentPhase(participationContext)
+    pastPresentOrFuture([
+      phase.attributes.start_at,
+      phase.attributes.end_at,
+    ]) !== 'present'
   ) {
+    return null;
+  }
+
+  const phaseEnded =
+    phase.attributes.end_at &&
+    pastPresentOrFuture(phase?.attributes?.end_at) === 'past';
+
+  const hideInteractions =
+    isGeneralIdeasPage ||
+    (phaseEnded && basket?.data.attributes.submitted_at === null)
+      ? true
+      : false;
+
+  if (hideInteractions) {
     return null;
   }
 
@@ -33,7 +51,7 @@ const Interactions = ({ participationContext, idea }: InteractionsProps) => {
     <>
       {config.getIdeaCardVoteInput({
         ideaId: idea.data.id,
-        participationContext,
+        phase,
       })}
     </>
   );

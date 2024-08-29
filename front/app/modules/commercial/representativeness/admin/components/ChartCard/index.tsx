@@ -1,42 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useReferenceData from '../../hooks/useReferenceData';
-import useRScore from '../../api/r_score/useRScore';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyCard from './EmptyCard';
-import Header from './Header';
-import Chart from './Chart';
-import Table from './Table';
-import Footer from './Footer';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import fieldMessages from '../Field/messages';
 
-// utils
-import { getLegendLabels } from './utils';
-import { isNilOrError } from 'utils/helperUtils';
-
-// typings
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'api/user_custom_fields/types';
+import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { View } from 'components/admin/GraphCard/ViewToggle';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useRScore from '../../api/r_score/useRScore';
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
 } from '../../hooks/parseReferenceData';
-import { View } from 'components/admin/GraphCard/ViewToggle';
-import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
-import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+import useReferenceData from '../../hooks/useReferenceData';
+import fieldMessages from '../Field/messages';
+
+import Chart from './Chart';
+import EmptyCard from './EmptyCard';
+import Footer from './Footer';
+import Header from './Header';
+import messages from './messages';
+import Table from './Table';
+import { getLegendLabels } from './utils';
 
 interface Props {
   userCustomField: IUserCustomFieldData;
@@ -48,10 +43,6 @@ const getXlsxEndpoint = (
   userCustomFieldId: string
 ): string => {
   switch (code) {
-    case 'gender':
-      return usersByGenderXlsxEndpoint;
-    case 'domicile':
-      return usersByDomicileXlsxEndpoint;
     case 'birthyear':
       return usersByAgeXlsxEndpoint;
     default:

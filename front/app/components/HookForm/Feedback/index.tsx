@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
-import { scrollToElement } from 'utils/scroll';
-import SuccessFeedback from './SuccessFeedback';
-import messages from './messages';
 import { get } from 'lodash-es';
-import { RHFErrors } from 'typings';
+import { useFormContext } from 'react-hook-form';
+import { CLError, RHFErrors } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import Error, {
+  findErrorMessage,
+  getApiErrorValues,
+  TFieldName,
+} from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
+import messages from './messages';
+import SuccessFeedback from './SuccessFeedback';
 
 type FeedbackProps = {
   successMessage?: string;
-} & WrappedComponentProps;
+  onlyShowErrors?: boolean;
+};
 
-const Feedback = ({
-  successMessage,
-  intl: { formatMessage },
-}: FeedbackProps) => {
+const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
+  const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
+  const { data: appConfiguration } = useAppConfiguration();
+
   const {
     formState: {
       errors: formContextErrors,
@@ -36,7 +46,8 @@ const Feedback = ({
   }, [submitCount]);
 
   const getAllErrorMessages = () => {
-    const errorMessages: Array<{ field: string; message?: string }> = [];
+    const errorMessages: Array<{ field: string; message?: string | Element }> =
+      [];
 
     for (const field in formContextErrors) {
       const errors = get(formContextErrors, field) as RHFErrors;
@@ -57,9 +68,12 @@ const Feedback = ({
           String(apiError)
         );
 
+        const values = getApiErrorValues(errors as CLError, appConfiguration);
         errorMessages.push({
           field,
-          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
+          message: apiErrorMessage
+            ? formatMessage(apiErrorMessage, values)
+            : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
@@ -73,16 +87,16 @@ const Feedback = ({
   };
 
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
-  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
     (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
+  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
 
   return (
     <>
       {isSubmitted && (
         <Box id="feedback" data-testid="feedback" key={submitCount}>
-          {successMessageIsShown && (
+          {successMessageIsShown && onlyShowErrors !== true && (
             <SuccessFeedback
               successMessage={
                 successMessage || formatMessage(messages.successMessage)
@@ -117,7 +131,7 @@ const Feedback = ({
                           <Text
                             key={error.field}
                             onClick={() => scrollToElement({ id: error.field })}
-                            onKeyPress={(e) => {
+                            onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 scrollToElement({ id: error.field });
                               }
@@ -144,4 +158,4 @@ const Feedback = ({
   );
 };
 
-export default injectIntl(Feedback);
+export default Feedback;

@@ -1,21 +1,25 @@
 import React, { memo } from 'react';
 
-// components
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// styles
-import { colors } from 'utils/styleUtils';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// types
 import { PublicationStatus } from 'api/projects/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   publicationStatus: PublicationStatus;
 }
+
+const StyledStatusLabel = styled(StatusLabel)`
+  padding-left: 4px;
+  padding-right: 4px;
+  height: 20px;
+  font-weight: bold;
+  font-size: 10px;
+`;
 
 const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
   if (publicationStatus !== 'published') {
@@ -25,7 +29,7 @@ const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
     }[publicationStatus];
 
     return (
-      <StatusLabel
+      <StyledStatusLabel
         text={<FormattedMessage {...messages[publicationStatus]} />}
         backgroundColor={publicationStatusColor}
       />

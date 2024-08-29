@@ -1,0 +1,10 @@
+
+<mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+  <div>
+    <%= local_assigns[:label] %>
+  </div>
+
+  <div style="font-weight: 400">
+    <%= local_assigns[:text] %>
+  </div>
+</mj-text>

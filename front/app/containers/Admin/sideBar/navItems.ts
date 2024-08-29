@@ -1,10 +1,13 @@
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import { IconNames } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import messages from './messages';
 
 export type NavItem = {
   name: string;
-  link: string;
+  link: RouteType;
   iconName: IconNames;
   message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];
@@ -16,7 +19,7 @@ export type NavItem = {
 const navItems: NavItem[] = [
   {
     name: 'dashboard',
-    link: '/admin/dashboard/visitors',
+    link: '/admin/dashboard/overview',
     iconName: 'dashboard',
     message: 'dashboard',
   },
@@ -51,13 +54,13 @@ const navItems: NavItem[] = [
     link: '/admin/messaging',
     iconName: 'messages',
     message: 'messaging',
-    featureNames: ['manual_emailing', 'automated_emailing_control', 'texting'],
   },
   {
     name: 'reporting',
-    link: `/admin/reporting`,
+    link: `/admin/reporting/report-builder`,
     iconName: 'reports',
     message: 'reporting',
+    featureNames: ['report_builder'],
   },
   {
     name: 'tools',

@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { ProjectsFilterTypes } from 'api/custom_pages/types';
+
 import {
   screen,
   render,
@@ -6,8 +9,8 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
+
 import CustomPageSettingsForm from './';
-import { ProjectsFilterTypes } from 'api/custom_pages/types';
 
 const titleEN = 'title en';
 const titleNL = 'title nl';
@@ -181,12 +184,12 @@ describe('CustomPageSettingsForm', () => {
       });
     });
 
-    it('keeps showing the slug input when field is erased', () => {
+    it('keeps showing the slug input when field is erased', async () => {
       const user = userEvent.setup();
       render(<CustomPageSettingsForm mode={mode} {...defaultProps} />);
 
       const slugInput = screen.getByRole('textbox', { name: 'Slug' });
-      user.clear(slugInput);
+      await user.clear(slugInput);
       expect(slugInput).toBeInTheDocument();
     });
   });

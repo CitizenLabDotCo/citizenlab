@@ -1,6 +1,8 @@
-import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
+import { UploadFile } from 'typings';
+
 import { reportError } from 'utils/loggingUtils';
+
 import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {

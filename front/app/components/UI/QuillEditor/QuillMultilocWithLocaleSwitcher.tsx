@@ -1,25 +1,21 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import QuillEditor, {
-  Props as QuillEditorProps,
-} from 'components/UI/QuillEditor';
 import {
   IconTooltip,
   LocaleSwitcher,
   Label,
 } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// style
 import styled from 'styled-components';
+import { SupportedLocale, Multiloc } from 'typings';
 
-// typings
-import { Locale, Multiloc } from 'typings';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
+import QuillEditor, {
+  Props as QuillEditorProps,
+} from 'components/UI/QuillEditor';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div``;
 
@@ -53,7 +49,7 @@ export interface Props
   > {
   valueMultiloc: Multiloc | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
-  onChange: (value: Multiloc, locale: Locale) => void;
+  onChange: (value: Multiloc, locale: SupportedLocale) => void;
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -66,7 +62,9 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     ...quillProps
   } = props;
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -76,7 +74,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   }, [locale]);
 
   const handleValueOnChange = useCallback(
-    (value: string, locale: Locale) => {
+    (value: string, locale: SupportedLocale) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
         [locale]: value,
@@ -88,7 +86,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   );
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
     },
     []

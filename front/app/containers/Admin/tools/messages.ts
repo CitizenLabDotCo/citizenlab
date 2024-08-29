@@ -65,4 +65,82 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.publicAPIImage',
     defaultMessage: 'Public API image',
   },
+  publicAPIDisabled: {
+    id: 'app.containers.Admin.tools.publicAPIDisabled',
+    defaultMessage:
+      'The public API is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+  },
+  powerBITitle: {
+    id: 'app.containers.Admin.tools.powerBITitle',
+    defaultMessage: 'Power BI',
+  },
+  powerBIDescription: {
+    id: 'app.containers.Admin.tools.powerBIDescription',
+    defaultMessage:
+      'Use our plug & play Power BI Templates to access Go Vocal data in your Microsoft Power BI Workspace.',
+  },
+  powerBIDownloadTemplates: {
+    id: 'app.containers.Admin.tools.powerBIDownloadTemplates',
+    defaultMessage: 'Download templates',
+  },
+  powerBIImage: {
+    id: 'app.containers.Admin.tools.powerBIAPIImage',
+    defaultMessage: 'Power BI image',
+  },
+  powerBIDisabled: {
+    id: 'app.containers.Admin.tools.powerBIDisabled',
+    defaultMessage:
+      'Power BI is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+  },
+  esriIntegration: {
+    id: 'app.containers.Admin.tools.esriIntegration2',
+    defaultMessage: 'Esri integration',
+  },
+  esriIntegrationDescription: {
+    id: 'app.containers.Admin.tools.esriIntegrationDescription3',
+    defaultMessage:
+      'Connect your Esri account and import data from ArcGIS Online directly into your mapping projects.',
+  },
+  esriIntegrationButton: {
+    id: 'app.containers.Admin.tools.esriIntegrationButton',
+    defaultMessage: 'Enable Esri',
+  },
+  esriIntegrationImageAlt: {
+    id: 'app.containers.Admin.tools.esriIntegrationImageAlt',
+    defaultMessage: 'Esri logo',
+  },
+  esriDisabled: {
+    id: 'app.containers.Admin.tools.esriDisabled',
+    defaultMessage:
+      'The Esri integration is an add-on feature. Contact your GovSuccess Manager if you want more information on this.',
+  },
+  esriMaps: {
+    id: 'app.containers.Admin.tools.esriMaps',
+    defaultMessage: 'Esri Maps',
+  },
+  esriKeyInputDescription: {
+    id: 'app.containers.Admin.tools.esriKeyInputDescription',
+    defaultMessage:
+      'Add your Esri API key to allow importing your map layers from ArcGIS Online in the map tabs in projects.',
+  },
+  esriKeyInputPlaceholder: {
+    id: 'app.containers.Admin.tools.esriKeyInputPlaceholder',
+    defaultMessage: 'Paste API key here',
+  },
+  esriKeyInputLabel: {
+    id: 'app.containers.Admin.tools.esriKeyInputLabel',
+    defaultMessage: 'Esri API key',
+  },
+  esriSaveButtonText: {
+    id: 'app.containers.Admin.tools.esriSaveButtonText',
+    defaultMessage: 'Save key',
+  },
+  esriSaveButtonSuccess: {
+    id: 'app.containers.Admin.tools.esriSaveButtonSuccess',
+    defaultMessage: 'API key saved',
+  },
+  esriSaveButtonError: {
+    id: 'app.containers.Admin.tools.esriSaveButtonError',
+    defaultMessage: 'There was an error saving your key, please try again.',
+  },
 });

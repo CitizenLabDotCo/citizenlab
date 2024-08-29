@@ -10,16 +10,24 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
-import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
-import messages from '../messages';
-import RenameTagModal from './RenameTagModal';
-import Modal from 'components/UI/Modal';
-import { ITagData } from 'api/analysis_tags/types';
-import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import styled from 'styled-components';
+
+import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
+import { ITagData } from 'api/analysis_tags/types';
+import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import Modal from 'components/UI/Modal';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
+import messages from './messages';
+import RenameTagModal from './RenameTagModal';
 
 const StyledSpinner = styled(Spinner)`
   margin-right: 8px;
@@ -56,6 +64,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         },
         {
           onSuccess: () => {
+            trackEventByName(tracks.tagDeleted.name, {
+              extra: { analysisId },
+            });
             closeDropdown();
           },
         }
@@ -81,6 +92,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.bulkTagAssignmentPerformed.name, {
+            extra: { analysisId },
+          });
           closeDropdown();
         },
       }
@@ -88,7 +102,8 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   };
 
   return (
-    <div>
+    <div data-cy="e2e-analysis-tag-action">
+      {/* Could be replaced by reusable MoreActionsMenu? */}
       <IconButton
         iconName="dots-horizontal"
         iconColor={colors.textSecondary}
@@ -104,37 +119,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         onClickOutside={closeDropdown}
         className="dropdown"
         right="0px"
-        top="40px"
+        top="-150px"
         content={
           <>
-            <DropdownListItem
-              onClick={(e) => {
-                e.stopPropagation();
-                openTagRenameModal(tag.id);
-              }}
-            >
-              <Text textAlign="left" m="0px">
-                <Icon name="edit" mr="8px" />
-                Rename tag
-              </Text>
-            </DropdownListItem>
-            <DropdownListItem
-              onClick={(e) => {
-                e.stopPropagation();
-                handleTagDelete();
-              }}
-            >
-              <Text textAlign="left" m="0px">
-                <Box display="flex" gap="8px">
-                  {deleteIsLoading ? (
-                    <StyledSpinner size="20px" />
-                  ) : (
-                    <Icon name="delete" />
-                  )}
-                  Delete tag
-                </Box>
-              </Text>
-            </DropdownListItem>
             <DropdownListItem
               onClick={(e) => {
                 e.stopPropagation();
@@ -148,7 +135,36 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                   ) : (
                     <Icon name="plus-circle" />
                   )}
-                  Add selected inputs to tag
+                  {formatMessage(messages.addInputToTag)}
+                </Box>
+              </Text>
+            </DropdownListItem>
+            <DropdownListItem
+              onClick={(e) => {
+                e.stopPropagation();
+                openTagRenameModal(tag.id);
+              }}
+            >
+              <Text textAlign="left" m="0px">
+                <Icon name="edit" mr="8px" />
+                {formatMessage(messages.renameTag)}
+              </Text>
+            </DropdownListItem>
+            <DropdownListItem
+              onClick={(e) => {
+                e.stopPropagation();
+                handleTagDelete();
+              }}
+              id="e2e-analysis-delete-tag-button"
+            >
+              <Text textAlign="left" m="0px">
+                <Box display="flex" gap="8px">
+                  {deleteIsLoading ? (
+                    <StyledSpinner size="20px" />
+                  ) : (
+                    <Icon name="delete" />
+                  )}
+                  {formatMessage(messages.deleteTag)}
                 </Box>
               </Text>
             </DropdownListItem>

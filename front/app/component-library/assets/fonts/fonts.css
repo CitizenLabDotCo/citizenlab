@@ -1,0 +1,89 @@
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-Light.woff2') format('woff2'),
+    url('./PublicSans-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-LightItalic.woff2') format('woff2'),
+    url('./PublicSans-LightItalic.woff') format('woff');
+  font-style: italic;
+  font-weight: 300;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-Regular.woff2') format('woff2'),
+    url('./PublicSans-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-Italic.woff2') format('woff2'),
+    url('./PublicSans-Italic.woff') format('woff');
+  font-style: italic;
+  font-weight: 400;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-Medium.woff2') format('woff2'),
+    url('./PublicSans-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-MediumItalic.woff2') format('woff2'),
+    url('./PublicSans-MediumItalic.woff') format('woff');
+  font-style: italic;
+  font-weight: 500;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-SemiBold.woff2') format('woff2'),
+    url('./PublicSans-SemiBold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-SemiBoldItalic.woff2') format('woff2'),
+    url('./PublicSans-SemiBoldItalic.woff') format('woff');
+  font-style: italic;
+  font-weight: 600;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-Bold.woff2') format('woff2'),
+    url('./PublicSans-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('./PublicSans-BoldItalic.woff2') format('woff2'),
+    url('./PublicSans-BoldItalic.woff') format('woff');
+  font-style: italic;
+  font-weight: 700;
+  font-display: auto;
+}

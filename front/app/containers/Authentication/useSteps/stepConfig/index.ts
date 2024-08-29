@@ -1,22 +1,19 @@
 // flows
-import { lightFlow } from './lightFlow';
-import { missingDataFlow } from './missingDataFlow';
-import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
-import { signUpFlow } from './signUpFlow';
-import { claveUnicaFlow } from './claveUnicaFlow';
-
-// typings
 import {
   GetRequirements,
   UpdateState,
   AuthenticationData,
   SetError,
+  State,
 } from '../../typings';
+
+import { lightFlow } from './lightFlow';
+import { missingDataFlow } from './missingDataFlow';
+import { sharedSteps } from './sharedSteps';
+import { signInFlow } from './signInFlow';
+import { signUpFlow } from './signUpFlow';
+import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -25,17 +22,24 @@ export const getStepConfig = (
   setError: SetError,
   updateState: UpdateState,
   anySSOEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  state: State
 ) => {
   return {
     ...lightFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      updateState
+      updateState,
+      state
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep, updateUser),
+    ...missingDataFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState,
+      state
+    ),
 
     ...sharedSteps(
       getAuthenticationData,
@@ -50,6 +54,7 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      updateState,
       anySSOEnabled
     ),
 
@@ -58,11 +63,15 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      anySSOEnabled,
-      updateUser
+      anySSOEnabled
     ),
 
-    ...claveUnicaFlow(getRequirements, setCurrentStep, updateUser),
+    ...ssoVerificationFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
+    ),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

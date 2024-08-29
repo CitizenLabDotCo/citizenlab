@@ -10,6 +10,8 @@ en-CA:
       comment_author: '%{authorName} commented:'
       idea_author: '%{authorName} submitted a post:'
       initiative_author: '%{authorName} submitted a proposal:'
-      this_post_was_flagged: >
-        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
+      automatically_flagged: >
+        This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.
+      how_to_review: >
+        If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.
       cta_review_post: 'Review post'

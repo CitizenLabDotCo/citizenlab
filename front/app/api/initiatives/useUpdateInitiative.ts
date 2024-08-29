@@ -1,21 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import initiativesKeys from './keys';
+
 import initiativesCountKeys from 'api/initiative_counts/keys';
-import { IInitiative, IUpdateInitiativeObject } from './types';
 import initiativeMarkersKeys from 'api/initiative_markers/keys';
 import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import initiativesKeys from './keys';
+import { IInitiative, IUpdateInitiativeObject } from './types';
 
 const updateInitiative = ({
   initiativeId,
   requestBody,
-}: IUpdateInitiativeObject) =>
-  fetcher<IInitiative>({
+}: IUpdateInitiativeObject) => {
+  return fetcher<IInitiative>({
     path: `/initiatives/${initiativeId}`,
     action: 'patch',
     body: { initiative: requestBody },
   });
+};
 
 const useUpdateInitiative = () => {
   const queryClient = useQueryClient();

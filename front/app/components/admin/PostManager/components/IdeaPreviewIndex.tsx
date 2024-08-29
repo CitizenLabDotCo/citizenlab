@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-import GoBackButton from 'components/UI/GoBackButton';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import IdeaPostPreview from './PostPreview/Idea/IdeaPostPreview';
+import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import GoBackButton from 'components/UI/GoBackButton';
+
+import clHistory from 'utils/cl-router/history';
+
 import { PreviewMode } from '..';
+
 import messages from './messages';
+import IdeaPostPreview from './PostPreview/Idea/IdeaPostPreview';
 
 interface Props {
-  goBackUrl: string;
+  goBackUrl: RouteType;
 }
 
 const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
@@ -28,7 +34,7 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   };
 
   return (
-    <>
+    <Box p="40px">
       <Box mb="24px">
         <GoBackButton
           onClick={handleOnClose}
@@ -42,7 +48,7 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
         onClose={handleOnClose}
         onSwitchPreviewMode={handleOnSwitchPreviewMode}
       />
-    </>
+    </Box>
   );
 };
 

@@ -2,7 +2,7 @@
 
 # @see UrlValidator#validate_each
 class UrlValidator < ActiveModel::EachValidator
-  URL_PATTERN = %r{^(http(s)?://.+)}.freeze
+  URL_PATTERN = %r{^(http(s)?://.+)}
 
   # Validates that the attribute is a valid URL. Allowed are URLs starting with `https://` or `http://`.
   def validate_each(record, attribute, value)

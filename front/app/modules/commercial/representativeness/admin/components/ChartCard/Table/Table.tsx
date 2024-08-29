@@ -1,15 +1,16 @@
 import React from 'react';
 
-// components
-import { Table, Tbody } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Tbody,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+
+import { RepresentativenessData } from '../../../hooks/parseReferenceData';
+
 import HeaderRow from './HeaderRow';
 import Row from './Row';
-
-// styling
-import { colors, stylingConsts } from 'utils/styleUtils';
-
-// typings
-import { RepresentativenessData } from '../../../hooks/parseReferenceData';
 
 interface Props {
   columns: string[];

@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
 
-// components
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
-
-// styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// typings
+import renderTooltip from './renderTooltip';
 import { GenderSerie } from './typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   innerRef?: React.RefObject<any>;
-  narrow?: boolean;
   data: GenderSerie;
 }
 
-const makeLegendItem = (row: GenderSerie[number], i: number): LegendItem => ({
+export const makeLegendItem = (
+  row: GenderSerie[number],
+  i: number
+): LegendItem => ({
   icon: 'circle',
   color: categoricalColorScheme({ rowIndex: i }),
   label: `${row.name} (${row.percentage}%)`,
 });
 
-const Chart = ({ innerRef, narrow = false, data }: Props) => {
+const Chart = ({ innerRef, data }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => setHoverIndex(rowIndex);
@@ -52,7 +50,7 @@ const Chart = ({ innerRef, narrow = false, data }: Props) => {
       legend={{
         items: data.map(makeLegendItem),
         maintainGraphSize: true,
-        marginLeft: narrow ? 10 : 50,
+        marginLeft: 50,
         position: 'right-center',
       }}
       onMouseOver={onMouseOver}

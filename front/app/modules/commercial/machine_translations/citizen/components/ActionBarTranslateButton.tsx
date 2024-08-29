@@ -1,12 +1,16 @@
 import React from 'react';
 
-import FeatureFlag from 'components/FeatureFlag';
-import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import TranslateButton from 'components/UI/TranslateButton';
-import { GetLocaleChildProps } from 'resources/GetLocale';
+
 import { IInitiativeData } from 'api/initiatives/types';
+
+import useLocale from 'hooks/useLocale';
+
+import FeatureFlag from 'components/FeatureFlag';
+import TranslateButton from 'components/UI/TranslateButton';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledTranslateButton = styled(TranslateButton)`
   ${media.phone`
@@ -18,19 +22,16 @@ interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   initiative: IInitiativeData;
-  locale: GetLocaleChildProps;
 }
 
 const ActionBarTranslateButton = ({
   initiative,
-  locale,
   onClick,
   translateButtonClicked,
 }: Props) => {
+  const locale = useLocale();
   const showTranslateButton =
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale) &&
-    !initiative.attributes.title_multiloc[locale];
+    !isNilOrError(initiative) && !initiative.attributes.title_multiloc[locale];
 
   return (
     <FeatureFlag name="machine_translations">

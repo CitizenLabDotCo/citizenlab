@@ -14,6 +14,7 @@ module Finder
       @current_user      = current_user
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
+      @includes          = includes
     end
 
     def find_records
@@ -44,9 +45,9 @@ module Finder
 
     def _filter_records
       params.each do |param, value|
-        next unless respond_to?("#{param}_condition", true)
+        next unless respond_to?(:"#{param}_condition", true)
 
-        new_records = send("#{param}_condition", value)
+        new_records = send(:"#{param}_condition", value)
 
         @records = new_records if new_records
       end

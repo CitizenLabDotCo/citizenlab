@@ -1,45 +1,27 @@
-import React, {
-  memo,
-  ReactElement,
-  useCallback,
-  useState,
-  useEffect,
-} from 'react';
-import { JsonForms } from '@jsonforms/react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 
-import {
-  createAjv,
-  JsonSchema7,
-  UISchemaElement,
-  isCategorization,
-  Translator,
-  Layout,
-} from '@jsonforms/core';
-import styled from 'styled-components';
-
+// jsonforms
 import {
   Box,
   fontSizes,
   media,
-  stylingConsts,
-  useBreakpoint,
   Button,
 } from '@citizenlab/cl2-component-library';
-import ButtonBar from './Components/ButtonBar';
+import { JsonSchema7, isCategorization, Layout } from '@jsonforms/core';
+import styled from 'styled-components';
+import { CLErrors } from 'typings';
 
-import useObserveEvent from 'hooks/useObserveEvent';
-
-import { CLErrors, Message } from 'typings';
-import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
-import { APIErrorsContext, FormContext } from './contexts';
 import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
-import { selectRenderers } from './formConfig';
-import { getFormSchemaAndData } from './utils';
+
+import { useIntl } from 'utils/cl-intl';
+
+import ButtonBar from './Components/ButtonBar';
+import Fields from './Components/Fields';
+import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
+import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
+import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
+import { sanitizeFormData, isValidData, customAjv } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -57,45 +39,20 @@ const Title = styled.h1`
   `}
 `;
 
-const InvisibleSubmitButton = styled.button`
-  visibility: hidden;
-`;
-
-type FormData = Record<string, any> | null | undefined;
-
-const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
-
-export type AjvErrorGetter = (
-  error: ErrorObject,
-  uischema?: UISchemaElement
-) => Message | undefined;
-
-export type ApiErrorGetter = (
-  errorKey: string,
-  fieldName: string
-) => Message | undefined;
-
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormData) => Promise<any>;
-  initialFormData?: any;
+  onSubmit: (formData: FormData) => void | Promise<any>;
+  initialFormData: FormData;
   title?: ReactElement;
-  /** The event name on which the form should automatically submit, as received from the eventEmitter. If this is set, no submit button is displayed. */
-  submitOnEvent?: string;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */
   getAjvErrorMessage: AjvErrorGetter;
   /**
-   * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
-   */
-  onChange?: (formData: FormData) => void;
-  /**
    * Idea id for update form, used to load and udpate image and files.
    */
-  inputId?: string;
-  formSubmitText?: MessageDescriptor;
+  inputId?: string | undefined;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
@@ -106,205 +63,107 @@ const Form = memo(
     schema,
     uiSchema,
     initialFormData,
-    onSubmit,
     title,
     inputId,
-    formSubmitText,
-    submitOnEvent,
-    onChange,
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
     layout,
     footer,
+    onSubmit,
   }: Props) => {
     const { formatMessage } = useIntl();
-    const [data, setData] = useState<FormData>(initialFormData);
-    const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
-    const [loading, setLoading] = useState(false);
-    const [showAllErrors, setShowAllErrors] = useState(false);
-    const [showSubmitButton, setShowSubmitButton] = useState(true);
-    const safeApiErrorMessages = useCallback(
-      () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
-      [getApiErrorMessage]
-    );
-    const isSmallerThanPhone = useBreakpoint('phone');
-
-    // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
-    // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
-    const [processingInitialMultiloc, setProcessingInitialMultiloc] =
-      useState(true);
-    const [fixedSchema, setSchema] = useState(schema);
-
     const locale = useLocale();
 
-    // Hacky way of handling required multiloc fields
-    useEffect(() => {
-      if (
-        !isNilOrError(locale) &&
-        !isNilOrError(schema) &&
-        processingInitialMultiloc
-      ) {
-        const requiredMultilocFields = schema?.required?.filter((req) =>
-          req.endsWith('_multiloc')
-        );
-        // requiredMultilocFields can only have elements if schema.required's has, can cast type
-        if (requiredMultilocFields && requiredMultilocFields.length > 0) {
-          setSchema((schema) => {
-            const requiredFieldsObject = Object.fromEntries(
-              requiredMultilocFields.map((req) => [
-                req,
-                { ...schema?.properties?.[req], required: [locale] },
-              ])
-            );
-            return {
-              ...schema,
-              properties: { ...schema.properties, ...requiredFieldsObject },
-            };
-          });
-          setData((data) => ({
-            ...Object.fromEntries(
-              requiredMultilocFields.map((req) => [req, { [locale]: '' }])
-            ),
-            ...data,
-          }));
-        }
-        setProcessingInitialMultiloc(false);
-      }
-    }, [locale, processingInitialMultiloc, schema]);
+    const [data, setData] = useState<FormData>(() => {
+      return parseRequiredMultilocsData(schema, locale, initialFormData);
+    });
+    const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
+    const [loading, setLoading] = useState(false);
+    const [scrollToError, setScrollToError] = useState(false);
+    const [showAllErrors, setShowAllErrors] = useState(false);
 
-    const handleSubmit = async (formData?: any) => {
+    const isSurvey = config === 'survey';
+    const showSubmitButton = !isSurvey;
+
+    useEffect(() => {
+      if (scrollToError) {
+        // Scroll to the first field with an error
+        document
+          .querySelector('.error-display-container')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setScrollToError(false);
+      }
+    }, [scrollToError]);
+
+    useEffect(() => {
+      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+    }, [schema, locale, initialFormData]);
+
+    const layoutType =
+      layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
+
+    const handleSubmit = async (formData?: any, showErrors = true) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
+      const sanitizedFormData = sanitizeFormData(submissionData);
 
-      const sanitizedFormData = {};
-      forOwn(submissionData, (value, key) => {
-        sanitizedFormData[key] =
-          value === null || value === '' || value === false ? undefined : value;
-      });
       setData(sanitizedFormData);
-      onChange?.(sanitizedFormData);
-      setShowAllErrors(true);
+      setShowAllErrors(showErrors);
 
-      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
-        schema,
-        uiSchema,
-        submissionData,
-        customAjv
-      );
-      if (
-        customAjv.validate(
-          schemaToUse,
-          config === 'survey' ? dataWithoutHiddenFields : submissionData
-        )
-      ) {
+      if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
         setLoading(true);
         try {
-          await onSubmit(submissionData as FormData);
+          await onSubmit(submissionData);
         } catch (e) {
+          setScrollToError(true);
           setApiErrors(e.errors);
         }
         setLoading(false);
       }
+      setScrollToError(true);
     };
 
-    useObserveEvent(submitOnEvent, handleSubmit);
-
-    const translateError = useCallback(
-      (
-        error: ErrorObject,
-        _translate: Translator,
-        uischema?: UISchemaElement
-      ) => {
-        const message =
-          getAjvErrorMessage?.(error, uischema) ||
-          getDefaultAjvErrorMessage({
-            keyword: error.keyword,
-            format: error?.parentSchema?.format,
-            type: error?.parentSchema?.type,
-          });
-        return formatMessage(message, error.params);
-      },
-      [formatMessage, getAjvErrorMessage]
-    );
-
-    const layoutType = layout
-      ? layout
-      : isCategorization(uiSchema)
-      ? 'fullpage'
-      : 'inline';
-    const renderers = selectRenderers(config || 'default');
-
     return (
-      <Box
-        as="form"
-        minHeight={
-          isSmallerThanPhone && layoutType === 'fullpage' && config !== 'survey'
-            ? `calc(100vh - ${stylingConsts.menuHeight}px)`
-            : '100%'
-        }
-        height={
-          isSmallerThanPhone
-            ? '100%'
-            : layoutType === 'fullpage' && config !== 'survey'
-            ? '100vh'
-            : '100%'
-        }
-        display="flex"
-        flexDirection="column"
-        maxHeight={
-          layoutType === 'inline'
-            ? 'auto'
-            : isSmallerThanPhone || config === 'survey'
-            ? 'auto'
-            : `calc(100vh - ${stylingConsts.menuHeight}px)`
-        }
-        id={uiSchema?.options?.formId}
-      >
+      /*
+        This form should contain as few styles as possible!
+        Customization should happen in places where this component is imported!
+      */
+      <FormWrapper formId={uiSchema.options?.formId}>
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          /*
+            Grows the content to take full height,
+            so we can center the form content vertically for survey form pages with only 1 field
+          */
           flex="1"
           marginBottom={
             layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
           }
         >
           {title && <Title>{title}</Title>}
-          <APIErrorsContext.Provider value={apiErrors}>
-            <FormContext.Provider
-              value={{
-                showAllErrors,
-                inputId,
-                getApiErrorMessage: safeApiErrorMessages(),
-                onSubmit: handleSubmit,
-                setShowAllErrors,
-                setShowSubmitButton,
-                formSubmitText,
-              }}
-            >
-              <JsonForms
-                schema={fixedSchema}
-                uischema={uiSchema}
-                data={data}
-                renderers={renderers}
-                onChange={({ data }) => {
-                  setData(data);
-                  onChange?.(data);
-                }}
-                validationMode="ValidateAndShow"
-                ajv={customAjv}
-                i18n={{
-                  translateError,
-                }}
-              />
-              {footer && (
-                <Box display="flex" flexDirection="row" justifyContent="center">
-                  <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
-                    {footer}
-                  </Box>
-                </Box>
-              )}
-            </FormContext.Provider>
-          </APIErrorsContext.Provider>
+          <Fields
+            data={data}
+            apiErrors={apiErrors}
+            showAllErrors={showAllErrors}
+            setShowAllErrors={setShowAllErrors}
+            schema={schema}
+            uiSchema={uiSchema}
+            getApiErrorMessage={getApiErrorMessage}
+            getAjvErrorMessage={getAjvErrorMessage}
+            inputId={inputId}
+            config={config}
+            locale={locale}
+            onChange={setData}
+            onSubmit={handleSubmit}
+          />
+          {footer && (
+            <Box display="flex" flexDirection="row" justifyContent="center">
+              <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
+                {footer}
+              </Box>
+            </Box>
+          )}
         </Box>
         {showSubmitButton && (
           <>
@@ -316,8 +175,6 @@ const Form = memo(
                 )}
                 processing={loading}
               />
-            ) : submitOnEvent ? (
-              <InvisibleSubmitButton onClick={handleSubmit} />
             ) : (
               <Button onClick={handleSubmit}>
                 {formatMessage(messages.save)}
@@ -325,7 +182,7 @@ const Form = memo(
             )}
           </>
         )}
-      </Box>
+      </FormWrapper>
     );
   }
 );

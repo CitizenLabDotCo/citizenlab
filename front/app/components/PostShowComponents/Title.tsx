@@ -1,11 +1,8 @@
 import React, { memo } from 'react';
 
-// typings
-import { Locale } from 'typings';
-
-// styling
+import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+
 import Outlet from 'components/Outlet';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
@@ -37,7 +34,6 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
   translateButtonClicked?: boolean;
   className?: string;
   color?: string;
@@ -49,7 +45,6 @@ const PostTitle = memo<Props>(
     postId,
     postType,
     title,
-    locale,
     translateButtonClicked,
     className,
     color,
@@ -65,7 +60,6 @@ const PostTitle = memo<Props>(
           color={color}
           align={align}
           translateButtonClicked={translateButtonClicked}
-          locale={locale}
         >
           {(outletComponents) =>
             outletComponents.length > 0 ? (

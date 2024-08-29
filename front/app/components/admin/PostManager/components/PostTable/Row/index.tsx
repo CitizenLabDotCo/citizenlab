@@ -1,26 +1,22 @@
-import React, { lazy, Suspense, MouseEvent } from 'react';
-import { ManagerType, TFilterMenu } from '../../..';
+import React, { Suspense, MouseEvent } from 'react';
 
-// services
-import { IIdeaData } from 'api/ideas/types';
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-// style
+import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import { IPhaseData } from 'api/phases/types';
+
 import useLocale from 'hooks/useLocale';
 
-// Types
-import { IInitiativeData } from 'api/initiatives/types';
+import { isNilOrError } from 'utils/helperUtils';
 
-// lazy-loaded components
-const IdeaRow = lazy(() => import('./IdeaRow'));
-const InitiativeRow = lazy(() => import('./InitiativeRow'));
+import { ManagerType, TFilterMenu } from '../../..';
+
+import IdeaRow from './IdeaRow';
+import InitiativeRow from './InitiativeRow';
 
 export const TitleLink = styled.a`
   display: block;
@@ -48,18 +44,15 @@ function nothingHappens() {}
 type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData;
+  /** A set of ids of ideas/initiatives that are currently selected */
+  selection: Set<string>;
+  activeFilterMenu: TFilterMenu;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  /** A set of ids of ideas/initiatives that are currently selected */
-  selection: Set<string>;
-  onUnselect: () => void;
   onToggleSelect: () => void;
-  onSingleSelect: () => void;
-  activeFilterMenu: TFilterMenu;
   openPreview: (ideaId: string) => void;
-  className?: string;
 };
 
 const Row = ({
@@ -71,7 +64,6 @@ const Row = ({
   statuses,
   selectedProjectId,
   selectedPhaseId,
-  className,
   openPreview,
   onToggleSelect,
 }: Props) => {
@@ -92,7 +84,11 @@ const Row = ({
     return null;
   }
 
-  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
+  if (
+    type === 'AllIdeas' ||
+    type === 'ProjectIdeas' ||
+    type === 'ProjectProposals'
+  ) {
     return (
       <Suspense fallback={null}>
         <IdeaRow
@@ -104,7 +100,6 @@ const Row = ({
           phases={phases}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
-          className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
           locale={locale}
@@ -120,7 +115,6 @@ const Row = ({
           statuses={statuses as IInitiativeStatusData[]}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
-          className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
           nothingHappens={nothingHappens}

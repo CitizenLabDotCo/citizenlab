@@ -1,28 +1,27 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
 
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import TabbedResource from 'components/admin/TabbedResource';
+import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
+import { ITab } from 'typings';
 
-// services
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
 } from 'api/user_custom_fields/types';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// hooks
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
-import useLocalize from 'hooks/useLocalize';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import useLocalize from 'hooks/useLocalize';
+
+import TabbedResource from 'components/admin/TabbedResource';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+import messages from '../messages';
 
 const StyledGoBackButton = styled(GoBackButton)`
   display: flex;
@@ -32,6 +31,8 @@ const StyledGoBackButton = styled(GoBackButton)`
 export interface Props {
   children?: React.ReactNode;
 }
+
+type TabType = ITab & { className: string };
 
 const RegistrationCustomFieldEdit = memo(
   ({
@@ -49,12 +50,10 @@ const RegistrationCustomFieldEdit = memo(
     };
 
     const getTabs = (customField: IUserCustomFieldData) => {
-      const baseTabsUrl = `/admin/settings/registration/custom-fields/${customField.id}`;
-
-      const tabs = [
+      const tabs: TabType[] = [
         {
           label: formatMessage(messages.fieldSettingsTab),
-          url: `${baseTabsUrl}/field-settings`,
+          url: `/admin/settings/registration/custom-fields/${customField.id}/field-settings`,
           className: 'field-settings',
           name: 'fieldSettings',
         },
@@ -66,7 +65,7 @@ const RegistrationCustomFieldEdit = memo(
       ) {
         tabs.push({
           label: formatMessage(messages.answerOptionsTab),
-          url: `${baseTabsUrl}/options`,
+          url: `/admin/settings/registration/custom-fields/${customField.id}/options`,
           className: 'options',
           name: 'options',
         });

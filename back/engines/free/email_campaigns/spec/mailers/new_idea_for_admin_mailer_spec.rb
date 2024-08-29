@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
           post_published_at: idea.published_at.iso8601,
           post_title_multiloc: idea.title_multiloc,
           post_author_name: idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale)
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
         }
       }
     end
@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Someone published a new idea on the platform of')
+      expect(mail.subject).to start_with('A new post has been published on')
     end
 
     it 'renders the receiver email' do
@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
     end
 
     it 'assigns go to idea CTA' do
-      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale)
+      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(idea_url)
     end
   end

@@ -13,12 +13,10 @@ describe('Project description builder Accordion component', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
@@ -51,6 +49,9 @@ describe('Project description builder Accordion component', () => {
       }
     );
 
+    cy.get('#accordionTitleId').type('Accordion title', { force: true });
+    cy.get('.ql-editor').type('Accordion content.', { force: true });
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
@@ -66,10 +67,10 @@ describe('Project description builder Accordion component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('.e2e-accordion').click({ force: true });
     cy.get('#default-open-toggle').click({ force: true });
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
@@ -86,7 +87,7 @@ describe('Project description builder Accordion component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('.e2e-accordion').click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

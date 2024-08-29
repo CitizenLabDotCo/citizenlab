@@ -1,27 +1,28 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import TabbedResource from 'components/admin/TabbedResource';
-import Breadcrumbs from 'components/UI/Breadcrumbs';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import ViewCustomPageButton from './ViewCustomPageButton';
-
-// i18n
-import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
-// routing
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import useLocalize from 'hooks/useLocalize';
+
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+
+import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import ViewCustomPageButton from './ViewCustomPageButton';
 
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
@@ -43,7 +44,7 @@ const CustomPagesEditSettings = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
+              linkTo: pagesAndMenuBreadcrumbLinkTo,
             },
             { label: localize(pageTitleMultiloc) },
           ]}

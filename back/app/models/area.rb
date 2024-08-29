@@ -11,10 +11,13 @@
 #  updated_at             :datetime         not null
 #  ordering               :integer
 #  custom_field_option_id :uuid
+#  followers_count        :integer          default(0), not null
+#  include_in_onboarding  :boolean          default(FALSE), not null
 #
 # Indexes
 #
 #  index_areas_on_custom_field_option_id  (custom_field_option_id)
+#  index_areas_on_include_in_onboarding   (include_in_onboarding)
 #
 # Foreign Keys
 #
@@ -22,18 +25,19 @@
 #
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
-  default_scope -> { order(ordering: :asc) }
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
+  has_many :followers, as: :followable, dependent: :destroy
 
   has_many :areas_static_pages, dependent: :restrict_with_error
   has_many :static_pages, through: :areas_static_pages
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
@@ -50,6 +54,13 @@ class Area < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
+
+  scope :order_projects_count, lambda { |direction = :desc|
+    safe_dir = direction == :desc ? 'DESC' : 'ASC'
+    left_outer_joins(:areas_projects)
+      .group(:id)
+      .order("COUNT(areas_projects.project_id) #{safe_dir}, ordering")
+  }
 
   def recreate_custom_field_option
     return unless (domicile_field = CustomField.find_by(key: 'domicile'))
@@ -118,7 +129,12 @@ class Area < ApplicationRecord
     def recreate_custom_field_options
       return unless (domicile_field = CustomField.find_by(key: 'domicile'))
 
-      options = Area.all.map(&:recreate_custom_field_option)
+      # Caution: Custom fields must created in the correct order (that is according to
+      # the ordering column), otherwise it could result in inconsistent ordering between
+      # areas and their option. For example, if the option with ordering 1 is created
+      # after the option with ordering 3, the latter will be adjusted (by acts_as_list)
+      # to ordering 4.
+      options = Area.order(:ordering).map(&:recreate_custom_field_option)
       domicile_field.options.where.not(id: options).destroy_all
       options << create_somewhere_else_option
     end
@@ -135,3 +151,5 @@ class Area < ApplicationRecord
     end
   end
 end
+
+Area.include(SmartGroups::Concerns::ValueReferenceable)

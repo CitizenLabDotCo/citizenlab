@@ -1,8 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Label } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+import useProjectById from 'api/projects/useProjectById';
+
 import T from 'components/T';
-import GetProject from 'resources/GetProject';
 
 const LabelText = styled.span`
   font-weight: 600;
@@ -17,18 +20,22 @@ const StyledLabel = styled(Label)`
   max-width: 175px;
 `;
 
-export default (props: { projectId: string }) => (
-  <GetProject projectId={props.projectId}>
-    {(project) => {
-      if (!project || project instanceof Error) return null;
+interface Props {
+  projectId: string;
+}
 
-      return (
-        <StyledLabel key={project.id} color="teal" basic={true}>
-          <LabelText>
-            <T value={project.attributes.title_multiloc} />
-          </LabelText>
-        </StyledLabel>
-      );
-    }}
-  </GetProject>
-);
+const ProjectSelector = ({ projectId }: Props) => {
+  const { data: project } = useProjectById(projectId);
+
+  if (!project) return null;
+
+  return (
+    <StyledLabel key={project.data.id} color="teal" basic={true}>
+      <LabelText>
+        <T value={project.data.attributes.title_multiloc} />
+      </LabelText>
+    </StyledLabel>
+  );
+};
+
+export default ProjectSelector;

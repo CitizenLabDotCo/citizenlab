@@ -1,23 +1,21 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import { List, Row } from 'components/admin/ResourceList';
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import Link from 'utils/cl-router/Link';
+
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { ICustomPageData } from 'api/custom_pages/types';
+
+import { List } from 'components/admin/ResourceList';
 import Warning from 'components/UI/Warning';
 
-// hooks
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-
-// utils
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+
 import { adminCustomPageSettingsPath } from '../../routes';
 
-// i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { ICustomPageData } from 'api/custom_pages/types';
+import Project from './Project';
 
 interface Props {
   customPage: ICustomPageData;
@@ -81,17 +79,11 @@ const ProjectsListContent = ({ customPage }: Props) => {
       <List>
         <>
           {adminPublicationsList.map((adminPublication, index: number) => (
-            <Row
-              id={adminPublication.id}
+            <Project
+              adminPublication={adminPublication}
               isLastItem={index === adminPublicationsList.length - 1}
               key={adminPublication.id}
-            >
-              <ProjectRow
-                publication={adminPublication}
-                actions={['manage']}
-                hideMoreActions
-              />
-            </Row>
+            />
           ))}
         </>
       </List>

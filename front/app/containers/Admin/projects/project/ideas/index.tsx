@@ -1,69 +1,93 @@
-// Libraries
 import React from 'react';
-import styled from 'styled-components';
-import messages from '../messages';
+
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-// Utils
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import InputManager, {
+  TFilterMenu,
+} from 'components/admin/PostManager/InputManager';
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import NewIdeaButton from '../../components/NewIdeaButton';
+import messages from '../messages';
 
-// resources
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import AnalysisBanner from './AnalysisBanner';
+import ownMessages from './messages';
 
-const StyledDiv = styled.div`
-  margin-bottom: 30px;
-`;
+const defaultTimelineProjectVisibleFilterMenu = 'phases';
+const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
+  defaultTimelineProjectVisibleFilterMenu,
+  'statuses',
+  'topics',
+];
 
 const AdminProjectIdeas = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
+  });
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  const defaultTimelineProjectVisibleFilterMenu = 'phases';
-  const defaultContinuousProjectVisibleFilterMenu = 'statuses';
-  const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultTimelineProjectVisibleFilterMenu,
-    'statuses',
-    'topics',
-  ];
-  const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultContinuousProjectVisibleFilterMenu,
-    'topics',
-  ];
+  if (!project) return null;
 
   return (
     <>
-      <StyledDiv>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleInputManager} />
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.subtitleInputManager} />
-        </SectionDescription>
-      </StyledDiv>
-
       <AnalysisBanner />
+      <Box mb="30px">
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Title variant="h3" color="primary" fontWeight="normal" my="0px">
+            <FormattedMessage {...messages.titleInputManager} />
+          </Title>
+          <Box display="flex" gap="8px">
+            {inputImporterEnabled && (
+              <Button
+                width="auto"
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+                icon="page"
+                buttonStyle="secondary-outlined"
+              >
+                <FormattedMessage {...ownMessages.importInputs} />
+              </Button>
+            )}
+            {phase && (
+              <NewIdeaButton
+                inputTerm={phase.data.attributes.input_term}
+                linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+              />
+            )}
+          </Box>
+        </Box>
+        <Text color="textSecondary">
+          <FormattedMessage {...messages.subtitleInputManager} />
+        </Text>
+      </Box>
+
       {project && (
-        <PostManager
-          type="ProjectIdeas"
+        <InputManager
+          key={phaseId}
           projectId={project.data.id}
           phases={phases?.data}
-          visibleFilterMenus={
-            project.data.attributes.process_type === 'timeline'
-              ? timelineProjectVisibleFilterMenus
-              : continuousProjectVisibleFilterMenus
-          }
-          defaultFilterMenu={
-            project.data.attributes.process_type === 'timeline'
-              ? defaultTimelineProjectVisibleFilterMenu
-              : defaultContinuousProjectVisibleFilterMenu
-          }
+          phaseId={phaseId}
+          visibleFilterMenus={timelineProjectVisibleFilterMenus}
+          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
         />
       )}
     </>

@@ -41,7 +41,20 @@ resource 'Insights' do
           }
         }
       })
-      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, question.id])
+      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, summary.background_task.id, question.id, question.background_task.id])
+    end
+
+    example_request 'Listing insights does not cause N+1 queries' do
+      create_list(:summary, 3, insight_attributes: { analysis: analysis })
+
+      # It would be better to lower the query limit to 1 and fix the other performance issues,
+      # but this at least helps to ensure that the missing_inputs_count part does not trigger
+      # N+1 queries.
+      expect do
+        do_request
+      end.not_to exceed_query_limit(3).with(/SELECT.*analysis_insights/)
+
+      assert_status 200
     end
   end
 
@@ -57,6 +70,24 @@ resource 'Insights' do
       expect(response_status).to eq 200
       expect { Analysis::Insight.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       expect { Analysis::Summary.find(summary.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  post 'web_api/v1/analyses/:analysis_id/insights/:id/rate' do
+    parameter :rating, 'The rating value, can be vote-up or vote-down'
+
+    let!(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis.id }
+    let(:id) { summary.insight_id }
+
+    example 'Up-vote an insight' do
+      expect { do_request(rating: 'vote-up') }.to have_enqueued_job(LogActivityJob).with(Analysis::Insight.find(id), 'rated', kind_of(User), anything, payload: { rating: 'vote-up' })
+      expect(response_status).to eq 201
+    end
+
+    example 'Down-vote an insight' do
+      expect { do_request(rating: 'vote-down') }.to have_enqueued_job(LogActivityJob).with(Analysis::Insight.find(id), 'rated', kind_of(User), anything, payload: { rating: 'vote-down' })
+      expect(response_status).to eq 201
     end
   end
 end

@@ -14,21 +14,9 @@ module EmailCampaigns
         if user&.active? && user&.admin?
           scope.all
         elsif user&.active? && user&.project_moderator?
-          projects = Project.where(id: user.moderatable_project_ids)
-          if projects.any? { |p| p.visible_to == 'public' }
-            scope.all
-          else
-            accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
-            campaigns_with_wrong_groups = CampaignsGroup
-              .where.not(group_id: accessible_group_ids)
-              .pluck(:campaign_id)
-            campaigns_without_groups = Campaigns::Manual
-              .left_outer_joins(:campaigns_groups)
-              .where(email_campaigns_campaigns_groups: { id: nil })
-              .ids
-            scope
-              .where.not(id: [*campaigns_with_wrong_groups, *campaigns_without_groups].uniq)
-          end
+          scope.manageable_by_project_moderator.automatic.or(
+            scope.manageable_by_project_moderator.manual.where(context_id: user.moderatable_project_ids)
+          )
         else
           scope.none
         end
@@ -36,11 +24,11 @@ module EmailCampaigns
     end
 
     def create?
-      record.instance_of?(EmailCampaigns::Campaigns::Manual) && can_access_and_modify?
+      record.manual? && can_access_and_modify?
     end
 
     def show?
-      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
+      if record.manual?
         can_access_and_modify?
       else
         user&.active? && user&.admin?
@@ -48,7 +36,7 @@ module EmailCampaigns
     end
 
     def update?
-      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
+      if record.manual?
         !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
       else
         user&.active? && user&.admin?
@@ -89,15 +77,7 @@ module EmailCampaigns
     end
 
     def moderator_can_access_and_modify?
-      projects = Project.where(id: user.moderatable_project_ids)
-      if projects.any? { |p| p.visible_to == 'public' }
-        true
-      elsif record.groups.empty?
-        false
-      else
-        accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
-        (record.groups.ids - accessible_group_ids).empty?
-      end
+      record.manageable_by_project_moderator? && user.moderatable_project_ids.include?(record.context_id)
     end
   end
 end

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
-import { useParams } from 'react-router-dom';
+
 import {
   Box,
   colors,
@@ -10,13 +9,27 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import ProgressBar from 'components/UI/ProgressBar';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Divider from 'components/admin/Divider';
-import { TagTypeColorMap } from '../Tags/Tag';
-import { timeAgo } from 'utils/dateUtils';
+
+import {
+  AutoTaggingMethod,
+  IBackgroundTaskData,
+} from 'api/analysis_background_tasks/types';
+import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
+
 import useLocale from 'hooks/useLocale';
+
+import Divider from 'components/admin/Divider';
+import ProgressBar from 'components/UI/ProgressBar';
+
+import { useIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { TagTypeColorMap } from '../Tags/Tag';
+
+import messages from './messages';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
@@ -31,6 +44,7 @@ const stateColorMap = {
 };
 
 const Tasks = () => {
+  const { formatMessage } = useIntl();
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
   const { analysisId } = useParams() as { analysisId: string };
@@ -47,6 +61,35 @@ const Tasks = () => {
     return null;
   }
 
+  const typeTranslationMap: Record<
+    IBackgroundTaskData['attributes']['type'],
+    string
+  > = {
+    auto_tagging_task: formatMessage(messages.autotaggingTask),
+    summarization_task: formatMessage(messages.summarizationTask),
+  };
+
+  const taggingMethodTranslationMap: Record<AutoTaggingMethod, string> = {
+    custom: formatMessage(messages.custom),
+    language: formatMessage(messages.language),
+    platform_topic: formatMessage(messages.platformTopic),
+    nlp_topic: formatMessage(messages.nlpTopic),
+    sentiment: formatMessage(messages.sentiment),
+    controversial: formatMessage(messages.controversial),
+    label_classification: formatMessage(messages.labelClassification),
+    few_shot_classification: formatMessage(messages.fewShotClassification),
+  };
+
+  const stateTranslationMap: Record<
+    IBackgroundTaskData['attributes']['state'],
+    string
+  > = {
+    queued: formatMessage(messages.queued),
+    in_progress: formatMessage(messages.inProgress),
+    succeeded: formatMessage(messages.succeeded),
+    failed: formatMessage(messages.failed),
+  };
+
   return (
     <Box display="flex" w="32px" h="32px">
       {anythingInProgress ? (
@@ -54,15 +97,15 @@ const Tasks = () => {
           buttonStyle="text"
           width="24px"
           height="24px"
-          aria-label="background jobs"
+          aria-label={formatMessage(messages.backgroundJobs)}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
         >
           <Spinner />
         </Button>
       ) : (
         <IconButton
-          iconName="book"
-          a11y_buttonActionMessage="background jobs"
+          iconName="list"
+          a11y_buttonActionMessage={formatMessage(messages.backgroundJobs)}
           iconColor={colors.grey800}
           iconColorOnHover={colors.black}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
@@ -79,6 +122,9 @@ const Tasks = () => {
         top="60px"
         content={
           <Box p="12px">
+            {tasks?.data.length === 0 && (
+              <Text>{formatMessage(messages.noJobs)}</Text>
+            )}
             {tasks?.data.map((task) => {
               return (
                 <Box
@@ -101,29 +147,33 @@ const Tasks = () => {
                         wordBreak: 'break-all',
                       }}
                     >
-                      {task.attributes.type}
+                      {typeTranslationMap[task.attributes.type]}
                     </Text>
                     {task.attributes.type === 'auto_tagging_task' && (
                       <Box
                         as="span"
                         bg={
                           TagTypeColorMap[task.attributes.auto_tagging_method]
-                            .background
+                            ?.background
                         }
                         color={
                           TagTypeColorMap[task.attributes.auto_tagging_method]
-                            .text
+                            ?.text
                         }
                         borderRadius="3px"
                         py="4px"
                         px="8px"
                         w="fit-content"
                       >
-                        {task.attributes.auto_tagging_method}
+                        {
+                          taggingMethodTranslationMap[
+                            task.attributes.auto_tagging_method
+                          ]
+                        }
                       </Box>
                     )}
                   </Box>
-                  {task.attributes.progress && (
+                  {!!task.attributes.progress && (
                     <StyledProgressBar
                       progress={task.attributes.progress}
                       color={colors.green400}
@@ -140,23 +190,23 @@ const Tasks = () => {
                     w="fit-content"
                     mb="4px"
                   >
-                    {task.attributes.state}
+                    {stateTranslationMap[task.attributes.state]}
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span> Triggered at</span>
+                    <span>{formatMessage(messages.triggeredAt)} </span>
                     <span>
                       {timeAgo(Date.parse(task.attributes.created_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span>Started at </span>
+                    <span>{formatMessage(messages.startedAt)} </span>
                     <span>
                       {task.attributes.started_at &&
                         timeAgo(Date.parse(task.attributes.started_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span>Ended at </span>
+                    <span>{formatMessage(messages.endedAt)} </span>
                     <span>
                       {task.attributes.ended_at &&
                         timeAgo(Date.parse(task.attributes.ended_at), locale)}

@@ -11,14 +11,15 @@ module PublicApi
       ).execute
 
       list_items(
-        ProjectFoldersFinder.new(folders, publication_status: publication_status).execute,
-        V2::ProjectFolders::FolderSerializer
+        folders,
+        V2::ProjectFolders::FolderSerializer,
+        includes: [:admin_publication]
       )
     end
 
     def show
       show_item(
-        ProjectFolders::Folder.includes(:admin_publication).find(params[:id]),
+        ProjectFolders::Folder.find(params[:id]),
         V2::ProjectFolders::FolderSerializer
       )
     end

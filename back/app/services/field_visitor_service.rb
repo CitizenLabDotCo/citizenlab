@@ -41,6 +41,14 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_select_image(field)
+    default(field)
+  end
+
+  def visit_multiselect_image(field)
+    default(field)
+  end
+
   def visit_checkbox(field)
     default(field)
   end
@@ -61,11 +69,23 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_line(field)
+    default(field)
+  end
+
+  def visit_polygon(field)
+    default(field)
+  end
+
   def visit_linear_scale(field)
     default(field)
   end
 
   def visit_file_upload(field)
+    default(field)
+  end
+
+  def visit_shapefile_upload(field)
     default(field)
   end
 

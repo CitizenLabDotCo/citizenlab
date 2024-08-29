@@ -8,7 +8,7 @@ namespace :fix_existing_tenants do
         puts "Processing tenant #{tenant.host}..."
 
         # Convert the field definition
-        birthyear_field = CustomField.with_resource_type('User').find_by(code: 'birthyear')
+        birthyear_field = CustomField.registration.find_by(code: 'birthyear')
         birthyear_field.update_column('input_type', 'number')
 
         # Convert the user values

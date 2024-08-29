@@ -1,16 +1,24 @@
 import React from 'react';
+
+import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
-import { Left, Right } from './';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import T from 'components/T';
+
 import useAuthUser from 'api/me/useAuthUser';
-import { media, isRtl, fontSizes } from 'utils/styleUtils';
-import OnboardingStep from './OnboardingStep';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
 import CTA from './CTA';
+import OnboardingStep from './OnboardingStep';
+
+import { Left, Right } from './';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -51,15 +59,17 @@ const HeaderContent = styled.div`
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
-const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
-  const { data: homepageSettings } = useHomepageSettings();
+const FallbackStep = ({
+  currentOnboardingCampaignName,
+  homepageSettings,
+}: Props) => {
   const { data: authUser } = useAuthUser();
 
   if (!isNilOrError(homepageSettings) && !isNilOrError(authUser)) {
-    const defaultMessage =
-      homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+    const defaultMessage = homepageSettings.banner_signed_in_header_multiloc;
 
     return (
       <OnboardingStep
@@ -78,7 +88,10 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
             )}
           </Left>
           <Right>
-            <CTA buttonStyle="primary-inverse" />
+            <CTA
+              buttonStyle="primary-inverse"
+              homepageSettings={homepageSettings}
+            />
           </Right>
         </HeaderContent>
       </OnboardingStep>

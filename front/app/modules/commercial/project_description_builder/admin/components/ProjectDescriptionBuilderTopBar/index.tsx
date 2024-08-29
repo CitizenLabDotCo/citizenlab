@@ -1,40 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
+import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
+import { useParams } from 'react-router-dom';
+import { SupportedLocale } from 'typings';
 
-// components
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// routing
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
 
-// types
-import { Locale } from 'typings';
+import messages from './messages';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
-  localesWithError: Locale[];
+  hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
+  selectedLocale: SupportedLocale | undefined;
   onSelectLocale: (args: {
-    locale: Locale;
+    locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
 };
@@ -44,43 +39,36 @@ const ProjectDescriptionBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  draftEditorData,
-  localesWithError,
+  hasError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
   const { projectId } = useParams() as { projectId: string };
-  const [loading, setLoading] = useState(false);
+
   const { query } = useEditor();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
-  const { mutateAsync: addProjectDescriptionBuilderLayout } =
-    useAddProjectDescriptionBuilderLayout();
+  const {
+    mutate: addProjectDescriptionBuilderLayout,
+    isLoading,
+    isError,
+  } = useAddProjectDescriptionBuilderLayout();
 
-  const disableSave = localesWithError.length > 0;
+  const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/description`);
+    clHistory.push(`/admin/projects/${projectId}/settings/description`);
   };
 
   const handleSave = async () => {
     if (selectedLocale) {
-      try {
-        setLoading(true);
-        await addProjectDescriptionBuilderLayout({
-          projectId,
-          craftjs_jsonmultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
-          },
-        });
-      } catch {
-        // Do nothing
-      }
-      setLoading(false);
+      addProjectDescriptionBuilderLayout({
+        projectId,
+        craftjs_json: query.getSerializedNodes(),
+      });
     }
   };
 
-  const handleSelectLocale = (locale: Locale) => {
+  const handleSelectLocale = (locale: SupportedLocale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
   };
@@ -109,7 +97,6 @@ const ProjectDescriptionBuilderTopBar = ({
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
           onSelectLocale={handleSelectLocale}
         />
         <Box ml="24px" />
@@ -119,7 +106,7 @@ const ProjectDescriptionBuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="eye"
           mx="20px"
           disabled={!project}
@@ -129,10 +116,22 @@ const ProjectDescriptionBuilderTopBar = ({
           <FormattedMessage {...messages.viewProject} />
         </Button>
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
-          processing={loading}
+          disabled={disableSave}
+          processing={isLoading}
           onClick={handleSave}
         />
+        {isError && (
+          <Text
+            color="error"
+            ml="20px"
+            position="absolute"
+            right="16px"
+            bottom="-18px"
+            fontSize="s"
+          >
+            <FormattedMessage {...messages.saveError} />
+          </Text>
+        )}
       </Box>
     </Container>
   );

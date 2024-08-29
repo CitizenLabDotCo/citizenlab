@@ -1,47 +1,39 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
-import styled, { withTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
   media,
   viewportWidths,
   defaultCardStyle,
-} from 'utils/styleUtils';
+  Icon,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
-// components
+import useAuthUser from 'api/me/useAuthUser';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 import Button from 'components/UI/Button';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { scrollToTop } from 'utils/scroll';
+
 import messages from './messages';
 
-const Container = styled.div``;
-
-const BoxContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 60px 40px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 70px;
   ${defaultCardStyle};
 
   ${media.tablet`
     padding: 60px 50px 50px;
-    margin-bottom: 20px;
   `}
 
   ${media.phone`
@@ -123,23 +115,19 @@ const StartInitiativeButton = styled(Button)`
   `}
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme: any;
-}
-
-const InitiativesCTABox = memo<Props>(({ theme, className }) => {
+const InitiativesCTABox = ({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
+  const theme = useTheme();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   const signUp = useCallback(() => {
     triggerAuthenticationFlow({
-      flow: 'signup',
       context: {
         type: 'initiative',
         action: 'posting_initiative',
@@ -153,41 +141,41 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
 
   return (
     <Container className={className}>
-      <BoxContainer>
-        <BackgroundIcon name="initiatives" />
-        <TextContainer>
-          <Title>
-            <FormattedMessage {...messages.initiativesBoxTitle} />
-          </Title>
-          <Text>
-            <FormattedMessage {...messages.initiativesBoxText} />
-          </Text>
-        </TextContainer>
-        <ButtonContainer>
-          <BrowseInitiativesButton
-            fontWeight="500"
-            padding="13px 22px"
-            buttonStyle="text"
-            textColor={theme.colors.tenantPrimary}
-            textDecorationHover="underline"
-            fullWidth={smallerThanSmallTablet}
-            linkTo="/initiatives"
-            text={<FormattedMessage {...messages.browseInitiative} />}
-            className="e2e-initiatives-landing-CTA-browse"
-          />
-          <StartInitiativeButton
-            fontWeight="500"
-            padding="13px 22px"
-            linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-            onClick={!authUser ? signUp : undefined}
-            fullWidth={smallerThanSmallTablet}
-            text={<FormattedMessage {...messages.startInitiative} />}
-            className="e2e-initiatives-landing-CTA-new"
-          />
-        </ButtonContainer>
-      </BoxContainer>
+      <BackgroundIcon name="initiatives" />
+      <TextContainer>
+        <Title>
+          <FormattedMessage {...messages.initiativesBoxTitle} />
+        </Title>
+        <Text>
+          <FormattedMessage {...messages.initiativesBoxText} />
+        </Text>
+      </TextContainer>
+      <ButtonContainer>
+        <BrowseInitiativesButton
+          fontWeight="500"
+          padding="13px 22px"
+          buttonStyle="text"
+          textColor={theme.colors.tenantPrimary}
+          textDecorationHover="underline"
+          fullWidth={smallerThanSmallTablet}
+          linkTo="/initiatives"
+          text={<FormattedMessage {...messages.browseInitiative} />}
+          className="e2e-initiatives-landing-CTA-browse"
+        />
+        <StartInitiativeButton
+          fontWeight="500"
+          padding="13px 22px"
+          linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
+          onClick={() => {
+            !authUser ? signUp() : scrollToTop();
+          }}
+          fullWidth={smallerThanSmallTablet}
+          text={<FormattedMessage {...messages.startInitiative} />}
+          className="e2e-initiatives-landing-CTA-new"
+        />
+      </ButtonContainer>
     </Container>
   );
-});
+};
 
-export default withTheme(InitiativesCTABox);
+export default InitiativesCTABox;

@@ -16,6 +16,10 @@ FactoryBot.define do
         'en' => 'Time to check it all out!'
       }
     end
+
+    factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
+      association :project, factory: :project_with_active_ideation_phase
+    end
   end
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
@@ -34,11 +38,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :comment_on_your_idea_campaign, class: EmailCampaigns::Campaigns::CommentOnYourIdea do
+  factory :comment_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :comment_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::CommentOnYourInitiative do
+  factory :comment_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow do
     enabled { true }
   end
 
@@ -126,22 +130,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_comment_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedIdea do
-    enabled { true }
-  end
-
-  factory :new_comment_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative do
-    enabled { true }
-  end
-
-  factory :new_comment_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedIdea do
-    enabled { true }
-  end
-
-  factory :new_comment_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedInitiative do
-    enabled { true }
-  end
-
   factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
     enabled { true }
   end
@@ -150,27 +138,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+  factory :official_feedback_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :official_feedback_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedInitiative do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedIdea do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnReactedInitiative do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
-    enabled { true }
-  end
-
-  factory :official_feedback_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative do
+  factory :official_feedback_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnInitiativeYouFollow do
     enabled { true }
   end
 
@@ -190,27 +162,15 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
+  factory :project_published_campaign, class: EmailCampaigns::Campaigns::ProjectPublished do
     enabled { true }
   end
 
-  factory :status_change_of_commented_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative do
+  factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :status_change_of_reacted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedIdea do
-    enabled { true }
-  end
-
-  factory :status_change_of_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfReactedInitiative do
-    enabled { true }
-  end
-
-  factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
-    enabled { true }
-  end
-
-  factory :status_change_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourInitiative do
+  factory :status_change_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow do
     enabled { true }
   end
 
@@ -251,6 +211,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :native_survey_not_submitted_campaign, class: EmailCampaigns::Campaigns::NativeSurveyNotSubmitted do
+    enabled { true }
+  end
+
   factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
     enabled { true }
   end
@@ -259,7 +223,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :event_registration_confirmation_campaign, class: EmailCampaigns::Campaigns::EventRegistrationConfirmation do
+    enabled { true }
+  end
+
   factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
+    enabled { true }
+  end
+
+  factory :voting_results_campaign, class: EmailCampaigns::Campaigns::VotingResults do
     enabled { true }
   end
 end

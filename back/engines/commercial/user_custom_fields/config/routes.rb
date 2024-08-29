@@ -6,8 +6,6 @@ UserCustomFields::Engine.routes.draw do
       scope :users do
         resources :custom_fields, controller: 'user_custom_fields' do
           patch 'reorder', on: :member
-          get 'schema', on: :collection
-          get 'json_forms_schema', on: :collection
           resources :custom_field_options, controller: '/web_api/v1/custom_field_options' do
             patch 'reorder', on: :member
           end
@@ -19,21 +17,14 @@ UserCustomFields::Engine.routes.draw do
 
       scope 'stats' do
         with_options controller: 'stats_users' do
-          get 'users_by_domicile'
-          get 'users_by_domicile_as_xlsx'
-
           get 'users_by_age'
           get 'users_by_age_as_xlsx'
 
           with_options action: :users_by_custom_field do
-            get 'users_by_gender'
-            get 'users_by_birthyear'
             get 'users_by_custom_field/:custom_field_id'
           end
 
           with_options action: :users_by_custom_field_as_xlsx do
-            get 'users_by_gender_as_xlsx'
-            get 'users_by_birthyear_as_xlsx'
             get 'users_by_custom_field_as_xlsx/:custom_field_id'
           end
         end

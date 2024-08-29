@@ -1,18 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisTaggings from './useAnalysisTaggings';
-
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { taggingsData } from './__mocks__/useAnalysisTaggings';
+import useAnalysisTaggings from './useAnalysisTaggings';
 
 const apiPath = '*/analyses/:analysisId/taggings';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: taggingsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: taggingsData }, { status: 200 });
   })
 );
 
@@ -38,8 +37,8 @@ describe('useAnalysisTaggings', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

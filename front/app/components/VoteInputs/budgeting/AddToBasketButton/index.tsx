@@ -1,47 +1,42 @@
 import React, { FormEvent } from 'react';
 
-// api
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// components
-import { Button, Icon } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
-
-// tracks
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// routing
+import {
+  Button,
+  Icon,
+  colors,
+  Tooltip,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// utils
-import { isButtonEnabled } from './utils';
-import { isNil } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// typings
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
+
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isNil } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
+import { isButtonEnabled } from './utils';
 
 interface Props {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   buttonStyle: 'primary' | 'primary-outlined';
   onIdeaPage?: boolean;
 }
@@ -49,7 +44,7 @@ interface Props {
 const AddToBasketButton = ({
   ideaId,
   buttonStyle,
-  participationContext,
+  phase,
   onIdeaPage,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
@@ -57,28 +52,28 @@ const AddToBasketButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
 
-  const basketId = participationContext.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  if (!idea || !ideaBudget) {
+  if (!idea || !ideaBudget || !currency) {
     return null;
   }
 
-  const participationContextId = participationContext.id;
-  const participationContextType = participationContext.type;
+  const phaseId = phase.id;
 
-  const actionDescriptor = idea.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea.data.attributes.action_descriptors.voting;
   if (!actionDescriptor) return null;
 
   const isPermitted =
     actionDescriptor.enabled ||
-    actionDescriptor.disabled_reason !== 'not_permitted';
+    actionDescriptor.disabled_reason !== 'user_not_permitted';
   const buttonVisible =
     isPermitted &&
     actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
@@ -89,7 +84,7 @@ const AddToBasketButton = ({
     event?.preventDefault();
 
     if (actionDescriptor.enabled) {
-      const maxBudget = participationContext.attributes.voting_max_total;
+      const maxBudget = phase.attributes.voting_max_total;
 
       if (isNil(maxBudget) || numberOfVotesCast === undefined) {
         return;
@@ -114,17 +109,16 @@ const AddToBasketButton = ({
 
     if (isFixableByAuthentication(budgetingDisabledReason)) {
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: ideaBudget,
         },
       };
@@ -135,47 +129,61 @@ const AddToBasketButton = ({
 
   const buttonMessage = ideaInBasket ? messages.added : messages.add;
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
-  const disabledMessage = basket?.data.attributes.submitted_at
-    ? onIdeaPage
-      ? messages.basketAlreadySubmittedIdeaPage
-      : messages.basketAlreadySubmitted
-    : undefined;
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    action,
+    actionDescriptor.disabled_reason,
+    true
+  );
+
+  const disabledMessage =
+    permissionsDisabledMessage ||
+    (basket?.data.attributes.submitted_at
+      ? onIdeaPage
+        ? messages.basketAlreadySubmittedIdeaPage
+        : messages.basketAlreadySubmitted
+      : undefined);
 
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage)
     : undefined;
 
   return (
-    <Tippy
-      disabled={!disabledExplanation}
-      interactive={true}
-      placement="bottom"
-      content={disabledExplanation}
-    >
-      <div>
-        <Button
-          onClick={handleAddRemoveButtonClick}
-          disabled={!buttonEnabled}
-          buttonStyle={buttonStyle}
-          processing={isProcessing}
-          bgColor={ideaInBasket ? colors.green500 : undefined}
-          textColor={ideaInBasket ? colors.white : undefined}
-          textHoverColor={ideaInBasket ? colors.white : undefined}
-          bgHoverColor={ideaInBasket ? colors.green500 : undefined}
-          borderColor={ideaInBasket ? colors.success : undefined}
-          width="100%"
-          className={`e2e-assign-budget-button ${
-            ideaInBasket ? 'in-basket' : 'not-in-basket'
-          }`}
-        >
-          {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
-          <FormattedMessage {...buttonMessage} />
-          {` (${ideaBudget} ${currency})`}
-        </Button>
-      </div>
-    </Tippy>
+    <Box w="100%">
+      <Tooltip
+        disabled={!disabledExplanation}
+        placement="bottom"
+        content={disabledExplanation}
+      >
+        <div>
+          <Button
+            onClick={handleAddRemoveButtonClick}
+            disabled={!buttonEnabled}
+            buttonStyle={buttonStyle}
+            processing={isProcessing}
+            bgColor={ideaInBasket ? colors.green500 : undefined}
+            textColor={ideaInBasket ? colors.white : undefined}
+            textHoverColor={ideaInBasket ? colors.white : undefined}
+            bgHoverColor={ideaInBasket ? colors.green500 : undefined}
+            borderColor={ideaInBasket ? colors.success : undefined}
+            width="100%"
+            className={`e2e-assign-budget-button ${
+              ideaInBasket ? 'in-basket' : 'not-in-basket'
+            }`}
+          >
+            {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
+            <FormattedMessage {...buttonMessage} />
+            <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
+            <ScreenReaderCurrencyValue
+              amount={ideaBudget}
+              currency={currency}
+            />
+          </Button>
+        </div>
+      </Tooltip>
+    </Box>
   );
 };
 

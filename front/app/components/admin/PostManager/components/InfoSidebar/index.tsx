@@ -1,10 +1,13 @@
 import React from 'react';
-import InfoSidebarSingle from './InfoSidebarSingle';
-import InfoSidebarMulti from './InfoSidebarMulti';
+
+import { media } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+
 import { Sticky } from '../..';
+
+import InfoSidebarMulti from './InfoSidebarMulti';
+import InfoSidebarSingle from './InfoSidebarSingle';
 
 const RightColumn = styled.div`
   max-width: 200px;

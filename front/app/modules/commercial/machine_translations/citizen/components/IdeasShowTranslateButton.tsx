@@ -1,10 +1,13 @@
 import React from 'react';
 
-import TranslateButton from 'components/UI/TranslateButton';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
 import { IIdeaData } from 'api/ideas/types';
-import { Locale } from 'typings';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import TranslateButton from 'components/UI/TranslateButton';
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 20px;
@@ -14,7 +17,7 @@ interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   idea: IIdeaData;
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 const IdeasShowTranslateButton = ({

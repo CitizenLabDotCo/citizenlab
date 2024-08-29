@@ -1,5 +1,6 @@
-import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 import React, { ReactNode } from 'react';
+
+import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 
 interface Props extends Partial<ButtonProps> {
   children: ReactNode;

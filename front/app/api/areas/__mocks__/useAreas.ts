@@ -11,6 +11,8 @@ export const areasData: IAreaData[] = [
       description_multiloc: {},
       ordering: 1,
       static_page_ids: ['3'],
+      followers_count: 3,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {
@@ -20,6 +22,9 @@ export const areasData: IAreaData[] = [
             type: 'static_page',
           },
         ],
+      },
+      user_follower: {
+        data: null,
       },
     },
   },
@@ -34,6 +39,8 @@ export const areasData: IAreaData[] = [
 
       ordering: 1,
       static_page_ids: ['4'],
+      followers_count: 3,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {
@@ -43,6 +50,9 @@ export const areasData: IAreaData[] = [
             type: 'static_page',
           },
         ],
+      },
+      user_follower: {
+        data: null,
       },
     },
   },

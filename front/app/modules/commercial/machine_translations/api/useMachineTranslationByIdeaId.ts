@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import machineTranslationKeys from './keys';
 import {
   IMachineTranslation,
   MachineTranslationKeys,
   IMachineTranslationByIdeaIdParams,
 } from './types';
-import machineTranslationKeys from './keys';
 
 const fetchMachineTranslationByIdeaId = ({
   ideaId,
@@ -28,7 +30,10 @@ const useMachineTranslationByIdeaId = ({
     IMachineTranslation,
     MachineTranslationKeys
   >({
-    queryKey: machineTranslationKeys.item({ ideaId: queryParameters.ideaId }),
+    queryKey: machineTranslationKeys.item({
+      ideaId: queryParameters.ideaId,
+      machine_translation: queryParameters.machine_translation,
+    }),
     queryFn: () => fetchMachineTranslationByIdeaId(queryParameters),
     enabled,
   });

@@ -3,7 +3,7 @@
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def initialize(input_term, supports_answer_visible_to)
     super()
-    @input_term = input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    @input_term = input_term || Phase::DEFAULT_INPUT_TERM
     @supports_answer_visible_to = supports_answer_visible_to
   end
 
@@ -19,7 +19,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def generate_for(fields)
     uses_pages = fields.any?(&:page?)
-    return super(fields) unless uses_pages
+    return super unless uses_pages
 
     generate_with_pages(fields)
   end
@@ -35,7 +35,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         input_type: field.input_type,
         id: field.id,
         title: multiloc_service.t(field.title_multiloc),
-        description: description_option(field)
+        description: description_option(field),
+        page_layout: field.page_layout,
+        map_config_id: field&.map_config&.id
       },
       elements: [
         # No elements yet. They will be added after invoking this method.
@@ -53,6 +55,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     if @supports_answer_visible_to
       defaults[:answer_visible_to] = field.answer_visible_to
     end
+    defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
+    defaults[:dropdown_layout] = field.dropdown_layout if field.dropdown_layout_type?
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
@@ -92,8 +96,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       type: 'Page',
       options: {
         id: 'survey_end',
-        title: I18n.t('form_builder.survey_end_page.title'),
-        description: I18n.t('form_builder.survey_end_page.description')
+        title: I18n.t('form_builder.form_end_page.title_text'),
+        description: I18n.t('form_builder.form_end_page.description_text_2')
       },
       elements: []
     }
@@ -111,9 +115,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_pages_for_current_locale(fields)
-    participation_context = fields.first.resource.participation_context
-    input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
-    categorization_schema_with(input_term, schema_elements_for(fields))
+    categorization_schema_with(fields.first.input_term, schema_elements_for(fields))
   end
 
   def generate_for_current_locale(fields)

@@ -14,12 +14,11 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
     }
     AppConfiguration.instance.update(settings: settings)
 
-    # Configure Matomo environment variables
-    stub_const('ENV', ENV.to_h.merge(
+    stub_env({
       'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
       'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token',
-      'DEFAULT_MATOMO_TENANT_SITE_ID' => 1
-    ))
+      'DEFAULT_MATOMO_TENANT_SITE_ID' => '1'
+    })
   end
 
   describe '.perform_for_all_tenants' do
@@ -27,7 +26,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
       create(:tenant)
 
       options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }
-      described_class.perform_for_all_tenants(options)
+      described_class.perform_for_all_tenants(**options)
 
       Tenant.ids.each do |id|
         expect(described_class).to(have_been_enqueued.with(id, options))
@@ -41,7 +40,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
     options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }
 
     expect_any_instance_of(Analytics::MatomoDataImporter)
-      .to receive(:import).with(site_id, min_timestamp, options)
+      .to receive(:import).with(site_id, min_timestamp, **options)
 
     described_class.perform_now(Tenant.current.id, **options, min_timestamp: min_timestamp)
   end

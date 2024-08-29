@@ -1,31 +1,28 @@
 import React from 'react';
-import { get, isString } from 'lodash-es';
 
-// components
-import Card from 'components/UI/Card';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Author from 'components/Author';
-import ReactionIndicator from './ReactionIndicator';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styles
+import {
+  Box,
+  Icon,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
-// hooks
+import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useUserById from 'api/users/useUserById';
-import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 
-const StyledAuthor = styled(Author)`
-  margin-left: -4px;
-`;
+import useLocalize from 'hooks/useLocalize';
+
+import Author from 'components/Author';
+import FollowUnfollow from 'components/FollowUnfollow';
+import Card from 'components/UI/Card';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import ReactionIndicator from './ReactionIndicator';
 
 const FooterInner = styled.div`
   width: 100%;
@@ -67,21 +64,17 @@ export interface Props {
 }
 
 const InitiativeCard = ({
-  localize,
   className,
   initiativeId,
   showFollowButton,
-}: Props & InjectedLocalized) => {
+}: Props) => {
+  const localize = useLocalize();
   const { data: initiative } = useInitiativeById(initiativeId);
-  const authorId = get(initiative, 'data.relationships.author.data.id');
+  const authorId = initiative?.data.relationships.author.data?.id;
   const { data: initiativeAuthor } = useUserById(authorId);
-  const initiativeImageId = get(
-    initiative,
-    'data.relationships.initiative_images.data[0].id'
-  );
   const { data: initiativeImage } = useInitiativeImage(
     initiativeId,
-    initiativeImageId
+    initiative?.data.relationships.initiative_images.data[0]?.id
   );
 
   if (!initiative) return null;
@@ -93,26 +86,28 @@ const InitiativeCard = ({
   const cardClassNames = [
     className,
     'e2e-initiative-card',
-    get(initiative, 'relationships.user_reaction.data')
-      ? 'reacted'
-      : 'not-reacted',
     commentsCount > 0 ? 'e2e-has-comments' : null,
   ]
-    .filter((item) => isString(item) && item !== '')
+    .filter((item) => typeof item === 'string' && item !== '')
     .join(' ');
+
   return (
     <Card
       className={cardClassNames}
       to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
+      scrollToTop
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={
-        <StyledAuthor
-          authorId={initiativeAuthorId}
-          createdAt={initiative.data.attributes.published_at}
-          size={34}
-          anonymous={initiative.data.attributes.anonymous}
-        />
+        <Box ml="-4px">
+          <Author
+            authorId={initiativeAuthorId}
+            createdAt={initiative.data.attributes.proposed_at}
+            size={34}
+            anonymous={initiative.data.attributes.anonymous}
+            showModeratorStyles={false}
+          />
+        </Box>
       }
       footer={
         <>
@@ -136,7 +131,7 @@ const InitiativeCard = ({
             </CommentInfo>
           </FooterInner>
           {showFollowButton && (
-            <Box p="8px" display="flex" justifyContent="flex-end">
+            <Box p="8px" display="flex" justifyContent="flex-end" my="24px">
               <FollowUnfollow
                 followableType="initiatives"
                 followableId={initiative.data.id}
@@ -144,7 +139,8 @@ const InitiativeCard = ({
                 followerId={
                   initiative.data.relationships.user_follower?.data?.id
                 }
-                py="2px"
+                w="100%"
+                toolTipType="input"
               />
             </Box>
           )}
@@ -154,4 +150,4 @@ const InitiativeCard = ({
   );
 };
 
-export default injectLocalize(InitiativeCard);
+export default InitiativeCard;

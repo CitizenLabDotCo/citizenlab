@@ -1,10 +1,18 @@
-import React from 'react';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import React, { useState } from 'react';
+
 import { Button, Icon } from 'semantic-ui-react';
-import messages from '../../messages';
-import { ManagerType } from '../..';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
+import WarningModal from 'components/WarningModal';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import { ManagerType } from '../..';
+
+import messages from './messages';
+
 interface Props {
   type: ManagerType;
   /** A set of ids of ideas/initiatives that are currently selected */
@@ -13,65 +21,80 @@ interface Props {
 }
 
 const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
+  const [warningModalOpen, setWarningModalOpen] = useState(false);
+  const [isLoadingDeleteIdea, setIsLoadingDeleteIdea] = useState(false);
+  const [isLoadingDeleteInitiative, setIsLoadingDeleteInitiative] =
+    useState(false);
+
   const { formatMessage } = useIntl();
-  // const { mutate: deleteInitiative } = useDeleteInitiative();
-  const { mutate: deleteIdea } = useDeleteIdea();
-  const { mutate: deleteInitiative } = useDeleteInitiative();
+  const { mutateAsync: deleteIdea } = useDeleteIdea();
+  const { mutateAsync: deleteInitiative } = useDeleteInitiative();
 
-  const handleClickDeleteIdeas = () => {
-    const message = formatMessage(messages.deleteInputsConfirmation, {
-      count: selection.size,
-    });
+  const openWarningModal = () => setWarningModalOpen(true);
+  const closeWarningModal = () => setWarningModalOpen(false);
 
-    if (window.confirm(message)) {
-      selection.forEach((id) => {
-        deleteIdea(id);
-      });
+  const handleDelete = async () => {
+    if (type === 'Initiatives') {
+      setIsLoadingDeleteInitiative(true);
+
+      // Yes, terribly inefficient, but if you try to do this in
+      // parallel the database crashes. To do this properly
+      // we should add a bulk delete endpoint instead.
+      for (const initiativeId of selection) {
+        await deleteInitiative({ initiativeId });
+      }
+
+      resetSelection();
+      setIsLoadingDeleteInitiative(false);
+      closeWarningModal();
+    } else {
+      setIsLoadingDeleteIdea(true);
+
+      // Yes, terribly inefficient, but if you try to do this in
+      // parallel the database crashes. To do this properly
+      // we should add a bulk delete endpoint instead.
+      for (const ideaId of selection) {
+        await deleteIdea(ideaId);
+      }
+
+      resetSelection();
+      setIsLoadingDeleteIdea(false);
+      closeWarningModal();
     }
-
-    resetSelection();
   };
 
-  const handleClickDeleteInitiatives = () => {
-    const message = formatMessage(messages.deleteInitiativesConfirmation, {
-      count: selection.size,
-    });
+  const deleteMessage =
+    type === 'Initiatives'
+      ? messages.deleteAllSelectedInitiatives
+      : messages.deleteAllSelectedInputs;
 
-    if (window.confirm(message)) {
-      selection.forEach((id) => {
-        deleteInitiative({ initiativeId: id });
-      });
-    }
-
-    resetSelection();
-  };
-
-  if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-    return (
-      <Button negative={true} basic={true} onClick={handleClickDeleteIdeas}>
+  return (
+    <>
+      <Button negative={true} basic={true} onClick={openWarningModal}>
         <Icon name="delete" />
         <FormattedMessage
-          {...messages.deleteAllSelectedInputs}
+          {...deleteMessage}
           values={{ count: selection.size }}
         />
       </Button>
-    );
-  } else if (type === 'Initiatives') {
-    return (
-      <Button
-        negative={true}
-        basic={true}
-        onClick={handleClickDeleteInitiatives}
-      >
-        <Icon name="delete" />
-        <FormattedMessage
-          {...messages.deleteAllSelectedInitiatives}
-          values={{ count: selection.size }}
-        />
-      </Button>
-    );
-  }
-  return null;
+      <WarningModal
+        open={warningModalOpen}
+        isLoading={isLoadingDeleteIdea || isLoadingDeleteInitiative}
+        title={
+          type === 'Initiatives'
+            ? formatMessage(messages.deleteInitiativesTitle)
+            : formatMessage(messages.deleteInputsTitle)
+        }
+        explanation={
+          type === 'Initiatives'
+            ? formatMessage(messages.deleteInitiativesExplanation)
+            : formatMessage(messages.deleteInputsExplanation)
+        }
+        onClose={closeWarningModal}
+        onConfirm={handleDelete}
+      />
+    </>
+  );
 };
 
 export default ActionBarMulti;

@@ -10,7 +10,7 @@ FactoryBot.define do
     end
 
     name { Faker::Address.city }
-    sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
+    sequence(:host) { |n| "tenant-#{n}.govocal.com" }
     style { {} }
     settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
 
@@ -33,6 +33,7 @@ FactoryBot.define do
   factory :test_tenant, class: 'Tenant' do
     name { 'test-tenant' }
     host { 'example.org' }
+    creation_finalized_at { Time.now }
     style { {} }
     settings do
       SettingsService.new.minimal_required_settings(
@@ -45,7 +46,8 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          organization_type: 'medium_city'
+          organization_type: 'medium_city',
+          onboarding: true
         },
         initiatives: {
           enabled: true,
@@ -53,7 +55,8 @@ FactoryBot.define do
           reacting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: { 'en' => 'Threshold reached' },
-          eligibility_criteria: { 'en' => 'Eligibility criteria' }
+          eligibility_criteria: { 'en' => 'Eligibility criteria' },
+          posting_tips: { 'en' => 'Posting tips' }
         },
         user_confirmation: {
           enabled: false,
@@ -62,6 +65,10 @@ FactoryBot.define do
         verification: {
           enabled: false,
           allowed: false
+        },
+        follow: {
+          enabled: true,
+          allowed: true
         }
       })
     end

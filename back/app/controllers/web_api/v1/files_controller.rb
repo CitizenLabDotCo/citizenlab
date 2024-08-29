@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::FilesController < ApplicationController
+  include CarrierwaveErrorDetailsTransformation
+
   skip_before_action :authenticate_user
 
   CONSTANTIZER = {
@@ -78,7 +80,7 @@ class WebApi::V1::FilesController < ApplicationController
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
     else
-      render json: { errors: transform_errors_details!(@file.errors.details) }, status: :unprocessable_entity
+      render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
     end
   end
 
@@ -118,13 +120,6 @@ class WebApi::V1::FilesController < ApplicationController
   def set_container
     container_id = params[secure_constantize(:container_id)]
     @container = secure_constantize(:container_class).find container_id
-  end
-
-  def transform_errors_details!(error_details)
-    # carrierwave does not return the error code symbols by default
-    error_details = error_details.dup
-    error_details[:file] = error_details[:file]&.uniq { |e| e[:error] }
-    error_details
   end
 
   def secure_constantize(key)

@@ -10,12 +10,8 @@ module Post
   PUBLICATION_STATUSES = %w[draft published].freeze
 
   included do
-    pg_search_scope :search_by_all,
-      against: %i[title_multiloc body_multiloc],
-      using: { tsearch: { prefix: true } }
-
     pg_search_scope :restricted_search,
-      against: %i[title_multiloc body_multiloc],
+      against: %i[title_multiloc body_multiloc slug],
       using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_any_word,
@@ -53,6 +49,7 @@ module Post
       where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)
     end)
 
+    scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
