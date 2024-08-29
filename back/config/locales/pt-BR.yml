@@ -36,26 +36,28 @@ pt:
   symbols:
     outside: em outro lugar
   idea_statuses:
+    prescreening: pré-triagem
+    prescreening_description: No momento, essa entrada está sendo revisada pelo gerente de projeto e ainda não está visível para o público.
     proposed: Proposta
-    proposed_description: Esta idea foi proposta por alguem da organização
+    proposed_description: Essa contribuição foi enviada e agora está aberta ao apoio público. Reúna votos para ajudar você a passar para a próxima etapa.
     viewed: Revisado
-    viewed_description: Esta idea foi vista por alguém da organização
+    viewed_description: Essa contribuição foi vista pelo gerente de projeto.
     under_consideration: em questão
-    under_consideration_description: Esta Ideia foi levada em consideração pela organização
+    under_consideration_description: Essa contribuição foi levada em consideração pelo gerente de projeto.
     accepted: Aceitada
-    accepted_description: Esta ideia foi aceite e será implementada pela organização.
+    accepted_description: Essa contribuição foi aceita e será implementada pelo gerente de projeto.
     implemented: Implementada
-    implemented_description: Esta ideia foi implementada pela organização.
+    implemented_description: Essa contribuição foi implementada pelo gerente de projeto.
     rejected: Rejeitada
-    rejected_description: Esta Idea foi rejeitada
+    rejected_description: Essa entrada foi rejeitada.
     expired: expirado
-    expired_description: expirado
+    expired_description: Essa entrada não está mais ativa e foi fechada devido a restrições de tempo ou inatividade.
     threshold_reached: limite atingido
-    threshold_reached_description: limite atingido
+    threshold_reached_description: Essa entrada atingiu o limite de suporte necessário e agora será considerada para ações futuras.
     answered: respondeu
-    answered_description: respondeu
+    answered_description: Uma resposta foi fornecida para essa entrada. Confira os detalhes para obter mais informações.
     ineligible: inelegível
-    ineligible_description: inelegível
+    ineligible_description: Essa entrada foi analisada e, infelizmente, foi rejeitada. Uma atualização oficial foi fornecida com mais detalhes.
   initiative_statuses:
     review_pending: revisão pendente
     review_pending_description: revisão pendente
