@@ -36,26 +36,28 @@ es-CL:
   symbols:
     outside: en otro lugar
   idea_statuses:
+    prescreening: preselección
+    prescreening_description: Esta aportación está siendo revisada por el director del proyecto y aún no es visible para el público.
     proposed: propuesta
-    proposed_description: Esta idea ha sido propuesta
+    proposed_description: Esta aportación se ha presentado y ahora está abierta al apoyo público. Reúne votos para ayudar a que pase a la siguiente fase.
     viewed: revisado
-    viewed_description: Esta idea ha sido vista por alguien de la organización
+    viewed_description: Esta aportación ha sido vista por el director del proyecto.
     under_consideration: bajo consideración
-    under_consideration_description: Esta idea está siendo considerada
+    under_consideration_description: El director del proyecto ha tenido en cuenta esta aportación.
     accepted: aceptada
-    accepted_description: Esta idea ha sido aceptada y será implementada
+    accepted_description: Esta aportación ha sido aceptada y será puesta en práctica por el director del proyecto.
     implemented: implementada
-    implemented_description: Esta idea ha sido implementada
+    implemented_description: Esta aportación ha sido puesta en práctica por el director del proyecto.
     rejected: rechazada
-    rejected_description: Esta idea ha sido rechazada
+    rejected_description: Esta entrada ha sido rechazada.
     expired: finalizado
-    expired_description: finalizado
+    expired_description: Esta entrada ya no está activa y se ha cerrado por falta de tiempo o inactividad.
     threshold_reached: límite alcanzado
-    threshold_reached_description: límite alcanzado
+    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y ahora se considerará para nuevas acciones.
     answered: respondida
-    answered_description: respondida
+    answered_description: Se ha proporcionado una respuesta para esta aportación. Consulta los detalles para obtener más información.
     ineligible: no elegible
-    ineligible_description: no elegible
+    ineligible_description: Esta aportación ha sido revisada y, lamentablemente, ha sido rechazada. Se ha proporcionado una actualización oficial con más detalles.
   initiative_statuses:
     review_pending: revisión pendiente
     review_pending_description: revisión pendiente
