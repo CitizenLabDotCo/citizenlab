@@ -43,7 +43,7 @@
 #  native_survey_button_multiloc :jsonb
 #  expire_days_limit             :integer
 #  reacting_threshold            :integer
-#  reviewing_enabled             :boolean          default(FALSE), not null
+#  prescreening_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -94,7 +94,7 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :campaigns_settings, presence: true
   validates :start_at, presence: true
-  validates :reviewing_enabled, inclusion: { in: [true, false] }
+  validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
