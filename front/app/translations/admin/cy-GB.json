@@ -963,7 +963,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Rhowch enw cyntaf, enw olaf, e-bost a chyfrinair",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "Rhowch eich e-bost",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Pa mor ddiweddar ddylai defnyddwyr gael eu gwirio?",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerification": "Gwirio hunaniaeth (yn seiliedig ar grŵp defnyddwyr)",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "Nid oes angen unrhyw gamau i gymryd rhan",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Defnyddiwch grwpiau clyfar i gyfyngu ar gyfranogiad yn seiliedig ar y data dilys a restrir uchod",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min1": "Mae'n rhaid bod defnyddwyr wedi'u dilysu yn ystod y 30 munud diwethaf.",
