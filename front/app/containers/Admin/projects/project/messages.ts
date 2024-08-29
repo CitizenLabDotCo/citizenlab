@@ -592,8 +592,8 @@ export default defineMessages({
     defaultMessage: 'Participation options',
   },
   prescreeningText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningText',
-    defaultMessage: 'Require pre-screening of inputs',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningText',
+    defaultMessage: 'Require screening of inputs',
   },
   prescreeningSubtext: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
@@ -601,8 +601,8 @@ export default defineMessages({
       'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
   },
   prescreeningTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningTooltip',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
     defaultMessage:
-      'Pre-screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+      'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
 });
