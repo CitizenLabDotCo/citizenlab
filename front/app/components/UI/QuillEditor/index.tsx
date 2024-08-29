@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import Quill, { RangeStatic } from 'quill';
 
@@ -33,6 +34,8 @@ configureQuill();
 const QuillEditor = ({
   id,
   value,
+  label,
+  labelTooltipText,
   noAlign,
   noToolbar,
   noImages,
@@ -131,6 +134,10 @@ const QuillEditor = ({
     onChange?.(html);
   };
 
+  const handleLabelOnClick = useCallback(() => {
+    editor?.focus();
+  }, [editor]);
+
   const className = focussed ? 'focus' : '';
 
   return (
@@ -140,6 +147,12 @@ const QuillEditor = ({
       className={className}
       onMouseLeave={saveLatestContent}
     >
+      {label && (
+        <Label htmlFor={id} onClick={handleLabelOnClick}>
+          <span>{label}</span>
+          {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+        </Label>
+      )}
       {toolbarId && (
         <Toolbar
           id={toolbarId}
