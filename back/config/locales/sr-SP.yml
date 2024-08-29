@@ -36,26 +36,28 @@ sr-Cyrl:
   symbols:
     outside: негде другде
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: предложено
-    proposed_description: Ова идеја је предложена граду
+    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
     viewed: гледано
-    viewed_description: Ову идеју је видео неко из града
+    viewed_description: This input has been seen by the project manager.
     under_consideration: у разматрању
-    under_consideration_description: Ову идеју је град узео у обзир
+    under_consideration_description: This input has been taken into consideration by the project manager.
     accepted: прихваћено
-    accepted_description: Ова идеја је прихваћена и биће спроведена од стране града
+    accepted_description: This input has been accepted and will be implemented by the project manager.
     implemented: имплементиран
-    implemented_description: Ову идеју је спровео град
+    implemented_description: This input has been implemented by the project manager.
     rejected: одбијен
-    rejected_description: Ова идеја је одбијена
+    rejected_description: This input has been rejected.
     expired: expired
-    expired_description: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
     answered: answered
-    answered_description: answered
+    answered_description: A response has been provided for this input. Check out the details for more information.
     ineligible: ineligible
-    ineligible_description: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: преглед на чекању
     review_pending_description: преглед на чекању
