@@ -55,7 +55,7 @@ en:
     threshold_reached: threshold reached
     threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
     answered: answered
-    answered_description: answered
+    answered_description: A response has been provided for this input. Check out the details for more information.
     ineligible: ineligible
     ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
