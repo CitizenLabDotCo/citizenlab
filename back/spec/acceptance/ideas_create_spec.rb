@@ -421,7 +421,7 @@ resource 'Ideas' do
         end
 
         describe 'when reviewing is enabled' do
-          before { phase.update!(reviewing_enabled: true) }
+          before { phase.update!(prescreening_enabled: true) }
 
           example 'Submit a proposal in prescreening', document: false do
             do_request
