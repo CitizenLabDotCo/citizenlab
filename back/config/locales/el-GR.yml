@@ -36,26 +36,28 @@ el:
   symbols:
     outside: κάπου αλλού
   idea_statuses:
+    prescreening: προεπιλογή
+    prescreening_description: Αυτή η εισαγωγή βρίσκεται επί του παρόντος υπό εξέταση από τον διαχειριστή του έργου και δεν είναι ακόμη ορατή στο κοινό.
     proposed: προτεινόμενη
-    proposed_description: Η ιδέα αυτή έχει προταθεί στην πόλη
+    proposed_description: Η εισήγηση αυτή έχει υποβληθεί και είναι πλέον ανοικτή για δημόσια υποστήριξη. Συγκεντρώστε ψήφους για να το προωθήσετε στο επόμενο στάδιο.
     viewed: προβλήθηκε
-    viewed_description: Αυτή η ιδέα έχει δει κάποιος από την πόλη
+    viewed_description: Η εισροή αυτή έχει γίνει αντιληπτή από τον διαχειριστή του έργου.
     under_consideration: υπό εξέταση
-    under_consideration_description: Η ιδέα αυτή έχει ληφθεί υπόψη από την πόλη
+    under_consideration_description: Η συμβολή αυτή ελήφθη υπόψη από τον υπεύθυνο του έργου.
     accepted: έγινε αποδεκτό
-    accepted_description: Η ιδέα αυτή έχει γίνει αποδεκτή και θα υλοποιηθεί από την πόλη
+    accepted_description: Η εισήγηση αυτή έγινε δεκτή και θα υλοποιηθεί από τον υπεύθυνο του έργου.
     implemented: υλοποιήθηκε
-    implemented_description: Η ιδέα αυτή εφαρμόστηκε από την πόλη
+    implemented_description: Η εισήγηση αυτή υλοποιήθηκε από τον υπεύθυνο του έργου.
     rejected: απορρίφθηκε
-    rejected_description: Η ιδέα αυτή έχει απορριφθεί
+    rejected_description: Αυτή η εισαγωγή απορρίφθηκε.
     expired: λήξει
-    expired_description: λήξει
+    expired_description: Αυτή η είσοδος δεν είναι πλέον ενεργή και έχει κλείσει λόγω χρονικών περιορισμών ή αδράνειας.
     threshold_reached: Επίτευξη ορίου
-    threshold_reached_description: Επίτευξη ορίου
+    threshold_reached_description: Η εισροή αυτή πληροί το απαιτούμενο όριο υποστήριξης και θα εξεταστεί τώρα για περαιτέρω δράση.
     answered: απάντησε το
-    answered_description: απάντησε το
+    answered_description: Έχει δοθεί απάντηση για την εισήγηση αυτή. Ελέγξτε τις λεπτομέρειες για περισσότερες πληροφορίες.
     ineligible: μη επιλέξιμες
-    ineligible_description: μη επιλέξιμες
+    ineligible_description: Η εισήγηση αυτή εξετάστηκε και, δυστυχώς, απορρίφθηκε. Έγινε επίσημη ενημέρωση με περισσότερες λεπτομέρειες.
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
