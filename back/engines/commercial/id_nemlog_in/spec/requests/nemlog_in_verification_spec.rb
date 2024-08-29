@@ -128,6 +128,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     })
   end
 
+  # TODO: JS - This test is failing as login is now allowed, but is it needed any more?
   it 'fails when the authentication token is not passed' do
     get '/auth/nemlog_in?pathname=/whatever-page'
     follow_redirect!

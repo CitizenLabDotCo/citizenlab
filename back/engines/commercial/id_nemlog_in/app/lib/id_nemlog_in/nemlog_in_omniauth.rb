@@ -20,30 +20,31 @@ module IdNemlogIn
       }
     }.freeze
 
-    ## TODO: JS- new version
     def profile_to_user_attrs(auth)
-      puts 'Decrypted auth document:'
-      puts auth.extra['response_object'].decrypted_document
-
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
-      email         = auth.extra.raw_info['https://data.gov.dk/model/core/eid/email']
+      birthdate     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/dateOfBirth']
       locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+
+      birthday_key = config[:birthday_custom_field_key]
+      birthyear_key = config[:birthyear_custom_field_key]
+      municipality_key = 'municipality_code'
+
+      custom_field_values = {}
+      custom_field_values[municipality_key] = fetch_municipality_code(cpr_number)
+      custom_field_values[birthday_key] = birthdate if birthday_key && birthdate
+      custom_field_values[birthyear_key] = Date.parse(birthdate).year if birthyear_key && birthdate
 
       {
         first_name: first_name,
         last_name: last_name,
         locale: locale,
-        email: email,
-
-        custom_field_values: {
-          municipality_code: fetch_municipality_code(cpr_number)
-        }
+        custom_field_values: custom_field_values
       }
     end
 
-    # TODO: do not store auth_hash
+    # TODO: JS - Alex comment "do not store auth_hash" - how?
     # We don't want to store any PII, but also raises Stacklevel too deep error as here
     # back/engines/commercial/id_vienna_saml/app/lib/id_vienna_saml/citizen_saml_omniauth.rb
     def filter_auth_to_persist(auth)
@@ -76,7 +77,7 @@ module IdNemlogIn
         # Transform `token` param to `RelayState`, which is preserved by SAML.
         # Nemlog-in gives error if it's longer than 512 chars.
         # idp_sso_target_url_runtime_params: { token: :RelayState },
-        # TODO: JS - commented out in master
+        # TODO: JS - commented out as above in master
         idp_sso_target_url_runtime_params: { token: :RelayState },
         # it's idp_slo_service_url in newest version of omniauth-saml
         idp_slo_target_url: idp_metadata[:idp_slo_service_url],
