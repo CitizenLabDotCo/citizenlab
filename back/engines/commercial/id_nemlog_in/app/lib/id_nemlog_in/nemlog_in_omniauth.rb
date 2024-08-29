@@ -76,9 +76,8 @@ module IdNemlogIn
         private_key: verification_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----". "Bag Attributes" part should be removed
         # Transform `token` param to `RelayState`, which is preserved by SAML.
         # Nemlog-in gives error if it's longer than 512 chars.
+        # TODO: JS - not sure why this is commented out, but does not verify locally when it is enabled, but fails logout sometimes if enabled
         # idp_sso_target_url_runtime_params: { token: :RelayState },
-        # TODO: JS - commented out as above in master
-        idp_sso_target_url_runtime_params: { token: :RelayState },
         # it's idp_slo_service_url in newest version of omniauth-saml
         idp_slo_target_url: idp_metadata[:idp_slo_service_url],
 
