@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdea } from 'api/ideas/types';
 
@@ -9,7 +8,6 @@ import Status from './Status';
 interface Props {
   idea: IIdea;
   compact?: boolean;
-  ideaStatus: IIdeaStatusData;
 }
 
 const ProposalInfo = ({ idea, compact }: Props) => {
