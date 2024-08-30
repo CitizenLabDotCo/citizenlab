@@ -125,6 +125,7 @@ const EmailConfirmation = ({
           <Input
             name="code"
             type="text"
+            autocomplete="off"
             label={formatMessage(messages.codeInput)}
             maxCharCount={4}
           />
