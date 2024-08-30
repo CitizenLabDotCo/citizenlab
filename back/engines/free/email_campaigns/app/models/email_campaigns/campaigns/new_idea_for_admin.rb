@@ -57,7 +57,7 @@ module EmailCampaigns
       initiator = input.author
       return users_scope.none if UserRoleService.new.moderates_something? initiator
 
-      UserRoleService.new.moderators_for(input, scope: users_scope)
+      UserRoleService.new.moderators_for(input, users_scope)
     end
 
     def self.recipient_role_multiloc_key
