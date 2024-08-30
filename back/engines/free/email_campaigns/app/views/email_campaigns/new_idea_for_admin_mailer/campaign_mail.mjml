@@ -1,4 +1,4 @@
-<% @diff_days = (Time.zone.today - event.post_published_at.to_date).to_i %>
+<% @diff_days = (Time.zone.today - event.post_submitted_at.to_date).to_i %>
 
 <!-- Idea description box -->
 <mj-section padding="0 25px 25px"

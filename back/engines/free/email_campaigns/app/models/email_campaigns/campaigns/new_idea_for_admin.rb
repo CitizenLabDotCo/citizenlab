@@ -82,7 +82,8 @@ module EmailCampaigns
 
       [{
         event_payload: {
-          post_published_at: idea.published_at.iso8601,
+          post_submitted_at: idea.submitted_at&.iso8601,
+          post_published_at: idea.published_at&.iso8601,
           post_title_multiloc: idea.title_multiloc,
           post_author_name: idea.author_name,
           post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
