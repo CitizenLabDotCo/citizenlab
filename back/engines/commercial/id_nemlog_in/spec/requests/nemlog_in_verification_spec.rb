@@ -128,12 +128,19 @@ describe IdNemlogIn::NemlogInOmniauth do
     })
   end
 
-  # TODO: JS - This test is failing as login is now allowed, but is it needed any more?
-  it 'fails when the authentication token is not passed' do
-    get '/auth/nemlog_in?pathname=/whatever-page'
-    follow_redirect!
+  context 'verifying and creating a new user' do
+    let(:user) { nil }
+    it 'creates a user with a unique ID and not an email' do
+      get '/auth/nemlog_in?pathname=/whatever-page'
+      follow_redirect!
 
-    expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
+      expect(response).to redirect_to('/en/complete-signup?pathname=%2Fwhatever-page')
+      expect(User.first.email).to be_nil
+      expect(User.first.first_name).to eq('Terje')
+      expect(User.first.last_name).to eq('Hermansen')
+      expect(User.first.verified).to eq(true)
+      expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
+    end
   end
 
   context "when validating user's age" do

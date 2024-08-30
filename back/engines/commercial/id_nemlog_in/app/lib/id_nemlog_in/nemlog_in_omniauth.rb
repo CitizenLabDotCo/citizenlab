@@ -21,6 +21,8 @@ module IdNemlogIn
     }.freeze
 
     def profile_to_user_attrs(auth)
+      # TODO: JS - Is this the correct unique ID may be using others elsewhere?
+      unique_code   = auth.extra.raw_info['https://data.gov.dk/model/core/eid/person/pid']
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
@@ -39,6 +41,7 @@ module IdNemlogIn
       {
         first_name: first_name,
         last_name: last_name,
+        unique_code: unique_code,
         locale: locale,
         custom_field_values: custom_field_values
       }
