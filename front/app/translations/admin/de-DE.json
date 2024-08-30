@@ -963,6 +963,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1": "Geben Sie Vorname, Nachname, E-Mail und Passwort ein.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterYourEmail": "E-Mail-Adresse eingeben",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.howRecentlyShouldUsersBeVerified": "Wie oft sollten Nutzer*innen verifiziert werden?",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.identityVerificationWith": "Identitätsüberprüfung mit {verificationMethod} (basierend auf der Nutzer*innengruppe)",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.noActionsAreRequired": "Für die Teilnahme sind keine Aktionen erforderlich",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.useSmartGroups": "Verwenden Sie intelligente Gruppen, um die Teilnahme auf der Grundlage der oben aufgeführten verifizierten Daten einzuschränken.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.verificationFlowVizExplanation30Min1": "Nutzer*innen müssen in den letzten 30 Minuten verifiziert worden sein.",
