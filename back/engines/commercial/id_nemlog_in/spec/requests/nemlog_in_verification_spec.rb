@@ -140,7 +140,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       expect(User.first.email).to be_nil
       expect(User.first.first_name).to eq('Terje')
       expect(User.first.last_name).to eq('Hermansen')
-      expect(User.first.verified).to eq(true)
+      expect(User.first.verified).to be(true)
       expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
     end
   end
@@ -166,7 +166,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       expect(User.first.id).to eq jwt_payload['sub']
       expect(User.first.first_name).to eq('Bob')
       expect(User.first.last_name).to eq('Jelly')
-      expect(User.first.verified).to eq(true)
+      expect(User.first.verified).to be(true)
       expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
     end
   end
