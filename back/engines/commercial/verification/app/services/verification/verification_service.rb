@@ -112,10 +112,9 @@ module Verification
       custom_fields.uniq
     end
 
-    # Return meta data for use in permission actions
-    def action_metadata(method: nil)
-      method ||= first_method_enabled_for_verified_actions
-      return { allowed: false } unless method.respond_to?(:enabled_for_verified_actions?) && method&.enabled_for_verified_actions?
+    # Return method metadata
+    def method_metadata(method)
+      allowed_for_verified_actions = method.respond_to?(:enabled_for_verified_actions?) && method&.enabled_for_verified_actions?
 
       name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
 
@@ -154,7 +153,7 @@ module Verification
       end
 
       {
-        allowed: true,
+        allowed_for_verified_actions: allowed_for_verified_actions,
         name: name,
         locked_attributes: locked_attributes,
         other_attributes: other_attributes,

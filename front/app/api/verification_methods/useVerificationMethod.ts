@@ -19,7 +19,7 @@ const useVerificationMethod = () => {
     IVerificationMethod,
     VerificationMethodsKeys
   >({
-    queryKey: verificationMethodsKeys.all(),
+    queryKey: verificationMethodsKeys.item({ endpoint: 'first_enabled' }),
     queryFn: () => fetchVerificationMethod(),
   });
 };
