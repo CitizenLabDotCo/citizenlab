@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Gonzo') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewIdeaForAdmin.create! }
 
     describe 'when the input if published' do
@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
       it 'renders the subject' do
-        expect(mail.subject).to start_with('A new post has been published on')
+        expect(mail.subject).to eq('Gonzo, a new input has been published on your platform')
       end
 
       it 'renders the receiver email' do
