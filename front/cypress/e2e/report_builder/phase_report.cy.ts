@@ -225,6 +225,10 @@ describe('Phase report', () => {
     // "autosaves report created from template"
     it('is visible in current phase when created from ideation template', () => {
       cy.setAdminLoginCookie();
+
+      // Remove any current reports from the phase
+      cy.apiRemoveAllReports();
+
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
         cy.visit(
@@ -259,6 +263,10 @@ describe('Phase report', () => {
     // inspired by front/cypress/e2e/report_builder/survey_template.cy.ts
     it('is visible in current phase when created from survey template', () => {
       cy.setAdminLoginCookie();
+
+      // Remove any current reports from the phase
+      cy.apiRemoveAllReports();
+
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
         cy.visit(

@@ -169,6 +169,9 @@ describe('Idea template', () => {
     });
 
     it('autosaves report created from template', () => {
+      // Remove any current reports from the phase
+      cy.apiRemoveAllReports();
+
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
 
@@ -231,6 +234,9 @@ describe('Idea template', () => {
     });
 
     it('autosaves report created from template', () => {
+      // Remove any current reports from the phase
+      cy.apiRemoveAllReports();
+
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
 
