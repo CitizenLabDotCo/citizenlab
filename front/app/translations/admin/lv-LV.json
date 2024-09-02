@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Piešķirts man",
   "app.components.admin.PostManager.assignee": "Izpildītājs",
   "app.components.admin.PostManager.authenticationError": "Mēģinot iegūt šo slāni, radās autentifikācijas kļūda. Lūdzu, pārbaudiet URL un vai jūsu Esri API atslēgai ir piekļuve šim slānim.",
-  "app.components.admin.PostManager.automatic": "(automātisks)",
   "app.components.admin.PostManager.bodyTitle": "Apraksts",
   "app.components.admin.PostManager.cancel2": "Atcelt",
   "app.components.admin.PostManager.changeStatusModalTitle": "Mainīt šī priekšlikuma statusu",

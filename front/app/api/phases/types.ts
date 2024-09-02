@@ -70,6 +70,7 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  prescreening_enabled?: boolean;
 }
 
 export interface IPhases {

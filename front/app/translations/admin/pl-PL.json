@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Przydzielony do mnie",
   "app.components.admin.PostManager.assignee": "Moderator",
   "app.components.admin.PostManager.authenticationError": "Wystąpił błąd uwierzytelniania podczas próby pobrania tej warstwy. Sprawdź adres URL i czy Twój klucz API Esri ma dostęp do tej warstwy.",
-  "app.components.admin.PostManager.automatic": "(automatycznie)",
   "app.components.admin.PostManager.bodyTitle": "Opis",
   "app.components.admin.PostManager.cancel2": "Anuluj",
   "app.components.admin.PostManager.changeStatusModalTitle": "Zmień status tej propozycji",

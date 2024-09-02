@@ -57,7 +57,6 @@
   "app.components.admin.PostManager.assignedTo": "Uunga tunniunneqarpoq {assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Uannut tunniunneqarpoq",
   "app.components.admin.PostManager.assignee": "Assignee",
-  "app.components.admin.PostManager.automatic": "(automatisk)",
   "app.components.admin.PostManager.bodyTitle": "Description",
   "app.components.admin.PostManager.changeStatusModalTitle": "Siunnersuutip killiffia allanngortiguk",
   "app.components.admin.PostManager.comments": "Oqaaseqaatit",

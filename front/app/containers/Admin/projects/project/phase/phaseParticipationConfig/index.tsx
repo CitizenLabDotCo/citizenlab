@@ -397,6 +397,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
+    setParticipationConfig((state) => ({
+      ...state,
+      prescreening_enabled,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -435,6 +442,7 @@ const PhaseParticipationConfig = ({
     document_annotation_embed_url,
     expire_days_limit,
     reacting_threshold,
+    prescreening_enabled,
   } = participationConfig;
 
   const showSurveys =
@@ -549,6 +557,8 @@ const PhaseParticipationConfig = ({
             expireDateLimitError={expireDateLimitError}
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={reactingThresholdError}
+            prescreening_enabled={prescreening_enabled}
+            toggleReviewingEnabled={toggleReviewingEnabled}
           />
         )}
 

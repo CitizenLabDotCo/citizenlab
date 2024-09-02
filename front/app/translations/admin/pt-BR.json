@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Atribuído a mim",
   "app.components.admin.PostManager.assignee": "Atribuído",
   "app.components.admin.PostManager.authenticationError": "Ocorreu um erro de autenticação ao tentar obter esta camada. Verifique o URL e se sua chave de API da Esri tem acesso a essa camada.",
-  "app.components.admin.PostManager.automatic": "(automático)",
   "app.components.admin.PostManager.bodyTitle": "Descrição",
   "app.components.admin.PostManager.cancel2": "Cancelar",
   "app.components.admin.PostManager.changeStatusModalTitle": "Alterar o status desta proposta",

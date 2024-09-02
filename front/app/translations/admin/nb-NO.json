@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Tildelt til meg",
   "app.components.admin.PostManager.assignee": "Anvist til",
   "app.components.admin.PostManager.authenticationError": "Det oppstod en autentiseringsfeil under forsøk på å hente dette laget. Vennligst sjekk URL-en og at din Esri API-nøkkel har tilgang til dette laget.",
-  "app.components.admin.PostManager.automatic": "(automatisk)",
   "app.components.admin.PostManager.bodyTitle": "Beskrivelse",
   "app.components.admin.PostManager.cancel2": "Avbryt",
   "app.components.admin.PostManager.changeStatusModalTitle": "Endre status for dette forslaget",
