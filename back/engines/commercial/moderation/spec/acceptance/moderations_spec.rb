@@ -3,7 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: move-old-proposals-test
 resource 'Moderations' do
   explanation 'Moderations are pieces of user-generated content that need to be moderated'
 
@@ -12,6 +11,7 @@ resource 'Moderations' do
 
     @time = Time.now
     create(:idea_status_proposed)
+    create(:proposals_status, code: 'proposed')
     @project = create(:project)
     @m3 = create(
       :idea,
@@ -35,7 +35,7 @@ resource 'Moderations' do
     )
     create(:moderation_status, moderatable: @m4, status: 'read')
     @m1 = create(
-      :initiative,
+      :proposal,
       title_multiloc: { 'en' => 'Burn more leaves' },
       body_multiloc: { 'en' => 'We must return that CO2 to our atmosphere at all cost' },
       published_at: @time - 1.minute
@@ -50,7 +50,7 @@ resource 'Moderations' do
       parameter :size, 'Number of moderations per page'
     end
     parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(', ')}.", required: false
-    parameter :moderatable_types, 'Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.', required: false
+    parameter :moderatable_types, 'Filter by a given array of moderatable types. One (or more) of Idea, Comment.', required: false
     parameter :project_ids, 'Filter by a given array of project IDs.', required: false
     parameter :search, 'Filter by searching in content title, and content body', required: false
 
@@ -77,12 +77,12 @@ resource 'Moderations' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data].pluck(:id)).to eq [@m1.id, @m2.id, @m3.id, @m4.id]
-        expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq %w[Initiative Comment Idea Idea]
+        expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq %w[Idea Comment Idea Idea]
         expect(json_response[:data].map { |d| d.dig(:attributes, :content_body_multiloc).stringify_keys['en'] }).to eq ['We must return that CO2 to our atmosphere at all cost', 'I\'m glad there\'s still heroes around', 'They are the true heroes of society', 'They are pretentious donkeys']
         expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq %w[unread unread read read]
         expect(json_response[:data].map { |d| Time.parse(d.dig(:attributes, :created_at)).to_i }).to eq [@time - 1.minute, @time - 1.hour, @time - 1.day, @time - 2.days].map(&:to_i)
         expect(JSON.parse(JSON.generate(json_response))['data'].map { |d| d.dig('attributes', 'belongs_to') }).to eq [
-          {},
+          { 'project' => { 'id' => @m1.project.id, 'slug' => @m1.project.slug, 'title_multiloc' => @m1.project.title_multiloc } },
           { 'project' => { 'id' => @m3.project.id, 'slug' => @m3.project.slug, 'title_multiloc' => @m3.project.title_multiloc }, 'idea' => { 'id' => @m3.id, 'slug' => @m3.slug, 'title_multiloc' => { 'en' => 'More bicycle repairmen' } } },
           { 'project' => { 'id' => @m3.project.id, 'slug' => @m3.project.slug, 'title_multiloc' => @m3.project.title_multiloc } },
           { 'project' => { 'id' => @m4.project.id, 'slug' => @m4.project.slug, 'title_multiloc' => @m4.project.title_multiloc } }
@@ -114,13 +114,13 @@ resource 'Moderations' do
       end
 
       describe do
-        let(:moderatable_types) { %w[Idea Comment] }
+        let(:moderatable_types) { %w[Idea] }
 
-        example_request 'List only moderations for ideas or comments' do
+        example_request 'List only moderations for ideas' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to eq [@m2.id, @m3.id, @m4.id]
+          expect(json_response[:data].pluck(:id)).to eq [@m1.id, @m3.id, @m4.id]
           expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }.uniq).to match_array moderatable_types
         end
       end
@@ -144,7 +144,7 @@ resource 'Moderations' do
       describe do
         before do
           @m5 = create(
-            :initiative,
+            :proposal,
             title_multiloc: { 'en' => 'Create a new super hero: Democracyman' },
             body_multiloc: { 'en' => 'That person could be called upon whenever democracy is at risk. Alternative soltution: Democracywoman.' }
           )
@@ -163,7 +163,7 @@ resource 'Moderations' do
 
     get 'web_api/v1/moderations/moderations_count' do
       parameter :moderation_status, "Filter by moderation status. One of #{Moderation::ModerationStatus::MODERATION_STATUSES.join(', ')}.", required: false
-      parameter :moderatable_types, 'Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.', required: false
+      parameter :moderatable_types, 'Filter by a given array of moderatable types. One (or more) of Idea, Comment.', required: false
       parameter :project_ids, 'Filter by a given array of project IDs.', required: false
       parameter :search, 'Filter by searching in content title, and content body', required: false
 
@@ -171,12 +171,12 @@ resource 'Moderations' do
         before { admin_header_token }
 
         describe do
-          let(:moderatable_types) { %w[Idea Comment] }
+          let(:moderatable_types) { %w[Comment] }
 
-          example_request 'Count only moderations for ideas or comments' do
+          example_request 'Count only moderations for comments' do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
-            expect(json_response[:data][:attributes][:count]).to eq 3
+            expect(json_response[:data][:attributes][:count]).to eq 1
           end
         end
       end
