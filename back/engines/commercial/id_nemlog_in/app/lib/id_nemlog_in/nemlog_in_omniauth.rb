@@ -21,8 +21,7 @@ module IdNemlogIn
     }.freeze
 
     def profile_to_user_attrs(auth)
-      # TODO: JS - Is this the correct unique ID may be using others elsewhere?
-      unique_code   = auth.extra.raw_info['https://data.gov.dk/model/core/eid/person/pid']
+      unique_code   = auth.extra.raw_info['https://data.gov.dk/model/core/eid/person/pid'] # NOTE: No email so we identify a user by unique code
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
@@ -47,7 +46,6 @@ module IdNemlogIn
       }
     end
 
-    # TODO: JS - Alex comment "do not store auth_hash" - how?
     # We don't want to store any PII, but also raises Stacklevel too deep error as here
     # back/engines/commercial/id_vienna_saml/app/lib/id_vienna_saml/citizen_saml_omniauth.rb
     def filter_auth_to_persist(auth)
@@ -79,7 +77,7 @@ module IdNemlogIn
         private_key: verification_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----". "Bag Attributes" part should be removed
         # Transform `token` param to `RelayState`, which is preserved by SAML.
         # Nemlog-in gives error if it's longer than 512 chars.
-        # TODO: JS - not sure why this is commented out, but does not verify locally when it is enabled, but fails logout sometimes if enabled
+        # NOTE: not sure why this is commented out, but does not verify locally when it is enabled
         # idp_sso_target_url_runtime_params: { token: :RelayState },
         # it's idp_slo_service_url in newest version of omniauth-saml
         idp_slo_target_url: idp_metadata[:idp_slo_service_url],
@@ -112,9 +110,10 @@ module IdNemlogIn
       %i[]
     end
 
-    def logout_url(_user)
-      URI.join(Frontend::UrlService.new.home_url, '/auth/nemlog_in/spslo').to_s
-    end
+    # TODO: JS - implement single logout (if possible)
+    # def logout_url(_user)
+    #   URI.join(Frontend::UrlService.new.home_url, '/auth/nemlog_in/spslo').to_s
+    # end
 
     def email_always_present?
       false
