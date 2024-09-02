@@ -138,6 +138,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
       expect(User.first.email).to be_nil
+      expect(User.first.email_confirmed_at).to be_nil
       expect(User.first.first_name).to eq('Terje')
       expect(User.first.last_name).to eq('Hermansen')
       expect(User.first.verified).to be(true)

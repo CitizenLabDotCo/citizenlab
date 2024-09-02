@@ -123,6 +123,10 @@ module IdNemlogIn
       true
     end
 
+    def email_confirmed?(_auth)
+      false
+    end
+
     private
 
     def fetch_municipality_code(cpr_number)
