@@ -45,7 +45,7 @@ const SSOBlock = ({
   const [modalOpen, setModalOpen] = useState(false);
 
   const verificationMethodMetadata =
-    verificationMethod?.data.attributes.action_metadata;
+    verificationMethod?.data.attributes.method_metadata;
 
   if (!verificationMethodMetadata) return null;
 
@@ -107,11 +107,13 @@ const SSOBlock = ({
               </Text>
             </>
           )}
-          <Box mt="12px">
-            {verifiedFieldsMessage}
-            <br />
-            <b>{returnedFieldsPreview}</b>
-          </Box>
+          {returnedFieldsPreview && (
+            <Box mt="12px">
+              {verifiedFieldsMessage}
+              <br />
+              <b>{returnedFieldsPreview}</b>
+            </Box>
+          )}
         </Box>
       </StyledBox>
       <SSOConfigModal
