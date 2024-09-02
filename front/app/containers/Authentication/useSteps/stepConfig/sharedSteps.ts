@@ -167,6 +167,9 @@ export const sharedSteps = (
         if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('missing-data:verification');
           setError('not_entitled_under_minimum_age');
+        } else if (error_code === 'taken') {
+          setCurrentStep('missing-data:verification');
+          setError('verification_taken');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
