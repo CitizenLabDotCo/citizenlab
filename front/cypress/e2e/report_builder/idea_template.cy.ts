@@ -111,12 +111,6 @@ describe('Idea template', () => {
     it.skip('creates a report from a template and allows editing it', () => {
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
-
-        // Setup any API intercepts
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
-
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
         );
@@ -154,6 +148,9 @@ describe('Idea template', () => {
         cy.get('.e2e-text-box').eq(2).should('contain.text', text);
 
         // Save report
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
         cy.get('#e2e-content-builder-topbar-save').click();
         cy.wait('@saveReportLayout');
 
@@ -169,13 +166,9 @@ describe('Idea template', () => {
     });
 
     it('autosaves report created from template', () => {
-      // Remove any current reports from the phase
-      cy.apiRemoveReportBuilder(phaseId);
-
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
 
-        // Setup any API intercepts
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
           'saveReportLayout'
         );
@@ -191,6 +184,7 @@ describe('Idea template', () => {
         );
 
         // Then, when we intercept the autosave...
+        cy.wait(2000);
         cy.wait('@saveReportLayout');
 
         // We expect the save button to indicate that the report is saved (has svg icon)
@@ -234,17 +228,12 @@ describe('Idea template', () => {
     });
 
     it('autosaves report created from template', () => {
-      // Remove any current reports from the phase
-      cy.apiRemoveReportBuilder(phaseId);
-
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
 
-        // Setup any API intercepts
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
           'saveReportLayout'
         );
-
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${phaseId}`
         );
@@ -256,6 +245,7 @@ describe('Idea template', () => {
         );
 
         // Then, when we intercept the autosave...
+        cy.wait(2000);
         cy.wait('@saveReportLayout');
 
         // We expect the save button to indicate that the report is saved (has svg icon)
