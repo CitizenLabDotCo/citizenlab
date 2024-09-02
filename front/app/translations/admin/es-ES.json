@@ -1205,7 +1205,7 @@
   "app.containers.Admin.tools.publicAPIImage": "Imagen pública de la API",
   "app.containers.Admin.tools.publicAPITitle": "Acceso público a la API",
   "app.containers.Admin.tools.toolsLabel": "Herramientas",
-  "app.containers.Admin.tools.widgetDescription": "You can create a widget, customize it and add it to your own website to attract people to this platform.",
+  "app.containers.Admin.tools.widgetDescription": "Puedes crear un widget, personalizarlo y añadirlo a tu propio sitio web para atraer gente a esta plataforma.",
   "app.containers.Admin.tools.widgetImage": "Imagen del widget",
   "app.containers.Admin.tools.widgetTitle": "Widget",
   "app.containers.Admin.tools.workshopsDescription": "Celebra reuniones de vídeo en directo, facilita discusiones y debates de grupo simultáneos. Recoge aportaciones, vota y llega a consensos, igual que lo harías fuera de línea.",
