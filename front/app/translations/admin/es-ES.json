@@ -2420,7 +2420,7 @@
   "app.containers.AdminPage.widgets.sortNewest": "Más reciente",
   "app.containers.AdminPage.widgets.sortPopular": "Más votados",
   "app.containers.AdminPage.widgets.sortTrending": "Tendencias",
-  "app.containers.AdminPage.widgets.subtitleWidgets": "You can create a widget, customize it and add it to your own website to attract people to this platform.",
+  "app.containers.AdminPage.widgets.subtitleWidgets": "Puedes crear un widget, personalizarlo y añadirlo a tu propio sitio web para atraer gente a esta plataforma.",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensiones",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Encabezado y pie de página",
