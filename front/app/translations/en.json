@@ -2025,6 +2025,7 @@
   "app.errors.unknown_locale": "The language {value} found in row {row} is not a configured language",
   "app.errors.unparseable_excel": "The selected Excel file could not be processed.",
   "app.errors.url": "Enter a valid link. Make sure the link starts with https://",
+  "app.errors.verification_taken": "Verification cannot be completed as another account has been verified using the same details.",
   "app.errors.view_name_taken": "A view with this name already exists",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Inappropriate content was auto-detected in a post or comment",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Sign in with StandardPortal",
