@@ -227,9 +227,6 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${ideationPhaseId}`
         );
@@ -264,9 +261,6 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${surveyPhaseId}`
         );
