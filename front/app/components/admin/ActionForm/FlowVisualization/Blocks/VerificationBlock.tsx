@@ -37,7 +37,7 @@ const VerificationBlock = ({ number }: Props) => {
   const { data: verificationMethod } = useVerificationMethod();
 
   const verificationMethodMetadata =
-    verificationMethod?.data.attributes.action_metadata;
+    verificationMethod?.data.attributes.method_metadata;
 
   if (!verificationMethodMetadata) return null;
 
