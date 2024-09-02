@@ -36,7 +36,7 @@ es:
   symbols:
     outside: en otro lugar
   idea_statuses:
-    prescreening: preselección
+    prescreening: pre-revisión
     prescreening_description: Esta aportación está siendo revisada por el gestor del proyecto y aún no es visible para el público.
     proposed: propuesta
     proposed_description: Esta aportación ha sido enviada y está abierta al apoyo público. Reúne votos para ayudar a que pase a la siguiente fase.
@@ -51,9 +51,9 @@ es:
     rejected: rechazada
     rejected_description: Este aporte ha sido rechazado.
     expired: finalizado
-    expired_description: Esta entrada ya no está activa y se ha cerrado por falta de tiempo o inactividad.
+    expired_description: Esta aporte ya no está activo y se ha cerrado por falta de tiempo o inactividad.
     threshold_reached: límite alcanzado
-    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y ahora se considerará para nuevas acciones.
+    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y va a ser considerada.
     answered: respondida
     answered_description: Se ha proporcionado una respuesta para esta aportación. Consulta los detalles para obtener más información.
     ineligible: no elegible
