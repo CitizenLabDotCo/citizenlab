@@ -107,11 +107,13 @@ const SSOBlock = ({
               </Text>
             </>
           )}
-          <Box mt="12px">
-            {verifiedFieldsMessage}
-            <br />
-            <b>{returnedFieldsPreview}</b>
-          </Box>
+          {returnedFieldsPreview && (
+            <Box mt="12px">
+              {verifiedFieldsMessage}
+              <br />
+              <b>{returnedFieldsPreview}</b>
+            </Box>
+          )}
         </Box>
       </StyledBox>
       <SSOConfigModal

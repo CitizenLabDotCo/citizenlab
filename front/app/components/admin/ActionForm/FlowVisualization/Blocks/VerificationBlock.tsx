@@ -82,11 +82,13 @@ const VerificationBlock = ({ number }: Props) => {
             verificationMethod: verificationMethodMetadata.name,
           })}
 
-          <Box mt="12px">
-            {verifiedFieldsMessage}
-            <br />
-            <b>{returnedFieldsPreview}</b>
-          </Box>
+          {returnedFieldsPreview && (
+            <Box mt="12px">
+              {verifiedFieldsMessage}
+              <br />
+              <b>{returnedFieldsPreview}</b>
+            </Box>
+          )}
         </Box>
       </StyledBox>
       <VerificationModal
