@@ -49,13 +49,13 @@ es:
     implemented: implementada
     implemented_description: Esta aportación ha sido implementada por el gestor del proyecto.
     rejected: rechazada
-    rejected_description: Esta entrada ha sido rechazada.
+    rejected_description: Este aporte ha sido rechazado.
     expired: finalizado
-    expired_description: Esta entrada ya no está activa y se ha cerrado por falta de tiempo o inactividad.
+    expired_description: Esta aporte ya no está activo y se ha cerrado por falta de tiempo o inactividad.
     threshold_reached: límite alcanzado
-    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y ahora se considerará para nuevas acciones.
+    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y va a ser considerada.
     answered: respondida
-    answered_description: Se ha proporcionado una respuesta para esta aportación. Consulta los detalles para obtener más información.
+    answered_description: El gestor del proyecto ha publicado un comentario oficial sobre este aporte.
     ineligible: no elegible
     ineligible_description: Esta aportación ha sido revisada y, lamentablemente, ha sido rechazada. Se ha proporcionado una actualización oficial con más detalles.
   initiative_statuses:
