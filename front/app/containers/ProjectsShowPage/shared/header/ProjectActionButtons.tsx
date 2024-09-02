@@ -102,7 +102,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           id: currentPhase.id,
@@ -135,7 +134,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           id: currentPhase.id,

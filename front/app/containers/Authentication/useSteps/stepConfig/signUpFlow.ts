@@ -29,6 +29,7 @@ export const signUpFlow = (
     'sign-up:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signin' });
         setCurrentStep('sign-in:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -41,8 +42,9 @@ export const signUpFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          requirements.verification
+          getAuthenticationData(),
+          requirements.verification,
+          'signup'
         );
       },
     },
@@ -53,6 +55,7 @@ export const signUpFlow = (
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-in:email-password');
         trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
@@ -71,7 +74,8 @@ export const signUpFlow = (
 
           const missingDataStep = checkMissingData(
             requirements,
-            authenticationData
+            authenticationData,
+            'signup'
           );
 
           if (missingDataStep) {

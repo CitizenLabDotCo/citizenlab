@@ -32,8 +32,9 @@ export const ssoVerificationFlow = (
         if (signedIn) {
           handleOnSSOClick(
             ssoProvider,
-            { ...getAuthenticationData(), flow: 'signup' },
-            true
+            getAuthenticationData(),
+            true,
+            'signup'
           );
         } else {
           updateState({ ssoProvider });
@@ -48,11 +49,7 @@ export const ssoVerificationFlow = (
     'sso-verification:sso-providers-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT: (ssoProvider: SSOProvider) => {
-        handleOnSSOClick(
-          ssoProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          true
-        );
+        handleOnSSOClick(ssoProvider, getAuthenticationData(), true, 'signup');
       },
     },
 
@@ -80,7 +77,8 @@ export const ssoVerificationFlow = (
 
           const missingDataStep = checkMissingData(
             requirements,
-            authenticationData
+            authenticationData,
+            'signin'
           );
 
           if (missingDataStep) {

@@ -45,17 +45,9 @@ module Analysis
       begin
         run(plan)
         task.set_succeeded!
-      rescue SummarizationFailedError, Faraday::BadRequestError => e
-        extra = {}
-        if e.instance_of?(Faraday::BadRequestError)
-          extra[:response] = e&.response
-          extra[:response_headers] = e&.response&.headers
-          extra[:response_body] = e&.response&.body
-          extra[:response_status] = e&.response&.status
-          extra[:backtrace] = e&.backtrace
-        end
+      rescue SummarizationFailedError => e
+        ErrorReporter.report(e)
 
-        ErrorReporter.report(e, extra: extra)
         task.set_failed!
         summary.update!(accuracy: old_accuracy, summary: old_summary)
         summary.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)

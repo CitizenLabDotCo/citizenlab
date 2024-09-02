@@ -9,8 +9,9 @@ import {
   colors,
   Radio,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-import { ActionMetadata } from 'api/verification_methods/types';
+import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,10 +23,14 @@ import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getVerifiedDataList } from './utils';
 
+const StyledLi = styled.li`
+  font-size: ${fontSizes.s}px;
+  margin-bottom: 8px;
+`;
+
 interface Props {
   opened: boolean;
   verificationExpiry: number | null;
-  verificationMethodMetadata: ActionMetadata;
   onClose: () => void;
   onChangeVerificationExpiry: (value: number | null) => void;
 }
@@ -33,11 +38,18 @@ interface Props {
 const SSOConfigModal = ({
   opened,
   verificationExpiry,
-  verificationMethodMetadata,
   onClose,
   onChangeVerificationExpiry,
 }: Props) => {
   const localize = useLocalize();
+
+  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+
+  const verificationMethodMetadata =
+    verificationMethod?.data.attributes.action_metadata;
+
+  if (!verificationMethodMetadata) return null;
+
   const verifiedDataList = getVerifiedDataList(
     verificationMethodMetadata,
     localize
@@ -113,10 +125,7 @@ const SSOConfigModal = ({
           </Text>
           <ul>
             {verifiedDataList.map((attribute, index) => (
-              <li
-                key={index}
-                style={{ fontSize: fontSizes.s, marginBottom: '8px' }}
-              >
+              <StyledLi key={index}>
                 <span style={{ marginRight: '4px' }}>{attribute.label}</span>
                 {attribute.locked && (
                   <Icon
@@ -127,7 +136,7 @@ const SSOConfigModal = ({
                     fill={colors.grey700}
                   />
                 )}
-              </li>
+              </StyledLi>
             ))}
           </ul>
         </Box>

@@ -26,9 +26,7 @@ describe('<Unauthorized />', () => {
     const button = screen.getByText(/Log in/);
     fireEvent.click(button);
     expect(triggerAuthenticationFlow).toHaveBeenCalledTimes(1);
-    expect(triggerAuthenticationFlow).toHaveBeenCalledWith({
-      flow: 'signin',
-    });
+    expect(triggerAuthenticationFlow).toHaveBeenCalledWith({}, 'signin');
   });
 
   it("tells you you don't have access if logged in", () => {

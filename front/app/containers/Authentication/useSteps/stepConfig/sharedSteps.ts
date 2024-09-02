@@ -57,13 +57,14 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async () => {
+      RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          flow
         );
 
         if (missingDataStep) {
@@ -71,19 +72,19 @@ export const sharedSteps = (
           return;
         }
 
-        if (authenticationData.flow === 'signup') {
+        if (flow === 'signup') {
           setCurrentStep('success');
-        } else {
-          const { successAction } = getAuthenticationData();
-          if (successAction) {
-            triggerSuccessAction(successAction);
-          }
+        }
+
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
         }
       },
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async () => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
           email: null,
           token: null,
@@ -133,7 +134,8 @@ export const sharedSteps = (
         if (signedIn) {
           const missingDataStep = checkMissingData(
             requirements,
-            authenticationData
+            authenticationData,
+            flow
           );
 
           if (missingDataStep) {
@@ -141,8 +143,6 @@ export const sharedSteps = (
             return;
           }
         }
-
-        const { flow } = authenticationData;
 
         if (flow === 'signin') {
           anySSOEnabled

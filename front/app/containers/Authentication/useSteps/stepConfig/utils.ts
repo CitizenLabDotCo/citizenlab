@@ -4,7 +4,8 @@ import { AuthenticationData } from 'containers/Authentication/typings';
 
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
-  { flow, context }: AuthenticationData
+  { context }: AuthenticationData,
+  flow: 'signup' | 'signin'
 ) => {
   if (requiredBuiltInFields(requirements)) {
     return 'missing-data:built-in';

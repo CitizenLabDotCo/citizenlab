@@ -5,7 +5,6 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -64,10 +63,10 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
         </FooterNoteLink>
       )}
     </FooterNote>
-    {!isNilOrError(onChangeEmail) && (
+    {onChangeEmail && (
       <FooterNote>
         <FormattedMessage {...messages.wrongEmail} />
-        <FooterNoteLink onClick={onChangeEmail}>
+        <FooterNoteLink onClick={onChangeEmail} id="e2e-go-to-change-email">
           <FormattedMessage {...messages.changeYourEmail} />
         </FooterNoteLink>
       </FooterNote>

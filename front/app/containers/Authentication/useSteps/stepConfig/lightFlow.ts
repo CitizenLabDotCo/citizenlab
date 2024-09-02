@@ -17,6 +17,7 @@ import {
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
+  State,
 } from '../../typings';
 
 import { Step } from './typings';
@@ -26,7 +27,8 @@ export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateState: UpdateState
+  updateState: UpdateState,
+  state: State
 ) => {
   return {
     // light flow
@@ -83,8 +85,9 @@ export const lightFlow = (
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         handleOnSSOClick(
           ssoProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          true
+          getAuthenticationData(),
+          true,
+          state.flow
         );
       },
     },
@@ -96,8 +99,9 @@ export const lightFlow = (
 
         handleOnSSOClick(
           'franceconnect',
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
         );
       },
     },
@@ -115,7 +119,8 @@ export const lightFlow = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {
@@ -147,7 +152,8 @@ export const lightFlow = (
 
         const missingDataStep = checkMissingData(
           requirements,
-          authenticationData
+          authenticationData,
+          state.flow
         );
 
         if (missingDataStep) {

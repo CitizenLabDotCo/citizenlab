@@ -10,6 +10,7 @@ import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
+  UpdateState,
 } from '../../typings';
 
 import { Step } from './typings';
@@ -19,6 +20,7 @@ export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
   anySSOProviderEnabled: boolean
 ) => {
   return {
@@ -26,6 +28,7 @@ export const signInFlow = (
     'sign-in:auth-providers': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:auth-providers');
       },
       SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
@@ -38,8 +41,9 @@ export const signInFlow = (
 
         handleOnSSOClick(
           authProvider,
-          { ...getAuthenticationData(), flow: 'signin' },
-          requirements.verification
+          getAuthenticationData(),
+          requirements.verification,
+          'signin'
         );
       },
     },
@@ -47,6 +51,7 @@ export const signInFlow = (
     'sign-in:email-password': {
       CLOSE: () => setCurrentStep('closed'),
       SWITCH_FLOW: () => {
+        updateState({ flow: 'signup' });
         setCurrentStep('sign-up:email-password');
       },
       GO_BACK: () => {
@@ -73,7 +78,8 @@ export const signInFlow = (
 
           const missingDataStep = checkMissingData(
             requirements,
-            authenticationData
+            authenticationData,
+            'signin'
           );
 
           if (missingDataStep) {

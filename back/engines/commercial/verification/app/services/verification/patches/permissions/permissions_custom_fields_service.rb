@@ -16,7 +16,7 @@ module Verification
 
         # Add any fields that are locked to verification method
         def add_verification_fields(permission, fields)
-          method = VerificationService.new.first_method_enabled_for_verified_actions
+          method = VerificationService.new.first_method_enabled
           return fields unless method.respond_to?(:locked_custom_fields) && method.locked_custom_fields.present?
 
           # Get the IDs of the custom fields that are locked to the verification method
