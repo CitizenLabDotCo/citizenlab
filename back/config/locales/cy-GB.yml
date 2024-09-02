@@ -36,26 +36,28 @@ cy:
   symbols:
     outside: rhywle arall
   idea_statuses:
+    prescreening: rhag-sgrinio
+    prescreening_description: Mae'r mewnbwn hwn yn cael ei adolygu ar hyn o bryd gan y rheolwr prosiect ac nid yw'n weladwy i'r cyhoedd eto.
     proposed: arfaethedig
-    proposed_description: Mae'r syniad hwn wedi'i gynnig i'r ddinas
+    proposed_description: Mae'r mewnbwn hwn wedi'i gyflwyno ac mae bellach yn agored i'r cyhoedd ei gefnogi. Casglwch bleidleisiau i'ch helpu i symud ymlaen i'r cam nesaf.
     viewed: gweld
-    viewed_description: Mae'r syniad hwn wedi'i weld gan rywun o'r ddinas
+    viewed_description: Mae'r mewnbwn hwn wedi'i weld gan y rheolwr prosiect.
     under_consideration: dan ystyriaeth
-    under_consideration_description: Mae'r syniad hwn wedi'i gymryd i ystyriaeth gan y ddinas
+    under_consideration_description: Mae'r mewnbwn hwn wedi'i gymryd i ystyriaeth gan y rheolwr prosiect.
     accepted: derbyn
-    accepted_description: Mae'r syniad hwn wedi'i dderbyn a bydd yn cael ei weithredu gan y ddinas
+    accepted_description: Mae'r mewnbwn hwn wedi'i dderbyn a bydd yn cael ei weithredu gan y rheolwr prosiect.
     implemented: gweithredu
-    implemented_description: Mae'r syniad hwn wedi'i roi ar waith gan y ddinas
+    implemented_description: Gweithredwyd y mewnbwn hwn gan y rheolwr prosiect.
     rejected: gwrthodwyd
-    rejected_description: Mae'r syniad hwn wedi'i wrthod
+    rejected_description: Mae'r mewnbwn hwn wedi'i wrthod.
     expired: wedi dod i ben
-    expired_description: wedi dod i ben
+    expired_description: Nid yw'r mewnbwn hwn bellach yn weithredol ac mae wedi'i gau oherwydd cyfyngiadau amser neu anweithgarwch.
     threshold_reached: trothwy wedi ei gyrraedd
-    threshold_reached_description: trothwy wedi ei gyrraedd
+    threshold_reached_description: Mae'r mewnbwn hwn wedi cyrraedd y trothwy cymorth gofynnol a bydd yn cael ei ystyried yn awr ar gyfer gweithredu pellach.
     answered: atebodd
-    answered_description: atebodd
+    answered_description: Mae ymateb wedi ei ddarparu i'r mewnbwn hwn. Edrychwch ar y manylion am fwy o wybodaeth.
     ineligible: anghymwys
-    ineligible_description: anghymwys
+    ineligible_description: Mae'r mewnbwn hwn wedi'i adolygu ac, yn anffodus, wedi'i wrthod. Mae diweddariad swyddogol wedi'i ddarparu gyda mwy o fanylion.
   initiative_statuses:
     review_pending: adolygiad yn yr arfaeth
     review_pending_description: adolygiad yn yr arfaeth

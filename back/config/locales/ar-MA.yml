@@ -36,26 +36,28 @@ ar-MA:
   symbols:
     outside: في مكان آخر
   idea_statuses:
+    prescreening: الفحص المسبق
+    prescreening_description: يخضع هذا الإدخال حاليًا لمراجعة مدير المشروع ولم يصبح مرئيًا للجمهور بعد.
     proposed: تم اقتراحها
-    proposed_description: تم اقتراح هذه الفكرة على المدينة
+    proposed_description: تم تقديم هذه المساهمة وهي الآن مفتوحة للدعم العام. اجمع الأصوات للمساعدة في نقلها إلى المرحلة التالية.
     viewed: تمت مشاهدتها
-    viewed_description: تمت مشاهدة هذه الفكرة من قِبل شخص من المدينة
+    viewed_description: لقد رأى مدير المشروع هذه المدخلات.
     under_consideration: قيد البحث
-    under_consideration_description: تم أخذ هذه الفكرة بعين الاعتبار من قِبل المدينة
+    under_consideration_description: لقد أخذ مدير المشروع هذه المدخلات بعين الاعتبار.
     accepted: تم قبولها
-    accepted_description: تم قبول هذه الفكرة وسيتم تنفيذها من قِبل المدينة
+    accepted_description: لقد تم قبول هذه المدخلات وسيتم تنفيذها من قبل مدير المشروع.
     implemented: تم تنفيذها
-    implemented_description: تم تنفيذ هذه الفكرة من قِبل المدينة
+    implemented_description: تم تنفيذ هذه المدخلات من قبل مدير المشروع.
     rejected: تم رفضها
-    rejected_description: تم رفض هذه الفكرة
+    rejected_description: لقد تم رفض هذا الإدخال.
     expired: منتهي الصلاحية
-    expired_description: منتهي الصلاحية
+    expired_description: هذا الإدخال لم يعد نشطًا وتم إغلاقه بسبب قيود الوقت أو عدم النشاط.
     threshold_reached: وصلت العتبة
-    threshold_reached_description: وصلت العتبة
+    threshold_reached_description: لقد استوفى هذا الإدخال الحد الأدنى المطلوب للدعم وسيتم الآن النظر فيه لاتخاذ إجراءات أخرى.
     answered: أجاب
-    answered_description: أجاب
+    answered_description: لقد تم تقديم رد على هذه المدخلات. راجع التفاصيل للحصول على مزيد من المعلومات.
     ineligible: غير مؤهل
-    ineligible_description: غير مؤهل
+    ineligible_description: لقد تمت مراجعة هذا المدخل، ولسوء الحظ، تم رفضه. وقد تم تقديم تحديث رسمي بمزيد من التفاصيل.
   initiative_statuses:
     review_pending: المراجعة معلقة
     review_pending_description: المراجعة معلقة

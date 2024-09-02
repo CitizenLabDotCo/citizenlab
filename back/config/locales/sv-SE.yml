@@ -36,26 +36,28 @@ sv:
   symbols:
     outside: någon annanstans
   idea_statuses:
+    prescreening: förhandsgranskning
+    prescreening_description: Denna inmatning granskas för närvarande av projektledaren och är ännu inte synlig för allmänheten.
     proposed: föreslagen
-    proposed_description: Den här idén har föreslagits till staden
+    proposed_description: Denna input har skickats in och är nu öppen för offentligt stöd. Samla röster för att hjälpa till att föra det vidare till nästa steg.
     viewed: har setts
-    viewed_description: Den här idén har setts av någon från staden
+    viewed_description: Denna input har setts av projektledaren.
     under_consideration: under övervägande
-    under_consideration_description: Den här idén övervägs av staden
+    under_consideration_description: Projektledaren har tagit hänsyn till dessa synpunkter.
     accepted: accepterad
-    accepted_description: Den här idén har accepterats och kommer att genomföras av staden
+    accepted_description: Denna input har accepterats och kommer att implementeras av projektledaren.
     implemented: genomfördes
-    implemented_description: Den här idén har genomförts av staden
+    implemented_description: Denna input har implementerats av projektledaren.
     rejected: avvisad
-    rejected_description: Den här idén har avvisats
+    rejected_description: Detta inlägg har avvisats.
     expired: utgått
-    expired_description: utgått
+    expired_description: Detta inlägg är inte längre aktivt och har stängts på grund av tidsbegränsningar eller inaktivitet.
     threshold_reached: tröskelvärdet uppnått
-    threshold_reached_description: tröskelvärdet uppnått
+    threshold_reached_description: Denna inmatning har uppnått den nödvändiga stödtröskeln och kommer nu att övervägas för vidare åtgärder.
     answered: besvarade
-    answered_description: besvarade
+    answered_description: Ett svar har lämnats för denna inmatning. Kolla in detaljerna för mer information.
     ineligible: obehörig
-    ineligible_description: obehörig
+    ineligible_description: Denna input har granskats och har tyvärr avvisats. En officiell uppdatering har lämnats med mer information.
   initiative_statuses:
     review_pending: pågående granskning
     review_pending_description: pågående granskning
