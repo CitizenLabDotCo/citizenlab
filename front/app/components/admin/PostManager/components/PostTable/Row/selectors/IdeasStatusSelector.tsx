@@ -58,6 +58,7 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
                 <FormattedMessage {...messages.automatedStatusTooltipText} />
               </div>
             }
+            disabled={status.attributes.can_manually_transition_to}
           >
             <ColorIndicator
               color={status.attributes.color}
