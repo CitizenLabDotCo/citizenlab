@@ -227,7 +227,7 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
 
       // Remove any current reports from the phase
-      cy.apiRemoveAllReports();
+      cy.apiRemoveReportBuilder(currentInfoPhaseId);
 
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
@@ -265,7 +265,7 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
 
       // Remove any current reports from the phase
-      cy.apiRemoveAllReports();
+      cy.apiRemoveReportBuilder(currentInfoPhaseId);
 
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;

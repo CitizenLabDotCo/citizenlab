@@ -170,7 +170,7 @@ describe('Idea template', () => {
 
     it('autosaves report created from template', () => {
       // Remove any current reports from the phase
-      cy.apiRemoveAllReports();
+      cy.apiRemoveReportBuilder(phaseId);
 
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
@@ -235,7 +235,7 @@ describe('Idea template', () => {
 
     it('autosaves report created from template', () => {
       // Remove any current reports from the phase
-      cy.apiRemoveAllReports();
+      cy.apiRemoveReportBuilder(phaseId);
 
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -244,6 +244,7 @@ describe('Idea template', () => {
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
           'saveReportLayout'
         );
+
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${phaseId}`
         );
