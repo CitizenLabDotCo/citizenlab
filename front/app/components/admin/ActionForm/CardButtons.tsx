@@ -29,6 +29,8 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   });
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
 
+  console.log(verificationMethod);
+
   const handleUpdate = (permittedBy: PermittedBy) => (e) => {
     e.preventDefault();
     onUpdate(permittedBy);
