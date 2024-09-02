@@ -36,26 +36,28 @@
   symbols:
     outside: annet sted
   idea_statuses:
+    prescreening: forhåndsscreening
+    prescreening_description: Dette innspillet er for tiden under vurdering av prosjektlederen og er ennå ikke synlig for offentligheten.
     proposed: foreslått
-    proposed_description: Ideen har blitt forslått til kommunen
+    proposed_description: Dette innspillet er sendt inn og er nå åpent for offentlig støtte. Samle stemmer for å hjelpe til med å flytte den til neste trinn.
     viewed: Sett
-    viewed_description: Ideen  har blitt sett av noen som jobber i kommunen
+    viewed_description: Dette innspillet har prosjektleder sett.
     under_consideration: Under vurdering
-    under_consideration_description: Denne ideen vurderes av kommunen
+    under_consideration_description: Dette innspillet har prosjektleder tatt til etterretning.
     accepted: Akseptert
-    accepted_description: Denne ideen har blitt akseptert og vli bli tatt i bruk av kommunen
+    accepted_description: Dette innspillet er akseptert og vil bli implementert av prosjektleder.
     implemented: Implementert
-    implemented_description: Denne ideen har blitt tatt i bruk av kommunen
+    implemented_description: Dette innspillet er implementert av prosjektleder.
     rejected: avslått
-    rejected_description: Denne ideen ble avslått
+    rejected_description: Dette innspillet er avvist.
     expired: utløpt
-    expired_description: utløpt
+    expired_description: Denne inngangen er ikke lenger aktiv og har blitt stengt på grunn av tidsbegrensninger eller inaktivitet.
     threshold_reached: terskel nådd
-    threshold_reached_description: terskel nådd
+    threshold_reached_description: Dette innspillet har nådd den nødvendige støtteterskelen og vil nå bli vurdert for videre handling.
     answered: svarte
-    answered_description: svarte
+    answered_description: Det er gitt svar på dette innspillet. Sjekk ut detaljene for mer informasjon.
     ineligible: ikke kvalifisert
-    ineligible_description: ikke kvalifisert
+    ineligible_description: Dette innspillet er gjennomgått og er dessverre avvist. En offisiell oppdatering er gitt med flere detaljer.
   initiative_statuses:
     review_pending: vurdering venter
     review_pending_description: vurdering venter

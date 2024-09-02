@@ -36,26 +36,28 @@ pl:
   symbols:
     outside: gdzieś indziej
   idea_statuses:
+    prescreening: kontrola wstępna
+    prescreening_description: Dane te są obecnie sprawdzane przez kierownika projektu i nie są jeszcze widoczne publicznie.
     proposed: zaproponowana
-    proposed_description: Ten pomysł został zaproponowany miastu
+    proposed_description: Ten wkład został przesłany i jest teraz otwarty na publiczne wsparcie. Zbierz głosy, aby przejść do następnego etapu.
     viewed: obejrzany
-    viewed_description: Ten pomysł został obejrzany przez kogoś z miasta
+    viewed_description: Dane te zostały sprawdzone przez kierownika projektu.
     under_consideration: rozpatrywany
-    under_consideration_description: Ten pomysł został wzięty pod uwagę przez miasto
+    under_consideration_description: Wkład ten został wzięty pod uwagę przez kierownika projektu.
     accepted: przyjęty
-    accepted_description: Ten pomysł został zaakceptowany i będzie realizowany przez miasto
+    accepted_description: Ten wkład został zaakceptowany i zostanie wdrożony przez kierownika projektu.
     implemented: wdrożony
-    implemented_description: Ten pomysł ten został zrealizowany przez miasto
+    implemented_description: Ten wkład został wdrożony przez kierownika projektu.
     rejected: odrzucony
-    rejected_description: Ten pomysł został odrzucony
+    rejected_description: To wejście zostało odrzucone.
     expired: wygasł
-    expired_description: wygasł
+    expired_description: To wejście nie jest już aktywne i zostało zamknięte z powodu ograniczeń czasowych lub braku aktywności.
     threshold_reached: osiągnięty próg
-    threshold_reached_description: osiągnięty próg
+    threshold_reached_description: Ten wkład osiągnął wymagany próg wsparcia i zostanie teraz rozpatrzony pod kątem dalszych działań.
     answered: odpowiedział
-    answered_description: odpowiedział
+    answered_description: Otrzymałeś odpowiedź na to zgłoszenie. Sprawdź szczegóły, aby uzyskać więcej informacji.
     ineligible: niekwalifikujący się
-    ineligible_description: niekwalifikujący się
+    ineligible_description: Dane te zostały zweryfikowane i niestety odrzucone. Oficjalna aktualizacja zawiera więcej szczegółów.
   initiative_statuses:
     review_pending: przegląd w toku
     review_pending_description: przegląd w toku
