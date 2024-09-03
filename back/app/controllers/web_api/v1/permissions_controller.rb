@@ -64,7 +64,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     attributes = {
       access_denied_explanation_multiloc: @permission.access_denied_explanation_multiloc
     }
-    render json: raw_json(attributes), status: ok
+    render json: raw_json(attributes), status: :ok
   end
 
   private
