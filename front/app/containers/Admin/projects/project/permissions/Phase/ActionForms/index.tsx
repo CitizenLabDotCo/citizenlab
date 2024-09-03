@@ -55,8 +55,8 @@ const ActionForms = ({ phaseId }: Props) => {
         <ActionForm
           phaseId={phaseId}
           permissionData={permission}
-          onChange={(permissionChanges) =>
-            updatePhasePermission({
+          onChange={async (permissionChanges) =>
+            await updatePhasePermission({
               permissionId: permission.id,
               phaseId,
               action: permissionAction,
@@ -106,8 +106,8 @@ const ActionForms = ({ phaseId }: Props) => {
             <ActionForm
               phaseId={phaseId}
               permissionData={permission}
-              onChange={(permissionChanges) =>
-                updatePhasePermission({
+              onChange={async (permissionChanges) =>
+                await updatePhasePermission({
                   permissionId: permission.id,
                   phaseId,
                   action: permissionAction,

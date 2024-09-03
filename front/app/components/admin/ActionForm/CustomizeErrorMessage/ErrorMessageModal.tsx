@@ -21,7 +21,7 @@ interface Props {
   opened: boolean;
   access_denied_explanation_multiloc?: Multiloc;
   onClose: () => void;
-  onSubmit: (formValues: FormValues) => void;
+  onSubmit: (formValues: FormValues) => Promise<void>;
 }
 
 const ErrorMessageModal = ({

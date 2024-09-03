@@ -34,7 +34,7 @@ type Changes = {
 interface Props {
   phaseId?: string;
   permissionData: IPermissionData;
-  onChange: (changes: Changes) => void;
+  onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
 }
 
@@ -135,8 +135,8 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                 access_denied_explanation_multiloc={
                   permissionData.attributes.access_denied_explanation_multiloc
                 }
-                onUpdate={(access_denied_explanation_multiloc) => {
-                  onChange({ access_denied_explanation_multiloc });
+                onUpdate={async (access_denied_explanation_multiloc) => {
+                  await onChange({ access_denied_explanation_multiloc });
                 }}
               />
             </>

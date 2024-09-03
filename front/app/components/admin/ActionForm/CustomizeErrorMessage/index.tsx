@@ -15,7 +15,7 @@ import messages from './messages';
 
 interface Props {
   access_denied_explanation_multiloc: Multiloc;
-  onUpdate: (access_denied_explanation_multiloc?: Multiloc) => void;
+  onUpdate: (access_denied_explanation_multiloc?: Multiloc) => Promise<void>;
 }
 
 const CustomizeErrorMessage = ({
@@ -54,8 +54,8 @@ const CustomizeErrorMessage = ({
         opened={modalOpen}
         access_denied_explanation_multiloc={access_denied_explanation_multiloc}
         onClose={() => setModalOpen(false)}
-        onSubmit={({ access_denied_explanation_multiloc }) => {
-          onUpdate(access_denied_explanation_multiloc);
+        onSubmit={async ({ access_denied_explanation_multiloc }) => {
+          await onUpdate(access_denied_explanation_multiloc);
         }}
       />
     </>
