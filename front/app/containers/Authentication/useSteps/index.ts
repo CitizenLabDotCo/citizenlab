@@ -51,8 +51,7 @@ export default function useSteps() {
     return authenticationDataRef.current;
   }, []);
 
-  // const [currentStep, _setCurrentStep] = useState<Step>('closed');
-  const [currentStep, _setCurrentStep] = useState<Step>('access-denied');
+  const [currentStep, _setCurrentStep] = useState<Step>('closed');
 
   const setCurrentStep = useCallback((step: Step) => {
     if (step === 'closed') {
