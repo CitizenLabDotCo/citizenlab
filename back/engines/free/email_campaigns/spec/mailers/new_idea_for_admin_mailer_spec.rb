@@ -37,7 +37,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
             with_text(/Gonzo, a new input has been published on your platform/)
           end
           with_tag 'p' do
-            with_text(/Kermit the Frog has submitted a new input on your platform\. Discover it now, give some feedback or change its status\!/)
+            with_text(/Kermit the Frog has submitted a new input on your platform\. Discover it now, give some feedback or change its status!/)
           end
         end
       end
@@ -52,7 +52,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
           end
         end
       end
-  
+
       it 'includes the CTA' do
         expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
           with_text(/Give feedback to Kermit the Frog/)
@@ -112,7 +112,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
           end
         end
       end
-  
+
       it 'includes the CTA' do
         expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
           with_text(/Review the input/)
