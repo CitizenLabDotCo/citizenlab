@@ -36,8 +36,8 @@ export interface IVerificationMethod {
   data: TVerificationMethod;
 }
 
-export type ActionMetadata = {
-  allowed: boolean;
+export type MethodMetadata = {
+  allowed_for_verified_actions: boolean;
   name: string; // Readable name to be shown to end user
   locked_attributes: Multiloc[];
   other_attributes: Multiloc[];
@@ -50,7 +50,7 @@ type TGenericMethod = {
   type: 'verification_method';
   attributes: {
     name: TVerificationMethodName;
-    action_metadata?: ActionMetadata;
+    method_metadata?: MethodMetadata;
   };
 };
 
@@ -59,7 +59,7 @@ type FakeSSOMethod = {
   type: 'verification_method';
   attributes: {
     name: 'fake_sso';
-    action_metadata?: ActionMetadata;
+    method_metadata?: MethodMetadata;
   };
 };
 
@@ -68,7 +68,7 @@ export type IDLookupMethod = {
   type: 'verification_method';
   attributes: {
     name: 'id_card_lookup';
-    action_metadata?: ActionMetadata;
+    method_metadata?: MethodMetadata;
     card_id: string;
     card_id_placeholder: string;
     card_id_tooltip: string;
@@ -82,7 +82,7 @@ export type IDCriiptoMethod = {
   type: 'verification_method';
   attributes: {
     name: 'criipto';
-    action_metadata?: ActionMetadata;
+    method_metadata?: MethodMetadata;
     ui_method_name: string;
   };
 };
@@ -92,7 +92,7 @@ export type IDAuth0Method = {
   type: 'verification_method';
   attributes: {
     name: 'auth0';
-    action_metadata?: ActionMetadata;
+    method_metadata?: MethodMetadata;
     method_name_multiloc: Multiloc;
   };
 };
