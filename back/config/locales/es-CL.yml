@@ -37,25 +37,25 @@ es-CL:
     outside: en otro lugar
   idea_statuses:
     prescreening: preselección
-    prescreening_description: Esta aportación está siendo revisada por el director del proyecto y aún no es visible para el público.
+    prescreening_description: Esta aportación está siendo revisada por el gestor del proyecto y aún no es visible para el público.
     proposed: propuesta
-    proposed_description: Esta aportación se ha presentado y ahora está abierta al apoyo público. Reúne votos para ayudar a que pase a la siguiente fase.
+    proposed_description: Esta aportación ha sido enviada y está abierta al apoyo público. Reúne votos para ayudar a que pase a la siguiente fase.
     viewed: revisado
-    viewed_description: Esta aportación ha sido vista por el director del proyecto.
+    viewed_description: Esta aportación ha sido vista por el gestor del proyecto.
     under_consideration: bajo consideración
-    under_consideration_description: El director del proyecto ha tenido en cuenta esta aportación.
+    under_consideration_description: El gestor del proyecto ha tenido en cuenta esta aportación.
     accepted: aceptada
-    accepted_description: Esta aportación ha sido aceptada y será puesta en práctica por el director del proyecto.
+    accepted_description: Esta aportación ha sido aceptada y será implementada por el gestor del proyecto.
     implemented: implementada
-    implemented_description: Esta aportación ha sido puesta en práctica por el director del proyecto.
+    implemented_description: Esta aportación ha sido implementada por el gestor del proyecto.
     rejected: rechazada
-    rejected_description: Esta entrada ha sido rechazada.
+    rejected_description: Este aporte ha sido rechazado.
     expired: finalizado
-    expired_description: Esta entrada ya no está activa y se ha cerrado por falta de tiempo o inactividad.
+    expired_description: Esta aporte ya no está activo y se ha cerrado por falta de tiempo o inactividad.
     threshold_reached: límite alcanzado
-    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y ahora se considerará para nuevas acciones.
+    threshold_reached_description: Esta aportación ha alcanzado el umbral de apoyo requerido y va a ser considerada.
     answered: respondida
-    answered_description: Se ha proporcionado una respuesta para esta aportación. Consulta los detalles para obtener más información.
+    answered_description: El gestor del proyecto ha publicado un comentario oficial sobre este aporte.
     ineligible: no elegible
     ineligible_description: Esta aportación ha sido revisada y, lamentablemente, ha sido rechazada. Se ha proporcionado una actualización oficial con más detalles.
   initiative_statuses:
