@@ -79,6 +79,10 @@ module IdNemlogIn
       true
     end
 
+    def check_entitled_on_sso?
+      true
+    end
+
     def enabled_for_verified_actions?
       config[:enabled_for_verified_actions]
     end

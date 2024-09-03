@@ -6,11 +6,6 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    # Rails.logger.warn("Auth extra raw info JSON: #{request.env['omniauth.auth'].extra['raw_info'].to_h.to_json}")
-    auth_provider = request.env.dig('omniauth.auth', 'provider')
-    auth_method = authentication_service.method_by_provider(auth_provider)
-    verification_method = get_verification_method(auth_provider)
-
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
       if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
@@ -29,10 +24,6 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def failure
-    failure_redirect
-  end
-
   def logout_data
     provider = params[:provider]
     user_id = params[:user_id]
@@ -44,20 +35,20 @@ class OmniauthCallbackController < ApplicationController
   private
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
-    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (emailless) don't return email
+    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
     return user if user
 
-    if verify # only for verification methods
+    if verify
+      # Try and find the user by verification for verification methods without an email
       uid = authver_method.profile_to_uid(auth)
       verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method).first
       verification&.user
     end
   end
 
-  def auth_callback(verify:, authver_method:)
+  def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
-    provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
@@ -85,7 +76,7 @@ class OmniauthCallbackController < ApplicationController
       if @user.invite_pending?
         @invite = @user.invitee_invite
         if !@invite || @invite.accepted_at
-          failure
+          failure_redirect
           return
         end
         UserService.assign_params_in_accept_invite(@user, user_attrs)
@@ -94,10 +85,10 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           @invite.save!
           SideFxInviteService.new.after_accept @invite
-          signup_success_redirect
+          verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
-          failure
+          failure_redirect
         end
 
       else # !@user.invite_pending?
@@ -105,14 +96,11 @@ class OmniauthCallbackController < ApplicationController
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
-          failure
+          failure_redirect
           return
         end
-        signin_success_redirect
+        verify_and_sign_in(auth, @user, verify, sign_up: false)
       end
-
-      set_auth_cookie(provider: provider)
-      handle_sso_verification(auth, @user) if verify
 
     else # New user
       confirm = authver_method.email_confirmed?(auth)
@@ -124,19 +112,29 @@ class OmniauthCallbackController < ApplicationController
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
-        set_auth_cookie(provider: provider)
-        handle_sso_verification(auth, @user) if verify
-        signup_success_redirect
+        verify_and_sign_in(auth, @user, verify, sign_up: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
-        failure
+        failure_redirect
       end
+    end
+  end
+
+  def verify_and_sign_in(auth, user, verify, sign_up: true)
+    continue_auth = verify ? handle_sso_verification(auth, user) : true
+    return unless continue_auth
+
+    set_auth_cookie(provider: auth['provider'])
+    if sign_up
+      signup_success_redirect
+    else
+      signin_success_redirect
     end
   end
 
   def failure_redirect(params = {})
     redirect_params = (request.env['omniauth.params'] || {}).with_indifferent_access.merge(params)
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params)) and nil
   end
 
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
@@ -220,11 +218,8 @@ class OmniauthCallbackController < ApplicationController
     nil
   end
 
-  # In some cases, it may be fine not to verify during SSO.
-  def handle_sso_verification(auth, user)
-    handle_verification(auth, user)
-  rescue Verification::VerificationService::NotEntitledError
-    # ignore
+  def handle_sso_verification(_auth, _user)
+    true
   end
 
   def handle_verification(_auth, _user)
@@ -237,6 +232,18 @@ class OmniauthCallbackController < ApplicationController
 
   def authentication_service
     @authentication_service ||= AuthenticationService.new
+  end
+
+  def auth_provider
+    @auth_provider ||= request.env.dig('omniauth.auth', 'provider')
+  end
+
+  def auth_method
+    @auth_method ||= authentication_service.method_by_provider(auth_provider)
+  end
+
+  def verification_method
+    @verification_method ||= get_verification_method(auth_provider)
   end
 end
 

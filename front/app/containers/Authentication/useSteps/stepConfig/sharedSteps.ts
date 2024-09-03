@@ -177,9 +177,13 @@ export const sharedSteps = (
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
+        console.log('error_code', error_code);
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
+        } else if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_minimum_age');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');

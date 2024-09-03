@@ -33,13 +33,27 @@ module Verification
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
             rescue VerificationService::NotEntitledError => e
-              message = e.why ? "not_entitled_#{e.why}" : 'not_entitled'
-              fail_verification(message)
+              fail_verification(not_entitled_error(e))
             end
           end
         rescue ActiveRecord::RecordNotFound
           fail_verification('no_token_passed')
         end
+      end
+
+      def handle_sso_verification(auth, user)
+        handle_verification(auth, user)
+        true
+      rescue VerificationService::NotEntitledError => e
+        # In some cases, it may be fine not to verify during SSO, so we enable this specifically in the method
+        return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?
+
+        failure_redirect(error_code: not_entitled_error(e))
+        return false
+      end
+
+      def not_entitled_error(error)
+        error.why ? "not_entitled_#{error.why}" : 'not_entitled'
       end
 
       def fail_verification(error)
