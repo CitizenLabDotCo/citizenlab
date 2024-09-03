@@ -21,7 +21,7 @@ type Props = {
 const ActionForms = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
-  const { mutate: updatePhasePermission } = useUpdatePhasePermission();
+  const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
   const { mutate: resetPhasePermission } = useResetPhasePermission();
 
   if (!permissions || !phase) return null;
@@ -55,14 +55,14 @@ const ActionForms = ({ phaseId }: Props) => {
         <ActionForm
           phaseId={phaseId}
           permissionData={permission}
-          onChange={async (permissionChanges) =>
+          onChange={async (permissionChanges) => {
             await updatePhasePermission({
               permissionId: permission.id,
               phaseId,
               action: permissionAction,
               permission: permissionChanges,
-            })
-          }
+            });
+          }}
           onReset={() =>
             resetPhasePermission({
               permissionId: permission.id,
@@ -106,14 +106,14 @@ const ActionForms = ({ phaseId }: Props) => {
             <ActionForm
               phaseId={phaseId}
               permissionData={permission}
-              onChange={async (permissionChanges) =>
+              onChange={async (permissionChanges) => {
                 await updatePhasePermission({
                   permissionId: permission.id,
                   phaseId,
                   action: permissionAction,
                   permission: permissionChanges,
-                })
-              }
+                });
+              }}
               onReset={() =>
                 resetPhasePermission({
                   permissionId: permission.id,

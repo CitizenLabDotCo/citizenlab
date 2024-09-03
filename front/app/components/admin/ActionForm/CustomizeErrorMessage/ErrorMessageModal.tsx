@@ -10,6 +10,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
 
@@ -40,6 +41,15 @@ const ErrorMessageModal = ({
     resolver: yupResolver(schema),
   });
 
+  const handleSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+      onClose();
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
   return (
     <Modal
       opened={opened}
@@ -55,7 +65,7 @@ const ErrorMessageModal = ({
     >
       <Box m="20px">
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(handleSubmit)}>
             <QuillMultilocWithLocaleSwitcher
               label={<FormattedMessage {...messages.alternativeErrorMessage} />}
               name="access_denied_explanation_multiloc"
