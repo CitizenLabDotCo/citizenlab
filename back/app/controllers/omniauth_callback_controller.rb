@@ -134,7 +134,6 @@ class OmniauthCallbackController < ApplicationController
 
   def failure_redirect(params = {})
     redirect_params = (request.env['omniauth.params'] || {}).with_indifferent_access.merge(params)
-    binding.pry
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
   end
 
