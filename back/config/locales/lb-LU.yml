@@ -183,7 +183,7 @@ lb:
         title: Detailer
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Wann Dir '{other_option}' gewielt hutt, un wat denkt Dir?
   custom_forms:
     categories:
       main_content:
