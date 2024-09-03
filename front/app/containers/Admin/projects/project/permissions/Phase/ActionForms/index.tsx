@@ -55,16 +55,12 @@ const ActionForms = ({ phaseId }: Props) => {
         <ActionForm
           phaseId={phaseId}
           permissionData={permission}
-          onChange={({ permittedBy, groupIds, verificationExpiry }) =>
+          onChange={(permissionChanges) =>
             updatePhasePermission({
               permissionId: permission.id,
               phaseId,
               action: permissionAction,
-              permission: {
-                permitted_by: permittedBy,
-                group_ids: groupIds,
-                verification_expiry: verificationExpiry,
-              },
+              permission: permissionChanges,
             })
           }
           onReset={() =>
@@ -110,16 +106,12 @@ const ActionForms = ({ phaseId }: Props) => {
             <ActionForm
               phaseId={phaseId}
               permissionData={permission}
-              onChange={({ permittedBy, groupIds, verificationExpiry }) =>
+              onChange={(permissionChanges) =>
                 updatePhasePermission({
                   permissionId: permission.id,
                   phaseId,
                   action: permissionAction,
-                  permission: {
-                    permitted_by: permittedBy,
-                    group_ids: groupIds,
-                    verification_expiry: verificationExpiry,
-                  },
+                  permission: permissionChanges,
                 })
               }
               onReset={() =>

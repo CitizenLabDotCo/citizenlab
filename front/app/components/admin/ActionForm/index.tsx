@@ -25,9 +25,9 @@ import messages from './messages';
 import { showResetButton } from './utils';
 
 type Changes = {
-  permittedBy?: PermittedBy;
-  groupIds?: string[];
-  verificationExpiry?: number | null;
+  permitted_by?: PermittedBy;
+  group_ids?: string[];
+  verification_expiry?: number | null;
   access_denied_explanation_multiloc?: Multiloc;
 };
 
@@ -59,8 +59,8 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
     action,
   });
 
-  const handlePermittedByUpdate = (permittedBy: PermittedBy) => {
-    onChange({ permittedBy });
+  const handlePermittedByUpdate = (permitted_by: PermittedBy) => {
+    onChange({ permitted_by });
   };
 
   const participation_method = phase?.data.attributes.participation_method;
@@ -101,8 +101,8 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               verificationEnabled={verification_enabled}
               verificationExpiry={verification_expiry}
               permissionsCustomFields={permissionsCustomFields.data}
-              onChangeVerificationExpiry={(verificationExpiry) => {
-                onChange({ verificationExpiry });
+              onChangeVerificationExpiry={(verification_expiry) => {
+                onChange({ verification_expiry });
               }}
             />
           </Box>
@@ -125,8 +125,8 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                 <Box w="300px">
                   <GroupSelect
                     groupIds={groupIds}
-                    onChange={(groupIds) => {
-                      onChange({ groupIds });
+                    onChange={(group_ids) => {
+                      onChange({ group_ids });
                     }}
                   />
                 </Box>

@@ -50,13 +50,19 @@ const ActionForms = ({ permissions }: Props) => {
           >
             <ActionForm
               permissionData={permission}
-              onChange={({ permittedBy, groupIds, verificationExpiry }) =>
+              onChange={({
+                permitted_by,
+                group_ids,
+                verification_expiry,
+                access_denied_explanation_multiloc,
+              }) =>
                 updatePermission({
                   id: permission.id,
                   action: permission.attributes.action,
-                  permitted_by: permittedBy,
-                  group_ids: groupIds,
-                  verification_expiry: verificationExpiry,
+                  permitted_by,
+                  group_ids,
+                  verification_expiry,
+                  access_denied_explanation_multiloc,
                 })
               }
               onReset={() =>
