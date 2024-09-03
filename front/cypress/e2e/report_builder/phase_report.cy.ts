@@ -16,11 +16,10 @@ function addTextWidget() {
 }
 
 function saveReport(reportId: string) {
-  cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-    'saveReportLayout'
-  );
   cy.get('#e2e-content-builder-topbar-save').click();
-  cy.wait('@saveReportLayout');
+  // We expect the save button to indicate that the report is saved (has svg icon)
+  cy.wait(2000);
+  cy.get('#e2e-content-builder-topbar-save > button > svg').should('exist');
 }
 
 describe('Phase report', () => {
@@ -227,9 +226,6 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${ideationPhaseId}`
         );
@@ -264,9 +260,6 @@ describe('Phase report', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${surveyPhaseId}`
         );

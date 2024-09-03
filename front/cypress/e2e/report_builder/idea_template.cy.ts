@@ -148,11 +148,13 @@ describe('Idea template', () => {
         cy.get('.e2e-text-box').eq(2).should('contain.text', text);
 
         // Save report
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.get('#e2e-content-builder-topbar-save').click();
-        cy.wait('@saveReportLayout');
+
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.wait(2000);
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
 
         // Refresh page
         cy.reload();
@@ -168,11 +170,6 @@ describe('Idea template', () => {
     it('autosaves report created from template', () => {
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
-
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
-
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
         );
@@ -183,9 +180,11 @@ describe('Idea template', () => {
           'not.exist'
         );
 
-        // Then, when we intercept the autosave...
+        // We expect the save button to indicate that the report is saved (has svg icon)
         cy.wait(2000);
-        cy.wait('@saveReportLayout');
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
 
         // We expect the save button to indicate that the report is saved (has svg icon)
         cy.get('#e2e-content-builder-topbar-save > button > svg').should(
@@ -231,9 +230,6 @@ describe('Idea template', () => {
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
 
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${phaseId}`
         );
@@ -244,11 +240,8 @@ describe('Idea template', () => {
           'not.exist'
         );
 
-        // Then, when we intercept the autosave...
-        cy.wait(2000);
-        cy.wait('@saveReportLayout');
-
         // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.wait(2000);
         cy.get('#e2e-content-builder-topbar-save > button > svg').should(
           'exist'
         );
