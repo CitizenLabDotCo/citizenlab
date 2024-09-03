@@ -1080,6 +1080,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.showVotes": "Rādīt balsis",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.votes": "Balsis",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics": "Demogrāfiskie dati",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange": "Reģistrācijas datumu diapazons",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Reģistrācijas lauks",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Nezināms",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Lietotāji: {numberOfUsers} ({percentageOfUsers}%)",
