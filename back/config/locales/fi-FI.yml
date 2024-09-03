@@ -183,7 +183,7 @@ fi:
         title: Yksityiskohdat
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Jos valitsit{other_option}, mitä ajattelet?
   custom_forms:
     categories:
       main_content:
