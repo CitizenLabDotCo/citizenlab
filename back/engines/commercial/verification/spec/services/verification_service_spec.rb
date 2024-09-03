@@ -7,14 +7,14 @@ describe Verification::VerificationService do
   let(:service) { described_class.new sfxv_service }
 
   before do
-    configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings['verification'] = {
-      allowed: true,
-      enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
-    }
-    configuration.save!
+    SettingsService.new.activate_feature!(
+      'verification',
+      settings: {
+        verification_methods: [
+          { name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }
+        ]
+      }
+    )
   end
 
   describe 'verify_sync' do
@@ -186,6 +186,35 @@ describe Verification::VerificationService do
         verification = create(:verification, method_name: 'bogus')
         expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
       end
+    end
+  end
+
+  describe 'action_metadata' do
+    it 'returns an empty hash if no methods are allowed on action' do
+      expect(service.action_metadata).to eq({ allowed: false })
+    end
+
+    it 'returns information about the first enabled method enabled for actions' do
+      create(:custom_field_gender)
+      create(:custom_field_birthyear)
+
+      configuration = AppConfiguration.instance
+      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso' }
+      configuration.save!
+
+      metadata = service.action_metadata
+      expect(metadata[:name]).to eq 'Fake SSO'
+      expect(metadata[:locked_attributes]).to match_array [
+        { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
+        { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
+      ]
+      expect(metadata[:other_attributes]).to match_array [
+        { 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' }
+      ]
+      expect(metadata[:locked_custom_fields]).to match_array [
+        { 'en' => 'gender' }, { 'en' => 'birthyear' }
+      ]
+      expect(metadata[:other_custom_fields]).to be_empty
     end
   end
 end

@@ -2,7 +2,7 @@ import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Existing single phase project with poll', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('/projects/the-big-poll');
     cy.get('#e2e-project-page');
     cy.wait(1000);

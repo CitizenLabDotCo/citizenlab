@@ -207,12 +207,6 @@ lv:
           title: Kāda ir jūsu problēma?
         option:
           title: Kāda ir jūsu izvēle?
-      details:
-        title: Detalizēta informācija
-      attachements:
-        title: Attēli un pielikumi
-      extra:
-        title: Papildu informācija
   custom_field_options:
     gender:
       male: Vīrietis
@@ -283,8 +277,8 @@ lv:
       option1: '1. variants'
       option2: '2. variants'
     form_end_page:
-      title: 'Paldies par dalību'
-      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt\" zemāk."
+      title_text: 'Gandrīz pabeigts'
+      description_text_2: "Jūs gatavojaties iesniegt savas atbildes. Noklikšķinot uz \"Iesniegt\", jūs atļaujat mums analizēt jūsu atbildes.<br/>Pēc iesniegšanas jūs vairs nevarēsiet atgriezties un mainīt savas atbildes."
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_public: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
@@ -296,6 +290,13 @@ lv:
       optional: 'izvēles'
       permission: 'Atļauja'
       choose_as_many: 'Izvēlieties tik daudz, cik vēlaties'
+      choose_exactly:
+        zero: 'Izvēlieties tieši %{count} iespējas'
+        one: 'Izvēlieties tieši %{count} opciju'
+        other: 'Izvēlieties tieši %{count} iespējas'
+      choose_between: 'Izvēlieties starp %{min} un %{max} iespējām'
+      choose_at_least: 'Izvēlieties vismaz %{count} iespējas'
+      choose_at_most: 'Izvēlieties ne vairāk kā %{count} iespējas'
       this_answer: 'Šī atbilde tiks izpausta tikai moderatoriem, bet ne sabiedrībai.'
       page: 'Lapa'
       date_published: 'Publicēšanas datums (dd-mm-gggg)'

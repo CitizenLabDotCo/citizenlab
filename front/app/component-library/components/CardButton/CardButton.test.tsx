@@ -3,7 +3,7 @@ import React from 'react';
 import { colors } from '../../utils/styleUtils';
 import { render, screen, fireEvent } from '../../utils/testUtils/rtl';
 
-import CardButton, { backgroundColor } from '.';
+import CardButton from '.';
 
 describe('<CardButton />', () => {
   it('renders', () => {
@@ -37,7 +37,7 @@ describe('<CardButton />', () => {
 
     const button = container.querySelector('button');
     expect(button).toBeInTheDocument();
-    expect(button).toHaveStyle(`background: ${backgroundColor}`);
+    expect(button).toHaveStyle(`background: ${colors.teal50}`);
 
     if (!button) throw new Error();
 
@@ -67,6 +67,6 @@ describe('<CardButton />', () => {
     );
 
     expect(selected).toBe(true);
-    expect(button).toHaveStyle(`background: ${backgroundColor}`);
+    expect(button).toHaveStyle(`background: ${colors.teal50}`);
   });
 });

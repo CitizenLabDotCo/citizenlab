@@ -155,12 +155,6 @@ kl:
           title: Suna ajornartorsiutaava?
         option:
           title: Suna toqqagassaraajuk?
-      details:
-        title: Details
-      attachements:
-        title: Assit fiilillu kakkiussat
-      extra:
-        title: Paasissutissat annertunerusut
   custom_field_options:
     gender:
       male: Angut

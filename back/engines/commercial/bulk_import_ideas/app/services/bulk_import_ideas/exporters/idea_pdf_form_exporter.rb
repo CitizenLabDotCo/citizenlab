@@ -6,6 +6,9 @@ module BulkImportIdeas::Exporters
   class IdeaPdfFormExporter < BaseFormExporter
     attr_reader :participation_context, :form_fields, :previous_cursor
 
+    delegate :generate_multiselect_instructions, to: :class
+    private :generate_multiselect_instructions
+
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
     JUMBLING_FIELD_TYPES = %w[multiline_text html_multiloc text text_multiloc]
 
@@ -281,25 +284,21 @@ module BulkImportIdeas::Exporters
     end
 
     def write_instructions_and_disclaimers(pdf, custom_field)
-      show_multiselect_instructions = custom_field.input_type == 'multiselect'
-      show_visibility_disclaimer = @phase.pmethod.supports_idea_form? && custom_field.answer_visible_to == 'admins'
+      multiselect_instructions = generate_multiselect_instructions(custom_field, @locale)
+      visibility_disclaimer = generate_visibility_disclaimer(custom_field)
 
-      if show_multiselect_instructions || show_visibility_disclaimer
+      if multiselect_instructions || visibility_disclaimer
         pdf.move_down 2.mm
+        pdf.text("*#{multiselect_instructions}", size: 10) if multiselect_instructions
+        pdf.text("*#{visibility_disclaimer}", size: 10) if visibility_disclaimer
+      end
+    end
 
-        if show_multiselect_instructions
-          pdf.text(
-            "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
-            size: 10
-          )
-        end
+    def generate_visibility_disclaimer(custom_field)
+      return unless @phase.pmethod.supports_public_visibility? && custom_field.answer_visible_to == 'admins'
 
-        if show_visibility_disclaimer
-          pdf.text(
-            "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
-            size: 10
-          )
-        end
+      I18n.with_locale(@locale) do
+        I18n.t('form_builder.pdf_export.this_answer')
       end
     end
 
@@ -390,6 +389,33 @@ module BulkImportIdeas::Exporters
         page: page,
         position: position.to_i
       }
+    end
+
+    class << self
+      def generate_multiselect_instructions(custom_field, locale)
+        return unless custom_field.input_type == 'multiselect'
+
+        min = custom_field.minimum_select_count
+        max = custom_field.maximum_select_count
+        min = nil if min == 0
+        max = nil if max&.>= custom_field.options.length
+
+        I18n.with_locale(locale) do
+          if custom_field.select_count_enabled && (min || max)
+            if min && max && min == max
+              I18n.t('form_builder.pdf_export.choose_exactly', count: min)
+            elsif min && max
+              I18n.t('form_builder.pdf_export.choose_between', min: min, max: max)
+            elsif min
+              I18n.t('form_builder.pdf_export.choose_at_least', count: min)
+            else
+              I18n.t('form_builder.pdf_export.choose_at_most', count: max)
+            end
+          else
+            I18n.t('form_builder.pdf_export.choose_as_many')
+          end
+        end
+      end
     end
   end
 end

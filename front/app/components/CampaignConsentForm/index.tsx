@@ -160,7 +160,7 @@ const CampaignConsentForm = ({
     setShowFeedback(false);
     setLoading(true);
     updateCampaignConsents(
-      { consentChanges },
+      { consentChanges, unsubscriptionToken },
       {
         onSuccess: () => {
           setShowFeedback('success');

@@ -10,33 +10,7 @@ module ParticipationMethod
       @phase = phase
     end
 
-    def transitive?
-      false
-    end
-
-    def assign_defaults_for_phase
-      # Default is to do nothing.
-    end
-
-    # Remove after unified status implementation
-    def idea_status_method
-      self.class.method_str
-    end
-
-    def generate_slug(input)
-      # Input is not created in this participation method,
-      # so the default is to return nothing.
-    end
-
-    def assign_defaults(input)
-      # Default is to do nothing.
-    end
-
-    def create_default_form!
-      # Default is to do nothing.
-    end
-
-    def default_fields(_custom_form)
+    def additional_export_columns
       []
     end
 
@@ -44,18 +18,16 @@ module ParticipationMethod
       []
     end
 
-    def constraints
-      {}
+    def allowed_ideas_orders
+      []
     end
 
-    def form_structure_element
-      nil
+    def assign_defaults(input)
+      # Default is to do nothing.
     end
 
-    def validate_built_in_fields?
-      # Most participation methods do not have built-in fields,
-      # so return false.
-      false
+    def assign_defaults_for_phase
+      # Default is to do nothing.
     end
 
     def author_in_form?(_user)
@@ -66,16 +38,12 @@ module ParticipationMethod
       false
     end
 
-    def proposed_budget_in_form?
-      false
+    def constraints
+      {}
     end
 
-    def allowed_ideas_orders
-      []
-    end
-
-    def update_if_published?
-      true
+    def create_default_form!
+      # Default is to do nothing.
     end
 
     def custom_form
@@ -83,35 +51,26 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def sign_in_required_for_posting?
+    def default_fields(_custom_form)
+      []
+    end
+
+    def generate_slug(input)
+      # Input is not created in this participation method,
+      # so the default is to return nothing.
+    end
+
+    # Remove after unified status implementation
+    def idea_status_method
+      self.class.method_str
+    end
+
+    # Should an admin be able to set permissions for disabled actions?
+    def return_disabled_actions?
       false
     end
 
-    def extra_fields_category_translation_key
-      'custom_forms.categories.extra.title'
-    end
-
-    def supports_public_visibility?
-      false
-    end
-
-    def supports_exports?
-      false
-    end
-
-    def supports_commenting?
-      false
-    end
-
-    def supports_reacting?
-      false
-    end
-
-    def supports_automated_statuses?
-      false # TODO: This is temorary, until proposal statuses are implemented
-    end
-
-    def supports_status?
+    def supports_answer_visible_to?
       false
     end
 
@@ -119,15 +78,23 @@ module ParticipationMethod
       false
     end
 
-    def supports_toxicity_detection?
-      true
-    end
-
-    def supports_posting_inputs?
+    def supports_automated_statuses?
       false
     end
 
-    def supports_idea_form?
+    def supports_built_in_fields?
+      false
+    end
+
+    def supports_commenting?
+      false
+    end
+
+    def supports_edits_after_publication?
+      true
+    end
+
+    def supports_exports?
       false
     end
 
@@ -135,7 +102,15 @@ module ParticipationMethod
       false
     end
 
-    def supports_survey_form?
+    def supports_inputs_without_author?
+      true
+    end
+
+    def supports_multiple_posts?
+      true
+    end
+
+    def supports_pages_in_form?
       false
     end
 
@@ -143,7 +118,15 @@ module ParticipationMethod
       false
     end
 
-    def supports_answer_visible_to?
+    def supports_posting_inputs?
+      false
+    end
+
+    def supports_public_visibility?
+      false
+    end
+
+    def supports_reacting?
       false
     end
 
@@ -155,23 +138,32 @@ module ParticipationMethod
       false
     end
 
-    # Should an admin be able to set permissions for disabled actions?
-    def return_disabled_actions?
+    def supports_status?
       false
     end
 
-    def additional_export_columns
-      []
+    def supports_survey_form?
+      false
     end
 
-    # @return [Integer, nil] the maximum number of ideas (in its wide sense, i.e. records
-    # from the ideas table) that a user can post in the phase. If nil, there is no limit.
-    def posting_limit
-      nil
+    def supports_toxicity_detection?
+      true
+    end
+
+    def transitive?
+      false
+    end
+
+    def use_reactions_as_votes?
+      false
     end
 
     private
 
     attr_reader :phase
+
+    def proposed_budget_in_form?
+      false
+    end
   end
 end

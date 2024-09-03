@@ -16,7 +16,6 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f4
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
@@ -75,7 +74,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_81e27f10eb;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
@@ -338,9 +336,6 @@ DROP INDEX IF EXISTS public.index_areas_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_area_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_idea_id_and_area_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_idea_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_area_id;
 DROP INDEX IF EXISTS public.index_analytics_dimension_types_on_name_and_parent;
 DROP INDEX IF EXISTS public.index_analytics_dimension_locales_on_name;
 DROP INDEX IF EXISTS public.index_analysis_tags_on_analysis_id_and_name;
@@ -483,7 +478,6 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS areas_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS areas_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS areas_initiatives_pkey;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS areas_ideas_pkey;
 ALTER TABLE IF EXISTS ONLY public.ar_internal_metadata DROP CONSTRAINT IF EXISTS ar_internal_metadata_pkey;
 ALTER TABLE IF EXISTS ONLY public.app_configurations DROP CONSTRAINT IF EXISTS app_configurations_pkey;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS analytics_fact_visits_pkey;
@@ -583,7 +577,6 @@ DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas_initiatives;
-DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
@@ -2037,17 +2030,6 @@ CREATE TABLE public.areas (
 
 
 --
--- Name: areas_ideas; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.areas_ideas (
-    area_id uuid,
-    idea_id uuid,
-    id uuid DEFAULT shared_extensions.uuid_generate_v4() NOT NULL
-);
-
-
---
 -- Name: areas_initiatives; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2218,15 +2200,21 @@ CREATE TABLE public.custom_fields (
     resource_id uuid,
     hidden boolean DEFAULT false NOT NULL,
     maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     logic jsonb DEFAULT '{}'::jsonb NOT NULL,
     answer_visible_to character varying,
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
     random_option_ordering boolean DEFAULT false NOT NULL,
-    page_layout character varying
+    page_layout character varying,
+    linear_scale_label_1_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_3_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_4_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    dropdown_layout boolean DEFAULT false NOT NULL
 );
 
 
@@ -2878,7 +2866,8 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL
+    global_custom_fields boolean DEFAULT false NOT NULL,
+    verification_expiry integer
 );
 
 
@@ -2892,7 +2881,8 @@ CREATE TABLE public.permissions_custom_fields (
     custom_field_id uuid NOT NULL,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ordering integer DEFAULT 0
 );
 
 
@@ -3523,14 +3513,6 @@ ALTER TABLE ONLY public.app_configurations
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: areas_ideas areas_ideas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT areas_ideas_pkey PRIMARY KEY (id);
 
 
 --
@@ -4624,27 +4606,6 @@ CREATE UNIQUE INDEX index_analytics_dimension_locales_on_name ON public.analytic
 --
 
 CREATE UNIQUE INDEX index_analytics_dimension_types_on_name_and_parent ON public.analytics_dimension_types USING btree (name, parent);
-
-
---
--- Name: index_areas_ideas_on_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_ideas_on_area_id ON public.areas_ideas USING btree (area_id);
-
-
---
--- Name: index_areas_ideas_on_idea_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_ideas_on_idea_id ON public.areas_ideas USING btree (idea_id);
-
-
---
--- Name: index_areas_ideas_on_idea_id_and_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_areas_ideas_on_idea_id_and_area_id ON public.areas_ideas USING btree (idea_id, area_id);
 
 
 --
@@ -6536,14 +6497,6 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: areas_ideas fk_rails_81e27f10eb; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT fk_rails_81e27f10eb FOREIGN KEY (area_id) REFERENCES public.areas(id);
-
-
---
 -- Name: notifications fk_rails_828a073a04; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7005,14 +6958,6 @@ ALTER TABLE ONLY public.nav_bar_items
 
 ALTER TABLE ONLY public.polls_response_options
     ADD CONSTRAINT fk_rails_e871bf6e26 FOREIGN KEY (response_id) REFERENCES public.polls_responses(id);
-
-
---
--- Name: areas_ideas fk_rails_e96a71e39f; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT fk_rails_e96a71e39f FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -7513,10 +7458,17 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240606112752'),
 ('20240612134240'),
 ('202407081751'),
+('20240710101033'),
 ('20240722090955'),
 ('20240729141927'),
 ('20240730093933'),
 ('20240731181623'),
-('20240731223530');
+('20240731223530'),
+('20240805121645'),
+('20240806161121'),
+('20240812115140'),
+('20240814133336'),
+('20240814163522'),
+('20240829185625');
 
 

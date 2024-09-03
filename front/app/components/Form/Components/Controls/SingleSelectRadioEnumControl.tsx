@@ -62,7 +62,11 @@ const SingleSelectRadioEnumControl = ({
           <FormattedMessage {...messages.notPublic} />
         </Text>
       )}
-      <Box display="block" id="e2e-single-select-control">
+      <Box
+        display="block"
+        id="e2e-single-select-control"
+        onBlur={() => setDidBlur(true)}
+      >
         {options?.map((option, index: number) => (
           <StyledBox
             background={theme.colors.tenantPrimaryLighten95}

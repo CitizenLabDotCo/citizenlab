@@ -93,7 +93,7 @@ resource 'Event attendances' do
         event = create(:event, project: project)
         permissions = event.project.phases.first.permissions
         permission = permissions.find_by(action: 'attending_event')
-        permission.update!(permitted_by: 'groups', groups: [group])
+        permission.update!(permitted_by: 'users', groups: [group])
         event
       end
 

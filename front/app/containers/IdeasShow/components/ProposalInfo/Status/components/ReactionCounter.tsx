@@ -35,7 +35,7 @@ interface Props {
 
 const ReactionCounter = ({ id, idea, barColor }: Props) => {
   const reactionCount = idea.attributes.likes_count;
-  const reactionLimit = idea.attributes.reactions_needed;
+  const reactionLimit = idea.attributes.reacting_threshold;
 
   return (
     <Box id={id}>

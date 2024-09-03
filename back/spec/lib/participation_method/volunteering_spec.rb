@@ -44,12 +44,6 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  describe '#validate_built_in_fields?' do
-    it 'returns false' do
-      expect(participation_method.validate_built_in_fields?).to be false
-    end
-  end
-
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'
@@ -70,36 +64,12 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  describe '#update_if_published?' do
-    it 'returns true' do
-      expect(participation_method.update_if_published?).to be true
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
-    end
-  end
-
-  describe '#sign_in_required_for_posting?' do
-    it 'returns false' do
-      expect(participation_method.sign_in_required_for_posting?).to be false
-    end
-  end
-
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
-    end
-  end
-
-  describe '#supports_toxicity_detection?' do
-    it 'returns true' do
-      expect(participation_method.supports_toxicity_detection?).to be true
     end
   end
 
@@ -115,18 +85,25 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  its(:transitive?) { is_expected.to be false }
+  its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }
-  its(:supports_public_visibility?) { is_expected.to be false }
-  its(:supports_exports?) { is_expected.to be false }
-  its(:supports_posting_inputs?) { is_expected.to be false }
-  its(:supports_input_term?) { is_expected.to be false }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_built_in_fields?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
+  its(:supports_exports?) { is_expected.to be false }
+  its(:supports_input_term?) { is_expected.to be false }
+  its(:supports_inputs_without_author?) { is_expected.to be true }
+  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_posting_inputs?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
-  its(:supports_assignment?) { is_expected.to be false }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
-  its(:additional_export_columns) { is_expected.to eq [] }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
+  its(:use_reactions_as_votes?) { is_expected.to be false }
+  its(:transitive?) { is_expected.to be false }
 end

@@ -203,7 +203,7 @@ const FullscreenMapInput = memo<Props>(
                   center: getInitialMapCenter(inputType, mapConfig, data),
                   showLegend: isWebMap || layerCount > 0,
                   showLayerVisibilityControl: isWebMap || layerCount > 0,
-                  showLegendExpanded: true,
+                  showLegendExpanded: false,
                   showZoomControls: true,
                   onInit: onMapInit,
                 }}

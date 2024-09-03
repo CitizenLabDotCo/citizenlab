@@ -296,14 +296,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles = (1..field.maximum).index_with do |value|
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
-    minimum_labels = field.minimum_label_multiloc.transform_values do |label|
-      label.present? ? "1 - #{label}" : '1'
+
+    answer_titles.each_key do |value|
+      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
+        label.present? ? "#{value} - #{label}" : value
+      end
+
+      answer_titles[value][:title_multiloc].merge! labels
     end
-    answer_titles[1][:title_multiloc].merge! minimum_labels
-    maximum_labels = field.maximum_label_multiloc.transform_values do |label|
-      label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
-    end
-    answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
 
     answer_titles
   end

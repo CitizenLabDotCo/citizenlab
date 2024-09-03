@@ -207,12 +207,6 @@ en-GB:
           title: What is your comment?
         option:
           title: What is your option?
-      details:
-        title: Details
-      attachements:
-        title: Images and attachments
-      extra:
-        title: Additional information
   custom_field_options:
     gender:
       male: Male
@@ -283,8 +277,8 @@ en-GB:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title: 'Thanks for participating'
-      description: "Please submit your answers by selecting 'Submit' below."
+      title_text: 'Almost done'
+      description_text_2: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
     pdf_export:
       personal_data: 'Personal data'
       personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
@@ -296,6 +290,12 @@ en-GB:
       optional: 'optional'
       permission: 'Permission'
       choose_as_many: 'Choose as many as you like'
+      choose_exactly:
+        one: 'Choose exactly %{count} option'
+        other: 'Choose exactly %{count} options'
+      choose_between: 'Choose between %{min} and %{max} options'
+      choose_at_least: 'Choose at least %{count} options'
+      choose_at_most: 'Choose at most %{count} options'
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
       page: 'Page'
       date_published: 'Date Published (dd-mm-yyyy)'

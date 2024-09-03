@@ -17,9 +17,5 @@ module EmailCampaigns
     def header_message
       format_message('message_welcome', values: { organizationName: organization_name })
     end
-
-    def show_unsubscribe_link?
-      false
-    end
   end
 end

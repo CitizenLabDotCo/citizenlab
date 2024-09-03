@@ -24,15 +24,15 @@ const fetchCampaignDeliveries = ({
     },
   });
 
-const useCampaignDeliveries = ({ campaignId }: IParameters) => {
+const useCampaignDeliveries = (params: IParameters) => {
   return useQuery<
     ICampaignDeliveries,
     CLErrors,
     ICampaignDeliveries,
     CampaignDeliveriesKeys
   >({
-    queryKey: campaignDeliveriesKeys.list({ campaignId }),
-    queryFn: () => fetchCampaignDeliveries({ campaignId }),
+    queryKey: campaignDeliveriesKeys.list(params),
+    queryFn: () => fetchCampaignDeliveries(params),
   });
 };
 

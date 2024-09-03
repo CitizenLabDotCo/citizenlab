@@ -154,16 +154,12 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
-      limit = phase.pmethod.posting_limit
-      return false unless limit
-
-      num_posts = phase.ideas.where(author: user, publication_status: 'published').size
-      return true if num_posts >= limit
+      return false if phase.pmethod.supports_multiple_posts?
+      return true if phase.ideas.published.exists?(author: user)
 
       if phase.allow_anonymous_participation?
         author_hash = Idea.create_author_hash user.id, phase.project.id, true
-        num_anonymous_posts = phase.ideas.where(author_hash: author_hash).size
-        return true if (num_posts + num_anonymous_posts) >= limit
+        return true if phase.ideas.published.exists?(author_hash: author_hash)
       end
 
       false

@@ -2,9 +2,9 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
-import useUpdatePermissionsCustomField from './useUpdatePermissionsCustomField';
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const data = {
   id: 'customFieldId1',
@@ -46,7 +46,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -72,7 +72,7 @@ describe('useUpdatePermissionsCustomField', () => {
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
-          projectId: '1',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),

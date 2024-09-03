@@ -10,13 +10,13 @@ RSpec.describe 'Footer' do
 
   let(:locale) { 'en' }
   let(:recipient) { create(:user, locale: locale) }
+  let(:campaign) { EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow.create! }
   let(:command) do
     create(:comment_on_initiative_you_follow_campaign).generate_commands(
       activity: create(:activity, item: create(:comment_on_initiative_you_follow), action: 'created'),
       recipient: recipient
     ).first.merge({ recipient: recipient })
   end
-  let(:campaign) { EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow.create! }
 
   let(:mail) { EmailCampaigns::CommentOnInitiativeYouFollowMailer.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
@@ -33,6 +33,32 @@ RSpec.describe 'Footer' do
       expect(mail.body.encoded).to have_tag('a', with: { href: 'https://govocal.com/' }) do
         with_tag 'img', with: { alt: 'Go Vocal logo', src: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_nl.png' }
       end
+    end
+  end
+
+  describe 'when the recipient can give/revoke consent' do
+    it 'includes the unsubscribe link' do
+      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
+        AppConfiguration.instance,
+        campaign.id,
+        recipient.id
+      )
+
+      allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(true)
+      expect(mail.body.encoded.scan(unsubscribe_url).count).to eq(2)
+    end
+  end
+
+  describe 'when the recipient cannot give/revoke consent' do
+    it 'does not include the unsubscribe link' do
+      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
+        AppConfiguration.instance,
+        campaign.id,
+        recipient.id
+      )
+
+      allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(false)
+      expect(mail.body.encoded.scan(unsubscribe_url).count).to eq(0)
     end
   end
 end

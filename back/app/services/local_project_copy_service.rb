@@ -59,8 +59,6 @@ class LocalProjectCopyService < ProjectCopyService
 
   def copy_actions_groups_permissions(phase, copied_object)
     phase.permissions.each do |permission|
-      next unless permission.permitted_by == 'groups'
-
       copied_permission = copied_object.permissions.where(action: permission.action).first
       next unless copied_permission
 

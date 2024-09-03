@@ -44,19 +44,21 @@ describe('Idea posting permissions', () => {
   describe('a project that requires verification', () => {
     it('sends unverified users to the signup flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
-      cy.visit('projects/verified-ideation');
+      cy.visit('/projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click();
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.wait(500);
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-verification-wizard-root').should('exist');
     });
 
     it('lets verified users post', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
-      cy.visit('projects/verified-ideation');
+      cy.visit('/projects/verified-ideation');
       cy.acceptCookies();
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click();
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.wait(500);
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-idea-new-page').should('exist');
     });
   });

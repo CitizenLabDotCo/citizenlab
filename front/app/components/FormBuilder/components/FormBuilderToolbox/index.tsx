@@ -89,8 +89,13 @@ const FormBuilderToolbox = ({
         title_multiloc: {
           [locale]: '',
         },
-        maximum_label_multiloc: {},
-        minimum_label_multiloc: {},
+        linear_scale_label_1_multiloc: {},
+        linear_scale_label_2_multiloc: {},
+        linear_scale_label_3_multiloc: {},
+        linear_scale_label_4_multiloc: {},
+        linear_scale_label_5_multiloc: {},
+        linear_scale_label_6_multiloc: {},
+        linear_scale_label_7_multiloc: {},
         maximum: 5,
         options: [
           {

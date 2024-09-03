@@ -81,8 +81,13 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def visit_linear_scale(field)
     default(field).tap do |ui_field|
-      ui_field[:options][:minimum_label] = multiloc_service.t(field.minimum_label_multiloc)
-      ui_field[:options][:maximum_label] = multiloc_service.t(field.maximum_label_multiloc)
+      ui_field[:options][:linear_scale_label1] = multiloc_service.t(field.linear_scale_label_1_multiloc)
+      ui_field[:options][:linear_scale_label2] = multiloc_service.t(field.linear_scale_label_2_multiloc)
+      ui_field[:options][:linear_scale_label3] = multiloc_service.t(field.linear_scale_label_3_multiloc)
+      ui_field[:options][:linear_scale_label4] = multiloc_service.t(field.linear_scale_label_4_multiloc)
+      ui_field[:options][:linear_scale_label5] = multiloc_service.t(field.linear_scale_label_5_multiloc)
+      ui_field[:options][:linear_scale_label6] = multiloc_service.t(field.linear_scale_label_6_multiloc)
+      ui_field[:options][:linear_scale_label7] = multiloc_service.t(field.linear_scale_label_7_multiloc)
     end
   end
 

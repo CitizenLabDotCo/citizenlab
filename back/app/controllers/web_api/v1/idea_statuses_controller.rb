@@ -107,6 +107,6 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def max_ordering
-    IdeaStatus.where(code: IdeaStatus::AUTOMATIC_STATUS_CODES).maximum(:ordering) || -1
+    IdeaStatus.where(code: IdeaStatus::AUTOMATIC_STATUS_CODES, participation_method: @idea_status.participation_method).maximum(:ordering) || -1
   end
 end

@@ -96,4 +96,16 @@ export default defineMessages({
     id: 'app.components.form.controls.uploadShapefileInstructions',
     defaultMessage: '* Upload a zip file containing one or more shapefiles.',
   },
+  valueOutOfTotalWithLabel: {
+    id: 'app.components.form.controls.valueOutOfTotalWithLabel',
+    defaultMessage: '{value} out of {total}, {label}',
+  },
+  valueOutOfTotalWithMaxExplanation: {
+    id: 'app.components.form.controls.valueOutOfTotalWithMaxExplanation',
+    defaultMessage: '{value} out of {total}, where {maxValue} is {maxLabel}',
+  },
+  valueOutOfTotal: {
+    id: 'app.components.form.controls.valueOutOfTotal',
+    defaultMessage: '{value} out of {total}',
+  },
 });

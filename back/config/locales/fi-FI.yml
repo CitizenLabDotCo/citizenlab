@@ -207,12 +207,6 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
-      details:
-        title: Yksityiskohdat
-      attachements:
-        title: Kuvat ja liitteet
-      extra:
-        title: Lisäinformaatio
   custom_field_options:
     gender:
       male: Mies
@@ -283,8 +277,8 @@ fi:
       option1: 'Vaihtoehto 1'
       option2: 'Vaihtoehto 2'
     form_end_page:
-      title: 'Kiitos osallistumisesta'
-      description: "Lähetä vastauksesi valitsemalla alta \"Lähetä\"."
+      title_text: 'Melkein valmis'
+      description_text_2: "Olet lähettämässä vastauksesi. Napsauttamalla 'Lähetä' annat meille luvan analysoida vastauksiasi.<br/>Lähettämisen jälkeen et voi enää palata takaisin ja muuttaa vastauksiasi."
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
       personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
@@ -296,6 +290,12 @@ fi:
       optional: 'valinnainen'
       permission: 'Lupa'
       choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_exactly:
+        one: 'Valitse täsmälleen %{count} -vaihtoehto'
+        other: 'Valitse täsmälleen %{count} vaihtoehdot'
+      choose_between: 'Valitse %{min} ja %{max} vaihtoehdoista'
+      choose_at_least: 'Valitse vähintään %{count} vaihtoehtoa'
+      choose_at_most: 'Valitse enintään %{count} vaihtoehtoa'
       this_answer: 'Tämä vastaus jaetaan vain moderaattoreille, ei yleisölle.'
       page: 'Sivu'
       date_published: 'Julkaisupäivä (pp-kk-vvvv)'

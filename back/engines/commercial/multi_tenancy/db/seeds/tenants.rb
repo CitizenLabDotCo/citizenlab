@@ -287,6 +287,12 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               verification_methods: [
+                # NOTE: for real platforms, you should never have
+                # more than one verification method enabled at a time.
+                # The below list is for testing purposes only.
+                {
+                  name: 'fake_sso'
+                },
                 {
                   name: 'cow',
                   api_username: 'fake_username',
@@ -329,7 +335,8 @@ module MultiTenancy
                   name: 'nemlog_in',
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
+                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+                  enabled_for_verified_actions: true
                 },
                 {
                   name: 'criipto',
@@ -338,9 +345,6 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
-                },
-                {
-                  name: 'fake_sso'
                 }
               ]
             },
@@ -459,7 +463,8 @@ module MultiTenancy
             },
             fake_sso: {
               enabled: true,
-              allowed: true
+              allowed: true,
+              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
             }
           })
         )

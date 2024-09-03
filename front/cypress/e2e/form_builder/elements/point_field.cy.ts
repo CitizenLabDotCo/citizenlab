@@ -126,6 +126,10 @@ describe('Form builder point field', () => {
     // Check results in back office
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.contains(questionTitle).should('exist');
+    // Open the legend and check the correct data is shown
+    cy.get(
+      '.esri-ui-bottom-right > .esri-component > .esri-expand__container'
+    ).click();
     cy.contains('Lava Flow Hazard Zones').should('exist'); // Check loading the correct map config
     cy.contains('Responses').should('exist');
   });

@@ -531,4 +531,57 @@ RSpec.describe CustomField do
       expect(field.other_option_text_field).to be_nil
     end
   end
+
+  describe '#linear_scale_print_description' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        maximum: 3,
+        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
+        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
+        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
+        linear_scale_label_4_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_5_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_6_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_7_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        }
+      )
+    end
+
+    it 'returns the linear scale print description for the specified locale' do
+      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
+      expect(field.linear_scale_print_description('fr-FR'))
+        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
+    end
+
+    it 'returns default copy if the locale values is/are not specified' do
+      field.linear_scale_label_1_multiloc = { en: '' }
+      field.linear_scale_label_3_multiloc = { en: '' }
+
+      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
+      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
+    end
+  end
+
+  describe '#nth_linear_scale_multiloc' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        linear_scale_label_3_multiloc: { en: 'I am label 3 multiloc' },
+        linear_scale_label_7_multiloc: { en: 'I am label 7 multiloc' }
+      )
+    end
+
+    it 'returns the nth linear scale label multiloc' do
+      expect(field.nth_linear_scale_multiloc(3)).to eq({ 'en' => 'I am label 3 multiloc' })
+      expect(field.nth_linear_scale_multiloc(7)).to eq({ 'en' => 'I am label 7 multiloc' })
+    end
+  end
 end

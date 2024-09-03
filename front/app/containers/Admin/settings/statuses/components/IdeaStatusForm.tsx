@@ -115,6 +115,7 @@ const IdeaStatusForm = ({
   const allowedCodes = codes.filter(
     (code) => !automatedInputStatusCodes.has(code)
   );
+  const dedupedCodes = [...new Set(allowedCodes)];
 
   return (
     <FormProvider {...methods}>
@@ -159,7 +160,7 @@ const IdeaStatusForm = ({
                 />
               </StyledLabel>
               <RadioGroup name="code">
-                {allowedCodes.map((code, i) => (
+                {dedupedCodes.map((code, i) => (
                   <Radio
                     key={`code-input-${i}`}
                     label={

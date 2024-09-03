@@ -77,14 +77,20 @@ export interface IAttributes {
   ordering: number;
   created_at: string;
   updated_at: string;
-  minimum_label_multiloc?: Multiloc;
-  maximum_label_multiloc?: Multiloc;
+  linear_scale_label_1_multiloc?: Multiloc;
+  linear_scale_label_2_multiloc?: Multiloc;
+  linear_scale_label_3_multiloc?: Multiloc;
+  linear_scale_label_4_multiloc?: Multiloc;
+  linear_scale_label_5_multiloc?: Multiloc;
+  linear_scale_label_6_multiloc?: Multiloc;
+  linear_scale_label_7_multiloc?: Multiloc;
   maximum?: number;
   minimum_select_count?: number;
   maximum_select_count?: number;
   select_count_enabled?: boolean;
   other?: boolean;
   random_option_ordering?: boolean;
+  dropdown_layout?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -128,10 +134,16 @@ export type IFlatCreateCustomField = Optional<
   | 'ordering'
   | 'created_at'
   | 'updated_at'
-  | 'minimum_label_multiloc'
-  | 'maximum_label_multiloc'
+  | 'linear_scale_label_1_multiloc'
+  | 'linear_scale_label_2_multiloc'
+  | 'linear_scale_label_3_multiloc'
+  | 'linear_scale_label_4_multiloc'
+  | 'linear_scale_label_5_multiloc'
+  | 'linear_scale_label_6_multiloc'
+  | 'linear_scale_label_7_multiloc'
   | 'maximum'
   | 'random_option_ordering'
+  | 'dropdown_layout'
 > & {
   isLocalOnly: boolean;
 };

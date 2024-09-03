@@ -179,6 +179,7 @@ const DesktopView = ({
               zoom: Number(mapConfig?.data.attributes.zoom_level),
               center: getInitialMapCenter(inputType, mapConfig, data),
               showLegend: isWebMap || layerCount > 0,
+              showLegendExpanded: false,
               showLayerVisibilityControl: isWebMap || layerCount > 0,
               onInit: onMapInit,
             }}

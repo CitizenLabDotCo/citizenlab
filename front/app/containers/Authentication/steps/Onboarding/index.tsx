@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import { OnboardingType } from 'api/users/types';
 
 import { AuthenticationData } from 'containers/Authentication/typings';
 
@@ -17,11 +17,8 @@ const Onboarding = ({ authenticationData, onSubmit, onSkip }: Props) => {
   const { data: authenticationRequirements } = useAuthenticationRequirements(
     authenticationData.context
   );
-  const requiresTopicsAndAreasOnboarding = Object.prototype.hasOwnProperty.call(
-    authenticationRequirements?.data.attributes.requirements.requirements
-      .onboarding,
-    'topics_and_areas'
-  );
+  const requiresTopicsAndAreasOnboarding =
+    authenticationRequirements?.data.attributes.requirements.onboarding;
 
   if (requiresTopicsAndAreasOnboarding) {
     return <TopicsAndAreas onSubmit={onSubmit} onSkip={onSkip} />;

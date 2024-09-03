@@ -45,6 +45,7 @@ fallback_locales =
   %i[
     ar
     ca
+    cy
     da
     de
     el

@@ -1,21 +1,17 @@
 import React from 'react';
 
-import {
-  IconTooltip,
-  Spinner,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Spinner, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+import useReorderIdeaStatus from 'api/idea_statuses/useReorderIdeaStatus';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
-  Row,
+  LockedRow,
   SortableList,
   SortableRow,
   TextCell,
@@ -55,25 +51,20 @@ const FlexTextCell = styled(TextCell)`
   align-items: center;
 `;
 
-const StyledIconTooltip = styled(IconTooltip)`
-  margin-right: 20px;
-  padding: 0 16px;
-`;
-
 const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
     participation_method: variant,
   });
-  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
+  const { mutate: reorderIdeaStatus } = useReorderIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
     name: 'custom_idea_statuses',
     onlyCheckAllowed: true,
   });
 
-  const handleReorder = (id: string, ordering: number) => () => {
-    updateIdeaStatus({
+  const handleReorder = (id: string, ordering: number) => {
+    reorderIdeaStatus({
       id,
-      requestBody: { participation_method: variant, ordering },
+      ordering,
     });
   };
 
@@ -98,9 +89,6 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
       (ideaStatus) => ideaStatus.attributes.can_reorder === false
     );
 
-    const sortableStatuses = ideaStatuses?.data.filter(
-      (ideaStatus) => ideaStatus.attributes.can_reorder
-    );
     return (
       <Section>
         {!customIdeaStatusesAllowed && (
@@ -132,48 +120,49 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             </Button>
           </Tooltip>
         </ButtonWrapper>
-        {defaultStatuses.map((defaultStatus) => (
-          <Row key={defaultStatus.id}>
-            <FlexTextCell className="expand">
-              <StyledIconTooltip
-                content={<FormattedMessage {...messages.lockedStatusTooltip} />}
-                iconSize="16px"
-                placement="top"
-                icon="lock"
-              />
-              <ColorLabel color={defaultStatus.attributes.color} />
-              <T value={defaultStatus.attributes.title_multiloc} />
-            </FlexTextCell>
-            <Buttons>
-              {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
-            so it's always disabled. */}
-              <DeleteStatusButton
-                buttonDisabled
-                tooltipContent={
-                  customIdeaStatusesAllowed ? (
-                    <FormattedMessage
-                      {...messages.defaultStatusDeleteButtonTooltip}
-                    />
-                  ) : (
-                    <FormattedMessage {...messages.pricingPlanUpgrade} />
-                  )
-                }
-                ideaStatusId={defaultStatus.id}
-              />
-              <EditStatusButton
-                buttonDisabled={!customIdeaStatusesAllowed}
-                tooltipContent={
-                  <FormattedMessage {...messages.pricingPlanUpgrade} />
-                }
-                linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
-              />
-            </Buttons>
-          </Row>
-        ))}
 
-        <SortableList items={sortableStatuses} onReorder={handleReorder}>
-          {({ itemsList, handleDragRow, handleDropRow }) => (
+        <SortableList
+          items={ideaStatuses.data}
+          lockFirstNItems={defaultStatuses.length}
+          onReorder={handleReorder}
+        >
+          {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
             <>
+              {lockedItemsList?.map((defaultStatus, i) => (
+                <LockedRow
+                  key={defaultStatus.id}
+                  isLastItem={i === itemsList.length - 1}
+                >
+                  <FlexTextCell className="expand">
+                    <ColorLabel color={defaultStatus.attributes.color} />
+                    <T value={defaultStatus.attributes.title_multiloc} />
+                  </FlexTextCell>
+                  <Buttons>
+                    {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
+            so it's always disabled. */}
+                    <DeleteStatusButton
+                      buttonDisabled
+                      tooltipContent={
+                        customIdeaStatusesAllowed ? (
+                          <FormattedMessage
+                            {...messages.defaultStatusDeleteButtonTooltip}
+                          />
+                        ) : (
+                          <FormattedMessage {...messages.pricingPlanUpgrade} />
+                        )
+                      }
+                      ideaStatusId={defaultStatus.id}
+                    />
+                    <EditStatusButton
+                      buttonDisabled={!customIdeaStatusesAllowed}
+                      tooltipContent={
+                        <FormattedMessage {...messages.pricingPlanUpgrade} />
+                      }
+                      linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
+                    />
+                  </Buttons>
+                </LockedRow>
+              ))}
               {itemsList.map((ideaStatus: IIdeaStatusData, index: number) => (
                 <SortableRow
                   key={ideaStatus.id}

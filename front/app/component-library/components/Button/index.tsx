@@ -514,6 +514,7 @@ export interface Props extends ButtonContainerProps {
   ariaPressed?: boolean;
   ariaDescribedby?: string;
   as?: React.ElementType;
+  tabIndex?: number;
 }
 
 const Button = (props: Props) => {
@@ -585,6 +586,7 @@ const Button = (props: Props) => {
     onClick: _onClick,
     processing = false,
     disabled = false,
+    tabIndex,
     as,
     ...rest
   } = props;
@@ -689,6 +691,7 @@ const Button = (props: Props) => {
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
         as={as}
+        tabIndex={tabIndex}
       >
         {childContent}
       </StyledButton>

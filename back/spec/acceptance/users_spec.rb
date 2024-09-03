@@ -826,7 +826,7 @@ resource 'Users' do
             ])
 
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'users', groups: [old_timers])
           end
 
           context 'on a resident' do

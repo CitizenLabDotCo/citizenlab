@@ -74,6 +74,7 @@ describe('Budgeting project', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
   });
 
   after(() => {
@@ -103,12 +104,17 @@ describe('Budgeting project', () => {
       .should('exist')
       .should('have.class', 'disabled');
 
+    cy.wait(2000);
+
+    cy.intercept('PUT', '**/baskets/ideas/**').as('voteForIdea');
+
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'not-in-basket')
       .click()
       .should('have.class', 'in-basket');
-    cy.wait(2000);
+
+    cy.wait('@voteForIdea');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
@@ -118,8 +124,10 @@ describe('Budgeting project', () => {
   });
 
   it('can submit the budget', () => {
-    cy.get('#e2e-voting-submit-button').find('button').click();
-    cy.wait(2000);
+    cy.get('#e2e-voting-submit-button');
+    cy.wait(4000);
+    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
+    cy.wait(1000);
 
     cy.contains('Budget submitted');
     cy.contains('You have participated in this project');
@@ -132,13 +140,24 @@ describe('Budgeting project', () => {
   it('can modify the budget and remove an option', () => {
     cy.get('#e2e-modify-votes')
       .should('exist')
-      .should('contain', 'Modify your budget')
-      .click();
+      .should('contain', 'Modify your budget');
+
     cy.wait(2000);
+
+    cy.get('#e2e-modify-votes').click();
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
-      .should('have.class', 'in-basket')
+      .should('have.class', 'in-basket');
+
+    cy.wait(2000);
+
+    cy.get('#e2e-ideas-container');
+
+    cy.wait(1000);
+
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-assign-budget-button')
       .click()
       .should('have.class', 'not-in-basket');
 

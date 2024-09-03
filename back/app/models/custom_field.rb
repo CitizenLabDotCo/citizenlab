@@ -4,30 +4,36 @@
 #
 # Table name: custom_fields
 #
-#  id                     :uuid             not null, primary key
-#  resource_type          :string
-#  key                    :string
-#  input_type             :string
-#  title_multiloc         :jsonb
-#  description_multiloc   :jsonb
-#  required               :boolean          default(FALSE)
-#  ordering               :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  enabled                :boolean          default(TRUE), not null
-#  code                   :string
-#  resource_id            :uuid
-#  hidden                 :boolean          default(FALSE), not null
-#  maximum                :integer
-#  minimum_label_multiloc :jsonb            not null
-#  maximum_label_multiloc :jsonb            not null
-#  logic                  :jsonb            not null
-#  answer_visible_to      :string
-#  select_count_enabled   :boolean          default(FALSE), not null
-#  maximum_select_count   :integer
-#  minimum_select_count   :integer
-#  random_option_ordering :boolean          default(FALSE), not null
-#  page_layout            :string
+#  id                            :uuid             not null, primary key
+#  resource_type                 :string
+#  key                           :string
+#  input_type                    :string
+#  title_multiloc                :jsonb
+#  description_multiloc          :jsonb
+#  required                      :boolean          default(FALSE)
+#  ordering                      :integer
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  enabled                       :boolean          default(TRUE), not null
+#  code                          :string
+#  resource_id                   :uuid
+#  hidden                        :boolean          default(FALSE), not null
+#  maximum                       :integer
+#  logic                         :jsonb            not null
+#  answer_visible_to             :string
+#  select_count_enabled          :boolean          default(FALSE), not null
+#  maximum_select_count          :integer
+#  minimum_select_count          :integer
+#  random_option_ordering        :boolean          default(FALSE), not null
+#  page_layout                   :string
+#  linear_scale_label_1_multiloc :jsonb            not null
+#  linear_scale_label_2_multiloc :jsonb            not null
+#  linear_scale_label_3_multiloc :jsonb            not null
+#  linear_scale_label_4_multiloc :jsonb            not null
+#  linear_scale_label_5_multiloc :jsonb            not null
+#  linear_scale_label_6_multiloc :jsonb            not null
+#  linear_scale_label_7_multiloc :jsonb            not null
+#  dropdown_layout               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -159,6 +165,10 @@ class CustomField < ApplicationRecord
     page? || section?
   end
 
+  def dropdown_layout_type?
+    %w[multiselect select].include?(input_type)
+  end
+
   def accepts_input?
     !page_or_section?
   end
@@ -285,8 +295,14 @@ class CustomField < ApplicationRecord
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
-    min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
-    max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
+    multiloc_service = MultilocService.new
+
+    min_text = multiloc_service.t(linear_scale_label_1_multiloc, locale)
+    min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
+
+    max_text = multiloc_service.t(nth_linear_scale_multiloc(maximum), locale)
+    max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
+
     I18n.with_locale(locale) do
       I18n.t(
         'form_builder.pdf_export.linear_scale_print_description',
@@ -294,6 +310,10 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def nth_linear_scale_multiloc(n)
+    send(:"linear_scale_label_#{n}_multiloc")
   end
 
   def input_term
