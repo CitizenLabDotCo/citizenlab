@@ -183,7 +183,7 @@ pt:
         title: Detalhes
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Se você escolheu "{other_option}", no que está pensando?
   custom_forms:
     categories:
       main_content:
