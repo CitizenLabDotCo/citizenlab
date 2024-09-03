@@ -696,7 +696,7 @@
   "app.components.formBuilder.done": "Fertig",
   "app.components.formBuilder.drawArea": "Fläche zeichnen",
   "app.components.formBuilder.drawRoute": "Route zeichnen",
-  "app.components.formBuilder.dropPin": "Pin anlegen",
+  "app.components.formBuilder.dropPin": "Pin setzen",
   "app.components.formBuilder.editButtonLabel": "Bearbeiten",
   "app.components.formBuilder.emptyImageOptionError": "Geben Sie mindestens 1 Antwort. Bitte beachten Sie, dass jede Antwort einen Titel haben muss.",
   "app.components.formBuilder.emptyOptionError": "Geben Sie mindestens 1 Antwortmöglichkeit an",
