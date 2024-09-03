@@ -10,9 +10,8 @@ en:
       "comment_on_idea_you_follow": A comment on an idea that you follow
       "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponor my proposal
-      "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
+      "idea_published": Publication of my input
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
@@ -453,24 +452,6 @@ en:
       main_header: 'An initiative reached the voting threshold!'
       subject: 'An initiative reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
-    first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
-      link: link
-      main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your first idea on the platform of %{organizationName}'
     welcome:
       cta_join_platform: 'Discover the platform'
       subject: 'Welcome to the platform of %{organizationName}'
@@ -479,21 +460,21 @@ en:
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} to increase visibility'
-      action_published_idea: 'Published idea'
+      action_published_idea: 'Published input'
       action_send_email: 'Send your contacts an %{sendEmailLink}'
       action_share_fb: 'Let your friends know on %{fbLink}'
       action_share_link: 'Share it via any channel by copying the %{link}'
       action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      cta_view_idea: 'Go to your input'
+      event_description: '%{firstName}, your input has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your input. Find out what next steps you can take below.'
       link: link
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
+      main_header: 'You posted an input! Let''s make sure it gets read.'
+      message_get_votes: 'Reach more people with your input:'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
       see_you: 'See you soon at the platform!'
       send_email: email
-      subject: 'Your idea on the platform of %{organizationName}'
+      subject: 'Your input on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your proposals'

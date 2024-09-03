@@ -41,7 +41,7 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def self.consentable_roles
-      %w[admin project_moderator] # TODO: Only project/folder moderators
+      %w[admin project_moderator project_folder_moderator]
     end
 
     def mailer_class
@@ -57,15 +57,15 @@ module EmailCampaigns
       initiator = input.author
       return users_scope.none if UserRoleService.new.moderates_something? initiator
 
-      UserRoleService.new.moderators_for(input, users_scope) # TODO: Only project/folder moderators
+      UserRoleService.new.moderators_for(input, users_scope)
     end
 
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.admins_and_managers' # TODO: Only project/folder moderators
+      'email_campaigns.admin_labels.recipient_role.admins_and_managers'
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins_and_managers' # TODO: Only project/folder moderators
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers'
     end
 
     def self.content_type_multiloc_key
