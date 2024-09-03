@@ -1,19 +1,55 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Multiloc } from 'typings';
+import { object } from 'yup';
 
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
 
-interface Props {
-  opened: boolean;
-  onClose: () => void;
+interface FormValues {
+  access_denied_explanation_multiloc?: Multiloc;
 }
 
-const ErrorMessageModal = ({ opened, onClose }: Props) => {
+interface Props {
+  opened: boolean;
+  access_denied_explanation_multiloc?: Multiloc;
+  onClose: () => void;
+  onSubmit: (formValues: FormValues) => Promise<void>;
+}
+
+const ErrorMessageModal = ({
+  opened,
+  access_denied_explanation_multiloc,
+  onClose,
+  onSubmit,
+}: Props) => {
+  const schema = object({
+    access_denied_explanation_multiloc: object(),
+  });
+
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: { access_denied_explanation_multiloc },
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
   return (
     <Modal
       opened={opened}
@@ -27,7 +63,27 @@ const ErrorMessageModal = ({ opened, onClose }: Props) => {
       closeOnClickOutside={false}
       width={'550px'}
     >
-      <Box m="20px">TODO content</Box>
+      <Box m="20px">
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+            <Feedback />
+            <InputMultilocWithLocaleSwitcher
+              label={<FormattedMessage {...messages.alternativeErrorMessage} />}
+              name="access_denied_explanation_multiloc"
+            />
+
+            <Box display="flex" mt="20px">
+              <Button
+                buttonStyle="admin-dark"
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
+                <FormattedMessage {...messages.saveErrorMessage} />
+              </Button>
+            </Box>
+          </form>
+        </FormProvider>
+      </Box>
     </Modal>
   );
 };
