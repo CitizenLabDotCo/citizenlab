@@ -212,7 +212,7 @@ const HighlightSettings = () => {
   }));
   return (
     <Box
-      background="#ffffff"
+      background={colors.white}
       my="20px"
       display="flex"
       flexDirection="column"

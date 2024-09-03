@@ -41,7 +41,8 @@ export const getTabs = (
       name: 'form',
     },
     (phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting') && {
+      phase.attributes.participation_method === 'voting' ||
+      phase.attributes.participation_method === 'proposals') && {
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',

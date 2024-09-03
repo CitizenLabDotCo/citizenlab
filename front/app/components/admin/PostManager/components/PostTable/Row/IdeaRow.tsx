@@ -22,12 +22,16 @@ import Checkbox from 'components/UI/Checkbox';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
+import IdeaOfficialFeedbackModal, {
+  getIdeaOfficialFeedbackModalEventName,
+} from '../../IdeaOfficialFeedbackModal';
 
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -411,6 +415,8 @@ const IdeaRow = ({
       method: 'Clicked on the squares representing the statuses',
       idea: ideaId,
     });
+
+    eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(ideaId));
   };
 
   return (
@@ -449,6 +455,7 @@ const IdeaRow = ({
         onClose={closePhaseDeselectModal}
         onConfirm={handleConfirmDeselectPhase}
       />
+      <IdeaOfficialFeedbackModal ideaId={idea.id} />
     </>
   );
 };
