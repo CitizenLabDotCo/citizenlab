@@ -6,13 +6,22 @@ import {
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import ErrorMessageModal from './ErrorMessageModal';
 import messages from './messages';
 
-const CustomizeErrorMessage = () => {
+interface Props {
+  access_denied_explanation_multiloc: Multiloc;
+  onUpdate: (access_denied_explanation_multiloc?: Multiloc) => void;
+}
+
+const CustomizeErrorMessage = ({
+  access_denied_explanation_multiloc,
+  onUpdate,
+}: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -43,7 +52,11 @@ const CustomizeErrorMessage = () => {
       </Box>
       <ErrorMessageModal
         opened={modalOpen}
+        access_denied_explanation_multiloc={access_denied_explanation_multiloc}
         onClose={() => setModalOpen(false)}
+        onSubmit={({ access_denied_explanation_multiloc }) => {
+          onUpdate(access_denied_explanation_multiloc);
+        }}
       />
     </>
   );

@@ -6,6 +6,7 @@ import {
   Title,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import { IPermissionData } from 'api/permissions/types';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
@@ -27,6 +28,7 @@ type Changes = {
   permittedBy?: PermittedBy;
   groupIds?: string[];
   verificationExpiry?: number | null;
+  access_denied_explanation_multiloc?: Multiloc;
 };
 
 interface Props {
@@ -129,7 +131,14 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                   />
                 </Box>
               </Box>
-              <CustomizeErrorMessage />
+              <CustomizeErrorMessage
+                access_denied_explanation_multiloc={
+                  permissionData.attributes.access_denied_explanation_multiloc
+                }
+                onUpdate={(access_denied_explanation_multiloc) => {
+                  onChange({ access_denied_explanation_multiloc });
+                }}
+              />
             </>
           )}
           {showResetButton(
