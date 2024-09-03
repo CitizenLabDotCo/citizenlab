@@ -1080,6 +1080,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.showVotes": "crwdns2467852:0crwdne2467852:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.votes": "crwdns2467854:0crwdne2467854:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics": "crwdns2212576:0crwdne2212576:0",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange": "crwdns2984471:0crwdne2984471:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "crwdns2212578:0crwdne2212578:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "crwdns2212580:0crwdne2212580:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "crwdns2212582:0{numberOfUsers}crwdnd2212582:0{percentageOfUsers}crwdne2212582:0",
