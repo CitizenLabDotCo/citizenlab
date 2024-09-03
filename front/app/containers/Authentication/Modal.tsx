@@ -324,7 +324,9 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {currentStep === 'access-denied' && <AccessDenied />}
+        {currentStep === 'access-denied' && (
+          <AccessDenied onClose={transition(currentStep, 'CLOSE')} />
+        )}
       </Box>
     </Modal>
   );
