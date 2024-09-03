@@ -29,7 +29,6 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -54,6 +53,7 @@ import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
 
 const ConsentManager = lazy(() => import('components/ConsentManager'));
+const Authentication = lazy(() => import('containers/Authentication'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
@@ -368,7 +368,9 @@ const App = ({ children }: Props) => {
               </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
-              <Authentication setModalOpen={setSignUpInModalOpened} />
+              <Suspense fallback={null}>
+                <Authentication setModalOpen={setSignUpInModalOpened} />
+              </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
               <div id="modal-portal" />
