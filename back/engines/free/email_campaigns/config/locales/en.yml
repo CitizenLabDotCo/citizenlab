@@ -32,7 +32,7 @@ en:
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
-      "new_idea_for_admin": New idea in a project I moderate
+      "new_idea_for_admin": New input in a project I moderate
       "new_initiative_for_admin": New proposal
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
@@ -279,13 +279,14 @@ en:
       subject: 'Someone published a new proposal on the platform of %{organizationName}'
       preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
-      commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'Give feedback to %{authorName}'
+      main_header_publication: '%{firstName}, a new input has been published on your platform'
+      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_publication: 'Give feedback to %{authorName}'
+      main_header_prescreening: '%{firstName}, an input requires your review'
+      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
+      cta_prescreening: 'Review the input'
       days_ago: '%{numberOfDays} days ago'
-      event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'A new post has been published on %{organizationName}''s platform'
-      preheader: '%{authorName} published a new idea on your platform'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:

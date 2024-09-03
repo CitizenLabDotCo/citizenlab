@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
           with_text(/There's an update on an input you follow/)
         end
         with_tag 'p' do
-          with_text(/Gonzo gave an update on the input 'Input title'. Click the button below to enter the conversation with Gonzo/)
+          with_text(/Gonzo gave an update on the input 'Input title'\. Click the button below to enter the conversation with Gonzo/)
         end
       end
     end
