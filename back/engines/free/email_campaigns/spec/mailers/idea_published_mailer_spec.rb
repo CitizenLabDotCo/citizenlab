@@ -39,9 +39,6 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
         with_tag 'h1' do
           with_text(/You posted an input! Let's make sure it gets read\./)
         end
-        # with_tag 'p' do
-        #   with_text(/Gonzo gave an update on the input 'Input title'\. Click the button below to enter the conversation with Gonzo/)
-        # end
       end
     end
 
