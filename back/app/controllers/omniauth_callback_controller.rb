@@ -112,7 +112,7 @@ class OmniauthCallbackController < ApplicationController
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
-        verify_and_sign_in(auth, @user, verify, sign_up: true)
+        verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
         failure_redirect
@@ -120,8 +120,8 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def verify_and_sign_in(auth, user, verify, sign_up: true)
-    continue_auth = verify ? handle_sso_verification(auth, user) : true
+  def verify_and_sign_in(auth, user, verify, sign_up: true, user_created: false)
+    continue_auth = verify ? handle_sso_verification(auth, user, user_created) : true
     return unless continue_auth
 
     set_auth_cookie(provider: auth['provider'])
@@ -134,7 +134,8 @@ class OmniauthCallbackController < ApplicationController
 
   def failure_redirect(params = {})
     redirect_params = (request.env['omniauth.params'] || {}).with_indifferent_access.merge(params)
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params)) and nil
+    binding.pry
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
   end
 
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
@@ -218,7 +219,7 @@ class OmniauthCallbackController < ApplicationController
     nil
   end
 
-  def handle_sso_verification(_auth, _user)
+  def handle_sso_verification(_auth, _user, _user_created)
     true
   end
 

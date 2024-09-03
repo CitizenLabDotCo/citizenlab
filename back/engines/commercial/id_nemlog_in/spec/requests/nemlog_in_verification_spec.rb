@@ -129,7 +129,7 @@ describe IdNemlogIn::NemlogInOmniauth do
   context 'verifying and creating a new user' do
     let(:user) { nil }
 
-    it 'creates a user with a unique ID and not an email' do
+    it 'creates a user with a unique ID and no email, then logs them in' do
       get '/auth/nemlog_in?pathname=/whatever-page'
       follow_redirect!
 
@@ -144,9 +144,21 @@ describe IdNemlogIn::NemlogInOmniauth do
       expect(User.first.verified).to be(true)
       expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
     end
+
+    it 'does not create a user or log them in if the user is under the minimum age' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
+
+      get '/auth/nemlog_in?pathname=/whatever-page'
+      follow_redirect!
+
+      # TODO: JS - This needs to redirect to the same page
+      expect(response).to redirect_to('/authentication-error?pathname=%2Fwhatever-page&error_code=not_entitled_under_minimum_age')
+      expect(cookies[:cl2_jwt]).to be_nil
+      expect(User.count).to eq 0
+    end
   end
 
-  context 'verifying and logging in new user' do
+  context 'verifying and logging in a user' do
     let!(:user) { create(:user, first_name: 'Bob', last_name: 'Jelly', email: nil, unique_code: '9208-2002-2-024271267078') }
 
     it 'logs in a user without an email but does not update user with details from verification' do

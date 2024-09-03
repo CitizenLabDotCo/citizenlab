@@ -41,13 +41,14 @@ module Verification
         end
       end
 
-      def handle_sso_verification(auth, user)
+      def handle_sso_verification(auth, user, user_created)
         handle_verification(auth, user)
         true
       rescue VerificationService::NotEntitledError => e
         # In some cases, it may be fine not to verify during SSO, so we enable this specifically in the method
         return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?
 
+        user.destroy if user_created # TODO: Probably should not be created in the first place, but bigger refactor required to fix
         failure_redirect(error_code: not_entitled_error(e))
         return false
       end
