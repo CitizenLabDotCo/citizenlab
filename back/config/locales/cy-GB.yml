@@ -183,7 +183,7 @@ cy:
         title: Manylion
         description:
       other_text_field:
-        title: Pam wnaethoch chi ddewis 'arall'?
+        title: Os dewisoch chi '{other_option}', beth ydych chi'n ei feddwl?
   custom_forms:
     categories:
       main_content:
