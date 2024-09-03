@@ -24,6 +24,10 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
+  def failure
+    failure_redirect
+  end
+
   def logout_data
     provider = params[:provider]
     user_id = params[:user_id]
@@ -121,7 +125,7 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def verify_and_sign_in(auth, user, verify, sign_up: true, user_created: false)
-    continue_auth = verify ? handle_sso_verification(auth, user, user_created) : true
+    continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
     return unless continue_auth
 
     set_auth_cookie(provider: auth['provider'])
@@ -214,22 +218,6 @@ class OmniauthCallbackController < ApplicationController
     locales.first
   end
 
-  def get_verification_method(_provider)
-    nil
-  end
-
-  def handle_sso_verification(_auth, _user, _user_created)
-    true
-  end
-
-  def handle_verification(_auth, _user)
-    # overridden
-  end
-
-  def verification_callback(_verification_method)
-    # overridden
-  end
-
   def authentication_service
     @authentication_service ||= AuthenticationService.new
   end
@@ -243,7 +231,19 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def verification_method
-    @verification_method ||= get_verification_method(auth_provider)
+    nil # overridden
+  end
+
+  def verified_for_sso?(_auth, _user, _user_created)
+    true # overridden
+  end
+
+  def handle_verification(_auth, _user)
+    # overridden
+  end
+
+  def verification_callback(_verification_method)
+    # overridden
   end
 end
 

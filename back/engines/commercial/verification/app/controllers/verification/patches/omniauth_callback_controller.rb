@@ -3,9 +3,7 @@
 module Verification
   module Patches
     module OmniauthCallbackController
-      def get_verification_method(provider)
-        verification_service.method_by_name(provider)
-      end
+      private
 
       def handle_verification(auth, user)
         configuration = AppConfiguration.instance
@@ -41,7 +39,7 @@ module Verification
         end
       end
 
-      def handle_sso_verification(auth, user, user_created)
+      def verified_for_sso?(auth, user, user_created)
         handle_verification(auth, user)
         true
       rescue VerificationService::NotEntitledError => e
@@ -50,7 +48,7 @@ module Verification
 
         user.destroy if user_created # TODO: Probably should not be created in the first place, but bigger refactor required to fix
         failure_redirect(error_code: not_entitled_error(e))
-        return false
+        false
       end
 
       def not_entitled_error(error)
@@ -65,6 +63,10 @@ module Verification
           omniauth_params.merge(verification_error: true, error: error)
         )
         redirect_to url
+      end
+
+      def verification_method
+        @verification_method ||= verification_service.method_by_name(auth_provider)
       end
 
       def verification_service
