@@ -36,10 +36,10 @@ fr:
   symbols:
     outside: autre lieu
   idea_statuses:
-    prescreening: présélection
-    prescreening_description: Ces données sont actuellement examinées par le chef de projet et ne sont pas encore visibles par le public.
+    prescreening: Réviser les contributions
+    prescreening_description: Cette contribution est actuellement en cours de révision par le chef de projet et n'est pas encore visibles au public.
     proposed: soumise
-    proposed_description: Cette contribution a été soumise et est maintenant ouverte au soutien du public. Recueillez des votes pour l'aider à passer à l'étape suivante.
+    proposed_description: Cette contribution a été soumise et est maintenant ouverte ouvert à la contribution publique. Recueillez des votes pour l'aider à passer à l'étape suivante.
     viewed: vue
     viewed_description: Cette contribution a été vue par le chef de projet.
     under_consideration: prise en considération
@@ -49,15 +49,15 @@ fr:
     implemented: mise en place
     implemented_description: Cette contribution a été mise en œuvre par le chef de projet.
     rejected: non-retenue
-    rejected_description: Cette entrée a été rejetée.
+    rejected_description: Cette contribution a été rejetée.
     expired: expirée
-    expired_description: Cette entrée n'est plus active et a été fermée en raison de contraintes de temps ou d'inactivité.
+    expired_description: Cette contribution n'est plus active et a été fermée en raison de contraintes de temps ou d'inactivité.
     threshold_reached: seuil atteint
-    threshold_reached_description: Cette contribution a atteint le seuil de soutien requis et sera maintenant examinée en vue d'une action ultérieure.
+    threshold_reached_description: Cette contribution a atteint le seuil de soutien requis et sera maintenant prise en compte pour une suite d'action.
     answered: répondue
-    answered_description: Une réponse a été apportée à cette demande. Consultez les détails pour plus d'informations.
+    answered_description: Le chef de projet a publié un retour d'information officiel sur cette contribution.
     ineligible: inéligible
-    ineligible_description: Cette demande a été examinée et, malheureusement, a été rejetée. Une mise à jour officielle a été fournie avec plus de détails.
+    ineligible_description: Cette contributions a été examinée et, malheureusement, a été rejetée. Une mise à jour officielle a été fournie avec plus de détails.
   initiative_statuses:
     review_pending: examen en cours
     review_pending_description: examen en cours
