@@ -1080,6 +1080,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.showVotes": "Prikaži glasove",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipationWidget.votes": "Glasovi",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics": "Demografija",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange": "Raspon datuma registracije",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Polje za registraciju",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Nepoznato",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Korisnici: {numberOfUsers} ({percentageOfUsers}%)",
