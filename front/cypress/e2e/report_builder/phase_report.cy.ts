@@ -225,78 +225,74 @@ describe('Phase report', () => {
     // "autosaves report created from template"
     it('is visible in current phase when created from ideation template', () => {
       cy.setAdminLoginCookie();
-      cy.apiRemoveAllReports().then(() => {
-        cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
-          const reportId = report.body.data.id;
-          cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-            'saveReportLayout'
-          );
-          cy.visit(
-            `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${ideationPhaseId}`
-          );
+      cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
+        const reportId = report.body.data.id;
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.visit(
+          `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${ideationPhaseId}`
+        );
 
-          // Wait for autosave
-          // We expect the save button to indicate that the report is saved (has svg icon)
-          cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-            'exist'
-          );
+        // Wait for autosave
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
 
-          addTextWidget();
+        addTextWidget();
 
-          // Now we save again
-          saveReport(reportId);
+        // Now we save again
+        saveReport(reportId);
 
-          reportShouldBeVisible();
-          cy.contains('Total inputs: 1').should('exist');
+        reportShouldBeVisible();
+        cy.contains('Total inputs: 1').should('exist');
 
-          // Make sure report is visible for logged out users
-          cy.logout();
-          cy.reload();
-          reportShouldBeVisible();
-          cy.contains('Total inputs: 1').should('exist');
+        // Make sure report is visible for logged out users
+        cy.logout();
+        cy.reload();
+        reportShouldBeVisible();
+        cy.contains('Total inputs: 1').should('exist');
 
-          // Clean up
-          cy.apiRemoveReportBuilder(reportId);
-        });
+        // Clean up
+        cy.apiRemoveReportBuilder(reportId);
       });
     });
 
     // inspired by front/cypress/e2e/report_builder/survey_template.cy.ts
     it('is visible in current phase when created from survey template', () => {
       cy.setAdminLoginCookie();
-      cy.apiRemoveAllReports().then(() => {
-        cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
-          const reportId = report.body.data.id;
-          cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-            'saveReportLayout'
-          );
-          cy.visit(
-            `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${surveyPhaseId}`
-          );
+      cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
+        const reportId = report.body.data.id;
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.visit(
+          `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${surveyPhaseId}`
+        );
 
-          // Wait for autosave
-          // We expect the save button to indicate that the report is saved (has svg icon)
-          cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-            'exist'
-          );
+        // Wait for autosave
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
 
-          addTextWidget();
+        addTextWidget();
 
-          // Now we save again
-          saveReport(reportId);
+        // Now we save again
+        saveReport(reportId);
 
-          reportShouldBeVisible();
-          cy.contains('0/0 - Multiple choice').should('exist');
+        reportShouldBeVisible();
+        cy.contains('0/0 - Multiple choice').should('exist');
 
-          // Make sure report is visible for logged out users
-          cy.logout();
-          cy.reload();
-          reportShouldBeVisible();
-          cy.contains('0/0 - Multiple choice').should('exist');
+        // Make sure report is visible for logged out users
+        cy.logout();
+        cy.reload();
+        reportShouldBeVisible();
+        cy.contains('0/0 - Multiple choice').should('exist');
 
-          // Clean up
-          cy.apiRemoveReportBuilder(reportId);
-        });
+        // Clean up
+        cy.apiRemoveReportBuilder(reportId);
       });
     });
   });
