@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AdminCollaboratorToggle from './AdminCollaboratorToggle';
 import CardButtons from './CardButtons';
+import CustomizeErrorMessage from './CustomizeErrorMessage';
 import Fields from './Fields';
 import FlowVisualization from './FlowVisualization';
 import GroupSelect from './GroupSelect';
@@ -111,22 +112,25 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
             />
           </Box>
           {permitted_by !== 'everyone' && (
-            <Box mt="28px">
-              <Title variant="h4" color="primary">
-                <FormattedMessage {...messages.restrictParticipation} />
-              </Title>
-              {/* For some reason this tooltip doesn't work properly unless I put it in
-               * a Box of exactly the same size as the child component
-               */}
-              <Box w="300px">
-                <GroupSelect
-                  groupIds={groupIds}
-                  onChange={(groupIds) => {
-                    onChange({ groupIds });
-                  }}
-                />
+            <>
+              <Box mt="28px">
+                <Title variant="h4" color="primary">
+                  <FormattedMessage {...messages.restrictParticipation} />
+                </Title>
+                {/* For some reason this tooltip doesn't work properly unless I put it in
+                 * a Box of exactly the same size as the child component
+                 */}
+                <Box w="300px">
+                  <GroupSelect
+                    groupIds={groupIds}
+                    onChange={(groupIds) => {
+                      onChange({ groupIds });
+                    }}
+                  />
+                </Box>
               </Box>
-            </Box>
+              <CustomizeErrorMessage />
+            </>
           )}
           {showResetButton(
             permitted_by,
