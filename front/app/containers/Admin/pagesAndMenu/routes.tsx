@@ -7,8 +7,9 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
-import FullScreenPreview from './containers/ContentBuilder/containers/FullscreenPreview';
-
+const FullScreenPreview = lazy(
+  () => import('./containers/ContentBuilder/containers/FullscreenPreview')
+);
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
 const NavigationSettings = lazy(
