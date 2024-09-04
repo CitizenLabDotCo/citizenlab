@@ -31,7 +31,6 @@ export const StatusHeading = styled(Text)`
 
 interface Props {
   compact?: boolean;
-  onScrollToOfficialFeedback?: () => void;
   idea: IIdeaData;
   ideaStatus: IIdeaStatusData;
 }
