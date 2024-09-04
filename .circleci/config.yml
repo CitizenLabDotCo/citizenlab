@@ -735,15 +735,15 @@ jobs:
     resource_class: medium
     steps:
       - shallow-clone
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - attach_workspace:
+          at: .
       - run:
           command: |
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
           background: true
-      - setup_remote_docker
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - attach_workspace:
-          at: .
       - run: |
           cd e2e
           docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
