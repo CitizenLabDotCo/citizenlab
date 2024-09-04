@@ -377,6 +377,9 @@ jobs:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
+    filters:
+      branches:
+        only: master
     steps:
       - echo_pipeline_parameters
       - run: |
