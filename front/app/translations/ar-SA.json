@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "يعتبر بواسطة {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "يعتبر بواسطة {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "اقرأ الجواب",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} تم إخطارنا وسنقدم إجابة. التصويت يبقى مفتوحا.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "لقد تم الوصول إلى العتبة",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "تصويت",
