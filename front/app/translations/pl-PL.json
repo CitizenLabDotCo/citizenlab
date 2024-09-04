@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "rozważane przez {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} Głosy potrzebne w ciągu {daysLeft, plural, =0 {mniej niż jednego dnia} one {jednego dnia} other {# dni}} aby uzyskać tę inicjatywę {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "rozważane przez {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Przeczytaj odpowiedź",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} został powiadomiony i udzieli odpowiedzi. Głosowanie pozostaje otwarte.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Próg został osiągnięty",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Głosuj",

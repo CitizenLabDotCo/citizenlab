@@ -3,9 +3,10 @@ import React from 'react';
 import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { StatusComponentProps } from '../../';
 import messages from '../../messages';
 
 import ProposalProgressBar from './ProposalProgressBar';
@@ -29,7 +30,7 @@ const ReactionTextRight = styled.div`
 
 interface Props {
   id?: string;
-  idea: StatusComponentProps['idea'];
+  idea: IIdeaData;
   barColor?: string;
 }
 
