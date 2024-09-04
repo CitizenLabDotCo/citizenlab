@@ -378,18 +378,14 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     steps:
-      - when:
-          condition:
-            equal: [ master, << pipeline.git.branch >> ]
-          steps:
-            - echo_pipeline_parameters
-            - run: |
-                curl --request POST \
-                  -u $CIRCLECI_API_TOKEN: \
-                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/documentation/pipeline \
-                  --header 'content-type: application/json' \
-                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "master"}'
+      - echo_pipeline_parameters
+      - run: |
+          curl --request POST \
+            -u $CIRCLECI_API_TOKEN: \
+            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/documentation/pipeline \
+            --header 'content-type: application/json' \
+            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+            --data '{"branch": "master"}'
 
   check-for-inconsistent-data:
     resource_class: small
@@ -824,6 +820,10 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
+          filters:
+            branches:
+              only:
+                - master
       - back-trigger-deploy:
           context: circleci-api-token
           requires:
