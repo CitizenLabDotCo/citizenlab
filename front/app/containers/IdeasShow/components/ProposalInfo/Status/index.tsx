@@ -22,7 +22,6 @@ import messages from '../messages';
 
 import CountDown from './components/CountDown';
 import ReactionCounter from './components/ReactionCounter';
-import ReadAnswerButton from './components/ReadAnswerButton';
 
 export const StatusHeading = styled(Text)`
   font-size: ${fontSizes.base}px;
@@ -37,12 +36,7 @@ interface Props {
   ideaStatus: IIdeaStatusData;
 }
 
-const Status = ({
-  onScrollToOfficialFeedback,
-  idea,
-  ideaStatus,
-  compact = false,
-}: Props) => {
+const Status = ({ idea, ideaStatus, compact = false }: Props) => {
   const theme = useTheme();
   const { code } = ideaStatus.attributes;
 
@@ -55,8 +49,6 @@ const Status = ({
     code === 'custom' ||
     code === 'ineligible' ||
     code === 'answered';
-
-  const showReadAnswerButton = code === 'answered' || code === 'ineligible';
 
   const showVoteButtons =
     code === 'proposed' ||
@@ -71,7 +63,7 @@ const Status = ({
       borderRadius={stylingConsts.borderRadius}
     >
       {showCountDown && (
-        <Box ml="auto" mb="24px">
+        <Box ml="auto">
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_timeLeft} />
           </ScreenReaderOnly>
@@ -96,7 +88,6 @@ const Status = ({
         <Text>
           <T value={ideaStatus.attributes.description_multiloc} />
         </Text>
-        {/* <StatusExplanation>{statusExplanation}</StatusExplanation> */}
       </Box>
       {showProgressBar && (
         <Box mb="24px">
@@ -114,11 +105,6 @@ const Status = ({
             size="4"
             variant="text"
           />
-        </Box>
-      )}
-      {showReadAnswerButton && onScrollToOfficialFeedback && (
-        <Box mb="8px">
-          <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
         </Box>
       )}
     </Box>
