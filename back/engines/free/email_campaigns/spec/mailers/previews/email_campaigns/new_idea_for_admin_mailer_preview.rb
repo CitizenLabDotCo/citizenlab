@@ -15,7 +15,7 @@ module EmailCampaigns
           post_title_multiloc: idea.title_multiloc,
           post_author_name: idea.author_name,
           post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient_user.locale)),
-          post_idea_status_code: idea.publication_status
+          post_publication_status: idea.publication_status
         }
       }
       campaign = EmailCampaigns::Campaigns::NewIdeaForAdmin.first
