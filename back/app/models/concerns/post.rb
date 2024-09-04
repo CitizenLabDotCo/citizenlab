@@ -51,7 +51,7 @@ module Post
 
     scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
-    scope :submitted, -> { where publication_status: %w[submitted published] }
+    scope :has_been_submitted, -> { where publication_status: %w[submitted published] }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, lambda { |user|
@@ -66,7 +66,7 @@ module Post
       publication_status == 'draft'
     end
 
-    def submitted?
+    def has_been_submitted?
       %w[submitted published].include? publication_status
     end
 

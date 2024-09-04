@@ -20,7 +20,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).submitted,
+      scope: policy_scope(Idea).has_been_submitted,
       current_user: current_user
     ).find_records
 
