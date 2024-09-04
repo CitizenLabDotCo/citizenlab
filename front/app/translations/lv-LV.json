@@ -1349,7 +1349,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "uzskata {orgName}.",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} Nepieciešamās balsis {daysLeft, plural, =0 {mazāk nekā vienas dienas laikā} one {vienas dienas laikā} other {# dienu laikā}} lai šī iniciatīva tiktu īstenota {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "uzskata {orgName}.",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Lasīt atbildi",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} saņēma paziņojumu un sniegs atbildi. Balsošana joprojām ir atvērta.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Robežvērtība ir sasniegta",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Balsojums",

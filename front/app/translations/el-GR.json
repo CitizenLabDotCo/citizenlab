@@ -1349,7 +1349,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "θεωρείται από το {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} ψήφοι που απαιτούνται εντός {daysLeft, plural, =0 {λιγότερο από μία ημέρα} one {μία ημέρα} other {# ημέρες}} για να ληφθεί αυτή η πρωτοβουλία {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "θεωρείται από το {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Διαβάστε την απάντηση",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. το {orgName} ειδοποιήθηκε και θα δώσει απάντηση. Η ψηφοφορία παραμένει ανοικτή.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Το όριο έχει επιτευχθεί",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Ψηφίστε",

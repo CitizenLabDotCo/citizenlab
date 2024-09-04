@@ -1349,7 +1349,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "prise en considération par {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "Il reste {daysLeft, plural, =0 {moins d'un jour} one {un jour} other {# jours}} à cette proposition pour atteindre {votingThreshold} votes et être {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "prise en considération par {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Lire la réponse",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} a été informé et fournira une réponse. Le vote reste ouvert.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Le seuil a été atteint",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vote",

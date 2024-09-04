@@ -1349,7 +1349,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "övervägs av {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} röster behövs inom {daysLeft, plural, =0 {mindre än en dag} one {en dag} other {# dagar}} för att få igenom detta initiativ {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "övervägs av {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Läs svar",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} blev underrättad och kommer att ge ett svar. Röstningen är fortfarande öppen.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Tröskelvärdet har uppnåtts",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Omröstning",

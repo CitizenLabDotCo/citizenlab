@@ -1349,7 +1349,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "vurdert av {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "vurdert av {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Les svaret",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} ble varslet og vil gi et svar. Avstemningen er fortsatt åpen.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Terskelen er nådd",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stemme",
