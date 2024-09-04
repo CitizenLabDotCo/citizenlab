@@ -15,7 +15,7 @@ const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyPlugin = require('copy-webpack-plugin');
 
 const dotenv = require('dotenv');
@@ -165,7 +165,7 @@ const config = {
       process: 'process/browser',
     }),
 
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
