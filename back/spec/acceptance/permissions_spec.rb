@@ -484,5 +484,20 @@ resource 'Permissions' do
         expect(json_attributes[:ui_schema_multiloc]).to be_present
       end
     end
+
+    get 'web_api/v1/phases/:phase_id/permissions/:action/access_denied_explanation' do
+      before do
+        @permission = @phase.permissions.first
+        @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
+        @permission.update!(access_denied_explanation_multiloc: @multiloc)
+      end
+
+      let(:action) { @permission.action }
+
+      example_request 'Get the access denied explanation of a phase permission' do
+        assert_status 200
+        expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
+      end
+    end
   end
 end

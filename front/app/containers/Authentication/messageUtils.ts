@@ -16,7 +16,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // shared
   closed: null,
   success: null,
-  'access-denied': null,
+  'access-denied': messages.youCantParticipate,
 
   // sign in flow
   'sign-in:auth-providers': messages.logIn,
