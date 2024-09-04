@@ -736,7 +736,9 @@ jobs:
     steps:
       - shallow-clone
       - run:
-          command: docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
+          command: |
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
           background: true
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
