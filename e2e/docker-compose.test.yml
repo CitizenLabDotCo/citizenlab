@@ -13,7 +13,6 @@ services:
       retries: 20
 
   front:
-    image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
     build:
       context: ../front/.
       dockerfile: Dockerfile-static-hosting

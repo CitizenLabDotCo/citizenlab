@@ -712,8 +712,8 @@ jobs:
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
-          # docker_layer_caching: true
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
