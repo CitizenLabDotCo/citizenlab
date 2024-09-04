@@ -19,6 +19,7 @@ import {
   HELPER_TEXT_KEYS,
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
+import AccessDenied from './steps/AccessDenied';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
@@ -322,6 +323,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
+
+        {currentStep === 'access-denied' && <AccessDenied />}
       </Box>
     </Modal>
   );

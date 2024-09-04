@@ -95,7 +95,13 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_params
-    params.require(:permission).permit(:permitted_by, :global_custom_fields, :verification_expiry, group_ids: [])
+    params.require(:permission).permit(
+      :permitted_by,
+      :global_custom_fields,
+      :verification_expiry,
+      group_ids: [],
+      access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
+    )
   end
 end
 
