@@ -103,7 +103,7 @@ class Phase < ApplicationRecord
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-  with_options if: ->(phase) { phase.pmethod.supports_posting? } do
+  with_options if: ->(phase) { phase.pmethod.supports_public_visibility?} do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
   end

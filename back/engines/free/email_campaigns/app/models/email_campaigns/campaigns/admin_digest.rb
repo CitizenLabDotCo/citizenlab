@@ -163,7 +163,7 @@ module EmailCampaigns
 
     def top_ideas
       @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).select do |idea|
-        idea.participation_method_on_creation.supports_posting?
+        idea.participation_method_on_creation.supports_public_visibility?
       end
     end
 

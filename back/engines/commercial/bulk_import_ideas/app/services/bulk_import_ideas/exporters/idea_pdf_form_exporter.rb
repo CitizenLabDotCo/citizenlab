@@ -164,7 +164,7 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      personal_data_explanation_key = if @phase.pmethod.supports_posting?
+      personal_data_explanation_key = if @phase.pmethod.supports_public_visibility?
         'form_builder.pdf_export.personal_data_explanation_public'
       else
         'form_builder.pdf_export.personal_data_explanation_private'
@@ -295,7 +295,7 @@ module BulkImportIdeas::Exporters
     end
 
     def generate_visibility_disclaimer(custom_field)
-      return unless @phase.pmethod.supports_posting? && custom_field.answer_visible_to == 'admins'
+      return unless @phase.pmethod.supports_public_visibility? && custom_field.answer_visible_to == 'admins'
 
       I18n.with_locale(@locale) do
         I18n.t('form_builder.pdf_export.this_answer')
