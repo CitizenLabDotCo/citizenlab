@@ -1,23 +1,23 @@
 import { FormatMessage } from 'typings';
 
-import { ActionMetadata } from 'api/verification_methods/types';
+import { MethodMetadata } from 'api/verification_methods/types';
 
 import { Localize } from 'hooks/useLocalize';
 
 import messages from './messages';
 
 export const getReturnedFieldsPreview = (
-  verificationActionMetadata: ActionMetadata,
+  verificationMethodMetadata: MethodMetadata,
   localize: Localize
 ) => {
-  if (!verificationActionMetadata) return null;
+  if (!verificationMethodMetadata) return null;
 
   const {
     locked_attributes,
     other_attributes,
     locked_custom_fields,
     other_custom_fields,
-  } = verificationActionMetadata;
+  } = verificationMethodMetadata;
 
   const allAttributes = [
     ...locked_attributes,
@@ -42,7 +42,7 @@ export const getReturnedFieldsPreview = (
 };
 
 export const getVerifiedDataList = (
-  verificationActionMetadata: ActionMetadata,
+  verificationMethodMetadata: MethodMetadata,
   localize: Localize
 ) => {
   const {
@@ -50,7 +50,7 @@ export const getVerifiedDataList = (
     other_attributes,
     locked_custom_fields,
     other_custom_fields,
-  } = verificationActionMetadata;
+  } = verificationMethodMetadata;
 
   const allAttributes = [
     ...locked_attributes.map((attribute) => ({

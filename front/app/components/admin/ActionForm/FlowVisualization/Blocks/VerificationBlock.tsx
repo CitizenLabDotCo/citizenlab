@@ -37,7 +37,7 @@ const VerificationBlock = ({ number }: Props) => {
   const { data: verificationMethod } = useVerificationMethod();
 
   const verificationMethodMetadata =
-    verificationMethod?.data.attributes.action_metadata;
+    verificationMethod?.data.attributes.method_metadata;
 
   if (!verificationMethodMetadata) return null;
 
@@ -82,11 +82,13 @@ const VerificationBlock = ({ number }: Props) => {
             verificationMethod: verificationMethodMetadata.name,
           })}
 
-          <Box mt="12px">
-            {verifiedFieldsMessage}
-            <br />
-            <b>{returnedFieldsPreview}</b>
-          </Box>
+          {returnedFieldsPreview && (
+            <Box mt="12px">
+              {verifiedFieldsMessage}
+              <br />
+              <b>{returnedFieldsPreview}</b>
+            </Box>
+          )}
         </Box>
       </StyledBox>
       <VerificationModal

@@ -56,7 +56,7 @@ describe('Input form builder', () => {
     cy.get('@locationToolboxItem').should('exist');
     cy.get('@locationToolboxItem').should('have.attr', 'disabled');
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Location').should('exist');
       cy.contains('Location').click();
     });
@@ -71,7 +71,7 @@ describe('Input form builder', () => {
     cy.get('@locationToolboxItem').should('not.have.attr', 'disabled');
 
     // Check to see that location is removed from the canvas
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Location').should('not.exist');
     });
 

@@ -36,12 +36,12 @@ const Blocks = ({
   });
   const { formatMessage } = useIntl();
 
-  const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
+  const numberOfVerificationLockedItems = getNumberOfVerificationLockedItems(
     permissionsCustomFields
   );
 
   const showCustomFields =
-    permissionsCustomFields.length > numberOfVerificatiomLockedItems;
+    permissionsCustomFields.length > numberOfVerificationLockedItems;
 
   if (permittedBy === 'admins_moderators') return null;
 
