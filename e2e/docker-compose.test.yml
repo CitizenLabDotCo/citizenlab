@@ -14,9 +14,9 @@ services:
 
   front:
     image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
-    # build:
-    #   context: ../front/.
-    #   dockerfile: Dockerfile-static-hosting
+    build:
+      context: ../front/.
+      dockerfile: Dockerfile-static-hosting
     healthcheck:
       test: ["CMD", "curl", "-f", "http://e2e.front:3000"]
       interval: 2s

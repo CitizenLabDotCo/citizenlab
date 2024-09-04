@@ -735,6 +735,9 @@ jobs:
     resource_class: medium
     steps:
       - shallow-clone
+      - run:
+          command: docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
+          background: true
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - attach_workspace:
@@ -790,14 +793,6 @@ workflows:
 
   manually-e2e-tests:
     jobs:
-      # - back-build-docker-image:
-      #     context:
-      #       - docker-hub-access
-      #       - citizenlab-ee-environment
-      #     filters:
-      #       branches:
-      #         only:
-      #           - TAN-2500-ci-e2e-speedup
       - e2e-setup-db:
           context:
             - docker-hub-access
@@ -806,8 +801,6 @@ workflows:
             branches:
               only:
                 - TAN-2500-ci-e2e-speedup
-          # requires:
-          #   - back-build-docker-image
       - e2e-setup-front:
           context:
             - docker-hub-access
