@@ -15,7 +15,7 @@ class IdeaPolicy < ApplicationPolicy
         scope.all
       elsif user
         scope
-          .has_been_submitted.where(author: user)
+          .submitted_or_published.where(author: user)
           .or(scope.published)
           .where(project: Pundit.policy_scope(user, Project))
       else

@@ -50,6 +50,10 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def reorder
     ordering = params.require(:idea_status).permit(:ordering)[:ordering]
+    if @idea_status.locked?
+      render json: { errors: { base: 'Cannot reorder a locked status' } }, status: :unprocessable_entity
+      return
+    end
     if ordering <= max_ordering
       render json: { errors: { base: 'Cannot reorder into the locked statuses section' } }, status: :unprocessable_entity
       return

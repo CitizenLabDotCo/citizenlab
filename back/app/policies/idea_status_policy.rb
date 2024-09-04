@@ -27,7 +27,7 @@ class IdeaStatusPolicy < ApplicationPolicy
   end
 
   def reorder?
-    update? && !record.locked?
+    update?
   end
 
   def destroy?
