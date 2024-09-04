@@ -166,7 +166,7 @@ export const sharedSteps = (
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
         if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('missing-data:verification');
-          setError('not_entitled_under_minimum_age');
+          setError('not_entitled_under_minimum_age'); // TOOD: Change this too
         } else if (error_code === 'taken') {
           setCurrentStep('missing-data:verification');
           setError('verification_taken');
@@ -181,8 +181,7 @@ export const sharedSteps = (
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
         } else if (error_code === 'not_entitled_under_minimum_age') {
-          setCurrentStep('missing-data:verification');
-          setError('not_entitled_under_minimum_age');
+          setCurrentStep('access-denied');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
