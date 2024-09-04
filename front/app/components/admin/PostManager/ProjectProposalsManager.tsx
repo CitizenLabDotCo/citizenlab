@@ -17,7 +17,6 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import PostTable from './components/PostTable';
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
@@ -253,9 +252,6 @@ const ProjectProposalsManager = ({
           onClose={closePreview}
           onSwitchPreviewMode={switchPreviewMode}
         />
-      </Suspense>
-      <Suspense fallback={null}>
-        <LazyStatusChangeModal />
       </Suspense>
     </DndProvider>
   );

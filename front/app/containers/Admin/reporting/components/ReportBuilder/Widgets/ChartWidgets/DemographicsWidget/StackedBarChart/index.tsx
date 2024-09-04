@@ -11,6 +11,7 @@ import {
 } from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
 
 import { useIntl } from 'utils/cl-intl';
+import { roundPercentages } from 'utils/math';
 
 import messages from '../messages';
 
@@ -61,7 +62,7 @@ const StackedBarChart = ({ response }: Props) => {
         stackedBarHoverIndex,
         data,
         columns,
-        Object.values(data[0]),
+        roundPercentages(Object.values(data[0])),
         labels
       )}
       legend={{

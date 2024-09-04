@@ -18,4 +18,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.formBuilderSettings.pageLayoutSettings.pageType',
     defaultMessage: 'Page type',
   },
+  notInCurrentLicense: {
+    id: 'app.components.formBuilder.formBuilderSettings.pageLayoutSettings.notInCurrentLicense',
+    defaultMessage:
+      'Survey mapping features are not included in your current license. Reach out to your GovSuccess Manager to learn more.',
+  },
+  noMapInputQuestions: {
+    id: 'app.components.formBuilder.formBuilderSettings.pageLayoutSettings.noMapInputQuestions',
+    defaultMessage:
+      'For optimal user experience, we do not recommend adding point, route, or area questions to map-based pages.',
+  },
 });

@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
-
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import React from 'react';
 
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
-import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { getNumberOfVerificationLockedItems } from '../../utils';
 
-import { Block, SSOBlock } from './Block';
+import Block from './Block';
 import Edge from './Edge';
 import messages from './messages';
-import SSOConfigModal from './SSOConfigModal';
-import {
-  getReturnedFieldsPreview,
-  enabledSteps,
-  getVerificationFrequencyExplanation,
-} from './utils';
+import SSOBlock from './SSOBlock';
+import { enabledSteps } from './utils';
+import VerificationBlock from './VerificationBlock';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -38,23 +31,17 @@ const Blocks = ({
   verificationExpiry,
   onChangeVerificationExpiry,
 }: Props) => {
-  const { data: verificationMethod } = useVerificationMethodVerifiedActions();
   const emailConfirmationEnabled = useFeatureFlag({
     name: 'user_confirmation',
   });
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const [modalOpen, setModalOpen] = useState(false);
 
-  const numberOfVerificatiomLockedItems = getNumberOfVerificationLockedItems(
+  const numberOfVerificationLockedItems = getNumberOfVerificationLockedItems(
     permissionsCustomFields
   );
 
   const showCustomFields =
-    permissionsCustomFields.length > numberOfVerificatiomLockedItems;
-
-  const verificationMethodMetadata =
-    verificationMethod?.data.attributes.action_metadata;
+    permissionsCustomFields.length > numberOfVerificationLockedItems;
 
   if (permittedBy === 'admins_moderators') return null;
 
@@ -79,9 +66,8 @@ const Blocks = ({
         {verificationEnabled && (
           <>
             <Edge />
-            <Block
+            <VerificationBlock
               number={2 + enabledSteps(emailConfirmationEnabled)}
-              text={formatMessage(messages.identityVerification)}
             />
           </>
         )}
@@ -116,9 +102,8 @@ const Blocks = ({
         {verificationEnabled && (
           <>
             <Edge />
-            <Block
+            <VerificationBlock
               number={2 + enabledSteps(emailConfirmationEnabled)}
-              text={formatMessage(messages.identityVerification)}
             />
           </>
         )}
@@ -137,47 +122,12 @@ const Blocks = ({
     );
   }
 
-  if (permittedBy === 'verified' && verificationMethodMetadata) {
-    const authenticateMessage = formatMessage(
-      messages.authenticateWithVerificationProvider,
-      {
-        verificationMethod: verificationMethodMetadata.name,
-      }
-    );
-
-    const verifiedFieldsMessage = formatMessage(messages.verifiedFields);
-
-    const verificationFrequencyExplanation =
-      getVerificationFrequencyExplanation(verificationExpiry, formatMessage);
-
-    const returnedFieldsPreview = getReturnedFieldsPreview(
-      verificationMethodMetadata,
-      localize
-    );
-
+  if (permittedBy === 'verified') {
     return (
       <>
         <SSOBlock
-          number={1}
-          text={
-            <>
-              {authenticateMessage}
-              <br />
-              {verificationFrequencyExplanation && (
-                <>
-                  <Text fontSize="xs" mt="8px" color="primary">
-                    {verificationFrequencyExplanation}
-                  </Text>
-                </>
-              )}
-              <Box mt="12px">
-                {verifiedFieldsMessage}
-                <br />
-                <b>{returnedFieldsPreview}</b>
-              </Box>
-            </>
-          }
-          onClick={() => setModalOpen(true)}
+          verificationExpiry={verificationExpiry}
+          onChangeVerificationExpiry={onChangeVerificationExpiry}
         />
         {showCustomFields && (
           <>
@@ -187,15 +137,6 @@ const Blocks = ({
               text={formatMessage(messages.completeTheExtraQuestionsBelow)}
             />
           </>
-        )}
-        {verificationMethodMetadata && (
-          <SSOConfigModal
-            opened={modalOpen}
-            onClose={() => setModalOpen(false)}
-            verificationExpiry={verificationExpiry}
-            verificationMethodMetadata={verificationMethodMetadata}
-            onChangeVerificationExpiry={onChangeVerificationExpiry}
-          />
         )}
       </>
     );
