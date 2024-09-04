@@ -377,18 +377,19 @@ jobs:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
-    filters:
-      branches:
-        only: master
     steps:
-      - echo_pipeline_parameters
-      - run: |
-          curl --request POST \
-            -u $CIRCLECI_API_TOKEN: \
-            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/documentation/pipeline \
-            --header 'content-type: application/json' \
-            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-            --data '{"branch": "master"}'
+      - when:
+          condition:
+            equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - echo_pipeline_parameters
+            - run: |
+                curl --request POST \
+                  -u $CIRCLECI_API_TOKEN: \
+                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/documentation/pipeline \
+                  --header 'content-type: application/json' \
+                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+                  --data '{"branch": "master"}'
 
   check-for-inconsistent-data:
     resource_class: small
