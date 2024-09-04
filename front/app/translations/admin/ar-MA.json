@@ -55,7 +55,6 @@
   "app.components.admin.PostManager.assignedTo": "{assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "معيّن إلي",
   "app.components.admin.PostManager.assignee": "المعيّن إليه",
-  "app.components.admin.PostManager.automatic": "(تلقائي)",
   "app.components.admin.PostManager.changeStatusModalTitle": "غيّر حالة هذا المُقترح",
   "app.components.admin.PostManager.comments": "التعليقات",
   "app.components.admin.PostManager.currentLat": "دائرة العرض المركزية",

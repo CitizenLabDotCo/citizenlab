@@ -41,7 +41,7 @@ class TimelineService
 
     current = current_phase(project, time)
     current_method = current&.pmethod
-    return current if current_method&.transitive? || current_method&.supports_posting?
+    return current if current_method&.transitive? || current_method&.supports_public_visibility?
 
     project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end

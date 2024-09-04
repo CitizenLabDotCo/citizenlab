@@ -138,7 +138,6 @@ export interface IAppConfigurationSettings {
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
-  input_form_mapping_question?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
@@ -235,6 +234,7 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
+  prescreening?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

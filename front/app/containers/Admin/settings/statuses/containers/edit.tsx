@@ -68,7 +68,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
               code,
             }}
             onSubmit={handleSubmit}
-            showCategorySelector={locked}
+            showCategorySelector={!locked}
             variant={variant}
           />
         </Section>

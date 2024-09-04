@@ -14,9 +14,9 @@ module Verification
       end
     end
 
-    # Action metadata
-    attribute :action_metadata do |record|
-      VerificationService.new.action_metadata(method: record)
+    # Method metadata
+    attribute :method_metadata do |record|
+      VerificationService.new.method_metadata(record)
     end
   end
 end

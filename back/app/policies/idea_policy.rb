@@ -15,7 +15,7 @@ class IdeaPolicy < ApplicationPolicy
         scope.all
       elsif user
         scope
-          .submitted.where(author: user)
+          .submitted_or_published.where(author: user)
           .or(scope.published)
           .where(project: Pundit.policy_scope(user, Project))
       else
@@ -48,7 +48,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    return false if !(record.draft? || record.participation_method_on_creation.supports_posting?)
+    return false if !(record.draft? || record.participation_method_on_creation.supports_public_visibility?)
 
     project_show = ProjectPolicy.new(user, record.project).show?
     return true if project_show && %w[draft published].include?(record.publication_status)

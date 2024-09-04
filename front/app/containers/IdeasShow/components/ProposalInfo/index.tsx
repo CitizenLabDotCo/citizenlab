@@ -26,6 +26,7 @@ const componentMap = {
   threshold_reached: ThresholdReached,
   ineligible: Ineligible,
   custom: () => <></>,
+  prescreening: () => <></>,
 };
 
 interface Props {

@@ -79,7 +79,7 @@ const FormFields = ({
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
-    <Box height="100%">
+    <Box height="100%" data-cy="e2e-form-fields">
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedGroupData);

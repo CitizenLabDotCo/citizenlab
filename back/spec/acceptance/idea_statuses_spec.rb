@@ -245,7 +245,8 @@ resource 'IdeaStatuses' do
 
         example '[Error] Cannot reorder the proposed status', document: false do
           do_request
-          assert_status 401
+          assert_status 422
+          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
         end
       end
 
@@ -267,7 +268,8 @@ resource 'IdeaStatuses' do
 
           example '[Error] Cannot reorder a locked status', document: false do
             do_request
-            assert_status 401
+            assert_status 422
+            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
           end
         end
 

@@ -185,7 +185,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:supports_posting?) { is_expected.to be true }
+  its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }

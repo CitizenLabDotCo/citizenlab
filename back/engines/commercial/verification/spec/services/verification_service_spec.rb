@@ -189,9 +189,10 @@ describe Verification::VerificationService do
     end
   end
 
-  describe 'action_metadata' do
-    it 'returns an empty hash if no methods are allowed on action' do
-      expect(service.action_metadata).to eq({ allowed: false })
+  describe 'method_metadata' do
+    it 'returns allowed_for_verified_actions: false if first method does not support verified actions' do
+      vm = service.method_metadata(service.first_method_enabled)
+      expect(vm[:allowed_for_verified_actions]).to be(false)
     end
 
     it 'returns information about the first enabled method enabled for actions' do
@@ -202,7 +203,7 @@ describe Verification::VerificationService do
       configuration.settings['verification']['verification_methods'] << { name: 'fake_sso' }
       configuration.save!
 
-      metadata = service.action_metadata
+      metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)
       expect(metadata[:name]).to eq 'Fake SSO'
       expect(metadata[:locked_attributes]).to match_array [
         { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },

@@ -19,10 +19,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import tracks from '../../../tracks';
+import { getIdeaOfficialFeedbackModalEventName } from '../../IdeaOfficialFeedbackModal';
 import messages from '../messages';
 
 const StyledLabel = styled(Label)`
@@ -103,6 +105,8 @@ const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
       idea: ideaId,
       adminAtWork: adminAtWorkId,
     });
+
+    eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(ideaId));
   };
 
   const onAssigneeChange = (assigneeOption: IOption | null) => {
@@ -127,6 +131,7 @@ const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
     const statusOptions = statuses.data.map((status) => ({
       value: status.id,
       label: localize(status.attributes.title_multiloc),
+      disabled: !status.attributes.can_manually_transition_to,
     }));
     const ideaStatusOption = getIdeaStatusOption(idea, statuses);
     const assigneeOptions = getAssigneeOptions();

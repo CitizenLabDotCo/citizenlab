@@ -118,7 +118,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_posting?
+    def supports_public_visibility?
       false
     end
 
