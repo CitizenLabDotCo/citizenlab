@@ -18,8 +18,18 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.CustomizeErrorMessage.saveErrorMessage',
     defaultMessage: 'Save error message',
   },
+  defaultErrorMessageExplanation: {
+    id: 'app.components.admin.ActionForm.CustomizeErrorMessage.customErrorMessageExplanation',
+    defaultMessage:
+      'By default, the following error message will be shown to users:',
+  },
   alternativeErrorMessage: {
     id: 'app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage',
     defaultMessage: 'Alternative error message',
+  },
+  customizeErrorMessageExplanation: {
+    id: 'app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessageExplanation',
+    defaultMessage:
+      'You can overwrite this message for each language using the "Alternative error message" text box below. If you leave the text box empty, the default message will be shown.',
   },
 });
