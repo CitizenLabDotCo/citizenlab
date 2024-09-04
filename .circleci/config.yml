@@ -820,6 +820,10 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
+          filters:
+            branches:
+              only:
+                - master
       - back-trigger-deploy:
           context: circleci-api-token
           requires:
