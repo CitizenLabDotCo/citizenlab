@@ -13,6 +13,7 @@ services:
       retries: 20
 
   front:
+    image: citizenlabdotco/cl2-devops-front-e2e-static:latest
     build:
       context: ../front/.
       dockerfile: Dockerfile-static-hosting
@@ -24,7 +25,7 @@ services:
     environment:
       API_HOST: e2e-web
       API_PORT: 4000
-    command: npm run start:prod
+    command: node server/production.js
 
   postgres:
     healthcheck:
