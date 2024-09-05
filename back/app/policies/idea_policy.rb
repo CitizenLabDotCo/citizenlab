@@ -67,8 +67,6 @@ class IdeaPolicy < ApplicationPolicy
     return false if !record.participation_method_on_creation.supports_edits_after_publication? && record.published? && !record.will_be_published?
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false if !active? || !owner?
-    return false if record.participation_method_on_creation.use_reactions_as_votes? && record.reactions.where.not(user_id: user.id).exists?
-    return false if record.creation_phase&.prescreening_enabled && record.published?
 
     permission_action = record.will_be_published? ? 'posting_idea' : 'editing_idea'
     posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action permission_action

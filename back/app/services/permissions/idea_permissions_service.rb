@@ -1,7 +1,9 @@
 module Permissions
   class IdeaPermissionsService < ProjectPermissionsService
     IDEA_DENIED_REASONS = {
-      idea_not_in_current_phase: 'idea_not_in_current_phase'
+      idea_not_in_current_phase: 'idea_not_in_current_phase',
+      votes_exist: 'votes_exist',
+      published_after_screening: 'published_after_screening'
     }.freeze
 
     def initialize(idea, user, user_requirements_service: nil)
@@ -16,8 +18,11 @@ module Permissions
 
       current_phase = @timeline_service.current_phase_not_archived project
       if current_phase && !idea_in_current_phase?(current_phase)
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase]
+        return IDEA_DENIED_REASONS[:idea_not_in_current_phase]
       end
+
+      return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user.id).exists?
+      IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
     end
 
     def denied_reason_for_reaction_mode(reaction_mode)
@@ -37,7 +42,7 @@ module Permissions
         editing_idea: {
           enabled: !editing_disabled_reason,
           disabled_reason: editing_disabled_reason,
-          # future_enabled_at: editing_disabled_reason && future_enabled_phase('editing_idea')&.start_at
+          future_enabled_at: editing_disabled_reason && future_enabled_phase('editing_idea')&.start_at
         },
         commenting_idea: {
           enabled: !commenting_disabled_reason,
