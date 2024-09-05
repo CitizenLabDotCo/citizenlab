@@ -61,8 +61,10 @@ const ParticipationReportPreview = ({
               return (
                 <Element is="div" canvas key={field.id}>
                   <DemographicsWidget
-                    startAt={startAt}
-                    endAt={endAt}
+                    // We don't filter by start and end date,
+                    // because start and end date refer to the
+                    // registration date of the user, not the
+                    // participation date of the user.
                     projectId={projectId}
                     customFieldId={field.id}
                     title={field.attributes.title_multiloc}
