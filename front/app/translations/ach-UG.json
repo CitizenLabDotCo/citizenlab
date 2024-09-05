@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "crwdns2747137:0{orgName}crwdne2747137:0",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "crwdns2747139:0votingThreshold={votingThreshold}crwdnd2747139:0daysLeft={daysLeft}crwdnd2747139:0proposedStatusExplanationMobileBold={proposedStatusExplanationMobileBold}crwdne2747139:0",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "crwdns2747141:0{orgName}crwdne2747141:0",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "crwdns2747143:0crwdne2747143:0",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "crwdns2747145:0{thresholdReachedStatusExplanationBold}crwdnd2747145:0{orgName}crwdne2747145:0",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "crwdns2747147:0crwdne2747147:0",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "crwdns2747149:0crwdne2747149:0",
