@@ -104,14 +104,18 @@ describe IdeaPolicy do
     end
 
     context 'when there is a posting idea disabled reason' do
-      before do
-        allow_any_instance_of(Permissions::ProjectPermissionsService)
-          .to receive(:denied_reason_for_action).and_return(disabled_reason)
-      end
-
       %w[posting_disabled posting_limited_max_reached].each do |disabled_reason|
         context "when the disabled reason is excluded for update: '#{disabled_reason}'" do
-          let(:disabled_reason) { disabled_reason }
+          before do
+            case disabled_reason
+            when 'posting_disabled'
+              project.phases.first.update!(submission_enabled: false)
+            when 'posting_limited_max_reached'
+              create(:idea, project: idea.project, author: idea.author)
+              allow_any_instance_of(ParticipationMethod::Ideation)
+                .to receive(:supports_multiple_posts?).and_return(false)
+            end
+          end
 
           context 'for an admin' do
             let(:user) { create(:admin) }
@@ -124,7 +128,7 @@ describe IdeaPolicy do
               is_expected.to permit(:destroy)
               is_expected.to permit(:index_xlsx)
 
-              expect(scope.resolve.size).to eq 1
+              expect(scope.resolve.size).to eq project.ideas.count
             end
           end
 
@@ -139,7 +143,7 @@ describe IdeaPolicy do
               is_expected.to permit(:destroy)
               is_expected.not_to permit(:index_xlsx)
 
-              expect(scope.resolve.size).to eq 1
+              expect(scope.resolve.size).to eq project.ideas.count
             end
 
             # rubocop:disable RSpec/NestedGroups
@@ -158,38 +162,41 @@ describe IdeaPolicy do
           end
         end
       end
+    end
 
-      context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
-        let(:disabled_reason) { 'posting_not_supported' }
+    context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
+      before do
+        allow_any_instance_of(Permissions::ProjectPermissionsService)
+          .to receive(:denied_reason_for_action).and_return('posting_not_supported')
+      end
 
-        context 'for an admin' do
-          let(:user) { create(:admin) }
+      context 'for an admin' do
+        let(:user) { create(:admin) }
 
-          it do
-            is_expected.to permit(:show)
-            is_expected.to permit(:by_slug)
-            is_expected.to permit(:create)
-            is_expected.to permit(:update)
-            is_expected.to permit(:destroy)
-            is_expected.to permit(:index_xlsx)
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.to permit(:create)
+          is_expected.to permit(:update)
+          is_expected.to permit(:destroy)
+          is_expected.to permit(:index_xlsx)
 
-            expect(scope.resolve.size).to eq 1
-          end
+          expect(scope.resolve.size).to eq 1
         end
+      end
 
-        context 'for the author' do
-          let(:user) { idea.author }
+      context 'for the author' do
+        let(:user) { idea.author }
 
-          it do
-            is_expected.to permit(:show)
-            is_expected.to permit(:by_slug)
-            is_expected.not_to permit(:index_xlsx)
-            expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
-            expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
-            expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError)
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.not_to permit(:index_xlsx)
+          expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+          expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
+          expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError)
 
-            expect(scope.resolve.size).to eq 1
-          end
+          expect(scope.resolve.size).to eq 1
         end
       end
     end
