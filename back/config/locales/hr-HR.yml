@@ -36,6 +36,8 @@ hr:
   symbols:
     outside: negdje drugdje
   idea_statuses:
+    prescreening: prethodni pregled
+    prescreening_description: Ovaj unos trenutno pregledava voditelj projekta i još nije vidljiv javnosti.
     proposed: predloženo
     proposed_description: Ova je ideja predložena gradskoj administraciji
     viewed: pregledano
