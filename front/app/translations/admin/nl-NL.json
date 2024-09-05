@@ -107,7 +107,7 @@
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Alternatieve foutmelding",
   "app.components.admin.ActionForm.CustomizeErrorMessage.customErrorMessageExplanation": "Standaard wordt de volgende foutmelding aan gebruikers getoond:",
   "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessage": "Foutmelding aanpassen",
-  "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessageExplanation": "Je kunt dit bericht voor elke taal overschrijven met behulp van het onderstaande tekstvak \"Alternatief foutbericht\". Als je het tekstvak leeg laat, wordt het standaardbericht getoond.",
+  "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessageExplanation": "Je kunt deze foutmelding voor elke taal overschrijven met behulp van het onderstaande tekstvak \"Alternatieve foutmelding\". Als je het tekstvak leeg laat, wordt de standaard foutmelding getoond.",
   "app.components.admin.ActionForm.CustomizeErrorMessage.errorMessage": "Foutmelding",
   "app.components.admin.ActionForm.CustomizeErrorMessage.errorMessageTooltip": "Dit is wat deelnemers te zien krijgen als ze niet voldoen aan de deelnamevereisten.",
   "app.components.admin.ActionForm.CustomizeErrorMessage.saveErrorMessage": "Foutmelding opslaan",
