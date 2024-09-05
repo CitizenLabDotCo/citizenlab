@@ -1024,7 +1024,7 @@
   "app.containers.App.skipLinkText": "Saltar al contenido principal",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ya existe una cuenta con este correo electrónico. Puedes cerrar sesión, iniciar sesión con esta dirección de correo electrónico y verificar tu cuenta en la página de configuración.",
   "app.containers.Authentication.steps.AccessDenied.close": "Cerrar",
-  "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No cumples los requisitos para participar en este proceso.",
+  "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No cumples con los requisitos para participar en este proceso.",
   "app.containers.Authentication.steps.EmailAndPasswordVerifiedActions.goBackToSSOVerification": "Volver a la verificación de inicio de sesión único",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Por favor, introduzca un token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
