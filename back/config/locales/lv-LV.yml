@@ -36,6 +36,8 @@ lv:
   symbols:
     outside: kaut kur citur
   idea_statuses:
+    prescreening: pirmskontrole
+    prescreening_description: Šos ievaddatus pašlaik izskata projekta vadītājs, un tie vēl nav publiski pieejami.
     proposed: ierosinātais
     proposed_description: Šī ideja ir ierosināta pilsētai
     viewed: skatīts
