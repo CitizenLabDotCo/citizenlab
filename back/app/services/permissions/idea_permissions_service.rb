@@ -16,13 +16,16 @@ module Permissions
       return reason if reason
       return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
 
-      current_phase = @timeline_service.current_phase_not_archived project
-      if current_phase && !idea_in_current_phase?(current_phase)
-        return IDEA_DENIED_REASONS[:idea_not_in_current_phase]
+      case action
+      when 'editing_idea'
+        return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
+        return IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       end
 
-      return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user.id).exists?
-      IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
+      current_phase = @timeline_service.current_phase_not_archived project
+      if current_phase && !idea_in_current_phase?(current_phase)
+        IDEA_DENIED_REASONS[:idea_not_in_current_phase]
+      end
     end
 
     def denied_reason_for_reaction_mode(reaction_mode)
