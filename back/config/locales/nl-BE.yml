@@ -39,17 +39,17 @@ nl-BE:
     prescreening: voorselectie
     prescreening_description: Deze bijdrage wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
     proposed: voorgesteld
-    proposed_description: Deze bijdrage is ingediend en kan nu door het publiek worden gesteund. Verzamel stemmen om het naar de volgende fase te helpen.
+    proposed_description: Dit idee is voorgesteld
     viewed: gezien
-    viewed_description: Deze bijdrage is gezien door de projectmanager.
+    viewed_description: Dit idee werd gezien door een beheerder
     under_consideration: in overweging
-    under_consideration_description: De projectmanager heeft deze bijdrage in overweging genomen.
+    under_consideration_description: Dit idee is in overweging genomen
     accepted: aangenomen
-    accepted_description: Deze bijdrage is geaccepteerd en zal door de projectmanager worden geïmplementeerd.
+    accepted_description: Dit idee is aanvaard en zal worden uitgevoerd
     implemented: uitgevoerd
-    implemented_description: Deze bijdrage is geïmplementeerd door de projectmanager.
+    implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
-    rejected_description: Deze bijdrage is afgewezen.
+    rejected_description: Dit idee is afgewezen
     expired: verstreken
     expired_description: Deze bijdrage is niet langer actief en is gesloten vanwege tijdsrestricties of inactiviteit.
     threshold_reached: drempel bereikt
