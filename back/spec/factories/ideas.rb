@@ -44,7 +44,7 @@ FactoryBot.define do
       association :project, factory: :single_phase_proposals_project
       creation_phase { project.phases.first }
       after(:create) do |idea, evaluator|
-        idea.phases = [idea.creation_phase]
+        idea.phases = [idea.creation_phase] if idea.phases.empty?
       end
     end
 

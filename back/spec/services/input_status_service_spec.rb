@@ -11,7 +11,7 @@ describe InputStatusService do
     end
 
     let(:phase) { create(:proposals_phase, reacting_threshold: 2, expire_days_limit: 20) }
-    let!(:proposal) { create(:proposal, idea_status: IdeaStatus.find_by(code: 'proposed'), creation_phase: phase, project: phase.project, phases: [phase], published_at: Time.now) }
+    let!(:proposal) { create(:proposal, idea_status: IdeaStatus.find_by(code: 'proposed'), creation_phase: phase, project: phase.project, published_at: Time.now) }
 
     describe 'auto_transition_input!' do
       it 'transitions when voting threshold was reached' do
