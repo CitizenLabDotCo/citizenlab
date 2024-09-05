@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "{orgName}tarafından değerlendirildi",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} {daysLeft, plural, =0 {bir günden az} one {bir gün} other {# gün}} içinde bu girişimi almak için gereken oylar {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "{orgName}tarafından değerlendirildi",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Cevabı okuyun",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} bilgilendirilmiştir ve bir cevap verecektir. Oylama devam etmektedir.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Eşiğe ulaşıldı",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Oylama",
