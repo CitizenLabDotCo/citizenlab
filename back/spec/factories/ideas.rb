@@ -23,7 +23,7 @@ FactoryBot.define do
     idea_status
     location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
-    after(:create) do |idea, evaluator|
+    after(:create) do |idea|
       idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
     end
 
@@ -43,7 +43,7 @@ FactoryBot.define do
     factory :proposal, class: 'Idea' do
       association :project, factory: :single_phase_proposals_project
       creation_phase { project.phases.first }
-      after(:create) do |idea, evaluator|
+      after(:create) do |idea|
         idea.phases = [idea.creation_phase] if idea.phases.empty?
       end
     end

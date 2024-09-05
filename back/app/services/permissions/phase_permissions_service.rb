@@ -101,7 +101,7 @@ module Permissions
       if !participation_method.supports_submission?
         POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
       end
-    end 
+    end
 
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
