@@ -39,17 +39,17 @@ es-CL:
     prescreening: preselección
     prescreening_description: Esta aportación está siendo revisada por el gestor del proyecto y aún no es visible para el público.
     proposed: propuesta
-    proposed_description: Esta aportación ha sido enviada y está abierta al apoyo público. Reúne votos para ayudar a que pase a la siguiente fase.
+    proposed_description: Esta idea ha sido propuesta
     viewed: revisado
-    viewed_description: Esta aportación ha sido vista por el gestor del proyecto.
+    viewed_description: Esta idea ha sido vista por alguien de la organización
     under_consideration: bajo consideración
-    under_consideration_description: El gestor del proyecto ha tenido en cuenta esta aportación.
+    under_consideration_description: Esta idea está siendo considerada
     accepted: aceptada
-    accepted_description: Esta aportación ha sido aceptada y será implementada por el gestor del proyecto.
+    accepted_description: Esta idea ha sido aceptada y será implementada
     implemented: implementada
-    implemented_description: Esta aportación ha sido implementada por el gestor del proyecto.
+    implemented_description: Esta idea ha sido implementada
     rejected: rechazada
-    rejected_description: Este aporte ha sido rechazado.
+    rejected_description: Esta idea ha sido rechazada
     expired: finalizado
     expired_description: Esta aporte ya no está activo y se ha cerrado por falta de tiempo o inactividad.
     threshold_reached: límite alcanzado
