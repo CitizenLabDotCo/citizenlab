@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
 import { Outlet as RouterOutlet } from 'react-router-dom';
@@ -8,12 +8,11 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
-import EsriKeyInput from './Esri/EsriKeyInput';
 import messages from './messages';
-import PowerBITemplates from './PowerBI/PowerBITemplates';
-import PublicAPITokens from './PublicAPI/PublicAPITokens';
-
-import Tools from './';
+const EsriKeyInput = lazy(() => import('./Esri/EsriKeyInput'));
+const PowerBITemplates = lazy(() => import('./PowerBI/PowerBITemplates'));
+const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
+const Tools = lazy(() => import('./'));
 
 export enum toolRoutes {
   tools = 'tools',
