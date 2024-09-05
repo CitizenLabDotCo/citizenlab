@@ -39,17 +39,17 @@ fr-BE:
     prescreening: Réviser les contributions
     prescreening_description: Cette contribution est actuellement en cours de révision par le chef de projet et n'est pas encore visibles au public.
     proposed: soumis.e
-    proposed_description: Cette contribution a été soumise et est maintenant ouverte ouvert à la contribution publique. Recueillez des votes pour l'aider à passer à l'étape suivante.
+    proposed_description: Cette idée à été proposée à l'administration
     viewed: vu.e
-    viewed_description: Cette contribution a été vue par le chef de projet.
+    viewed_description: Cette idée a été vue par une personne de la ville
     under_consideration: pris.e en considération
-    under_consideration_description: Cette contribution a été prise en compte par le chef de projet.
+    under_consideration_description: Cette idée a été prise en considération par l'administration
     accepted: accepté.e
-    accepted_description: Cette contribution a été acceptée et sera mise en œuvre par le gestionnaire du projet.
+    accepted_description: Cette idée a été acceptée et sera mise en place par l'administration
     implemented: mis.e en place
-    implemented_description: Cette contribution a été mise en œuvre par le chef de projet.
+    implemented_description: Cette idée a été mise en place par l'administration
     rejected: non-retenu.e
-    rejected_description: Cette contribution a été rejetée.
+    rejected_description: Cette idée n'a pas été retenue
     expired: expirée
     expired_description: Cette contribution n'est plus active et a été fermée en raison de contraintes de temps ou d'inactivité.
     threshold_reached: seuil atteint
