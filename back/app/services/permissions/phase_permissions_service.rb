@@ -75,11 +75,9 @@ module Permissions
       when 'volunteering'
         volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
+        raise "Unsupported action: #{action}" if !supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
-
-      return unless supported_action? action
 
       super(action, scope: phase)
     end
