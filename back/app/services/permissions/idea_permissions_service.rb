@@ -12,6 +12,7 @@ module Permissions
     def denied_reason_for_action(action, reaction_mode: nil)
       reason = super
       return reason if reason
+      return if UserRoleService.new.can_moderate_project?(idea.project, user)
 
       current_phase = @timeline_service.current_phase_not_archived project
       if current_phase && !idea_in_current_phase?(current_phase)
