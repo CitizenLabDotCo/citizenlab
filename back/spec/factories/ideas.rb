@@ -23,6 +23,10 @@ FactoryBot.define do
     idea_status
     location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
+    after(:create) do |idea, evaluator|
+      idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
+    end
+
     factory :idea_with_topics do
       transient do
         topics_count { 2 }
