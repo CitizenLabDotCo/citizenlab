@@ -265,6 +265,10 @@ resource 'Ideas' do
           slug: idea.slug,
           budget: idea.budget,
           action_descriptors: {
+            editing_idea: {
+              enabled: false,
+              disabled_reason: 'posting_not_supported'
+            },
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,

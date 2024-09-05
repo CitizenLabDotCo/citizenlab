@@ -11,7 +11,7 @@ resource 'IdeaFile' do
     @user = create(:user)
     header_token_for @user
     @project = create(:single_phase_ideation_project)
-    @idea = create(:idea, author: @user, project: @project, phases: @project.phases)
+    @idea = create(:idea, author: @user, project: @project)
     create_list(:idea_file, 2, idea: @idea)
   end
 
