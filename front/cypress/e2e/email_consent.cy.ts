@@ -23,6 +23,7 @@ describe('email consent', () => {
     cy.get('.e2e-campaign_body_multiloc .e2e-localeswitcher').each((button) => {
       // input
       cy.wrap(button).click();
+      button.hasClass('selected');
       cy.get('.e2e-campaign_body_multiloc')
         .find('.ql-editor')
         .first()
