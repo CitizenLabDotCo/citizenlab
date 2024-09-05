@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Tildelt til mig",
   "app.components.admin.PostManager.assignee": "Modtager",
   "app.components.admin.PostManager.authenticationError": "Der opstod en godkendelsesfejl under forsøget på at hente dette lag. Tjek venligst URL'en, og at din Esri API-nøgle har adgang til dette lag.",
-  "app.components.admin.PostManager.automatic": "(automatisk)",
   "app.components.admin.PostManager.bodyTitle": "Beskrivelse",
   "app.components.admin.PostManager.cancel2": "Afbryd",
   "app.components.admin.PostManager.changeStatusModalTitle": "Ændre dette forslags status",

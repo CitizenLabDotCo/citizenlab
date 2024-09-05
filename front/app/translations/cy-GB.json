@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "cael ei ystyried gan {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "cael ei ystyried gan {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Darllenwch yr ateb",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} wedi cael gwybod a bydd yn rhoi ateb. Mae'r pleidleisio yn parhau ar agor.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "Mae'r trothwy wedi'i gyrraedd",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Pleidlais",

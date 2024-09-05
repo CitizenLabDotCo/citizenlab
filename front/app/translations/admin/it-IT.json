@@ -89,7 +89,6 @@
   "app.components.admin.PostManager.assignedTo": "Assegnato a {assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Assegnato a me",
   "app.components.admin.PostManager.assignee": "Assignee",
-  "app.components.admin.PostManager.automatic": "(automatico)",
   "app.components.admin.PostManager.bodyTitle": "Descrizione",
   "app.components.admin.PostManager.changeStatusModalTitle": "Cambia lo stato di questa proposta",
   "app.components.admin.PostManager.comments": "Comments",

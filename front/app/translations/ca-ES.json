@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "considerat per {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votes needed within {daysLeft, plural, =0 {less than a day} one {one day} other {# days}} to get this initiative {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "considerat per {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Llegeix la resposta",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} ha rebut una notificació i li donarà una resposta. La votació continua oberta.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "S'ha assolit el llindar",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Vota",

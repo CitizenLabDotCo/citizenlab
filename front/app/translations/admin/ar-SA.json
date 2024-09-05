@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "معيّن إلي",
   "app.components.admin.PostManager.assignee": "المعيّن إليه",
   "app.components.admin.PostManager.authenticationError": "حدث خطأ في المصادقة أثناء محاولة جلب هذه الطبقة. يرجى التحقق من عنوان URL ومن أن مفتاح Esri API الخاص بك لديه حق الوصول إلى هذه الطبقة.",
-  "app.components.admin.PostManager.automatic": "(تلقائي)",
   "app.components.admin.PostManager.bodyTitle": "وصف",
   "app.components.admin.PostManager.cancel2": "يلغي",
   "app.components.admin.PostManager.changeStatusModalTitle": "غيّر حالة هذا المُقترح",

@@ -7,7 +7,7 @@ module Post
   include GeoJsonHelpers
   extend ActiveSupport::Concern
 
-  PUBLICATION_STATUSES = %w[draft published].freeze
+  PUBLICATION_STATUSES = %w[draft submitted published].freeze
 
   included do
     pg_search_scope :restricted_search,
@@ -51,6 +51,7 @@ module Post
 
     scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
+    scope :submitted_or_published, -> { where publication_status: %w[submitted published] }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, lambda { |user|
@@ -63,6 +64,10 @@ module Post
 
     def draft?
       publication_status == 'draft'
+    end
+
+    def submitted_or_published?
+      %w[submitted published].include? publication_status
     end
 
     def published?
@@ -83,6 +88,10 @@ module Post
       title_multiloc.each do |key, value|
         title_multiloc[key] = value.strip
       end
+    end
+
+    def set_submitted_at
+      self.submitted_at ||= Time.zone.now
     end
 
     def set_published_at

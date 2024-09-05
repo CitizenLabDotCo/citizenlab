@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Bana atandı",
   "app.components.admin.PostManager.assignee": "Atanan",
   "app.components.admin.PostManager.authenticationError": "Bu katmanı getirmeye çalışırken bir kimlik doğrulama hatası oluştu. Lütfen URL'yi ve Esri API anahtarınızın bu katmana erişimi olup olmadığını kontrol edin.",
-  "app.components.admin.PostManager.automatic": "(otomatik)",
   "app.components.admin.PostManager.bodyTitle": "Açıklama",
   "app.components.admin.PostManager.cancel2": "İptal",
   "app.components.admin.PostManager.changeStatusModalTitle": "Bu önerinin durumunu değiştirin",

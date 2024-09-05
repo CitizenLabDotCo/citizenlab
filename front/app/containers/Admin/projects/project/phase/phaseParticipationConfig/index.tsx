@@ -214,7 +214,7 @@ const PhaseParticipationConfig = ({
   const togglePostingEnabled = () => {
     setParticipationConfig((state) => ({
       ...state,
-      posting_enabled: !state.posting_enabled,
+      submission_enabled: !state.submission_enabled,
     }));
   };
 
@@ -397,6 +397,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
+    setParticipationConfig((state) => ({
+      ...state,
+      prescreening_enabled,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -411,7 +418,7 @@ const PhaseParticipationConfig = ({
 
   const {
     participation_method,
-    posting_enabled,
+    submission_enabled,
     commenting_enabled,
     reacting_enabled,
     reacting_like_method,
@@ -435,6 +442,7 @@ const PhaseParticipationConfig = ({
     document_annotation_embed_url,
     expire_days_limit,
     reacting_threshold,
+    prescreening_enabled,
   } = participationConfig;
 
   const showSurveys =
@@ -481,7 +489,7 @@ const PhaseParticipationConfig = ({
           <IdeationInputs
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
-            posting_enabled={posting_enabled}
+            submission_enabled={submission_enabled}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}
@@ -521,7 +529,7 @@ const PhaseParticipationConfig = ({
           <ProposalsInputs
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
-            posting_enabled={posting_enabled}
+            submission_enabled={submission_enabled}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}
@@ -549,6 +557,8 @@ const PhaseParticipationConfig = ({
             expireDateLimitError={expireDateLimitError}
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={reactingThresholdError}
+            prescreening_enabled={prescreening_enabled}
+            toggleReviewingEnabled={toggleReviewingEnabled}
           />
         )}
 

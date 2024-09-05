@@ -92,10 +92,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.proposals.VoteControl.voted',
     defaultMessage: 'Voted',
   },
-  readAnswer: {
-    id: 'app.containers.IdeasShow.proposals.VoteControl.readAnswer',
-    defaultMessage: 'Read answer',
-  },
   votedTitle: {
     id: 'app.containers.IdeasShow.proposals.VoteControl.votedTitle',
     defaultMessage: 'Your vote has been submitted!',

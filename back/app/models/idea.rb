@@ -33,6 +33,7 @@
 #  internal_comments_count  :integer          default(0), not null
 #  votes_count              :integer          default(0), not null
 #  followers_count          :integer          default(0), not null
+#  submitted_at             :datetime
 #
 # Indexes
 #
@@ -100,6 +101,7 @@ class Idea < ApplicationRecord
 
   with_options unless: :draft? do |post|
     post.before_validation :strip_title
+    post.after_validation :set_submitted_at, if: ->(record) { record.submitted_or_published? && record.publication_status_changed? }
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
@@ -111,6 +113,7 @@ class Idea < ApplicationRecord
   validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
+  validate :not_published_in_non_public_status
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
@@ -262,6 +265,17 @@ class Idea < ApplicationRecord
         message: 'The creation phase cannot be set for transitive participation methods'
       )
     end
+  end
+
+  def not_published_in_non_public_status
+    return if !published?
+    return if idea_status.public_post?
+
+    errors.add(
+      :publication_status,
+      :invalid_status,
+      message: 'Inputs can only be published in public statuses'
+    )
   end
 
   # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays

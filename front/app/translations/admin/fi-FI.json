@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Minulle määrätty",
   "app.components.admin.PostManager.assignee": "Valtuutettu",
   "app.components.admin.PostManager.authenticationError": "Tätä tasoa haettaessa tapahtui todennusvirhe. Tarkista URL-osoite ja että Esri API -avaimellasi on pääsy tähän tasoon.",
-  "app.components.admin.PostManager.automatic": "(Automaattinen)",
   "app.components.admin.PostManager.bodyTitle": "Kuvaus",
   "app.components.admin.PostManager.cancel2": "Peruuttaa",
   "app.components.admin.PostManager.changeStatusModalTitle": "Muuta tämän ehdotuksen tilaa",

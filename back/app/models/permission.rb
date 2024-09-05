@@ -65,7 +65,7 @@ class Permission < ApplicationRecord
     return available_actions(permission_scope) if permission_scope&.pmethod&.return_disabled_actions?
 
     available_actions(permission_scope).reject do |action|
-      (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+      (action == 'posting_idea' && !permission_scope&.submission_enabled?) ||
         (action == 'reacting_idea' && !permission_scope&.reacting_enabled?) ||
         (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
     end

@@ -42,21 +42,6 @@ class InputStatusService
     end
   end
 
-  def can_transition_manually?
-    case input_status.participation_method
-    when 'ideation'
-      true
-    when 'proposals'
-      !input_status.automatic?
-    else
-      false
-    end
-  end
-
-  def can_reorder?
-    !input_status.automatic?
-  end
-
   private
 
   private_class_method def self.apply_transition!(input, code_to)

@@ -103,12 +103,12 @@ module ParticipationMethod
       true
     end
 
-    def supports_posting_inputs?
-      true
-    end
-
     def supports_serializing?(attribute)
       %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
+    end
+
+    def supports_submission?
+      true
     end
 
     def supports_survey_form?

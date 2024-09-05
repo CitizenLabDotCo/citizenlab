@@ -144,7 +144,6 @@
   "app.components.admin.PostManager.assignedToMe": "Asignado a mí",
   "app.components.admin.PostManager.assignee": "Asignado",
   "app.components.admin.PostManager.authenticationError": "Se ha producido un error de autenticación al intentar obtener esta capa. Comprueba la URL y que tu clave API de Esri tiene acceso a esta capa.",
-  "app.components.admin.PostManager.automatic": "(automático)",
   "app.components.admin.PostManager.bodyTitle": "Descripción",
   "app.components.admin.PostManager.cancel2": "Cancelar",
   "app.components.admin.PostManager.changeStatusModalTitle": "Cambiar el estado de esta propuesta",
