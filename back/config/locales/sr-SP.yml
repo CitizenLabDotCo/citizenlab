@@ -39,17 +39,17 @@ sr-Cyrl:
     prescreening: screening
     prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: предложено
-    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
+    proposed_description: Ова идеја је предложена граду
     viewed: гледано
-    viewed_description: This input has been seen by the project manager.
+    viewed_description: Ову идеју је видео неко из града
     under_consideration: у разматрању
-    under_consideration_description: This input has been taken into consideration by the project manager.
+    under_consideration_description: Ову идеју је град узео у обзир
     accepted: прихваћено
-    accepted_description: This input has been accepted and will be implemented by the project manager.
+    accepted_description: Ова идеја је прихваћена и биће спроведена од стране града
     implemented: имплементиран
-    implemented_description: This input has been implemented by the project manager.
+    implemented_description: Ову идеју је спровео град
     rejected: одбијен
-    rejected_description: This input has been rejected.
+    rejected_description: Ова идеја је одбијена
     expired: expired
     expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
