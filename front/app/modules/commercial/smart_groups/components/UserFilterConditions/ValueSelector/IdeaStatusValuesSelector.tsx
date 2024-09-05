@@ -15,7 +15,7 @@ export interface Props {
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method: undefined,
   });
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
@@ -23,7 +23,9 @@ const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
       return ideaStatuses.data.map((ideaStatus) => {
         return {
           value: ideaStatus.id,
-          label: localize(ideaStatus.attributes.title_multiloc),
+          label: `${localize(ideaStatus.attributes.title_multiloc)} (${
+            ideaStatus.attributes.participation_method
+          })`,
         };
       });
     } else {
