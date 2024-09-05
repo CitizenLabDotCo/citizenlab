@@ -36,6 +36,8 @@
   symbols:
     outside: annet sted
   idea_statuses:
+    prescreening: forhåndsscreening
+    prescreening_description: Dette innspillet er for tiden under vurdering av prosjektlederen og er ennå ikke synlig for offentligheten.
     proposed: foreslått
     proposed_description: Ideen har blitt forslått til kommunen
     viewed: Sett
