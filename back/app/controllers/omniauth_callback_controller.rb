@@ -149,7 +149,7 @@ class OmniauthCallbackController < ApplicationController
 
   def signin_failure_redirect(params = {})
     params['authentication_error'] = true
-    redirect_path = request.env['omniauth.params']['sso_pathname'] || '/'
+    redirect_path = request.env['omniauth.params']&['sso_pathname'] || '/'
     redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url(pathname: redirect_path), params))
   end
 

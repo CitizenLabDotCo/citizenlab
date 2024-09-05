@@ -205,7 +205,7 @@ const App = ({ children }: Props) => {
       'sign-in',
       'complete-signup',
       'invite',
-      'authentication-error',
+      'authentication-error', // TODO: JS - what is the effect here of removing?
     ];
     setPreviousPathname(
       !endsWith(newPreviousPathname, pathsToIgnore)

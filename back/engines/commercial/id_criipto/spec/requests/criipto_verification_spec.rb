@@ -238,7 +238,7 @@ context 'criipto verification' do
         get "/auth/criipto?token=#{@token}&pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
           first_name: 'Bulenga',

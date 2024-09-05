@@ -121,7 +121,7 @@ describe 'clave_unica verification' do
     get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(@user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -175,7 +175,7 @@ describe 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
           first_name: 'Rudolphi',
