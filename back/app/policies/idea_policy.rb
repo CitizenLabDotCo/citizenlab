@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
-  EXCLUDED_REASONS_FOR_UPDATE = %w[posting_disabled posting_limited_max_reached].freeze
   class Scope
     attr_reader :user, :scope
 
@@ -71,12 +70,9 @@ class IdeaPolicy < ApplicationPolicy
     return false if record.participation_method_on_creation.use_reactions_as_votes? && record.reactions.where.not(user_id: user.id).exists?
     return false if record.creation_phase&.prescreening_enabled && record.published?
 
-    posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
+    posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action 'editing_idea'
+    raise_not_authorized(posting_denied_reason) if posting_denied_reason
 
-    if posting_denied_reason
-      ignored_reasons = record.will_be_published? ? [] : EXCLUDED_REASONS_FOR_UPDATE
-      raise_not_authorized(posting_denied_reason) unless posting_denied_reason.in?(ignored_reasons)
-    end
     true
   end
 

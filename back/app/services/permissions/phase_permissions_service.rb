@@ -58,6 +58,8 @@ module Permissions
       phase_denied_reason = case action
       when 'posting_idea'
         posting_idea_denied_reason_for_action
+      when 'editing_idea'
+        editing_idea_denied_reason_for_action
       when 'commenting_idea'
         commenting_idea_denied_reason_for_action
       when 'reacting_idea'
@@ -96,6 +98,12 @@ module Permissions
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
+
+    def editing_idea_denied_reason_for_action
+      if !participation_method.supports_submission?
+        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+      end
+    end 
 
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?

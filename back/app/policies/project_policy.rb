@@ -80,6 +80,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
+    # TODO: Remove code duplcation shared with ProjectPermissionsService#project_visible_disabled_reason
     active_moderator? || (
       %w[published archived].include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (

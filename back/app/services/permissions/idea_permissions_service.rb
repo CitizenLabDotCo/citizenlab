@@ -24,6 +24,7 @@ module Permissions
     end
 
     def action_descriptors
+      editing_disabled_reason = denied_reason_for_action 'editing_idea'
       commenting_disabled_reason = denied_reason_for_action 'commenting_idea'
       liking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
       disliking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
@@ -32,6 +33,11 @@ module Permissions
       comment_reacting_disabled_reason = commenting_disabled_reason
 
       {
+        editing_idea: {
+          enabled: !editing_disabled_reason,
+          disabled_reason: editing_disabled_reason,
+          # future_enabled_at: editing_disabled_reason && future_enabled_phase('editing_idea')&.start_at
+        },
         commenting_idea: {
           enabled: !commenting_disabled_reason,
           disabled_reason: commenting_disabled_reason,
