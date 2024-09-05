@@ -109,7 +109,7 @@ describe IdeaPolicy do
           .to receive(:denied_reason_for_action).and_return(disabled_reason)
       end
 
-      described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|
+      %w[posting_disabled posting_limited_max_reached].each do |disabled_reason|
         context "when the disabled reason is excluded for update: '#{disabled_reason}'" do
           let(:disabled_reason) { disabled_reason }
 
