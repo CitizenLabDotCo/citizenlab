@@ -74,7 +74,6 @@ export enum citizenRoutes {
   signIn = 'sign-in',
   signUp = 'sign-up',
   invite = 'invite',
-  completeSignUp = 'complete-signup',
   siteMap = 'site-map',
   profileEdit = `profile/edit`,
   changePassword = `profile/change-password`,
@@ -114,7 +113,6 @@ type citizenRouteTypes =
   | `/sign-in`
   | `/sign-up`
   | `/invite`
-  | `/complete-signup`
   | `/site-map`
   | `/${citizenRoutes.profile}/edit`
   | `/${citizenRoutes.profile}/change-password`
@@ -176,14 +174,6 @@ export default function createRoutes() {
         },
         {
           path: citizenRoutes.invite,
-          element: (
-            <PageLoading>
-              <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.completeSignUp,
           element: (
             <PageLoading>
               <HomePage />

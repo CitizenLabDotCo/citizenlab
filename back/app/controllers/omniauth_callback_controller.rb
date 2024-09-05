@@ -69,7 +69,7 @@ class OmniauthCallbackController < ApplicationController
       # Note, that the modal is not shown with this URL
       # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
       #
-      # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
+      # Probably, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
       signin_failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
       return
     end
@@ -138,19 +138,34 @@ class OmniauthCallbackController < ApplicationController
 
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
-    request.env['omniauth.params']['sso_flow'] = 'signin' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
+    omniauth_params = filter_omniauth_params
+    omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(pathname: sso_redirect_path), omniauth_params))
   end
 
   def signup_success_redirect
-    request.env['omniauth.params']['sso_flow'] = 'signup' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
+    omniauth_params = filter_omniauth_params
+    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
+    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(pathname: sso_redirect_path), omniauth_params))
   end
 
   def signin_failure_redirect(params = {})
     params['authentication_error'] = true
-    redirect_path = (request.env['omniauth.params'] & ['sso_pathname']) || '/'
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url(pathname: redirect_path), params))
+    redirect_to(
+      add_uri_params(
+        Frontend::UrlService.new.signin_failure_url(pathname: sso_redirect_path),
+        filter_omniauth_params.merge(params)
+      )
+    )
+  end
+
+  def sso_redirect_path
+    request.env['omniauth.params'].dig('sso_pathname') || '/'
+  end
+
+  # Reject any parameters we don't need to be passed to the frontend in the URL
+  def filter_omniauth_params
+    request.env['omniauth.params'].except("token", "pathname", "sso_pathname")
   end
 
   def add_uri_params(uri, params = {})

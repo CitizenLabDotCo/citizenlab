@@ -126,14 +126,74 @@ describe IdNemlogIn::NemlogInOmniauth do
     })
   end
 
+  context "when validating user's age" do
+    it 'does not verify a user under specified age limit' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
+
+      get "/auth/nemlog_in?token=#{token}&pathname=/en/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
+      expect(user.reload).to have_attributes({
+                                               verified: false
+                                             })
+    end
+
+    it 'verifies a user over specified age limit' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
+
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
+      expect(user.reload).to have_attributes({
+                                               verified: true
+                                             })
+    end
+  end
+
+  context 'when handling birthyear' do
+    context 'when birthyear field is configured' do
+      before do
+        configuration = AppConfiguration.instance
+        settings = configuration.settings
+        settings['verification']['verification_methods'].first['birthyear_custom_field_key'] = 'birthyear'
+        configuration.save!
+      end
+
+      it 'stores the birthyear in the custom field' do
+        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(user.reload.custom_field_values['birthyear']).to eq(1944)
+      end
+    end
+
+    context 'when birthyear field is not configured' do
+      before do
+        configuration = AppConfiguration.instance
+        settings = configuration.settings
+        settings['verification']['verification_methods'].delete('birthyear_custom_field_key')
+        configuration.save!
+      end
+
+      it 'stores the birthyear in the custom field' do
+        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(user.reload.custom_field_values['birthyear']).to be_nil
+      end
+    end
+  end
+
   context 'verifying and creating a new user' do
     let(:user) { nil }
 
     it 'creates a user with a unique ID and no email, then logs them in' do
-      get '/auth/nemlog_in?pathname=/whatever-page'
+      get '/auth/nemlog_in?sso_pathname=/en/whatever-page&other_param=123'
       follow_redirect!
 
-      expect(response).to redirect_to('/en/complete-signup?pathname=%2Fwhatever-page')
+      expect(response).to redirect_to('/en/whatever-page?other_param=123')
       expect(cookies[:cl2_jwt]).to be_present
       jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
@@ -169,10 +229,10 @@ describe IdNemlogIn::NemlogInOmniauth do
       )
       expect(User.first.first_name).to eq('Bob') # Check the user is created correctly
 
-      get '/auth/nemlog_in?pathname=/another-page'
+      get '/auth/nemlog_in?sso_pathname=/en/another-page&test_param=test'
       follow_redirect!
 
-      expect(response).to redirect_to('/en?pathname=%2Fanother-page')
+      expect(response).to redirect_to('/en/another-page?test_param=test')
       expect(cookies[:cl2_jwt]).to be_present
       jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
@@ -180,66 +240,6 @@ describe IdNemlogIn::NemlogInOmniauth do
       expect(User.first.last_name).to eq('Jelly')
       expect(User.first.verified).to be(true)
       expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
-    end
-  end
-
-  context "when validating user's age" do
-    it 'does not verify a user under specified age limit' do
-      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
-
-      get "/auth/nemlog_in?token=#{token}&pathname=/en/some-page"
-      follow_redirect!
-
-      expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
-      expect(user.reload).to have_attributes({
-        verified: false
-      })
-    end
-
-    it 'verifies a user over specified age limit' do
-      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
-
-      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
-      follow_redirect!
-
-      expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
-      expect(user.reload).to have_attributes({
-        verified: true
-      })
-    end
-  end
-
-  context 'when handling birthyear' do
-    context 'when birthyear field is configured' do
-      before do
-        configuration = AppConfiguration.instance
-        settings = configuration.settings
-        settings['verification']['verification_methods'].first['birthyear_custom_field_key'] = 'birthyear'
-        configuration.save!
-      end
-
-      it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
-        follow_redirect!
-
-        expect(user.reload.custom_field_values['birthyear']).to eq(1944)
-      end
-    end
-
-    context 'when birthyear field is not configured' do
-      before do
-        configuration = AppConfiguration.instance
-        settings = configuration.settings
-        settings['verification']['verification_methods'].delete('birthyear_custom_field_key')
-        configuration.save!
-      end
-
-      it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
-        follow_redirect!
-
-        expect(user.reload.custom_field_values['birthyear']).to be_nil
-      end
     end
   end
 end

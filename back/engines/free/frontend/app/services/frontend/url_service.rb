@@ -79,20 +79,24 @@ module Frontend
       locale ? "#{url}/#{locale.locale_sym}" : url
     end
 
-    def verification_url(options = {})
+    def sso_url(options = {})
       pathname = options[:pathname]
       "#{home_url(options)}#{pathname}"
     end
 
     def signin_success_url(options = {})
-      home_url(options)
+      sso_url(options)
     end
 
     def signup_success_url(options = {})
-      "#{home_url(options)}/complete-signup"
+      sso_url(options)
     end
 
     def signin_failure_url(options = {})
+      sso_url(options)
+    end
+
+    def verification_url(options = {})
       pathname = options[:pathname]
       "#{home_url(options)}#{pathname}"
     end

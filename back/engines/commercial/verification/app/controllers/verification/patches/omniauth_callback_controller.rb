@@ -56,8 +56,7 @@ module Verification
       end
 
       def verification_failure_redirect(error)
-        omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
-
+        omniauth_params = filter_omniauth_params
         url = add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
           omniauth_params.merge(verification_error: true, error_code: error)
