@@ -118,7 +118,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -148,11 +148,10 @@ describe IdNemlogIn::NemlogInOmniauth do
     it 'does not create a user or log them in if the user is under the minimum age' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get '/auth/nemlog_in?pathname=/whatever-page'
+      get '/auth/nemlog_in?sso_pathname=/en/whatever-page'
       follow_redirect!
 
-      # TODO: JS - This needs to redirect to the same page
-      expect(response).to redirect_to('/authentication-error?pathname=%2Fwhatever-page&error_code=not_entitled_under_minimum_age')
+      expect(response).to redirect_to('/en/whatever-page?error_code=not_entitled_under_minimum_age&authentication_error=true')
       expect(cookies[:cl2_jwt]).to be_nil
       expect(User.count).to eq 0
     end
@@ -188,10 +187,10 @@ describe IdNemlogIn::NemlogInOmniauth do
     it 'does not verify a user under specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+      get "/auth/nemlog_in?token=#{token}&pathname=/en/some-page"
       follow_redirect!
 
-      expect(response).to redirect_to('/some-page?verification_error=true&error=not_entitled_under_minimum_age')
+      expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
       expect(user.reload).to have_attributes({
         verified: false
       })

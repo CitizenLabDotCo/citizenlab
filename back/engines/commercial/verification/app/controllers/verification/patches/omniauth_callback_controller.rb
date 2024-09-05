@@ -29,13 +29,13 @@ module Verification
               )
               redirect_to url
             rescue VerificationService::VerificationTakenError
-              fail_verification('taken')
+              verification_failure_redirect('taken')
             rescue VerificationService::NotEntitledError => e
-              fail_verification(not_entitled_error(e))
+              verification_failure_redirect(not_entitled_error(e))
             end
           end
         rescue ActiveRecord::RecordNotFound
-          fail_verification('no_token_passed')
+          verification_failure_redirect('no_token_passed')
         end
       end
 
@@ -47,7 +47,7 @@ module Verification
         return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?
 
         user.destroy if user_created # TODO: Probably should not be created in the first place, but bigger refactor required to fix
-        failure_redirect(error_code: not_entitled_error(e))
+        signin_failure_redirect(error_code: not_entitled_error(e))
         false
       end
 
@@ -55,12 +55,12 @@ module Verification
         error.why ? "not_entitled_#{error.why}" : 'not_entitled'
       end
 
-      def fail_verification(error)
+      def verification_failure_redirect(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
 
         url = add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
-          omniauth_params.merge(verification_error: true, error: error)
+          omniauth_params.merge(verification_error: true, error_code: error)
         )
         redirect_to url
       end

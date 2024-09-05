@@ -25,7 +25,7 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def failure
-    failure_redirect
+    signin_failure_redirect
   end
 
   def logout_data
@@ -70,7 +70,7 @@ class OmniauthCallbackController < ApplicationController
       # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
       #
       # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
-      failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
+      signin_failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
       return
     end
 
@@ -80,7 +80,7 @@ class OmniauthCallbackController < ApplicationController
       if @user.invite_pending?
         @invite = @user.invitee_invite
         if !@invite || @invite.accepted_at
-          failure_redirect
+          signin_failure_redirect
           return
         end
         UserService.assign_params_in_accept_invite(@user, user_attrs)
@@ -92,7 +92,7 @@ class OmniauthCallbackController < ApplicationController
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
-          failure_redirect
+          signin_failure_redirect
         end
 
       else # !@user.invite_pending?
@@ -100,7 +100,7 @@ class OmniauthCallbackController < ApplicationController
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
-          failure_redirect
+          signin_failure_redirect
           return
         end
         verify_and_sign_in(auth, @user, verify, sign_up: false)
@@ -119,7 +119,7 @@ class OmniauthCallbackController < ApplicationController
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
-        failure_redirect
+        signin_failure_redirect
       end
     end
   end
@@ -136,11 +136,6 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def failure_redirect(params = {})
-    redirect_params = (request.env['omniauth.params'] || {}).with_indifferent_access.merge(params)
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
-  end
-
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signin' if request.env['omniauth.params']['sso_flow']
@@ -150,6 +145,12 @@ class OmniauthCallbackController < ApplicationController
   def signup_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signup' if request.env['omniauth.params']['sso_flow']
     redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
+  end
+
+  def signin_failure_redirect(params = {})
+    params['authentication_error'] = true
+    redirect_path = request.env['omniauth.params']['sso_pathname'] || '/'
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url(pathname: redirect_path), params))
   end
 
   def add_uri_params(uri, params = {})

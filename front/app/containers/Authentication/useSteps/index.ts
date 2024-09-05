@@ -251,7 +251,7 @@ export default function useSteps() {
       transition(
         currentStep,
         'TRIGGER_VERIFICATION_ERROR'
-      )(urlSearchParams.error);
+      )(urlSearchParams.error_code);
       return;
     }
 
@@ -299,17 +299,18 @@ export default function useSteps() {
       const flow = sso_flow ?? 'signin';
       updateState({ flow });
 
-      if (pathname.endsWith('authentication-error')) {
+      if (urlSearchParams.authentication_error === 'true') {
         transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
 
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
+        // Remove query string from URL as they've already been captured
+        window.history.replaceState(null, '', pathname);
         return;
       }
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
       } else if (!verification_success) {
+        // TODO: JS - is this needed - if it fails it should be picked up earlier
         // Remove all parameters from URL as they've already been captured
         window.history.replaceState(null, '', '/');
       }

@@ -93,7 +93,8 @@ module Frontend
     end
 
     def signin_failure_url(options = {})
-      "#{home_url(options)}/authentication-error"
+      pathname = options[:pathname]
+      "#{home_url(options)}#{pathname}"
     end
 
     def verification_success_url(options = {})
