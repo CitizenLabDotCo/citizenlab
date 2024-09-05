@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "./build/main.*.min.js",
-      "maxSize": "700 kB"
+      "maxSize": "400 kB"
     }
   ]
 }

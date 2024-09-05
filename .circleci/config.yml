@@ -491,7 +491,7 @@ jobs:
       - run:
           command: | 
             TEST_BUILD="true" npm run build
-            npx --yes bundlesize2 --enable-github-checks
+            npx --yes bundlesize2
           no_output_timeout: "30m"
 
   front-extract-intl:
