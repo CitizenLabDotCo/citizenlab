@@ -1,6 +1,7 @@
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[
+      visiting
       posting_initiative
       commenting_initiative
       reacting_initiative
