@@ -107,7 +107,7 @@
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": "Mensaje de error alternativo",
   "app.components.admin.ActionForm.CustomizeErrorMessage.customErrorMessageExplanation": "Por defecto, se mostrará a los usuarios el siguiente mensaje de error:",
   "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessage": "Personalizar el mensaje de error",
-  "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessageExplanation": "Puedes sobrescribir este mensaje para cada idioma utilizando el cuadro de texto \"Mensaje de error alternativo\" que aparece más abajo. Si dejas la caja de texto vacía, se mostrará el mensaje por defecto.",
+  "app.components.admin.ActionForm.CustomizeErrorMessage.customizeErrorMessageExplanation": "Puedes ofrecer un mensaje alternativo a este mensaje para cada idioma utilizando el cuadro de texto \"Mensaje de error alternativo\" que aparece más abajo. Si dejas la caja de texto vacía, se mostrará el mensaje que incluimos por defecto.",
   "app.components.admin.ActionForm.CustomizeErrorMessage.errorMessage": "Mensaje de error",
   "app.components.admin.ActionForm.CustomizeErrorMessage.errorMessageTooltip": "Esto es lo que verán los participantes cuando no cumplan los requisitos de participación.",
   "app.components.admin.ActionForm.CustomizeErrorMessage.saveErrorMessage": "Guardar mensaje de error",
