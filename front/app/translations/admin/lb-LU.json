@@ -145,7 +145,7 @@
   "app.components.admin.PostManager.assignedToMe": "Assigned to me",
   "app.components.admin.PostManager.assignee": "Assignee",
   "app.components.admin.PostManager.authenticationError": "En Authentifikatiounsfehler ass geschitt beim Versuch dës Layer ze sichen. Kuckt w.e.g. d'URL an datt Ären Esri API Schlëssel Zougang zu dëser Layer huet.",
-  "app.components.admin.PostManager.automatic": "(automatic)",
+  "app.components.admin.PostManager.automatic": "(automatesch)",
   "app.components.admin.PostManager.bodyTitle": "Beschreiwung",
   "app.components.admin.PostManager.cancel2": "Ofbriechen",
   "app.components.admin.PostManager.changeStatusModalTitle": "Change this proposal's status",
