@@ -39,17 +39,17 @@ sr-Latn:
     prescreening: screening
     prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: predloženo
-    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
+    proposed_description: Ova ideja je predložena administraciji
     viewed: pregledano
-    viewed_description: This input has been seen by the project manager.
+    viewed_description: Ova ideja je pogledana
     under_consideration: razmatra se
-    under_consideration_description: This input has been taken into consideration by the project manager.
+    under_consideration_description: Ova ideja se razmatra
     accepted: prihvaćeno
-    accepted_description: This input has been accepted and will be implemented by the project manager.
+    accepted_description: Ova ideja je prihvaćena i biće realizovana
     implemented: realizovano
-    implemented_description: This input has been implemented by the project manager.
+    implemented_description: Ova ideja je realizovana
     rejected: odbijeno
-    rejected_description: This input has been rejected.
+    rejected_description: Ova ideja je odbijena
     expired: expired
     expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
