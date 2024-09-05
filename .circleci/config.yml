@@ -717,7 +717,7 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker compose run front npm run build:test
+          docker compose run --build front npm run build:test
       - run: docker cp $(docker ps -lq):/front/build .
       - run: |
           docker tag e2e-front citizenlabdotco/front-e2e:$CIRCLE_SHA1
