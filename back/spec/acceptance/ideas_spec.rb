@@ -405,7 +405,7 @@ resource 'Ideas' do
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          input.update(phases: [phase])
+          input.update!(phases: [phase])
         end
 
         example 'the count starts at 1' do
