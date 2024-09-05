@@ -79,21 +79,22 @@ module Frontend
       locale ? "#{url}/#{locale.locale_sym}" : url
     end
 
-    def sso_url(options = {})
-      pathname = options[:pathname]
+    def sso_return_url(options = {})
+      pathname = options[:pathname] || '/'
+      pathname = strip_existing_locale_from_path(pathname) if options[:locale]
       "#{home_url(options)}#{pathname}"
     end
 
     def signin_success_url(options = {})
-      sso_url(options)
+      sso_return_url(options)
     end
 
     def signup_success_url(options = {})
-      sso_url(options)
+      sso_return_url(options)
     end
 
     def signin_failure_url(options = {})
-      sso_url(options)
+      sso_return_url(options)
     end
 
     def verification_url(options = {})
@@ -188,6 +189,11 @@ module Frontend
         ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
       options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
+    end
+
+    def strip_existing_locale_from_path(pathname)
+      # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
+      pathname.gsub(/^\/([a-z]{2}(-[A-Z]{2})?)(\/(.*))/, '\3')
     end
 
     # Memoized database query

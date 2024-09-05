@@ -140,13 +140,23 @@ class OmniauthCallbackController < ApplicationController
   def signin_success_redirect
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(pathname: sso_redirect_path), omniauth_params))
+    redirect_to(
+      add_uri_params(
+        Frontend::UrlService.new.signin_success_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
+        omniauth_params
+      )
+    )
   end
 
   def signup_success_redirect
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(pathname: sso_redirect_path), omniauth_params))
+    redirect_to(
+      add_uri_params(
+        Frontend::UrlService.new.signup_success_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
+        omniauth_params
+      )
+    )
   end
 
   def signin_failure_redirect(params = {})
