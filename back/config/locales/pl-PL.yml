@@ -36,6 +36,8 @@ pl:
   symbols:
     outside: gdzieś indziej
   idea_statuses:
+    prescreening: kontrola wstępna
+    prescreening_description: Dane te są obecnie sprawdzane przez kierownika projektu i nie są jeszcze widoczne publicznie.
     proposed: zaproponowana
     proposed_description: Ten pomysł został zaproponowany miastu
     viewed: obejrzany
