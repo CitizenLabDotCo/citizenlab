@@ -13,7 +13,7 @@
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #  participation_method          :string           default("ideation"), not null
-#  posting_enabled               :boolean          default(TRUE)
+#  submission_enabled            :boolean          default(TRUE)
 #  commenting_enabled            :boolean          default(TRUE)
 #  reacting_enabled              :boolean          default(TRUE), not null
 #  reacting_like_method          :string           default("unlimited"), not null
@@ -43,6 +43,7 @@
 #  native_survey_button_multiloc :jsonb
 #  expire_days_limit             :integer
 #  reacting_threshold            :integer
+#  prescreening_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -93,6 +94,7 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :campaigns_settings, presence: true
   validates :start_at, presence: true
+  validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
@@ -106,8 +108,8 @@ class Phase < ApplicationRecord
     validates :presentation_mode, presence: true
   end
 
-  validates :posting_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
-    phase.pmethod.supports_posting_inputs?
+  validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
+    phase.pmethod.supports_submission?
   }
 
   with_options if: ->(phase) { phase.pmethod.supports_commenting? } do

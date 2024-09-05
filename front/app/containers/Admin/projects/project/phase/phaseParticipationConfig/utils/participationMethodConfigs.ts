@@ -10,7 +10,7 @@ import {
 
 export interface IPhaseParticipationConfig {
   participation_method: ParticipationMethod;
-  posting_enabled?: boolean | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'unlimited' | 'limited' | null;
@@ -34,11 +34,12 @@ export interface IPhaseParticipationConfig {
   document_annotation_embed_url?: string | null;
   expire_days_limit?: number | null;
   reacting_threshold?: number | null;
+  prescreening_enabled?: boolean | null;
 }
 
 export const defaultParticipationConfig: IPhaseParticipationConfig = {
   participation_method: 'ideation',
-  posting_enabled: true,
+  submission_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
   reacting_like_method: undefined,
@@ -62,12 +63,13 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   survey_embed_url: null,
   expire_days_limit: undefined,
   reacting_threshold: undefined,
+  prescreening_enabled: undefined,
 };
 
 export const ideationDefaultConfig: IPhaseParticipationConfig = {
   ...defaultParticipationConfig,
   participation_method: 'ideation',
-  posting_enabled: true,
+  submission_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
@@ -85,7 +87,7 @@ export const nativeSurveyDefaultConfig: IPhaseParticipationConfig = {
   ...defaultParticipationConfig,
   participation_method: 'native_survey',
   allow_anonymous_participation: false,
-  posting_enabled: true,
+  submission_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
   reacting_dislike_enabled: true,
@@ -114,7 +116,7 @@ export const surveyDefaultConfig: IPhaseParticipationConfig = {
 export const proposalsDefaultConfig: IPhaseParticipationConfig = {
   ...defaultParticipationConfig,
   participation_method: 'proposals',
-  posting_enabled: true,
+  submission_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
@@ -127,4 +129,5 @@ export const proposalsDefaultConfig: IPhaseParticipationConfig = {
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,
+  prescreening_enabled: false,
 };

@@ -60,8 +60,8 @@ resource 'IdeaStatuses' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
-        expect(json_response.dig(:data, :attributes, :can_reorder)).to be true
-        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to be true
+        expect(json_response.dig(:data, :attributes, :locked)).to be false
+        expect(json_response.dig(:data, :attributes, :can_manually_transition_to)).to be true
       end
     end
 
@@ -76,8 +76,8 @@ resource 'IdeaStatuses' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response.dig(:data, :attributes, :code)).to eq 'proposed'
-        expect(json_response.dig(:data, :attributes, :can_reorder)).to be false
-        expect(json_response.dig(:data, :attributes, :can_transition_manually)).to be true
+        expect(json_response.dig(:data, :attributes, :locked)).to be true
+        expect(json_response.dig(:data, :attributes, :can_manually_transition_to)).to be true
       end
     end
   end
@@ -135,12 +135,12 @@ resource 'IdeaStatuses' do
         end
 
         describe do
-          let(:code) { 'proposed' }
+          let(:code) { 'prescreening' }
 
-          example '[Error] Cannot create a proposed status', document: false do
+          example '[Error] Cannot create a locked status', document: false do
             expect { do_request }.not_to change(IdeaStatus, :count)
             assert_status 422
-            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional automatic statuses', value: 'proposed')
+            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional locked statuses', value: code)
           end
         end
       end
@@ -189,7 +189,7 @@ resource 'IdeaStatuses' do
       describe do
         let(:idea_status) { create(:idea_status_proposed) }
 
-        example '[Error] Cannot update the code of a proposed status', document: false do
+        example '[Error] Cannot update the code of a locked status', document: false do
           do_request
           expect(idea_status.reload.code).to eq 'proposed'
         end
@@ -199,7 +199,7 @@ resource 'IdeaStatuses' do
         let(:idea_status) { create(:proposals_status) }
         let(:code) { 'expired' }
 
-        example '[Error] Cannot change the code to an automatic status code', document: false do
+        example '[Error] Cannot change the code to a locked status code', document: false do
           do_request
           expect(idea_status.reload.code).not_to eq 'expired'
         end
@@ -212,7 +212,11 @@ resource 'IdeaStatuses' do
       parameter :ordering, 'The position, starting from 0, where the status should be at. Fields after will move down.', required: true
     end
 
-    before { create_list(:idea_status, 3) }
+    before do
+      create_list(:idea_status, 2)
+      # Ensure testing that only one set is taken into account when calculating the max_ordering
+      (IdeaStatus::LOCKED_CODES + ['custom']).each { |code| create(:proposals_status, code: code) }
+    end
 
     let(:idea_status) { create(:idea_status) }
     let(:id) { idea_status.id }
@@ -241,40 +245,43 @@ resource 'IdeaStatuses' do
 
         example '[Error] Cannot reorder the proposed status', document: false do
           do_request
-          assert_status 401
-        end
-      end
-
-      describe do
-        let(:idea_status) { create(:proposals_status, code: 'answered') }
-
-        example 'Reorder a manual default proposals status', document: false do
-          do_request
-          assert_status 200
-          expect(response_data.dig(:attributes, :ordering)).to eq ordering
-        end
-      end
-
-      describe do
-        let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
-
-        example '[Error] Cannot reorder an automated status status', document: false do
-          do_request
-          assert_status 401
-        end
-      end
-
-      describe do
-        before do
-          IdeaStatus.all.zip(%w[proposed threshold_reached expired]).each { |status, code| status.update!(code: code, participation_method: 'proposals') }
-        end
-
-        let(:idea_status) { create(:proposals_status) }
-
-        example '[Error] Cannot reorder a proposals status into the automated status section', document: false do
-          do_request
           assert_status 422
-          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the automatic statuses section'
+          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
+        end
+      end
+
+      context 'when proposals statuses' do
+        let(:ordering) { IdeaStatus::LOCKED_CODES.size }
+
+        describe do
+          let(:idea_status) { create(:proposals_status, code: 'answered') }
+
+          example 'Reorder a manual default proposals status', document: false do
+            do_request
+            assert_status 200
+            expect(response_data.dig(:attributes, :ordering)).to eq ordering
+          end
+        end
+
+        describe do
+          let(:idea_status) { create(:proposals_status, code: 'threshold_reached') }
+
+          example '[Error] Cannot reorder a locked status', document: false do
+            do_request
+            assert_status 422
+            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
+          end
+        end
+
+        describe do
+          let(:idea_status) { create(:proposals_status) }
+          let(:ordering) { 2 }
+
+          example '[Error] Cannot reorder a proposals status into the locked status section', document: false do
+            do_request
+            assert_status 422
+            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the locked statuses section'
+          end
         end
       end
     end
@@ -314,9 +321,9 @@ resource 'IdeaStatuses' do
       describe do
         let(:idea_status) { create(:idea_status_proposed) }
 
-        example_request '[Error] Cannot delete the proposed status' do
+        example_request '[Error] Cannot delete a locked status' do
           assert_status 422
-          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot delete the proposed status'
+          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot delete a locked status'
         end
       end
     end

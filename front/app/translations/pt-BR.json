@@ -1356,7 +1356,6 @@
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationBold": "considerado por {orgName}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobile": "{votingThreshold} votos necessários dentro de {daysLeft, plural, =0 {menos de um dia} one {um dia} other {# dias}} para que você obtenha essa iniciativa {proposedStatusExplanationMobileBold}",
   "app.containers.IdeasShow.proposals.VoteControl.proposedStatusExplanationMobileBold": "considerado por {orgName}",
-  "app.containers.IdeasShow.proposals.VoteControl.readAnswer": "Ler resposta",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} foi notificado e fornecerá uma resposta. A votação continua aberta.",
   "app.containers.IdeasShow.proposals.VoteControl.thresholdReachedStatusExplanationBold": "O limite foi atingido",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Votação",

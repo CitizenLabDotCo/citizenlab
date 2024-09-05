@@ -53,7 +53,7 @@ RSpec.describe Permission do
     end
 
     context 'native survey' do
-      let(:phase) { create(:native_survey_phase, posting_enabled: false) }
+      let(:phase) { create(:native_survey_phase, submission_enabled: false) }
       let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: phase) }
 
       it 'Returns all permissions for native surveys even if survey is not open to responses' do

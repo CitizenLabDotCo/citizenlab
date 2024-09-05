@@ -177,7 +177,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   if (project) {
     const isProjectArchived =
       project.data.attributes.publication_status === 'archived';
-    const postingIsEnabled = currentPhase?.attributes.posting_enabled;
+    const postingIsEnabled = currentPhase?.attributes.submission_enabled;
     const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget = currentPhase?.attributes?.voting_max_total || null;
     const hasProjectEnded = currentPhase

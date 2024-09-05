@@ -53,7 +53,7 @@ class SideFxPhaseService
 
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
-      posting_enabled commenting_enabled reacting_enabled
+      submission_enabled commenting_enabled reacting_enabled
       reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode participation_method
     ].each do |attribute|
       if phase.send :"#{attribute}_previously_changed?"
