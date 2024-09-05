@@ -135,8 +135,8 @@ describe IdNemlogIn::NemlogInOmniauth do
 
       expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
       expect(user.reload).to have_attributes({
-                                               verified: false
-                                             })
+        verified: false
+      })
     end
 
     it 'verifies a user over specified age limit' do
@@ -147,8 +147,8 @@ describe IdNemlogIn::NemlogInOmniauth do
 
       expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
       expect(user.reload).to have_attributes({
-                                               verified: true
-                                             })
+        verified: true
+      })
     end
   end
 

@@ -170,12 +170,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def sso_redirect_path
-    request.env['omniauth.params'].dig('sso_pathname') || '/'
+    request.env['omniauth.params']&.dig('sso_pathname') || '/'
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    request.env['omniauth.params'].except("token", "pathname", "sso_pathname")
+    request.env['omniauth.params']&.except('token', 'pathname', 'sso_pathname') || {}
   end
 
   def add_uri_params(uri, params = {})

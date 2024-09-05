@@ -194,7 +194,7 @@ context 'criipto verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/criipto?param=/some-param'
+    get '/auth/criipto?param=some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -208,7 +208,7 @@ context 'criipto verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+    expect(response).to redirect_to('/en/?param=some-param')
   end
 
   it 'does not send email to empty address (when just registered)' do

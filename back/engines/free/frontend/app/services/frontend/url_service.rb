@@ -193,7 +193,7 @@ module Frontend
 
     def strip_existing_locale_from_path(pathname)
       # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
-      pathname.gsub(/^\/([a-z]{2}(-[A-Z]{2})?)(\/(.*))/, '\3')
+      pathname.gsub(%r{^/([a-z]{2}(-[A-Z]{2})?)(/(.*))}, '\3')
     end
 
     # Memoized database query
