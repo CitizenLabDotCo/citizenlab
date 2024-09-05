@@ -36,6 +36,8 @@ cy:
   symbols:
     outside: rhywle arall
   idea_statuses:
+    prescreening: rhag-sgrinio
+    prescreening_description: Mae'r mewnbwn hwn yn cael ei adolygu ar hyn o bryd gan y rheolwr prosiect ac nid yw'n weladwy i'r cyhoedd eto.
     proposed: arfaethedig
     proposed_description: Mae'r syniad hwn wedi'i gynnig i'r ddinas
     viewed: gweld

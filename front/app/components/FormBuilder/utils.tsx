@@ -75,7 +75,7 @@ export const getIsPostingEnabled = (
   phase?: IPhaseData | Error | null | undefined
 ) => {
   if (!isNilOrError(phase)) {
-    return phase.attributes.posting_enabled;
+    return phase.attributes.submission_enabled;
   }
 
   return false;

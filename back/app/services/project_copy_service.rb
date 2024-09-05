@@ -295,7 +295,7 @@ class ProjectCopyService < TemplateService
                                     end,
         'presentation_mode' => phase.presentation_mode,
         'participation_method' => phase.participation_method,
-        'posting_enabled' => phase.posting_enabled,
+        'submission_enabled' => phase.submission_enabled,
         'commenting_enabled' => phase.commenting_enabled,
         'reacting_enabled' => phase.reacting_enabled,
         'reacting_like_method' => phase.reacting_like_method,
@@ -307,7 +307,8 @@ class ProjectCopyService < TemplateService
         'ideas_order' => phase.ideas_order,
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
-        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count
+        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
+        'prescreening_enabled' => phase.prescreening_enabled
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -581,6 +582,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => idea.title_multiloc,
         'body_multiloc' => idea.body_multiloc,
         'publication_status' => idea.publication_status,
+        'submitted_at' => shift_timestamp(idea.submitted_at, shift_timestamps)&.iso8601,
         'published_at' => shift_timestamp(idea.published_at, shift_timestamps)&.iso8601,
         'project_ref' => lookup_ref(idea.project_id, :project),
         'author_ref' => lookup_ref(idea.author_id, :user),

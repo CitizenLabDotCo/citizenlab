@@ -14,12 +14,14 @@ class IdeaPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       elsif user
-        projects = Pundit.policy_scope(user, Project)
-        scope.where(project: projects, publication_status: 'published')
+        scope
+          .submitted_or_published.where(author: user)
+          .or(scope.published)
+          .where(project: Pundit.policy_scope(user, Project))
       else
         scope
           .left_outer_joins(project: [:admin_publication])
-          .where(publication_status: 'published')
+          .published
           .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
       end
     end
@@ -67,6 +69,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
     return false if record.participation_method_on_creation.use_reactions_as_votes? && record.reactions.where.not(user_id: user.id).exists?
+    return false if record.creation_phase&.prescreening_enabled && record.published?
 
     posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
 

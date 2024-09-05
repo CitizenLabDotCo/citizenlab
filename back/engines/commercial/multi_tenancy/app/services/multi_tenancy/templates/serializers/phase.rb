@@ -18,7 +18,7 @@ module MultiTenancy
           input_term
           participation_method
           poll_anonymous
-          posting_enabled
+          submission_enabled
           presentation_mode
           reacting_like_limited_max
           reacting_like_method

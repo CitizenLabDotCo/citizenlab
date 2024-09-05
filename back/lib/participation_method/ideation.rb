@@ -15,7 +15,9 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input.idea_status ||= IdeaStatus.find_by!(code: IdeaStatus::PROPOSED_CODE, participation_method: idea_status_method)
+      input_status_code = input.creation_phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
+      input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
 
     def assign_defaults_for_phase
@@ -331,10 +333,6 @@ module ParticipationMethod
       false
     end
 
-    def supports_posting_inputs?
-      true
-    end
-
     def supports_public_visibility?
       true
     end
@@ -344,6 +342,10 @@ module ParticipationMethod
     end
 
     def supports_status?
+      true
+    end
+
+    def supports_submission?
       true
     end
 

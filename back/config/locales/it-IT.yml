@@ -36,6 +36,8 @@ it:
   symbols:
     outside: da qualche altra parte
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
     proposed_description: Questa idea è stata proposta alla città
     viewed: visto

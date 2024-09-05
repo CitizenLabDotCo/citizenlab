@@ -10,7 +10,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe '"posting_idea" denied_reason_for_action' do
     context 'when posting is disabled' do
-      let(:current_phase_attrs) { { posting_enabled: false } }
+      let(:current_phase_attrs) { { submission_enabled: false } }
 
       it 'returns `posting_disabled`' do
         expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_disabled'
@@ -84,7 +84,7 @@ describe Permissions::ProjectPermissionsService do
     context 'when the author posted a survey anonymously and the limit was reached' do
       let(:project) do
         create(:single_phase_native_survey_project, phase_attrs: {
-          posting_enabled: true,
+          submission_enabled: true,
           allow_anonymous_participation: true
         })
       end
@@ -602,9 +602,9 @@ describe Permissions::ProjectPermissionsService do
           :project_with_current_phase,
           phases_config: {
             sequence: 'xcxxxxxy',
-            x: { posting_enabled: false },
-            y: { posting_enabled: true },
-            c: { posting_enabled: false }
+            x: { submission_enabled: false },
+            y: { submission_enabled: true },
+            c: { submission_enabled: false }
           }
         )
       end
@@ -620,7 +620,7 @@ describe Permissions::ProjectPermissionsService do
           :project_with_current_phase,
           phases_config: {
             sequence: 'xcyyy',
-            y: { posting_enabled: false }
+            y: { submission_enabled: false }
           }
         )
       end

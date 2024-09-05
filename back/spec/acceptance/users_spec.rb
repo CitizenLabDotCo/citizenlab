@@ -1354,7 +1354,7 @@ resource 'Users' do
         end
       end
 
-      # TODO: move-old-proposals-test
+      # TODO: cleanup-after-proposals-migration
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1398,7 +1398,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
-        # TODO: move-old-proposals-test
+        # TODO: cleanup-after-proposals-migration
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))
