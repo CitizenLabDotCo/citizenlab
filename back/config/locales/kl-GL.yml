@@ -39,17 +39,17 @@ kl:
     prescreening: screening
     prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: siunnersuutigineqareerpoq
-    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
+    proposed_description: Isumassarsiaq una illoqarfimmut siunnersuutaareerpoq
     viewed: takuneqareerpoq
-    viewed_description: This input has been seen by the project manager.
+    viewed_description: Isumassarsiaq una inummit illoqarfimmeersumit takuneqareerpoq
     under_consideration: isumaliutersuutigineqarpoq
-    under_consideration_description: This input has been taken into consideration by the project manager.
+    under_consideration_description: Isumassarsiaq una illoqarfimmit eqqarsaatigineqareerpoq
     accepted: akuerineqareerpoq
-    accepted_description: This input has been accepted and will be implemented by the project manager.
+    accepted_description: Isumassarsiaq una akuerineqareerpoq aammalu illoqarfimmit atuutilersinneqassaaq
     implemented: atuutilersinneqareerpoq
-    implemented_description: This input has been implemented by the project manager.
+    implemented_description: Isumassarsiaq una illoqarfimmit atuutilersinneqareerpoq
     rejected: itigartinneqarpoq
-    rejected_description: This input has been rejected.
+    rejected_description: Isumassarsiaq una itigartinneqarpoq
     expired: expired
     expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
