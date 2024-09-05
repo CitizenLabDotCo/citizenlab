@@ -43,6 +43,9 @@ FactoryBot.define do
     factory :proposal, class: 'Idea' do
       association :project, factory: :single_phase_proposals_project
       creation_phase { project.phases.first }
+      after(:create) do |idea, evaluator|
+        idea.phases = [idea.creation_phase]
+      end
     end
 
     factory :native_survey_response, class: 'Idea' do
