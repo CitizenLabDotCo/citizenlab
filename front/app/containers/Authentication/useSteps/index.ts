@@ -258,6 +258,14 @@ export default function useSteps() {
       return;
     }
 
+    if (urlSearchParams.authentication_error === 'true') {
+      transition(currentStep, 'TRIGGER_AUTH_ERROR')(urlSearchParams.error_code);
+
+      // Remove query string from URL as params already been captured
+      window.history.replaceState(null, '', pathname);
+      return;
+    }
+
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
@@ -270,7 +278,6 @@ export default function useSteps() {
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
-        error_code,
       } = urlSearchParams as SSOParams;
 
       // Check if there is a success action in local storage (from SSO or verification)
@@ -299,15 +306,6 @@ export default function useSteps() {
 
       const flow = sso_flow ?? 'signin';
       updateState({ flow });
-
-      if (urlSearchParams.authentication_error === 'true') {
-        transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
-
-        // Remove query string from URL as params already been captured
-        window.history.replaceState(null, '', pathname);
-        return;
-      }
-
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       // Remove query string from URL as params already been captured
