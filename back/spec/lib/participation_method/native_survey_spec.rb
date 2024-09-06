@@ -18,18 +18,20 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       let!(:proposed) { create(:idea_status_proposed) }
       let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
-      it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
+      it 'sets the publication_status to "publised" and doesn\'t set the idea_status' do
         participation_method.assign_defaults input
         expect(input.publication_status).to eq 'published'
-        expect(input.idea_status).to eq proposed
+        expect(input.idea_status).to eq nil
       end
     end
 
     context 'when the proposed idea status is not available' do
       let(:input) { build(:idea, idea_status: nil) }
 
-      it 'raises ActiveRecord::RecordNotFound' do
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      it 'sets the publication_status to "publised" and doesn\'t set the idea_status' do
+        participation_method.assign_defaults input
+        expect(input.publication_status).to eq 'published'
+        expect(input.idea_status).to eq nil
       end
     end
   end
