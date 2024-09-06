@@ -88,16 +88,12 @@ interface Props
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
-  secondaryButtonOnClick?: (event: FormEvent<any>) => void;
-  secondaryButtonStyle?: ButtonStyles;
-  secondaryButtonSaveMessage?: MessageDescriptor;
   animate?: boolean;
   enableFormOnSuccess?: boolean;
 }
 
 const SubmitWrapper = (props: Props) => {
   const submitButtonRef = useRef<HTMLButtonElement>();
-  const secondaryButtonRef = useRef<HTMLButtonElement>();
 
   const buttonProps = omit(props, [
     'className',
@@ -117,15 +113,12 @@ const SubmitWrapper = (props: Props) => {
     animate,
     customError,
     fullWidth,
-    secondaryButtonSaveMessage,
-    secondaryButtonOnClick,
     onClick,
   } = props;
 
   useEffect(() => {
     if (status === 'success' || status === 'error') {
       submitButtonRef.current?.blur();
-      secondaryButtonRef.current?.blur();
     }
   }, [status]);
 
@@ -133,12 +126,7 @@ const SubmitWrapper = (props: Props) => {
     submitButtonRef.current = el;
   };
 
-  const setSecondaryButtonRef = (el: HTMLButtonElement) => {
-    secondaryButtonRef.current = el;
-  };
-
   const style = props.buttonStyle || 'admin-dark';
-  const secondaryButtonStyle = props.secondaryButtonStyle || 'primary-outlined';
 
   const isSubmitButtonDisabled =
     status === 'disabled' ||
@@ -162,25 +150,6 @@ const SubmitWrapper = (props: Props) => {
           <FormattedMessage {...messages.buttonSuccess} />
         )}
       </Button>
-
-      {/* show a secondary button if an onClick handler is provided for it */}
-      {secondaryButtonOnClick && (
-        <Button
-          data-cy="e2e-submit-wrapper-secondary-submit-button"
-          buttonStyle={secondaryButtonStyle}
-          processing={loading}
-          disabled={isSubmitButtonDisabled}
-          onClick={secondaryButtonOnClick}
-          setSubmitButtonRef={setSecondaryButtonRef}
-          ml="25px"
-        >
-          {secondaryButtonSaveMessage ? (
-            <FormattedMessage {...secondaryButtonSaveMessage} />
-          ) : (
-            <FormattedMessage {...messages.buttonSave} />
-          )}
-        </Button>
-      )}
 
       {status === 'error' && (
         <Message className="error">
