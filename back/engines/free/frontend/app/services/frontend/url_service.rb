@@ -85,29 +85,9 @@ module Frontend
       "#{home_url(options)}#{pathname}"
     end
 
-    def signin_success_url(options = {})
-      sso_return_url(options)
-    end
-
-    def signup_success_url(options = {})
-      sso_return_url(options)
-    end
-
-    def signin_failure_url(options = {})
-      sso_return_url(options)
-    end
-
-    def verification_url(options = {})
+    def verification_return_url(options = {})
       pathname = options[:pathname]
       "#{home_url(options)}#{pathname}"
-    end
-
-    def verification_success_url(options = {})
-      verification_url(options)
-    end
-
-    def verification_failure_url(options = {})
-      verification_url(options)
     end
 
     def invite_url(token, options = {})

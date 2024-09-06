@@ -24,7 +24,7 @@ module Verification
               handle_verification(auth, @user)
               update_user!(auth, @user, verification_method)
               url = add_uri_params(
-                Frontend::UrlService.new.verification_success_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
+                Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
                 omniauth_params.merge(verification_success: true).except('pathname')
               )
               redirect_to url
@@ -58,7 +58,7 @@ module Verification
       def verification_failure_redirect(error)
         omniauth_params = filter_omniauth_params
         url = add_uri_params(
-          Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
+          Frontend::UrlService.new.verification_return_url(pathname: request.env['omniauth.params']['pathname']),
           omniauth_params.merge(verification_error: true, error_code: error)
         )
         redirect_to url

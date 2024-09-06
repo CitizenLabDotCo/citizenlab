@@ -142,7 +142,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
     redirect_to(
       add_uri_params(
-        Frontend::UrlService.new.signin_success_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
+        Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
         omniauth_params
       )
     )
@@ -153,7 +153,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
     redirect_to(
       add_uri_params(
-        Frontend::UrlService.new.signup_success_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
+        Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
         omniauth_params
       )
     )
@@ -163,7 +163,7 @@ class OmniauthCallbackController < ApplicationController
     params['authentication_error'] = true
     redirect_to(
       add_uri_params(
-        Frontend::UrlService.new.signin_failure_url(pathname: sso_redirect_path),
+        Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path),
         filter_omniauth_params.merge(params)
       )
     )
