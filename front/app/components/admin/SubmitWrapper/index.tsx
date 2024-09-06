@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent, useRef, useEffect } from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
@@ -95,122 +95,117 @@ interface Props
   enableFormOnSuccess?: boolean;
 }
 
-export default class SubmitWrapper extends PureComponent<Props> {
-  submitButton: HTMLButtonElement | null;
-  secondaryButton: HTMLButtonElement | null;
+const SubmitWrapper = (props: Props) => {
+  const submitButtonRef = useRef<HTMLButtonElement>();
+  const secondaryButtonRef = useRef<HTMLButtonElement>();
 
-  constructor(props: Props) {
-    super(props);
-    this.submitButton = null;
-    this.secondaryButton = null;
-  }
+  const buttonProps = omit(props, [
+    'className',
+    'style',
+    'processing',
+    'disabled',
+    'onClick',
+    'setSubmitButtonRef',
+    'messages',
+    'loading',
+  ]);
 
-  removeFocus = (el: HTMLButtonElement | null) => {
-    el && el.blur();
-  };
+  const {
+    loading,
+    status,
+    messages,
+    animate,
+    customError,
+    fullWidth,
+    secondaryButtonSaveMessage,
+    secondaryButtonOnClick,
+    onClick,
+  } = props;
 
-  setSubmitButtonRef = (el: HTMLButtonElement | null) => {
-    this.submitButton = el;
-  };
-
-  setSecondaryButtonRef = (el: HTMLButtonElement | null) => {
-    this.secondaryButton = el;
-  };
-
-  render() {
-    const style = this.props.buttonStyle || 'admin-dark';
-    const secondaryButtonStyle =
-      this.props.secondaryButtonStyle || 'primary-outlined';
-
-    if (this.props.status === 'success' || this.props.status === 'error') {
-      this.removeFocus(this.submitButton);
-      if (this.secondaryButton) {
-        this.removeFocus(this.secondaryButton);
-      }
+  useEffect(() => {
+    if (status === 'success' || status === 'error') {
+      submitButtonRef.current?.blur();
+      secondaryButtonRef.current?.blur();
     }
+  }, [status]);
 
-    const buttonProps = omit(this.props, [
-      'className',
-      'style',
-      'processing',
-      'disabled',
-      'onClick',
-      'setSubmitButtonRef',
-      'messages',
-      'loading',
-    ]);
+  const setSubmitButtonRef = (el: HTMLButtonElement) => {
+    submitButtonRef.current = el;
+  };
 
-    const { loading, status, onClick, messages, animate, customError } =
-      this.props;
+  const setSecondaryButtonRef = (el: HTMLButtonElement) => {
+    secondaryButtonRef.current = el;
+  };
 
-    // give the option to leave the form enabled even in success state
-    const isSubmitButtonDisabled =
-      status === 'disabled' ||
-      (!this.props.enableFormOnSuccess && status === 'success');
+  const style = props.buttonStyle || 'admin-dark';
+  const secondaryButtonStyle = props.secondaryButtonStyle || 'primary-outlined';
 
-    return (
-      <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
+  const isSubmitButtonDisabled =
+    status === 'disabled' ||
+    (!props.enableFormOnSuccess && status === 'success');
+
+  return (
+    <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
+      <Button
+        className="e2e-submit-wrapper-button"
+        buttonStyle={style}
+        processing={loading}
+        disabled={isSubmitButtonDisabled}
+        onClick={onClick}
+        setSubmitButtonRef={setSubmitButtonRef}
+        {...buttonProps}
+      >
+        {(status === 'enabled' ||
+          status === 'disabled' ||
+          status === 'error') && <FormattedMessage {...messages.buttonSave} />}
+        {status === 'success' && (
+          <FormattedMessage {...messages.buttonSuccess} />
+        )}
+      </Button>
+
+      {/* show a secondary button if an onClick handler is provided for it */}
+      {secondaryButtonOnClick && (
         <Button
-          className="e2e-submit-wrapper-button"
-          buttonStyle={style}
+          data-cy="e2e-submit-wrapper-secondary-submit-button"
+          buttonStyle={secondaryButtonStyle}
           processing={loading}
           disabled={isSubmitButtonDisabled}
-          onClick={onClick}
-          setSubmitButtonRef={this.setSubmitButtonRef}
-          {...buttonProps}
+          onClick={secondaryButtonOnClick}
+          setSubmitButtonRef={setSecondaryButtonRef}
+          ml="25px"
         >
-          {(status === 'enabled' ||
-            status === 'disabled' ||
-            status === 'error') && (
+          {secondaryButtonSaveMessage ? (
+            <FormattedMessage {...secondaryButtonSaveMessage} />
+          ) : (
             <FormattedMessage {...messages.buttonSave} />
           )}
-          {status === 'success' && (
-            <FormattedMessage {...messages.buttonSuccess} />
-          )}
         </Button>
+      )}
 
-        {/* show a secondary button if an onClick handler is provided for it */}
-        {this.props.secondaryButtonOnClick && (
-          <Button
-            data-cy="e2e-submit-wrapper-secondary-submit-button"
-            buttonStyle={secondaryButtonStyle}
-            processing={loading}
-            disabled={isSubmitButtonDisabled}
-            onClick={this.props.secondaryButtonOnClick}
-            setSubmitButtonRef={this.setSecondaryButtonRef}
-            ml="25px"
-          >
-            {this.props.secondaryButtonSaveMessage ? (
-              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
-            ) : (
-              <FormattedMessage {...messages.buttonSave} />
-            )}
-          </Button>
-        )}
+      {status === 'error' && (
+        <Message className="error">
+          {customError ? (
+            customError
+          ) : (
+            <FormattedMessage {...messages.messageError} />
+          )}
+        </Message>
+      )}
 
-        {status === 'error' && (
-          <Message className="error">
-            {customError ? (
-              customError
-            ) : (
-              <FormattedMessage {...messages.messageError} />
-            )}
+      {status === 'success' && (
+        <CSSTransition
+          classNames="success"
+          timeout={0}
+          enter={animate}
+          exit={animate}
+        >
+          <Message className="success">
+            <FormattedMessage {...messages.messageSuccess} />
           </Message>
-        )}
+        </CSSTransition>
+      )}
+    </Wrapper>
+  );
+};
 
-        {status === 'success' && (
-          <CSSTransition
-            classNames="success"
-            timeout={0}
-            enter={animate}
-            exit={animate}
-          >
-            <Message className="success">
-              <FormattedMessage {...messages.messageSuccess} />
-            </Message>
-          </CSSTransition>
-        )}
-      </Wrapper>
-    );
-  }
-}
+export default SubmitWrapper;
