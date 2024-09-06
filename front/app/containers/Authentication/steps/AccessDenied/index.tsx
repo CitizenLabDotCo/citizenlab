@@ -1,12 +1,15 @@
 import React from 'react';
 
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { AuthenticationData } from 'containers/Authentication/typings';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -19,6 +22,7 @@ interface Props {
 
 const AccessDenied = ({ authenticationData, onClose }: Props) => {
   const localize = useLocalize();
+  const theme = useTheme();
   const { data } = useAccessDeniedExplanation(authenticationData.context);
 
   if (!data) return null;
@@ -36,7 +40,11 @@ const AccessDenied = ({ authenticationData, onClose }: Props) => {
         {isEmpty ? (
           <FormattedMessage {...messages.youDoNotMeetTheRequirements} />
         ) : (
-          <>{accessDeniedExplanation}</>
+          <QuillEditedContent textColor={theme.colors.tenantText}>
+            <div
+              dangerouslySetInnerHTML={{ __html: accessDeniedExplanation }}
+            />
+          </QuillEditedContent>
         )}
       </Text>
       <Box w="100%" display="flex" justifyContent="flex-end">
