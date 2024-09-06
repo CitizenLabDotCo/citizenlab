@@ -21,7 +21,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       it 'sets the publication_status to "publised" and doesn\'t set the idea_status' do
         participation_method.assign_defaults input
         expect(input.publication_status).to eq 'published'
-        expect(input.idea_status).to eq nil
+        expect(input.idea_status).to be nil
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       it 'sets the publication_status to "publised" and doesn\'t set the idea_status' do
         participation_method.assign_defaults input
         expect(input.publication_status).to eq 'published'
-        expect(input.idea_status).to eq nil
+        expect(input.idea_status).to be nil
       end
     end
   end
