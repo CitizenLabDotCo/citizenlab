@@ -36,6 +36,8 @@ fi:
   symbols:
     outside: jossain muualla
   idea_statuses:
+    prescreening: esiseulonta
+    prescreening_description: Projektipäällikkö tarkistaa parhaillaan tätä syötettä, eikä se ole vielä näkyvissä yleisölle.
     proposed: ehdotettu
     proposed_description: Tätä ideaa on esitetty kaupungille
     viewed: katsottu
