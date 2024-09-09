@@ -37,7 +37,7 @@ const FilterSidebarStatuses = ({
     return null;
   }
 
-  const handleItemClick = (id: string) => () => {
+  const handleItemClick = (id: string) => {
     onChangeStatusFilter(id);
   };
 
@@ -87,7 +87,7 @@ const FilterSidebarStatuses = ({
               key={status.id}
               status={status}
               active={isActive(status.id)}
-              onClick={handleItemClick(status.id)}
+              onClick={() => handleItemClick(status.id)}
             />
           )
         )}

@@ -63,9 +63,16 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
 
-  const handleEventAttendanceEvent = useCallback(() => {
-    setConfirmationModalVisible(true);
-  }, []);
+  const handleEventAttendanceEvent = useCallback(
+    (eventEmitterEvent) => {
+      const eventId = eventEmitterEvent.eventValue;
+
+      if (eventId === event.id) {
+        setConfirmationModalVisible(true);
+      }
+    },
+    [event.id]
+  );
 
   useObserveEvent('eventAttendance', handleEventAttendanceEvent);
 

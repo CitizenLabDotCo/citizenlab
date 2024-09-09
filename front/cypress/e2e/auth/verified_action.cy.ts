@@ -41,6 +41,9 @@ describe.skip('Verified action', () => {
         cy.visit(
           `/admin/projects/${projectId}/phases/${phaseId}/access-rights`
         );
+
+        cy.get('.e2e-action-accordion-posting_idea').click();
+
         cy.get('.e2e-action-form-posting_idea').within(() => {
           cy.get('.e2e-permission-verified-actions').click();
         });

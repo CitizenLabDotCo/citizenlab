@@ -14,6 +14,62 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
+  describe '#assign_defaults' do
+    context 'when the proposed and prescreening statuses are available' do
+      let!(:ideation_proposed) { create(:idea_status_proposed) }
+      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
+      let!(:custom_status) { create(:proposals_status) }
+
+      context 'when the creation phase has reviewing enabled' do
+        let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+
+        it 'assignes the default "prescreening" status if not set' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq prescreening_status
+        end
+
+        it 'does not change the status if it is already set' do
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq custom_status
+        end
+      end
+
+      context 'when the creation phase does not have reviewing enabled' do
+        let(:creation_phase) { create(:proposals_phase, prescreening_enabled: false) }
+
+        it 'assigns the default "proposed" status if not set' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq proposed_status
+        end
+
+        it 'does not change the status if it is already set' do
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq custom_status
+        end
+      end
+    end
+
+    context 'when the proposed status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:proposal, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        create(:proposals_status, code: 'proposed')
+        initial_status = create(:proposals_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:proposals_phase) }
 
@@ -30,6 +86,24 @@ RSpec.describe ParticipationMethod::Proposals do
     it 'sets the reacting_threshold to 300' do
       participation_method.assign_defaults_for_phase
       expect(phase.reacting_threshold).to eq 300
+    end
+
+    describe 'when prescreening is deactivated' do
+      before { SettingsService.new.deactivate_feature! 'prescreening' }
+
+      it 'does not set prescreening_enabled' do
+        participation_method.assign_defaults_for_phase
+        expect(phase.prescreening_enabled).to be false
+      end
+    end
+
+    describe 'when prescreening is activated' do
+      before { SettingsService.new.activate_feature! 'prescreening' }
+
+      it 'sets prescreening_enabled to false' do
+        participation_method.assign_defaults_for_phase
+        expect(phase.prescreening_enabled).to be false
+      end
     end
   end
 
@@ -121,41 +195,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#assign_defaults' do
-    context 'when the proposed status is available' do
-      let!(:ideation_proposed) { create(:idea_status_proposed) }
-      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
-      let!(:custom_status) { create(:proposals_status) }
-
-      it 'assignes the default "proposed" status if not set' do
-        proposal = build(:proposal, idea_status: nil)
-        participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq proposed_status
-      end
-
-      it 'does not change the status if it is already set' do
-        proposal = build(:proposal, idea_status: custom_status)
-        participation_method.assign_defaults proposal
-        expect(proposal.idea_status).to eq custom_status
-      end
-    end
-
-    context 'when the proposed status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:proposal, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        create(:proposals_status, code: 'proposed')
-        initial_status = create(:proposals_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-  end
-
   describe '#custom_form' do
     it 'returns the custom form of the phase' do
       expect(participation_method.custom_form.participation_context_id).to eq phase.id
@@ -188,10 +227,10 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:supports_posting_inputs?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_submission?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }

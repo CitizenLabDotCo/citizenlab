@@ -1563,7 +1563,6 @@
   "app.utils.IdeaCards.trending": "Trending",
   "app.utils.IdeasNewPage.contributionFormTitle": "Add new contribution",
   "app.utils.IdeasNewPage.ideaFormTitle": "Add new idea",
-  "app.utils.IdeasNewPage.issueFormTitle": "Add new comment",
   "app.utils.IdeasNewPage.optionFormTitle": "Add new option",
   "app.utils.IdeasNewPage.projectFormTitle": "Add new project",
   "app.utils.IdeasNewPage.questionFormTitle": "Add new question",

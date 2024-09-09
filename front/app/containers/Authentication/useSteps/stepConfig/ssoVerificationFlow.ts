@@ -13,12 +13,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  confirmationRequired,
-  requiredCustomFields,
-  showOnboarding,
-  doesNotMeetGroupCriteria,
-} from './utils';
+import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 export const ssoVerificationFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -37,8 +32,9 @@ export const ssoVerificationFlow = (
         if (signedIn) {
           handleOnSSOClick(
             ssoProvider,
-            { ...getAuthenticationData(), flow: 'signup' },
-            true
+            getAuthenticationData(),
+            true,
+            'signup'
           );
         } else {
           updateState({ ssoProvider });
@@ -53,11 +49,7 @@ export const ssoVerificationFlow = (
     'sso-verification:sso-providers-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT: (ssoProvider: SSOProvider) => {
-        handleOnSSOClick(
-          ssoProvider,
-          { ...getAuthenticationData(), flow: 'signup' },
-          true
-        );
+        handleOnSSOClick(ssoProvider, getAuthenticationData(), true, 'signup');
       },
     },
 
@@ -81,24 +73,16 @@ export const ssoVerificationFlow = (
           });
 
           const { requirements } = await getRequirements();
+          const authenticationData = getAuthenticationData();
 
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            'signin'
+          );
 
-          if (requirements.verification) {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements)) {
-            setCurrentStep('missing-data:onboarding');
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
             return;
           }
 

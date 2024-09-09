@@ -14,6 +14,13 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
+  describe '#assign_defaults' do
+    it 'does not change the input' do
+      participation_method.assign_defaults input
+      expect(input).not_to be_changed
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     let(:phase) { build(:volunteering_phase) }
 
@@ -57,13 +64,6 @@ RSpec.describe ParticipationMethod::Volunteering do
     end
   end
 
-  describe '#assign_defaults' do
-    it 'does not change the input' do
-      participation_method.assign_defaults input
-      expect(input).not_to be_changed
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -99,10 +99,10 @@ RSpec.describe ParticipationMethod::Volunteering do
   its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
+  its(:supports_submission?) { is_expected.to be false }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }

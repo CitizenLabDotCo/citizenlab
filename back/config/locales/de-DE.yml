@@ -36,6 +36,8 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
+    prescreening: Vorabprüfung
+    prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
     proposed_description: Diese Idee wurde der Stadt vorgeschlagen
     viewed: angesehen
@@ -307,10 +309,10 @@ de:
     title_suffix: 'Kopie'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform %{organizationName}"
+      subject: "E-Mail-Adresse für die Beteiligungsplattform %{organizationName} bestätigen"
       header: "Ihr Bestätigungscode"
       header_message: "Hallo %{firstName}!"
-      confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
+      confirm_email_address: "E-Mail-Adresse bestätigen"
       thanks_for_signing_up1: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
       best_regards: "Herzliche Grüße"
       ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren."

@@ -14,7 +14,7 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :ideas_count,
     :baskets_count,
     :votes_count,
-    :posting_enabled,
+    :submission_enabled,
     :commenting_enabled,
     :reacting_enabled,
     :reacting_like_method,

@@ -201,7 +201,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
-        {field?.input_type !== 'point' && (
+        {(field?.input_type === 'line' || field?.input_type === 'polygon') && (
           <Box my="8px">
             <Warning>
               <FormattedMessage

@@ -35,9 +35,10 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
   };
 
   const verificationMethodMetadata =
-    verificationMethod?.data.attributes.action_metadata;
+    verificationMethod?.data.attributes.method_metadata;
   const verificationMethodName = verificationMethodMetadata?.name;
-  const verificationMethodAllowed = verificationMethodMetadata?.allowed;
+  const verificationMethodAllowed =
+    verificationMethodMetadata?.allowed_for_verified_actions;
 
   return (
     <>

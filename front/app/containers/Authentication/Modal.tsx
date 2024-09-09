@@ -1,28 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import T from 'components/T';
 import Error from 'components/UI/Error';
-import errorMessages from 'components/UI/Error/messages';
 import Modal from 'components/UI/Modal';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+import {
+  getHeaderMessage,
+  HELPER_TEXT_KEYS,
+  ERROR_CODE_MESSAGES,
+} from './messageUtils';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
-import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
@@ -31,118 +30,19 @@ import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
-import AzureAdB2cPolicies from './steps/Policies/AzureAdB2cPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import EmailPolicies from './steps/Policies/EmailPolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
 import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import GooglePolicies from './steps/Policies/GooglePolicies';
+import SSOPolicies from './steps/Policies/SSOPolicies';
 import SSOVerification from './steps/SSOVerification';
 import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
 import Success from './steps/Success';
 import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
-import { ModalProps, ErrorCode } from './typings';
+import { ModalProps } from './typings';
 import useSteps from './useSteps';
-
-type Step = ReturnType<typeof useSteps>['currentStep'];
-
-const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
-  // shared
-  closed: null,
-  success: null,
-
-  // old sign in flow
-  'sign-in:auth-providers': messages.logIn,
-  'sign-in:email-password': messages.logIn,
-
-  // old sign up flow
-  'sign-up:auth-providers': messages.signUp,
-  'sign-up:email-password': messages.signUp,
-  'sign-up:built-in': messages.signUp,
-  'sign-up:email-confirmation': messages.signUp,
-  'sign-up:change-email': messages.signUp,
-  'sign-up:verification': messages.verifyYourIdentity,
-  'sign-up:custom-fields': messages.completeYourProfile,
-  'sign-up:onboarding': messages.whatAreYouInterestedIn,
-  'sign-up:invite': messages.signUp,
-
-  // light flow
-  'light-flow:email': messages.beforeYouParticipate,
-  'light-flow:email-policies': messages.beforeYouParticipate,
-  'light-flow:google-policies': messages.beforeYouParticipate,
-  'light-flow:facebook-policies': messages.beforeYouParticipate,
-  'light-flow:azure-ad-policies': messages.beforeYouParticipate,
-  'light-flow:azure-ad-b2c-policies': messages.beforeYouParticipate,
-  'light-flow:france-connect-login': messages.beforeYouParticipate,
-  'light-flow:email-confirmation': messages.confirmYourEmail,
-  'light-flow:password': messages.logIn,
-
-  // missing data flow
-  'missing-data:built-in': messages.completeYourProfile,
-  'missing-data:email-confirmation': messages.confirmYourEmail,
-  'missing-data:change-email': messages.confirmYourEmail,
-  'missing-data:verification': messages.verifyYourIdentity,
-  'missing-data:custom-fields': messages.completeYourProfile,
-  'missing-data:onboarding': messages.whatAreYouInterestedIn,
-
-  // verification only
-  'verification-only': messages.verifyYourIdentity,
-  'verification-success': null,
-
-  // sso verification flow
-  'sso-verification:sso-providers': messages.verificationRequired,
-  'sso-verification:sso-providers-policies': messages.verificationRequired,
-  'sso-verification:email-password': messages.logIn,
-};
-
-const getHeaderMessage = (
-  step: Step,
-  action:
-    | 'visiting'
-    | IInitiativeAction
-    | IPhasePermissionAction
-    | IFollowingAction
-) => {
-  if (
-    action === 'following' &&
-    [
-      'light-flow:email',
-      'light-flow:email-policies',
-      'light-flow:google-policies',
-      'light-flow:facebook-policies',
-      'light-flow:azure-ad-policies',
-      'light-flow:azure-ad-b2c-policies',
-      'light-flow:france-connect-login',
-    ].includes(step)
-  ) {
-    return messages.beforeYouFollow;
-  }
-  return HEADER_MESSAGES[step];
-};
-
-export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
-  account_creation_failed: messages.unknownError,
-  wrong_confirmation_code: errorMessages.confirmation_code_invalid,
-  sign_in_failed: messages.signInError,
-  requirements_fetching_failed: messages.unknownError,
-  unknown: messages.unknownError,
-  invitation_error: messages.invitationErrorText,
-  franceconnect_merging_failed: messages.franceConnectMergingFailed,
-  email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
-  not_entitled_under_minimum_age:
-    messages.nemlogInUnderMinimumAgeVerificationFailed,
-  resending_code_failed: errorMessages.resending_code_failed,
-};
-
-type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
-
-const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'sign-up:auth-providers': 'signup_helper_text',
-  'sign-up:email-password': 'signup_helper_text',
-  'sign-up:custom-fields': 'custom_fields_signup_helper_text',
-  'missing-data:custom-fields': 'custom_fields_signup_helper_text',
-};
+// All steps above could be lazy loaded
+// but this one was the worst in terms of bundle size impact
+const CustomFields = lazy(() => import('./steps/CustomFields'));
 
 const AuthModal = ({ setModalOpen }: ModalProps) => {
   const {
@@ -321,26 +221,9 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-        {currentStep === 'light-flow:google-policies' && (
-          <GooglePolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:facebook-policies' && (
-          <FacebookPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:azure-ad-policies' && (
-          <AzureAdPolicies
-            loading={loading}
-            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
-          />
-        )}
-        {currentStep === 'light-flow:azure-ad-b2c-policies' && (
-          <AzureAdB2cPolicies
+        {currentStep === 'light-flow:sso-policies' && (
+          <SSOPolicies
+            state={state}
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
@@ -358,8 +241,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {/* missing data flow / shared */}
-        {(currentStep === 'missing-data:built-in' ||
-          currentStep === 'sign-up:built-in') && (
+        {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
             authenticationData={authenticationData}
@@ -367,8 +249,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {(currentStep === 'sign-up:email-confirmation' ||
-          currentStep === 'light-flow:email-confirmation' ||
+        {(currentStep === 'light-flow:email-confirmation' ||
           currentStep === 'missing-data:email-confirmation') && (
           <EmailConfirmation
             state={state}
@@ -379,8 +260,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {(currentStep === 'sign-up:change-email' ||
-          currentStep === 'missing-data:change-email') && (
+        {currentStep === 'missing-data:change-email' && (
           <ChangeEmail
             loading={loading}
             setError={setError}
@@ -390,27 +270,26 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
 
         {(currentStep === 'missing-data:verification' ||
-          currentStep === 'verification-only' ||
-          currentStep === 'sign-up:verification') && (
+          currentStep === 'verification-only') && (
           <Verification
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
             authenticationData={authenticationData}
           />
         )}
-        {(currentStep === 'missing-data:custom-fields' ||
-          currentStep === 'sign-up:custom-fields') && (
-          <CustomFields
-            authenticationData={authenticationData}
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
+        {currentStep === 'missing-data:custom-fields' && (
+          <Suspense fallback={null}>
+            <CustomFields
+              authenticationData={authenticationData}
+              loading={loading}
+              setError={setError}
+              onSubmit={transition(currentStep, 'SUBMIT')}
+              onSkip={transition(currentStep, 'SKIP')}
+            />
+          </Suspense>
         )}
 
-        {(currentStep === 'sign-up:onboarding' ||
-          currentStep === 'missing-data:onboarding') && (
+        {currentStep === 'missing-data:onboarding' && (
           <Onboarding
             authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}

@@ -69,7 +69,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.can_reorder === false;
+    return ideaStatus.attributes.locked === false;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -86,7 +86,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
 
   if (ideaStatuses) {
     const defaultStatuses = ideaStatuses?.data.filter(
-      (ideaStatus) => ideaStatus.attributes.can_reorder === false
+      (ideaStatus) => ideaStatus.attributes.locked === true
     );
 
     return (

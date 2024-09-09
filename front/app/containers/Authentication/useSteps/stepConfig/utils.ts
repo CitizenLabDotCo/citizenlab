@@ -1,5 +1,56 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
+import { AuthenticationData } from 'containers/Authentication/typings';
+
+export const checkMissingData = (
+  requirements: AuthenticationRequirements['requirements'],
+  { context }: AuthenticationData,
+  flow: 'signup' | 'signin'
+) => {
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
+  }
+
+  if (confirmationRequired(requirements)) {
+    return 'missing-data:email-confirmation';
+  }
+
+  if (requirements.verification) {
+    return 'missing-data:verification';
+  }
+
+  const isGlobalSignInFlow =
+    flow === 'signin' &&
+    context.action === 'visiting' &&
+    context.type === 'global';
+
+  // In the global sign in flow, we only want to show the custom
+  // fields step if there are required custom fields.
+  // Otherwise it's kind of annoying, because every time you log
+  // in you get asked to fill them out.
+  // NOTE: maybe this should be calculated in the BE instead.
+  if (isGlobalSignInFlow && requiredCustomFields(requirements)) {
+    return 'missing-data:custom-fields';
+  }
+
+  // In any other situation we just ask for all custom fields
+  if (!isGlobalSignInFlow && askCustomFields(requirements)) {
+    return 'missing-data:custom-fields';
+  }
+
+  if (showOnboarding(requirements)) {
+    return 'missing-data:onboarding';
+  }
+
+  return null;
+};
+
+export const doesNotMeetGroupCriteria = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  return requirements.group_membership;
+};
+
 export const confirmationRequired = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
@@ -14,14 +65,14 @@ export const showOnboarding = (
   return requirements.onboarding;
 };
 
-export const askCustomFields = (
+const askCustomFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   const { custom_fields } = requirements;
   return Object.keys(custom_fields).length > 0;
 };
 
-export const requiredCustomFields = (
+const requiredCustomFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   const { custom_fields } = requirements;
@@ -35,7 +86,7 @@ export const requiredCustomFields = (
   return false;
 };
 
-export const requiredBuiltInFields = (
+const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   const missingAttributes = new Set(
@@ -48,10 +99,4 @@ export const requiredBuiltInFields = (
   const askPassword = missingAttributes.has('password');
 
   return askFirstName || askLastName || askEmail || askPassword;
-};
-
-export const doesNotMeetGroupCriteria = (
-  requirements: AuthenticationRequirements['requirements']
-) => {
-  return requirements.group_membership;
 };

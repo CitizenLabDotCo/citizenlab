@@ -128,7 +128,6 @@ const InitiativesCTABox = ({ className }: Props) => {
 
   const signUp = useCallback(() => {
     triggerAuthenticationFlow({
-      flow: 'signup',
       context: {
         type: 'initiative',
         action: 'posting_initiative',

@@ -29,7 +29,7 @@ resource 'ActionDescriptors' do
           .update!(permitted_by: 'users', groups: create_list(:group, 2))
       end
 
-      # TODO: move-old-proposals-test
+      # TODO: cleanup-after-proposals-migration
       example_request 'Get the global action descriptors for initiatives' do
         expect(json_response).to eq(
           {
