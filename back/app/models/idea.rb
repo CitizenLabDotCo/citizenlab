@@ -120,11 +120,11 @@ class Idea < ApplicationRecord
   # }
 
   with_options unless: :draft? do
+    validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-  validates :idea_status, presence: true, if: :requires_idea_status?
 
   after_update :fix_comments_count_on_projects
 
@@ -218,10 +218,6 @@ class Idea < ApplicationRecord
 
   def supports_built_in_fields?
     !draft? && participation_method_on_creation.supports_built_in_fields?
-  end
-
-  def requires_idea_status?
-    !draft? && participation_method_on_creation.supports_status?
   end
 
   def assign_defaults
