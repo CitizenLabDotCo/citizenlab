@@ -11,6 +11,7 @@ services:
       interval: 2s
       timeout: 1s
       retries: 20
+      start_period: 30s
 
   front:
     image: citizenlabdotco/cl2-devops-front-e2e-static:latest
