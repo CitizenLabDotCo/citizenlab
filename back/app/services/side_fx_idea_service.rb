@@ -22,7 +22,7 @@ class SideFxIdeaService
       payload: { idea: serialize_idea(idea) }
     )
 
-    after_submission idea, user if idea.submitted?
+    after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
   end
 
