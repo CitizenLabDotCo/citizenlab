@@ -1137,11 +1137,22 @@ workflows:
               only:
                 - master
     jobs:
+      - e2e-setup-db:
+          context:
+            - docker-hub-access
+            - lastpass
+      - e2e-setup-front:
+          context:
+            - docker-hub-access
+            - lastpass
       - e2e-tests:
           context:
             - docker-hub-access
             - slack-dev-notifications-e2e
             - lastpass
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
           post-steps:
             - slack/notify:
                 event: pass
