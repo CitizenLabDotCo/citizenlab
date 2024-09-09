@@ -6,21 +6,10 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    if auth_method && verification_method
-      # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
-        # We need it only for providers that support both auth and ver except FC.
-        # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
-        verification_callback(verification_method)
-      else
-        auth_callback(verify: true, authver_method: auth_method)
-      end
-    elsif auth_method
-      auth_callback(verify: false, authver_method: auth_method)
-    elsif verification_method
-      verification_callback(verification_method)
+    if auth_method
+      auth_callback
     else
-      raise "#{auth_provider} not supported"
+      raise "#{auth['provider']} not supported"
     end
   end
 
@@ -38,29 +27,20 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  def find_existing_user(authver_method, auth, user_attrs, verify:)
+  def find_existing_user(user_attrs)
     user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
-    return user if user
-
-    if verify
-      # Try and find the user by verification for verification methods without an email
-      uid = authver_method.profile_to_uid(auth)
-      verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method).first
-      verification&.user
-    end
+    user if user
   end
 
-  def auth_callback(verify: false, authver_method: nil)
-    auth = request.env['omniauth.auth']
-    omniauth_params = request.env['omniauth.params']
-    user_attrs = authver_method.profile_to_user_attrs(auth)
+  def auth_callback
+    user_attrs = auth_method.profile_to_user_attrs(auth)
 
-    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-    @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
+    @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
+    @user = @identity.user || find_existing_user(user_attrs)
     @user = authentication_service.prevent_user_account_hijacking @user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
-    if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
+    if @user && !auth_method.can_merge?(@user, user_attrs, params[:sso_verification])
       # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
       #
       # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
@@ -70,7 +50,7 @@ class OmniauthCallbackController < ApplicationController
       # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
       #
       # Probably, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
-      signin_failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
+      signin_failure_redirect(error_code: auth_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
       return
     end
 
@@ -89,7 +69,7 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           @invite.save!
           SideFxInviteService.new.after_accept @invite
-          verify_and_sign_in(auth, @user, verify, sign_up: true)
+          sign_in(sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -97,18 +77,18 @@ class OmniauthCallbackController < ApplicationController
 
       else # !@user.invite_pending?
         begin
-          update_user!(auth, @user, authver_method)
+          update_user!
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
           return
         end
-        verify_and_sign_in(auth, @user, verify, sign_up: false)
+        sign_in(sign_up: false)
       end
 
     else # New user
-      confirm = authver_method.email_confirmed?(auth)
-      user_locale = get_user_locale(omniauth_params, user_attrs)
+      confirm = auth_method.email_confirmed?(auth)
+      user_locale = get_user_locale(user_attrs)
 
       @user = UserService.build_in_sso(user_attrs, confirm, user_locale)
 
@@ -116,7 +96,7 @@ class OmniauthCallbackController < ApplicationController
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
-        verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
+        sign_in(sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
         signin_failure_redirect
@@ -124,10 +104,7 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  def verify_and_sign_in(auth, user, verify, sign_up: true, user_created: false)
-    continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
-    return unless continue_auth
-
+  def sign_in(sign_up: true, user_created: false)
     set_auth_cookie(provider: auth['provider'])
     if sign_up
       signup_success_redirect
@@ -138,23 +115,23 @@ class OmniauthCallbackController < ApplicationController
 
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
-    omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
+    params = filter_omniauth_params
+    params['sso_flow'] = 'signin' if params['sso_flow']
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
-        omniauth_params
+        params
       )
     )
   end
 
   def signup_success_redirect
-    omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
+    params = filter_omniauth_params
+    params['sso_flow'] = 'signup' if params['sso_flow']
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
-        omniauth_params
+        params
       )
     )
   end
@@ -170,12 +147,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def sso_redirect_path
-    request.env['omniauth.params']&.dig('sso_pathname') || '/'
+    omniauth_params&.dig('sso_pathname') || '/'
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    request.env['omniauth.params']&.except('token', 'pathname', 'sso_pathname') || {}
+    omniauth_params&.except('token', 'pathname', 'sso_pathname') || {}
   end
 
   def add_uri_params(uri, params = {})
@@ -210,25 +187,24 @@ class OmniauthCallbackController < ApplicationController
 
   # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
   # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method
-  # @param [OmniauthMethods::Base] authver_method
   # @param [User] user
-  def update_user!(auth, user, authver_method)
-    attrs = authver_method.updateable_user_attrs
-    sso_user_attrs = authver_method.profile_to_user_attrs(auth)
+  def update_user!
+    attrs = auth_method.updateable_user_attrs
+    sso_user_attrs = auth_method.profile_to_user_attrs(auth)
     user_params = sso_user_attrs.slice(*attrs).compact
-    user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
+    user_params.delete(:remote_avatar_url) if @user.avatar.present? # don't overwrite avatar if already present
 
-    sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
-    confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
+    sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || @user.email))
+    confirm_user = auth_method.email_confirmed?(auth) && sso_email_is_used
 
-    UserService.update_in_sso!(user, user_params, confirm_user)
+    UserService.update_in_sso!(@user, user_params, confirm_user)
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
   # and is not the default locale.
   # If that fails, return the locale returned by the SSO provider.
   # If that also fails, just return the default locale.
-  def get_user_locale(omniauth_params, user_attrs)
+  def get_user_locale(user_attrs)
     locales = AppConfiguration.instance.settings.dig('core', 'locales')
     sso_pathname = omniauth_params['sso_pathname']
     locale_in_pathname = sso_pathname ? sso_pathname.split('/', 2)[1].split('/')[0] : nil
@@ -248,28 +224,16 @@ class OmniauthCallbackController < ApplicationController
     @authentication_service ||= AuthenticationService.new
   end
 
-  def auth_provider
-    @auth_provider ||= request.env.dig('omniauth.auth', 'provider')
+  def auth
+    @auth ||= request.env['omniauth.auth']
   end
 
   def auth_method
-    @auth_method ||= authentication_service.method_by_provider(auth_provider)
+    @auth_method ||= authentication_service.method_by_provider(auth['provider'])
   end
 
-  def verification_method
-    nil # overridden
-  end
-
-  def verified_for_sso?(_auth, _user, _user_created)
-    true # overridden
-  end
-
-  def handle_verification(_auth, _user)
-    # overridden
-  end
-
-  def verification_callback(_verification_method)
-    # overridden
+  def omniauth_params
+    @omniauth_params || request.env['omniauth.params']
   end
 end
 
