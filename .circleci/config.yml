@@ -1142,7 +1142,7 @@ workflows:
             - docker-hub-access
             - lastpass
       - e2e-tests:
-          paralellism: 16
+          parallelism: 16
           context:
             - docker-hub-access
           requires:
@@ -1169,7 +1169,7 @@ workflows:
             - docker-hub-access
             - lastpass
       - e2e-tests:
-          paralellism: 4
+          parallelism: 4
           requires:
             - e2e-setup-db
             - e2e-setup-front
