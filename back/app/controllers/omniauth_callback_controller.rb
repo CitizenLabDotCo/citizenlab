@@ -27,11 +27,6 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  def find_existing_user(user_attrs)
-    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
-    user if user
-  end
-
   def auth_callback
     user_attrs = auth_method.profile_to_user_attrs(auth)
 
@@ -102,6 +97,11 @@ class OmniauthCallbackController < ApplicationController
         signin_failure_redirect
       end
     end
+  end
+
+  def find_existing_user(user_attrs)
+    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
+    user
   end
 
   def sign_in(sign_up: true, user_created: false)
