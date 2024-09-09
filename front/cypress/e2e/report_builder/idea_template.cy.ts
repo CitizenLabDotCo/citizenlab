@@ -151,7 +151,9 @@ describe('Idea template', () => {
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
           'saveReportLayout'
         );
-        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.get('#e2e-content-builder-topbar-save > button').click({
+          force: true,
+        });
         cy.wait('@saveReportLayout');
 
         // Refresh page
@@ -165,7 +167,7 @@ describe('Idea template', () => {
       });
     });
 
-    it.skip('autosaves report created from template', () => {
+    it('autosaves report created from template', () => {
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
 
@@ -227,7 +229,7 @@ describe('Idea template', () => {
       cy.get('#e2e-create-report-button').should('exist');
     });
 
-    it.skip('autosaves report created from template', () => {
+    it('autosaves report created from template', () => {
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
 
