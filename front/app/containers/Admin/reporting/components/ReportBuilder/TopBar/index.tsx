@@ -50,6 +50,17 @@ type ContentBuilderTopBarProps = {
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
+const TEMPLATE_NODES = new Set([
+  'ProjectTemplate',
+  'PhaseTemplate',
+  'PlatformTemplate',
+]);
+
+const isTemplateNode = (resolvedName?: string) => {
+  if (!resolvedName) return false;
+  return TEMPLATE_NODES.has(resolvedName);
+};
+
 const ContentBuilderTopBar = ({
   selectedLocale,
   hasPendingState,
@@ -125,12 +136,7 @@ const ContentBuilderTopBar = ({
 
   // This useEffect handles autosave for templates
   useEffect(() => {
-    // eslint-disable-next-line
-    console.log({ initialized });
     if (initialized) return;
-
-    // eslint-disable-next-line
-    console.log({ isTemplate });
 
     if (!isTemplate) {
       setInitialized(true);
@@ -140,21 +146,13 @@ const ContentBuilderTopBar = ({
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
       const firstNode = nodes.ROOT?.nodes[0];
-
-      // eslint-disable-next-line
-      console.log({ firstNode });
       if (!firstNode) return;
 
-      const displayName = nodes?.[firstNode].displayName;
+      const type = nodes?.[firstNode].type;
+      const resolvedName =
+        typeof type === 'object' ? type.resolvedName : undefined;
 
-      // eslint-disable-next-line
-      console.log({ displayName });
-
-      if (
-        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
-          displayName
-        )
-      ) {
+      if (!isTemplateNode(resolvedName)) {
         // In theory this should not be possible, but handling
         // it gracefully just in case
         setInitialized(true);
@@ -168,17 +166,14 @@ const ContentBuilderTopBar = ({
       // again if the number of nodes is already correct.
       const numberOfNodes = Object.keys(nodes).length;
 
-      // eslint-disable-next-line
-      console.log({ numberOfNodes });
-
       if (
-        displayName === 'ProjectTemplate' &&
+        resolvedName === 'ProjectTemplate' &&
         numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
       ) {
         return;
       }
       if (
-        displayName === 'PlatformTemplate' &&
+        resolvedName === 'PlatformTemplate' &&
         numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
       ) {
         return;
@@ -201,12 +196,7 @@ const ContentBuilderTopBar = ({
       clearInterval(interval);
     }, 3000);
 
-    // return () => clearInterval(interval);
-    return () => {
-      // eslint-disable-next-line
-      console.log('clearing interval');
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [
     isTemplate,
     query,
