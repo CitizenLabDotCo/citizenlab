@@ -682,11 +682,15 @@ jobs:
       - image: cimg/base:2024.08
     working_directory: ~/citizenlab
     resource_class: medium
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        description: Because docker layer caching is expensive, we make it optional so the automated nightly e2e runs can opt-out from using it.
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
@@ -710,12 +714,16 @@ jobs:
     docker:
       - image: cimg/base:2024.08
     resource_class: large
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        description: Because docker layer caching is expensive, we make it optional so the automated nightly e2e runs can opt-out from using it.
     working_directory: ~/citizenlab
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
@@ -1124,10 +1132,12 @@ workflows:
     when: << pipeline.parameters.e2e >>
     jobs:
       - e2e-setup-db:
+          docker_layer_caching: true
           context:
             - docker-hub-access
             - lastpass
       - e2e-setup-front:
+          docker_layer_caching: true
           context:
             - docker-hub-access
             - lastpass
@@ -1149,10 +1159,12 @@ workflows:
                 - master
     jobs:
       - e2e-setup-db:
+          docker_layer_caching: false
           context:
             - docker-hub-access
             - lastpass
       - e2e-setup-front:
+          docker_layer_caching: false
           context:
             - docker-hub-access
             - lastpass
