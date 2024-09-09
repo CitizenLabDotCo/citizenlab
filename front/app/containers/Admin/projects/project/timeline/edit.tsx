@@ -128,14 +128,7 @@ const AdminPhaseEdit = () => {
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
-    return () => {
-      console.log('unmounting');
-    };
-  }, []);
-
-  useEffect(() => {
     setAttributeDiff({});
-    console.log('disabling button from useEffect');
     setSubmitState('disabled');
   }, [phaseId]);
 
@@ -163,7 +156,6 @@ const AdminPhaseEdit = () => {
         return acc;
       }, {});
 
-      console.log('enabling button from handlePhaseParticipationConfigChange');
       setSubmitState('enabled');
       // Important to keep the order of the spread operators
       setAttributeDiff((attributeDiff) => ({
@@ -205,7 +197,6 @@ const AdminPhaseEdit = () => {
   const hasEndDate = !!phaseAttrs.end_at;
 
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
-    console.log('enabling button from handleTitleMultilocOnChange');
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
