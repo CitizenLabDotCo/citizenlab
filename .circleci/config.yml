@@ -842,7 +842,7 @@ workflows:
                 - /l10n_.*/
           context:
             - docker-hub-access
-            - 
+            - citizenlab-ee-environment
       - back-lint:
           context:
             - docker-hub-access
