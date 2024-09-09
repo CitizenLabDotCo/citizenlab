@@ -1702,7 +1702,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Lataa kyselyn tulokset",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Lataa kysely pdf-muodossa",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Kopioi toinen kysely",
-  "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Muokata",
+  "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Muokkaa",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Muokkaa kyselyn sisältöä",
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Tähän kyselyyn on alkanut saapua palautetta. Kyselyyn tehdyt muutokset voivat johtaa tietojen katoamiseen ja epätäydellisiin tietoihin viedyissä tiedostoissa.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Tiedoston lataus",
