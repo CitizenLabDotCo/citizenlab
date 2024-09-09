@@ -732,7 +732,10 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2024.08
-    parallelism: 16
+    parameters:
+      parallelism:
+        type: integer
+    parallelism: << parameters.parallelism >>
     working_directory: ~/citizenlab
     resource_class: medium
     steps:
@@ -1121,9 +1124,9 @@ workflows:
             - docker-hub-access
             - lastpass
       - e2e-tests:
+          paralellism: 16
           context:
             - docker-hub-access
-            - lastpass
           requires:
             - e2e-setup-db
             - e2e-setup-front
@@ -1137,11 +1140,22 @@ workflows:
               only:
                 - master
     jobs:
+      - e2e-setup-db:
+          context:
+            - docker-hub-access
+            - lastpass
+      - e2e-setup-front:
+          context:
+            - docker-hub-access
+            - lastpass
       - e2e-tests:
+          paralellism: 4
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
           context:
             - docker-hub-access
             - slack-dev-notifications-e2e
-            - lastpass
           post-steps:
             - slack/notify:
                 event: pass
