@@ -677,57 +677,118 @@ jobs:
       - run: npm run chromatic
 
   # E2E TESTS
-  e2e-tests:
+  e2e-setup-db:
     docker:
-      - image: cimg/base:2021.03
-    parallelism: 3
+      - image: cimg/base:2024.08
     working_directory: ~/citizenlab
-    resource_class: medium+
+    resource_class: medium
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
-          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
-          docker-compose build --parallel
+          docker compose run web bin/rails db:drop db:create db:schema:load
+          docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
       - run: |
           cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load
-          docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
+      - run: |
+          docker tag e2e-web citizenlabdotco/back-e2e:$CIRCLE_SHA1
+          docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: .
+          paths:
+            - postgresql-data
+            - uploads
+            - env_files
+
+  e2e-setup-front:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: large
+    working_directory: ~/citizenlab
+    steps:
+      - shallow-clone
+      - copy_secrets_from_lastpass
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          cd e2e
+          docker compose run --build front npm run build:test
+      - run: docker cp $(docker ps -lq):/front/build .
+      - run: |
+          docker tag e2e-front citizenlabdotco/front-e2e:$CIRCLE_SHA1
+      - run: |
+          docker push citizenlabdotco/front-e2e:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+  e2e-tests:
+    docker:
+      - image: cimg/base:2024.08
+    parallelism: 16
+    working_directory: ~/citizenlab
+    resource_class: medium
+    steps:
+      - shallow-clone
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - attach_workspace:
+          at: .
       - run:
           command: |
-            cd e2e
-            docker-compose up
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
           background: true
-      # Wait until build is finished.
       - run: |
-          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
-          # we cannot access localhost:3000, so we call it from the container
-          # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
-          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
+          docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
+      - run: |
+          cd e2e
+          WEB_CONTAINER_ID=$(docker compose ps -a -q web)
+          FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
+          POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
+          docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
+          docker cp ../build $FRONT_CONTAINER_ID:/front/build
+          docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
+      - run: |
+          cd e2e
+          docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
+      - run:
+          command: |
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
+          background: true
       - run: |
           cd front
-          mkdir -p reports
-          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # We run cypress tests in container, so we need to copy the results out.
-      - run: |
-          mkdir -p front/reports
-          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+          docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
+            cypress npm run cypress:run -- \
+            --reporter cypress-circleci-reporter \
+            --config baseUrl=http://e2e.front:3000 \
+            --spec ${COMMA_SEPARATED_TESTFILES}
+      - run:
+          command: |
+            docker cp cypress_run:/front/test_results .
+          when: always
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
-          path: front/reports
+          path: test_results
+      - store_artifacts:
+          path: test_results
       - store_artifacts:
           path: screenshots
 
@@ -888,7 +949,7 @@ workflows:
             branches:
               only: production
       - back-deploy-to-swarm:
-          name: Deploy to Europe (Frankfurt)
+          name: Deploy to Europe
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -900,19 +961,6 @@ workflows:
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-web"
           cluster_name: "eu"
-      - back-deploy-to-swarm:
-          name: Deploy to Europe (Paris)
-          requires:
-            - back-push-deployment-docker-image
-          filters:
-            branches:
-              only:
-                - production
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
-          compose_file: docker-compose-production.yml
-          stack_name: cl2
-          env_file: ".env-web"
-          cluster_name: "paris"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
@@ -1064,10 +1112,33 @@ workflows:
   manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
+      - e2e-setup-db:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+      - e2e-setup-front:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
       - e2e-tests:
           context:
             - docker-hub-access
             - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
 
   nightly-e2e-tests:
     triggers:
@@ -1102,22 +1173,13 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (Frankfurt)"
+          name: "Europe (mainland)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-web"
-      - back-generate-tenant-templates:
-          name: "Europe (Paris)"
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-            - slack-dev-notifications-tenant-templates
-          <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1163,8 +1225,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (Frankfurt)"
-            - "Europe (Paris)"
+            - "Europe (mainland)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1203,22 +1264,13 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (Frankfurt)"
+          name: "Europe (mainland)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-web"
-      - back-generate-tenant-templates:
-          name: "Europe (Paris)"
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-            - slack-dev-notifications-tenant-templates
-          <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1264,8 +1316,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (Frankfurt)"
-            - "Europe (Paris)"
+            - "Europe (mainland)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1295,13 +1346,6 @@ workflows:
               only:
                 - production
     jobs:
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "Europe (Paris)"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
-          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "South America"

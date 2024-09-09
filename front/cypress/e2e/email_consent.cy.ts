@@ -13,20 +13,25 @@ describe('email consent', () => {
       (button) => {
         // input
         cy.wrap(button).click();
+        cy.wrap(button).should('have.class', 'selected');
         cy.get('.e2e-campaign_subject_multiloc')
           .find('input')
           .first()
           .type('Test subject');
+        cy.wrap(button).find('div').should('have.class', 'notEmpty');
       }
     );
 
     cy.get('.e2e-campaign_body_multiloc .e2e-localeswitcher').each((button) => {
       // input
       cy.wrap(button).click();
+      cy.wrap(button).should('have.class', 'selected');
+      // cy.wait(1000);
       cy.get('.e2e-campaign_body_multiloc')
         .find('.ql-editor')
         .first()
         .type('Test content');
+      cy.wrap(button).find('div').should('have.class', 'notEmpty');
     });
 
     cy.get('#e2e-campaign-form-save-button').click();

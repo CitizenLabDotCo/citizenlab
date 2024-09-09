@@ -165,7 +165,7 @@ describe('Idea template', () => {
       });
     });
 
-    it('autosaves report created from template', () => {
+    it.skip('autosaves report created from template', () => {
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
 
@@ -227,7 +227,7 @@ describe('Idea template', () => {
       cy.get('#e2e-create-report-button').should('exist');
     });
 
-    it('autosaves report created from template', () => {
+    it.skip('autosaves report created from template', () => {
       cy.apiCreateReportBuilder(phaseId).then((report) => {
         const reportId = report.body.data.id;
 

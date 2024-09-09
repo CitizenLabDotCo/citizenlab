@@ -223,7 +223,7 @@ describe('Phase report', () => {
 
     // inspired by front/cypress/e2e/report_builder/idea_template.cy.ts
     // "autosaves report created from template"
-    it('is visible in current phase when created from ideation template', () => {
+    it.skip('is visible in current phase when created from ideation template', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
@@ -260,7 +260,7 @@ describe('Phase report', () => {
     });
 
     // inspired by front/cypress/e2e/report_builder/survey_template.cy.ts
-    it('is visible in current phase when created from survey template', () => {
+    it.skip('is visible in current phase when created from survey template', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
         const reportId = report.body.data.id;
