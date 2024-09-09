@@ -2288,7 +2288,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTag": "Nimeä tunniste uudelleen",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalCancel": "Peruuttaa",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalNameLabel": "Nimi",
-  "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalSave": "Tallentaa",
+  "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalSave": "Tallenna",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalTitle": "Nimeä tunniste uudelleen",
   "app.containers.AdminPage.projects.project.analysis.Tags.selectAll": "Valitse kaikki",
   "app.containers.AdminPage.projects.project.analysis.Tags.sentimentTagDescription": "Määritä jokaiselle syötteelle tekstistä johdettu positiivinen tai negatiivinen mielipide",
