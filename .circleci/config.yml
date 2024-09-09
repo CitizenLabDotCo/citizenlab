@@ -745,40 +745,50 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Start pulling in the large cypress image in parallel to continuing with the rest of the setup
           command: |
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
           background: true
-      - run: |
-          cd e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
-      - run: |
-          cd e2e
-          WEB_CONTAINER_ID=$(docker compose ps -a -q web)
-          FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
-          POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
-          docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
-          docker cp ../build $FRONT_CONTAINER_ID:/front/build
-          docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
-      - run: |
-          cd e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
       - run:
+          name: Pull all images and create the containers, but don't start them yet
+          command: |
+            cd e2e
+            docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
+      - run:
+          name: Copy the pre-built e2e tenant data and front-end bundle into the containers
+          command: |
+            cd e2e
+            WEB_CONTAINER_ID=$(docker compose ps -a -q web)
+            FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
+            POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
+            docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
+            docker cp ../build $FRONT_CONTAINER_ID:/front/build
+            docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
+      - run:
+          name: Start the containers, block on them becoming healthy
+          command: |
+            cd e2e
+            docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
+      - run:
+          name: Output the container logs
           command: |
               cd e2e
               docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
-      - run: |
-          cd front
-          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
-          echo $COMMA_SEPARATED_TESTFILES
-          cd ../e2e
-          docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
-            cypress npm run cypress:run -- \
-            --reporter cypress-circleci-reporter \
-            --config baseUrl=http://e2e.front:3000 \
-            --spec ${COMMA_SEPARATED_TESTFILES}
+      - run:
+          name: Run cypress
+          command: |
+            cd front
+            TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
+            COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            echo $COMMA_SEPARATED_TESTFILES
+            cd ../e2e
+            docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
+              cypress npm run cypress:run -- \
+              --reporter cypress-circleci-reporter \
+              --config baseUrl=http://e2e.front:3000 \
+              --spec ${COMMA_SEPARATED_TESTFILES}
       - run:
           command: |
             docker cp cypress_run:/front/test_results .
@@ -789,8 +799,6 @@ jobs:
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
-          path: test_results
-      - store_artifacts:
           path: test_results
       - store_artifacts:
           path: screenshots
