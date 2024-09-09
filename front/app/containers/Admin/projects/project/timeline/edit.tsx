@@ -485,6 +485,7 @@ const AdminPhaseEdit = () => {
         end_at: '',
       });
     }
+    setHasEndDate((prevValue) => !prevValue);
   };
 
   const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
