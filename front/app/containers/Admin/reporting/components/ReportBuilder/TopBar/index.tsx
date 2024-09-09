@@ -125,7 +125,12 @@ const ContentBuilderTopBar = ({
 
   // This useEffect handles autosave for templates
   useEffect(() => {
+    // eslint-disable-next-line
+    console.log({ initialized });
     if (initialized) return;
+
+    // eslint-disable-next-line
+    console.log({ isTemplate });
 
     if (!isTemplate) {
       setInitialized(true);
@@ -135,9 +140,15 @@ const ContentBuilderTopBar = ({
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
       const firstNode = nodes.ROOT?.nodes[0];
+
+      // eslint-disable-next-line
+      console.log({ firstNode });
       if (!firstNode) return;
 
       const displayName = nodes?.[firstNode].displayName;
+
+      // eslint-disable-next-line
+      console.log({ displayName });
 
       if (
         !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
@@ -156,6 +167,9 @@ const ContentBuilderTopBar = ({
       // if we early return here, we basically wait for the next interval and check
       // again if the number of nodes is already correct.
       const numberOfNodes = Object.keys(nodes).length;
+
+      // eslint-disable-next-line
+      console.log({ numberOfNodes });
 
       if (
         displayName === 'ProjectTemplate' &&
@@ -187,7 +201,12 @@ const ContentBuilderTopBar = ({
       clearInterval(interval);
     }, 3000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
+    return () => {
+      // eslint-disable-next-line
+      console.log('clearing interval');
+      clearInterval(interval);
+    };
   }, [
     isTemplate,
     query,
