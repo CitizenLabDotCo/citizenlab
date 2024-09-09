@@ -795,624 +795,594 @@ jobs:
 workflows:
   version: 2
 
-  manually-e2e-tests:
+  ci:
+    when: << pipeline.parameters.trigger >>
     jobs:
-      - e2e-setup-db:
-          context:
-            - docker-hub-access
-            - lastpass
+      - trigger-workflows:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+
+  global-checks:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - danger-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
+      - changelogger:
           filters:
             branches:
               only:
-                - TAN-2500-ci-e2e-speedup
-      - e2e-setup-front:
+                - production
           context:
             - docker-hub-access
-            - lastpass
+            - changelogger
+
+  # BACK-END
+  back:
+    when:
+      and:
+        - << pipeline.parameters.back >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - back-build-docker-image:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+          context:
+            - docker-hub-access
+            - 
+      - back-lint:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-docker-image
+      - back-bundle-audit:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-license-check:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-test:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-docker-image
+      - back-docs-not-blocking:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-docker-image
           filters:
             branches:
               only:
-                - TAN-2500-ci-e2e-speedup
+                - master
+      - back-trigger-deploy:
+          context: circleci-api-token
+          requires:
+            - back-test
+            - back-lint
+            - back-bundle-audit
+          filters:
+            branches:
+              only:
+                - master
+
+  back-deploy-staging:
+    when:
+      and:
+        - <<pipeline.parameters.run_deploy>>
+        - << pipeline.parameters.back >>
+    jobs:
+      - back-push-deployment-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - master
+      - back-deploy-to-swarm:
+          name: Deploy to staging
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - master
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
+          compose_file: docker-compose-staging.yml
+          stack_name: "cl2"
+          env_file: ".env-web"
+          cluster_name: "stg"
+
+  back-deploy-production:
+    when: << pipeline.parameters.back >>
+    jobs:
+      - back-build-docker-image:
+          filters:
+            branches:
+              only: production
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-push-deployment-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+          image_tag: $CIRCLE_SHA1
+          requires:
+            - back-build-docker-image
+      - back-deploy-developer-documentation:
+          context: circleci-api-token
+          filters:
+            branches:
+              only: production
+      - back-deploy-to-swarm:
+          name: Deploy to Europe
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          compose_file: docker-compose-production.yml
+          stack_name: cl2-prd-bnlx-stack
+          env_file: ".env-web"
+          cluster_name: "eu"
+      - back-deploy-to-swarm:
+          name: Deploy to Canada
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+          cluster_name: "can"
+      - back-deploy-to-swarm:
+          name: Deploy to South-America
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+          cluster_name: "sam"
+      - back-deploy-to-swarm:
+          name: Deploy to US-West
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+          cluster_name: "usw"
+      - back-deploy-to-swarm:
+          name: Deploy to UK
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
+          cluster_name: "uk"
+
+  # FRONT-END
+  front:
+    when:
+      and:
+        - << pipeline.parameters.front >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - front-test
+      - front-lint:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-detect-deadcode:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-dependency-cruiser:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-license-check:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-build:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - front-extract-intl:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+      - front-trigger-deploy:
+          context: circleci-api-token
+          requires:
+            - front-test
+            - front-build
+            - front-license-check
+          filters:
+            branches:
+              only:
+                - master
+
+  front-deploy-staging:
+    when:
+      and:
+        - <<pipeline.parameters.run_deploy>>
+        - <<pipeline.parameters.front>>
+    jobs:
+      - front-deploy-staging:
+          filters:
+            branches:
+              only: master
+          context:
+            - citizenlab-ee-environment
+      - front-test-lighthouse:
+          requires:
+            - front-deploy-staging
+          filters:
+            branches:
+              only: master
+
+  front-deploy-production:
+    when: <<pipeline.parameters.front>>
+    jobs:
+      - front-deploy-production:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - citizenlab-ee-environment
+
+  # OTHER
+  manually-e2e-tests:
+    when: << pipeline.parameters.e2e >>
+    jobs:
       - e2e-tests:
           context:
             - docker-hub-access
             - lastpass
+
+  nightly-e2e-tests:
+    triggers:
+      - schedule:
+          cron: "0 2,14 * * 1-5" # https://crontab.guru/
           filters:
             branches:
               only:
-                - TAN-2500-ci-e2e-speedup
+                - master
+    jobs:
+      - e2e-tests:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-e2e
+            - lastpass
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ":boom: FAILURE: Some tests failed."
+                template: basic_fail_1
+
+  manual-templates:
+    when: << pipeline.parameters.templates >>
+    jobs:
+      - back-build-docker-image:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+      - back-generate-tenant-templates:
+          name: "Europe (mainland)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "South America"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Canada"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "US West"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "UK"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+          env_file: ".env-web"
+      - back-test-tenant-templates:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
           requires:
-            - e2e-setup-db
-            - e2e-setup-front
+            - back-build-docker-image
+            - "Europe (mainland)"
+            - "South America"
+            - "Canada"
+            - "US West"
+            - "UK"
+      - back-release-tenant-templates:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          requires:
+            - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
+                template: basic_fail_1
 
-  # ci:
-  #   when: << pipeline.parameters.trigger >>
-  #   jobs:
-  #     - trigger-workflows:
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
+  nightly-templates:
+    # Todo: scheduled workflows are deprecated, should be converted into a scheduled pipeline
+    # https://circleci.com/docs/migrate-scheduled-workflows-to-scheduled-pipelines/
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - production
+    jobs:
+      - back-build-docker-image:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+      - back-generate-tenant-templates:
+          name: "Europe (mainland)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "South America"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Canada"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "US West"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "UK"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+          env_file: ".env-web"
+      - back-test-tenant-templates:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          requires:
+            - back-build-docker-image
+            - "Europe (mainland)"
+            - "South America"
+            - "Canada"
+            - "US West"
+            - "UK"
+      - back-release-tenant-templates:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          requires:
+            - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
+                template: basic_fail_1
 
-  # global-checks:
-  #   when: << pipeline.parameters.trigger >>
-  #   jobs:
-  #     - danger-check:
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #               - master
-  #               - production
-  #     - changelogger:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         context:
-  #           - docker-hub-access
-  #           - changelogger
+  check-for-inconsistent-data:
+    triggers:
+      - schedule:
+          cron: "0 2 * * 1"
+          filters:
+            branches:
+              only:
+                - production
+    jobs:
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "South America"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Canada"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "US West"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          env_file: ".env-web"
+      # Disabling the check for the UK cluster for now, as it is likely the root cause of CL-3026.
+      # See: https://citizenlab.atlassian.net/browse/CL-3026
+      # Don't forget to uncomment the "UK" requirement in 'slack-invalid-data-success'
+      # when re-enabling this.
+      # - check-for-inconsistent-data:
+      #     <<: *slack-fail-post-step-inconsistent-data
+      #     name: "UK"
+      #     context:
+      #       - slack-dev-notifications-inconsistent-data
+      #     ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+      #     env_file: ".env-web"
+      - slack-invalid-data-success:
+          name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
+          context:
+            - slack-dev-notifications-inconsistent-data
+          requires:
+            - "South America"
+            - "Canada"
+            - "US West"
+      #     - "UK"
 
-  # # BACK-END
-  # back:
-  #   when:
-  #     and:
-  #       - << pipeline.parameters.back >>
-  #       - not: <<pipeline.parameters.run_deploy>>
-  #       - not:
-  #           equal: ["production", << pipeline.git.branch >>]
-  #   jobs:
-  #     - back-build-docker-image:
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #         context:
-  #           - docker-hub-access
-  #           - 
-  #     - back-lint:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #         requires:
-  #           - back-build-docker-image
-  #     - back-bundle-audit:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #         requires:
-  #           - back-build-docker-image
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - back-license-check:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #         requires:
-  #           - back-build-docker-image
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - back-test:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #         requires:
-  #           - back-build-docker-image
-  #     - back-docs-not-blocking:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #         requires:
-  #           - back-build-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #     - back-trigger-deploy:
-  #         context: circleci-api-token
-  #         requires:
-  #           - back-test
-  #           - back-lint
-  #           - back-bundle-audit
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
+  manual-chromatic:
+    when: << pipeline.parameters.chromatic >>
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic
 
-  # back-deploy-staging:
-  #   when:
-  #     and:
-  #       - <<pipeline.parameters.run_deploy>>
-  #       - << pipeline.parameters.back >>
-  #   jobs:
-  #     - back-push-deployment-docker-image:
-  #         context: docker-hub-access
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to staging
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
-  #         compose_file: docker-compose-staging.yml
-  #         stack_name: "cl2"
-  #         env_file: ".env-web"
-  #         cluster_name: "stg"
-
-  # back-deploy-production:
-  #   when: << pipeline.parameters.back >>
-  #   jobs:
-  #     - back-build-docker-image:
-  #         filters:
-  #           branches:
-  #             only: production
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #     - back-push-deployment-docker-image:
-  #         context: docker-hub-access
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         image_tag: $CIRCLE_SHA1
-  #         requires:
-  #           - back-build-docker-image
-  #     - back-deploy-developer-documentation:
-  #         context: circleci-api-token
-  #         filters:
-  #           branches:
-  #             only: production
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to Europe
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-  #         compose_file: docker-compose-production.yml
-  #         stack_name: cl2-prd-bnlx-stack
-  #         env_file: ".env-web"
-  #         cluster_name: "eu"
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to Canada
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
-  #         compose_file: docker-compose-production.yml
-  #         env_file: ".env-web"
-  #         stack_name: "cl2"
-  #         cluster_name: "can"
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to South-America
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
-  #         compose_file: docker-compose-production.yml
-  #         env_file: ".env-web"
-  #         stack_name: "cl2"
-  #         cluster_name: "sam"
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to US-West
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
-  #         compose_file: docker-compose-production.yml
-  #         env_file: ".env-web"
-  #         stack_name: "cl2"
-  #         cluster_name: "usw"
-  #     - back-deploy-to-swarm:
-  #         name: Deploy to UK
-  #         requires:
-  #           - back-push-deployment-docker-image
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-  #         compose_file: docker-compose-production.yml
-  #         env_file: ".env-web"
-  #         stack_name: "cl2"
-  #         cluster_name: "uk"
-
-  # # FRONT-END
-  # front:
-  #   when:
-  #     and:
-  #       - << pipeline.parameters.front >>
-  #       - not: <<pipeline.parameters.run_deploy>>
-  #       - not:
-  #           equal: ["production", << pipeline.git.branch >>]
-  #   jobs:
-  #     - front-test
-  #     - front-lint:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - front-detect-deadcode:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - front-dependency-cruiser:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - front-license-check:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - front-build:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #     - front-extract-intl:
-  #         context: citizenlab-ee-environment
-  #         filters:
-  #           branches:
-  #             ignore:
-  #               - crowdin_master
-  #               - /l10n_.*/
-  #               - master
-  #     - front-trigger-deploy:
-  #         context: circleci-api-token
-  #         requires:
-  #           - front-test
-  #           - front-build
-  #           - front-license-check
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-
-  # front-deploy-staging:
-  #   when:
-  #     and:
-  #       - <<pipeline.parameters.run_deploy>>
-  #       - <<pipeline.parameters.front>>
-  #   jobs:
-  #     - front-deploy-staging:
-  #         filters:
-  #           branches:
-  #             only: master
-  #         context:
-  #           - citizenlab-ee-environment
-  #     - front-test-lighthouse:
-  #         requires:
-  #           - front-deploy-staging
-  #         filters:
-  #           branches:
-  #             only: master
-
-  # front-deploy-production:
-  #   when: <<pipeline.parameters.front>>
-  #   jobs:
-  #     - front-deploy-production:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #         context:
-  #           - citizenlab-ee-environment
-
-  # # OTHER
-  # manually-e2e-tests:
-  #   when: << pipeline.parameters.e2e >>
-  #   jobs:
-  #     - e2e-tests:
-  #         context:
-  #           - docker-hub-access
-  #           - lastpass
-
-  # nightly-e2e-tests:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 2,14 * * 1-5" # https://crontab.guru/
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #   jobs:
-  #     - e2e-tests:
-  #         context:
-  #           - docker-hub-access
-  #           - slack-dev-notifications-e2e
-  #           - lastpass
-  #         post-steps:
-  #           - slack/notify:
-  #               event: pass
-  #               template: basic_success_1
-  #           - slack/notify:
-  #               event: fail
-  #               mentions: ":boom: FAILURE: Some tests failed."
-  #               template: basic_fail_1
-
-  # manual-templates:
-  #   when: << pipeline.parameters.templates >>
-  #   jobs:
-  #     - back-build-docker-image:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #     - back-generate-tenant-templates:
-  #         name: "Europe (mainland)"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "South America"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "Canada"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "US West"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "UK"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-  #         env_file: ".env-web"
-  #     - back-test-tenant-templates:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         requires:
-  #           - back-build-docker-image
-  #           - "Europe (mainland)"
-  #           - "South America"
-  #           - "Canada"
-  #           - "US West"
-  #           - "UK"
-  #     - back-release-tenant-templates:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         requires:
-  #           - back-test-tenant-templates
-  #         post-steps:
-  #           - slack/notify:
-  #               event: pass
-  #               template: basic_success_1
-  #           - slack/notify:
-  #               event: fail
-  #               mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
-  #               template: basic_fail_1
-
-  # nightly-templates:
-  #   # Todo: scheduled workflows are deprecated, should be converted into a scheduled pipeline
-  #   # https://circleci.com/docs/migrate-scheduled-workflows-to-scheduled-pipelines/
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 0 * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #   jobs:
-  #     - back-build-docker-image:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #     - back-generate-tenant-templates:
-  #         name: "Europe (mainland)"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "South America"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "Canada"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "US West"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
-  #         env_file: ".env-web"
-  #     - back-generate-tenant-templates:
-  #         name: "UK"
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-  #         env_file: ".env-web"
-  #     - back-test-tenant-templates:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         <<: *slack-fail-post-step-templates
-  #         requires:
-  #           - back-build-docker-image
-  #           - "Europe (mainland)"
-  #           - "South America"
-  #           - "Canada"
-  #           - "US West"
-  #           - "UK"
-  #     - back-release-tenant-templates:
-  #         context:
-  #           - docker-hub-access
-  #           - citizenlab-ee-environment
-  #           - slack-dev-notifications-tenant-templates
-  #         requires:
-  #           - back-test-tenant-templates
-  #         post-steps:
-  #           - slack/notify:
-  #               event: pass
-  #               template: basic_success_1
-  #           - slack/notify:
-  #               event: fail
-  #               mentions: ":boom: FAILURE: Some templates are invalid and could not be released."
-  #               template: basic_fail_1
-
-  # check-for-inconsistent-data:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 2 * * 1"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - production
-  #   jobs:
-  #     - check-for-inconsistent-data:
-  #         <<: *slack-fail-post-step-inconsistent-data
-  #         name: "South America"
-  #         context:
-  #           - slack-dev-notifications-inconsistent-data
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
-  #         env_file: ".env-web"
-  #     - check-for-inconsistent-data:
-  #         <<: *slack-fail-post-step-inconsistent-data
-  #         name: "Canada"
-  #         context:
-  #           - slack-dev-notifications-inconsistent-data
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
-  #         env_file: ".env-web"
-  #     - check-for-inconsistent-data:
-  #         <<: *slack-fail-post-step-inconsistent-data
-  #         name: "US West"
-  #         context:
-  #           - slack-dev-notifications-inconsistent-data
-  #         ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
-  #         env_file: ".env-web"
-  #     # Disabling the check for the UK cluster for now, as it is likely the root cause of CL-3026.
-  #     # See: https://citizenlab.atlassian.net/browse/CL-3026
-  #     # Don't forget to uncomment the "UK" requirement in 'slack-invalid-data-success'
-  #     # when re-enabling this.
-  #     # - check-for-inconsistent-data:
-  #     #     <<: *slack-fail-post-step-inconsistent-data
-  #     #     name: "UK"
-  #     #     context:
-  #     #       - slack-dev-notifications-inconsistent-data
-  #     #     ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-  #     #     env_file: ".env-web"
-  #     - slack-invalid-data-success:
-  #         name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
-  #         context:
-  #           - slack-dev-notifications-inconsistent-data
-  #         requires:
-  #           - "South America"
-  #           - "Canada"
-  #           - "US West"
-  #     #     - "UK"
-
-  # manual-chromatic:
-  #   when: << pipeline.parameters.chromatic >>
-  #   jobs:
-  #     - front-chromatic:
-  #         context:
-  #           - docker-hub-access
-  #           - chromatic
-
-  # weekly-chromatic:
-  #   triggers:
-  #     - schedule:
-  #         cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #   jobs:
-  #     - front-chromatic:
-  #         context:
-  #           - docker-hub-access
-  #           - chromatic
+  weekly-chromatic:
+    triggers:
+      - schedule:
+          cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic
