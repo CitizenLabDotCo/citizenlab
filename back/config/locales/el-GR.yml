@@ -36,6 +36,8 @@ el:
   symbols:
     outside: κάπου αλλού
   idea_statuses:
+    prescreening: προεπιλογή
+    prescreening_description: Αυτή η εισαγωγή βρίσκεται επί του παρόντος υπό εξέταση από τον διαχειριστή του έργου και δεν είναι ακόμη ορατή στο κοινό.
     proposed: προτεινόμενη
     proposed_description: Η ιδέα αυτή έχει προταθεί στην πόλη
     viewed: προβλήθηκε
