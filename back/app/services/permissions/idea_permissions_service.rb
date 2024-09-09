@@ -19,12 +19,13 @@ module Permissions
       case action
       when 'editing_idea'
         return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
-        return IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
-      end
-
-      current_phase = @timeline_service.current_phase_not_archived project
-      if current_phase && !idea_in_current_phase?(current_phase)
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase]
+        IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
+      else
+        # The input does not need to be in the current phase for editing.
+        # We preserved the behaviour that was already there, but we're not
+        # sure if this is the desired behaviour.
+        current_phase = @timeline_service.current_phase_not_archived project
+        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
       end
     end
 
