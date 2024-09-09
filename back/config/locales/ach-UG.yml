@@ -36,6 +36,8 @@ ach:
   symbols:
     outside: crwdns2887021:0crwdne2887021:0
   idea_statuses:
+    prescreening: crwdns2999101:0crwdne2999101:0
+    prescreening_description: crwdns2999103:0crwdne2999103:0
     proposed: crwdns2887023:0crwdne2887023:0
     proposed_description: crwdns2887025:0crwdne2887025:0
     viewed: crwdns2887027:0crwdne2887027:0
