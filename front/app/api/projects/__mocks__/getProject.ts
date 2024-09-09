@@ -27,7 +27,7 @@ export function getProject(
       timeline_active: 'present',
       participants_count: 13,
       participation_method: participationMethod || null,
-      posting_enabled: true,
+      submission_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
       reacting_like_method: 'unlimited', // 'limited' | 'unlimited',

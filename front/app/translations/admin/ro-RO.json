@@ -55,7 +55,6 @@
   "app.components.admin.PostManager.assignedTo": "Assigned to {assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Assigned to me",
   "app.components.admin.PostManager.assignee": "Responsabil",
-  "app.components.admin.PostManager.automatic": "(automatic)",
   "app.components.admin.PostManager.changeStatusModalTitle": "Change this proposal's status",
   "app.components.admin.PostManager.comments": "Comentarii",
   "app.components.admin.PostManager.currentLat": "Latitudine actuală",

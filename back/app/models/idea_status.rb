@@ -16,9 +16,10 @@
 #  participation_method :string           default("ideation"), not null
 #
 class IdeaStatus < ApplicationRecord
-  CODES = %w[proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
-  AUTOMATIC_STATUS_CODES = %w[proposed threshold_reached expired].freeze
-  PROPOSED_CODE = 'proposed'
+  CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
+  LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
+  MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
+  NON_PUBLIC_CODES = %w[prescreening].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
@@ -36,12 +37,16 @@ class IdeaStatus < ApplicationRecord
   validates :color, presence: true
   validates :participation_method, presence: true, inclusion: { in: %w[ideation proposals] }
 
-  def proposed?
-    code == PROPOSED_CODE
+  def locked?
+    LOCKED_CODES.include? code
   end
 
-  def automatic?
-    AUTOMATIC_STATUS_CODES.include? code
+  def can_manually_transition_to?
+    MANUAL_TRANSITION_NOT_ALLOWED_CODES.exclude? code
+  end
+
+  def public_post?
+    NON_PUBLIC_CODES.exclude? code
   end
 
   private

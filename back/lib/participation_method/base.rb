@@ -118,10 +118,6 @@ module ParticipationMethod
       false
     end
 
-    def supports_posting_inputs?
-      false
-    end
-
     def supports_public_visibility?
       false
     end
@@ -139,6 +135,10 @@ module ParticipationMethod
     end
 
     def supports_status?
+      false
+    end
+
+    def supports_submission?
       false
     end
 

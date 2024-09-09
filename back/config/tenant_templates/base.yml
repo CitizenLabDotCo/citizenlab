@@ -46,36 +46,43 @@ models:
       description_multiloc: idea_statuses.implemented_description
       participation_method: ideation
     -
-      title_multiloc: idea_statuses.proposed
+      title_multiloc: idea_statuses.prescreening
       ordering: 0
+      code: prescreening
+      color: '#767676'
+      description_multiloc: idea_statuses.prescreening_description
+      participation_method: proposals
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 1
       code: proposed
       color: '#BEE7EB'
       description_multiloc: idea_statuses.proposed_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.threshold_reached
-      ordering: 1
+      ordering: 2
       code: threshold_reached
       color: '#40B8C5'
       description_multiloc: idea_statuses.threshold_reached_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.expired
-      ordering: 2
+      ordering: 3
       code: expired
       color: '#FF672F'
       description_multiloc: idea_statuses.expired_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.answered
-      ordering: 3
+      ordering: 4
       code: answered
       color: '#147985'
       description_multiloc: idea_statuses.answered_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.ineligible
-      ordering: 4
+      ordering: 5
       code: ineligible
       color: '#E52516'
       description_multiloc: idea_statuses.ineligible_description
@@ -394,7 +401,7 @@ models:
       participation_method: ideation
       campaigns_settings:
         project_phase_started: true
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited

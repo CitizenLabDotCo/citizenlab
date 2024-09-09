@@ -51,7 +51,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   if (ideaStatuses && ideaStatus && tenantLocales) {
-    const { color, title_multiloc, description_multiloc, code, can_reorder } =
+    const { color, title_multiloc, description_multiloc, code, locked } =
       ideaStatus.data.attributes;
     return (
       <>
@@ -68,7 +68,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
               code,
             }}
             onSubmit={handleSubmit}
-            showCategorySelector={can_reorder}
+            showCategorySelector={!locked}
             variant={variant}
           />
         </Section>

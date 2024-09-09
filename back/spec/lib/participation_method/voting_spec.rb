@@ -13,6 +13,40 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#assign_defaults' do
+    context 'when the proposed idea status is available' do
+      let!(:proposed) { create(:idea_status_proposed) }
+      let!(:initial_status) { create(:idea_status) }
+
+      it 'sets a default "proposed" idea_status if not set' do
+        input = build(:idea, idea_status: nil)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq proposed
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+
+    context 'when the proposed idea status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:idea, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     context 'budgeting' do
       it 'sets the ideas order to random' do
@@ -88,40 +122,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#assign_defaults' do
-    context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status) }
-
-      it 'sets a default "proposed" idea_status if not set' do
-        input = build(:idea, idea_status: nil)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq proposed
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-
-    context 'when the proposed idea status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:idea, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
@@ -185,11 +185,11 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_multiple_posts?) { is_expected.to be true }
   its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:supports_posting_inputs?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_submission?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
 end
