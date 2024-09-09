@@ -123,16 +123,21 @@ const AdminPhaseEdit = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
-    setHasEndDate(phase?.data.attributes.end_at ? true : false);
+    return () => {
+      console.log('unmounting');
+    };
+  }, []);
+
+  useEffect(() => {
     setAttributeDiff({});
-    setSubmitState(phase?.data.id ? 'enabled' : 'disabled');
-  }, [phase?.data.id, phase?.data.attributes.end_at]);
+    console.log('disabling button from useEffect');
+    setSubmitState('disabled');
+  }, [phaseId]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -158,6 +163,7 @@ const AdminPhaseEdit = () => {
         return acc;
       }, {});
 
+      console.log('enabling button from handlePhaseParticipationConfigChange');
       setSubmitState('enabled');
       // Important to keep the order of the spread operators
       setAttributeDiff((attributeDiff) => ({
@@ -196,7 +202,10 @@ const AdminPhaseEdit = () => {
     ? { ...phase.data.attributes, ...attributeDiff }
     : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
 
+  const hasEndDate = !!phaseAttrs.end_at;
+
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
+    console.log('enabling button from handleTitleMultilocOnChange');
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
@@ -241,7 +250,6 @@ const AdminPhaseEdit = () => {
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
-    setHasEndDate(!!endDate);
 
     if (startDate && phases) {
       const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
@@ -252,10 +260,6 @@ const AdminPhaseEdit = () => {
       });
 
       setDisableNoEndDate(hasPhaseWithLaterStartDate);
-
-      if (hasPhaseWithLaterStartDate) {
-        setHasEndDate(true);
-      }
     }
   };
 
@@ -485,7 +489,6 @@ const AdminPhaseEdit = () => {
         end_at: '',
       });
     }
-    setHasEndDate((prevValue) => !prevValue);
   };
 
   const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
