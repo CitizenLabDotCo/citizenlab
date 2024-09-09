@@ -151,7 +151,9 @@ describe('Idea template', () => {
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
           'saveReportLayout'
         );
-        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.get('#e2e-content-builder-topbar-save > button').click({
+          force: true,
+        });
         cy.wait('@saveReportLayout');
 
         // Refresh page
