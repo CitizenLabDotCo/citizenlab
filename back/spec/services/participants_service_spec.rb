@@ -130,6 +130,7 @@ describe ParticipantsService do
     end
 
     it 'returns total project participant count including anonymous posts & everyone surveys' do
+      create(:idea_status_proposed)
       project = create(:project)
       pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
 

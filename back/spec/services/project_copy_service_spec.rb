@@ -120,6 +120,7 @@ describe ProjectCopyService do
     end
 
     it 'skips custom field values with ID references' do
+      create(:idea_status_proposed)
       project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
