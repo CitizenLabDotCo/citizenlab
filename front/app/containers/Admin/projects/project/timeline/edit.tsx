@@ -115,6 +115,7 @@ const AdminPhaseEdit = () => {
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
     convertToFileType(phaseFiles)
   );
+  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
@@ -128,9 +129,10 @@ const AdminPhaseEdit = () => {
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
+    setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
     setSubmitState('disabled');
-  }, [phaseId]);
+  }, [phaseId, phase?.data.attributes.end_at]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -194,8 +196,6 @@ const AdminPhaseEdit = () => {
     ? { ...phase.data.attributes, ...attributeDiff }
     : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
 
-  const hasEndDate = !!phaseAttrs.end_at;
-
   const handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -241,6 +241,7 @@ const AdminPhaseEdit = () => {
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
+    setHasEndDate(!!endDate);
 
     if (startDate && phases) {
       const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
@@ -251,6 +252,10 @@ const AdminPhaseEdit = () => {
       });
 
       setDisableNoEndDate(hasPhaseWithLaterStartDate);
+
+      if (hasPhaseWithLaterStartDate) {
+        setHasEndDate(true);
+      }
     }
   };
 
