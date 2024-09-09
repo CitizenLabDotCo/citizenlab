@@ -19,6 +19,7 @@ module Permissions
       case action
       when 'editing_idea'
         return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
+
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       else
         # The input does not need to be in the current phase for editing.
