@@ -36,6 +36,8 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
+    prescreening: Vorabprüfung
+    prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
     proposed_description: Diese Idee wurde der Stadt vorgeschlagen
     viewed: angesehen

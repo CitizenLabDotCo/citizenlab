@@ -1,0 +1,19 @@
+# This Dockerfile is used to build the image that CI uses to run the front-end
+# for the e2e tests. The front-end bundle is already built, so it only needs
+# minimal depencencies to host a small express server. The image is stored in
+# Docker Hub as citizenlabdotco/cl2-devops-front-e2e-static. In case you need to
+# update it, perform following steps:
+# 1. Build the image with `docker build -f Dockerfile-static-hosting -t citizenlabdotco/cl2-devops-front-e2e-static .`
+# 2. Push the image to Docker Hub with `docker push citizenlabdotco/cl2-devops-front-e2e-static`
+
+FROM node:20.16.0-slim
+
+RUN apt-get update && apt-get install -y curl
+
+WORKDIR /front
+
+RUN npm install express request compression
+
+ADD ./server server 
+
+CMD ["node", "server/production"]

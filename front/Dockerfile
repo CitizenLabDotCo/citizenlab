@@ -1,4 +1,8 @@
-FROM cypress/browsers:node-20.11.1-chrome-123.0.6312.58-1-ff-124.0-edge-122.0.2365.92-1
+
+ARG NODE_VERSION='20.11.1'
+ARG CHROME_VERSION='125.0.6422.141-1'
+
+FROM cypress/factory:4.1.0
 
 WORKDIR /
 

@@ -36,6 +36,8 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
     proposed_description: Bu fikir kent yönetimine önerildi
     viewed: görüntülendi

@@ -36,6 +36,8 @@ es-CL:
   symbols:
     outside: en otro lugar
   idea_statuses:
+    prescreening: preselección
+    prescreening_description: Esta aportación está siendo revisada por el gestor del proyecto y aún no es visible para el público.
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
     viewed: revisado
