@@ -1112,10 +1112,33 @@ workflows:
   manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
+      - e2e-setup-db:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+      - e2e-setup-front:
+          context:
+            - docker-hub-access
+            - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
       - e2e-tests:
           context:
             - docker-hub-access
             - lastpass
+          filters:
+            branches:
+              only:
+                - TAN-2500-ci-e2e-speedup
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
 
   nightly-e2e-tests:
     triggers:
