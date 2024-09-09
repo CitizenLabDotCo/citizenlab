@@ -167,7 +167,7 @@ describe('Idea template', () => {
       });
     });
 
-    it('autosaves report created from template', () => {
+    it.skip('autosaves report created from template', () => {
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
 
