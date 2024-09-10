@@ -360,8 +360,6 @@ export interface InputProps {
   showFollowButton?: boolean;
 }
 
-// moment.locale('fi-FI')
-
 const ProjectCard = memo<InputProps>(
   ({
     projectId,
