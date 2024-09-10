@@ -19,7 +19,6 @@ RSpec.describe GenerateUserAvatarJob do
     end
 
     context 'when user_avatars is disabled' do
-
       before do
         SettingsService.new.deactivate_feature!('gravatar_avatars')
         SettingsService.new.deactivate_feature!('user_avatars')
