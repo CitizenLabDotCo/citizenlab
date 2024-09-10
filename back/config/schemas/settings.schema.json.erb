@@ -255,6 +255,18 @@
         }
       },
 
+      "gravatar_avatars": {
+        "type": "object",
+        "title": "Automatically try to download an avatar from an external service called Gravatar when a user registers without an avatar",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -1354,7 +1366,8 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
-    "import_printed_forms": ["input_importer"]
+    "import_printed_forms": ["input_importer"],
+    "gravatar_avatars": ["user_avatars"]
   },
   "definitions": {
     "multiloc_string": {

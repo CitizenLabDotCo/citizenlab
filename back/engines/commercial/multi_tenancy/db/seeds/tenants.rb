@@ -397,6 +397,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            gravatar_avatars: {
+              enabled: true,
+              allowed: true
+            },
             internal_commenting: {
               enabled: true,
               allowed: true
