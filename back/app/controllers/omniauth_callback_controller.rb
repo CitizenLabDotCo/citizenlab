@@ -29,10 +29,11 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback
     user_attrs = auth_method.profile_to_user_attrs(auth)
-
     @identity = Identity.find_or_build_with_omniauth(auth, auth_method)
     @user = @identity.user || find_existing_user(user_attrs)
     @user = authentication_service.prevent_user_account_hijacking @user
+
+    # TODO: JS - Not finding the user even though it is there - @identity has no user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
     if @user && !auth_method.can_merge?(@user, user_attrs, params[:sso_verification])
@@ -43,7 +44,10 @@ class OmniauthCallbackController < ApplicationController
       # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
       # Note, that the modal is not shown with this URL
       # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
-      #
+
+      # TODO: JS - The new paths do not work
+      # http://localhost:3000/?authentication-error=truesso_response=true&sso_flow=signin&error_code=franceconnect_merging_failed
+
       # Probably, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
       signin_failure_redirect(error_code: auth_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
       return
