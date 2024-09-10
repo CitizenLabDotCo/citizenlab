@@ -17,7 +17,7 @@ import {
 } from '../../shared/styling';
 
 const UserActions = ({
-  posting_enabled,
+  submission_enabled,
   commenting_enabled,
   reacting_enabled,
   togglePostingEnabled,
@@ -30,7 +30,7 @@ const UserActions = ({
   handleReactingLikeMethodOnChange,
   handleLikingLimitOnChange,
 }: {
-  posting_enabled: boolean;
+  submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
   togglePostingEnabled: () => void;
@@ -58,11 +58,11 @@ const UserActions = ({
 
         <ToggleRow>
           <Toggle
-            checked={posting_enabled || false}
+            checked={submission_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
           />
-          <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
+          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
         </ToggleRow>
 
         <ToggleRow>

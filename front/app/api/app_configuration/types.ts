@@ -238,6 +238,7 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
+  prescreening?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

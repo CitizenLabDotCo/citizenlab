@@ -300,7 +300,7 @@ const IdeasMap = memo<Props>(
         setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
 
         const ideaPostingEnabled =
-          (phase?.data.attributes.posting_enabled && authUser) ||
+          (phase?.data.attributes.submission_enabled && authUser) ||
           isAdmin(authUser);
 
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
@@ -412,7 +412,7 @@ const IdeasMap = memo<Props>(
       [
         setSelectedIdea,
         authUser,
-        phase?.data.attributes.posting_enabled,
+        phase?.data.attributes.submission_enabled,
         startIdeaButtonNode,
         formatMessage,
         ideaIconSecondary,

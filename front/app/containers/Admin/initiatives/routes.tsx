@@ -1,12 +1,14 @@
 import React, { lazy } from 'react';
 
-import InitiativePreviewIndex from 'components/admin/PostManager/components/InitiativePreviewIndex';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 const AdminGranularPermissionsComponent = lazy(() => import('./permissions'));
+const InitiativePreviewIndex = lazy(
+  () => import('components/admin/PostManager/components/InitiativePreviewIndex')
+);
 
 export enum initiativeRoutes {
   initiatives = 'initiatives',

@@ -131,8 +131,8 @@ const AdminPhaseEdit = () => {
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
-    setSubmitState(phase ? 'enabled' : 'disabled');
-  }, [phase]);
+    setSubmitState(phase?.data.id ? 'enabled' : 'disabled');
+  }, [phase?.data.id, phase?.data.attributes.end_at]);
 
   useEffect(() => {
     if (phaseFiles) {

@@ -22,7 +22,7 @@ describe LocalProjectCopyService do
         phase_attrs: {
           with_permissions: with_permissions,
           participation_method: 'ideation',
-          posting_enabled: true,
+          submission_enabled: true,
           commenting_enabled: true,
           reacting_enabled: true,
           reacting_like_method: 'unlimited',

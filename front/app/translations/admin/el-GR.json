@@ -89,7 +89,6 @@
   "app.components.admin.PostManager.assignedTo": "Εκχωρήθηκε στον/στην {assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Εκχωρήθηκε σε μένα",
   "app.components.admin.PostManager.assignee": "Assignee",
-  "app.components.admin.PostManager.automatic": "(αυτόματα)",
   "app.components.admin.PostManager.bodyTitle": "Περιγραφή",
   "app.components.admin.PostManager.changeStatusModalTitle": "Αλλαγή της κατάστασης αυτής της πρότασης",
   "app.components.admin.PostManager.comments": "Comments",

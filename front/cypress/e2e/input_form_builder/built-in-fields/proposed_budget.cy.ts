@@ -58,7 +58,7 @@ describe('Input form builder', () => {
 
     // The proposed budget tool box item should be enabled as it is not on the canvas
     cy.get('@proposedBudgetToolboxItem').should('not.have.attr', 'disabled');
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Proposed Budget').should('not.exist');
     });
 
@@ -68,7 +68,7 @@ describe('Input form builder', () => {
     cy.get('@proposedBudgetToolboxItem').should('have.attr', 'disabled');
 
     // Check to see that the proposed budget is added to the canvas
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Proposed Budget').should('exist');
       cy.contains('Proposed Budget').click();
     });

@@ -17,8 +17,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   def create
     @idea_status = IdeaStatus.new(idea_status_params_for_create)
     authorize @idea_status
-    if IdeaStatus::AUTOMATIC_STATUS_CODES.include?(@idea_status.code)
-      render json: { errors: { code: [{ error: 'Cannot create additional automatic statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
+    if IdeaStatus::LOCKED_CODES.include?(@idea_status.code)
+      render json: { errors: { code: [{ error: 'Cannot create additional locked statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
       return
     end
     if @idea_status.save
@@ -31,13 +31,13 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def update
     code_change = params.dig(:idea_status, :code) != @idea_status.code
-    if code_change && @idea_status.automatic?
-      render json: { errors: { code: [{ error: 'Cannot change the code of automatic statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
+    if code_change && @idea_status.locked?
+      render json: { errors: { code: [{ error: 'Cannot change the code of locked statuses', value: @idea_status.code }] } }, status: :unprocessable_entity
       return
     end
     @idea_status.assign_attributes(idea_status_params_for_update)
-    if code_change && @idea_status.automatic?
-      render json: { errors: { code: [{ error: 'Cannot set the code to an automatic status code', value: @idea_status.code }] } }, status: :unprocessable_entity
+    if code_change && @idea_status.locked?
+      render json: { errors: { code: [{ error: 'Cannot set the code to a locked status code', value: @idea_status.code }] } }, status: :unprocessable_entity
       return
     end
     if @idea_status.save
@@ -50,8 +50,12 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def reorder
     ordering = params.require(:idea_status).permit(:ordering)[:ordering]
+    if @idea_status.locked?
+      render json: { errors: { base: 'Cannot reorder a locked status' } }, status: :unprocessable_entity
+      return
+    end
     if ordering <= max_ordering
-      render json: { errors: { base: 'Cannot reorder into the automatic statuses section' } }, status: :unprocessable_entity
+      render json: { errors: { base: 'Cannot reorder into the locked statuses section' } }, status: :unprocessable_entity
       return
     end
     if @idea_status.insert_at(ordering)
@@ -63,8 +67,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def destroy
-    if @idea_status.proposed?
-      render json: { errors: { base: 'Cannot delete the proposed status' } }, status: :unprocessable_entity
+    if @idea_status.locked?
+      render json: { errors: { base: 'Cannot delete a locked status' } }, status: :unprocessable_entity
       return
     end
     frozen_idea_status = @idea_status.destroy
@@ -107,6 +111,6 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def max_ordering
-    IdeaStatus.where(code: IdeaStatus::AUTOMATIC_STATUS_CODES, participation_method: @idea_status.participation_method).maximum(:ordering) || -1
+    IdeaStatus.where(code: IdeaStatus::LOCKED_CODES, participation_method: @idea_status.participation_method).maximum(:ordering) || -1
   end
 end

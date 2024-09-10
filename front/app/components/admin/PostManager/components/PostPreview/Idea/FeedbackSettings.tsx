@@ -131,6 +131,7 @@ const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
     const statusOptions = statuses.data.map((status) => ({
       value: status.id,
       label: localize(status.attributes.title_multiloc),
+      disabled: !status.attributes.can_manually_transition_to,
     }));
     const ideaStatusOption = getIdeaStatusOption(idea, statuses);
     const assigneeOptions = getAssigneeOptions();
