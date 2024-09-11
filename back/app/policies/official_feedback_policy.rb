@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
+class OfficialFeedbackPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -10,16 +10,16 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(post: Pundit.policy_scope(user, Initiative))
+      scope.where(idea: Pundit.policy_scope(user, Idea))
     end
   end
 
   def create?
-    user&.admin?
+    user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
   def show?
-    InitiativePolicy.new(user, record.post).show?
+    IdeaPolicy.new(user, record.idea).show?
   end
 
   def update?

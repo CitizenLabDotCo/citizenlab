@@ -32,7 +32,6 @@ Rails.application.routes.draw do
           patch :mark_as_deleted, on: :member
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
-        resources :official_feedback, shallow: true
       end
       concern :permissionable do
         # We named the param :permission_action, bc :action is already taken (controller action).
@@ -64,6 +63,7 @@ Rails.application.routes.draw do
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
+        resources :official_feedback, shallow: true
         concern :spam_reportable do
           resources :spam_reports, shallow: true
         end
