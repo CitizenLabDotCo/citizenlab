@@ -52,6 +52,7 @@ class Comment < ApplicationRecord
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+  after_save :broadcast_idea
   has_many :notifications, dependent: :nullify
 
   counter_culture(
@@ -124,6 +125,10 @@ class Comment < ApplicationRecord
         notification.destroy!
       end
     end
+  end
+
+  def broadcast_idea
+    IdeasChannel.broadcast_to(post, post)
   end
 end
 

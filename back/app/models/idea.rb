@@ -59,6 +59,8 @@ class Idea < ApplicationRecord
   extend OrderAsSpecified
 
   before_save :convert_wkt_geo_custom_field_values_to_geojson
+  after_update :fix_comments_count_on_projects
+  after_save :broadcast_idea
 
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 
@@ -125,8 +127,6 @@ class Idea < ApplicationRecord
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
-  after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc body_multiloc custom_field_values slug],
@@ -297,6 +297,10 @@ class Idea < ApplicationRecord
     custom_field_values.slice(*geo_cf_keys).each do |key, value|
       custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
     end
+  end
+
+  def broadcast_idea
+    IdeasChannel.broadcast_to(self, self)
   end
 
   def transitive_input_term
