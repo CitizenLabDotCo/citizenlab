@@ -27,7 +27,7 @@ const Preview = () => {
       <Player
         component={MyComposition}
         inputProps={{ text: 'World' }}
-        durationInFrames={160}
+        durationInFrames={3000}
         compositionWidth={windowSize.windowWidth}
         compositionHeight={600}
         fps={30}
@@ -35,10 +35,10 @@ const Preview = () => {
           width: windowSize.windowWidth,
           height: 600,
         }}
-        controls={false}
+        controls={true}
         // controls={true}
-        autoPlay={true}
-        loop={true}
+        autoPlay={false}
+        // loop={true}
       />
 
       <Editor isPreview={true}>
