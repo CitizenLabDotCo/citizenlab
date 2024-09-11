@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       end
       concern :post do
         resources :comments, shallow: true,
-          concerns: %i[reactable spam_reportable],
+          concerns: %i[reactable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
           get :children, on: :member
           post :mark_as_deleted, on: :member
@@ -33,9 +33,6 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
         resources :official_feedback, shallow: true
-      end
-      concern :spam_reportable do
-        resources :spam_reports, shallow: true
       end
       concern :permissionable do
         # We named the param :permission_action, bc :action is already taken (controller action).
@@ -54,8 +51,8 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable permissionable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns: %i[reactable post followable permissionable],
+        defaults: { reactable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -66,11 +63,15 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
+
+        concern :spam_reportable do
+          resources :spam_reports, shallow: true
+        end
       end
 
       resources :initiatives,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
+        concerns: %i[reactable post followable],
+        defaults: { reactable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 
