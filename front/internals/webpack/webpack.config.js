@@ -15,8 +15,7 @@ const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin'); // CopyPlugin is already required
 
 const dotenv = require('dotenv');
 dotenv.config({
@@ -65,6 +64,15 @@ const config = {
     host: '0.0.0.0',
     allowedHosts: 'all',
     historyApiFallback: true,
+    https: false,
+    // https: true,  // Enable HTTPS
+    // https: {
+    //   key: fs.readFileSync('./path-to-your-key.pem'), // Path to the private key
+    //   cert: fs.readFileSync('./path-to-your-cert.pem'), // Path to the certificate
+    // },
+    static: {
+      directory: path.join(process.cwd(), 'build'), // Serve static files from the build directory
+    },
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
       '/auth/': `http://${API_HOST}:${API_PORT}`,
@@ -149,7 +157,7 @@ const config = {
       typescript: {
         configFile: path.join(process.cwd(), 'app/tsconfig.json'),
       },
-      logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
+      logger: { infrastructure: !!argv.json ? 'silent' : 'console' },
     }),
 
     new CleanWebpackPlugin(),
@@ -165,9 +173,13 @@ const config = {
       process: 'process/browser',
     }),
 
-    // new BundleAnalyzerPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: './app/service-worker.js', to: 'service-worker.js' }, // Ensure service worker is copied to root
+        { from: './security.txt', to: '.well-known/security.txt' },
+      ],
+    }),
 
-    // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
     new MomentLocalesPlugin({
       localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
@@ -183,10 +195,6 @@ const config = {
     new SentryCliPlugin({
       include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
-    }),
-
-    new CopyPlugin({
-      patterns: [{ from: './security.txt', to: '.well-known/security.txt' }],
     }),
   ].filter(Boolean),
 

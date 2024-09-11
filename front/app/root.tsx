@@ -76,11 +76,31 @@ const Root = () => {
   );
 };
 
+// Function to register service worker for PWA functionality
+const registerServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').then(
+        (registration) => {
+          console.log(
+            'Service Worker registered with scope: ',
+            registration.scope
+          );
+        },
+        (error) => {
+          console.error('Service Worker registration failed:', error);
+        }
+      );
+    });
+  }
+};
+
 const mountApplication = () => {
   try {
     modules.beforeMountApplication();
   } finally {
     render(<Root />, document.getElementById('app'));
+    registerServiceWorker(); // Register the service worker after mounting
   }
 };
 
