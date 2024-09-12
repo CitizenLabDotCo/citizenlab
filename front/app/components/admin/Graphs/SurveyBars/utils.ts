@@ -20,7 +20,7 @@ export const parseQuestionResult = (
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
 
-    return answers.map(({ answer, count, groups }, i) => {
+    return answers.map(({ answer, count, groups }) => {
       const label =
         answer === null
           ? noAnswerCopy
