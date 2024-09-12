@@ -124,3 +124,14 @@ export const getBorderRadius = (type: BarType) => {
       return '3px';
   }
 };
+
+export const measureText = (str: string, fontSize: number) => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  if (!context) return 0;
+
+  context.font = `${fontSize}px Public Sans`;
+  const metrics = context.measureText(str);
+
+  return metrics.width;
+};

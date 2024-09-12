@@ -169,3 +169,52 @@ export const Grouped: Story = {
     colorScheme: COLOR_SCHEME,
   },
 };
+
+const skewedData: ResultGrouped = {
+  ...groupedData,
+  totalResponseCount: 40,
+  questionResponseCount: 40,
+  totalPickCount: 80,
+  answers: [
+    {
+      answer: 'multiselect_option_1_s2e',
+      count: 78,
+      groups: [
+        {
+          group: 'male',
+          count: 76,
+        },
+        {
+          group: 'female',
+          count: 2,
+        },
+      ],
+    },
+    {
+      answer: 'multiselect_option_2_3c7',
+      count: 2,
+      groups: [
+        {
+          group: 'male',
+          count: 1,
+        },
+        {
+          group: 'female',
+          count: 1,
+        },
+      ],
+    },
+    {
+      answer: null,
+      count: 0,
+      groups: [],
+    },
+  ],
+};
+
+export const Skewed: Story = {
+  args: {
+    questionResult: skewedData,
+    colorScheme: COLOR_SCHEME,
+  },
+};

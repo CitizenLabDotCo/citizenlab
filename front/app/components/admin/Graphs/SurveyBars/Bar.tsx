@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import { Bar as BarProps } from './typings';
-import { getBorderRadius } from './utils';
+import { getBorderRadius, measureText } from './utils';
 
 const BORDER = `1px solid ${colors.divider}`;
 
 const Bar = ({ type, count, percentage, color }: BarProps) => {
+  const label = `${percentage}% (${count})`;
+
+  const labelOffset = useMemo(() => {
+    if (percentage > 80) {
+      const labelWidthPx = measureText(label, fontSizes.xs);
+      return `-${labelWidthPx + 12}px`;
+    }
+
+    return '8px';
+  }, [label, percentage]);
+
   return (
     <Box
       height="20px"
@@ -30,8 +46,13 @@ const Bar = ({ type, count, percentage, color }: BarProps) => {
         <rect width="100" height="100" fill={color} />
       </svg>
       {type !== 'single' && (
-        <Text m="0" fontSize="xs" ml="8px">
-          {`${percentage}% (${count})`}
+        <Text
+          m="0"
+          fontSize="xs"
+          ml={labelOffset}
+          color={percentage > 80 ? 'white' : undefined}
+        >
+          {label}
         </Text>
       )}
     </Box>
