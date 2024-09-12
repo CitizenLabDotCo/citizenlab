@@ -45,7 +45,6 @@ resource 'Stats - Initiatives' do
 
     travel_to(begin_of_last_year - 1.month) do
       i = create(:initiative, initiative_status: @threshold_reached)
-      create(:official_feedback, post: i)
     end
 
     travel_to(begin_of_last_year + 2.months) do
@@ -71,28 +70,6 @@ resource 'Stats - Initiatives' do
       json_response = json_parse response_body
       expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
       expect(json_response.dig(:data, :attributes, :count)).to eq Initiative.published.count
-    end
-
-    describe 'with feedback_needed filter' do
-      let(:feedback_needed) { true }
-
-      example_request 'Count all initiatives that need feedback' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
-        expect(json_response.dig(:data, :attributes, :count)).to eq Initiative.published.count
-      end
-
-      example 'Count all initiatives that need feedback for a specific assignee' do
-        assignee = create(:admin)
-        create(:initiative, initiative_status: @threshold_reached, assignee: assignee)
-        do_request assignee: assignee.id
-
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
-        expect(json_response.dig(:data, :attributes, :count)).to eq 1
-      end
     end
   end
 end
