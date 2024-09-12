@@ -164,7 +164,7 @@ class Idea < ApplicationRecord
   scope :feedback_needed, lambda {
     scope = joins(:idea_status)
     scope.where(idea_statuses: { code: 'proposed' })
-      .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
       .or(scope.where(idea_statuses: { code: 'threshold_reached' }))
   }
 
