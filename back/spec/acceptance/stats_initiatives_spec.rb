@@ -44,7 +44,7 @@ resource 'Stats - Initiatives' do
     begin_of_last_year = AppConfiguration.timezone.now.beginning_of_year - 1.year
 
     travel_to(begin_of_last_year - 1.month) do
-      i = create(:initiative, initiative_status: @threshold_reached)
+      create(:initiative, initiative_status: @threshold_reached)
     end
 
     travel_to(begin_of_last_year + 2.months) do
