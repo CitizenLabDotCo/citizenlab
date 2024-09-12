@@ -8,14 +8,13 @@ import React, {
 
 import {
   Text,
-  CheckboxWithLabel,
   Box,
   Title,
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
@@ -39,7 +38,6 @@ import useLocalize from 'hooks/useLocalize';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
 import {
   Section,
   SectionField,
@@ -52,26 +50,19 @@ import FileUploader from 'components/UI/FileUploader';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Warning from 'components/UI/Warning';
 
-import {
-  FormattedMessage,
-  useIntl,
-  useFormatMessageWithLocale,
-} from 'utils/cl-intl';
+import { FormattedMessage, useFormatMessageWithLocale } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import PhaseParticipationConfig from '../phase/phaseParticipationConfig';
-import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig/utils/participationMethodConfigs';
-
-import CampaignRow from './CampaignRow';
+import CampaignRow from './components/CampaignRow';
+import DateSetup from './components/DateSetup';
+import PhaseParticipationConfig from './components/PhaseParticipationConfig';
+import { IPhaseParticipationConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
-import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
-
-type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
+import { SubmitStateType } from './typings';
+import { getTimelineTab, getStartDate } from './utils';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
   if (phaseFiles) {
@@ -115,24 +106,20 @@ const AdminPhaseEdit = () => {
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
     convertToFileType(phaseFiles)
   );
-  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     {}
   );
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
-    setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
     setSubmitState('disabled');
-  }, [phaseId, phase?.data.attributes.end_at]);
+  }, [phaseId]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -226,37 +213,6 @@ const AdminPhaseEdit = () => {
       ...attributeDiff,
       description_multiloc,
     });
-  };
-
-  const handleDateUpdate = ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
-      end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
-    });
-    setHasEndDate(!!endDate);
-
-    if (startDate && phases) {
-      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
-        const iteratedPhaseStartDate = moment(
-          iteratedPhase.attributes.start_at
-        );
-        return iteratedPhaseStartDate.isAfter(startDate);
-      });
-
-      setDisableNoEndDate(hasPhaseWithLaterStartDate);
-
-      if (hasPhaseWithLaterStartDate) {
-        setHasEndDate(true);
-      }
-    }
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -366,7 +322,11 @@ const AdminPhaseEdit = () => {
     if (!isEmpty(attributeDiff) && !processing) {
       setProcessing(true);
       if (!isEmpty(attributeDiff)) {
-        const start = getStartDate();
+        const start = getStartDate({
+          phase,
+          phases,
+          attributeDiff,
+        });
         const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
 
         // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
@@ -410,60 +370,6 @@ const AdminPhaseEdit = () => {
     }
   };
 
-  const getStartDate = () => {
-    const phaseAttrs = phase
-      ? { ...phase.data.attributes, ...attributeDiff }
-      : { ...attributeDiff };
-    let startDate: Moment | null = null;
-
-    // If this is a new phase
-    if (!phase) {
-      const previousPhase =
-        !isNilOrError(phases) && phases.data[phases.data.length - 1];
-      const previousPhaseEndDate =
-        previousPhase && previousPhase.attributes.end_at
-          ? moment(previousPhase.attributes.end_at)
-          : null;
-      const previousPhaseStartDate =
-        previousPhase && previousPhase.attributes.start_at
-          ? moment(previousPhase.attributes.start_at)
-          : null;
-
-      // And there's a previous phase (end date) and the phase hasn't been picked/changed
-      if (previousPhaseEndDate && !phaseAttrs.start_at) {
-        // Make startDate the previousEndDate + 1 day
-        startDate = previousPhaseEndDate.add(1, 'day');
-        // However, if there's been a manual change to this start date
-      } else if (phaseAttrs.start_at) {
-        // Take this date as the start date
-        startDate = moment(phaseAttrs.start_at);
-      } else if (!previousPhaseEndDate && previousPhaseStartDate) {
-        // If there is no previous end date, then the previous phase is open ended
-        // Set the default start date to the previous start date + 2 days to account for single day phases
-        startDate = previousPhaseStartDate.add(2, 'day');
-      } else if (!startDate) {
-        // If there is no start date at this point, then set the default start date to today
-        startDate = moment();
-      }
-
-      // else there is already a phase (which means we're in the edit form)
-      // and we take it from the attrs
-    } else {
-      if (phaseAttrs.start_at) {
-        startDate = moment(phaseAttrs.start_at);
-      }
-    }
-
-    return startDate;
-  };
-
-  const startDate = getStartDate();
-  const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
-  const phasesWithOutCurrentPhase = phases
-    ? phases.data.filter((iteratedPhase) => iteratedPhase.id !== phase?.data.id)
-    : [];
-  const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
-
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
     setSubmitState('enabled');
     const campaignKey = campaign.attributes.campaign_name;
@@ -476,19 +382,6 @@ const AdminPhaseEdit = () => {
       },
     });
   };
-
-  const setNoEndDate = () => {
-    if (endDate) {
-      setSubmitState('enabled');
-      setAttributeDiff({
-        ...attributeDiff,
-        end_at: '',
-      });
-    }
-    setHasEndDate((prevValue) => !prevValue);
-  };
-
-  const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
 
   return (
     <Box ref={containerRef}>
@@ -511,48 +404,12 @@ const AdminPhaseEdit = () => {
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
 
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.datesLabel} />
-            </SubSectionTitle>
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              onDatesChange={handleDateUpdate}
-              startDatePlaceholderText={formatMessage(messages.startDate)}
-              endDatePlaceholderText={formatMessage(messages.endDate)}
-              excludeDates={excludeDates}
-              maxDate={maxEndDate}
-            />
-            <Error apiErrors={errors && errors.start_at} />
-            <Error apiErrors={errors && errors.end_at} />
-            <CheckboxWithLabel
-              checked={!hasEndDate}
-              onChange={setNoEndDate}
-              disabled={disableNoEndDate}
-              size="21px"
-              label={
-                <Text>
-                  <FormattedMessage {...messages.noEndDateCheckbox} />
-                </Text>
-              }
-            />
-            {!hasEndDate && (
-              <Warning>
-                <>
-                  <FormattedMessage {...messages.noEndDateWarningTitle} />
-                  <ul>
-                    <li>
-                      <FormattedMessage {...messages.noEndDateWarningBullet1} />
-                    </li>
-                    <li>
-                      <FormattedMessage {...messages.noEndDateWarningBullet2} />
-                    </li>
-                  </ul>
-                </>
-              </Warning>
-            )}
-          </SectionField>
+          <DateSetup
+            attributeDiff={attributeDiff}
+            errors={errors}
+            setSubmitState={setSubmitState}
+            setAttributeDiff={setAttributeDiff}
+          />
 
           <PhaseParticipationConfig
             phase={phase}

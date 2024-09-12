@@ -30,7 +30,7 @@ const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
-const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
+const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(

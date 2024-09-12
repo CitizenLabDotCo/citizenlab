@@ -10,7 +10,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import messages from './messages';
+import messages from '../messages';
 
 type Props = {
   campaign: CampaignData;

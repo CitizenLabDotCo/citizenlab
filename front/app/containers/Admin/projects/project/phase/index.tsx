@@ -22,7 +22,7 @@ import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
-import { getTimelineTab } from '../timeline/utils';
+import { getTimelineTab } from '../phaseSetup/utils';
 
 import { PhaseHeader } from './PhaseHeader';
 

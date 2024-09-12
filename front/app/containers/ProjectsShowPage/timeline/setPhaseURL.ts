@@ -2,7 +2,7 @@ import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
-import { getTimelineTab } from 'containers/Admin/projects/project/timeline/utils';
+import { getTimelineTab } from 'containers/Admin/projects/project/phaseSetup/utils';
 
 import clHistory from 'utils/cl-router/history';
 
