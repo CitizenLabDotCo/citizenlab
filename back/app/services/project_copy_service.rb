@@ -445,7 +445,7 @@ class ProjectCopyService < TemplateService
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
-    user_ids += OfficialFeedback.where(idea_id: idea_id).pluck(:user_id)
+    user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
@@ -686,7 +686,7 @@ class ProjectCopyService < TemplateService
   def yml_official_feedback(exported_ideas, shift_timestamps: 0)
     OfficialFeedback.where(idea: exported_ideas).map do |o|
       yml_official_feedback = {
-        'idea_ref' => lookup_ref(o.post_id, :idea),
+        'idea_ref' => lookup_ref(o.idea_id, :idea),
         'user_ref' => lookup_ref(o.user_id, :user),
         'body_multiloc' => o.body_multiloc,
         'author_multiloc' => o.author_multiloc,

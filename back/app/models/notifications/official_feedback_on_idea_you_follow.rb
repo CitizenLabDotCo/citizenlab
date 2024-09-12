@@ -76,12 +76,12 @@ module Notifications
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 
-      if official_feedback.post_type == 'Idea' && initiator_id
-        User.from_follows(official_feedback.post.followers).where.not(id: initiator_id).map do |recipient|
+      if initiator_id
+        User.from_follows(official_feedback.idea.followers).where.not(id: initiator_id).map do |recipient|
           new(
             recipient_id: recipient.id,
             initiating_user_id: initiator_id,
-            post: official_feedback.post,
+            post: official_feedback.idea,
             official_feedback: official_feedback,
             project_id: official_feedback.post.project_id
           )
