@@ -174,7 +174,10 @@ resource 'Users' do
         end
 
         context 'when the user_avatars module is inactive' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example_request 'Create a user without avatar' do
             assert_status 201
@@ -1192,7 +1195,10 @@ resource 'Users' do
         end
 
         describe 'when user_avatars is disabled' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)

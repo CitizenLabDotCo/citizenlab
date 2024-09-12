@@ -67,7 +67,7 @@ context 'Azure AD B2C authentication' do
     get '/auth/azureactivedirectory_b2c?random-passthrough-param=somevalue'
     follow_redirect!
 
-    expect(response).to redirect_to('/en/complete-signup?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/en/?random-passthrough-param=somevalue')
 
     expect_user_to_have_attributes(User.last)
     expect(cookies[:cl2_jwt]).to be_present
