@@ -43,8 +43,8 @@ export const parseQuestionResult = (
                   color: EMPTY_COLOR,
                 },
               ]
-            : groups.map(({ group, count }) => {
-                const type = getType(i, groups.length);
+            : groups.map(({ group, count }, groupIndex) => {
+                const type = getType(groupIndex, groups.length);
 
                 return {
                   type,
