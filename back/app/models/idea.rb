@@ -92,6 +92,7 @@ class Idea < ApplicationRecord
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :official_feedbacks, dependent: :destroy
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
