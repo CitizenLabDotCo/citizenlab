@@ -23,8 +23,7 @@ resource 'User Token' do
 
     example_request 'Authenticate a registered user' do
       assert_status 201
-      json_response = json_parse(response_body)
-      expect(json_response[:jwt]).to be_present
+      expect(response_headers['Set-Cookie']).to start_with('cl2_jwt=')
     end
 
     example '[error] Authenticate an invited user' do
@@ -53,9 +52,8 @@ resource 'User Token' do
 
       example_request 'Create JWT token with 1 day expiration' do
         expect(status).to eq(201)
-
-        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-        expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
+        expect(response_headers['Set-Cookie']).to start_with('cl2_jwt=')
+        expect(response_jwt_cookie['exp']).to eq((Time.now + 1.day).to_i)
       end
 
       context 'when remember_me is sent' do
@@ -63,9 +61,7 @@ resource 'User Token' do
 
         example_request 'create JWT token with default expiration' do
           expect(status).to eq(201)
-
-          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-          expect(jwt['exp']).to eq((Time.now + 30.days).to_i)
+          expect(response_jwt_cookie['exp']).to eq((Time.now + 30.days).to_i)
         end
 
         context 'when authentication_token_lifetime_in_days is configured' do
@@ -79,9 +75,7 @@ resource 'User Token' do
 
           example_request 'create JWT token with expiration from settings' do
             expect(status).to eq(201)
-
-            jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-            expect(jwt['exp']).to eq((Time.now + token_lifetime.days).to_i)
+            expect(response_jwt_cookie['exp']).to eq((Time.now + token_lifetime.days).to_i)
           end
         end
       end
@@ -117,9 +111,7 @@ resource 'User Token' do
 
           example_request 'create a JWT token with 1 day expiration' do
             expect(status).to eq(201)
-
-            jwt = JWT.decode(json_response_body[:jwt], nil, false).first
-            expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
+            expect(response_jwt_cookie['exp']).to eq((Time.now + 1.day).to_i)
           end
         end
 

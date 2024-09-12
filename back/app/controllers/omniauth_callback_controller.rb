@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OmniauthCallbackController < ApplicationController
-  include ActionController::Cookies
+  include UserAuthCookie
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
@@ -111,7 +111,7 @@ class OmniauthCallbackController < ApplicationController
         signin_success_redirect
       end
 
-      set_auth_cookie(provider: provider)
+      set_auth_cookie(auth_token: auth_token(@user, provider), expires: LONG_TOKEN_LIFETIME.from_now)
       handle_sso_verification(auth, @user) if verify
 
     else # New user
@@ -124,7 +124,7 @@ class OmniauthCallbackController < ApplicationController
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
-        set_auth_cookie(provider: provider)
+        set_auth_cookie(auth_token: auth_token(@user, provider), expires: LONG_TOKEN_LIFETIME.from_now)
         handle_sso_verification(auth, @user) if verify
         signup_success_redirect
       rescue ActiveRecord::RecordInvalid => e
@@ -171,13 +171,6 @@ class OmniauthCallbackController < ApplicationController
       provider: provider,
       logout_supported: authentication_service.supports_logout?(provider)
     })
-  end
-
-  def set_auth_cookie(provider: nil)
-    cookies[:cl2_jwt] = {
-      value: auth_token(@user, provider).token,
-      expires: 1.month.from_now
-    }
   end
 
   # Updates the user with attributes from the auth response if `updateable_user_attrs` is set

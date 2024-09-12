@@ -1,8 +1,7 @@
-import { get, set, remove, CookieAttributes } from 'js-cookie';
+import { get, remove } from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 
-import { SECURE_COOKIE } from '../cookie';
-
+// NOTE: Cookie is always set by the backend
 const COOKIE_NAME = 'cl2_jwt';
 
 export interface IDecodedJwt {
@@ -17,18 +16,6 @@ export function getJwt() {
   } catch (error) {
     return null;
   }
-}
-
-export function setJwt(
-  jwt: string,
-  rememberMe: boolean,
-  tokenLifetime?: number
-) {
-  const attrs = { secure: SECURE_COOKIE } as CookieAttributes;
-  if (rememberMe) {
-    attrs.expires = tokenLifetime; // If omitted, the cookie becomes a session cookie. Fore more info, check https://stackoverflow.com/a/36421888
-  }
-  set(COOKIE_NAME, jwt, attrs);
 }
 
 export function removeJwt() {
