@@ -59,18 +59,10 @@ class OmniauthCallbackController < ApplicationController
     @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
-    # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
+    # For FranceConnect only: https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
     if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
       # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
-      #
-      # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
-      # On the FE, this hack can be tested accessing this URL
-      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
-      # Note, that the modal is not shown with this URL
-      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
-      #
-      # Probably, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
-      signin_failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
+      signin_failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin')
       return
     end
 
