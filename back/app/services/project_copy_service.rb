@@ -425,6 +425,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'geojson' => layer.geojson,
         'default_enabled' => layer.default_enabled,
         'marker_svg_url' => layer.marker_svg_url,
+        'ordering' => layer.ordering,
         'created_at' => shift_timestamp(layer.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
