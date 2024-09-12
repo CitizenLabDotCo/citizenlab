@@ -83,7 +83,7 @@ module Notifications
             initiating_user_id: initiator_id,
             post: official_feedback.idea,
             official_feedback: official_feedback,
-            project_id: official_feedback.post.project_id
+            project_id: official_feedback.idea.project_id
           )
         end
       else
