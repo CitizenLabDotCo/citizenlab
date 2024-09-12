@@ -64,6 +64,7 @@ describe IdeaAssignment::IdeaAssignmentService do
       timeline_survey_project = create(:project_with_active_native_survey_phase, default_assignee_id: create(:admin).id)
       expect(timeline_survey_project.phases[0].participation_method).to eq('native_survey')
 
+      create(:idea_status_proposed)
       idea = create(
         :native_survey_response,
         creation_phase_id: timeline_survey_project.phases[0].id,
