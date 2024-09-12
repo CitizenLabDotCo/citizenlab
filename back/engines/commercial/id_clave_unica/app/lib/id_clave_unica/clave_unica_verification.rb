@@ -25,12 +25,12 @@ module IdClaveUnica
         client_id: {
           private: true,
           type: 'string',
-          description: 'Client ID.',
+          description: 'Client ID.'
         },
         client_secret: {
           private: true,
           type: 'string',
-          description: 'Client secret.',
+          description: 'Client secret.'
         },
         enabled_for_verified_actions: {
           private: true,
