@@ -397,12 +397,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
-    custom_fields = CustomField.where(resource: custom_forms)
-    map_configs = CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
-
-    map_configs.map do |map_config|
+    project_map_configs.map do |map_config|
       yml_map_config = {
         'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
@@ -419,7 +414,9 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_layers(shift_timestamps: 0)
-    (@project.map_config&.layers || []).map do |layer|
+    layers = project_map_configs.map(&:layers).flatten
+
+    layers.map do |layer|
       yml_layer = {
         'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
         'type' => layer.type,
@@ -763,5 +760,13 @@ class ProjectCopyService < TemplateService
       props['dataCode'] = new_image_code
     end
     craftjs_json
+  end
+
+  def project_map_configs
+    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
+    custom_fields = CustomField.where(resource: custom_forms)
+
+    CustomMaps::MapConfig.where(mappable: @project)
+      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
   end
 end
