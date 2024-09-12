@@ -7,14 +7,10 @@ import { getBorderRadius } from './utils';
 
 const BORDER = `1px solid ${colors.divider}`;
 
-type Props = BarProps & {
-  showLabel?: boolean;
-};
-
-const Bar = ({ type, count, percentage, color, showLabel = false }: Props) => {
+const Bar = ({ type, count, percentage, color }: BarProps) => {
   return (
     <Box
-      height="16px"
+      height="20px"
       width="100%"
       borderRadius={getBorderRadius(type)}
       border={BORDER}
@@ -33,8 +29,8 @@ const Bar = ({ type, count, percentage, color, showLabel = false }: Props) => {
       >
         <rect width="100" height="100" fill={color} />
       </svg>
-      {showLabel && (
-        <Text m="0" fontSize="xs" mt="-2px" ml="8px">
+      {type !== 'single' && (
+        <Text m="0" fontSize="xs" ml="8px">
           {`${percentage}% (${count})`}
         </Text>
       )}
