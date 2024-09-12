@@ -33,6 +33,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
+    @project_map_configs = project_map_configs
     @template = { 'models' => {} }
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
@@ -397,7 +398,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    project_map_configs.map do |map_config|
+    @project_map_configs.map do |map_config|
       yml_map_config = {
         'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
@@ -414,7 +415,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_maps_layers(shift_timestamps: 0)
-    layers = project_map_configs.map(&:layers).flatten
+    layers = @project_map_configs.map(&:layers).flatten
 
     layers.map do |layer|
       yml_layer = {
