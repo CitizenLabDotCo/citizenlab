@@ -18,10 +18,10 @@ const Bar = ({ type, count, percentage, color, showLabel = false }: Props) => {
       width="100%"
       borderRadius={getBorderRadius(type)}
       border={BORDER}
+      borderBottom={['last', 'single'].includes(type) ? BORDER : 'none'}
       overflow="hidden"
       display="flex"
       flexDirection="row"
-      mb={type === 'last' ? '0' : '4px'}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
