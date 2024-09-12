@@ -68,7 +68,7 @@ const SurveyBars = ({ questionResult, colorScheme }: Props) => {
               </Text>
             </Box>
             {bars.map((bar, index) => (
-              <Bar key={index} {...bar} />
+              <Bar key={index} {...bar} showLabel={bars.length > 1} />
             ))}
           </Box>
         </Box>

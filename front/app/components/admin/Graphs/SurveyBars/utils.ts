@@ -38,6 +38,7 @@ export const parseQuestionResult = (
             ? [
                 {
                   type: 'single',
+                  count: 0,
                   percentage: 0,
                   color: EMPTY_COLOR,
                 },
@@ -47,6 +48,7 @@ export const parseQuestionResult = (
 
                 return {
                   type,
+                  count,
                   percentage: roundPercentage(count, totalPickCount, 1),
                   color: colorSchemeMap.get(group) ?? EMPTY_COLOR,
                 };
@@ -77,6 +79,7 @@ export const parseQuestionResult = (
         {
           type: 'single',
           percentage,
+          count,
           color: colorScheme[0],
         },
       ],

@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import SurveyBars from '.';
@@ -6,7 +10,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Graphs/SurveyBars',
-  component: SurveyBars,
+  render: (props) => (
+    <Box w="100%" display="flex" justifyContent="center">
+      <Box w="100%" maxWidth="600px" p="8px">
+        <SurveyBars {...props} />
+      </Box>
+    </Box>
+  ),
 } satisfies Meta<typeof SurveyBars>;
 
 export default meta;

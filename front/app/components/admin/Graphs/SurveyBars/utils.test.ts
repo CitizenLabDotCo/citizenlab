@@ -97,6 +97,7 @@ const expected = [
       {
         type: 'single',
         percentage: 50,
+        count: 2,
         color: '#4D85C6',
       },
     ],
@@ -109,6 +110,7 @@ const expected = [
       {
         type: 'single',
         percentage: 0,
+        count: 0,
         color: EMPTY_COLOR,
       },
     ],
