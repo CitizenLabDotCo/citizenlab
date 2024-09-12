@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
@@ -11,7 +12,6 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
@@ -33,7 +33,7 @@ interface Props {
   reacting_dislike_method: 'unlimited' | 'limited' | null | undefined;
   reacting_dislike_limited_max: number | null | undefined;
   noDislikingLimitError: JSX.Element | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleReactingEnabled: () => void;

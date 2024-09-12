@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { TSurveyService } from 'api/phases/types';
 
@@ -9,14 +10,13 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ApiErrors } from '../..';
 import messages from '../../../../messages';
 import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 interface Props {
   survey_service: TSurveyService | null | undefined;
   survey_embed_url: string | null | undefined;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   surveyProviders: { [key in TSurveyService]: boolean };
   handleSurveyProviderChange: (survey_service: TSurveyService) => void;
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;

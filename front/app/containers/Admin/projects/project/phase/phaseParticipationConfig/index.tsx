@@ -51,15 +51,13 @@ import {
 } from './utils/participationMethodConfigs';
 import validatePhaseConfig from './utils/validate';
 
-export type ApiErrors = CLErrors | null | undefined;
-
 interface Props {
   className?: string;
   onChange: (arg: IPhaseParticipationConfig) => void;
   onSubmit: (arg: IPhaseParticipationConfig) => void;
   phase?: IPhase | undefined | null;
   project?: IProject | undefined | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {

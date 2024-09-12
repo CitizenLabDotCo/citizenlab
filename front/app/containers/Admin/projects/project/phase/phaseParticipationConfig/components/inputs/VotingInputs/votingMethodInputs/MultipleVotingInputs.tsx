@@ -6,21 +6,20 @@ import {
   Error,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';
 
 interface Props {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   maxTotalVotesError: string | null;
   maxVotesPerOptionError: string | null;
   voteTermError: string | null;

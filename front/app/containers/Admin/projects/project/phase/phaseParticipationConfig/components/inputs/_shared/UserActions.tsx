@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { IconTooltip, Radio, Toggle } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -8,7 +9,6 @@ import Error from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';
 import {
   ReactingLimitInput,
@@ -36,7 +36,7 @@ const UserActions = ({
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleReactingEnabled: () => void;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   noLikingLimitError: JSX.Element | null;

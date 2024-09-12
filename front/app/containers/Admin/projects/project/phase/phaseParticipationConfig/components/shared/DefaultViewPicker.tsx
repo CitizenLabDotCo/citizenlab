@@ -1,18 +1,18 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-import { ApiErrors } from '../..';
 import messages from '../../../../messages';
 
 interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   title?: MessageDescriptor;
 }

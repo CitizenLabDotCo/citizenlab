@@ -1,18 +1,18 @@
 import React from 'react';
 
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ApiErrors } from '../..';
 import messages from '../../../../messages';
 
 interface Props {
   poll_anonymous: boolean | undefined;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   togglePollAnonymous: () => void;
 }
 

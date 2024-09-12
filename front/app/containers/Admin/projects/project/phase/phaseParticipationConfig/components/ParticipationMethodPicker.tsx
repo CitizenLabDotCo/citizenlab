@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { CLErrors } from 'typings';
 
 import { IPhase, ParticipationMethod } from 'api/phases/types';
 
@@ -23,7 +24,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ApiErrors } from '..';
 import messages from '../../../messages';
 
 import documentImage from './assets/document.png';
@@ -44,7 +44,7 @@ interface Props {
   participation_method: ParticipationMethod;
   phase?: IPhase | undefined | null;
   showSurveys: boolean;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   handleParticipationMethodOnChange: (
     participation_method: ParticipationMethod
   ) => void;

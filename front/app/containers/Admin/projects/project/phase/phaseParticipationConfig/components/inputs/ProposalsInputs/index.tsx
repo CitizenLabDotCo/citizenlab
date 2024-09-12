@@ -8,6 +8,7 @@ import {
   Toggle,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
@@ -19,7 +20,6 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
@@ -40,7 +40,7 @@ interface Props {
   expireDateLimitError: JSX.Element | null;
   reacting_threshold: number | null | undefined;
   reactingThresholdError: JSX.Element | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleReactingEnabled: () => void;

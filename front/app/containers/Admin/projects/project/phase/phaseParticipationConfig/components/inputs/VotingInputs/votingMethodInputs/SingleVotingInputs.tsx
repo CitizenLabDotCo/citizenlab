@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 
@@ -11,13 +12,12 @@ import {
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';
 
 interface Props {
   voting_max_total?: number | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   maxTotalVotesError: string | null;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
 }

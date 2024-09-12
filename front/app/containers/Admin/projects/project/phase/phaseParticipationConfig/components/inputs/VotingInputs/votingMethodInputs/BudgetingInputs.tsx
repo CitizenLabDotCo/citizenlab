@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ApiErrors } from '../../../..';
 import messages from '../../../../../../messages';
 import { LabelBudgetingInput } from '../../../shared/labels';
 import {
@@ -19,7 +19,7 @@ interface Props {
   voting_max_total?: number | null;
   minTotalVotesError: string | null;
   maxTotalVotesError: string | null;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   handleMinBudgetingAmountChange: (newMinBudget: string) => void;
   handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;
 }

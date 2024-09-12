@@ -8,7 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 
 import { VotingMethod } from 'api/phases/types';
 
@@ -24,7 +24,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
@@ -52,7 +51,7 @@ export interface VotingInputsProps {
   handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
   handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
   toggleCommentingEnabled: () => void;
-  apiErrors: ApiErrors;
+  apiErrors: CLErrors | null | undefined;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
