@@ -40,14 +40,6 @@ module MultiTenancy
             end
           end
 
-          rand(5).times do
-            initiative.official_feedbacks.create!(
-              body_multiloc: runner.rand_description_multiloc,
-              author_multiloc: runner.create_for_some_locales { Faker::FunnyName.name },
-              user: User.admin.sample
-            )
-          end
-
           runner.create_comment_tree(initiative, nil)
         end
       end

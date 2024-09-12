@@ -12,7 +12,7 @@ resource 'OfficialFeedback' do
     header 'Content-Type', 'application/json'
     @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project)
-    @feedbacks = create_list(:official_feedback, 2, post: @idea)
+    @feedbacks = create_list(:official_feedback, 2, idea: @idea)
   end
 
   get 'web_api/v1/ideas/:idea_id/official_feedback' do
@@ -41,8 +41,8 @@ resource 'OfficialFeedback' do
       expect(json_response.dig(:data, :type)).to eq 'official_feedback'
       expect(json_response.dig(:data, :attributes, :created_at)).to be_present
       expect(json_response.dig(:data, :relationships)).to include(
-        post: {
-          data: { id: @feedbacks.first.post_id, type: 'idea' }
+        idea: {
+          data: { id: @feedbacks.first.idea_id, type: 'idea' }
         },
         user: {
           data: { id: @feedbacks.first.user_id, type: 'user' }
@@ -93,7 +93,7 @@ resource 'OfficialFeedback' do
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
-        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
+        expect(json_response.dig(:data, :relationships, :idea, :data, :id)).to eq idea_id
         expect(@idea.reload.official_feedbacks_count).to eq 3
       end
 
@@ -114,7 +114,7 @@ resource 'OfficialFeedback' do
       end
       ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
 
-      let(:official_feedback) { create(:official_feedback, user: @user, post: @idea) }
+      let(:official_feedback) { create(:official_feedback, user: @user, idea: @idea) }
       let(:id) { official_feedback.id }
       let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
@@ -126,7 +126,7 @@ resource 'OfficialFeedback' do
     end
 
     delete 'web_api/v1/official_feedback/:id' do
-      let(:official_feedback) { create(:official_feedback, user: @user, post: @idea) }
+      let(:official_feedback) { create(:official_feedback, user: @user, idea: @idea) }
       let(:id) { official_feedback.id }
       example_request 'Delete an official feedback from an idea' do
         assert_status 200

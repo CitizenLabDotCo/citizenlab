@@ -27,7 +27,6 @@ class NotificationService
     Notifications::InternalComments::MentionInInternalComment,
     Notifications::MentionInOfficialFeedback,
     Notifications::OfficialFeedbackOnIdeaYouFollow,
-    Notifications::OfficialFeedbackOnInitiativeYouFollow,
     Notifications::ProjectFolderModerationRightsReceived,
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,

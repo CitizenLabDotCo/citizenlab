@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :official_feedback do
     user
-    association :post, factory: :idea
+    idea
     body_multiloc do
       {
         'en' => '<p>This post has been declared as awesome.</p>',

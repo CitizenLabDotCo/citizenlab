@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:idea) { create(:idea, title_multiloc: { 'en' => 'Idea title' }) }
-    let_it_be(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, post: idea) }
+    let_it_be(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, idea: idea) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
     let_it_be(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, post: idea, official_feedback: feedback) }
     let_it_be(:command) do
