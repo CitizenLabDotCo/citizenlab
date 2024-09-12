@@ -17,6 +17,9 @@ const meta = {
       </Box>
     </Box>
   ),
+  parameters: {
+    chromatic: { disableSnapshot: false },
+  },
 } satisfies Meta<typeof SurveyBars>;
 
 export default meta;
