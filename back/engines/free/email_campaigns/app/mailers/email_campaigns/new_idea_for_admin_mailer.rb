@@ -18,6 +18,10 @@ module EmailCampaigns
       format_message("event_description_#{version_suffix}", values: { authorName: event.post_author_name })
     end
 
+    def preheader
+      format_message('preheader', values: { authorName: event.post_author_name, organizationName: organization_name })
+    end
+
     helper_method :prescreening_version?
     def prescreening_version?
       event.post_publication_status != 'published'

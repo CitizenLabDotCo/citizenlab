@@ -280,6 +280,7 @@ en:
       subject: 'Someone published a new proposal on the platform of %{organizationName}'
       preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
+      new_idea_for_admin:
       main_header_publication: '%{firstName}, a new input has been published on your platform'
       event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
       cta_publication: 'Give feedback to %{authorName}'
@@ -288,6 +289,7 @@ en:
       input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
       cta_prescreening: 'Review the input'
       days_ago: '%{numberOfDays} days ago'
+      preheader: '%{authorName} published a new input on your platform'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
@@ -472,6 +474,7 @@ en:
       action_share_link: 'Share it via any channel by copying the %{link}'
       link: link
       cta_view_idea: 'Go to your input'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your proposals'
       preheader: 'What happened with your proposals in the past week?'

@@ -286,6 +286,7 @@ en:
       input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
       cta_prescreening: 'Review the input'
       days_ago: '%{numberOfDays} days ago'
+      preheader: '%{authorName} published a new input on your platform'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
@@ -470,6 +471,7 @@ en:
       action_share_link: 'Share it via any channel by copying the %{link}'
       link: link
       cta_view_idea: 'Go to your input'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your proposals'
       preheader: 'What happened with your proposals in the past week?'
