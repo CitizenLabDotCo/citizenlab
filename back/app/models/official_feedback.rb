@@ -36,9 +36,7 @@ class OfficialFeedback < ApplicationRecord
   validates :author_multiloc, presence: true, multiloc: { presence: true }
   validates :idea, presence: true
 
-  def project_id
-    idea.project_id
-  end
+  delegate :project_id, to: :idea
 
   private
 
