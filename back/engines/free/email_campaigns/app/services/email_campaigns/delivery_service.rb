@@ -40,7 +40,6 @@ module EmailCampaigns
       Campaigns::NewIdeaForAdmin,
       Campaigns::NewInitiativeForAdmin,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
-      Campaigns::OfficialFeedbackOnInitiativeYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
