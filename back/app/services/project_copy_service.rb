@@ -764,10 +764,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def project_map_configs
-    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
-    custom_fields = CustomField.where(resource: custom_forms)
-
     CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
+      .or(
+        CustomMaps::MapConfig.where(
+          mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
+        )
+      )
   end
 end
