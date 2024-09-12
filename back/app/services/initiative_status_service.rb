@@ -78,9 +78,8 @@ class InitiativeStatusService
     }
   }
 
-  def transition_allowed?(_initiative, status1, status2, with_feedback: false)
-    transition_possibility = MANUAL_TRANSITIONS.dig status1.code, status2.code
-    transition_possibility && (!transition_possibility[:feedback_required] || with_feedback)
+  def transition_allowed?(_initiative, status1, status2)
+    MANUAL_TRANSITIONS.dig status1.code, status2.code
   end
 
   def automated_transitions!
