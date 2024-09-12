@@ -78,6 +78,9 @@ const AuthProviders = memo<Props>(
       name: 'criipto_login',
     });
     const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
+    const nemlogInLoginEnabled = useFeatureFlag({
+      name: 'nemlog_in_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -117,7 +120,8 @@ const AuthProviders = memo<Props>(
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
-      criiptoLoginEnabled;
+      criiptoLoginEnabled ||
+      nemlogInLoginEnabled;
 
     return (
       <Container
@@ -164,6 +168,16 @@ const AuthProviders = memo<Props>(
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithHoplr} />
+          </StyledAuthProviderButton>
+        )}
+
+        {nemlogInLoginEnabled && (
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="nemlog_in"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithNemlogIn} />
           </StyledAuthProviderButton>
         )}
 

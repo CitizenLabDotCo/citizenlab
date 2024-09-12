@@ -73,7 +73,7 @@ function setHref(
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: flow,
-    sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
+    sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: context?.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
