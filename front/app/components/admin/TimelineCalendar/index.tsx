@@ -12,11 +12,26 @@ import { getLocale } from './locales';
 const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
+    --rdp-accent-background-color: ${colors.teal100};
   }
 `;
 
-const TimelineCalendar = () => {
+type DateRange = {
+  from: Date;
+  to: Date;
+};
+
+interface Props {
+  phases: DateRange[];
+  selectedPhaseIndex: number;
+}
+
+const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
   const locale = useLocale();
+
+  const selectedPhase = phases[selectedPhaseIndex];
+
+  if (!selectedPhase) return null;
 
   return (
     <DayPickerStyles>
@@ -25,10 +40,7 @@ const TimelineCalendar = () => {
         numberOfMonths={2}
         captionLayout="dropdown-months"
         locale={getLocale(locale)}
-        selected={{
-          from: new Date(2024, 8, 1),
-          to: new Date(2024, 8, 5),
-        }}
+        selected={selectedPhase}
       />
     </DayPickerStyles>
   );
