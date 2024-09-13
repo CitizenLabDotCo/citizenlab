@@ -9,7 +9,7 @@ import useLocale from 'hooks/useLocale';
 
 import { getLocale } from './locales';
 import { DateRange } from './typings';
-import { getModifierStyles, getModifiers } from './utils';
+import { getModifierStyles, getModifiers, validatePhases } from './utils';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
@@ -21,9 +21,14 @@ const DayPickerStyles = styled.div`
 interface Props {
   phases: DateRange[];
   selectedPhaseIndex: number;
+  onUpdatePhases: (phases: DateRange[]) => void;
 }
 
-const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
+const TimelineCalendar = ({
+  phases,
+  selectedPhaseIndex,
+  onUpdatePhases,
+}: Props) => {
   const locale = useLocale();
   const selectedPhase = phases[selectedPhaseIndex];
 
@@ -37,6 +42,21 @@ const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
 
   if (!selectedPhase) return null;
 
+  const handleDayClick = (date: Date) => {
+    const newPhases = phases.map((phase, index) => {
+      // if (index === selectedPhaseIndex) {
+      //   return { from, to };
+      // }
+
+      return phase;
+    });
+
+    if (validatePhases(newPhases)) {
+      console.log('valid');
+      onUpdatePhases(newPhases);
+    }
+  };
+
   return (
     <DayPickerStyles>
       <DayPicker
@@ -47,6 +67,7 @@ const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
         selected={selectedPhase}
         modifiers={modifiers}
         modifiersStyles={modifiersStyles}
+        onDayClick={handleDayClick}
       />
     </DayPickerStyles>
   );

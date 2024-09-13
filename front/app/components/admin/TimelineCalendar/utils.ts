@@ -52,3 +52,17 @@ export const getModifierStyles = (
 
   return modifiersStyles;
 };
+
+export const validatePhases = (phases: DateRange[]) => {
+  if (!phases.every((phase) => phase.from <= phase.to)) {
+    return false;
+  }
+
+  for (let i = 0; i < phases.length - 1; i++) {
+    if (phases[i].to >= phases[i + 1].from) {
+      return false;
+    }
+  }
+
+  return true;
+};
