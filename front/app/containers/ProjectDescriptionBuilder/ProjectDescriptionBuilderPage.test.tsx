@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { screen, render } from 'utils/testUtils/rtl';
+import ProjectDescriptionBuilderPage from 'containers/ProjectDescriptionBuilder';
 
-import ProjectDescriptionBuilderPage from '.';
+import { screen, render } from 'utils/testUtils/rtl';
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Editor } from '@craftjs/core';
-import { IProjectDescriptionBuilderData } from 'modules/commercial/project_description_builder/api/types';
+import { IProjectDescriptionBuilderData } from 'api/project_description_builder/types';
 
 import clHistory from 'utils/cl-router/history';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';

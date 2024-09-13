@@ -19,7 +19,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../containers/ProjectDescriptionBuilder/messages';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type ProjectDescriptionBuilderToolboxProps = {

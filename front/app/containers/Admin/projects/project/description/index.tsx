@@ -16,7 +16,7 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
+import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -163,13 +163,12 @@ const ProjectDescription = memo<
                   withCTAButton
                 />
               )}
-              <Outlet
-                id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
-                onMount={setModuleToActive}
+              <ProjectDescriptionBuilderToggle
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                onMount={setModuleToActive}
               />
               <Error
                 fieldName="description_multiloc"

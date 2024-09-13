@@ -6,12 +6,13 @@ import {
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
+
+import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -23,7 +24,7 @@ import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Messages
-import messages from '../../messages';
+import messages from '../../../containers/ProjectDescriptionBuilder/messages';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -62,7 +63,8 @@ const ProjectDescriptionBuilderToggle = ({
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(params.projectId);
 
-  const route: RouteType = `/admin/project-description-builder/projects/${params.projectId}/description`;
+  const route =
+    `/admin/project-description-builder/projects/${params.projectId}/description` as RouteType;
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,
