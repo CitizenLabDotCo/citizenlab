@@ -155,7 +155,7 @@ const ProjectDescription = memo<
             <SectionField>
               {!moduleActive && (
                 <QuillMultilocWithLocaleSwitcher
-                  id="project-description"
+                  id="project-description-module-inactive"
                   valueMultiloc={formValues.description_multiloc}
                   onChange={handleDescriptionOnChange}
                   label={formatMessage(messages.descriptionLabel)}
