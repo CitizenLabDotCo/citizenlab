@@ -18,7 +18,7 @@ const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTIO
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useProjectDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockProjectDescriptionBuilderLayoutData,
@@ -28,7 +28,7 @@ jest.mock(
 
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
 jest.mock(
-  'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useAddProjectDescriptionBuilderLayout',
   () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
 );
 
