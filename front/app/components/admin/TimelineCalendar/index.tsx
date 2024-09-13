@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import { getLocale } from './locales';
+import { DateRange } from './typings';
+import { getModifierStyles, getModifiers } from './utils';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
@@ -16,11 +18,6 @@ const DayPickerStyles = styled.div`
   }
 `;
 
-type DateRange = {
-  from: Date;
-  to: Date;
-};
-
 interface Props {
   phases: DateRange[];
   selectedPhaseIndex: number;
@@ -28,8 +25,15 @@ interface Props {
 
 const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
   const locale = useLocale();
-
   const selectedPhase = phases[selectedPhaseIndex];
+
+  const modifiers = useMemo(() => {
+    return getModifiers({ phases, selectedPhaseIndex });
+  }, [phases, selectedPhaseIndex]);
+
+  const modifiersStyles = useMemo(() => {
+    return getModifierStyles(modifiers);
+  }, [modifiers]);
 
   if (!selectedPhase) return null;
 
@@ -41,6 +45,8 @@ const TimelineCalendar = ({ phases, selectedPhaseIndex }: Props) => {
         captionLayout="dropdown-months"
         locale={getLocale(locale)}
         selected={selectedPhase}
+        modifiers={modifiers}
+        modifiersStyles={modifiersStyles}
       />
     </DayPickerStyles>
   );
