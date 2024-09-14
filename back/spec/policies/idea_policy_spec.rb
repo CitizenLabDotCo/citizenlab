@@ -6,6 +6,7 @@ describe IdeaPolicy do
   subject(:policy) { described_class.new(user, idea) }
 
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
+  let(:editing_idea_disabled_reason) { Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('editing_idea') }
 
   context 'on an idea in a public project' do
     let(:project) { create(:single_phase_ideation_project) }
@@ -19,6 +20,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -34,6 +36,7 @@ describe IdeaPolicy do
         is_expected.to     permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -52,6 +55,7 @@ describe IdeaPolicy do
         is_expected.to     permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -67,6 +71,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -82,6 +87,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -96,6 +102,7 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -125,6 +132,7 @@ describe IdeaPolicy do
               is_expected.to permit(:by_slug)
               is_expected.to permit(:create)
               is_expected.to permit(:update)
+              expect(editing_idea_disabled_reason).to be_nil
               is_expected.to permit(:destroy)
               is_expected.to permit(:index_xlsx)
 
@@ -140,6 +148,7 @@ describe IdeaPolicy do
               is_expected.to permit(:by_slug)
               expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
               is_expected.to permit(:update)
+              expect(editing_idea_disabled_reason).to be_nil
               is_expected.to permit(:destroy)
               is_expected.not_to permit(:index_xlsx)
 
@@ -178,6 +187,7 @@ describe IdeaPolicy do
           is_expected.to permit(:by_slug)
           is_expected.to permit(:create)
           is_expected.to permit(:update)
+          expect(editing_idea_disabled_reason).to be_nil
           is_expected.to permit(:destroy)
           is_expected.to permit(:index_xlsx)
 
@@ -214,6 +224,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -229,6 +240,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -244,6 +256,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -258,6 +271,7 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -276,6 +290,7 @@ describe IdeaPolicy do
       is_expected.not_to permit(:by_slug)
       is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -293,6 +308,7 @@ describe IdeaPolicy do
       is_expected.not_to permit(:by_slug)
       expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -310,6 +326,7 @@ describe IdeaPolicy do
       is_expected.to permit(:by_slug)
       is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
+      expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
       is_expected.not_to permit(:index_xlsx)
 
@@ -327,6 +344,7 @@ describe IdeaPolicy do
       is_expected.to permit(:by_slug)
       is_expected.to permit(:create)
       is_expected.to permit(:update)
+      expect(editing_idea_disabled_reason).to be_nil
       is_expected.to permit(:destroy)
       is_expected.to permit(:index_xlsx)
 
@@ -347,6 +365,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -362,6 +381,7 @@ describe IdeaPolicy do
         is_expected.not_to permit(:by_slug)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -377,6 +397,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -398,6 +419,8 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -428,6 +451,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -453,6 +477,8 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to be_present
+
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
@@ -483,6 +509,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -539,6 +566,7 @@ describe IdeaPolicy do
           is_expected.not_to permit(:show)
           is_expected.to permit(:create)
           is_expected.not_to permit(:update)
+          expect(editing_idea_disabled_reason).to be_present
           is_expected.not_to permit(:destroy)
           is_expected.not_to permit(:index_xlsx)
         end
@@ -551,6 +579,7 @@ describe IdeaPolicy do
           is_expected.to permit(:show)
           is_expected.not_to permit(:create)
           is_expected.not_to permit(:update)
+          expect(editing_idea_disabled_reason).to be_present
           is_expected.not_to permit(:destroy)
           is_expected.not_to permit(:index_xlsx)
 
@@ -567,6 +596,7 @@ describe IdeaPolicy do
         is_expected.to permit(:show)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
         is_expected.to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
