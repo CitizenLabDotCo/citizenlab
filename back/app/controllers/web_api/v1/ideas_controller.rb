@@ -205,6 +205,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
@@ -363,6 +364,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
     if submittable_field_keys.include?(:topic_ids)
       complex_attributes[:topic_ids] = []
+    end
+
+    if submittable_field_keys.include?(:cosponsor_ids)
+      complex_attributes[:cosponsor_ids] = []
     end
 
     complex_attributes

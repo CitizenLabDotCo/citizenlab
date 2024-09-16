@@ -170,6 +170,9 @@ en:
       topic_ids:
         title: Tags
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description:
       location:
         title: Location
         description:

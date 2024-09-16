@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image cosponsor_ids]
     end
 
     def allowed_ideas_orders
