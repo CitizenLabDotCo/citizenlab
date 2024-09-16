@@ -684,6 +684,7 @@
   "app.components.formBuilder.configureMap": "Configure map",
   "app.components.formBuilder.confirmLeaveBuilderButtonText": "Yes, I want to leave",
   "app.components.formBuilder.content": "Content",
+  "app.components.formBuilder.cosponsors": "Co-sponsors",
   "app.components.formBuilder.default": "Default",
   "app.components.formBuilder.defaultContent": "Default content",
   "app.components.formBuilder.delete": "Delete",
