@@ -167,7 +167,7 @@ PATH
   remote: engines/commercial/id_nemlog_in
   specs:
     id_nemlog_in (1.0.0)
-      omniauth-saml (~> 1.10.3)
+      omniauth-saml (~> 2.2.0)
       rails (~> 7.0)
 
 PATH
@@ -182,7 +182,7 @@ PATH
   remote: engines/commercial/id_vienna_saml
   specs:
     id_vienna_saml (1.0.0)
-      omniauth-saml (~> 1.10.3)
+      omniauth-saml (~> 2.2.0)
       rails (~> 7.0)
 
 PATH
@@ -850,28 +850,28 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     okcomputer (1.18.5)
-    omniauth (1.9.2)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
-      rack (>= 1.6.2, < 3)
-    omniauth-auth0 (2.6.0)
-      omniauth (~> 1.9)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-auth0 (2.4.1)
       omniauth-oauth2 (~> 1.5)
     omniauth-facebook (9.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-google-oauth2 (0.8.2)
+    omniauth-google-oauth2 (1.0.1)
       jwt (>= 2.0)
       oauth2 (~> 1.1)
-      omniauth (~> 1.1)
-      omniauth-oauth2 (>= 1.6)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.7.1)
     omniauth-oauth2 (1.7.2)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
     omniauth-rails_csrf_protection (0.1.2)
       actionpack (>= 4.2)
       omniauth (>= 1.3.1)
-    omniauth-saml (1.10.3)
-      omniauth (~> 1.3, >= 1.3.2)
-      ruby-saml (~> 1.9)
+    omniauth-saml (2.2.1)
+      omniauth (~> 2.1)
+      ruby-saml (~> 1.17)
     omniauth_openid_connect (0.7.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
@@ -1013,8 +1013,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.7)
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1111,8 +1110,8 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
-    ruby-saml (1.14.0)
-      nokogiri (>= 1.10.5)
+    ruby-saml (1.17.0)
+      nokogiri (>= 1.13.10)
       rexml
     ruby-vips (2.2.1)
       ffi (~> 1.12)
@@ -1177,7 +1176,6 @@ GEM
       spring (>= 4)
     ssrf_filter (1.1.2)
     stackprof (0.2.26)
-    strscan (3.1.0)
     swd (2.0.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1328,11 +1326,11 @@ DEPENDENCIES
   nkf
   nokogiri (~> 1.16.5)
   okcomputer
-  omniauth (~> 1.9.1)
+  omniauth (~> 2.1)
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
-  omniauth-saml (~> 1.10.3)
+  omniauth-saml (~> 2.2.0)
   omniauth_openid_connect (~> 0.7.1)
   onboarding!
   order_as_specified

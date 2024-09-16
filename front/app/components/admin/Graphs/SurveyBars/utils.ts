@@ -20,7 +20,7 @@ export const parseQuestionResult = (
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
 
-    return answers.map(({ answer, count, groups }, i) => {
+    return answers.map(({ answer, count, groups }) => {
       const label =
         answer === null
           ? noAnswerCopy
@@ -38,15 +38,17 @@ export const parseQuestionResult = (
             ? [
                 {
                   type: 'single',
+                  count: 0,
                   percentage: 0,
                   color: EMPTY_COLOR,
                 },
               ]
-            : groups.map(({ group, count }) => {
-                const type = getType(i, groups.length);
+            : groups.map(({ group, count }, groupIndex) => {
+                const type = getType(groupIndex, groups.length);
 
                 return {
                   type,
+                  count,
                   percentage: roundPercentage(count, totalPickCount, 1),
                   color: colorSchemeMap.get(group) ?? EMPTY_COLOR,
                 };
@@ -77,6 +79,7 @@ export const parseQuestionResult = (
         {
           type: 'single',
           percentage,
+          count,
           color: colorScheme[0],
         },
       ],
@@ -120,4 +123,15 @@ export const getBorderRadius = (type: BarType) => {
     case 'single':
       return '3px';
   }
+};
+
+export const measureText = (str: string, fontSize: number) => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  if (!context) return 0;
+
+  context.font = `${fontSize}px Public Sans`;
+  const metrics = context.measureText(str);
+
+  return metrics.width;
 };
