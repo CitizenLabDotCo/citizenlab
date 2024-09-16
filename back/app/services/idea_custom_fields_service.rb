@@ -43,7 +43,7 @@ class IdeaCustomFieldsService
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon]
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 

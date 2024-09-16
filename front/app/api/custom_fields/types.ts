@@ -34,7 +34,8 @@ export type ICustomFieldInputType =
   | 'multiselect_image'
   | 'point'
   | 'line'
-  | 'polygon';
+  | 'polygon'
+  | 'cosponsor_ids';
 
 export type IOptionsType = {
   id?: string;

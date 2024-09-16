@@ -65,6 +65,8 @@ const FormBuilderToolbox = ({
     'toolboxTitle',
     messages.content
   );
+
+  console.log(formCustomFields);
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
@@ -230,6 +232,7 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
+
         <Box>
           {!builderConfig.toolboxFieldsToExclude.includes('point') && ( // We want to show the mapping section
             <>

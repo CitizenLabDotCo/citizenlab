@@ -55,9 +55,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
     }
   end
 
-  def visit_cosponsor_ids(field)
-    return super unless field.code == 'cosponsor_ids'
-    
+  def visit_cosponsor_ids(field)  
     {
       type: 'array',
       uniqueItems: true,

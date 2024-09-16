@@ -270,6 +270,29 @@ module ParticipationMethod
           enabled: true,
           ordering: 8,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'cosponsor_ids',
+          code: 'cosponsor_ids',
+          input_type: 'text',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.consponsor_ids.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.consponsor_ids.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: false,
+          ordering: proposed_budget_in_form? ? 10 : 9,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       ]
       if proposed_budget_in_form?

@@ -32,7 +32,6 @@ export const ideationConfig: FormBuilderConfig = {
     'location_description',
     'idea_images_attributes',
     'idea_files_attributes',
-    'topic_ids',
   ],
   formCustomFields: undefined,
 
@@ -68,7 +67,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'location_description',
     'idea_images_attributes',
     'idea_files_attributes',
-    'topic_ids',
+    'cosponsor_ids',
   ],
   formCustomFields: undefined,
 

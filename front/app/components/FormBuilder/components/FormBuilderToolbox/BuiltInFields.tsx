@@ -101,6 +101,15 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
           data-cy="e2e-tags-item"
         />
       )}
+      <ToolboxItem
+        icon="volunteer"
+        label={formatMessage(messages.cosponsors)}
+        onClick={() => enableField('cosponsor_ids')}
+        data-cy="e2e-cosponsors-field"
+        fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+        inputType="cosponsor_ids"
+        disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+      />
     </Box>
   );
 };
