@@ -50,6 +50,8 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
       return messages.fileUpload;
     case 'proposed_budget':
       return messages.proposedBudget;
+    case 'cosponsor_ids':
+      return messages.cosponsors;
     default:
       return messages.default;
   }

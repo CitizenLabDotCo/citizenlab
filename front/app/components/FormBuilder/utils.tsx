@@ -31,7 +31,7 @@ export const builtInFieldKeys = [
   'location_description',
   'idea_images_attributes',
   'idea_files_attributes',
-  'topic_ids',
+  'cosponsor_ids',
 ];
 
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];

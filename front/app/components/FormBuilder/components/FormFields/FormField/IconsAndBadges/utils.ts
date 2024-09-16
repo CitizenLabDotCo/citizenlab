@@ -20,6 +20,8 @@ const getBuiltinFieldIcon = (key: string): IconNames => {
       return 'upload-file';
     case 'proposed_budget':
       return 'money-bag';
+    case 'cosponsor_ids':
+      return 'volunteer';
     default:
       return 'survey';
   }

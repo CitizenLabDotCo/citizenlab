@@ -276,7 +276,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'cosponsor_ids',
           code: 'cosponsor_ids',
-          input_type: 'text',
+          input_type: 'cosponsor_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.consponsor_ids.title',
             locales: CL2_SUPPORTED_LOCALES
