@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, Matcher } from 'react-day-picker';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
 import { getLocale } from './locales';
 import { DateRange } from './typings';
-import { getModifierStyles, getModifiers, validatePhases } from './utils';
+import { getModifierStyles, getModifiers } from './utils';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
@@ -30,11 +30,20 @@ const TimelineCalendar = ({
   onUpdatePhases,
 }: Props) => {
   const locale = useLocale();
+
   const selectedPhase = phases[selectedPhaseIndex];
 
   const modifiers = useMemo(() => {
     return getModifiers({ phases, selectedPhaseIndex });
   }, [phases, selectedPhaseIndex]);
+
+  const disabled = useMemo(() => {
+    return Object.keys(modifiers).reduce((acc, key) => {
+      if (!key.startsWith('phase-')) return acc;
+
+      return [...acc, modifiers[key]];
+    }, [] as Matcher[]);
+  }, [modifiers]);
 
   const modifiersStyles = useMemo(() => {
     return getModifierStyles(modifiers);
@@ -42,19 +51,8 @@ const TimelineCalendar = ({
 
   if (!selectedPhase) return null;
 
-  const handleDayClick = (date: Date) => {
-    const newPhases = phases.map((phase, index) => {
-      // if (index === selectedPhaseIndex) {
-      //   return { from, to };
-      // }
-
-      return phase;
-    });
-
-    if (validatePhases(newPhases)) {
-      console.log('valid');
-      onUpdatePhases(newPhases);
-    }
+  const handleSelect = (e) => {
+    console.log(e);
   };
 
   return (
@@ -65,9 +63,10 @@ const TimelineCalendar = ({
         captionLayout="dropdown-months"
         locale={getLocale(locale)}
         selected={selectedPhase}
+        disabled={disabled}
         modifiers={modifiers}
         modifiersStyles={modifiersStyles}
-        onDayClick={handleDayClick}
+        onSelect={handleSelect}
       />
     </DayPickerStyles>
   );
