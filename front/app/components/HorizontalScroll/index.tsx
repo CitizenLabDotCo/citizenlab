@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode, AriaRole } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 
 import {
   Box,
@@ -37,7 +37,7 @@ const StyledContainer = styled(Box)`
 
 interface Props {
   children: ReactNode;
-  containerRole?: AriaRole; // If the scrollable container needs a specific role, pass it in
+  containerRole?: string; // If the scrollable container needs a specific role, pass it in
 }
 
 /*
