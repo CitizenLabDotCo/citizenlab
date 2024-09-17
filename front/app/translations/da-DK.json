@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetitel:",
   "app.components.FolderFolderCard.archived": "Arkiveret",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekter} one {# projekt} other {# projekter}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisk lagring",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Automatisk lagring er aktiveret som standard, når du åbner undersøgelseseditoren. Hver gang du lukker panelet Feltindstillinger med knappen \"X\", vil undersøgelsen automatisk blive gemt.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbage til forrige side",
