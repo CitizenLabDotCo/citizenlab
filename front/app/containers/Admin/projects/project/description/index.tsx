@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -48,7 +49,9 @@ const ProjectDescription = memo<
   } = props;
 
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
-  const [moduleActive, setModuleActive] = useState(false);
+  const showProjectDescriptionBuilder = useFeatureFlag({
+    name: 'project_description_builder',
+  });
   const [touched, setTouched] = useState(false);
   const { width, containerRef } = useContainerWidthAndHeight();
 
@@ -58,7 +61,6 @@ const ProjectDescription = memo<
     description_multiloc: null,
   });
 
-  const setModuleToActive = () => setModuleActive(true);
   const { data: project } = useProjectById(props.params.projectId);
 
   useEffect(() => {
@@ -153,7 +155,7 @@ const ProjectDescription = memo<
 
           <Box mb="40px">
             <SectionField>
-              {!moduleActive && (
+              {!showProjectDescriptionBuilder && (
                 <QuillMultilocWithLocaleSwitcher
                   id="project-description-module-inactive"
                   valueMultiloc={formValues.description_multiloc}
@@ -168,7 +170,6 @@ const ProjectDescription = memo<
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                onMount={setModuleToActive}
               />
               <Error
                 fieldName="description_multiloc"

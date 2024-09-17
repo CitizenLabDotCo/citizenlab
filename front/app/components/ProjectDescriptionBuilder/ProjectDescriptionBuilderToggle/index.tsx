@@ -16,6 +16,8 @@ import useProjectDescriptionBuilderLayout from 'api/project_description_builder/
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import messages from 'containers/ProjectDescriptionBuilder/messages';
+
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -24,14 +26,12 @@ import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Messages
-import messages from '../../../containers/ProjectDescriptionBuilder/messages';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   label: string;
   labelTooltipText: string;
-  onMount: () => void;
 } & WithRouterProps &
   WrappedComponentProps;
 
@@ -55,7 +55,6 @@ const ProjectDescriptionBuilderToggle = ({
   onChange,
   label,
   labelTooltipText,
-  onMount,
 }: ProjectDescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
@@ -71,11 +70,6 @@ const ProjectDescriptionBuilderToggle = ({
   ] = useState<boolean | null>(null);
   const { mutateAsync: addProjectDescriptionBuilderLayout } =
     useAddProjectDescriptionBuilderLayout();
-
-  useEffect(() => {
-    if (!featureEnabled) return;
-    onMount();
-  }, [onMount, featureEnabled]);
 
   useEffect(() => {
     if (projectDescriptionBuilderLayout) {
