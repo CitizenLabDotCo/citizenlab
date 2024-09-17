@@ -76,6 +76,8 @@ type TFollowPredicate =
   | 'is_not_folder'
   | 'is_not_initiative'
   | 'is_not_idea'
+  | 'is_not_topic'
+  | 'is_not_area'
   | 'is_one_of_projects'
   | 'is_one_of_folders'
   | 'is_one_of_ideas'
