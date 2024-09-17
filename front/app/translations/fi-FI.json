@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Arkistoitu",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projektia} one {# projekti} other {# projektia}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automaattinen tallennus",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Automaattinen tallennus on oletuksena käytössä, kun avaat kyselyeditorin. Aina kun suljet Kenttäasetukset-paneelin \"X\"-painikkeella, kysely käynnistää automaattisesti tallennuksen.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "Automaattinen tallennus on oletuksena käytössä, kun avaat kyselyeditorin. Aina kun suljet kysymysasetuspaneelin \"X\"-painikkeella, kysely käynnistää automaattisesti tallennuksen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-muodossa",
   "app.components.GoBackButton.group.edit.goBack": "Mene takaisin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Palaa edelliselle sivulle",
