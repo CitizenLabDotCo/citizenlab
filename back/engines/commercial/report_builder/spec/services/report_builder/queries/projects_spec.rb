@@ -45,7 +45,12 @@ RSpec.describe ReportBuilder::Queries::Projects do
     end
 
     it 'returns overlapping projects' do
-      result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
+      result = query.run_query(
+        start_at: Date.new(2021, 1, 1),
+        end_at: Date.new(2021, 4, 1),
+        publication_statuses: %w[published]
+      )
+
       expect(result[:projects].count).to eq(2)
 
       expect(
@@ -54,7 +59,12 @@ RSpec.describe ReportBuilder::Queries::Projects do
     end
 
     it 'returns overlapping projects when last phase has no end date' do
-      result = query.run_query(start_at: Date.new(2022, 1, 1), end_at: Date.new(2022, 4, 1))
+      result = query.run_query(
+        start_at: Date.new(2022, 1, 1),
+        end_at: Date.new(2022, 4, 1),
+        publication_statuses: %w[published]
+      )
+
       expect(result[:projects].count).to eq(2)
 
       expect(
@@ -63,12 +73,22 @@ RSpec.describe ReportBuilder::Queries::Projects do
     end
 
     it 'returns project images' do
-      result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
+      result = query.run_query(
+        start_at: Date.new(2021, 1, 1),
+        end_at: Date.new(2021, 4, 1),
+        publication_statuses: %w[published]
+      )
+
       expect(result[:project_images].count).to eq(1)
     end
 
     it 'returns correct project periods' do
-      result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
+      result = query.run_query(
+        start_at: Date.new(2021, 1, 1),
+        end_at: Date.new(2021, 4, 1),
+        publication_statuses: %w[published]
+      )
+
       expect(result[:periods].count).to eq(2)
       expect(result[:periods][@project1.id]).to eq({
         'start_at' => Date.new(2021, 2, 1),
