@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Αρχειοθετημένος",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# έργα} one {# έργο} other {# έργα}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Αυτόματη αποθήκευση",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Η αυτόματη αποθήκευση είναι ενεργοποιημένη από προεπιλογή όταν ανοίγετε τον επεξεργαστή ερευνών. Κάθε φορά που κλείνετε τον πίνακα ρυθμίσεων πεδίου χρησιμοποιώντας το κουμπί \"X\", η έρευνα θα προκαλέσει αυτόματα αποθήκευση.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "Η αυτόματη αποθήκευση είναι ενεργοποιημένη από προεπιλογή όταν ανοίγετε τον επεξεργαστή ερευνών. Κάθε φορά που κλείνετε τον πίνακα ρυθμίσεων ερωτήσεων χρησιμοποιώντας το κουμπί \"X\", η έρευνα θα προκαλέσει αυτόματα αποθήκευση.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Λήψη ως pdf",
   "app.components.GoBackButton.group.edit.goBack": "Επιστροφή",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
