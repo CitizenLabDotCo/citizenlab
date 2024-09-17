@@ -265,8 +265,8 @@ namespace :cl2_back do
           allowed: true
         },
         form_mapping: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         posthog_integration: {
           enabled: false,
