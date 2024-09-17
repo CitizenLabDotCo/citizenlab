@@ -64,8 +64,6 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   volunteered_in: messages.predicate_volunteered_in,
   registered_to_an_event: messages.predicate_registered_to_an_event,
   not_registered_to_an_event: messages.predicate_not_registered_to_an_event,
-  follows_something: messages.predicate_follows_something,
-  not_follows_something: messages.predicate_not_follows_something,
   reacted_comment_in: messages.predicate_reacted_comment_in,
   reacted_idea_in: messages.predicate_reacted_input_in,
   something: messages.predicate_something,

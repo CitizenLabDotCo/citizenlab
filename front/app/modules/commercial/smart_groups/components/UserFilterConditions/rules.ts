@@ -127,8 +127,6 @@ type TRegistrationCompletedPredicate =
 type TParticipatedInProjectPredicate =
   | 'commented_in'
   | 'not_commented_in'
-  | 'follows_something'
-  | 'not_follows_something'
   | 'in'
   | 'not_in'
   | 'posted_in'
@@ -399,7 +397,6 @@ export type TRule =
       ruleType?: 'participated_in_project';
       predicate?:
         | 'not_commented_in'
-        | 'not_follows_something'
         | 'not_in'
         | 'not_posted_in'
         | 'not_reacted_comment_in'
@@ -416,7 +413,6 @@ export type TRule =
       ruleType?: 'participated_in_project';
       predicate?:
         | 'commented_in'
-        | 'follows_something'
         | 'in'
         | 'posted_in'
         | 'reacted_comment_in'
@@ -603,8 +599,6 @@ export const ruleTypeConstraints = {
   participated_in_project: {
     commented_in: ProjectValuesSelector,
     not_commented_in: ProjectValueSelector,
-    follows_something: ProjectValuesSelector,
-    not_follows_something: ProjectValueSelector,
     in: ProjectValuesSelector,
     not_in: ProjectValueSelector,
     posted_in: ProjectValuesSelector,
