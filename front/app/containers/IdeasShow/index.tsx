@@ -1,9 +1,12 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 
 import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
+import { useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
+import commentsKeys from 'api/comments/keys';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
+import ideasKeys from 'api/ideas/keys';
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
@@ -22,6 +25,7 @@ import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
+import consumer from 'utils/ActionCableConsumer';
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
@@ -75,6 +79,20 @@ export const IdeasShow = ({
   const handleContainerRef = (element: HTMLDivElement) => {
     setRef?.(element);
   };
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    consumer.subscriptions.create(
+      { channel: 'IdeasChannel', id: ideaId },
+      {
+        received: (_data) => {
+          queryClient.invalidateQueries(ideasKeys.item({ id: ideaId }));
+          queryClient.invalidateQueries(commentsKeys.lists());
+        },
+      }
+    );
+  }, [ideaId, queryClient]);
 
   if (isLoadingIdea || isLoadingIdeaImages || isLoadingProject) {
     return <FullPageSpinner />;

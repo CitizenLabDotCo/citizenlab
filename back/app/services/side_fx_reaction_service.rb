@@ -4,6 +4,9 @@ class SideFxReactionService
   include SideFxHelper
 
   def after_create(reaction, current_user)
+    reactable = reaction.reactable
+    IdeasChannel.broadcast_to(reactable, reactable)
+
     InputStatusService.auto_transition_input!(reaction.reactable.reload) if reaction.reactable_type == 'Idea'
 
     if reaction.reactable_type == 'Initiative'
@@ -18,6 +21,9 @@ class SideFxReactionService
   end
 
   def after_destroy(reaction, current_user)
+    reactable = reaction.reactable
+    IdeasChannel.broadcast_to(reactable, reactable)
+
     action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
   end
