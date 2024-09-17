@@ -2604,6 +2604,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Stopa registracije",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Prijave",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Vremenska traka sudionika",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning": "Imajte na umu da brojevi sudjelovanja možda neće biti potpuno točni jer su neki podaci prikupljeni u vanjskoj anketi koju ne pratimo",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Grafikon",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Raspon datuma",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Naslov",
