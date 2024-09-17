@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Autosave',
   },
   autosaveTooltip: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2',
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip3',
     defaultMessage:
-      'Auto-saving is enabled by default when you open the survey editor. Any time you close the question setings panel using the "X" button, the survey will automatically trigger a save.',
+      'Auto-saving is enabled by default when you open the form editor. Any time you close the field setings panel using the "X" button, it will automatically trigger a save.',
   },
 });
