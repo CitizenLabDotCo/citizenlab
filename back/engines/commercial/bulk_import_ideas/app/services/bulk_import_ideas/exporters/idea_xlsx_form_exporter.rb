@@ -23,9 +23,9 @@ module BulkImportIdeas::Exporters
 
         value = case field.input_type
         when 'select'
-          field.options.first.title_multiloc[@locale]
+          handle_option_title(field.options.first)
         when 'multiselect', 'multiselect_image'
-          field.options.map { |o| o.title_multiloc[@locale] }.join '; '
+          field.options.map { |o| handle_option_title(o) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number', 'linear_scale'
@@ -73,7 +73,7 @@ module BulkImportIdeas::Exporters
       options = @form_fields.map do |field|
         field.options.map do |option|
           {
-            name: option[:title_multiloc][@locale],
+            name: handle_option_title(option),
             type: 'option',
             input_type: 'option',
             code: option[:code],

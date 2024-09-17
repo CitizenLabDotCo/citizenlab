@@ -26,5 +26,16 @@ module BulkImportIdeas::Exporters
     def importer_data
       raise NotImplementedError, 'This method is not yet implemented'
     end
+
+    private
+
+    # Fallback to another locale if option in current locale is missing
+    def handle_option_title(option)
+      I18n.with_locale(@locale) { multiloc_service.t(option.title_multiloc) }
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
+    end
   end
 end
