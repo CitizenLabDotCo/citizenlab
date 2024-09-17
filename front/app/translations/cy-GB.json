@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Wedi'i archifo",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Cadw'n awtomatig",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Mae arbed yn awtomatig yn cael ei alluogi yn ddiofyn pan fyddwch chi'n agor golygydd yr arolwg. Unrhyw bryd y byddwch yn cau'r panel Gosodiadau Maes gan ddefnyddio'r botwm \"X\", bydd yr arolwg yn sbarduno arbediad yn awtomatig.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "Mae arbed yn awtomatig yn cael ei alluogi yn ddiofyn pan fyddwch chi'n agor golygydd yr arolwg. Unrhyw bryd y byddwch yn cau'r panel gosodiadau cwestiwn gan ddefnyddio'r botwm \"X\", bydd yr arolwg yn sbarduno arbediad yn awtomatig.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwythwch fel pdf",
   "app.components.GoBackButton.group.edit.goBack": "Mynd yn ôl",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ewch yn ôl i'r dudalen flaenorol",
