@@ -426,9 +426,22 @@ export default defineMessages({
     defaultMessage:
       'This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).',
   },
+  inaccurateParticipantsTooltip: {
+    id: 'app.containers.Projects.inaccurateParticipantsTooltip',
+    defaultMessage:
+      'Participation numbers may not be fully accurate as some data is captured in an external survey that we do not track (see the {projectParticipantsLink} tab for more details)',
+  },
+  participationDataIncomplete: {
+    id: 'app.containers.Projects.participationDataIncomplete',
+    defaultMessage: 'Participation data may be incomplete',
+  },
   accessRights: {
     id: 'app.containers.Projects.accessRights',
     defaultMessage: 'Access rights',
+  },
+  participants: {
+    id: 'app.containers.Projects.participants',
+    defaultMessage: 'Participants',
   },
   surveySubmissionsTooltip: {
     id: 'app.containers.Projects.surveySubmissionsTooltip3',
