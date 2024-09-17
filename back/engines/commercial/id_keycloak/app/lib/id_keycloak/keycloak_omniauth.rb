@@ -11,7 +11,7 @@ module IdKeycloak
         first_name: first_name,
         last_name: last_name.join(' '),
         email: email,
-        locale: AppConfiguration.instance.closest_locale_to('nb-NO'), # No need to get the locale from the provider
+        locale: AppConfiguration.instance.closest_locale_to('nb-NO') # No need to get the locale from the provider
       }
     end
 

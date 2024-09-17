@@ -12,7 +12,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       'locale' => 'nb',
       'info' => {
         'name' => 'Erling Haaland',
-        'email' => 'erling@topscoring.com',
+        'email' => 'erling@topscoring.com'
       },
       'credentials' => {
         'id_token' =>
@@ -190,10 +190,10 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
           expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
           expect(@user.reload).to have_attributes({
-                                                    verified: false,
-                                                    first_name: 'EXISTING',
-                                                    last_name: 'USER'
-                                                  })
+            verified: false,
+            first_name: 'EXISTING',
+            last_name: 'USER'
+          })
 
           expect(new_user.reload).to eq(new_user)
         end
