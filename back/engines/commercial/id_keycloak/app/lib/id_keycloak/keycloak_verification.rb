@@ -18,13 +18,10 @@ module IdKeycloak
 
     def config_parameters
       %i[
-        birthday_custom_field_key
-        birthyear_custom_field_key
-        municipality_code_custom_field_key
+        ui_method_name
         domain
         client_id
         client_secret
-        minimum_age
       ]
     end
 
@@ -34,26 +31,6 @@ module IdKeycloak
           type: 'string',
           description: 'The name this verification method will have in the UI',
           default: 'ID-Porten'
-        },
-        birthday_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'The `key` attribute of the custom field where the birthdate should be stored. Leave empty to not store the birthday. If it\'s set, the field will be locked for verified users.'
-        },
-        birthyear_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
-        },
-        municipality_code_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
-        },
-        minimum_age: {
-          private: true,
-          type: 'integer',
-          description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
     end
@@ -76,11 +53,15 @@ module IdKeycloak
     end
 
     def profile_to_uid(auth)
-      auth.extra.raw_info.to_h.symbolize_keys
+      auth.pid
     end
 
     def locked_attributes
-      []
+      %i[first_name last_name]
+    end
+
+    def other_attributes
+      %i[email]
     end
 
     def locked_custom_fields
@@ -91,7 +72,7 @@ module IdKeycloak
     end
 
     def updateable_user_attrs
-      super + %i[custom_field_values birthyear]
+      super + %i[first_name last_name]
     end
   end
 end

@@ -4,21 +4,15 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'keycloak verification (ID-Porten - Oslo)' do
+  # TODO: JS - We need the actual response here
   let(:auth_hash) do
     {
       'provider' => 'keycloak',
-      'uid' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
+      'pid' => '23079421936',
+      'locale' => 'nb',
       'info' => {
-        'name' => 'Bulenga Poulsen',
-        'email' => nil,
-        'email_verified' => nil,
-        'nickname' => nil,
-        'first_name' => nil,
-        'last_name' => nil,
-        'gender' => nil,
-        'image' => nil,
-        'phone' => nil,
-        'urls' => { 'website' => nil }
+        'name' => 'Erling Haaland',
+        'email' => 'erling@topscoring.com',
       },
       'credentials' => {
         'id_token' =>
@@ -29,62 +23,12 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         'refresh_token' => nil,
         'expires_in' => '120',
         'scope' => nil
-      },
-      'extra' => {
-        'raw_info' => {
-          'nonce' => 'bf5811df0cbf392754ca252a29c0cc36',
-          'identityscheme' => 'dkmitid',
-          'authenticationtype' => 'urn:grn:authn:dk:mitid:substantial',
-          'authenticationmethod' =>
-          'app:1692621888956:SUBSTANTIAL:SUBSTANTIAL:HIGH:HIGH',
-          'authenticationinstant' => '2023-08-21T12:45:01.733Z',
-          'nameidentifier' => '29d14ea06e16473286ac5de87a941784',
-          'sub' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
-          'sessionindex' => '531690ce-9792-4949-8a11-f3f5a4c504b5',
-          'loA' => 'SUBSTANTIAL',
-          'ial' => 'SUBSTANTIAL',
-          'aal' => 'SUBSTANTIAL',
-          'fal' => 'HIGH',
-          'uuid' => '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
-          'cprNumberIdentifier' => '3112772846',
-          'birthdate' => '1977-12-31',
-          'dateofbirth' => '1977-12-31',
-          'age' => '45',
-          'name' => 'Bulenga Poulsen',
-          'refTextHeader' => 'Log on at keycloak',
-          'refTextBody' => 'local development test (Koen)',
-          'country' => 'DK',
-          'iss' => 'https://kobenhavn-test.keycloak.id',
-          'aud' => 'urn:my:application:identifier:407793',
-          'iat' => 1_692_621_902,
-          'nbf' => 1_692_621_902,
-          'exp' => 1_692_639_888,
-          'address' => {
-            'formatted' => "Paiman Petersen\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
-            'common_name' => 'Paiman Petersen',
-            'street_address' => 'Grusgraven 1,3 tv',
-            'postal_code' => '3400',
-            'city' => 'Hillerød',
-            'locality' => '(Lokalitet ukendt)',
-            'region' => nil,
-            'country' => 'Danmark'
-          },
-          'address_details' => {
-            'road' => 'Grusgraven',
-            'road_code' => '1732',
-            'municipality' => 'Lyngby-Taarbæk',
-            'municipality_code' => '0173',
-            'house_number' => '001',
-            'floor' => '03',
-            'apartment_code' => ' tv'
-          }
-        }
       }
     }
   end
 
   before do
-    @user = create(:user, first_name: 'Bulenga', last_name: 'Poulsen')
+    @user = create(:user, first_name: 'EXISTING', last_name: 'USER')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
 
     OmniAuth.config.test_mode = true
@@ -99,10 +43,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         name: 'keycloak',
         domain: 'some.test.domain.com',
         client_id: '12345',
-        client_secret: '78910',
-        birthday_custom_field_key: 'birthdate',
-        birthyear_custom_field_key: 'birthyear',
-        municipality_code_custom_field_key: 'municipality_code',
+        client_secret: '78910'
       }]
     }
     configuration.save!
@@ -112,189 +53,108 @@ context 'keycloak verification (ID-Porten - Oslo)' do
   def expect_user_to_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Bulenga',
-      last_name: 'Poulsen',
-      custom_field_values: {
-        'birthdate' => '1977-12-31',
-        'birthyear' => 1977,
-        'municipality_code' => '0173'
-      }
+      first_name: 'Erling',
+      last_name: 'Haaland',
+      custom_field_values: {}
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'keycloak',
       user_id: user.id,
       active: true,
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '410a77ec-4f85-46e4-aaef-bdbbd1a951f2', 'keycloak')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '23079421936', 'keycloak')
     })
   end
 
   def expect_user_to_be_verified_and_identified(user)
     expect_user_to_be_verified(user)
+    # expect(user.email).to eq 'erling@topscoring.com'
+    expect(user.confirmation_required?).to be(false)
     expect(user.identities.first).to have_attributes({
       provider: 'keycloak',
       user_id: user.id,
-      uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
+      uid: '23079421936',
       auth_hash: nil
     })
   end
 
-  it 'successfully verifies a user' do
-    get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
-    follow_redirect!
+  context 'email provided in auth response' do
+    it 'successfully verifies an existing user' do
+      get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+      follow_redirect!
 
-    expect_user_to_be_verified(@user)
+      expect_user_to_be_verified(@user)
 
-    expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
-  end
-
-  it 'successfully authenticates a user that was previously verified' do
-    get "/auth/keycloak?token=#{@token}"
-    follow_redirect!
-
-    expect(User.count).to eq(1)
-    expect(@user.identities.count).to eq(0)
-    expect_user_to_be_verified(@user)
-
-    get '/auth/keycloak'
-    follow_redirect!
-
-    expect(User.count).to eq(1)
-    expect(@user.identities.count).to eq(1)
-    expect_user_to_be_verified_and_identified(@user)
-  end
-
-  context 'updating custom fields when existing user' do
-    before do
-      auth_hash['extra']['raw_info']['birthdate'] = '1978-01-01'
-      auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
-      OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
-      @user.update!(verified: true, custom_field_values: { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123' })
+      expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
     end
 
-    it 'updates custom fields when reverifying' do
+    it 'successfully authenticates an existing user that was previously verified' do
       get "/auth/keycloak?token=#{@token}"
       follow_redirect!
 
       expect(User.count).to eq(1)
-      expect(@user.reload.identities.count).to eq(0)
-      expect(@user.reload.verified).to be true
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
-    end
-
-    it 'updates custom fields when authenticating as an existing user' do
-      create(:identity, provider: 'keycloak', uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2', user: @user)
+      expect(@user.identities.count).to eq(0)
+      expect_user_to_be_verified(@user)
 
       get '/auth/keycloak'
       follow_redirect!
 
       expect(User.count).to eq(1)
-      expect(@user.reload.verified).to be true
-      expect(@user.reload.identities.count).to eq(1)
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
+      expect(@user.identities.count).to eq(1)
+      expect_user_to_be_verified_and_identified(@user)
     end
-  end
 
-  it 'successfully verifies another user with another MitID account' do
-    get "/auth/keycloak?token=#{@token}"
-    follow_redirect!
-    expect(@user.reload).to have_attributes({
-      verified: true
-    })
-
-    user2 = create(:user)
-    token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['extra']['raw_info']['uuid'] = '12345'
-    OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
-
-    get "/auth/keycloak?token=#{token2}"
-    follow_redirect!
-    expect(user2.reload).to have_attributes(verified: true)
-  end
-
-  it 'fails when uid has already been used' do
-    uid = '410a77ec-4f85-46e4-aaef-bdbbd1a951f2'
-    create(
-      :verification,
-      method_name: 'DK MitID',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'DK MitID')
-    )
-
-    get "/auth/keycloak?token=#{@token}"
-    follow_redirect!
-
-    expect(@user.reload).to have_attributes(verified: false)
-  end
-
-  it 'creates user when the authentication token is not passed' do
-    expect(User.count).to eq(1)
-    get '/auth/keycloak?param=some-param'
-    follow_redirect!
-
-    expect(User.count).to eq(2)
-
-    user = User.order(created_at: :asc).last
-    expect_user_to_be_verified_and_identified(user)
-
-    expect(user).not_to eq(@user)
-    expect(user).to have_attributes({
-      email: nil,
-      password_digest: nil
-    })
-
-    expect(response).to redirect_to('/en/?param=some-param')
-  end
-
-  it 'does not send email to empty address (when just registered)' do
-    get '/auth/keycloak'
-    follow_redirect!
-
-    expect(ActionMailer::Base.deliveries).to be_empty
-  end
-
-  context 'when verification is already taken by new user' do
-    before do
-      get '/auth/keycloak'
+    it 'successfully verifies another user with another ID-Porten account' do
+      get "/auth/keycloak?token=#{@token}"
       follow_redirect!
+      expect(@user.reload).to have_attributes({
+        verified: true
+      })
+
+      user2 = create(:user)
+      token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
+      auth_hash['pid'] = '12345'
+      OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
+
+      get "/auth/keycloak?token=#{token2}"
+      follow_redirect!
+      expect(user2.reload).to have_attributes(verified: true)
     end
 
-    let!(:new_user) do
-      User.order(created_at: :asc).last.tap do |user|
-        expect(user).to have_attributes({ email: nil })
-        expect_user_to_be_verified_and_identified(user)
-      end
+    it 'fails when uid has already been used' do
+      uid = '23079421936'
+      create(
+        :verification,
+        method_name: 'keycloak',
+        hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'keycloak')
+      )
+
+      get "/auth/keycloak?token=#{@token}"
+      follow_redirect!
+
+      expect(@user.reload).to have_attributes(verified: false)
     end
 
-    context 'when verified registration is completed by new user' do
-      before { new_user.update!(email: Faker::Internet.email) }
+    it 'creates a new user when the authentication token is not passed' do
+      expect(User.count).to eq(1)
+      get '/auth/keycloak?param=some-param'
+      follow_redirect!
 
-      it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/keycloak?token=#{@token}&pathname=/some-page"
-        follow_redirect!
+      expect(User.count).to eq(2)
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
-        expect(@user.reload).to have_attributes({
-          verified: false,
-          first_name: 'Bulenga',
-          last_name: 'Poulsen'
-        })
+      user = User.order(created_at: :asc).last
+      expect_user_to_be_verified_and_identified(user)
 
-        expect(new_user.reload).to eq(new_user)
-      end
-    end
+      expect(user).not_to eq(@user)
+      expect(user).to have_attributes({
+        email: 'erling@topscoring.com',
+        password_digest: nil
+      })
 
-    context 'when verified registration is not completed by new user' do
-      it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/keycloak?token=#{@token}&pathname=/some-page"
-        follow_redirect!
-
-        expect(response).to redirect_to('/en/some-page?verification_success=true')
-        expect_user_to_be_verified(@user.reload)
-        expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
+      expect(response).to redirect_to('/en/?param=some-param')
     end
   end
 
-  describe 'update email after registration with keycloak' do
+  context 'email NOT provided in auth response' do
     before do
       configuration = AppConfiguration.instance
       configuration.settings['password_login'] = {
@@ -304,6 +164,51 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         'minimum_length' => 8
       }
       configuration.save!
+      auth_hash['info']['email'] = nil
+      OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
+    end
+
+    context 'when verification is already taken by a new user with no email' do
+      before do
+        get '/auth/keycloak'
+        follow_redirect!
+      end
+
+      let!(:new_user) do
+        User.order(created_at: :asc).last.tap do |user|
+          expect(user).to have_attributes({ email: nil })
+          expect_user_to_be_verified_and_identified(user)
+        end
+      end
+
+      context 'when verified registration is completed by new user' do
+        before { new_user.update!(email: Faker::Internet.email) }
+
+        it 'does not verify another user and does not delete previously verified new user' do
+          get "/auth/keycloak?token=#{@token}&pathname=/some-page"
+          follow_redirect!
+
+          expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
+          expect(@user.reload).to have_attributes({
+                                                    verified: false,
+                                                    first_name: 'EXISTING',
+                                                    last_name: 'USER'
+                                                  })
+
+          expect(new_user.reload).to eq(new_user)
+        end
+      end
+
+      context 'when verified registration is not completed by new user' do
+        it 'successfully verifies another user and deletes previously verified blank new user' do
+          get "/auth/keycloak?token=#{@token}&pathname=/some-page"
+          follow_redirect!
+
+          expect(response).to redirect_to('/en/some-page?verification_success=true')
+          expect_user_to_be_verified(@user.reload)
+          expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
     end
 
     context 'email confirmation enabled' do
@@ -324,6 +229,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         expect_user_to_be_verified_and_identified(user)
         expect(user.email).to be_nil
         expect(user.active?).to be(true)
+        expect(user.confirmation_required?).to be(false)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
         headers = { 'Authorization' => authorization_header(user) }
@@ -356,6 +262,13 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
       end
+
+      it 'does not send email to empty email address (when just registered)' do
+        get '/auth/keycloak'
+        follow_redirect!
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
     end
 
     context 'email confirmation disabled' do
@@ -386,34 +299,6 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(false)
       end
-    end
-  end
-
-  context 'when configured for auth0 backward compatibility' do
-    before do
-      config = AppConfiguration.instance
-      keycloak = config.settings('verification', 'verification_methods').first
-      keycloak[:method_name_for_hashing] = 'auth0'
-      keycloak[:uid_field_pattern] = 'adfs|cl-test-keycloak-verify-DK-NemID-POCES|%{nameidentifier}'
-      config.save!
-    end
-
-    it 'successfully verifies a user like auth0' do
-      get "/auth/keycloak?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
-      follow_redirect!
-
-      expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
-
-      expect(@user.reload).to have_attributes(verified: true)
-      expect(@user.custom_field_values['birthdate']).to eq '1977-12-31'
-      expect(@user.verifications.first).to have_attributes({
-        method_name: 'auth0',
-        user_id: @user.id,
-        active: true
-      })
-      hash_value = Verification::VerificationService.new.send(:hashed_uid, 'adfs|cl-test-keycloak-verify-DK-NemID-POCES|29d14ea06e16473286ac5de87a941784', 'auth0')
-      expect(@user.verifications.first.hashed_uid).to eq(hash_value)
-      expect(@user.verifications.first.hashed_uid).to eq('106ba51c378a87edd55f322f0c4c9ae7ba4f6ef9141aeec0fc1ebef68d01f128')
     end
   end
 end

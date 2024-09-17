@@ -5,30 +5,13 @@ module IdKeycloak
     include KeycloakVerification
 
     def profile_to_user_attrs(auth)
-      custom_field_values = {}
-
-      # Handle birthdate
-      # birthdate is already in YYYY-MM-DD, tak Denmark
-      birthdate = auth.extra.raw_info['birthdate']
-      if (birthday_key = config[:birthday_custom_field_key]) && birthdate
-        custom_field_values[birthday_key] = birthdate
-      end
-      if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
-        custom_field_values[birthyear_key] = Date.parse(birthdate).year
-      end
-
-      # Handle municipality_code
-      municipality_code = auth.extra.raw_info.dig('address_details', 'municipality_code')
-      if (municipality_code_key = config[:municipality_code_custom_field_key]) && municipality_code.present?
-        custom_field_values[municipality_code_key] = municipality_code
-      end
-
-      first_name, *last_name = auth.extra.raw_info.name.split
+      first_name, *last_name = auth.info.name.split
+      email = auth.info.email
       {
         first_name: first_name,
         last_name: last_name.join(' '),
-        locale: AppConfiguration.instance.closest_locale_to('da-DK'),
-        custom_field_values: custom_field_values
+        email: email,
+        locale: AppConfiguration.instance.closest_locale_to('nb-NO'), # No need to get the locale from the provider
       }
     end
 
@@ -54,7 +37,7 @@ module IdKeycloak
         identifier: config[:client_id],
         secret: config[:client_secret],
         host: config[:domain],
-        redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
+        redirect_uri: "#{configuration.base_backend_uri}/auth/keycloak/callback"
       }
     end
 
@@ -66,8 +49,9 @@ module IdKeycloak
       true
     end
 
-    def email_confirmed?(_auth)
-      false
+    def email_confirmed?(auth)
+      # Assume email confirmed if present
+      auth.info.email.present?
     end
 
     def filter_auth_to_persist(_auth)
