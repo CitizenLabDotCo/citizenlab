@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Archivé",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projets} one {# projet} other {# projets}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Sauvegarde automatique",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "La sauvegarde automatique est activée par défaut lorsque vous ouvrez l'éditeur d'enquête. Chaque fois que vous fermez le panneau des paramètres du champ à l'aide du bouton \"X\", l'enquête déclenche automatiquement une sauvegarde.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "La sauvegarde automatique est activée par défaut lorsque vous ouvrez l'éditeur d'enquête. Chaque fois que vous fermez le panneau de configuration des questions à l'aide du bouton \"X\", l'enquête déclenche automatiquement une sauvegarde.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
   "app.components.GoBackButton.group.edit.goBack": "Retour",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Retour à la page précédente",
