@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Archiviert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisch speichern",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Das automatische Speichern ist standardmäßig aktiviert, wenn Sie den Umfrage-Editor öffnen. Jedes Mal, wenn Sie das Feld Einstellungen über die Schaltfläche \"X\" schließen, wird die Umfrage automatisch gespeichert.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "Auto-saving is enabled by default when you open the survey editor. Any time you close the question setings panel using the \"X\" button, the survey will automatically trigger a save.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
   "app.components.GoBackButton.group.edit.goBack": "Zurück",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Zurück zur vorherigen Seite",
