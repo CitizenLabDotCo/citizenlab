@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título de la carpeta:",
   "app.components.FolderFolderCard.archived": "Archivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# proyectos} one {# proyecto} other {# proyectos}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autoguardado",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "El guardado automático está activado por defecto cuando abres el editor de encuestas. Cada vez que cierres el panel Ajustes de campo con el botón \"X\", la encuesta se guardará automáticamente.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descargar como pdf",
   "app.components.GoBackButton.group.edit.goBack": "Volver",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Volver a la página anterior",
