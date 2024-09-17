@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapes nosaukums:",
   "app.components.FolderFolderCard.archived": "Arhivēts",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekti} one {# projekts} other {# projekti}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automātiskā saglabāšana",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Pēc noklusējuma, atverot apsekojuma redaktoru, ir iespējota automātiskā saglabāšana. Katru reizi, kad aizverat lauka iestatījumu paneli, izmantojot pogu \"X\", apsekojums automātiski tiek saglabāts.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lejupielādēt kā pdf",
   "app.components.GoBackButton.group.edit.goBack": "Atgriezties",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Atgriezties uz iepriekšējo lapu",
