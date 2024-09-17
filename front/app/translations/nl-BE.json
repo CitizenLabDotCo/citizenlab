@@ -172,7 +172,7 @@
   "app.components.FolderFolderCard.archived": "Afgerond",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autosave",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip2": "Automatisch opslaan is standaard ingeschakeld als je de enquête-editor opent. Telkens als je het paneel met vraaginstellingen sluit met de knop \"X\", wordt de enquête automatisch opgeslagen.",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisch opslaan staat standaard aan als je de formuliereditor opent. Elke keer dat je het veldinstellingenpaneel sluit met de \"X\" knop, wordt het automatisch opgeslagen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ga terug naar de vorige pagina",
