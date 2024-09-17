@@ -120,7 +120,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
     const { disabled } = this.props;
     if (!disabled) {
       const targetElement = get(event, 'target') as any;
-      const parentElement = get(event, 'target.parentElement');
+      const parentElement = get(event, 'target.parentElement') as any;
       const targetElementIsLink =
         targetElement &&
         targetElement.hasAttribute &&
@@ -141,7 +141,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
     const { disabled } = this.props;
     if (!disabled) {
       const targetElement = get(event, 'target') as any;
-      const parentElement = get(event, 'target.parentElement');
+      const parentElement = get(event, 'target.parentElement') as any;
       const targetElementIsLink =
         targetElement &&
         targetElement.hasAttribute &&
