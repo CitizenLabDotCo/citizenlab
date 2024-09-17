@@ -9,7 +9,12 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
+import {
+  useForm,
+  useFieldArray,
+  FormProvider,
+  SubmitHandler,
+} from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { object, boolean, array, string, number } from 'yup';
@@ -80,6 +85,7 @@ const FormEdit = ({
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
     useState(true);
+  const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -131,6 +137,7 @@ const FormEdit = ({
     handleSubmit,
     control,
     formState: { errors, isDirty },
+    getValues,
     reset,
   } = methods;
 
@@ -152,8 +159,19 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = () => {
+  const closeSettings = async () => {
     setSelectedField(undefined);
+
+    if (autosaveEnabled) {
+      // Auto-save the form if the close button is clicked
+      const formValues = getValues();
+      handleSubmit(
+        onFormSubmit(formValues) as SubmitHandler<{
+          // Required casting here.
+          customFields: IFlatCustomField[];
+        }>
+      );
+    }
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
@@ -180,7 +198,9 @@ const FormEdit = ({
   const hasErrors = !!Object.keys(errors).length;
   const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
-  const onFormSubmit = async ({ customFields }: FormValues) => {
+  const onFormSubmit: SubmitHandler<{
+    customFields: IFlatCustomField[];
+  }> = async ({ customFields }: FormValues) => {
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
@@ -327,6 +347,8 @@ const FormEdit = ({
               isSubmitting={isSubmitting}
               builderConfig={builderConfig}
               viewFormLink={viewFormLink}
+              autosaveEnabled={autosaveEnabled}
+              setAutosaveEnabled={setAutosaveEnabled}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">

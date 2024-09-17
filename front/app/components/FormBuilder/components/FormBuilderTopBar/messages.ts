@@ -5,4 +5,13 @@ export default defineMessages({
     id: 'app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF',
     defaultMessage: 'Download as pdf',
   },
+  autosave: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.autosave',
+    defaultMessage: 'Autosave',
+  },
+  autosaveTooltip: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip',
+    defaultMessage:
+      'Auto-saving is enabled by default when you open the survey editor. Any time you close the Field Settings panel using the "X" button, the survey will automatically trigger a save.',
+  },
 });
