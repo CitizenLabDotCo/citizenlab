@@ -2604,6 +2604,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registreringsavgift",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registreringar",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Deltagarnas tidslinje",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning": "Observera att deltagarantalet kanske inte är helt korrekt eftersom vissa uppgifter samlas in i en extern undersökning som vi inte spårar",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "DIAGRAM",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Datumintervall",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Titel",
