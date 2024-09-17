@@ -108,4 +108,8 @@ export default defineMessages({
     id: 'app.components.form.controls.valueOutOfTotal',
     defaultMessage: '{value} out of {total}',
   },
+  cosponsorsPlaceholder: {
+    id: 'app.components.form.controls.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
 });

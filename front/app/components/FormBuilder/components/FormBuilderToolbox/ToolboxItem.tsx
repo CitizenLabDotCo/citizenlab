@@ -31,7 +31,6 @@ interface Props {
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
   margin-left: auto;
-  margin-right: 12px;
   fill: ${colors.textSecondary};
   margin-right: 0;
 `;
@@ -94,6 +93,7 @@ const ToolboxItem = ({
         <StyledBox
           display="flex"
           p="18px"
+          pl="8px"
           onClick={onClick}
           width="100%"
           m="0px"
