@@ -87,6 +87,9 @@ const AuthProviders = memo<Props>(
     const nemlogInLoginEnabled = useFeatureFlag({
       name: 'nemlog_in_login',
     });
+    const keycloakLoginEnabled = useFeatureFlag({
+      name: 'keycloak_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -127,6 +130,7 @@ const AuthProviders = memo<Props>(
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
+      keycloakLoginEnabled ||
       nemlogInLoginEnabled;
 
     return (
@@ -201,6 +205,22 @@ const AuthProviders = memo<Props>(
                   process.env.NODE_ENV === 'development'
                     ? 'MitID (Criipto)'
                     : 'MitID',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
+        {keycloakLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="idporten"
+            flow={flow}
+            authProvider="keycloak"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'ID-Porten',
               }}
             />
           </StyledAuthProviderButton>
