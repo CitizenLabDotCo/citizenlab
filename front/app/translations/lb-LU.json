@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel vum Dossier: ",
   "app.components.FolderFolderCard.archived": "Archivéiert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projeten} one {# Projet} other {# Projeten}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autospäicheren",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip": "Autospäicheren ass par défaut aktivéiert wann Dir den Ëmfroeditor opmaacht. All Kéier wann Dir d'Feld Astellunge Panel mat dem \"X\" Knäppchen zoumaacht, wäert d'Ëmfro automatesch e Späicheren ausléisen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Zeréck",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gitt zréck op déi virdrun Säit",
