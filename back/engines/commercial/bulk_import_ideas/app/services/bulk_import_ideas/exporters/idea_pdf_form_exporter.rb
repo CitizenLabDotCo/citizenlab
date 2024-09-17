@@ -373,7 +373,7 @@ module BulkImportIdeas::Exporters
       position = (810 - position) / 8.1 # Convert the position into equivalent of what form parser returns
       key = field[:key]
       parent_key = type == 'option' ? field.custom_field.key : nil
-      title = type == 'option' ? handle_option_title(option) : field[:title_multiloc][@locale]
+      title = type == 'option' ? handle_option_title(field) : field[:title_multiloc][@locale]
 
       # Because of the way pdf group works we delete if value is already there and always use the last value for the field
       @importer_fields.delete_if { |f| f[:key] == key && f[:parent_key] == parent_key }
