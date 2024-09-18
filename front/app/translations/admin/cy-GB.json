@@ -1102,7 +1102,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Wedi gorffen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Penagored",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Wedi'i gynllunio",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Prosiectau cyhoeddedig",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Mae'r data ar gyfer y teclyn hwn ar goll. Ail-ffurfweddwch neu dilëwch ef i allu cadw'r adroddiad.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Ni chanfuwyd unrhyw gamau priodol yn y prosiect hwn",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Dim cam wedi'i ddewis. Dewiswch gam yn gyntaf.",
