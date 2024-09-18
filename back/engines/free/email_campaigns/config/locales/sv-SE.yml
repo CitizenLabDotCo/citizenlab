@@ -82,6 +82,8 @@ sv:
       "unsubscribe_text": "avsluta prenumeration"
     follow:
       "unfollow_here": "Du har fått detta meddelande på grund av ett objekt som du följer. <a href=\"%{unfollow_url}\">Du kan avfölja det här.</a>"
+    manual:
+      preheader: 'Du har e-post från %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Anledningen till att din kommentar togs bort:'
       cta_view: 'Se den här idén'
@@ -540,6 +542,7 @@ sv:
       cta_see_results: 'Se resultat i plattformen'
     event_registration_confirmation:
       subject: "Du har kommit in! Din anmälan till \"%{eventTitle}\" är bekräftad."
+      preheader: "%{firstName}, tack för att du registrerar dig för %{eventTitle}"
       header_message: "%{firstName}, tack för att du registrerat dig för"
       event_details:
         labels:
