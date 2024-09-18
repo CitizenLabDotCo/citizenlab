@@ -159,7 +159,7 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = async () => {
+  const closeSettings = () => {
     setSelectedField(undefined);
 
     if (autosaveEnabled) {
