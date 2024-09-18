@@ -139,19 +139,21 @@ class CustomFieldService
     idea.author_id == current_user.id || UserRoleService.new.can_moderate_project?(idea.project, current_user)
   end
 
-  private
+  # Fallback to another locale title if current locale is missing
+  def handle_title(field, locale)
+    I18n.with_locale(locale) do
+      @multiloc_service.t(field.title_multiloc)
+    end
+  end
 
+  # Fallback to another locale description if current locale is missing
   def handle_description(field, locale)
     I18n.with_locale(locale) do
       @multiloc_service.t(field.description_multiloc)
     end
   end
 
-  def handle_title(field, locale)
-    I18n.with_locale(locale) do
-      @multiloc_service.t(field.title_multiloc)
-    end
-  end
+  private
 
   def base_ui_schema_field(field, _locale)
     {}.tap do |ui_schema|

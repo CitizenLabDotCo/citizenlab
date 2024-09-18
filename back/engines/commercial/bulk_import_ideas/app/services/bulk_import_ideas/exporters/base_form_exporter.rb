@@ -29,13 +29,8 @@ module BulkImportIdeas::Exporters
 
     private
 
-    # Fallback to another locale if option in current locale is missing
-    def handle_option_title(option)
-      I18n.with_locale(@locale) { multiloc_service.t(option.title_multiloc) }
-    end
-
-    def multiloc_service
-      @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
+    def custom_field_service
+      @custom_field_service ||= CustomFieldService.new
     end
   end
 end
