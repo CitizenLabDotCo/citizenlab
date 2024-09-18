@@ -35,7 +35,7 @@ const AccessDenied = ({ authenticationData, onClose }: Props) => {
     !accessDeniedExplanation || accessDeniedExplanation.length === 0;
 
   return (
-    <Box>
+    <Box id="e2e-access-denied-step">
       <Text mt="12px">
         {isEmpty ? (
           <FormattedMessage {...messages.youDoNotMeetTheRequirements} />

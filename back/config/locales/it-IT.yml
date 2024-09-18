@@ -192,8 +192,8 @@ it:
       section3:
         title: Dettagli
         description:
-      other_text_field:
-        title: Se hai scelto '{other_option}', a cosa stai pensando?
+      other_input_field:
+        title: Scrivi la tua risposta
   custom_forms:
     categories:
       main_content:

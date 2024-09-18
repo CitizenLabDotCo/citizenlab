@@ -64,7 +64,7 @@ module IdNemlogIn
       idp_metadata = idp_metadata_parser.parse_to_hash(File.read(metadata_file))
 
       metadata = idp_metadata.merge({
-        issuer: verification_config[:issuer],
+        sp_entity_id: verification_config[:issuer],
 
         # without it (or with assertion_consumer_service_url: nil), localtunnel gives "502 Bad Gateway nginx/1.17.9"
         # after clicking "Verify with MitID" on https://nemlogin-k3kd.loca.lt/auth/nemlog_in?token=eyJhbGc...
@@ -78,9 +78,8 @@ module IdNemlogIn
         # Transform `token` param to `RelayState`, which is preserved by SAML.
         # Nemlog-in gives error if it's longer than 512 chars.
         # NOTE: not sure why this is commented out, but does not verify locally when it is enabled
-        # idp_sso_target_url_runtime_params: { token: :RelayState },
-        # it's idp_slo_service_url in newest version of omniauth-saml
-        idp_slo_target_url: idp_metadata[:idp_slo_service_url],
+        # idp_sso_service_url_runtime_params: { token: :RelayState },
+        idp_slo_service_url: idp_metadata[:idp_slo_service_url],
 
         security: {
           authn_requests_signed: true, # using false gives "A technical error has occurred" on https://test-devtest4-nemlog-in.pp.mitid.dk/

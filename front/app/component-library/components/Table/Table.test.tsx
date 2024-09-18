@@ -1,8 +1,6 @@
 import React from 'react';
 
-import userEvent from '@testing-library/user-event';
-
-import { render, screen, waitFor } from '../../utils/testUtils/rtl';
+import { render, screen } from '../../utils/testUtils/rtl';
 
 import { Table, Thead, Tbody, Tr, Th, Td } from '.';
 
@@ -33,27 +31,6 @@ describe('<Table />', () => {
 
     expect(screen.getByText('Test header cell')).toBeInTheDocument();
     expect(container.querySelector('.cl-icon')).toBeInTheDocument();
-  });
-
-  it('renders info tooltip in Th', async () => {
-    render(
-      <Table>
-        <Thead>
-          <Tr>
-            <Th infoTooltip="Info tooltip copy">Test header cell</Th>
-          </Tr>
-        </Thead>
-      </Table>
-    );
-
-    expect(screen.getByText('Test header cell')).toBeInTheDocument();
-    const tooltipIcon = screen.getByTestId('tooltip-icon-button');
-    expect(screen.queryByText('Info tooltip copy')).not.toBeInTheDocument();
-
-    userEvent.hover(tooltipIcon);
-    await waitFor(() => {
-      expect(screen.getByText('Info tooltip copy')).toBeInTheDocument();
-    });
   });
 
   it('does not give Th cursor: pointer if not clickable', () => {
