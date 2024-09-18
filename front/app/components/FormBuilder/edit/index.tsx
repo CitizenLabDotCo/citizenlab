@@ -162,8 +162,8 @@ const FormEdit = ({
   const closeSettings = () => {
     setSelectedField(undefined);
 
-    if (autosaveEnabled) {
-      // Auto-save the form if the close button is clicked & auto-save is enabled
+    // If autosave is enabled & no submission have come in yet, save
+    if (autosaveEnabled && totalSubmissions === 0) {
       onFormSubmit(getValues());
     }
   };
@@ -343,6 +343,7 @@ const FormEdit = ({
               viewFormLink={viewFormLink}
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
+              showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">

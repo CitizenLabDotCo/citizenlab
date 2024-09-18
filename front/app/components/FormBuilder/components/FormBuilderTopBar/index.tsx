@@ -46,6 +46,7 @@ type FormBuilderTopBarProps = {
   builderConfig: FormBuilderConfig;
   viewFormLink: RouteType;
   autosaveEnabled: boolean;
+  showAutosaveToggle: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -55,6 +56,7 @@ const FormBuilderTopBar = ({
   viewFormLink,
   autosaveEnabled,
   setAutosaveEnabled,
+  showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
   const printedFormsEnabled =
     useFeatureFlag({
@@ -142,22 +144,24 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
-        <Box mx="16px">
-          <Toggle
-            label={
-              <Box display="flex" gap="4px">
-                {formatMessage(ownMessages.autosave)}
-                <IconTooltip
-                  content={formatMessage(ownMessages.autosaveTooltip)}
-                />
-              </Box>
-            }
-            checked={autosaveEnabled}
-            onChange={() => {
-              setAutosaveEnabled(!autosaveEnabled);
-            }}
-          />
-        </Box>
+        {showAutosaveToggle && (
+          <Box mx="16px">
+            <Toggle
+              label={
+                <Box display="flex" gap="4px">
+                  {formatMessage(ownMessages.autosave)}
+                  <IconTooltip
+                    content={formatMessage(ownMessages.autosaveTooltip)}
+                  />
+                </Box>
+              }
+              checked={autosaveEnabled}
+              onChange={() => {
+                setAutosaveEnabled(!autosaveEnabled);
+              }}
+            />
+          </Box>
+        )}
         {printedFormsEnabled && (
           <Button
             buttonStyle="secondary-outlined"
