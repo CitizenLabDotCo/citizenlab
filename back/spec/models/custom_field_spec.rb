@@ -524,7 +524,7 @@ RSpec.describe CustomField do
       expect(other_option_text_field.key).to eq 'select_field_other'
       expect(other_option_text_field.input_type).to eq 'text'
       expect(other_option_text_field.title_multiloc['en']).to eq 'Type your answer'
-      # expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Tapez votre réponse'
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Tapez votre réponse'
     end
 
     it 'returns nil otherwise' do
