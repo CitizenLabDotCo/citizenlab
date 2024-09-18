@@ -20,15 +20,15 @@ module EmailCampaigns
 
     private
 
+    def preheader
+      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
+    end
+
     def subject
       format_message('subject', values: {
         organizationName: organization_name,
         eventTitle: event_title
       })
-    end
-
-    def preheader
-      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
     end
 
     def event_title

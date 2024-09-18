@@ -12,12 +12,12 @@ class ResetPasswordMailer < ApplicationMailer
     end
   end
 
-  def subject
-    t('.subject', organizationName: organization_name)
-  end
-
   def preheader
     t('.preheader', organizationName: organization_name)
+  end
+
+  def subject
+    t('.subject', organizationName: organization_name)
   end
 
   def header_logo_only?
