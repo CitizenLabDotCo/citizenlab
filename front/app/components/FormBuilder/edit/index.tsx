@@ -163,14 +163,8 @@ const FormEdit = ({
     setSelectedField(undefined);
 
     if (autosaveEnabled) {
-      // Auto-save the form if the close button is clicked
-      const formValues = getValues();
-      handleSubmit(
-        onFormSubmit(formValues) as SubmitHandler<{
-          // Required casting here.
-          customFields: IFlatCustomField[];
-        }>
-      );
+      // Auto-save the form if the close button is clicked & auto-save is enabled
+      onFormSubmit(getValues());
     }
   };
 
