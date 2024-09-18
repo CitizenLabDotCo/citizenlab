@@ -11,6 +11,10 @@ class UserBlockedMailer < ApplicationMailer
     end
   end
 
+  def preheader
+    t('.preheader', organizationName: organization_name)
+  end
+
   def subject
     t('.subject', organizationName: organization_name)
   end

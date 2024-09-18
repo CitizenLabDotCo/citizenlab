@@ -20,6 +20,10 @@ class ConfirmationsMailer < ApplicationMailer
     t('.subject', organizationName: organization_name)
   end
 
+  def preheader
+    t('.preheader', organizationName: organization_name)
+  end
+
   def header_logo_only?
     true
   end
