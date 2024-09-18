@@ -21,4 +21,16 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned',
     defaultMessage: 'Planned',
   },
+  archived: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.archived',
+    defaultMessage: 'Archived',
+  },
+  published: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published',
+    defaultMessage: 'Published',
+  },
+  publicationStatus: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus',
+    defaultMessage: 'Publication status',
+  },
 });

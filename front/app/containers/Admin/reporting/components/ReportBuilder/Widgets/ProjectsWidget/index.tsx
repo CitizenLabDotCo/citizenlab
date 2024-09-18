@@ -20,6 +20,7 @@ ProjectsWidget.craft = {
     title: {},
     startAt: undefined,
     endAt: undefined,
+    publicationStatus: undefined,
   },
   related: {
     settings: Settings,
