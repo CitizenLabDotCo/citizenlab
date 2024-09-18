@@ -1235,6 +1235,7 @@
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "The idea body must be more than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength": "The contribution title must be less than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength1": "The contribution title must be more than {limit} characters long",
+  "app.containers.IdeasNewPage.ajv_error_cosponsor_ids_required": "Please select at least one cosponsor",
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_maxLength": "The idea description must be less than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_minLength": "The idea description must be more than {limit} characters long",
   "app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required": "Please provide a description",
