@@ -1230,7 +1230,7 @@
   "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Dës Ëmfro ass am Moment net aktiv.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Zréck op de Projet",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Dir hutt dës Ëmfro schonn ofgeschloss.",
-  "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Ëmfro presentéiert",
+  "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Ëmfro ofgeschloss",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.thanksForResponse": "Merci fir Är Äntwert!",
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength": "D’Bäitragsbeschreiwung muss manner wéi {limit} Zeeche laang sinn",
   "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Den Haaptdeel vun der Iddi muss méi wéi {limit} Zeeche laang sinn",
