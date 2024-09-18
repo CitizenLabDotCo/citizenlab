@@ -39,8 +39,6 @@ const TimelineCalendar = ({
 
   const disabled = useMemo(() => {
     return Object.keys(modifiers).reduce((acc, key) => {
-      if (!key.startsWith('phase-')) return acc;
-
       return [...acc, modifiers[key]];
     }, [] as Matcher[]);
   }, [modifiers]);
