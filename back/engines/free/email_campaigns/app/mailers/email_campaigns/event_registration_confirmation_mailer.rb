@@ -27,6 +27,10 @@ module EmailCampaigns
       })
     end
 
+    def preheader
+      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
+    end
+
     def event_title
       localize_for_recipient(event.event_attributes.title_multiloc)
     end
