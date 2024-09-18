@@ -29,10 +29,12 @@ import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import tracks from '../tracks';
 
 import ownMessages from './messages';
 
@@ -157,6 +159,10 @@ const FormBuilderTopBar = ({
               }
               checked={autosaveEnabled}
               onChange={() => {
+                autosaveEnabled
+                  ? trackEventByName(tracks.toggledOffFormAutosaving)
+                  : trackEventByName(tracks.toggledOnFormAutosaving);
+
                 setAutosaveEnabled(!autosaveEnabled);
               }}
             />
