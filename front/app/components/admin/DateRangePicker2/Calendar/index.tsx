@@ -20,11 +20,15 @@ const DayPickerStyles = styled.div`
 
 interface Props {
   selectedRange: DateRange;
-  disabledRanges: DateRange[];
+  disabledRanges?: DateRange[];
   onUpdateRange: (range: DateRange) => void;
 }
 
-const Calendar = ({ selectedRange, disabledRanges, onUpdateRange }: Props) => {
+const Calendar = ({
+  selectedRange,
+  disabledRanges = [],
+  onUpdateRange,
+}: Props) => {
   const locale = useLocale();
 
   const handleDayClick: PropsBase['onDayClick'] = (day) => {
