@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
-import { DayPicker, Matcher } from 'react-day-picker';
+import { DayPicker, Matcher, PropsRange } from 'react-day-picker';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
@@ -51,7 +51,7 @@ const TimelineCalendar = ({
 
   if (!selectedPhase) return null;
 
-  const handleSelect = (e) => {
+  const handleSelect: PropsRange['onSelect'] = (e) => {
     console.log(e);
   };
 
