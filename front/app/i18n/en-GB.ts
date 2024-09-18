@@ -1,7 +1,7 @@
 import enGB from 'date-fns/locale/en-GB';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/TimelineCalendar/locales';
+import { addLocale } from 'components/admin/DateRangePicker2/Calendar/locales';
 
 import { formatTranslationMessages } from './';
 
