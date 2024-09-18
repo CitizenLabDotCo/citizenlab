@@ -200,13 +200,7 @@ const App = ({ children }: Props) => {
     };
 
     const newPreviousPathname = location.pathname as RouteType;
-    const pathsToIgnore = [
-      'sign-up',
-      'sign-in',
-      'complete-signup',
-      'invite',
-      'authentication-error',
-    ];
+    const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
     setPreviousPathname(
       !endsWith(newPreviousPathname, pathsToIgnore)
         ? newPreviousPathname

@@ -73,9 +73,8 @@ export enum citizenRoutes {
   profile = 'profile',
   signIn = 'sign-in',
   signUp = 'sign-up',
+  signInAdmin = 'sign-in/admin',
   invite = 'invite',
-  completeSignUp = 'complete-signup',
-  authenticationError = 'authentication-error',
   siteMap = 'site-map',
   profileEdit = `profile/edit`,
   changePassword = `profile/change-password`,
@@ -112,11 +111,10 @@ export enum citizenRoutes {
 type citizenRouteTypes =
   | '/'
   | `/${string}/`
+  | `/sign-in/admin`
   | `/sign-in`
   | `/sign-up`
   | `/invite`
-  | `/complete-signup`
-  | `/authentication-error`
   | `/site-map`
   | `/${citizenRoutes.profile}/edit`
   | `/${citizenRoutes.profile}/change-password`
@@ -161,6 +159,14 @@ export default function createRoutes() {
           ),
         },
         {
+          path: citizenRoutes.signInAdmin,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
           path: citizenRoutes.signIn,
           element: (
             <PageLoading>
@@ -178,22 +184,6 @@ export default function createRoutes() {
         },
         {
           path: citizenRoutes.invite,
-          element: (
-            <PageLoading>
-              <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.completeSignUp,
-          element: (
-            <PageLoading>
-              <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.authenticationError,
           element: (
             <PageLoading>
               <HomePage />

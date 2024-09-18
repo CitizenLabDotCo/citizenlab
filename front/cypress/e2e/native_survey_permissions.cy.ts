@@ -185,8 +185,11 @@ describe('Native survey permissions', () => {
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
 
-      // Expect to be kicked out of auth modal
-      cy.get('#e2e-authentication-modal').should('not.exist');
+      // Expect to see access denied step
+      cy.get('#e2e-access-denied-step').should('exist');
+
+      // Close modal
+      cy.get('.e2e-modal-close-button').click();
 
       // Expect button to be disabled
       cy.wait(5000);

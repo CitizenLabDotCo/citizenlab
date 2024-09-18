@@ -21,6 +21,7 @@ export type ErrorCode =
   | 'franceconnect_merging_failed'
   | 'email_taken_and_user_can_be_verified'
   | 'not_entitled_under_minimum_age'
+  | 'verification_taken'
   | 'resending_code_failed';
 
 export interface State {
@@ -45,7 +46,10 @@ export type Step = keyof StepConfig;
 export type SetError = (errorCode: ErrorCode) => void;
 
 export type SignUpInFlow = 'signup' | 'signin';
-export type SignUpInError = 'general' | 'franceconnect_merging_failed';
+export type SignUpInError =
+  | 'general'
+  | 'franceconnect_merging_failed'
+  | 'not_entitled_under_minimum_age';
 export type VerificationError = 'not_entitled_under_minimum_age';
 
 export interface AuthenticationData {

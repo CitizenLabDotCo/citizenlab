@@ -6,7 +6,7 @@ import { isLastVerificationMethod } from 'api/verification_methods/util';
 import { FormattedMessage } from 'utils/cl-intl';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import messages from './messages';
+import messages from '../../../components/UI/ClaveUnicaButton/messages';
 
 const ClaveUnicaButton = React.lazy(
   () => import('../../../components/UI/ClaveUnicaButton')

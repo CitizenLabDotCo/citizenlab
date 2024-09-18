@@ -120,6 +120,7 @@ describe ProjectCopyService do
     end
 
     it 'skips custom field values with ID references' do
+      create(:idea_status_proposed)
       project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
@@ -148,68 +149,91 @@ describe ProjectCopyService do
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
 
-    it 'successfully copies map_configs associated with phase-level form custom_fields' do
+    it 'successfully copies map_configs associated with phase-level form custom_fields, and their layers' do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
       page_field = create(:custom_field_page, :for_custom_form, resource: form1)
       map_config1 = create(:map_config, zoom_level: 15, mappable: page_field)
+      layer1 = create(:geojson_layer, map_config: map_config1, title_multiloc: { en: 'Layer 1' })
       point_field = create(:custom_field_point, :for_custom_form, resource: form1)
       map_config2 = create(:map_config, zoom_level: 17, mappable: point_field)
+      layer2 = create(:geojson_layer, map_config: map_config2, title_multiloc: { en: 'Layer 2' })
+      layer3 = create(:esri_feature_layer, map_config: map_config2, title_multiloc: { en: 'Layer 3' })
 
       template = service.export open_ended_project
 
       expect(template['models']['custom_field'].size).to eq 2
       expect(template['models']['custom_maps/map_config'].size).to eq 2
+      expect(template['models']['custom_maps/layer'].size).to eq 3
 
       tenant = create(:tenant)
       tenant.switch do
         expect(CustomMaps::MapConfig.count).to eq 0
+        expect(CustomMaps::Layer.count).to eq 0
 
         service.import template
 
         expect(CustomMaps::MapConfig.count).to eq 2
         expect(CustomMaps::MapConfig.all.pluck(:zoom_level))
           .to match_array [map_config1.zoom_level, map_config2.zoom_level]
+
+        expect(CustomMaps::Layer.count).to eq 3
+        expect(CustomMaps::Layer.all.pluck(:title_multiloc))
+          .to match_array [layer1.title_multiloc, layer2.title_multiloc, layer3.title_multiloc]
       end
     end
 
-    it 'successfully copies map_configs associated with project-level form custom_fields' do
+    it 'successfully copies map_configs associated with project-level form custom_fields, and their layers' do
       project = create(:project)
       form1 = create(:custom_form, participation_context: project)
       field1 = create(:custom_field_point, :for_custom_form, resource: form1)
       map_config = create(:map_config, zoom_level: 17, mappable: field1)
+      layer1 = create(:geojson_layer, map_config: map_config, title_multiloc: { en: 'Layer 1' })
+      layer2 = create(:geojson_layer, map_config: map_config, title_multiloc: { en: 'Layer 2' })
 
       template = service.export project
 
       expect(template['models']['custom_maps/map_config'].size).to eq 1
+      expect(template['models']['custom_maps/layer'].size).to eq 2
 
       tenant = create(:tenant)
       tenant.switch do
         expect(CustomMaps::MapConfig.count).to eq 0
+        expect(CustomMaps::Layer.count).to eq 0
 
         service.import template
 
         expect(CustomMaps::MapConfig.count).to eq 1
         expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+
+        expect(CustomMaps::Layer.count).to eq 2
+        expect(CustomMaps::Layer.all.pluck(:title_multiloc))
+          .to match_array [layer1.title_multiloc, layer2.title_multiloc]
       end
     end
 
-    it 'successfully copies map_configs associated with projects' do
+    it 'successfully copies map_configs associated with projects, and their layers' do
       project = create(:project)
       map_config = create(:map_config, zoom_level: 17, mappable: project)
+      layer = create(:geojson_layer, map_config: map_config, title_multiloc: { en: 'Layer title' })
 
       template = service.export project
 
       expect(template['models']['custom_maps/map_config'].size).to eq 1
+      expect(template['models']['custom_maps/layer'].size).to eq 1
 
       tenant = create(:tenant)
       tenant.switch do
         expect(CustomMaps::MapConfig.count).to eq 0
+        expect(CustomMaps::Layer.count).to eq 0
 
         service.import template
 
         expect(CustomMaps::MapConfig.count).to eq 1
         expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+
+        expect(CustomMaps::Layer.count).to eq 1
+        expect(CustomMaps::Layer.first.title_multiloc).to eq layer.title_multiloc
       end
     end
 

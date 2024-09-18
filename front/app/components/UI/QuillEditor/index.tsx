@@ -116,6 +116,8 @@ const QuillEditor = ({
     const textChangeHandler = () => {
       const html = getHTML(editor);
 
+      if (html === htmlRef.current) return;
+
       htmlRef.current = html;
       onChangeRef.current?.(html);
     };
@@ -165,6 +167,8 @@ const QuillEditor = ({
   const saveLatestContent = () => {
     if (!editor) return;
     const html = getHTML(editor);
+
+    if (html === htmlRef.current) return;
 
     htmlRef.current = html;
     onChangeRef.current?.(html);

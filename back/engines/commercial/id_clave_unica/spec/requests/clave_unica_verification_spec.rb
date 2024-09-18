@@ -121,7 +121,7 @@ describe 'clave_unica verification' do
     get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(@user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -131,7 +131,7 @@ describe 'clave_unica verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/clave_unica?param=/some-param'
+    get '/auth/clave_unica?param=some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -145,7 +145,7 @@ describe 'clave_unica verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+    expect(response).to redirect_to('/en/?param=some-param')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -175,7 +175,7 @@ describe 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
           first_name: 'Rudolphi',
