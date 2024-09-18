@@ -4,10 +4,6 @@ module EmailCampaigns
   class ProjectPublishedMailer < ApplicationMailer
     private
 
-    def preheader
-      format_message('preheader')
-    end
-
     def subject
       format_message('subject', values: { organizationName: organization_name })
     end

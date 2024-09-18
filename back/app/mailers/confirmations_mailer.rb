@@ -11,10 +11,6 @@ class ConfirmationsMailer < ApplicationMailer
     end
   end
 
-  def preheader
-    t('.preheader', organizationName: organization_name)
-  end
-
   def to_email
     email = recipient.new_email.presence || recipient.email
     email_address_with_name(email, "#{recipient.first_name} #{recipient.last_name}")

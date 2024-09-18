@@ -10,10 +10,6 @@ module EmailCampaigns
       localize_for_recipient(event.official_feedback_author_multiloc)
     end
 
-    def preheader
-      format_message('preheader')
-    end
-
     def subject
       format_message('subject', values: { organizationName: organization_name })
     end
