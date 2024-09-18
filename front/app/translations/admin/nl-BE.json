@@ -1104,7 +1104,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Open einde",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Gepland",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.projects": "Projecten",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Status van de map",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Publicatiestatus",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Gepubliceerd",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "De gegevens voor deze widget ontbreken. Configureer het opnieuw of verwijder het om het rapport op te kunnen slaan.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Geen geschikte fasen gevonden in dit project",
