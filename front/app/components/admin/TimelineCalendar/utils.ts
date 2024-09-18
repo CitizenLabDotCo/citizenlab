@@ -77,3 +77,20 @@ export const getModifierStyles = (modifiers: Record<string, Matcher>) => {
 
   return modifiersStyles;
 };
+
+type NewPhasesGetterParams = {
+  phases: DateRange[];
+  selectedPhaseIndex: number;
+};
+
+export const newPhasesGetter =
+  ({ phases, selectedPhaseIndex }: NewPhasesGetterParams) =>
+  (newPhase: DateRange) => {
+    return phases.map((phase, index) => {
+      if (index === selectedPhaseIndex) {
+        return newPhase;
+      }
+
+      return phase;
+    });
+  };
