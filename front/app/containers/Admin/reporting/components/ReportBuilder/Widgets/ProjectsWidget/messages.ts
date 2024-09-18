@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  publishedProjects: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects',
-    defaultMessage: 'Published projects',
+  projects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.projects',
+    defaultMessage: 'Projects',
   },
   finished: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished',
