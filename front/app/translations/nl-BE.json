@@ -1617,7 +1617,7 @@
   "app.containers.Projects.events": "Activiteiten",
   "app.containers.Projects.header": "Projecten",
   "app.containers.Projects.ideas": "Ideeën",
-  "app.containers.Projects.inaccurateParticipantsTooltip": "Deelnameaantallen zijn mogelijk niet volledig accuraat, omdat sommige gegevens worden vastgelegd in een externe enquête die we niet bijhouden (zie het tabblad {projectParticipantsLink} voor meer informatie).",
+  "app.containers.Projects.inaccurateParticipantsTooltip": "Het aantal deelnemers is mogelijk niet volledig accuraat, omdat sommige gegevens worden vastgelegd in een externe vragenlijst die we niet bijhouden (zie het tabblad {projectParticipantsLink} voor meer informatie)",
   "app.containers.Projects.information": "Info",
   "app.containers.Projects.invisbleTitleDocumentAnnotation1": "Bekijk het document",
   "app.containers.Projects.invisibleTitlePhaseAbout": "Over deze fase",
