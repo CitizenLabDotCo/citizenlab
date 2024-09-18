@@ -24,7 +24,7 @@ class ApplicationMailer < ActionMailer::Base
   NotImplementedError = Class.new(StandardError)
 
   def format_message(key, component: nil, escape_html: true, values: {})
-    msg = t(".#{key}", values)
+    msg = t(".#{key}", **values)
     escape_html ? msg : msg.html_safe
   end
 
