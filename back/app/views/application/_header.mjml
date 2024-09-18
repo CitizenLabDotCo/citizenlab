@@ -1,3 +1,4 @@
+
 <% unless header_logo_only? %>
   <mj-section>
     <mj-column>
