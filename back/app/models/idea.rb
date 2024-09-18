@@ -93,8 +93,8 @@ class Idea < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
-  has_many :cosposorships, dependent: :destroy
-  has_many :cosponsors, through: :cosposorships, source: :user
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsors, through: :cosponsorships, source: :user
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
