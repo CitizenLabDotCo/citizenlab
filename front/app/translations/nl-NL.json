@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",
   "app.components.FolderFolderCard.archived": "Afgerond",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
-  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autosave",
+  "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisch opslaan",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisch opslaan staat standaard aan als je de formuliereditor opent. Elke keer dat je het veldinstellingenpaneel sluit met de \"X\" knop, wordt het automatisch opgeslagen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
