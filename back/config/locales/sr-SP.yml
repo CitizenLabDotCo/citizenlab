@@ -192,8 +192,8 @@ sr-Cyrl:
       section3:
         title: Детаљи
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
