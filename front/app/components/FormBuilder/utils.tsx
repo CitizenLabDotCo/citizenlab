@@ -202,6 +202,9 @@ const getBuiltInFieldStringKey = (
     case 'topic_ids':
       translatedStringKey = messages.tags;
       break;
+    case 'cosponsor_ids':
+      translatedStringKey = messages.cosponsors;
+      break;
     case 'proposed_budget':
       translatedStringKey = messages.proposedBudget;
       break;

@@ -179,6 +179,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       idea_files_attributes: _idea_files_attributes,
       idea_images_attributes: _idea_images_attributes,
       topic_ids: _topic_ideas,
+      cosponsor_ids: _cosponsor_ids,
       author_id: _author_id,
       ...supportedFormData
     } = ideaFormData;

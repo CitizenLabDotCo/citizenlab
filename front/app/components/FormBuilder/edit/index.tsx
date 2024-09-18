@@ -238,7 +238,6 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
-      console.log(finalResponseArray);
 
       await updateFormCustomFields(
         {

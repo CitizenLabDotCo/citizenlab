@@ -63,6 +63,7 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
+  cosponsor_ids?: string[];
   publication_status?: IdeaPublicationStatus;
 }
 

@@ -170,6 +170,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.ajv_error_option_topic_ids_minItems',
     defaultMessage: 'Please select at least one tag',
   },
+  ajv_error_cosponsor_ids_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_cosponsor_ids_required',
+    defaultMessage: 'Please select at least one cosponsor',
+  },
   ajv_error_proposed_budget_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_proposed_budget_required',
     defaultMessage: 'Please enter a number',
