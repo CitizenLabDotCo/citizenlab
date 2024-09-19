@@ -54,9 +54,9 @@ interface Props {
   className?: string;
   onChange: (arg: IPhaseParticipationConfig) => void;
   onSubmit: (arg: IPhaseParticipationConfig) => void;
-  phase?: IPhase | undefined | null;
+  phase?: IPhase;
   project?: IProject | undefined | null;
-  apiErrors: CLErrors | null | undefined;
+  apiErrors: CLErrors | null;
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -614,6 +614,8 @@ const PhaseParticipationConfig = ({
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
             allow_anonymous_participation={allow_anonymous_participation}
+            apiErrors={apiErrors}
+            phase={phase}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
