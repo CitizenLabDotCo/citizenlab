@@ -501,7 +501,9 @@ const AdminPhaseEditWrapper = () => {
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
   if (phaseLoading) return null;
 
-  return <AdminPhaseEdit projectId={projectId} phase={phase} />;
+  return (
+    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
+  );
 };
 
 export default AdminPhaseEditWrapper;
