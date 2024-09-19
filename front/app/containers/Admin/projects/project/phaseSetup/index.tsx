@@ -109,11 +109,6 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
-    setAttributeDiff(phase ? phase.data.attributes : ideationDefaultConfig);
-    setSubmitState('disabled');
-  }, [phase]);
-
-  useEffect(() => {
     if (phaseFiles) {
       setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
@@ -265,14 +260,14 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         setErrors(null);
         setSubmitState('success');
 
-        setAttributeDiff(phase ? phase.data.attributes : ideationDefaultConfig);
-
         if (redirectAfterSave) {
           const redirectTab = getTimelineTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
             `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
           );
+        } else {
+          setAttributeDiff(response.data.attributes);
         }
       })
       .catch(({ errors }) => {
