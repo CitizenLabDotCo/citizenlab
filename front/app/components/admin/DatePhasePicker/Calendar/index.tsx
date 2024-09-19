@@ -2,6 +2,7 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
+import { addYears } from 'date-fns';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
 
@@ -21,12 +22,16 @@ const DayPickerStyles = styled.div`
 interface Props {
   selectedRange: DateRange;
   disabledRanges?: DateRange[];
+  startMonth?: Date;
+  endMonth?: Date;
   onUpdateRange: (range: DateRange) => void;
 }
 
 const Calendar = ({
   selectedRange,
   disabledRanges = [],
+  startMonth = addYears(new Date(), -2),
+  endMonth = addYears(new Date(), 2),
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
@@ -52,6 +57,8 @@ const Calendar = ({
         locale={getLocale(locale)}
         selected={selectedRange}
         disabled={disabledRanges}
+        startMonth={startMonth}
+        endMonth={endMonth}
         modifiersStyles={{
           disabled: {
             backgroundColor: colors.background,
