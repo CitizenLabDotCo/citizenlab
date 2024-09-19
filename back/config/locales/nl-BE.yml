@@ -326,7 +326,7 @@ nl-BE:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Uw account is tijdelijk uitgeschakeld'
-      preheader: 'Je account op het deelnameplatform van %{organizationName} is tijdelijk uitgeschakeld.'
+      preheader: 'Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld'
       title_user_blocked: 'Uw account is tijdelijk uitgeschakeld'
       paragraph_1_without_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
       paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
