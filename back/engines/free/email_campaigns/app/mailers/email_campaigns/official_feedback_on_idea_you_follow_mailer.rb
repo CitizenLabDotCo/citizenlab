@@ -11,11 +11,11 @@ module EmailCampaigns
     end
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject', values: { organizationName: organization_name, input_title: localize_for_recipient(event.post_title_multiloc) })
     end
 
     def header_title
-      format_message('header_title', values: { organizationName: organization_name })
+      format_message('header_title', values: { organizationName: organization_name, input_title: localize_for_recipient(event.post_title_multiloc) })
     end
 
     def header_message

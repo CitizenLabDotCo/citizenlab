@@ -343,8 +343,8 @@ en:
       preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
-      header_title: 'There''s an update on an input you follow'
-      subject: 'An input you follow has received an official update on the platform of %{organizationName}'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
