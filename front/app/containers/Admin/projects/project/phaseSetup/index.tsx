@@ -412,6 +412,7 @@ const AdminPhaseEdit = () => {
           />
 
           <PhaseParticipationConfig
+            phaseAttrs={phaseAttrs}
             phase={phase}
             onSubmit={handlePhaseParticipationConfigSubmit}
             onChange={handlePhaseParticipationConfigChange}
