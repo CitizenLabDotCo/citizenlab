@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
@@ -16,6 +16,23 @@ const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
     --rdp-accent-background-color: ${colors.teal100};
+  }
+
+  .is-disabled {
+    background-color: ${colors.background};
+    color: ${colors.coolGrey600};
+  }
+
+  .is-disabled > button {
+    cursor: not-allowed;
+  }
+
+  .is-disabled-start {
+    border-radius: 50% 0 0 50%;
+  }
+
+  .is-disabled-end {
+    border-radius: 0 50% 50% 0;
   }
 `;
 
@@ -36,7 +53,18 @@ const Calendar = ({
 }: Props) => {
   const locale = useLocale();
 
-  const handleDayClick: PropsBase['onDayClick'] = (day) => {
+  const modifiers = useMemo(
+    () => ({
+      isDisabled: disabledRanges,
+      isDisabledStart: disabledRanges.map((range) => range.from),
+      isDisabledEnd: disabledRanges.map((range) => range.to),
+    }),
+    [disabledRanges]
+  );
+
+  const handleDayClick: PropsBase['onDayClick'] = (day, modifiers) => {
+    if (modifiers.isDisabled) return;
+
     const nextSelectedRage = getNextSelectedRange(
       day,
       selectedRange,
@@ -56,13 +84,13 @@ const Calendar = ({
         captionLayout="dropdown"
         locale={getLocale(locale)}
         selected={selectedRange}
-        disabled={disabledRanges}
         startMonth={startMonth}
         endMonth={endMonth}
-        modifiersStyles={{
-          disabled: {
-            backgroundColor: colors.background,
-          },
+        modifiers={modifiers}
+        modifiersClassNames={{
+          isDisabled: 'is-disabled',
+          isDisabledStart: 'is-disabled-start',
+          isDisabledEnd: 'is-disabled-end',
         }}
         onDayClick={handleDayClick}
         // This NOOP is necessary because otherwise the DayPicker
