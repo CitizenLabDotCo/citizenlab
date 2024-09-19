@@ -127,7 +127,7 @@ const PhaseParticipationConfig = ({
         isValidated,
       } = validatePhaseConfig(
         {
-          ...participationConfig,
+          ...phaseAttrs,
           appConfig,
         },
         formatMessage
@@ -149,10 +149,10 @@ const PhaseParticipationConfig = ({
       .observeEvent('getPhaseParticipationConfig')
       .pipe(filter(() => validate()))
       .subscribe(() => {
-        onSubmit(participationConfig);
+        onSubmit(phaseAttrs);
       });
     return () => subscription.unsubscribe();
-  }, [participationConfig, onSubmit, formatMessage, appConfig]);
+  }, [phaseAttrs, onSubmit, formatMessage, appConfig]);
 
   const handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
