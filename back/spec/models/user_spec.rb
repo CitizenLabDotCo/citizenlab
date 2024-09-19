@@ -1227,6 +1227,17 @@ RSpec.describe User do
     end
   end
 
+  describe '#full_name' do
+    it 'returns an anonymous name if first_name and last_name are not set' do
+      settings = AppConfiguration.instance.settings
+      settings['core']['anonymous_name_scheme'] = 'animal'
+      AppConfiguration.instance.update!(settings: settings)
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.full_name).to eq 'Anonymous Lion'
+      expect(user.no_name?).to be true
+    end
+  end
+
   describe '#compacted_roles' do
     let_it_be(:user) { create(:user) }
 
