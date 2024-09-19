@@ -41,15 +41,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :participants_count do |object, params|
-    Rails.logger.info "Params: #{params.inspect}"
     participants_service = ParticipantsService.new
     use_cache = params[:use_cache].to_s != 'false'
 
     if use_cache
-      Rails.logger.info "Using cached participants count for project #{object.id}"
       participants_service.project_participants_count(object)
     else
-      Rails.logger.info "Using uncached participants count for project #{object.id}"
       participants_service.project_participants_count_uncached(object)
     end
   end
