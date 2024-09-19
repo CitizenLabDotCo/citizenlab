@@ -25,6 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from '../../../../../../messages';
+import { ValidationErrors } from '../../../utils/validate';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
 
@@ -38,10 +39,6 @@ export interface VotingInputsProps {
   voting_min_total: number | null | undefined;
   voting_max_total: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
-  minTotalVotesError: string | null;
-  maxTotalVotesError: string | null;
-  maxVotesPerOptionError: string | null;
-  voteTermError: string | null;
   voting_max_votes_per_idea?: number | null;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
@@ -52,6 +49,7 @@ export interface VotingInputsProps {
   handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
   toggleCommentingEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
+  validationErrors: ValidationErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
@@ -62,10 +60,6 @@ export default ({
   voting_min_total,
   voting_max_total,
   commenting_enabled,
-  minTotalVotesError,
-  maxTotalVotesError,
-  maxVotesPerOptionError,
-  voteTermError,
   voting_max_votes_per_idea,
   voting_term_plural_multiloc,
   voting_term_singular_multiloc,
@@ -76,6 +70,7 @@ export default ({
   handleVoteTermPluralChange,
   handleVoteTermSingularChange,
   apiErrors,
+  validationErrors,
   presentation_mode,
   handleIdeasDisplayChange,
   handleVotingMethodOnChange,
@@ -154,8 +149,8 @@ export default ({
           <BudgetingInputs
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
-            minTotalVotesError={minTotalVotesError}
-            maxTotalVotesError={maxTotalVotesError}
+            minTotalVotesError={validationErrors.minTotalVotesError}
+            maxTotalVotesError={validationErrors.maxTotalVotesError}
             apiErrors={apiErrors}
             handleMinBudgetingAmountChange={handleVotingMinTotalChange}
             handleMaxBudgetingAmountChange={handleVotingMaxTotalChange}
@@ -165,9 +160,9 @@ export default ({
           <MultipleVotingInputs
             voting_max_total={voting_max_total}
             apiErrors={apiErrors}
-            voteTermError={voteTermError}
-            maxTotalVotesError={maxTotalVotesError}
-            maxVotesPerOptionError={maxVotesPerOptionError}
+            voteTermError={validationErrors.voteTermError}
+            maxTotalVotesError={validationErrors.maxTotalVotesError}
+            maxVotesPerOptionError={validationErrors.maxVotesPerOptionError}
             voting_max_votes_per_idea={voting_max_votes_per_idea}
             voting_term_plural_multiloc={voting_term_plural_multiloc}
             voting_term_singular_multiloc={voting_term_singular_multiloc}
@@ -183,7 +178,7 @@ export default ({
           <SingleVotingInputs
             voting_max_total={voting_max_total}
             apiErrors={apiErrors}
-            maxTotalVotesError={maxTotalVotesError}
+            maxTotalVotesError={validationErrors.maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
           />
         )}

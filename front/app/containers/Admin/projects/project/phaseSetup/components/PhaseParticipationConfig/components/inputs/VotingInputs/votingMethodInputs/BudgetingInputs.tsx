@@ -17,8 +17,8 @@ import {
 interface Props {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
-  minTotalVotesError: string | null;
-  maxTotalVotesError: string | null;
+  minTotalVotesError?: string;
+  maxTotalVotesError?: string;
   apiErrors: CLErrors | null | undefined;
   handleMinBudgetingAmountChange: (newMinBudget: string) => void;
   handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;

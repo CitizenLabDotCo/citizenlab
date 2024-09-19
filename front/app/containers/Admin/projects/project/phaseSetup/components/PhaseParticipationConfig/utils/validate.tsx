@@ -1,18 +1,15 @@
-import React from 'react';
-
 import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import messages from '../../../../messages';
 
-export default (
-  state: IUpdatedPhaseProperties & { appConfig?: IAppConfiguration },
-  formatMessage: FormatMessage
+const validate = (
+  state: IUpdatedPhaseProperties,
+  formatMessage: FormatMessage,
+  appConfig?: IAppConfiguration
 ) => {
   const {
     reacting_like_method,
@@ -28,18 +25,17 @@ export default (
     voting_term_singular_multiloc,
     reacting_threshold,
     expire_days_limit,
-    appConfig,
   } = state;
 
   let isValidated = true;
-  let noLikingLimitError: JSX.Element | null = null;
-  let noDislikingLimitError: JSX.Element | null = null;
-  let minTotalVotesError: string | null = null;
-  let maxTotalVotesError: string | null = null;
-  let maxVotesPerOptionError: string | null = null;
-  let voteTermError: string | null = null;
-  let expireDateLimitError: JSX.Element | null = null;
-  let reactingThresholdError: JSX.Element | null = null;
+  let noLikingLimitError: string | undefined;
+  let noDislikingLimitError: string | undefined;
+  let minTotalVotesError: string | undefined;
+  let maxTotalVotesError: string | undefined;
+  let maxVotesPerOptionError: string | undefined;
+  let voteTermError: string | undefined;
+  let expireDateLimitError: string | undefined;
+  let reactingThresholdError: string | undefined;
 
   const locales = appConfig?.data.attributes.settings.core.locales;
 
@@ -71,9 +67,7 @@ export default (
       !isFinite(reacting_like_limited_max) ||
       reacting_like_limited_max < 1)
   ) {
-    noLikingLimitError = (
-      <FormattedMessage {...messages.noReactingLimitErrorMessage} />
-    );
+    noLikingLimitError = formatMessage(messages.noReactingLimitErrorMessage);
     isValidated = false;
   }
 
@@ -83,9 +77,7 @@ export default (
       !isFinite(reacting_dislike_limited_max) ||
       reacting_dislike_limited_max < 1)
   ) {
-    noDislikingLimitError = (
-      <FormattedMessage {...messages.noReactingLimitErrorMessage} />
-    );
+    noDislikingLimitError = formatMessage(messages.noReactingLimitErrorMessage);
     isValidated = false;
   }
 
@@ -144,28 +136,32 @@ export default (
 
   if (participation_method === 'proposals') {
     if (isNaN(expire_days_limit)) {
-      expireDateLimitError = (
-        <FormattedMessage {...messages.expireDateLimitRequired} />
-      );
+      expireDateLimitError = formatMessage(messages.expireDateLimitRequired);
       isValidated = false;
     }
     if (isNaN(reacting_threshold)) {
-      reactingThresholdError = (
-        <FormattedMessage {...messages.reactingThresholdRequired} />
+      reactingThresholdError = formatMessage(
+        messages.reactingThresholdRequired
       );
       isValidated = false;
     }
   }
 
   return {
-    noLikingLimitError,
-    noDislikingLimitError,
-    minTotalVotesError,
-    maxTotalVotesError,
-    maxVotesPerOptionError,
     isValidated,
-    voteTermError,
-    expireDateLimitError,
-    reactingThresholdError,
+    errors: {
+      noLikingLimitError,
+      noDislikingLimitError,
+      minTotalVotesError,
+      maxTotalVotesError,
+      maxVotesPerOptionError,
+      voteTermError,
+      expireDateLimitError,
+      reactingThresholdError,
+    },
   };
 };
+
+export type ValidationErrors = Partial<ReturnType<typeof validate>['errors']>;
+
+export default validate;

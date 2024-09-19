@@ -46,7 +46,7 @@ import {
   surveyDefaultConfig,
   votingDefaultConfig,
 } from './utils/participationMethodConfigs';
-import validatePhaseConfig from './utils/validate';
+import validatePhaseConfig, { ValidationErrors } from './utils/validate';
 
 interface Props {
   onChange: (arg: IUpdatedPhaseProperties) => void;
@@ -89,24 +89,9 @@ const PhaseParticipationConfig = ({
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  const [noLikingLimitError, setNoLikingLimitError] =
-    useState<JSX.Element | null>(null);
-  const [noDislikingLimitError, setNoDislikingLimitError] =
-    useState<JSX.Element | null>(null);
-  const [minTotalVotesError, setMinTotalVotesError] = useState<string | null>(
-    null
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
   );
-  const [maxTotalVotesError, setMaxTotalVotesError] = useState<string | null>(
-    null
-  );
-  const [maxVotesPerOptionError, setMaxVotesPerOptionError] = useState<
-    string | null
-  >(null);
-  const [voteTermError, setVoteTermError] = useState<string | null>(null);
-  const [expireDateLimitError, setExpireDateLimitError] =
-    useState<JSX.Element | null>(null);
-  const [reactingThresholdError, setReactingThresholdError] =
-    useState<JSX.Element | null>(null);
 
   const updatePhaseAttrs = (fn: SetFn) => {
     const updatedPhaseAttrs = fn(phaseAttrs);
@@ -115,32 +100,13 @@ const PhaseParticipationConfig = ({
 
   useEffect(() => {
     const validate = () => {
-      const {
-        noLikingLimitError,
-        noDislikingLimitError,
-        minTotalVotesError,
-        maxTotalVotesError,
-        maxVotesPerOptionError,
-        voteTermError,
-        expireDateLimitError,
-        reactingThresholdError,
-        isValidated,
-      } = validatePhaseConfig(
-        {
-          ...phaseAttrs,
-          appConfig,
-        },
-        formatMessage
+      const { errors, isValidated } = validatePhaseConfig(
+        phaseAttrs,
+        formatMessage,
+        appConfig
       );
 
-      setNoLikingLimitError(noLikingLimitError);
-      setNoDislikingLimitError(noDislikingLimitError);
-      setMinTotalVotesError(minTotalVotesError);
-      setMaxTotalVotesError(maxTotalVotesError);
-      setMaxVotesPerOptionError(maxVotesPerOptionError);
-      setVoteTermError(voteTermError);
-      setExpireDateLimitError(expireDateLimitError);
-      setReactingThresholdError(reactingThresholdError);
+      setValidationErrors(errors);
 
       return isValidated;
     };
@@ -235,7 +201,10 @@ const PhaseParticipationConfig = ({
       ...state,
       reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
     }));
-    setNoLikingLimitError(null);
+    setValidationErrors((errors) => ({
+      ...errors,
+      noLikingLimitError: undefined,
+    }));
   };
 
   const handleReactingDislikeEnabledOnChange = (
@@ -286,7 +255,10 @@ const PhaseParticipationConfig = ({
       ...state,
       reacting_dislike_limited_max: parseInt(rreacting_dislike_limited_max, 10),
     }));
-    setNoDislikingLimitError(null);
+    setValidationErrors((errors) => ({
+      ...errors,
+      noDislikingLimitError: undefined,
+    }));
   };
 
   const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
@@ -311,7 +283,10 @@ const PhaseParticipationConfig = ({
       ...state,
       voting_min_total,
     }));
-    setMinTotalVotesError(null);
+    setValidationErrors((errors) => ({
+      ...errors,
+      minTotalVotesError: undefined,
+    }));
   };
 
   const handleVotingMaxTotalChange = (newVotingMaxTotal: string | null) => {
@@ -322,7 +297,10 @@ const PhaseParticipationConfig = ({
       ...state,
       voting_max_total,
     }));
-    setMaxTotalVotesError(null);
+    setValidationErrors((errors) => ({
+      ...errors,
+      maxTotalVotesError: undefined,
+    }));
   };
 
   const handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
@@ -331,7 +309,10 @@ const PhaseParticipationConfig = ({
       ...state,
       voting_max_votes_per_idea,
     }));
-    setMaxVotesPerOptionError(null);
+    setValidationErrors((errors) => ({
+      ...errors,
+      maxVotesPerOptionError: undefined,
+    }));
   };
 
   const handleVoteTermPluralChange = (
@@ -341,7 +322,7 @@ const PhaseParticipationConfig = ({
       ...state,
       voting_term_plural_multiloc,
     }));
-    setVoteTermError(null);
+    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
   };
 
   const handleVoteTermSingularChange = (
@@ -351,7 +332,7 @@ const PhaseParticipationConfig = ({
       ...state,
       voting_term_singular_multiloc,
     }));
-    setVoteTermError(null);
+    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
   };
 
   const handleInputTermChange = (option: IOption) => {
@@ -471,16 +452,13 @@ const PhaseParticipationConfig = ({
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
             commenting_enabled={commenting_enabled}
-            minTotalVotesError={minTotalVotesError}
-            maxTotalVotesError={maxTotalVotesError}
-            voteTermError={voteTermError}
-            maxVotesPerOptionError={maxVotesPerOptionError}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
             handleVoteTermPluralChange={handleVoteTermPluralChange}
             handleVoteTermSingularChange={handleVoteTermSingularChange}
             toggleCommentingEnabled={toggleCommentingEnabled}
             apiErrors={apiErrors}
+            validationErrors={validationErrors}
             presentation_mode={presentation_mode}
             handleIdeasDisplayChange={handleIdeasDisplayChange}
             handleVotingMethodOnChange={handleVotingMethodOnChange}
@@ -503,8 +481,8 @@ const PhaseParticipationConfig = ({
             reacting_like_limited_max={reacting_like_limited_max}
             reacting_dislike_limited_max={reacting_dislike_limited_max}
             reacting_dislike_enabled={reacting_dislike_enabled}
-            noLikingLimitError={noLikingLimitError}
-            noDislikingLimitError={noDislikingLimitError}
+            noLikingLimitError={validationErrors.noLikingLimitError}
+            noDislikingLimitError={validationErrors.noDislikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
@@ -540,7 +518,7 @@ const PhaseParticipationConfig = ({
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}
             reacting_like_limited_max={reacting_like_limited_max}
-            noLikingLimitError={noLikingLimitError}
+            noLikingLimitError={validationErrors.noLikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
@@ -560,9 +538,9 @@ const PhaseParticipationConfig = ({
             expire_days_limit={expire_days_limit}
             handleDaysLimitChange={handleDaysLimitChange}
             reacting_threshold={reacting_threshold}
-            expireDateLimitError={expireDateLimitError}
+            expireDateLimitError={validationErrors.expireDateLimitError}
             handleReactingThresholdChange={handleReactingThresholdChange}
-            reactingThresholdError={reactingThresholdError}
+            reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
             toggleReviewingEnabled={toggleReviewingEnabled}
           />

@@ -35,11 +35,11 @@ interface Props {
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
-  noLikingLimitError: JSX.Element | null;
+  noLikingLimitError?: string;
   expire_days_limit: number | null | undefined;
-  expireDateLimitError: JSX.Element | null;
+  expireDateLimitError?: string;
   reacting_threshold: number | null | undefined;
-  reactingThresholdError: JSX.Element | null;
+  reactingThresholdError?: string;
   apiErrors: CLErrors | null | undefined;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;

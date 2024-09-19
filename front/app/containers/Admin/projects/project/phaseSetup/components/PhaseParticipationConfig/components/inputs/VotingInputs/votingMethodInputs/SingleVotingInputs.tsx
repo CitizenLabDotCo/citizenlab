@@ -18,7 +18,7 @@ import messages from '../messages';
 interface Props {
   voting_max_total?: number | null;
   apiErrors: CLErrors | null | undefined;
-  maxTotalVotesError: string | null;
+  maxTotalVotesError?: string;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
 }
 

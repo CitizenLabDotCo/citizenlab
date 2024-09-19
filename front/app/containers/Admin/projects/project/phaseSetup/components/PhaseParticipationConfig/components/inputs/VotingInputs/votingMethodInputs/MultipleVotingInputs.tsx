@@ -20,9 +20,9 @@ interface Props {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
   apiErrors: CLErrors | null | undefined;
-  maxTotalVotesError: string | null;
-  maxVotesPerOptionError: string | null;
-  voteTermError: string | null;
+  maxTotalVotesError?: string;
+  maxVotesPerOptionError?: string;
+  voteTermError?: string;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;

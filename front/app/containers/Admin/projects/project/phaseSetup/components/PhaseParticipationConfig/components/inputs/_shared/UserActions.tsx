@@ -39,7 +39,7 @@ const UserActions = ({
   apiErrors: CLErrors | null | undefined;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
-  noLikingLimitError: JSX.Element | null;
+  noLikingLimitError?: string;
   handleReactingLikeMethodOnChange: (
     reacting_like_method: 'unlimited' | 'limited'
   ) => void;
