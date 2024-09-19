@@ -30,8 +30,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { anyIsDefined } from 'utils/helperUtils';
 
-import messages from '../../messages';
-
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
 import PollInputs from './components/inputs/PollInputs';
@@ -40,6 +38,7 @@ import SurveyInputs from './components/inputs/SurveyInputs';
 import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { Container, StyledSection } from './components/shared/styling';
+import messages from './messages';
 import {
   defaultParticipationConfig,
   ideationDefaultConfig,
