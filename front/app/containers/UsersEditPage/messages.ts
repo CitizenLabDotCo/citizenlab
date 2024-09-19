@@ -41,6 +41,11 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.h1sub',
     defaultMessage: 'Edit your basic information related to your account',
   },
+  noNameWarning: {
+    id: 'app.containers.UsersEditPage.noNameWarning',
+    defaultMessage:
+      'Your name is currently displayed on the platform as: "{displayName}" because you have not entered your name.',
+  },
   firstNames: {
     id: 'app.containers.UsersEditPage.firstNames',
     defaultMessage: 'First names',

@@ -36,7 +36,7 @@ class UserDisplayNameService
   def display_name!(user)
     return nil if user.nil?
 
-    [user.first_name, last_name(user)].join(' ')
+    [first_name(user), last_name(user)].join(' ')
   end
 
   # Returns nil when user is nil, but logs a warning.

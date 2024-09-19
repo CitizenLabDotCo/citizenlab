@@ -239,29 +239,8 @@ class User < ApplicationRecord
   end
 
   def no_name?
-    !self[:last_name] && !self[:first_name] && !invite_pending?
+    !self[:last_name].present? && !self[:first_name].present? && !invite_pending?
   end
-
-  # # Anonymous names to use if no first name and last name
-  # def anon_first_name
-  #   # I18n.t 'user.anon_first_name'
-  #   'Anonymous'
-  # end
-  #
-  # def anon_last_name
-  #   name_key = email || unique_code || id
-  #
-  #   # Put this in a service - AnonymousNameService
-  #   scheme = AppConfiguration.instance.settings('core', 'anonymous_name_scheme')
-  #   if scheme == 'animal'
-  #     names = %w[Aardvark Lion Platypus Giraffe Zebra]
-  #     index = name_key.sum**2 % names.length
-  #     names[index]
-  #   else
-  #     # Default is to generate a numeric last name in the format of '123456'
-  #     (name_key.sum**2).to_s[0, 6] # Default
-  #   end
-  # end
 
   def authenticate(unencrypted_password)
     if no_password?

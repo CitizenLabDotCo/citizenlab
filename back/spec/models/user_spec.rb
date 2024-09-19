@@ -1206,8 +1206,13 @@ RSpec.describe User do
   end
 
   describe '#no_name?' do
-    it 'returns true if first_name and last_name are not set' do
-      user = described_class.new(email: 'test@citizenlab.co')
+    it 'returns true if first_name and last_name are null' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: nil, last_name: nil)
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns true if first_name and last_name are blank strings' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: '', last_name: '')
       expect(user.no_name?).to be true
     end
 
