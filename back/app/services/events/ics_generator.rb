@@ -59,7 +59,7 @@ module Events
         # The interpretation of the URL property seems to differ widely depending on its
         # value and the calendar app. Most of them will just ignore the property if they
         # don't recognize a well-known video conferencing service in the URL.
-        e.url = event.online_link
+        e.url = event_url(event, preferred_locale)
 
         e.geo = [event.location_point.y, event.location_point.x] if event.location_point
       end
@@ -75,6 +75,19 @@ module Events
       address += "\n(#{address_details})" if address_details.present?
 
       address.presence
+    end
+
+    def event_url(event, preferred_locale)
+      online_link = event.online_link
+      return online_link if online_link.present?
+
+      tenant_locales = AppConfiguration.instance.settings('core', 'locales')
+
+      locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
+      locale = Locale.new(locale)
+
+      frontend_service = Frontend::UrlService.new
+      frontend_service.model_to_url(event, locale: locale)
     end
 
     def multiloc_service
