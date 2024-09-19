@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[section number linear_scale text multiline_text select multiselect multiselect_image cosponsor_ids]
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
     end
 
     def allowed_ideas_orders
@@ -37,7 +37,7 @@ module ParticipationMethod
     end
 
     def cosponsors_in_form?
-      phase.participation_method == 'proposals'
+      phase ? phase.participation_method == 'proposals' : false
     end
 
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
@@ -301,7 +301,7 @@ module ParticipationMethod
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
-      
+
       if cosponsors_in_form?
         fields << CustomField.new(
             id: SecureRandom.uuid,
