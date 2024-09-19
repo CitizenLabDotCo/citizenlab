@@ -11,12 +11,12 @@ import ProjectRow from './ProjectRow';
 const ProjectsCard = ({
   startAt,
   endAt,
-  publicationStatus = 'published',
+  publicationStatuses = ['published'],
 }: Props) => {
   const { data: response } = useProjects({
     start_at: startAt,
     end_at: endAt,
-    publication_statuses: publicationStatus,
+    publication_statuses: publicationStatuses,
   });
   if (!response) return null;
 

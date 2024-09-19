@@ -235,7 +235,7 @@ export const useParticipationLive = (
 };
 
 export const useProjects = (
-  props: ProjectsProps = { publication_statuses: 'published' }
+  props: ProjectsProps = { publication_statuses: ['published'] }
 ) => {
   return useGraphDataUnits<ProjectsResponse>({
     resolved_name: 'ProjectsWidget',
