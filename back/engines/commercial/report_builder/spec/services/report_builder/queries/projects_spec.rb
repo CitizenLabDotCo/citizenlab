@@ -106,7 +106,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
     end
 
     context 'when specific publication statuses are requested' do
-      it 'returns only published projects when no publication_statuses are requested' do
+      it 'returns only published projects when no publication_statuses are specified exiplicitly' do
         result = query.run_query(
           start_at: nil,
           end_at: nil
