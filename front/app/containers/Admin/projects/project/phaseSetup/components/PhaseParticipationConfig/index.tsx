@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import {
   Box,
@@ -91,16 +91,15 @@ const PhaseParticipationConfig = ({
 
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
-  const [participationConfig, setParticipationConfig] =
-    useState<IPhaseParticipationConfig>(
-      // Only use the attributes from phase that are relevant to participation config
-      phase
-        ? (pick(
-            phase.data.attributes,
-            Object.keys(defaultParticipationConfig)
-          ) as IPhaseParticipationConfig)
-        : ideationDefaultConfig
-    );
+
+  const participationConfig = useMemo(() => {
+    return phase
+      ? (pick(
+          phase.data.attributes,
+          Object.keys(defaultParticipationConfig)
+        ) as IPhaseParticipationConfig)
+      : ideationDefaultConfig;
+  }, [phase]);
 
   const [noLikingLimitError, setNoLikingLimitError] =
     useState<JSX.Element | null>(null);
@@ -122,11 +121,8 @@ const PhaseParticipationConfig = ({
     useState<JSX.Element | null>(null);
 
   const updateParticipationConfig = (fn: SetFn) => {
-    setParticipationConfig((prev) => {
-      const updatedConfig = fn(prev);
-      onChange(updatedConfig);
-      return updatedConfig;
-    });
+    const updatedConfig = fn(participationConfig);
+    onChange(updatedConfig);
   };
 
   useEffect(() => {
