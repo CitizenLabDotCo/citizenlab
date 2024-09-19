@@ -36,12 +36,14 @@ interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: () => void;
   builderConfig: FormBuilderConfig;
+  surveyHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
+  surveyHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
@@ -75,7 +77,7 @@ const FormBuilderSettings = ({
   };
 
   const translatedStringKey = getTranslatedStringKey(
-    field.input_type,
+    watch(`customFields.${field.index}.input_type`),
     field.key
   );
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
@@ -152,7 +154,11 @@ const FormBuilderSettings = ({
       {(!showTabbedSettings ||
         !builderConfig.isLogicEnabled ||
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings field={field} locales={locales} />
+        <ContentSettings
+          field={field}
+          locales={locales}
+          surveyHasSubmissions={surveyHasSubmissions}
+        />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

@@ -393,6 +393,7 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
+                      surveyHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}
