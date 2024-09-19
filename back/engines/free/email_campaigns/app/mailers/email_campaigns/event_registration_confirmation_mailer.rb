@@ -58,11 +58,6 @@ module EmailCampaigns
       location.presence
     end
 
-    def event_description
-      description = localize_for_recipient(event.event_attributes.description_multiloc)
-      strip_tags(description).presence
-    end
-
     def project_title
       localize_for_recipient(event.project_title_multiloc)
     end

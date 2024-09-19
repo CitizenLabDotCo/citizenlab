@@ -54,7 +54,6 @@ module Events
         e.dtend = Icalendar::Values::DateTime.new(end_time, tzid: tzid)
 
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
-        e.description = multiloc_service.t(event.description_multiloc, preferred_locale)
         e.location = full_address(event, preferred_locale)
 
         # The interpretation of the URL property seems to differ widely depending on its
