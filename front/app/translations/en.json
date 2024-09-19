@@ -1849,6 +1849,7 @@
   "app.containers.UsersEditPage.metaDescription": "This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.",
   "app.containers.UsersEditPage.metaTitle1": "Profile settings page of {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Once you click this button, we will have no way to restore your account.",
+  "app.containers.UsersEditPage.noNameWarning": "Your name is currently displayed on the platform as: \"{displayName}\" because you have not entered your name.",
   "app.containers.UsersEditPage.notificationsSubTitle": "What kinds of email notifications do you want to receive? ",
   "app.containers.UsersEditPage.notificationsTitle": "Email notifications",
   "app.containers.UsersEditPage.password": "Choose a new password",
