@@ -59,6 +59,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import CampaignRow from './components/CampaignRow';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
+import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType } from './typings';
 import { getTimelineTab, getStartDate } from './utils';
@@ -82,17 +83,18 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
-const AdminPhaseEdit = () => {
+interface Props {
+  projectId: string;
+  phase: IPhase | undefined;
+}
+
+const AdminPhaseEdit = ({ projectId, phase }: Props) => {
+  const phaseId = phase?.data.id;
+
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
   const { data: project } = useProjectById(projectId);
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
-  const { data: phaseData } = usePhase(phaseId || null);
-  const phase = phaseId ? phaseData : undefined;
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
     campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
@@ -108,7 +110,7 @@ const AdminPhaseEdit = () => {
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
-    {}
+    phase ? phase.data.attributes : ideationDefaultConfig
   );
   const localize = useLocalize();
   const formatMessageWithLocale = useFormatMessageWithLocale();
@@ -116,9 +118,9 @@ const AdminPhaseEdit = () => {
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
-    setAttributeDiff({});
+    setAttributeDiff(phase ? phase.data.attributes : ideationDefaultConfig);
     setSubmitState('disabled');
-  }, [phaseId]);
+  }, [phase]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -288,7 +290,7 @@ const AdminPhaseEdit = () => {
         setErrors(null);
         setSubmitState('success');
 
-        setAttributeDiff({});
+        setAttributeDiff(phase ? phase.data.attributes : ideationDefaultConfig);
 
         if (redirectAfterSave) {
           const redirectTab = getTimelineTab(phaseResponse);
@@ -568,4 +570,16 @@ const AdminPhaseEdit = () => {
   );
 };
 
-export default AdminPhaseEdit;
+const AdminPhaseEditWrapper = () => {
+  const { projectId, phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
+
+  if (!projectId) return null;
+
+  const phaseLoading = phaseId && phase?.data.id !== phaseId;
+  if (phaseLoading) return null;
+
+  return <AdminPhaseEdit projectId={projectId} phase={phase} />;
+};
+
+export default AdminPhaseEditWrapper;
