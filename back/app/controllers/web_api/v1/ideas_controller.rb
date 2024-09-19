@@ -235,7 +235,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images]
+          include: %i[author topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity

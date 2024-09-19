@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import {
@@ -24,39 +24,30 @@ import ErrorDisplay from '../ErrorDisplay';
 
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
+import { IUser } from 'api/users/types';
 
-const CosponsorsControl = ({
+const CosponsorsControlInner = ({
   uischema,
   schema,
-  data,
   handleChange,
   path,
   errors,
   required,
   visible,
   id,
-}: ControlProps & WrappedComponentProps) => {
-  const [initialRender, setInitialRender] = useState(true);
-  const results = useUsersWithIds(data);
+  users,
+}: ControlProps & WrappedComponentProps & { users: IUser[] }) => {
+  const initialCosponsorsText = users.reduce(
+    (acc, cosponsor) =>
+      `${acc}@[${getFullName(cosponsor?.data)}](${cosponsor?.data.id}) `,
+    ''
+  );
 
-  const [cosponsorsText, setCosponsorsText] = useState<string | null>(null);
+  const [cosponsorsText, setCosponsorsText] = useState<string | null>(
+    initialCosponsorsText
+  );
 
-  useEffect(() => {
-    const users = results.map((result) => result?.data);
-    if (initialRender) {
-      const initialCosponsorsText = users.reduce(
-        (acc, cosponsorship) =>
-          cosponsorship
-            ? `${acc}@[${getFullName(cosponsorship.data)}](${
-                cosponsorship.data.id
-              }) `
-            : '',
-        ''
-      );
-      setCosponsorsText(initialCosponsorsText);
-      setInitialRender(false);
-    }
-  }, [initialRender, results]);
+  console.log({ cosponsorsText });
 
   const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
@@ -110,7 +101,21 @@ const CosponsorsControl = ({
   );
 };
 
-export default withJsonFormsControlProps(CosponsorsControl);
+// Wrapping the control in a component that fetches the users with the given ids
+// to make sure their names display correctly in the mentions text area
+const CosponsorsControlOuter = (
+  props: ControlProps & WrappedComponentProps
+) => {
+  const results = useUsersWithIds(props.data);
+  const users = results.map((result) => result.data);
+
+  if (results.some((result) => !result.data)) {
+    return null;
+  }
+  return <CosponsorsControlInner {...props} users={users as IUser[]} />;
+};
+
+export default withJsonFormsControlProps(CosponsorsControlOuter);
 
 export const cosponsorsControlTester: RankedTester = rankWith(
   1000,
