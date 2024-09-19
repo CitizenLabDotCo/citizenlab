@@ -26,7 +26,7 @@ RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('The status of an input you follow has been changed')
+      expect(mail.subject).to eq('The status of "Input title" has changed')
     end
 
     it 'renders the sender email' do
