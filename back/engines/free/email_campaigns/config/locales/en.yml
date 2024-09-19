@@ -143,20 +143,17 @@ en:
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
-      subject: 'Ideas requiring your feedback: %{numberIdeas}'
+      subject: 'Inputs requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
       cta_manage_your_input: 'Manage your input'
-      assigned_ideas: 'Ideas need your feedback'
-      title_assignment_past_week: 'Latest ideas assigned to you'
-      title_no_assignment_past_week: 'No new ideas assigned to you last week'
+      x_inputs_need_your_feedback: 'inputs need your feedback'
+      title_assignment_past_week: 'Latest inputs assigned to you'
+      title_no_assignment_past_week: 'No new inputs assigned to you last week'
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
-      title_initiatives_past_week: 'New proposals assigned to you'
-      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
+      title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
       cta_review_idea: 'Review idea'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
