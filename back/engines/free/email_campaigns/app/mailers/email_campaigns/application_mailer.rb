@@ -26,14 +26,6 @@ module EmailCampaigns
 
     private
 
-    def preheader
-      raise NotImplementedError
-    end
-
-    def subject
-      raise NotImplementedError
-    end
-
     def show_unsubscribe_link?
       user && campaign.class.try(:consentable_for?, user)
     end
