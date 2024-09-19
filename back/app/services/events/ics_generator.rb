@@ -86,8 +86,7 @@ module Events
       locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
       locale = Locale.new(locale)
 
-      frontend_service = Frontend::UrlService.new
-      frontend_service.model_to_url(event, locale: locale)
+      Frontend::UrlService.new.model_to_url(event, locale: locale)
     end
 
     def multiloc_service
