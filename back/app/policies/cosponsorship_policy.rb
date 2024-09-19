@@ -12,9 +12,9 @@ class CosponsorshipPolicy < ApplicationPolicy
     def resolve
       scope.all
     end
+  end
 
-    def accept_cosponsorship?
-      user.id == record.user_id
-    end
+  def accept_cosponsorship?
+    user.id == record.user_id
   end
 end

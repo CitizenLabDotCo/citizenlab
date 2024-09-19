@@ -10,11 +10,19 @@ class WebApi::V1::CosponsorshipsController < ApplicationController
     render json: linked_json(paginated_cosponsorships, WebApi::V1::CosponsorshipSerializer, params: jsonapi_serializer_params)
   end
 
-  def accept_cosponsorship; end
+  def accept_cosponsorship
+    if @cosponsorship.status == 'pending'
+      @cosponsorship.update(status: 'accepted')
+      # SideFxAcceptedCosponsorshipService.new.after_accept(@cosponsorship, current_user)
+      render json: WebApi::V1::CosponsorshipSerializer.new(@cosponsorship, params: jsonapi_serializer_params).serializable_hash
+    else
+      render json: { errors: @cosponsorship.errors.details }, status: :unprocessable_entity
+    end
+  end
 
   private
 
-  def set_topic
+  def set_cosponsorship
     @cosponsorship = Cosponsorship.find(params[:id])
     authorize @cosponsorship
   end
