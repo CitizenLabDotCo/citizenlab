@@ -179,7 +179,7 @@ const AdminPhaseEdit = () => {
     return acc;
   }, {});
 
-  const phaseAttrs = phase
+  const phaseAttrs: IUpdatedPhaseProperties = phase
     ? { ...phase.data.attributes, ...attributeDiff }
     : { campaigns_settings: initialCampaignsSettings, ...attributeDiff };
 
@@ -378,7 +378,7 @@ const AdminPhaseEdit = () => {
       ...attributeDiff,
       campaigns_settings: {
         ...phaseAttrs.campaigns_settings,
-        [campaignKey]: !phaseAttrs.campaigns_settings[campaignKey],
+        [campaignKey]: !phaseAttrs?.campaigns_settings?.[campaignKey],
       },
     });
   };
@@ -517,7 +517,7 @@ const AdminPhaseEdit = () => {
                 <CampaignRow
                   campaign={stringifyCampaignFields(campaign, localize)}
                   checked={
-                    phaseAttrs.campaigns_settings?.[
+                    !!phaseAttrs?.campaigns_settings?.[
                       campaign.attributes.campaign_name
                     ]
                   }

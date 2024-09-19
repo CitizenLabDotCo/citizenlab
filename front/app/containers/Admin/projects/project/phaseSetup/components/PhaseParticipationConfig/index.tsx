@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -6,7 +6,6 @@ import {
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
-import { pick } from 'lodash-es';
 import { filter } from 'rxjs/operators';
 import { CLErrors, Multiloc } from 'typings';
 
@@ -15,11 +14,11 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
   IPhase,
+  IUpdatedPhaseProperties,
   ParticipationMethod,
   TSurveyService,
   VotingMethod,
 } from 'api/phases/types';
-import { IProject } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -51,11 +50,10 @@ import {
 import validatePhaseConfig from './utils/validate';
 
 interface Props {
-  className?: string;
   onChange: (arg: IPhaseParticipationConfig) => void;
   onSubmit: (arg: IPhaseParticipationConfig) => void;
   phase?: IPhase;
-  project?: IProject | undefined | null;
+  phaseAttrs: IUpdatedPhaseProperties;
   apiErrors: CLErrors | null;
 }
 
@@ -69,9 +67,9 @@ type SetFn = (config: IPhaseParticipationConfig) => IPhaseParticipationConfig;
 
 const PhaseParticipationConfig = ({
   phase,
+  phaseAttrs,
   onSubmit,
   onChange,
-  className,
   apiErrors,
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
@@ -91,15 +89,6 @@ const PhaseParticipationConfig = ({
 
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
-
-  const participationConfig = useMemo(() => {
-    return phase
-      ? (pick(
-          phase.data.attributes,
-          Object.keys(defaultParticipationConfig)
-        ) as IPhaseParticipationConfig)
-      : ideationDefaultConfig;
-  }, [phase]);
 
   const [noLikingLimitError, setNoLikingLimitError] =
     useState<JSX.Element | null>(null);
@@ -442,13 +431,13 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
-  } = participationConfig;
+  } = phaseAttrs;
 
   const showSurveys =
     surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
 
   return (
-    <Container className={className}>
+    <Container>
       <StyledSection>
         <ParticipationMethodPicker
           phase={phase}

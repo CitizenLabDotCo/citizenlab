@@ -87,7 +87,7 @@ export interface IUpdatedPhaseProperties {
   description_multiloc?: Multiloc;
   input_term?: InputTerm;
   start_at?: string;
-  end_at?: string;
+  end_at?: string | null;
   participation_method?: ParticipationMethod;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
