@@ -82,11 +82,9 @@ module Events
       return online_link if online_link.present?
 
       tenant_locales = AppConfiguration.instance.settings('core', 'locales')
-
       locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
-      locale = Locale.new(locale)
 
-      Frontend::UrlService.new.model_to_url(event, locale: locale)
+      Frontend::UrlService.new.model_to_url(event, locale: Locale.new(locale))
     end
 
     def multiloc_service
