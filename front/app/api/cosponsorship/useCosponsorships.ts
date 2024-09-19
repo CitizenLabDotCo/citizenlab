@@ -10,13 +10,13 @@ import {
   ICosponsorshipParameters,
 } from './types';
 
-const fetchCosponsorships = ({ ideaId, id }: ICosponsorshipParameters) =>
+const fetchCosponsorships = ({ ideaId }: ICosponsorshipParameters) =>
   fetcher<ICosponsorships>({
-    path: `/ideas/${ideaId}/cosponsorships/${id}`,
+    path: `/ideas/${ideaId}/cosponsorships`,
     action: 'get',
   });
 
-const useCosponsorships = ({ ideaId, id }: ICosponsorshipParameters) => {
+const useCosponsorships = ({ ideaId }: ICosponsorshipParameters) => {
   return useQuery<
     ICosponsorships,
     CLErrors,
@@ -25,9 +25,8 @@ const useCosponsorships = ({ ideaId, id }: ICosponsorshipParameters) => {
   >({
     queryKey: cosponsorshipsKeys.list({
       ideaId,
-      id,
     }),
-    queryFn: () => fetchCosponsorships({ ideaId, id }),
+    queryFn: () => fetchCosponsorships({ ideaId }),
   });
 };
 

@@ -38,6 +38,5 @@ export interface ICosponsorship {
 }
 
 export interface ICosponsorshipParameters {
-  id: string;
   ideaId: string;
 }

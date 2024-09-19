@@ -26,6 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
+import Cosponsorship from './components/Cosponsorship';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposalInfo from './components/ProposalInfo';
@@ -124,6 +125,7 @@ export const IdeasShow = ({
             projectId={project.data.id}
             translateButtonClicked={translateButtonIsClicked}
           />
+          <Cosponsorship ideaId={ideaId} />
           <ProjectLink project={project.data} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />

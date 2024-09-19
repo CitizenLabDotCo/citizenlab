@@ -8,11 +8,10 @@ import { cosponsorshipData } from './__mocks__/useCosponsorships';
 import { ICosponsorshipParameters } from './types';
 import useCosponsorships from './useCosponsorships';
 
-const apiPath = '*/ideas/:ideaId/cosponsorships/:id';
+const apiPath = '*/ideas/:ideaId/cosponsorships';
 
 const params: ICosponsorshipParameters = {
   ideaId: '1',
-  id: '2',
 };
 
 const server = setupServer(
