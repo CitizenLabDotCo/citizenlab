@@ -1,6 +1,7 @@
 module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, **_other_props)
+    def run_query(start_at: nil, end_at: nil, publication_statuses: [], **_other_props)
+      # publication_statuses = %w[published archived] # TODO: remove this debug line
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       overlapping_project_ids = Phase
@@ -10,7 +11,7 @@ module ReportBuilder
       overlapping_projects = Project
         .joins(:admin_publication)
         .where(id: overlapping_project_ids)
-        .where(admin_publication: { publication_status: 'published' })
+        .where(admin_publication: { publication_status: publication_statuses })
 
       periods = Phase
         .select(
