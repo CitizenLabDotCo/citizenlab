@@ -180,6 +180,16 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  scope :with_status_code, lambda { |code|
+    joins(:idea_status).where(idea_statuses: { code: code })
+  }
+
+  # Is the performance of this code okay? We currently have no other data source for status changes
+  scope :with_status_transitioned_after, lambda { |time|
+    idea_ids = Activity.where(item_type: 'Idea', action: 'changed_status', created_at: time..).pluck(:item_id)
+    where(id: idea_ids)
+  }
+
   def just_submitted?
     # It would be better to foresee separate endpoints for submission,
     # rather than relying on Rails dirty to detect publication.
