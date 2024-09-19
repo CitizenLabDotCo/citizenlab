@@ -19,13 +19,13 @@ module BulkImportIdeas::Exporters
 
       xlsx_utils = Export::Xlsx::Utils.new
       @form_fields.each do |field|
-        column_name = xlsx_utils.add_duplicate_column_name_suffix(field.title_multiloc[@locale])
+        column_name = xlsx_utils.add_duplicate_column_name_suffix(custom_field_service.handle_title(field, @locale))
 
         value = case field.input_type
         when 'select'
-          field.options.first.title_multiloc[@locale]
+          custom_field_service.handle_title(field.options.first, @locale)
         when 'multiselect', 'multiselect_image'
-          field.options.map { |o| o.title_multiloc[@locale] }.join '; '
+          field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number', 'linear_scale'
@@ -60,7 +60,7 @@ module BulkImportIdeas::Exporters
     def importer_data
       fields = @form_fields.map do |field|
         {
-          name: field[:title_multiloc][@locale],
+          name: custom_field_service.handle_title(field, @locale),
           type: 'field',
           input_type: field[:input_type],
           code: field[:code],
@@ -73,7 +73,7 @@ module BulkImportIdeas::Exporters
       options = @form_fields.map do |field|
         field.options.map do |option|
           {
-            name: option[:title_multiloc][@locale],
+            name: custom_field_service.handle_title(option, @locale),
             type: 'option',
             input_type: 'option',
             code: option[:code],

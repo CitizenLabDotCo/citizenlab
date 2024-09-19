@@ -94,7 +94,7 @@ const ToolboxItem = ({
         <StyledBox
           display="flex"
           p="18px"
-          onClick={onClick}
+          onClick={disabled ? () => {} : onClick}
           width="100%"
           m="0px"
           alignItems="center"

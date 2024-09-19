@@ -294,7 +294,7 @@ class Idea < ApplicationRecord
 
   def not_published_in_non_public_status
     return if !published?
-    return if idea_status.public_post?
+    return if !idea_status || idea_status.public_post?
 
     errors.add(
       :publication_status,

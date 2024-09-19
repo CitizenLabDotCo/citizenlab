@@ -255,6 +255,18 @@
         }
       },
 
+      "gravatar_avatars": {
+        "type": "object",
+        "title": "Automatically try to download an avatar from an external service called Gravatar when a user registers without an avatar",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -414,6 +426,12 @@
             "title": "Login Mechanism Name",
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          },
+          "admin_only": {
+            "title": "Admin only",
+            "type": "boolean",
+            "default": false,
+            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
           }
         }
       },

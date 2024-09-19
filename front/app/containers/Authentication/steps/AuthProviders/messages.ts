@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithHoplr',
     defaultMessage: 'Continue with Hoplr',
   },
+  continueWithNemlogIn: {
+    id: 'app.components.AuthProviders.continueWithNemlogIn',
+    defaultMessage: 'Continue with MitID',
+  },
   continueWithAzure: {
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',

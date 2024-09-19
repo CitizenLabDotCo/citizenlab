@@ -100,7 +100,7 @@ describe 'bosa_fas verification' do
     get "/auth/bosa_fas?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(@user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -112,6 +112,6 @@ describe 'bosa_fas verification' do
     get '/auth/bosa_fas?pathname=/whatever-page'
     follow_redirect!
 
-    expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
+    expect(response).to redirect_to('/whatever-page?verification_error=true&error_code=no_token_passed')
   end
 end

@@ -130,7 +130,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
             </Box>
           </Box>
           {projectHeaderImageLargeUrl && (
-            <HeaderImageContainer id="e2e-project-header-image">
+            <HeaderImageContainer>
               <HeaderImage
                 id="e2e-project-header-image"
                 src={projectHeaderImageLargeUrl}

@@ -84,7 +84,7 @@ export const signUpFlow = (
           }
 
           if (doesNotMeetGroupCriteria(requirements)) {
-            setCurrentStep('closed');
+            setCurrentStep('access-denied');
             return;
           }
 
