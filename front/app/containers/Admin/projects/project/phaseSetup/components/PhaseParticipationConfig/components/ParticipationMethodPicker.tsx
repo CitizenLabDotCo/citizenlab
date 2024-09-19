@@ -24,7 +24,7 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
+import messages from '../../../../messages';
 
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';

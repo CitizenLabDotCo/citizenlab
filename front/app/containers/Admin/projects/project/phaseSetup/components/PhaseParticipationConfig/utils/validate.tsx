@@ -7,7 +7,7 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../messages';
+import messages from '../../../../messages';
 
 import { IPhaseParticipationConfig } from './participationMethodConfigs';
 

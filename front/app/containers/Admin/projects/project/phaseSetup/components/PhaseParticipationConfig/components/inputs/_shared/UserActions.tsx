@@ -9,7 +9,7 @@ import Error from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-import messages from '../../../../../messages';
+import messages from '../../../../../../messages';
 import {
   ReactingLimitInput,
   StyledSectionField,

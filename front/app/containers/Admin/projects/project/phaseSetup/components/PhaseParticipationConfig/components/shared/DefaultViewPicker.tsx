@@ -8,7 +8,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;

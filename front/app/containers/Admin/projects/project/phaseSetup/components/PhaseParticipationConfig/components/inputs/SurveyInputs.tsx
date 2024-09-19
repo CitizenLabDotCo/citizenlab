@@ -10,7 +10,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 interface Props {

@@ -10,7 +10,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
+import messages from '../../../../../../messages';
 
 interface Props {
   options: { key: string; value: string }[];

@@ -20,7 +20,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
+import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SortingPicker from '../_shared/SortingPicker';

@@ -11,7 +11,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;

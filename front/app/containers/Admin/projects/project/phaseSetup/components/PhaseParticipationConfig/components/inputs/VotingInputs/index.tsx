@@ -24,7 +24,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import messages from '../../../../../messages';
+import messages from '../../../../../../messages';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
 
