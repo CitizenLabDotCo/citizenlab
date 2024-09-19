@@ -60,7 +60,7 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
         resources :cosponsorships, defaults: { container_type: 'Idea' }, only: %i[index]
-          patch 'accept_cosponsorship', on: :member
+        patch 'accept_cosponsorship', on: :member
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'

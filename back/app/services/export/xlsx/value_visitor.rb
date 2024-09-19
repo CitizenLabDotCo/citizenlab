@@ -120,7 +120,7 @@ module Export
       end
 
       def visit_cosponsor_ids(_field)
-        return ''
+        ''
       end
 
       private

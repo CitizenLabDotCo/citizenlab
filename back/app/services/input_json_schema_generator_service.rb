@@ -55,7 +55,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
     }
   end
 
-  def visit_cosponsor_ids(field)  
+  def visit_cosponsor_ids(field)
     {
       type: 'array',
       uniqueItems: true,

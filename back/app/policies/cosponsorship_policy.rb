@@ -8,7 +8,7 @@ class CosponsorshipPolicy < ApplicationPolicy
       @user = user
       @scope = scope
     end
-    
+
     def resolve
       scope.all
     end

@@ -5,5 +5,4 @@ class WebApi::V1::CosponsorshipSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :idea
   belongs_to :user
-
 end
