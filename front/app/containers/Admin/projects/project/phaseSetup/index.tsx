@@ -59,7 +59,6 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import CampaignRow from './components/CampaignRow';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
-import { IPhaseParticipationConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType } from './typings';
 import { getTimelineTab, getStartDate } from './utils';
@@ -128,7 +127,7 @@ const AdminPhaseEdit = () => {
   }, [phaseFiles]);
 
   const handlePhaseParticipationConfigChange = useCallback(
-    (participationContextConfig: IPhaseParticipationConfig) => {
+    (participationContextConfig: IUpdatedPhaseProperties) => {
       const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
         acc[locale] = formatMessageWithLocale(
           locale,
@@ -252,7 +251,7 @@ const AdminPhaseEdit = () => {
   };
 
   const handlePhaseParticipationConfigSubmit = (
-    participationContextConfig: IPhaseParticipationConfig
+    participationContextConfig: IUpdatedPhaseProperties
   ) => {
     // Important to keep the order of the spread operators
     save(projectId, phase?.data, {

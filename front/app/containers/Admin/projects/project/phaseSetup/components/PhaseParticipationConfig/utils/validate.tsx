@@ -4,15 +4,14 @@ import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
+import { IUpdatedPhaseProperties } from 'api/phases/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
 
-import { IPhaseParticipationConfig } from './participationMethodConfigs';
-
 export default (
-  state: IPhaseParticipationConfig & { appConfig?: IAppConfiguration },
+  state: IUpdatedPhaseProperties & { appConfig?: IAppConfiguration },
   formatMessage: FormatMessage
 ) => {
   const {

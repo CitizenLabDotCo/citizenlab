@@ -1,43 +1,6 @@
-import { Multiloc } from 'typings';
+import { IUpdatedPhaseProperties } from 'api/phases/types';
 
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-  ParticipationMethod,
-  TSurveyService,
-  VotingMethod,
-} from 'api/phases/types';
-
-export interface IPhaseParticipationConfig {
-  participation_method: ParticipationMethod;
-  submission_enabled?: boolean | null;
-  commenting_enabled?: boolean | null;
-  reacting_enabled?: boolean | null;
-  reacting_like_method?: 'unlimited' | 'limited' | null;
-  reacting_like_limited_max?: number | null;
-  reacting_dislike_enabled?: boolean | null;
-  allow_anonymous_participation?: boolean | null;
-  voting_method?: VotingMethod | null;
-  reacting_dislike_method?: 'unlimited' | 'limited' | null;
-  reacting_dislike_limited_max?: number | null;
-  presentation_mode?: 'map' | 'card' | null;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term?: InputTerm;
-  voting_min_total?: number | null;
-  voting_max_total?: number | null;
-  voting_max_votes_per_idea?: number | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  poll_anonymous?: boolean;
-  document_annotation_embed_url?: string | null;
-  expire_days_limit?: number | null;
-  reacting_threshold?: number | null;
-  prescreening_enabled?: boolean | null;
-}
-
-export const defaultParticipationConfig: IPhaseParticipationConfig = {
+export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   participation_method: 'ideation',
   submission_enabled: true,
   commenting_enabled: true,
@@ -48,7 +11,7 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   reacting_dislike_method: undefined,
   reacting_dislike_limited_max: null,
   allow_anonymous_participation: false,
-  voting_method: null,
+  voting_method: undefined,
   voting_min_total: null,
   voting_max_total: null,
   voting_max_votes_per_idea: 1,
@@ -66,7 +29,7 @@ export const defaultParticipationConfig: IPhaseParticipationConfig = {
   prescreening_enabled: undefined,
 };
 
-export const ideationDefaultConfig: IPhaseParticipationConfig = {
+export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'ideation',
   submission_enabled: true,
@@ -83,7 +46,7 @@ export const ideationDefaultConfig: IPhaseParticipationConfig = {
   ideas_order: 'trending',
 };
 
-export const nativeSurveyDefaultConfig: IPhaseParticipationConfig = {
+export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'native_survey',
   allow_anonymous_participation: false,
@@ -94,7 +57,7 @@ export const nativeSurveyDefaultConfig: IPhaseParticipationConfig = {
   reacting_dislike_method: 'unlimited',
 };
 
-export const votingDefaultConfig: IPhaseParticipationConfig = {
+export const votingDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'voting',
   voting_method: 'single_voting',
@@ -107,13 +70,13 @@ export const votingDefaultConfig: IPhaseParticipationConfig = {
   input_term: 'idea',
 };
 
-export const surveyDefaultConfig: IPhaseParticipationConfig = {
+export const surveyDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'survey',
   survey_service: 'typeform',
 };
 
-export const proposalsDefaultConfig: IPhaseParticipationConfig = {
+export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'proposals',
   submission_enabled: true,
