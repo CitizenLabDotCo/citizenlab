@@ -11,9 +11,6 @@ export const mockRoutes = {
       path: 'invite',
     },
     {
-      path: 'complete-signup',
-    },
-    {
       path: 'admin',
       children: [
         {
