@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
+import {
+  Success,
+  Error,
+  Toggle,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import {
@@ -19,6 +24,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import Form from './Form';
+import Radio from 'component-library/components/Radio';
+import Box from 'component-library/components/Box';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -91,6 +98,20 @@ const SettingsGeneralTab = () => {
     }
   };
 
+  const onChangeAnonymousNameScheme = (scheme: string) => {
+    if (!isNilOrError(appConfiguration)) {
+      console.log('UPDATING ANONYMOUS NAME SCHEME');
+      updateAppConfiguration(
+        {
+          settings: {
+            core: { anonymous_name_scheme: scheme },
+          },
+        },
+        { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
+      );
+    }
+  };
+
   const handleSettingChange = (settingName: TAppConfigurationSetting) => {
     if (!isNilOrError(appConfiguration)) {
       const setting = appConfiguration.data.attributes.settings[settingName];
@@ -116,6 +137,11 @@ const SettingsGeneralTab = () => {
 
     const { organization_name, organization_site, locales, population } =
       appConfiguration.data.attributes.settings.core;
+
+    const anomymousNameSchemes = ['user', 'animal'];
+    const currentAnonymousNameScheme =
+      appConfiguration.data.attributes.settings.core.anonymous_name_scheme ||
+      'user';
 
     return (
       <>
@@ -150,6 +176,27 @@ const SettingsGeneralTab = () => {
               </ToggleLabel>
             </Setting>
           )}
+
+          <Box mt="20px">
+            <SubSectionTitle>Anonymous name settings</SubSectionTitle>
+            <Text mt="0">
+              Choose how users without names will appear on the platform.
+            </Text>
+            {anomymousNameSchemes.map((scheme) => (
+              <Radio
+                key={scheme}
+                onChange={() => {
+                  onChangeAnonymousNameScheme(scheme);
+                }}
+                currentValue={currentAnonymousNameScheme}
+                value={scheme}
+                name={scheme}
+                id={scheme}
+                label={formatMessage(messages['anonymousNameScheme_' + scheme])}
+              />
+            ))}
+          </Box>
+
           <Outlet
             id="app.containers.Admin.settings.general.form"
             onSettingChange={handleSettingChange}

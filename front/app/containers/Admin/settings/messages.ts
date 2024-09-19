@@ -184,4 +184,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.populationMinError',
     defaultMessage: 'Population must be a positive number.',
   },
+  // NOTE: Using _user and _animal as suffixes as key is built dynamically from lowercase string setting
+  anonymousNameScheme_user: {
+    id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_user',
+    defaultMessage: 'User - eg User 123456',
+  },
+  anonymousNameScheme_animal: {
+    id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal',
+    defaultMessage: 'Animal - eg Pink Elephant',
+  },
 });
