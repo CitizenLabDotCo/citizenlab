@@ -59,6 +59,8 @@ Rails.application.routes.draw do
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
+        resources :cosponsorships, defaults: { container_type: 'Idea' }, only: %i[index]
+          patch 'accept_cosponsorship', on: :member
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'

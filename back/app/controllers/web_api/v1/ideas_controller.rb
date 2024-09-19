@@ -396,7 +396,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases]
+    include = %i[author idea_images ideas_phases cosponsors]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.

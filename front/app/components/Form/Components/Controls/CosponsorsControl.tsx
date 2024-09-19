@@ -47,8 +47,6 @@ const CosponsorsControlInner = ({
     initialCosponsorsText
   );
 
-  console.log({ cosponsorsText });
-
   const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
 
