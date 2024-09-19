@@ -8,7 +8,7 @@ class AnonymousNameService
   def first_name
     if scheme == 'animal'
       names = I18n.t('user.anon_scheme.animal.first_names').split(',')
-      index = name_key.sum**2 % names.length
+      index = (name_key.sum**2) % names.length
       names[index]
     else
       I18n.t 'user.anon_first_name'
@@ -18,7 +18,7 @@ class AnonymousNameService
   def last_name
     if scheme == 'animal'
       names = I18n.t('user.anon_scheme.animal.last_names').split(',')
-      index = name_key.sum**2 % names.length
+      index = (name_key.sum**2) % names.length
       names[index]
     else
       # Default is to generate a numeric last name in the format of '123456'

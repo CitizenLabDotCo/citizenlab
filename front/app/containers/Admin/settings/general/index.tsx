@@ -100,7 +100,6 @@ const SettingsGeneralTab = () => {
 
   const onChangeAnonymousNameScheme = (scheme: string) => {
     if (!isNilOrError(appConfiguration)) {
-      console.log('UPDATING ANONYMOUS NAME SCHEME');
       updateAppConfiguration(
         {
           settings: {
