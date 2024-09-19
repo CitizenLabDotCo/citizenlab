@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IPhase } from 'api/phases/types';
+import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -23,16 +23,25 @@ interface Props {
   allow_anonymous_participation: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
+  phaseAttrs: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleSurveyTitleChange: (
+    value: Multiloc,
+    locale: string | undefined
+  ) => void;
+  handleSurveyCTAChange: (value: Multiloc, locale: string | undefined) => void;
 }
 
 const NativeSurveyInputs = ({
   allow_anonymous_participation,
   apiErrors,
   phase,
+  phaseAttrs,
   handleAllowAnonymousParticipationOnChange,
+  handleSurveyTitleChange,
+  handleSurveyCTAChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -108,7 +117,7 @@ const NativeSurveyInputs = ({
         </SubSectionTitle>
         <Button
           width="fit-content"
-          onClick={(event: MouseEvent) => {
+          onClick={(event) => {
             if (phase) {
               window.open(
                 `/projects/${project?.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`,

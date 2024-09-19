@@ -391,6 +391,20 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
+    updatePhaseAttrs((state) => ({
+      ...state,
+      native_survey_title_multiloc: surveyTitle,
+    }));
+  };
+
+  const handleSurveyCTAChange = (CTATitle: Multiloc) => {
+    updatePhaseAttrs((state) => ({
+      ...state,
+      native_survey_button_multiloc: CTATitle,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -434,6 +448,11 @@ const PhaseParticipationConfig = ({
 
   const showSurveys =
     surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
+
+  if (!participation_method) {
+    // Type check, should in practice always be defined
+    return null;
+  }
 
   return (
     <Container>
@@ -600,9 +619,12 @@ const PhaseParticipationConfig = ({
             allow_anonymous_participation={allow_anonymous_participation}
             apiErrors={apiErrors}
             phase={phase}
+            phaseAttrs={phaseAttrs}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
+            handleSurveyTitleChange={handleSurveyTitleChange}
+            handleSurveyCTAChange={handleSurveyCTAChange}
           />
         )}
         {participation_method === 'survey' && (
