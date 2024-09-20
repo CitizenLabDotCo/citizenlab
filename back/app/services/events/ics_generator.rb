@@ -54,12 +54,13 @@ module Events
         e.dtend = Icalendar::Values::DateTime.new(end_time, tzid: tzid)
 
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
+        e.description = "Event details: #{event_url(event, preferred_locale)}"
         e.location = full_address(event, preferred_locale)
 
         # The interpretation of the URL property seems to differ widely depending on its
         # value and the calendar app. Most of them will just ignore the property if they
         # don't recognize a well-known video conferencing service in the URL.
-        e.url = event_url(event, preferred_locale)
+        e.url = event.online_link
 
         e.geo = [event.location_point.y, event.location_point.x] if event.location_point
       end
@@ -78,9 +79,6 @@ module Events
     end
 
     def event_url(event, preferred_locale)
-      online_link = event.online_link
-      return online_link if online_link.present?
-
       tenant_locales = AppConfiguration.instance.settings('core', 'locales')
       locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
 

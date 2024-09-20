@@ -49,11 +49,11 @@ RSpec.describe Events::IcsGenerator do
         UID:%UID_PLACEHOLDER%
         DTSTART;TZID=America/New_York:20170501T160000
         DTEND;TZID=America/New_York:20170501T180000
+        DESCRIPTION:Event details: http://example.org/en/events/#{event.id[..-18]}
+         #{event.id[-17..]}
         GEO:50.8465574798584;4.351710319519043
         LOCATION:Atomiumsquare 1\\, 1020 Brussels\\, Belgium\\n(Sphere 1)
         SUMMARY:Info session
-        URL;VALUE=URI:http://example.org/en/events/#{event.id[..-5]}
-         #{event.id[-4..]}
         END:VEVENT
         END:VCALENDAR
       ICS
