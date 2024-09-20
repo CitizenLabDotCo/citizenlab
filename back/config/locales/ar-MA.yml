@@ -343,3 +343,5 @@ ar-MA:
   voting_method:
     default_voting_term_singular: "تصويت"
     default_voting_term_plural: "أصوات"
+  ics_calendar_event:
+    event_details: "تفاصيل الحدث"
