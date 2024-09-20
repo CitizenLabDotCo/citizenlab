@@ -339,3 +339,5 @@ fi:
   voting_method:
     default_voting_term_singular: "äänestys"
     default_voting_term_plural: "ääniä"
+  ics_calendar_event:
+    event_details: "Tapahtuman tiedot"
