@@ -339,3 +339,5 @@ ca:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "vots"
+  ics_calendar_event:
+    event_details: "Detalls de l'esdeveniment"
