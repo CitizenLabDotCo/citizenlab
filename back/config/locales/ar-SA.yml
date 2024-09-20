@@ -192,8 +192,8 @@ ar:
       section3:
         title: تفاصيل
         description:
-      other_text_field:
-        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
+      other_input_field:
+        title: اكتب إجابتك
   custom_forms:
     categories:
       main_content:
