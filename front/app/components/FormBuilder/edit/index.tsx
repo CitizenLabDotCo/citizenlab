@@ -190,9 +190,13 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
-          logic: field.logic,
-        }),
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+          ? {
+              logic: field.logic,
+            }
+          : {
+              logic: [],
+            }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},

@@ -5,6 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
+import { generateTempId } from 'components/FormBuilder/utils';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -37,6 +39,14 @@ const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
           disabled={surveyHasSubmissions}
           options={fieldSwitchOptions}
           onChange={(value) => {
+            // Remove the current field ID, since we want to create a new field
+            setValue(`customFields.${field.index}.id`, undefined, {
+              shouldDirty: true,
+            });
+            // Generate a new temp ID for the field
+            setValue(`customFields.${field.index}.temp_id`, generateTempId(), {
+              shouldDirty: true,
+            });
             setValue(inputTypeName, value?.value, { shouldDirty: true });
           }}
           value={watch(inputTypeName)}
