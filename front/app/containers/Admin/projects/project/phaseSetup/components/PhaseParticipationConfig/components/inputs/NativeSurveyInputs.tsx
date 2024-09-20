@@ -23,7 +23,7 @@ interface Props {
   allow_anonymous_participation: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
-  phaseAttrs: IUpdatedPhaseProperties;
+  formData: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
@@ -38,7 +38,7 @@ const NativeSurveyInputs = ({
   allow_anonymous_participation,
   apiErrors,
   phase,
-  phaseAttrs,
+  formData,
   handleAllowAnonymousParticipationOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
@@ -88,7 +88,7 @@ const NativeSurveyInputs = ({
         <InputMultilocWithLocaleSwitcher
           id="title"
           type="text"
-          valueMultiloc={phaseAttrs.native_survey_title_multiloc}
+          valueMultiloc={formData.native_survey_title_multiloc}
           onChange={handleSurveyTitleChange}
         />
         <Error
@@ -103,7 +103,7 @@ const NativeSurveyInputs = ({
         <InputMultilocWithLocaleSwitcher
           id="title"
           type="text"
-          valueMultiloc={phaseAttrs.native_survey_button_multiloc}
+          valueMultiloc={formData.native_survey_button_multiloc}
           onChange={handleSurveyCTAChange}
         />
         <Error
@@ -127,7 +127,7 @@ const NativeSurveyInputs = ({
             event.preventDefault();
           }}
         >
-          {localize(phaseAttrs.native_survey_button_multiloc)}
+          {localize(formData.native_survey_button_multiloc)}
         </Button>
       </SectionField>
     </>

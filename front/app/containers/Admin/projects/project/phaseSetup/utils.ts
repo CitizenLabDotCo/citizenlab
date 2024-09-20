@@ -113,17 +113,17 @@ export function getTimelineTab(
 interface GetStartDateParams {
   phase?: IPhaseData;
   phases?: IPhases;
-  attributeDiff: IUpdatedPhaseProperties;
+  formData: IUpdatedPhaseProperties;
 }
 
 export const getStartDate = ({
   phase,
   phases,
-  attributeDiff,
+  formData,
 }: GetStartDateParams) => {
   const phaseAttrs = phase
-    ? { ...phase.attributes, ...attributeDiff }
-    : { ...attributeDiff };
+    ? { ...phase.attributes, ...formData }
+    : { ...formData };
   let startDate: Moment | null = null;
 
   // If this is a new phase

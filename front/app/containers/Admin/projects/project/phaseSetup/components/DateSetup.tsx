@@ -21,19 +21,17 @@ import { SubmitStateType } from '../typings';
 import { getStartDate, getExcludedDates, getMaxEndDate } from '../utils';
 
 interface Props {
-  attributeDiff: IUpdatedPhaseProperties;
+  formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
-  setAttributeDiff: React.Dispatch<
-    React.SetStateAction<IUpdatedPhaseProperties>
-  >;
+  setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
 }
 
 const DateSetup = ({
-  attributeDiff,
+  formData,
   errors,
   setSubmitState,
-  setAttributeDiff,
+  setFormData,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -52,10 +50,10 @@ const DateSetup = ({
   const startDate = getStartDate({
     phase: phase?.data,
     phases,
-    attributeDiff,
+    formData,
   });
 
-  const endAt = attributeDiff.end_at ?? phase?.data.attributes.end_at;
+  const endAt = formData.end_at ?? phase?.data.attributes.end_at;
   const endDate = endAt ? moment(endAt) : null;
 
   const phasesWithOutCurrentPhase = phases
@@ -72,8 +70,8 @@ const DateSetup = ({
     endDate: Moment | null;
   }) => {
     setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
+    setFormData({
+      ...formData,
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
@@ -98,8 +96,8 @@ const DateSetup = ({
   const setNoEndDate = () => {
     if (endDate) {
       setSubmitState('enabled');
-      setAttributeDiff({
-        ...attributeDiff,
+      setFormData({
+        ...formData,
         end_at: '',
       });
     }

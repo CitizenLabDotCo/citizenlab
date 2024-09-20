@@ -47,7 +47,7 @@ import { ValidationErrors } from './utils/validate';
 
 interface Props {
   phase?: IPhase;
-  phaseAttrs: IUpdatedPhaseProperties;
+  formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
   onChange: (arg: IUpdatedPhaseProperties) => void;
@@ -64,7 +64,7 @@ type SetFn = (config: IUpdatedPhaseProperties) => IUpdatedPhaseProperties;
 
 const PhaseParticipationConfig = ({
   phase,
-  phaseAttrs,
+  formData,
   validationErrors,
   apiErrors,
   onChange,
@@ -87,9 +87,9 @@ const PhaseParticipationConfig = ({
 
   const { formatMessage } = useIntl();
 
-  const updatePhaseAttrs = (fn: SetFn) => {
-    const updatedPhaseAttrs = fn(phaseAttrs);
-    onChange(updatedPhaseAttrs);
+  const updateFormData = (fn: SetFn) => {
+    const updatedFormData = fn(formData);
+    onChange(updatedFormData);
   };
 
   const handleParticipationMethodOnChange = (
@@ -101,7 +101,7 @@ const PhaseParticipationConfig = ({
     const survey = participation_method === 'survey';
     const proposals = participation_method === 'proposals';
 
-    updatePhaseAttrs(() => ({
+    updateFormData(() => ({
       ...defaultParticipationConfig,
       participation_method,
 
@@ -114,14 +114,14 @@ const PhaseParticipationConfig = ({
   };
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       survey_service,
     }));
   };
 
   const handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       survey_embed_url,
     }));
@@ -130,28 +130,28 @@ const PhaseParticipationConfig = ({
   const handleDocumentAnnotationEmbedUrlChange = (
     document_annotation_embed_url: string
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       document_annotation_embed_url,
     }));
   };
 
   const togglePostingEnabled = () => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       submission_enabled: !state.submission_enabled,
     }));
   };
 
   const toggleCommentingEnabled = () => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       commenting_enabled: !state.commenting_enabled,
     }));
   };
 
   const toggleReactingEnabled = () => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_enabled: !state.reacting_enabled,
     }));
@@ -160,7 +160,7 @@ const PhaseParticipationConfig = ({
   const handleReactingLikeMethodOnChange = (
     reacting_like_method: 'unlimited' | 'limited'
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_like_method,
       reacting_like_limited_max:
@@ -169,7 +169,7 @@ const PhaseParticipationConfig = ({
   };
 
   const handleLikingLimitOnChange = (reacting_like_limited_max: string) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
     }));
@@ -182,7 +182,7 @@ const PhaseParticipationConfig = ({
   const handleReactingDislikeEnabledOnChange = (
     reacting_dislike_enabled: boolean
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_dislike_enabled,
     }));
@@ -191,7 +191,7 @@ const PhaseParticipationConfig = ({
   const handleAllowAnonymousParticipationOnChange = (
     allow_anonymous_participation: boolean
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       allow_anonymous_participation,
     }));
@@ -200,7 +200,7 @@ const PhaseParticipationConfig = ({
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_method,
       voting_max_votes_per_idea:
@@ -212,7 +212,7 @@ const PhaseParticipationConfig = ({
   const handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_dislike_method,
       reacting_dislike_limited_max:
@@ -223,7 +223,7 @@ const PhaseParticipationConfig = ({
   const handleDislikingLimitOnChange = (
     rreacting_dislike_limited_max: string
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_dislike_limited_max: parseInt(rreacting_dislike_limited_max, 10),
     }));
@@ -234,7 +234,7 @@ const PhaseParticipationConfig = ({
   };
 
   const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       presentation_mode,
     }));
@@ -243,7 +243,7 @@ const PhaseParticipationConfig = ({
   const handleIdeaDefaultSortMethodChange = (
     ideas_order: IdeaDefaultSortMethod
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       ideas_order,
     }));
@@ -251,7 +251,7 @@ const PhaseParticipationConfig = ({
 
   const handleVotingMinTotalChange = (newVotingMinTotal: string) => {
     const voting_min_total = parseInt(newVotingMinTotal, 10);
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_min_total,
     }));
@@ -265,7 +265,7 @@ const PhaseParticipationConfig = ({
     const voting_max_total = newVotingMaxTotal
       ? parseInt(newVotingMaxTotal, 10)
       : null;
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_max_total,
     }));
@@ -277,7 +277,7 @@ const PhaseParticipationConfig = ({
 
   const handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
     const voting_max_votes_per_idea = parseInt(newVotingMaxPerIdeaTotal, 10);
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_max_votes_per_idea,
     }));
@@ -290,7 +290,7 @@ const PhaseParticipationConfig = ({
   const handleVoteTermPluralChange = (
     voting_term_plural_multiloc: Multiloc
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_term_plural_multiloc,
     }));
@@ -300,7 +300,7 @@ const PhaseParticipationConfig = ({
   const handleVoteTermSingularChange = (
     voting_term_singular_multiloc: Multiloc
   ) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       voting_term_singular_multiloc,
     }));
@@ -310,49 +310,49 @@ const PhaseParticipationConfig = ({
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       input_term,
     }));
   };
 
   const togglePollAnonymous = () => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       poll_anonymous: !state.poll_anonymous,
     }));
   };
 
   const handleDaysLimitChange = (limit: string) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       expire_days_limit: parseInt(limit, 10),
     }));
   };
 
   const handleReactingThresholdChange = (threshold: string) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       reacting_threshold: parseInt(threshold, 10),
     }));
   };
 
   const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       prescreening_enabled,
     }));
   };
 
   const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       native_survey_title_multiloc: surveyTitle,
     }));
   };
 
   const handleSurveyCTAChange = (CTATitle: Multiloc) => {
-    updatePhaseAttrs((state) => ({
+    updateFormData((state) => ({
       ...state,
       native_survey_button_multiloc: CTATitle,
     }));
@@ -397,7 +397,7 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
-  } = phaseAttrs;
+  } = formData;
 
   const showSurveys =
     surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
@@ -569,7 +569,7 @@ const PhaseParticipationConfig = ({
             allow_anonymous_participation={allow_anonymous_participation}
             apiErrors={apiErrors}
             phase={phase}
-            phaseAttrs={phaseAttrs}
+            formData={formData}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
