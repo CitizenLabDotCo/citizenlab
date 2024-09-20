@@ -339,3 +339,5 @@ sv:
   voting_method:
     default_voting_term_singular: "omröstning"
     default_voting_term_plural: "röster"
+  ics_calendar_event:
+    event_details: "Detaljer om evenemanget"
