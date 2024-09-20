@@ -340,3 +340,5 @@ lv:
   voting_method:
     default_voting_term_singular: "balsot"
     default_voting_term_plural: "balsis"
+  ics_calendar_event:
+    event_details: "Detalizēta informācija par pasākumu"
