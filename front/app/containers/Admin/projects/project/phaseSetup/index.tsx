@@ -17,7 +17,7 @@ import { IPhaseFiles } from 'api/phase_files/types';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
@@ -118,6 +118,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
+    console.log('setting form data...');
+    console.log(phase);
     setFormData(
       phase
         ? phase.data.attributes
@@ -228,6 +230,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
+    console.log({ formData });
     if (!formData) return;
 
     const { isValidated, errors } = validate(
@@ -236,10 +239,12 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       tenantLocales
     );
 
+    console.log({ isValidated, errors });
+
     setValidationErrors(errors);
 
     if (isValidated) {
-      save(projectId, phase?.data, formData);
+      save(formData);
     }
   };
 
@@ -296,17 +301,13 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       });
   };
 
-  const save = async (
-    projectId: string | null,
-    phase: IPhaseData | undefined,
-    formData: IUpdatedPhaseProperties
-  ) => {
+  const save = async (formData: IUpdatedPhaseProperties) => {
     if (processing) return;
 
     setProcessing(true);
 
     const start = getStartDate({
-      phase,
+      phase: phase?.data,
       phases,
       formData,
     });
@@ -326,7 +327,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     if (phase) {
       updatePhase(
-        { phaseId: phase.id, ...updatedAttr },
+        { phaseId: phase?.data.id, ...updatedAttr },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
