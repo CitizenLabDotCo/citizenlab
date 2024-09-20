@@ -154,7 +154,7 @@ interface ParticipationParams extends BaseParams {
 export type ProjectReportsPublicationStatus = 'published' | 'archived';
 
 export interface ProjectsProps extends DateProps {
-  publication_statuses: ProjectReportsPublicationStatus;
+  publication_statuses?: ProjectReportsPublicationStatus[];
 }
 
 interface ProjectsParams extends BaseParams {

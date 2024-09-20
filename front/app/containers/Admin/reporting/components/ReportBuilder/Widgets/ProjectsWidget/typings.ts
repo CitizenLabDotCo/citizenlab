@@ -6,5 +6,5 @@ export interface Props {
   title?: Multiloc;
   startAt?: string;
   endAt?: string | null;
-  publicationStatus?: ProjectReportsPublicationStatus;
+  publicationStatuses?: ProjectReportsPublicationStatus[];
 }

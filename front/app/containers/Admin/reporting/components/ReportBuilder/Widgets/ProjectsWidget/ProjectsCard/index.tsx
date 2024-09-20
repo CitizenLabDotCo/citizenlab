@@ -8,15 +8,11 @@ import { Props } from '../typings';
 
 import ProjectRow from './ProjectRow';
 
-const ProjectsCard = ({
-  startAt,
-  endAt,
-  publicationStatus = 'published',
-}: Props) => {
+const ProjectsCard = ({ startAt, endAt, publicationStatuses }: Props) => {
   const { data: response } = useProjects({
     start_at: startAt,
     end_at: endAt,
-    publication_statuses: publicationStatus,
+    publication_statuses: publicationStatuses,
   });
   if (!response) return null;
 
