@@ -118,8 +118,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    console.log('setting form data...');
-    console.log(phase);
     setFormData(
       phase
         ? phase.data.attributes
@@ -230,7 +228,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    console.log({ formData });
     if (!formData) return;
 
     const { isValidated, errors } = validate(
@@ -238,8 +235,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       formatMessage,
       tenantLocales
     );
-
-    console.log({ isValidated, errors });
 
     setValidationErrors(errors);
 
@@ -339,7 +334,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       addPhase(
         {
           projectId,
-          campaigns_settings: initialCampaignsSettings,
           ...updatedAttr,
         },
         {
