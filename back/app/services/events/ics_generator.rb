@@ -54,7 +54,7 @@ module Events
         e.dtend = Icalendar::Values::DateTime.new(end_time, tzid: tzid)
 
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
-        e.description = "Event details: #{event_url(event, preferred_locale)}"
+        e.description = event_description(event, preferred_locale)
         e.location = full_address(event, preferred_locale)
 
         # The interpretation of the URL property seems to differ widely depending on its
@@ -78,11 +78,14 @@ module Events
       address.presence
     end
 
-    def event_url(event, preferred_locale)
+    def event_description(event, preferred_locale)
       tenant_locales = AppConfiguration.instance.settings('core', 'locales')
       locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
 
-      Frontend::UrlService.new.model_to_url(event, locale: Locale.new(locale))
+      event_details = I18n.with_locale(locale) { I18n.t('ics_calendar_event.event_details') }
+      event_url = Frontend::UrlService.new.model_to_url(event, locale: Locale.new(locale))
+
+      "#{event_details}: #{event_url}"
     end
 
     def multiloc_service
