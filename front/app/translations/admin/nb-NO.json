@@ -1461,8 +1461,6 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Vises på prosjektkortet på startsiden.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Vises på prosjektsiden. Beskriv tydelig hva prosjektet går ut på, hva du forventer fra brukerne og hva de kan forvente fra deg.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Det oppstod en feil, prøv på nytt senere",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Ved å bruke innholdsbyggeren kan du bruke mer avanserte alternativer for oppsett. For språk der innhold ikke er tilgjengelig i innholdsbyggeren vises innholdet fra den vanlige prosjektbeskrivelsen i stedet.",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Rediger beskrivelsen i innholdsbyggeren",
   "app.containers.AdminPage.ProjectDescription.preview": "Forhåndsvisning",
   "app.containers.AdminPage.ProjectDescription.save": "Lagre",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Endringene dine er lagret.",
