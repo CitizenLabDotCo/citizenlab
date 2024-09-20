@@ -339,3 +339,5 @@ el:
   voting_method:
     default_voting_term_singular: "ψήφος"
     default_voting_term_plural: "ψήφοι"
+  ics_calendar_event:
+    event_details: "Λεπτομέρειες εκδήλωσης"
