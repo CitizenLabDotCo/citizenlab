@@ -26,6 +26,8 @@ import Error from 'components/UI/Error';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { anyIsDefined } from 'utils/helperUtils';
 
+import { ValidationErrors } from '../../typings';
+
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
 import PollInputs from './components/inputs/PollInputs';
@@ -43,7 +45,6 @@ import {
   surveyDefaultConfig,
   votingDefaultConfig,
 } from './utils/participationMethodConfigs';
-import { ValidationErrors } from './utils/validate';
 
 interface Props {
   phase?: IPhase;

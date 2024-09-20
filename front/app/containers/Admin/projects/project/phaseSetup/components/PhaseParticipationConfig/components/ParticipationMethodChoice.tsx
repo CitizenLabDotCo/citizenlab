@@ -20,6 +20,24 @@ type Props = {
 
 export const backgroundColor = lighten(0.1, colors.tealLight);
 
+interface ChildTextProps {
+  selected: boolean;
+  children: React.ReactNode;
+}
+
+export const ChildText = ({ selected, children }: ChildTextProps) => (
+  <Text
+    my="0px"
+    variant="bodyS"
+    color={selected ? 'primary' : 'coolGrey500'}
+    textAlign="left"
+    width="100%"
+    style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
+  >
+    {children}
+  </Text>
+);
+
 const ParticipationMethodChoice = ({
   selected,
   title,
@@ -77,18 +95,7 @@ const ParticipationMethodChoice = ({
           {title}
         </Title>
       )}
-      {children && (
-        <Text
-          my="0px"
-          variant="bodyS"
-          color={selected ? 'primary' : 'coolGrey500'}
-          textAlign="left"
-          width="100%"
-          style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
-        >
-          {children}
-        </Text>
-      )}
+      {children}
       {subtitle && (
         <Text
           my="0px"

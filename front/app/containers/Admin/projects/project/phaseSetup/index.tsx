@@ -54,12 +54,10 @@ import CampaignRow from './components/CampaignRow';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
-import validate, {
-  ValidationErrors,
-} from './components/PhaseParticipationConfig/utils/validate';
 import messages from './messages';
-import { SubmitStateType } from './typings';
+import { SubmitStateType, ValidationErrors } from './typings';
 import { getTimelineTab, getStartDate } from './utils';
+import validate from './validate';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
   if (phaseFiles) {

@@ -3,7 +3,7 @@ import { FormatMessage, SupportedLocale } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
-import messages from '../../../../messages';
+import messages from '../messages';
 
 const validate = (
   state: IUpdatedPhaseProperties,
@@ -158,7 +158,5 @@ const validate = (
     },
   };
 };
-
-export type ValidationErrors = Partial<ReturnType<typeof validate>['errors']>;
 
 export default validate;

@@ -25,7 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from '../../../../../../messages';
-import { ValidationErrors } from '../../../utils/validate';
+import { ValidationErrors } from '../../../../../typings';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
 

@@ -34,10 +34,22 @@ import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
 import messages2 from './messages';
-import ParticipationMethodChoice from './ParticipationMethodChoice';
+import ParticipationMethodChoice, {
+  ChildText,
+} from './ParticipationMethodChoice';
 
 const LeftAlignedList = styled.ul`
   text-align: left;
+`;
+
+const ParticipationMethodDescriptionWrapper = styled.div<{ selected: boolean }>`
+  width: 100%;
+  color: ${({ selected }) => (selected ? colors.primary : colors.coolGrey500)};
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  line-height: 21px;
 `;
 
 interface Props {
@@ -250,7 +262,9 @@ const ParticipationMethodPicker = ({
                   title={formatMessage(messages2.survey)}
                   selected={selectedMethod === 'native_survey'}
                 >
-                  <>
+                  <ParticipationMethodDescriptionWrapper
+                    selected={selectedMethod === 'native_survey'}
+                  >
                     <LeftAlignedList>
                       <li>
                         <FormattedMessage {...messages2.aiPoweredInsights} />
@@ -267,7 +281,7 @@ const ParticipationMethodPicker = ({
                         />
                       </li>
                     </LeftAlignedList>
-                  </>
+                  </ParticipationMethodDescriptionWrapper>
                 </ParticipationMethodChoice>
 
                 {pollsEnabled && (
@@ -276,7 +290,9 @@ const ParticipationMethodPicker = ({
                     title={formatMessage(messages2.quickPoll)}
                     selected={selectedMethod === 'poll'}
                   >
-                    <>{formatMessage(messages2.quickPollDescription)}</>
+                    <ChildText selected={selectedMethod === 'poll'}>
+                      {formatMessage(messages2.quickPollDescription)}
+                    </ChildText>
                   </ParticipationMethodChoice>
                 )}
 
@@ -286,7 +302,9 @@ const ParticipationMethodPicker = ({
                     title={formatMessage(messages2.externalSurvey)}
                     selected={selectedMethod === 'survey'}
                   >
-                    <>
+                    <ParticipationMethodDescriptionWrapper
+                      selected={selectedMethod === 'survey'}
+                    >
                       <FormattedMessage {...messages2.embedSurvey} />
                       <LeftAlignedList>
                         <li>
@@ -296,7 +314,7 @@ const ParticipationMethodPicker = ({
                           <FormattedMessage {...messages2.lacksReportingText} />
                         </li>
                       </LeftAlignedList>
-                    </>
+                    </ParticipationMethodDescriptionWrapper>
                   </ParticipationMethodChoice>
                 )}
               </>
