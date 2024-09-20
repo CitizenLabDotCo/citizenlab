@@ -339,3 +339,5 @@ es:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "votos"
+  ics_calendar_event:
+    event_details: "Detalles del evento"
