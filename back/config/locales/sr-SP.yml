@@ -340,3 +340,5 @@ sr-Cyrl:
   voting_method:
     default_voting_term_singular: "воте"
     default_voting_term_plural: "гласови"
+  ics_calendar_event:
+    event_details: "Event details"
