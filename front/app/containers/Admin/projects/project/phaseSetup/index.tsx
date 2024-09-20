@@ -7,7 +7,6 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
@@ -43,15 +42,21 @@ import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useFormatMessageWithLocale } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  useFormatMessageWithLocale,
+  useIntl,
+} from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import CampaignRow from './components/CampaignRow';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import validate, {
+  ValidationErrors,
+} from './components/PhaseParticipationConfig/utils/validate';
 import messages from './messages';
 import { SubmitStateType } from './typings';
 import { getTimelineTab, getStartDate } from './utils';
@@ -103,7 +108,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
     phase ? phase.data.attributes : ideationDefaultConfig
   );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
@@ -219,17 +228,18 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('getPhaseParticipationConfig');
-  };
 
-  const handlePhaseParticipationConfigSubmit = (
-    participationContextConfig: IUpdatedPhaseProperties
-  ) => {
-    // Important to keep the order of the spread operators
-    save(projectId, phase?.data, {
-      ...attributeDiff,
-      ...participationContextConfig,
-    });
+    const { isValidated, errors } = validate(
+      attributeDiff,
+      formatMessage,
+      tenantLocales
+    );
+
+    setValidationErrors(errors);
+
+    if (isValidated) {
+      save(projectId, phase?.data, attributeDiff);
+    }
   };
 
   const handleError = (error: { errors: CLErrors }) => {
@@ -290,54 +300,53 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     phase: IPhaseData | undefined,
     attributeDiff: IUpdatedPhaseProperties
   ) => {
-    if (!isEmpty(attributeDiff) && !processing) {
-      setProcessing(true);
-      if (!isEmpty(attributeDiff)) {
-        const start = getStartDate({
-          phase,
-          phases,
-          attributeDiff,
-        });
-        const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+    if (processing) return;
 
-        // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
-        const updatedAttr = {
-          ...attributeDiff,
-          ...(!attributeDiff.start_at &&
-            start && {
-              start_at: start.locale('en').format('YYYY-MM-DD'),
-              end_at:
-                attributeDiff.end_at ||
-                (end ? end.locale('en').format('YYYY-MM-DD') : ''),
-            }),
-        };
+    setProcessing(true);
 
-        if (phase) {
-          updatePhase(
-            { phaseId: phase.id, ...updatedAttr },
-            {
-              onSuccess: (response) => {
-                handleSaveResponse(response, false);
-              },
-              onError: handleError,
-            }
-          );
-        } else if (projectId) {
-          addPhase(
-            {
-              projectId,
-              campaigns_settings: initialCampaignsSettings,
-              ...updatedAttr,
-            },
-            {
-              onSuccess: (response) => {
-                handleSaveResponse(response, true);
-              },
-              onError: handleError,
-            }
-          );
+    const start = getStartDate({
+      phase,
+      phases,
+      attributeDiff,
+    });
+    const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
+    // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
+    const updatedAttr = {
+      ...attributeDiff,
+      ...(!attributeDiff.start_at &&
+        start && {
+          start_at: start.locale('en').format('YYYY-MM-DD'),
+          end_at:
+            attributeDiff.end_at ||
+            (end ? end.locale('en').format('YYYY-MM-DD') : ''),
+        }),
+    };
+
+    if (phase) {
+      updatePhase(
+        { phaseId: phase.id, ...updatedAttr },
+        {
+          onSuccess: (response) => {
+            handleSaveResponse(response, false);
+          },
+          onError: handleError,
         }
-      }
+      );
+    } else if (projectId) {
+      addPhase(
+        {
+          projectId,
+          campaigns_settings: initialCampaignsSettings,
+          ...updatedAttr,
+        },
+        {
+          onSuccess: (response) => {
+            handleSaveResponse(response, true);
+          },
+          onError: handleError,
+        }
+      );
     }
   };
 
@@ -383,11 +392,12 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           />
 
           <PhaseParticipationConfig
-            phaseAttrs={phaseAttrs}
             phase={phase}
-            onSubmit={handlePhaseParticipationConfigSubmit}
-            onChange={handlePhaseParticipationConfigChange}
+            phaseAttrs={phaseAttrs}
+            validationErrors={validationErrors}
             apiErrors={errors}
+            onChange={handlePhaseParticipationConfigChange}
+            setValidationErrors={setValidationErrors}
           />
           <SectionField className="fullWidth">
             <Box display="flex" alignItems="center">

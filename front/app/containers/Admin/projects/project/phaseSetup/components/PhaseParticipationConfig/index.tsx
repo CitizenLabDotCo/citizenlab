@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -6,10 +6,8 @@ import {
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
-import { filter } from 'rxjs/operators';
 import { CLErrors, Multiloc } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {
   IdeaDefaultSortMethod,
   InputTerm,
@@ -26,7 +24,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
 import { anyIsDefined } from 'utils/helperUtils';
 
 import IdeationInputs from './components/inputs/IdeationInputs';
@@ -46,14 +43,15 @@ import {
   surveyDefaultConfig,
   votingDefaultConfig,
 } from './utils/participationMethodConfigs';
-import validatePhaseConfig, { ValidationErrors } from './utils/validate';
+import { ValidationErrors } from './utils/validate';
 
 interface Props {
-  onChange: (arg: IUpdatedPhaseProperties) => void;
-  onSubmit: (arg: IUpdatedPhaseProperties) => void;
   phase?: IPhase;
   phaseAttrs: IUpdatedPhaseProperties;
+  validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
+  onChange: (arg: IUpdatedPhaseProperties) => void;
+  setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -67,9 +65,10 @@ type SetFn = (config: IUpdatedPhaseProperties) => IUpdatedPhaseProperties;
 const PhaseParticipationConfig = ({
   phase,
   phaseAttrs,
-  onSubmit,
-  onChange,
+  validationErrors,
   apiErrors,
+  onChange,
+  setValidationErrors,
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
@@ -86,39 +85,12 @@ const PhaseParticipationConfig = ({
     name: 'microsoft_forms_surveys',
   });
 
-  const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
-
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
 
   const updatePhaseAttrs = (fn: SetFn) => {
     const updatedPhaseAttrs = fn(phaseAttrs);
     onChange(updatedPhaseAttrs);
   };
-
-  useEffect(() => {
-    const validate = () => {
-      const { errors, isValidated } = validatePhaseConfig(
-        phaseAttrs,
-        formatMessage,
-        appConfig
-      );
-
-      setValidationErrors(errors);
-
-      return isValidated;
-    };
-
-    const subscription = eventEmitter
-      .observeEvent('getPhaseParticipationConfig')
-      .pipe(filter(() => validate()))
-      .subscribe(() => {
-        onSubmit(phaseAttrs);
-      });
-    return () => subscription.unsubscribe();
-  }, [phaseAttrs, onSubmit, formatMessage, appConfig]);
 
   const handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod

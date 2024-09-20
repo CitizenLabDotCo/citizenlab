@@ -1,7 +1,6 @@
 import { isFinite, isNaN } from 'lodash-es';
-import { FormatMessage } from 'typings';
+import { FormatMessage, SupportedLocale } from 'typings';
 
-import { IAppConfiguration } from 'api/app_configuration/types';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
 import messages from '../../../../messages';
@@ -9,7 +8,7 @@ import messages from '../../../../messages';
 const validate = (
   state: IUpdatedPhaseProperties,
   formatMessage: FormatMessage,
-  appConfig?: IAppConfiguration
+  locales?: SupportedLocale[]
 ) => {
   const {
     reacting_like_method,
@@ -36,8 +35,6 @@ const validate = (
   let voteTermError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
-
-  const locales = appConfig?.data.attributes.settings.core.locales;
 
   if (voting_method === 'multiple_voting') {
     locales?.map((locale) => {
