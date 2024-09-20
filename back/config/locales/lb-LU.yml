@@ -339,3 +339,5 @@ lb:
   voting_method:
     default_voting_term_singular: "stëmmen"
     default_voting_term_plural: "Stëmmen"
+  ics_calendar_event:
+    event_details: "Event Detailer"
