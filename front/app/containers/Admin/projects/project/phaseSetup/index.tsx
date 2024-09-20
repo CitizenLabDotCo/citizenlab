@@ -105,9 +105,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   );
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
-  const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
-    phase ? phase.data.attributes : ideationDefaultConfig
-  );
+  const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
@@ -118,6 +116,10 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
+    setAttributeDiff(phase ? phase.data.attributes : ideationDefaultConfig);
+  }, [phase]);
+
+  useEffect(() => {
     if (phaseFiles) {
       setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
@@ -125,6 +127,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handlePhaseParticipationConfigChange = useCallback(
     (participationContextConfig: IUpdatedPhaseProperties) => {
+      if (!attributeDiff) return;
+
       const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
         acc[locale] = formatMessageWithLocale(
           locale,
@@ -148,19 +152,20 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         ...participationContextConfig,
         ...(participationContextConfig.participation_method ===
           'native_survey' &&
-          !attributeDiff.native_survey_button_multiloc &&
+          !attributeDiff?.native_survey_button_multiloc &&
           !phase?.data.attributes.native_survey_button_multiloc && {
             native_survey_button_multiloc: surveyCTALabel,
           }),
         ...(participationContextConfig.participation_method ===
           'native_survey' &&
-          !attributeDiff.native_survey_title_multiloc &&
+          !attributeDiff?.native_survey_title_multiloc &&
           !phase?.data.attributes.native_survey_button_multiloc && {
             native_survey_title_multiloc: surveyTitle,
           }),
       }));
     },
     [
+      attributeDiff,
       formatMessageWithLocale,
       phase?.data.attributes.native_survey_button_multiloc,
       tenantLocales,
@@ -228,6 +233,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
+    if (!attributeDiff) return;
 
     const { isValidated, errors } = validate(
       attributeDiff,
@@ -362,6 +368,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
       },
     });
   };
+
+  if (!attributeDiff) return null;
 
   return (
     <Box ref={containerRef}>
