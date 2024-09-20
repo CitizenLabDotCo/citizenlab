@@ -341,3 +341,5 @@ pl:
   voting_method:
     default_voting_term_singular: "głosowanie"
     default_voting_term_plural: "głosy"
+  ics_calendar_event:
+    event_details: "Szczegóły wydarzenia"
