@@ -53,6 +53,15 @@ resource 'Projects' do
       items: { type: 'string' }
     )
 
+    parameter(
+      :area_ids,
+      'List only the projects that are in the specified areas.',
+      required: false,
+      in: 'query',
+      type: 'array',
+      items: { type: 'string' }
+    )
+
     context 'when the page size is smaller than the total number of projects' do
       let(:page_size) { 2 }
 
@@ -129,6 +138,25 @@ resource 'Projects' do
       end
 
       example_request 'List only the projects that have all the specified topics' do
+        assert_status 200
+        expect(json_response_body[:projects].pluck(:id))
+          .to match_array [project.id]
+      end
+    end
+
+    context "when filtering by 'area_ids'" do
+      let(:areas) { create_list(:area, 2) }
+      let(:area_ids) { areas.pluck(:id) }
+
+      let!(:project) do
+        create(:project).tap { |project| project.areas << areas }
+      end
+
+      let!(:project_with_one_area) do
+        create(:project).tap { |project| project.areas << areas.first }
+      end
+
+      example_request 'List only the projects that are in the specified areas' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
           .to match_array [project.id]

@@ -20,7 +20,7 @@ module PublicApi
     private
 
     def finder_params
-      params.permit(:folder_id, :publication_status, topic_ids: []).to_h.tap do |params|
+      params.permit(:folder_id, :publication_status, topic_ids: [], area_ids: []).to_h.tap do |params|
         if params[:publication_status]
           validate_publication_status!(params[:publication_status])
         end
