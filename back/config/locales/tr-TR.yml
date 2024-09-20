@@ -339,3 +339,5 @@ tr:
   voting_method:
     default_voting_term_singular: "oylama"
     default_voting_term_plural: "oylar"
+  ics_calendar_event:
+    event_details: "Etkinlik detayları"
