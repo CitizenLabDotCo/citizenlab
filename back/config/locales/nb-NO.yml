@@ -339,3 +339,5 @@
   voting_method:
     default_voting_term_singular: "stemme"
     default_voting_term_plural: "stemmer"
+  ics_calendar_event:
+    event_details: "Begivenhetsdetaljer"
