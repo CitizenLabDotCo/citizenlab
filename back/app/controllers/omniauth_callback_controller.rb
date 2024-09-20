@@ -33,8 +33,6 @@ class OmniauthCallbackController < ApplicationController
     @user = @identity.user || find_existing_user(user_attrs)
     @user = authentication_service.prevent_user_account_hijacking @user
 
-    # TODO: JS - Not finding the user even though it is there - @identity has no user
-
     # For FranceConnect only: https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
     if @user && !auth_method.can_merge?(@user, user_attrs, params[:sso_verification])
       # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message

@@ -6,6 +6,7 @@ end
 
 # See https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
 OmniAuth.config.allowed_request_methods = %i[post get]
+OmniAuth.config.silence_get_warning = true
 
 OmniAuth.config.full_host = lambda { |_env|
   AppConfiguration.instance&.base_backend_uri

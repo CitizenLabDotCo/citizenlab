@@ -19,7 +19,8 @@ module Verification
       private
 
       def find_existing_user(user_attrs)
-        super
+        user = super
+        return user if user
 
         if @verify
           # Try and find the user by verification for verification methods without an email
