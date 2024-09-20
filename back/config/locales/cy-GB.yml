@@ -343,3 +343,5 @@ cy:
   voting_method:
     default_voting_term_singular: "pleidlais"
     default_voting_term_plural: "pleidleisiau"
+  ics_calendar_event:
+    event_details: "Manylion y digwyddiad"
