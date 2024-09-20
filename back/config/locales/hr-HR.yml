@@ -340,3 +340,5 @@ hr:
   voting_method:
     default_voting_term_singular: "glasanje"
     default_voting_term_plural: "glasova"
+  ics_calendar_event:
+    event_details: "Detalji događaja"
