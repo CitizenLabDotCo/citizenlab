@@ -50,7 +50,7 @@ module Verification
         if @user&.invite_not_pending?
           begin
             handle_verification
-            update_user!
+            update_user!(verification_method)
             url = add_uri_params(
               Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
               filter_omniauth_params.merge(verification_success: true)
@@ -91,7 +91,6 @@ module Verification
         redirect_to url
       end
 
-      # TODO: JS - Is verification method and auth method the same? Or can it be instantiated separately?
       def verification_method
         @verification_method ||= verification_service.method_by_name(auth['provider'])
       end

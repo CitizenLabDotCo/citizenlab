@@ -5,6 +5,7 @@ class OmniauthCallbackController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
+  # NOTE: Patched by verification
   def create
     if auth_method
       auth_callback
@@ -26,6 +27,22 @@ class OmniauthCallbackController < ApplicationController
   end
 
   private
+
+  # NOTE: Patched by verification
+  def find_existing_user(user_attrs)
+    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
+    user
+  end
+
+  # NOTE: Patched by verification
+  def sign_in(sign_up: true, user_created: false)
+    set_auth_cookie(provider: auth['provider'])
+    if sign_up
+      signup_success_redirect
+    else
+      signin_success_redirect
+    end
+  end
 
   def auth_callback
     user_attrs = auth_method.profile_to_user_attrs(auth)
@@ -63,7 +80,7 @@ class OmniauthCallbackController < ApplicationController
 
       else # !@user.invite_pending?
         begin
-          update_user!
+          update_user!(auth_method)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -77,7 +94,6 @@ class OmniauthCallbackController < ApplicationController
       user_locale = get_user_locale(user_attrs)
 
       @user = UserService.build_in_sso(user_attrs, confirm, user_locale)
-
       @user.identities << @identity
       begin
         @user.save!
@@ -87,20 +103,6 @@ class OmniauthCallbackController < ApplicationController
         Rails.logger.info "Social signup failed: #{e.message}"
         signin_failure_redirect
       end
-    end
-  end
-
-  def find_existing_user(user_attrs)
-    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
-    user
-  end
-
-  def sign_in(sign_up: true, user_created: false)
-    set_auth_cookie(provider: auth['provider'])
-    if sign_up
-      signup_success_redirect
-    else
-      signin_success_redirect
     end
   end
 
@@ -178,15 +180,14 @@ class OmniauthCallbackController < ApplicationController
 
   # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
   # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method
-  # @param [User] user
-  def update_user!
-    attrs = auth_method.updateable_user_attrs
-    sso_user_attrs = auth_method.profile_to_user_attrs(auth)
+  def update_user!(auth_ver_method)
+    attrs = auth_ver_method.updateable_user_attrs
+    sso_user_attrs = auth_ver_method.profile_to_user_attrs(auth)
     user_params = sso_user_attrs.slice(*attrs).compact
     user_params.delete(:remote_avatar_url) if @user.avatar.present? # don't overwrite avatar if already present
 
     sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || @user.email))
-    confirm_user = auth_method.email_confirmed?(auth) && sso_email_is_used
+    confirm_user = auth_ver_method.email_confirmed?(auth) && sso_email_is_used
 
     UserService.update_in_sso!(@user, user_params, confirm_user)
   end
