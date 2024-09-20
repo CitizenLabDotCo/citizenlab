@@ -17,6 +17,9 @@ class AnonymousNameService
 
   def last_name
     if scheme == 'animal'
+
+      # TODO: JS - Use Faker::Creature::Animal.name
+
       names = I18n.t('user.anon_scheme.animal.last_names').split(',')
       index = (name_key.sum**2) % names.length
       names[index]
