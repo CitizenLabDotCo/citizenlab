@@ -20,7 +20,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
 
@@ -387,7 +387,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_status_not_allowed?(input)
     return false if params.dig(:idea, :idea_status_id).blank?
 
-    !InputStatusService.new(input.idea_status).can_transition_manually?
+    !input.idea_status.can_manually_transition_to?
   end
 
   def serialization_options_for(ideas)
@@ -453,7 +453,7 @@ class WebApi::V1::IdeasController < ApplicationController
       return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
     end
     if idea_status_not_allowed?(input)
-      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }
+      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
     end
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
       return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }

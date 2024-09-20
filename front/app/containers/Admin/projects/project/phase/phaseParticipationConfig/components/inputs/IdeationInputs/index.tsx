@@ -22,7 +22,7 @@ import UserActions from '../_shared/UserActions';
 interface Props {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
-  posting_enabled?: boolean | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
@@ -62,7 +62,7 @@ interface Props {
 const IdeationInputs = ({
   input_term,
   handleInputTermChange,
-  posting_enabled,
+  submission_enabled,
   commenting_enabled,
   reacting_enabled,
   reacting_like_method,
@@ -101,7 +101,7 @@ const IdeationInputs = ({
         handleInputTermChange={handleInputTermChange}
       />
       <UserActions
-        posting_enabled={posting_enabled || false}
+        submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}
         reacting_enabled={reacting_enabled || false}
         togglePostingEnabled={togglePostingEnabled}

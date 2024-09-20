@@ -36,6 +36,8 @@ hr:
   symbols:
     outside: negdje drugdje
   idea_statuses:
+    prescreening: prethodni pregled
+    prescreening_description: Ovaj unos trenutno pregledava voditelj projekta i još nije vidljiv javnosti.
     proposed: predloženo
     proposed_description: Ova je ideja predložena gradskoj administraciji
     viewed: pregledano
@@ -190,8 +192,8 @@ hr:
       section3:
         title: Pojedinosti
         description:
-      other_text_field:
-        title: Ako ste odabrali '{other_option}', na što mislite?
+      other_input_field:
+        title: Upišite svoj odgovor
   custom_forms:
     categories:
       main_content:

@@ -1237,7 +1237,7 @@ function apiCreatePhase({
           },
           participation_method: participationMethod,
           voting_method: votingMethod,
-          posting_enabled: canPost,
+          submission_enabled: canPost,
           reacting_enabled: canReact,
           commenting_enabled: canComment,
           description_multiloc: { en: description },

@@ -168,7 +168,7 @@ export interface IUpdatedProjectProperties {
   area_ids?: string[];
   visible_to?: Visibility;
   participation_method?: ParticipationMethod | null;
-  posting_enabled?: boolean | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;

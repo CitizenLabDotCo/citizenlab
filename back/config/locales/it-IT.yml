@@ -36,6 +36,8 @@ it:
   symbols:
     outside: da qualche altra parte
   idea_statuses:
+    prescreening: pre-screening
+    prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
     proposed_description: Questa idea è stata proposta alla città
     viewed: visto
@@ -190,8 +192,8 @@ it:
       section3:
         title: Dettagli
         description:
-      other_text_field:
-        title: Se hai scelto '{other_option}', a cosa stai pensando?
+      other_input_field:
+        title: Scrivi la tua risposta
   custom_forms:
     categories:
       main_content:

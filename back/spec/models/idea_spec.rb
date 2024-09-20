@@ -438,11 +438,11 @@ RSpec.describe Idea do
         create(:idea, idea_status: create(:idea_status_proposed)),
         create(:idea, idea_status: create(:idea_status, code: 'accepted')),
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status, code: 'viewed'))
+        create(:idea, idea_status: create(:idea_status, code: 'threshold_reached'))
       ]
       create(:official_feedback, post: ideas[0])
 
-      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id]
+      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id, ideas[3].id]
     end
   end
 

@@ -259,7 +259,7 @@ class CustomField < ApplicationRecord
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.other_text_field.title',
+      'custom_fields.ideas.other_input_field.title',
       locales: CL2_SUPPORTED_LOCALES
     )
 

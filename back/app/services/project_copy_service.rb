@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectCopyService < TemplateService
+class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
     same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 
@@ -33,6 +33,7 @@ class ProjectCopyService < TemplateService
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
+    @project_map_configs = project_map_configs
     @template = { 'models' => {} }
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
@@ -295,7 +296,7 @@ class ProjectCopyService < TemplateService
                                     end,
         'presentation_mode' => phase.presentation_mode,
         'participation_method' => phase.participation_method,
-        'posting_enabled' => phase.posting_enabled,
+        'submission_enabled' => phase.submission_enabled,
         'commenting_enabled' => phase.commenting_enabled,
         'reacting_enabled' => phase.reacting_enabled,
         'reacting_like_method' => phase.reacting_like_method,
@@ -307,7 +308,8 @@ class ProjectCopyService < TemplateService
         'ideas_order' => phase.ideas_order,
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
-        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count
+        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
+        'prescreening_enabled' => phase.prescreening_enabled
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -396,12 +398,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
-    custom_fields = CustomField.where(resource: custom_forms)
-    map_configs = CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
-
-    map_configs.map do |map_config|
+    @project_map_configs.map do |map_config|
       yml_map_config = {
         'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
@@ -418,7 +415,9 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_layers(shift_timestamps: 0)
-    (@project.map_config&.layers || []).map do |layer|
+    layers = @project_map_configs.map(&:layers).flatten
+
+    layers.map do |layer|
       yml_layer = {
         'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
         'type' => layer.type,
@@ -427,6 +426,7 @@ class ProjectCopyService < TemplateService
         'geojson' => layer.geojson,
         'default_enabled' => layer.default_enabled,
         'marker_svg_url' => layer.marker_svg_url,
+        'ordering' => layer.ordering,
         'created_at' => shift_timestamp(layer.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
@@ -581,6 +581,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => idea.title_multiloc,
         'body_multiloc' => idea.body_multiloc,
         'publication_status' => idea.publication_status,
+        'submitted_at' => shift_timestamp(idea.submitted_at, shift_timestamps)&.iso8601,
         'published_at' => shift_timestamp(idea.published_at, shift_timestamps)&.iso8601,
         'project_ref' => lookup_ref(idea.project_id, :project),
         'author_ref' => lookup_ref(idea.author_id, :user),
@@ -761,5 +762,14 @@ class ProjectCopyService < TemplateService
       props['dataCode'] = new_image_code
     end
     craftjs_json
+  end
+
+  def project_map_configs
+    CustomMaps::MapConfig.where(mappable: @project)
+      .or(
+        CustomMaps::MapConfig.where(
+          mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
+        )
+      )
   end
 end

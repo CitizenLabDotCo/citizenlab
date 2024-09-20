@@ -174,7 +174,10 @@ resource 'Users' do
         end
 
         context 'when the user_avatars module is inactive' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example_request 'Create a user without avatar' do
             assert_status 201
@@ -1192,7 +1195,10 @@ resource 'Users' do
         end
 
         describe 'when user_avatars is disabled' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
@@ -1354,7 +1360,7 @@ resource 'Users' do
         end
       end
 
-      # TODO: move-old-proposals-test
+      # TODO: cleanup-after-proposals-migration
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1398,7 +1404,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
-        # TODO: move-old-proposals-test
+        # TODO: cleanup-after-proposals-migration
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))

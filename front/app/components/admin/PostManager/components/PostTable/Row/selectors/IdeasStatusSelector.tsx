@@ -1,17 +1,21 @@
 import React, { MouseEvent } from 'react';
 
-import { Popup } from 'semantic-ui-react';
+import { Text, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 import T from 'components/T';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../../messages';
+
 const Container = styled.div`
   display: flex;
 `;
 
-const ColorIndicator = styled.div<{ active: boolean }>`
+const ColorIndicator = styled.div<{ active: boolean; disabled: boolean }>`
   width: 1rem;
   height: 1rem;
   border: 1px solid ${(props) => props.color};
@@ -20,6 +24,7 @@ const ColorIndicator = styled.div<{ active: boolean }>`
   cursor: pointer;
   margin: 0 0.25rem;
   ${(props) => (props.active ? `background-color: ${props.color};` : '')}
+  ${(props) => (props.disabled ? 'cursor: not-allowed;' : '')}
 `;
 
 type Props = {
@@ -43,19 +48,25 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
     return (
       <Container>
         {statuses.map((status) => (
-          <Popup
+          <Tooltip
             key={status.id}
-            basic
-            trigger={
-              <ColorIndicator
-                color={status.attributes.color}
-                active={this.isActive(status.id)}
-                onClick={this.handleStatusClick(status.id)}
-              />
+            content={
+              <div>
+                <Text fontWeight="bold" m="0px">
+                  <T value={status.attributes.title_multiloc} />
+                </Text>
+                <FormattedMessage {...messages.automatedStatusTooltipText} />
+              </div>
             }
-            content={<T value={status.attributes.title_multiloc} />}
-            position="top center"
-          />
+            disabled={status.attributes.can_manually_transition_to}
+          >
+            <ColorIndicator
+              color={status.attributes.color}
+              active={this.isActive(status.id)}
+              onClick={this.handleStatusClick(status.id)}
+              disabled={!status.attributes.can_manually_transition_to}
+            />
+          </Tooltip>
         ))}
       </Container>
     );

@@ -7,6 +7,9 @@ import useVerificationMethodVerifiedActions from 'api/verification_methods/useVe
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
+import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import NemlogInButton from '../_components/NemLogInButton';
@@ -28,6 +31,8 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   if (!verificationMethod) return null;
 
   const isNemLogIn = verificationMethod.data.attributes.name === 'nemlog_in';
+  const isClaveUnica =
+    verificationMethod.data.attributes.name === 'clave_unica';
 
   return (
     <Box>
@@ -38,6 +43,17 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           standardSSOBehavior
           onClickStandardSSO={() => {
             onClickSSO('nemlog_in');
+          }}
+        />
+      )}
+      {isClaveUnica && (
+        <ClaveUnicaButton
+          disabled={false}
+          message={
+            <FormattedMessage {...claveUnicaButtonMessages.verifyClaveUnica} />
+          }
+          onClick={() => {
+            onClickSSO('clave_unica');
           }}
         />
       )}

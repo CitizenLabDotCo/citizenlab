@@ -15,6 +15,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     :location_description,
     :created_at,
     :updated_at,
+    :submitted_at,
     :published_at,
     :budget,
     :proposed_budget,

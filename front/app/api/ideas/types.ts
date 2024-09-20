@@ -137,8 +137,8 @@ export interface IIdeaData {
 export interface IIdeaAdd {
   // Required
   project_id: string;
-  publication_status: IdeaPublicationStatus;
   // Optional
+  publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;

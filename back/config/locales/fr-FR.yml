@@ -36,6 +36,8 @@ fr:
   symbols:
     outside: autre lieu
   idea_statuses:
+    prescreening: Réviser les contributions
+    prescreening_description: Cette contribution est actuellement en cours de révision par le chef de projet et n'est pas encore visibles au public.
     proposed: soumise
     proposed_description: Cette idée à été proposée à l'administration
     viewed: vue
@@ -190,8 +192,8 @@ fr:
       section3:
         title: Détails
         description:
-      other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+      other_input_field:
+        title: Saisissez votre réponse
   custom_forms:
     categories:
       main_content:

@@ -36,6 +36,8 @@
   symbols:
     outside: annet sted
   idea_statuses:
+    prescreening: forhåndsscreening
+    prescreening_description: Dette innspillet er for tiden under vurdering av prosjektlederen og er ennå ikke synlig for offentligheten.
     proposed: foreslått
     proposed_description: Ideen har blitt forslått til kommunen
     viewed: Sett
@@ -190,8 +192,8 @@
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Hvis du valgte '{other_option}', hva tenker du på?
+      other_input_field:
+        title: Skriv inn svaret ditt
   custom_forms:
     categories:
       main_content:

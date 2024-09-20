@@ -36,6 +36,8 @@ lb:
   symbols:
     outside: anzwousch anescht
   idea_statuses:
+    prescreening: Pre-Screening
+    prescreening_description: Dësen Input gëtt am Moment vum Projet Manager iwwerpréift an ass nach net fir de Public ze gesinn.
     proposed: virgeschloen
     proposed_description: Dës Iddi gouf virgeschloen
     viewed: gesinn
@@ -190,8 +192,8 @@ lb:
       section3:
         title: Detailer
         description:
-      other_text_field:
-        title: Wann Dir '{other_option}' gewielt hutt, un wat denkt Dir?
+      other_input_field:
+        title: Typ Är Äntwert
   custom_forms:
     categories:
       main_content:

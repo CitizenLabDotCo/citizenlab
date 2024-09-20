@@ -36,6 +36,8 @@ ar:
   symbols:
     outside: في مكان آخر
   idea_statuses:
+    prescreening: الفحص المسبق
+    prescreening_description: يخضع هذا الإدخال حاليًا لمراجعة مدير المشروع ولم يصبح مرئيًا للجمهور بعد.
     proposed: تم اقتراحها
     proposed_description: تم اقتراح هذه الفكرة على المدينة
     viewed: تمت مشاهدتها
@@ -190,8 +192,8 @@ ar:
       section3:
         title: تفاصيل
         description:
-      other_text_field:
-        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
+      other_input_field:
+        title: اكتب إجابتك
   custom_forms:
     categories:
       main_content:

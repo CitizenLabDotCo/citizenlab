@@ -124,11 +124,11 @@ const ProjectProposalsManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (_initiativeStatus: string) => {
+  const onChangeStatus = (ideaStatus: string) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
-      // initiative_status: initiativeStatus, // Fix later when statuses are updated
+      idea_status: ideaStatus,
     });
   };
 

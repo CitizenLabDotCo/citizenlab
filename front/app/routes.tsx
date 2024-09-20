@@ -73,6 +73,7 @@ export enum citizenRoutes {
   profile = 'profile',
   signIn = 'sign-in',
   signUp = 'sign-up',
+  signInAdmin = 'sign-in/admin',
   invite = 'invite',
   siteMap = 'site-map',
   profileEdit = `profile/edit`,
@@ -110,6 +111,7 @@ export enum citizenRoutes {
 type citizenRouteTypes =
   | '/'
   | `/${string}/`
+  | `/sign-in/admin`
   | `/sign-in`
   | `/sign-up`
   | `/invite`
@@ -150,6 +152,14 @@ export default function createRoutes() {
       children: [
         {
           index: true,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.signInAdmin,
           element: (
             <PageLoading>
               <HomePage />
