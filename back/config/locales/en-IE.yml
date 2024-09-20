@@ -339,3 +339,5 @@ en-IE:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"
