@@ -340,4 +340,4 @@ de:
     default_voting_term_singular: "Stimme"
     default_voting_term_plural: "Stimmen"
   ics_calendar_event:
-    event_details: "Details zur Veranstaltung"
+    event_details: "Veranstaltungsdetails"
