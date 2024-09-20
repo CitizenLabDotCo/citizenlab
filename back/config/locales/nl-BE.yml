@@ -339,3 +339,5 @@ nl-BE:
   voting_method:
     default_voting_term_singular: "stem"
     default_voting_term_plural: "stemmen"
+  ics_calendar_event:
+    event_details: "Details evenement"
