@@ -312,13 +312,14 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
     end
 
-    it 'returns followers' do
+    it 'does not return followers' do
       project = create(:project)
-      follower1 = create(:follower, followable: project).user
-      idea = create(:idea, project: project, author: follower1)
-      follower2 = create(:follower, followable: idea).user
+      create(:follower, followable: project).user
+      author = create(:user)
+      idea = create(:idea, project: project, author: author)
+      create(:follower, followable: idea).user
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
+      expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
     end
   end
 
