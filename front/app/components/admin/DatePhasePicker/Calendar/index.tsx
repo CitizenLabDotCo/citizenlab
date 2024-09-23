@@ -96,6 +96,12 @@ const DayPickerStyles = styled.div`
   .is-selected-gradient_three {
     background: linear-gradient(90deg, ${selectedBackground3}, ${colors.white});
   }
+
+  .is-currently-selected {
+    background: var(--rdp-accent-color);
+    color: ${colors.white};
+    border-radius: 50%;
+  }
 `;
 
 const modifiersClassNames = {
@@ -111,6 +117,7 @@ const modifiersClassNames = {
   isSelectedGradient_one: 'is-selected-gradient_one',
   isSelectedGradient_two: 'is-selected-gradient_two',
   isSelectedGradient_three: 'is-selected-gradient_three',
+  isCurrentlySelected: 'is-currently-selected',
 };
 
 interface Props {
@@ -157,14 +164,19 @@ const Calendar = ({
       return;
     }
 
+    console.log({ day });
+
     const nextSelectedRange = getNextSelectedRange({
       disabledRanges,
       currentlySelectedDate,
       lastClickedDate: day,
     });
 
+    console.log({ nextSelectedRange });
+
     if (nextSelectedRange) {
       onUpdateRange(nextSelectedRange);
+      setCurrentSelectedDate(undefined);
     }
   };
 
