@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Projenin amacını, kullanılan katılım yöntemlerini ve sonucu ekleyin",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Ziyaretçiler",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Bu rapor kaydedilmemiş değişiklikler içermektedir. Lütfen yazdırmadan önce kaydedin.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Yeniden Adlandır",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Başlık zaten alınmış",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Önceki {days} günleriyle karşılaştırıldığında",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "İstatistikleri gizle",
