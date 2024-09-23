@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Ychwanegwch nod y prosiect, y dulliau cyfranogiad a ddefnyddiwyd, a'r canlyniad",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Ymwelwyr",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Mae'r adroddiad hwn yn cynnwys newidiadau heb eu cadw. Arbedwch cyn argraffu.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Ailenwi",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Mae'r teitl eisoes wedi'i gymryd",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "O'i gymharu â {days} diwrnodau blaenorol",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Cuddio ystadegau",
