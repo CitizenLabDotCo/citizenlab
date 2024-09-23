@@ -6,16 +6,21 @@ import { ClosedDateRange, DateRange } from './typings';
 interface GenerateViewParams {
   previouslySelectedRange: DateRange;
   disabledRanges: DateRange[];
-  // currentlySelectedStartDate?: Date;
-  // currentlyHoveredDate?: Date;
+  currentlySelectedDate?: Date;
 }
 
 // This function does not do validation- it assumes that the input is valid
 // The validation happens somewhere else
-export const generateModifiers = (params: GenerateViewParams) => {
-  const { previouslySelectedRange, disabledRanges } = params;
-
-  return generateIdleView({ previouslySelectedRange, disabledRanges });
+export const generateModifiers = ({
+  previouslySelectedRange,
+  disabledRanges,
+  currentlySelectedDate,
+}: GenerateViewParams) => {
+  if (!currentlySelectedDate) {
+    return generateIdleView({ previouslySelectedRange, disabledRanges });
+  } else {
+    return generateSelectingView({ disabledRanges, currentlySelectedDate });
+  }
 };
 
 interface GenerateIdleViewParams {
@@ -113,6 +118,69 @@ const generateIdleView = ({
   }
 
   // Unreachable
+  throw new Error('Unreachable');
+};
+
+interface GenerateSelectingViewParams {
+  disabledRanges: DateRange[];
+  currentlySelectedDate: Date;
+}
+
+const generateSelectingView = ({
+  disabledRanges,
+  currentlySelectedDate,
+}: GenerateSelectingViewParams) => {
+  const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+  const disabledRangesWithoutLastOne = disabledRanges.filter(
+    (range) => range !== lastDisabledRange
+  );
+
+  // We don't really need to do any validation here, because the input is assumed to be valid.
+  // But since we need to do a type check here anyway we might as well
+  if (!allAreClosedDateRanges(disabledRangesWithoutLastOne)) {
+    throw new Error('All disabled ranges except the last one must be closed');
+  }
+
+  const currentlySelectedDateIsAfterLastDisabledRange = isClosedDateRange(
+    lastDisabledRange
+  )
+    ? currentlySelectedDate > lastDisabledRange.to
+    : currentlySelectedDate > lastDisabledRange.from;
+
+  if (currentlySelectedDateIsAfterLastDisabledRange) {
+    return {};
+  }
+
+  if (!currentlySelectedDateIsAfterLastDisabledRange) {
+    if (!isClosedDateRange(lastDisabledRange)) {
+      return {
+        isDisabled: disabledRangesWithoutLastOne,
+        isDisabledStart: [
+          ...disabledRangesWithoutLastOne.map((range) => range.from),
+          lastDisabledRange.from,
+        ],
+        isDisabledEnd: disabledRangesWithoutLastOne.map((range) => range.to),
+        isCurrentlySelected: currentlySelectedDate,
+      };
+    }
+
+    if (isClosedDateRange(lastDisabledRange)) {
+      // We will again do the type check
+      if (!allAreClosedDateRanges(disabledRanges)) {
+        throw new Error(
+          'All disabled ranges except the last one must be closed'
+        );
+      }
+
+      return {
+        isDisabled: disabledRanges,
+        isDisabledStart: disabledRanges.map((range) => range.from),
+        isDisabledEnd: disabledRanges.map((range) => range.to),
+        isCurrentlySelected: currentlySelectedDate,
+      };
+    }
+  }
+
   throw new Error('Unreachable');
 };
 

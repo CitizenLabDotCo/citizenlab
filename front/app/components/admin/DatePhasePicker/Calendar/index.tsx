@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
@@ -102,7 +102,6 @@ const modifiersClassNames = {
   isDisabled: 'is-disabled',
   isDisabledStart: 'is-disabled-start',
   isDisabledEnd: 'is-disabled-end',
-  isDisabledGradient: 'is-disabled-gradient',
   isDisabledGradient_one: 'is-disabled-gradient_one',
   isDisabledGradient_two: 'is-disabled-gradient_two',
   isDisabledGradient_three: 'is-disabled-gradient_three',
@@ -130,18 +129,28 @@ const Calendar = ({
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
+  const [currentlySelectedDate, setCurrentSelectedDate] = useState<Date>();
 
   const modifiers = useMemo(
     () =>
       generateModifiers({
         previouslySelectedRange: selectedRange,
         disabledRanges,
+        currentlySelectedDate,
       }),
-    [selectedRange, disabledRanges]
+    [selectedRange, disabledRanges, currentlySelectedDate]
   );
 
-  const handleDayClick: PropsBase['onDayClick'] = (day, modifiers) => {
-    if (modifiers.isDisabled) return;
+  const handleDayClick: PropsBase['onDayClick'] = (
+    day,
+    { isDisabled, isDisabledStart, isDisabledGradient_one }
+  ) => {
+    if (isDisabled || isDisabledStart || isDisabledGradient_one) return;
+
+    if (!currentlySelectedDate) {
+      setCurrentSelectedDate(day);
+      return;
+    }
 
     const nextSelectedRage = getNextSelectedRange(
       day,
@@ -169,6 +178,7 @@ const Calendar = ({
         // This NOOP is necessary because otherwise the DayPicker
         // will rely on its internal state to manage the selected range,
         // rather than being controlled by our state.
+        selected={[] as any}
         onSelect={NOOP}
       />
     </DayPickerStyles>
