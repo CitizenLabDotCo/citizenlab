@@ -21,7 +21,6 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
-        binding.pry
         expect(ContentBuilder::Layout.where(code: 'homepage').count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
