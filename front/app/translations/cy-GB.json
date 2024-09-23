@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# prosiect} one {# prosiect} other {# prosiect}} yn y cyfnod presennol",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# prosiect} one {# prosiect} other {# prosiect}} yn y cam olaf",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# cwestiwn} one {# cwestiwn} other {# cwestiwn}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# cwestiwn} one {# cwestiwn} other {# cwestiwn}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# cwestiwn} one {# cwestiwn} other {# cwestiwn}} yn y cyfnod presennol",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# cwestiwn} one {# cwestiwn} other {# cwestiwn}} yn y cam olaf",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# digwyddiadau sydd ar ddod} one {# digwyddiad sydd ar ddod} other {# digwyddiadau sydd ar ddod}}",
