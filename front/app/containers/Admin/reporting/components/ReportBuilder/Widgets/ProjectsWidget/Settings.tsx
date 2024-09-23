@@ -23,7 +23,9 @@ const Settings = () => {
     actions: { setProp },
     publicationStatuses,
   } = useNode((node) => ({
-    publicationStatuses: node.data.props.publicationStatuses?.length ?  node.data.props.publicationStatuses : ['published']
+    publicationStatuses: node.data.props.publicationStatuses?.length
+      ? node.data.props.publicationStatuses
+      : ['published'],
   }));
 
   const handleStatusChange = (options: IOption[]) => {
