@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Teitl y ffolder:",
   "app.components.FolderFolderCard.archived": "Wedi'i archifo",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Ni ellir newid y math o faes unwaith y bydd yr arolwg wedi'i gyflwyno.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Math",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwythwch fel pdf",
   "app.components.GoBackButton.group.edit.goBack": "Mynd yn ôl",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ewch yn ôl i'r dudalen flaenorol",
