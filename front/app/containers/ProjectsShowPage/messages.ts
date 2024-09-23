@@ -164,92 +164,92 @@ export default defineMessages({
     defaultMessage: 'About',
   },
   xIdeas: {
-    id: 'app.containers.Projects.xIdeas',
+    id: 'app.containers.Projects.xIdeas2',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   xIdeasInCurrentPhase: {
-    id: 'app.containers.Projects.xIdeasInCurrentPhase',
+    id: 'app.containers.Projects.xIdeasInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the current phase',
   },
   xIdeasInFinalPhase: {
-    id: 'app.containers.Projects.xIdeasInFinalPhase',
+    id: 'app.containers.Projects.xIdeasInFinalPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}} in the final phase',
   },
   xContributions: {
-    id: 'app.containers.Projects.xContributions',
+    id: 'app.containers.Projects.xContributions2',
     defaultMessage:
       '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}}',
   },
   xContributionsInCurrentPhase: {
-    id: 'app.containers.Projects.xContributionsInCurrentPhase',
+    id: 'app.containers.Projects.xContributionsInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}} in the current phase',
   },
   xContributionsInFinalPhase: {
-    id: 'app.containers.Projects.xContributionsInFinalPhase',
+    id: 'app.containers.Projects.xContributionsInFinalPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}} in the final phase',
   },
   xProjects: {
-    id: 'app.containers.Projects.xProjects',
+    id: 'app.containers.Projects.xProjects2',
     defaultMessage:
       '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
   },
   xProjectsInCurrentPhase: {
-    id: 'app.containers.Projects.xProjectsInCurrentPhase',
+    id: 'app.containers.Projects.xProjectsInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# projects} one {# project} other {# projects}} in the current phase',
   },
   xProjectsInFinalPhase: {
-    id: 'app.containers.Projects.xProjectsInFinalPhase',
+    id: 'app.containers.Projects.xProjectsInFinalPhas2e',
     defaultMessage:
       '{ideasCount, plural, no {# projects} one {# project} other {# projects}} in the final phase',
   },
   xOptions: {
-    id: 'app.containers.Projects.xOptions',
+    id: 'app.containers.Projects.xOptions2',
     defaultMessage:
       '{ideasCount, plural, no {# options} one {# option} other {# options}}',
   },
   xOptionsInCurrentPhase: {
-    id: 'app.containers.Projects.xOptionsInCurrentPhase',
+    id: 'app.containers.Projects.xOptionsInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# options} one {# option} other {# options}} in the current phase',
   },
   xOptionsInFinalPhase: {
-    id: 'app.containers.Projects.xOptionsInFinalPhase',
+    id: 'app.containers.Projects.xOptionsInFinalPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# options} one {# option} other {# options}} in the final phase',
   },
   xIssues: {
-    id: 'app.containers.Projects.xIssues',
+    id: 'app.containers.Projects.xIssues2',
     defaultMessage:
       '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
   },
   xIssuesInCurrentPhase: {
-    id: 'app.containers.Projects.xIssuesInCurrentPhase',
+    id: 'app.containers.Projects.xIssuesInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# issues} one {# issue} other {# issues}} in the current phase',
   },
   xIssuesInFinalPhase: {
-    id: 'app.containers.Projects.xIssuesInFinalPhase',
+    id: 'app.containers.Projects.xIssuesInFinalPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# issues} one {# issue} other {# issues}} in the final phase',
   },
   xQuestions: {
-    id: 'app.containers.Projects.xQuestions',
+    id: 'app.containers.Projects.xQuestions2',
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# questions} other {# questions}}',
   },
   xQuestionsInCurrentPhase: {
-    id: 'app.containers.Projects.xQuestionsInCurrentPhase',
+    id: 'app.containers.Projects.xQuestionsInCurrentPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the current phase',
   },
   xQuestionsInFinalPhase: {
-    id: 'app.containers.Projects.xQuestionsInFinalPhase',
+    id: 'app.containers.Projects.xQuestionsInFinalPhase2',
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
@@ -296,7 +296,7 @@ export default defineMessages({
       '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
   },
   xUpcomingEvents: {
-    id: 'app.containers.Projects.xUpcomingEvents',
+    id: 'app.containers.Projects.xUpcomingEvents2',
     defaultMessage:
       '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
   },
@@ -369,7 +369,7 @@ export default defineMessages({
     defaultMessage: 'Read less',
   },
   xEvents: {
-    id: 'app.containers.Projects.xEvents',
+    id: 'app.containers.Projects.xEvents2',
     defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
   },
   seeTheIdeas: {
