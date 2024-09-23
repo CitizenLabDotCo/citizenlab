@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural, no {# projeler} one {# proje} other {# projeler}}",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# projeler} one {# proje} other {# projeler}} mevcut aşamada",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# projeler} one {# proje} other {# projeler}} son aşamada",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# sorular} one {# sorular} other {# sorular}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# sorular} one {# soru} other {# sorular}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# sorular} one {# soru} other {# sorular}} mevcut aşamada",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# sorular} one {# soru} other {# sorular}} son aşamada",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# yaklaşan etkinlikler} one {# yaklaşan etkinlik} other {# yaklaşan etkinlikler}}",
