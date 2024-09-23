@@ -1226,7 +1226,7 @@
   "app.containers.Admin.tools.publicAPIImage": "Offentlig API-bilde",
   "app.containers.Admin.tools.publicAPITitle": "Offentlig API-tilgang",
   "app.containers.Admin.tools.toolsLabel": "Verktøy",
-  "app.containers.Admin.tools.widgetDescription": "You can create a widget, customize it and add it to your own website to attract people to this platform.",
+  "app.containers.Admin.tools.widgetDescription": "Du kan opprette et kontrollprogram, tilpasse det og legge det til på ditt eget nettsted for å trekke folk til plattformen.",
   "app.containers.Admin.tools.widgetImage": "Widget-bilde",
   "app.containers.Admin.tools.widgetTitle": "Widget",
   "app.containers.Admin.tools.workshopsDescription": "Hold live videomøter, tilrettelegg for samtidige gruppediskusjoner og debatter. Samle innspill, stem og oppnå konsensus, akkurat som du ville gjort uten nett.",
