@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# seçenek} other {# seçenek}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "Şu andaki aşamada {ideasCount, plural, one {# seçenek} other {# seçenek}}",
   "app.containers.Projects.xOptionsInFinalPhase": "Son aşamada {ideasCount, plural, one {# seçenek} other {# seçenek}}",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# katılımcı} other {# katılımcı}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# aşama} other {# aşama}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# proje} other {# proje}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "Şu andaki aşamada {ideasCount, plural, one {# proje} other {# proje}}",
   "app.containers.Projects.xProjectsInFinalPhase": "Son aşamada {ideasCount, plural, one {# proje} other {# proje}}",

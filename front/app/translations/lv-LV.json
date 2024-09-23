@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# iespēja} other {# iespējas}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# option} other {# options}} pašreizējā posmā",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# option} other {# options}} pēdējā posmā",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# dalībnieks} other {# dalībnieki}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# fāze} other {# fāzes}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# projekts} other {# projekti}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# project} other {# projects}} pašreizējā posmā",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# project} other {# projects}} pēdējā posmā",

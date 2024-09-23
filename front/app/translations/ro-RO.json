@@ -983,8 +983,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# opțiune} other {# opțiuni}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# opțiune} other {# opțiuni}} în faza curentă",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# opțiune} other {# opțiuni}} în faza finală",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, no {# participanți} one {# participant} other {# participanți}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, no {# faze} one {# fază} other {# faze}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# proiect} other {# proiecte}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# proiect} other {# proiecte}} în faza curentă",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# proiect} other {# proiecte}} în faza finală",

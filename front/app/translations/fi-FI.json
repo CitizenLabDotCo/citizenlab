@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# vaihtoehto} other {# vaihtoehtoa}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# vaihtoehto} other {# vaihtoehtoa}} nykyisessä vaiheessa",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# vaihtoehto} other {# vaihtoehtoa}} viimeisessä vaiheessa",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# osallistuja} other {# osallistuja}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# vaihe} other {# vaihetta}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# projekti} other {# projektia}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# projekti} other {# projektia}} nykyisessä vaiheessa",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# projekti} other {# projektia}} loppuvaiheessa",

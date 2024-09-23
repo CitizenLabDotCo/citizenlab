@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# επιλογή} other {# επιλογές}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# επιλογή} other {# επιλογές}} στην τρέχουσα φάση",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# επιλογή} other {# επιλογές}} στην τελική φάση",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# συμμετέχων} other {# συμμετέχοντες}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# φάση} other {# φάσεις}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# έργο} other {# έργα}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# έργο} other {# έργα}} στην τρέχουσα φάση",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# έργο} other {# έργο}} στην τελική φάση",

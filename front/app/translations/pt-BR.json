@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, no {# opções} one {# opção} other {# opções}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, no {# opções} one {# opção} other {# opções}} na fase atual",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, no {# opções} one {# opção} other {# opções}} na fase final",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, um {# participante}  other {# participantes}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, não {# fases} um {# fase} other {# fases}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, não {# projetos} um {# projeto} other {# projetos}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, não {# projetos} um {# projeto} other {# projetos}} na fase atual",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, não {# projetos} um {# projeto} other {# projetos}} na fase final",

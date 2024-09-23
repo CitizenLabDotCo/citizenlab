@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, no {# options} واحد {# option}  آخر {# options}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, no {# options} واحد {# option}  آخر {# options}} في المرحلة الحالية",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, no {# options} واحد {# option}  آخر {# options}} في المرحلة الأخيرة",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# مشارك} other {# من المشاركين}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# مرحلة} other {# من المراحل}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, no {# projects} واحد {# project} آخر {# projects}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, no {# projects} واحد {# project} آخر {# projects}} في المرحلة الحالية",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, no {# projects} واحد {# project} آخر {# projects}} في المرحلة الأخيرة",
