@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural,no {# projet} one {# projet} other {# projets}}",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# projet} one {# projet} other {# projets}} dans la phase en cours",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# project} one {# project} other {# projects}} dans la dernière phase",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# question} one {# questions} other {# questions}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# questions} one {# question} other {# questions}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# question} one {# question} other {# questions}} dans la phase en cours",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# question} one {# question} other {# questions}} dans la dernière phase",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# événement à venir} one {# événement à venir} other {# événements à venir}}",
