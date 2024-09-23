@@ -10,9 +10,9 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import { generateModifiers } from './generateModifiers';
+import { getNextSelectedRange } from './getNextSelectedRange';
 import { getLocale } from './locales';
 import { DateRange } from './typings';
-import { getNextSelectedRange } from './utils';
 
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
@@ -152,14 +152,19 @@ const Calendar = ({
       return;
     }
 
-    const nextSelectedRage = getNextSelectedRange(
-      day,
-      selectedRange,
-      disabledRanges
-    );
+    if (day <= currentlySelectedDate) {
+      setCurrentSelectedDate(day);
+      return;
+    }
 
-    if (nextSelectedRage) {
-      onUpdateRange(nextSelectedRage);
+    const nextSelectedRange = getNextSelectedRange({
+      disabledRanges,
+      currentlySelectedDate,
+      lastClickedDate: day,
+    });
+
+    if (nextSelectedRange) {
+      onUpdateRange(nextSelectedRange);
     }
   };
 

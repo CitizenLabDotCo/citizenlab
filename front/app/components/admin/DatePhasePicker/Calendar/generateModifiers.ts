@@ -148,6 +148,7 @@ const generateSelectingView = ({
     : currentlySelectedDate > lastDisabledRange.from;
 
   if (currentlySelectedDateIsAfterLastDisabledRange) {
+    // TODO
     return {};
   }
 
