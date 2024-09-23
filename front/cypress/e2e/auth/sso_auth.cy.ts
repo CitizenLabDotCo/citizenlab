@@ -126,8 +126,8 @@ describe.skip('SSO authentication', () => {
     it("Doesn't show custom fields step if all fields are returned by SSO", () => {
       cy.visit(`/en/projects/${projectSlug}`);
 
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       cy.get('#e2e-login-with-fake-sso').click();
       cy.get('#e2e-terms-and-conditions-container .e2e-checkbox').click();

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { screen, render } from 'utils/testUtils/rtl';
+import ProjectDescriptionBuilderPage from 'containers/ProjectDescriptionBuilder';
 
-import ProjectDescriptionBuilderPage from '.';
+import { screen, render } from 'utils/testUtils/rtl';
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
@@ -32,7 +32,7 @@ const mockProjectDescriptionBuilderLayoutData: typeof DEFAULT_PROJECT_DESCRIPTIO
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  'api/project_description_builder/useProjectDescriptionBuilderLayout',
   () => () => {
     return {
       data: mockProjectDescriptionBuilderLayoutData,
