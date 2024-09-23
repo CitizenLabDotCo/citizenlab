@@ -20,12 +20,13 @@ ProjectsWidget.craft = {
     title: {},
     startAt: undefined,
     endAt: undefined,
+    publicationStatus: undefined,
   },
   related: {
     settings: Settings,
   },
 };
 
-export const projectsTitle = messages.publishedProjects;
+export const projectsTitle = messages.projects;
 
 export default ProjectsWidget;
