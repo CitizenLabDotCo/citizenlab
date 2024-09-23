@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Tilføj projektets mål, de anvendte deltagelsesmetoder og resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøgende",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Denne rapport indeholder ændringer, der ikke er gemt. Gem venligst før udskrivning.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Omdøb",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Titlen er allerede taget",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Sammenlignet med tidligere {days} dage",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Skjul statistik",

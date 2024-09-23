@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Ajoutez le but du projet, les méthodes de participation utilisées et le résultat",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visiteurs",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Ce rapport contient des modifications non enregistrées. Veuillez le sauvegarder avant de l'imprimer.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Renommer",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Ce titre est déjà utilisé",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "comparé aux {days} jours précédents",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Masquer les statistiques",

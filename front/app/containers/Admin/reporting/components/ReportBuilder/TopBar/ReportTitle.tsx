@@ -6,7 +6,6 @@ import {
   fontSizes,
   Input,
   Title,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -128,22 +127,16 @@ const ReportTitle = ({ reportId }) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      <Tooltip
-        content={formatMessage(messages.reportTitleTooltip)}
-        zIndex={99999}
-        placement="right"
-      >
-        <div>
-          <StyledInput
-            type="text"
-            value={newTitle}
-            onChange={setNewTitle}
-            onBlur={handleOnBlur}
-            onKeyDown={handleOnKeyDown}
-            setRef={setInputRef}
-          />
-        </div>
-      </Tooltip>
+      <div>
+        <StyledInput
+          type="text"
+          value={newTitle}
+          onChange={setNewTitle}
+          onBlur={handleOnBlur}
+          onKeyDown={handleOnKeyDown}
+          setRef={setInputRef}
+        />
+      </div>
 
       {errorMessage && <StyledError text={errorMessage} />}
     </Box>
