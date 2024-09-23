@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Lisää projektin tavoite, käytetyt osallistumismenetelmät ja tulos",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Vierailijat",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Tämä raportti sisältää tallentamattomia muutoksia. Tallenna ennen tulostusta.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Nimeä uudelleen",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Otsikko on jo varattu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Verrattuna edelliseen {days} päivään",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Piilota tilastot",
