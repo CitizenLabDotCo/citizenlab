@@ -21,6 +21,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        binding.pry
         expect(ContentBuilder::Layout.where(code: 'homepage').count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
@@ -299,6 +300,19 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(BasketsIdea.count).to eq 2
         expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
       end
+    end
+
+    it 'adds a unique ID to SSO users with no email address' do
+      create(:user, email: nil, identities: [create(:identity, provider: 'fake_sso')])
+      template = tenant_serializer.run(deserializer_format: true)
+
+      # Main user
+      expect(template['models']['user'].first['email']).not_to be_nil
+      expect(template['models']['user'].first['unique_code']).to be_nil
+
+      # SSO user added above
+      expect(template['models']['user'].last['email']).to be_nil
+      expect(template['models']['user'].last['unique_code']).not_to be_nil
     end
   end
 end
