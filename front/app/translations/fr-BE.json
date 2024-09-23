@@ -2043,7 +2043,7 @@
   "app.errors.unknown_locale": "La langue {value} trouvée ligne {row} ne fait pas partie des langues paramétrées",
   "app.errors.unparseable_excel": "Le fichier Excel sélectionné n'a pas pu être traité.",
   "app.errors.url": "Veuillez entrer un lien valide commençant par « https:// »",
-  "app.errors.verification_taken": "La vérification ne peut être achevée car un autre compte a été vérifié avec les mêmes détails.",
+  "app.errors.verification_taken": "La vérification ne peut pas être effectuée car un autre compte a été vérifié avec les mêmes informations.",
   "app.errors.view_name_taken": "Une vue avec ce nom existe déjà",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Contenu signalé automatiquement (contribution ou commentaire)",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Se connecter avec StandardPortal",
