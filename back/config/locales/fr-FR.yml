@@ -311,7 +311,7 @@ fr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmez votre adresse électronique pour la plateforme de participation de %{organizationName}"
-      preheader: 'Confirmez votre adresse électronique pour %{organizationName}'
+      preheader: 'Confirmez votre adresse e-mail pour %{organizationName}'
       header: "Votre code de confirmation"
       header_message: "Bonjour %{firstName} !"
       confirm_email_address: "Confirmez votre adresse e-mail"
