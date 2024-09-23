@@ -1104,7 +1104,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Continu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planifié",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.projects": "Projets",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Statut du dossier",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Statut de publication",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publié",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Aucune donnée n'est disponible pour ce widget. Reconfigurez-le ou supprimez-le pour pouvoir enregistrer le rapport.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Aucune phase appropriée n'a été trouvée dans ce projet",
