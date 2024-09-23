@@ -1648,7 +1648,7 @@
   "app.containers.Projects.options": "Options",
   "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "Ce chiffre inclut également les réponses anonymes à l'enquête. Les réponses anonymes sont possibles si l'enquête est ouverte à tous (voir l'onglet {accessRightsLink} de ce projet).",
-  "app.containers.Projects.participationDataIncomplete": "Les données sur la participation peuvent être incomplètes",
+  "app.containers.Projects.participationDataIncomplete": "Les données de participation peuvent être incomplètes",
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "{tenantName, select, vitrysurseine {1 enquête} other {1 sondage}}",
