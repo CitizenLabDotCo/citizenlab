@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetitel:",
   "app.components.FolderFolderCard.archived": "Arkiveret",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekter} one {# projekt} other {# projekter}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Felttypen kan ikke ændres, når undersøgelsen er indsendt.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Felttypen kan ikke ændres, når undersøgelsen har modtaget besvarelser.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Type",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
