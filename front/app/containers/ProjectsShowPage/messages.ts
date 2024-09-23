@@ -286,12 +286,12 @@ export default defineMessages({
     defaultMessage: 'Nothing posted yet',
   },
   xPhases: {
-    id: 'app.containers.Projects.xPhases',
+    id: 'app.containers.Projects.xPhases2',
     defaultMessage:
       '{phasesCount, plural, no {# phases} one {# phase} other {# phases}}',
   },
   xParticipants: {
-    id: 'app.containers.Projects.xParticipants',
+    id: 'app.containers.Projects.xParticipants2',
     defaultMessage:
       '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
   },
