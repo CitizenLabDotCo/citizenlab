@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Kansion otsikko:",
   "app.components.FolderFolderCard.archived": "Arkistoitu",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projektia} one {# projekti} other {# projektia}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Kentän tyyppiä ei voi muuttaa, kun kyselyyn on lähetetty.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tyyppi",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-muodossa",
   "app.components.GoBackButton.group.edit.goBack": "Mene takaisin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Palaa edelliselle sivulle",
