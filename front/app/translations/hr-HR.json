@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural, no {# projekti} one {# projekt} other {# projekti}}",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# projekti} one {# projekt} other {# projekti}} u trenutnoj fazi",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# projekti} one {# projekt} other {# projekti}} u završnoj fazi",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# pitanja} one {# pitanja} other {# pitanja}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# pitanja} one {# pitanje} other {# pitanja}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# pitanja} one {# pitanje} other {# pitanja}} u trenutnoj fazi",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# pitanja} one {# pitanje} other {# pitanja}} u završnoj fazi",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# nadolazeći događaji} one {# nadolazeći događaj} other {# nadolazeći događaji}}",
