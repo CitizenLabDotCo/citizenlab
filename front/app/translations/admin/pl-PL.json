@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cel projektu, zastosowane metody uczestnictwa oraz wynik.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Odwiedzający",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Ten raport zawiera niezapisane zmiany. Zapisz go przed wydrukowaniem.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Zmień nazwę",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Tytuł jest już zajęty",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "W porównaniu do poprzednich dni {days}",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Ukryj statystyki",
