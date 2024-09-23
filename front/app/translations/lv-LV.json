@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural, no {# projekti} one {# projekts} other {# projekti}}# projekti ~ ~",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# projekti} one {# projekts} other {# projekti}} pašreizējā posmā",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# projekti} one {# projekts} other {# projekti}} noslēguma posmā",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# jautājumi} one {# jautājumi} other {# jautājumi}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# jautājumi} one {# jautājums} other {# jautājumi}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# jautājumi} one {# jautājums} other {# jautājumi}} pašreizējā posmā",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# jautājumi} one {# jautājums} other {# jautājumi}} pēdējā posmā",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# gaidāmie pasākumi} one {# gaidāmie pasākumi} other {# gaidāmie pasākumi}}",
