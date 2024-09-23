@@ -427,26 +427,24 @@ en:
       subject: 'The status of a proposal you follow has changed'
       preheader: 'A proposal you follow has a new status'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "This week on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Discover what happened last week"
       intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
       cta_go_to_the_platform: "Go to the platform"
       title_no_activity_past_week: "No activity in the past week"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      successful_proposals_title: "Reached the threshold"
+      successful_proposals_text: "In the past week, these have gotten enough support to move to the next stage."
       today_by_author: "Today by %{author}"
       yesterday_by_author: "Yesterday by %{author}"
       x_days_ago_by_author: "%{x} days ago by %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      trending_title: "Trending"
+      trending_text: "Interested in what’s been happening on the platform? Here are the three most trending contributions and what people are saying about them."
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
+      no_unread_notifications: "You don't have any unread notifications."
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Take this proposal to the next steps'
