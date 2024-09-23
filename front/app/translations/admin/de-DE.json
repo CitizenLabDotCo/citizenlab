@@ -913,7 +913,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.pleaseEnterValidUser": "Bitte geben Sie eine E-Mail-Adresse und/oder einen Vor- und Nachnamen ein, um diesen Beitrag einem Autor / einer Autorin zuzuordnen. Oder deaktivieren Sie das Zustimmungsfeld.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Es gibt bereits ein Konto, das mit dieser E-Mail verknüpft ist. Diese Eingabe wird zu diesem hinzugefügt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Zustimmung des/der Benutzer*in (Benutzerkonto erstellen)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Genehmigen",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Alle Beiträge freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Der Import von PDF-Dateien gescannter Formulare ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundnebetreuerin, um mehr darüber zu erfahren.",
