@@ -275,10 +275,10 @@ en:
       subject: 'Someone published a new proposal on the platform of %{organizationName}'
       preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
-      main_header_publication: '%{firstName}, a new input has been published on your platform'
+      main_header_publication: 'A new input has been published on your platform'
       event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
       cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: '%{firstName}, an input requires your review'
+      main_header_prescreening: 'An input requires your review'
       event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
       input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
       cta_prescreening: 'Review the input'
