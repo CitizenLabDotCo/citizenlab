@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapes nosaukums:",
   "app.components.FolderFolderCard.archived": "Arhivēts",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekti} one {# projekts} other {# projekti}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Lauka tipu nevar mainīt pēc tam, kad apsekojums ir iesniegts.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tips",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lejupielādēt kā pdf",
   "app.components.GoBackButton.group.edit.goBack": "Atgriezties",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Atgriezties uz iepriekšējo lapu",
