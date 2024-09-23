@@ -1205,8 +1205,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, 0 {# qinigassaqanngilaq} one {# qinigassaq} other {# qinigassat}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, 0 {# qinigassaqanngilaq} one {# qinigassaq} other {# qinigassat}} immikkoortumi massakkut pineqartumi",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, 0 {# qinigassaqanngilaq} one {# qinigassaq} other {# qinigassat}} immikkoortumi kingullermi",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, no {# deltagere} one {# deltager} other {# deltagere}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, no {# faser} one {# fase} other {# faser}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, 0 {# suliassaqanngilaq} one {# suliaq} other {# suliat}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, 0 {# suliassaqanngilaq} one {# suliaq} other {# suliat}} immikkoortumi massakkut pineqartumi",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, 0 {# suliassaqanngilaq} one {# suliaq} other {# suliat}} immikkoortumi kingullermi",

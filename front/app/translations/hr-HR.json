@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# opcija} other {# opcije}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# opcija} other {# opcije}} u trenutnoj fazi",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# opcija} other {# opcije}} u konačnoj fazi",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# sudionik} other {# sudionika}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# faza} other {# faze}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# projekt} other {# projekta}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# projekt} other {# projekta}} u trenutnoj fazi",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# projekt} other {# projekta}} u konačnoj fazi",

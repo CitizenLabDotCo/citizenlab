@@ -1700,8 +1700,6 @@
   "app.containers.Projects.xOptions": "{ideasCount, plural, one {# opsiwn} other {# opsiwn}}",
   "app.containers.Projects.xOptionsInCurrentPhase": "{ideasCount, plural, one {# opsiwn} other {# opsiwn}} yn y cyfnod presennol",
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# opsiwn} other {# opsiwn}} yn y cam olaf",
-  "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# cyfranogwr} other {# cyfranogwr}}",
-  "app.containers.Projects.xPhases": "{phasesCount, plural, one {# cyfnod} other {# cyfnod}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# prosiect} other {# prosiect}}",
   "app.containers.Projects.xProjectsInCurrentPhase": "{ideasCount, plural, one {# prosiect} other {# prosiect}} yn y cyfnod presennol",
   "app.containers.Projects.xProjectsInFinalPhase": "{ideasCount, plural, one {# prosiect} other {# prosiect}} yn y cam olaf",
