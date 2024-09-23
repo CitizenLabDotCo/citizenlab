@@ -15,13 +15,17 @@ import { DateRange } from './typings';
 import { getNextSelectedRange } from './utils';
 
 const disabledBackground = colors.grey300;
-const background2 = transparentize(0.33, disabledBackground);
-const background3 = transparentize(0.66, disabledBackground);
+const disabledBackground2 = transparentize(0.33, disabledBackground);
+const disabledBackground3 = transparentize(0.66, disabledBackground);
+
+const selectedBackground = colors.teal100;
+const selectedBackground2 = transparentize(0.33, selectedBackground);
+const selectedBackground3 = transparentize(0.66, selectedBackground);
 
 const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
-    --rdp-accent-background-color: ${colors.teal100};
+    --rdp-accent-background-color: ${selectedBackground};
   }
 
   .is-disabled {
@@ -50,7 +54,11 @@ const DayPickerStyles = styled.div`
   }
 
   .is-disabled-gradient_one {
-    background: linear-gradient(90deg, ${disabledBackground}, ${background2});
+    background: linear-gradient(
+      90deg,
+      ${disabledBackground},
+      ${disabledBackground2}
+    );
   }
 
   .is-disabled-gradient_one > button {
@@ -58,11 +66,35 @@ const DayPickerStyles = styled.div`
   }
 
   .is-disabled-gradient_two {
-    background: linear-gradient(90deg, ${background2}, ${background3});
+    background: linear-gradient(
+      90deg,
+      ${disabledBackground2},
+      ${disabledBackground3}
+    );
   }
 
   .is-disabled-gradient_three {
-    background: linear-gradient(90deg, ${background3}, ${colors.white});
+    background: linear-gradient(90deg, ${disabledBackground3}, ${colors.white});
+  }
+
+  .is-selected-gradient_one {
+    background: linear-gradient(
+      90deg,
+      ${selectedBackground},
+      ${selectedBackground2}
+    );
+  }
+
+  .is-selected-gradient_two {
+    background: linear-gradient(
+      90deg,
+      ${selectedBackground2},
+      ${selectedBackground3}
+    );
+  }
+
+  .is-selected-gradient_three {
+    background: linear-gradient(90deg, ${selectedBackground3}, ${colors.white});
   }
 `;
 
@@ -71,12 +103,15 @@ const modifiersClassNames = {
   isDisabledStart: 'is-disabled-start',
   isDisabledEnd: 'is-disabled-end',
   isDisabledGradient: 'is-disabled-gradient',
-  isSelected: 'rdp-range_middle',
-  isSelectedStart: 'rdp-range_start',
-  isSelectedEnd: 'rdp-range_end',
   isDisabledGradient_one: 'is-disabled-gradient_one',
   isDisabledGradient_two: 'is-disabled-gradient_two',
   isDisabledGradient_three: 'is-disabled-gradient_three',
+  isSelected: 'rdp-range_middle',
+  isSelectedStart: 'rdp-range_start',
+  isSelectedEnd: 'rdp-range_end',
+  isSelectedGradient_one: 'is-selected-gradient_one',
+  isSelectedGradient_two: 'is-selected-gradient_two',
+  isSelectedGradient_three: 'is-selected-gradient_three',
 };
 
 interface Props {
