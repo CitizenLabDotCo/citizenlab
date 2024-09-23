@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Lägg till projektets mål, metoder som använts för deltagande och resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besökare",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Denna rapport innehåller osparade ändringar. Spara innan du skriver ut.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Byt namn på",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Titeln är redan upptagen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Jämfört med tidigare {days} dagar",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Dölj statistik",
