@@ -1705,7 +1705,7 @@
   "app.containers.Projects.xProjects2": "{ideasCount, plural, no {# projects} one {# project} other {# projects}}",
   "app.containers.Projects.xProjectsInCurrentPhase2": "{ideasCount, plural, no {# έργα} one {# έργο} other {# έργα}} στην τρέχουσα φάση",
   "app.containers.Projects.xProjectsInFinalPhas2e": "{ideasCount, plural, no {# έργα} one {# έργο} other {# έργα}} στην τελική φάση",
-  "app.containers.Projects.xQuestions2": "{ideasCount, plural, no {# ερωτήσεις} one {# ερωτήσεις} other {# ερωτήσεις}}",
+  "app.containers.Projects.xQuestions3": "{ideasCount, plural, no {# ερωτήσεις} one {# ερώτηση} other {# ερωτήσεις}}",
   "app.containers.Projects.xQuestionsInCurrentPhase2": "{ideasCount, plural, no {# ερωτήσεις} one {# ερώτηση} other {# ερωτήσεις}} στην τρέχουσα φάση",
   "app.containers.Projects.xQuestionsInFinalPhase2": "{ideasCount, plural, no {# ερωτήσεις} one {# ερώτηση} other {# ερωτήσεις}} στην τελική φάση",
   "app.containers.Projects.xUpcomingEvents2": "{upcomingEventsCount, plural, no {# επερχόμενες εκδηλώσεις} one {# επερχόμενη εκδήλωση} other {# επερχόμενες εκδηλώσεις}}",
