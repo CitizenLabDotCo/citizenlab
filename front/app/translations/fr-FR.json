@@ -1617,7 +1617,7 @@
   "app.containers.Projects.events": "Evénements",
   "app.containers.Projects.header": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.Projects.ideas": "Idées",
-  "app.containers.Projects.inaccurateParticipantsTooltip": "Les chiffres de participation peuvent ne pas être tout à fait exacts car certaines données sont saisies dans une enquête externe que nous ne suivons pas (voir l'onglet {projectParticipantsLink} pour plus de détails).",
+  "app.containers.Projects.inaccurateParticipantsTooltip": "Les chiffres de participations présentés ici peuvent être inférieurs à la réalité, car les données de participation à des enquêtes externes ne peuvent être mesurées. Pour plus de détails, consultez l'onglet {projectParticipantsLink}.",
   "app.containers.Projects.information": "Informations",
   "app.containers.Projects.invisbleTitleDocumentAnnotation1": "Réviser le document",
   "app.containers.Projects.invisibleTitlePhaseAbout": "A propos de cette phase",
