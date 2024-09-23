@@ -18,8 +18,8 @@ module MultiTenancy
           verified
         ]
 
-        # To fix invalid SSO users where they have no email without having to serialize the Identity model
-        attribute(:unique_code) { |user| user.unique_code || (user.email.blank? ? SecureRandom.uuid : nil) }
+        # To fix invalid SSO users without email addresses without having to serialize the Identity model
+        attribute(:unique_code) { |user| user.unique_code || (user.sso? && user.email.blank? ? SecureRandom.uuid : nil) }
 
         attribute(:block_start_at) { |user| serialize_timestamp(user.block_start_at) }
         attribute(:registration_completed_at) { |user| serialize_timestamp(user.registration_completed_at) }
