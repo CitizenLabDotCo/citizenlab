@@ -1078,7 +1078,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Legg til målet med prosjektet, deltakermetoder som brukes og utfallet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøkende",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Denne rapporten inneholder ulagrede endringer. Vennligst lagre før utskrift.",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Gi nytt navn",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Tittelen er allerede tatt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Sammenlignet med tidligere {days} dager",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Skjul statistikk",
