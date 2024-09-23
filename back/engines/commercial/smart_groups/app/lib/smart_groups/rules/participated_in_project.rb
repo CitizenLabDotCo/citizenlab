@@ -8,7 +8,6 @@ module SmartGroups::Rules
     VALUELESS_PREDICATES = []
     SINGLEVALUE_PREDICATES = %w[
       not_commented_in
-      not_follows_something
       not_in
       not_posted_in
       not_reacted_comment_in
@@ -19,7 +18,6 @@ module SmartGroups::Rules
     ]
     MULTIVALUE_PREDICATES = %w[
       commented_in
-      follows_something
       in
       posted_in
       reacted_comment_in
@@ -117,12 +115,6 @@ module SmartGroups::Rules
         users_scope.where(id: participants)
       when 'not_commented_in'
         participants = participants_service.projects_participants(projects, actions: [:commenting])
-        users_scope.where.not(id: participants)
-      when 'follows_something'
-        participants = participants_service.projects_participants(projects, actions: [:following])
-        users_scope.where(id: participants)
-      when 'not_follows_something'
-        participants = participants_service.projects_participants(projects, actions: [:following])
         users_scope.where.not(id: participants)
       when 'in'
         participants = participants_service.projects_participants(projects)
