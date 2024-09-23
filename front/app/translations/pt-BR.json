@@ -171,6 +171,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título da pasta:",
   "app.components.FolderFolderCard.archived": "Arquivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projetos} one {# projeto} other {# projetos}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "O tipo de campo não pode ser alterado após o envio da pesquisa.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipo",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Baixe como pdf",
   "app.components.GoBackButton.group.edit.goBack": "Voltar",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Voltar à página anterior",
