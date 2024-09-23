@@ -22,13 +22,16 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let!(:comment) { create(:comment, idea: old_ideas[0]) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
+    let!(:threshold_reached_status) { create(:proposals_status, code: 'threshold_reached') }
+    let!(:proposal) { create(:proposal, project: project, idea_status: threshold_reached_status) }
+    let!(:proposal_changed_activity) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: moderator).first
 
       expect(
         command.dig(:event_payload, :statistics, :new_ideas_increase)
-      ).to eq(other_new_ideas.size + 1)
+      ).to eq(other_new_ideas.size + 2)
       expect(
         command.dig(:event_payload, :statistics, :new_comments_increase)
       ).to eq(1)
@@ -41,7 +44,10 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
       ).not_to include(other_idea.id)
-      expect(command.dig(:tracked_content, :idea_ids)).to include(top_new_idea.id)
+      expect(
+        command.dig(:event_payload, :successful_proposals).pluck(:id)
+      ).to include(proposal.id)
+      expect(command.dig(:tracked_content, :idea_ids)).to include(top_new_idea.id, proposal.id)
     end
 
     it 'generates a command with abbreviated names' do
