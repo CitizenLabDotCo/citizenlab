@@ -314,11 +314,12 @@ describe ParticipantsService do
 
     it 'does not return followers' do
       project = create(:project)
-      user = create(:follower, followable: project).user
-      idea = create(:idea, project: project, author: user)
+      create(:follower, followable: project).user
+      author = create(:user)
+      idea = create(:idea, project: project, author: author)
       create(:follower, followable: idea).user
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [user.id]
+      expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
     end
   end
 
