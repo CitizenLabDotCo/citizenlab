@@ -19,7 +19,8 @@ export default meta;
 
 const DISABLED_RANGES = [
   { from: new Date('2024-08-01'), to: new Date('2024-09-05') },
-  { from: new Date('2024-09-21'), to: new Date('2024-10-28') },
+  // { from: new Date('2024-09-21'), to: new Date('2024-10-28') },
+  { from: new Date('2024-09-21') },
 ];
 
 const Wrapper = () => {

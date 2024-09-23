@@ -7,8 +7,11 @@ export const getNextSelectedRange = (
 ) => {
   // NOTE: This function won't fire if the day is disabled, so we don't
   // need to check if the day is disabled / overlaps with another range.
-  const currentSelectionIsOneDayRange =
-    selectedRange.from.getTime() === selectedRange.to.getTime();
+
+  // We will treat open-ended ranges as one-day ranges.
+  const currentSelectionIsOneDayRange = selectedRange.to
+    ? selectedRange.from.getTime() === selectedRange.to.getTime()
+    : true;
 
   const clickedDayIsBeforeSelectedRange = day < selectedRange.from;
 
