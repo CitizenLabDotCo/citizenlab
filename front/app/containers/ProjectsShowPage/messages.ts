@@ -239,9 +239,9 @@ export default defineMessages({
       '{ideasCount, plural, no {# issues} one {# issue} other {# issues}} in the final phase',
   },
   xQuestions: {
-    id: 'app.containers.Projects.xQuestions2',
+    id: 'app.containers.Projects.xQuestions3',
     defaultMessage:
-      '{ideasCount, plural, no {# questions} one {# questions} other {# questions}}',
+      '{ideasCount, plural, no {# questions} one {# question} other {# questions}}',
   },
   xQuestionsInCurrentPhase: {
     id: 'app.containers.Projects.xQuestionsInCurrentPhase2',
