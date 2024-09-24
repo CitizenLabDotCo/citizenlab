@@ -32,7 +32,11 @@ const generateIdleView = ({
   previouslySelectedRange,
   disabledRanges,
 }: GenerateIdleViewParams) => {
-  const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+  // Funky hack to not have to deal with the case where disabledRanges is empty
+  const lastDisabledRange = disabledRanges[disabledRanges.length - 1] as
+    | DateRange
+    | undefined;
+
   const disabledRangesWithoutLastOne = disabledRanges.filter(
     (range) => range !== lastDisabledRange
   );
@@ -44,6 +48,13 @@ const generateIdleView = ({
   }
 
   if (!isClosedDateRange(previouslySelectedRange)) {
+    if (lastDisabledRange === undefined) {
+      return {
+        isSelectedStart: previouslySelectedRange.from,
+        ...generateGradient(previouslySelectedRange.from, 'isSelectedGradient'),
+      };
+    }
+
     if (!isClosedDateRange(lastDisabledRange)) {
       // Assuming this is all valid: the selected range must be at least two days after the
       // last disabled range.
@@ -80,6 +91,10 @@ const generateIdleView = ({
   }
 
   if (isClosedDateRange(previouslySelectedRange)) {
+    if (lastDisabledRange === undefined) {
+      return getSelection(previouslySelectedRange);
+    }
+
     if (!isClosedDateRange(lastDisabledRange)) {
       // In this case, we just have to generate the gradient
       // for the last disabled range
@@ -127,7 +142,9 @@ const generateSelectingView = ({
   disabledRanges,
   currentlySelectedDate,
 }: GenerateSelectingViewParams) => {
-  const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+  const lastDisabledRange = disabledRanges[disabledRanges.length - 1] as
+    | DateRange
+    | undefined;
   const disabledRangesWithoutLastOne = disabledRanges.filter(
     (range) => range !== lastDisabledRange
   );
@@ -138,26 +155,38 @@ const generateSelectingView = ({
     throw new Error('All disabled ranges except the last one must be closed');
   }
 
-  const currentlySelectedDateIsAfterLastDisabledRange = isClosedDateRange(
-    lastDisabledRange
-  )
-    ? currentlySelectedDate > lastDisabledRange.to
-    : currentlySelectedDate > lastDisabledRange.from;
+  const getCurrentlySelectedDateIsAfterLastDisabledRange = () => {
+    if (lastDisabledRange === undefined) {
+      return true;
+    }
 
-  if (currentlySelectedDateIsAfterLastDisabledRange) {
-    // TODO
-    return {};
-  }
+    return isClosedDateRange(lastDisabledRange)
+      ? currentlySelectedDate > lastDisabledRange.to
+      : currentlySelectedDate > lastDisabledRange.from;
+  };
+
+  const currentlySelectedDateIsAfterLastDisabledRange =
+    getCurrentlySelectedDateIsAfterLastDisabledRange();
 
   if (!currentlySelectedDateIsAfterLastDisabledRange) {
-    if (!isClosedDateRange(lastDisabledRange)) {
+    if (lastDisabledRange === undefined) {
       return {
-        isDisabled: disabledRangesWithoutLastOne,
+        isCurrentlySelected: currentlySelectedDate,
+      };
+    }
+
+    if (!isClosedDateRange(lastDisabledRange)) {
+      const disabledRanges = generateDisabledRanges(
+        disabledRangesWithoutLastOne
+      );
+
+      return {
+        isDisabled: disabledRanges.isDisabled,
         isDisabledStart: [
-          ...disabledRangesWithoutLastOne.map((range) => range.from),
+          ...disabledRanges.isDisabledStart,
           lastDisabledRange.from,
         ],
-        isDisabledEnd: disabledRangesWithoutLastOne.map((range) => range.to),
+        isDisabledEnd: disabledRanges.isDisabledEnd,
         isCurrentlySelected: currentlySelectedDate,
       };
     }
@@ -171,12 +200,14 @@ const generateSelectingView = ({
       }
 
       return {
-        isDisabled: disabledRanges,
-        isDisabledStart: disabledRanges.map((range) => range.from),
-        isDisabledEnd: disabledRanges.map((range) => range.to),
+        ...generateDisabledRanges(disabledRanges),
         isCurrentlySelected: currentlySelectedDate,
       };
     }
+  }
+
+  if (currentlySelectedDateIsAfterLastDisabledRange) {
+    // TODO: Implement this
   }
 
   throw new Error('Unreachable');
@@ -214,11 +245,22 @@ const generateGradient = (startDate: Date, prefix: string) => ({
   [`${prefix}_three`]: addDays(startDate, 3),
 });
 
-const getSelection = (previouslySelectedRange: ClosedDateRange) => ({
-  isSelected: {
-    from: addDays(previouslySelectedRange.from, 1),
-    to: addDays(previouslySelectedRange.to, -1),
-  },
-  isSelectedStart: previouslySelectedRange.from,
-  isSelectedEnd: previouslySelectedRange.to,
-});
+const getSelection = ({ from, to }: ClosedDateRange) => {
+  const diff = differenceInCalendarDays(to, from);
+  const isSelected = getIsSelected({ from, to }, diff);
+
+  return {
+    isSelected,
+    isSelectedStart: from,
+    isSelectedEnd: to,
+  };
+};
+
+const getIsSelected = ({ from, to }: ClosedDateRange, diff: number) => {
+  if (diff < 2) return undefined;
+  if (diff === 2) return addDays(from, 1);
+  return {
+    from: addDays(from, 1),
+    to: addDays(to, -1),
+  };
+};

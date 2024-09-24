@@ -53,6 +53,10 @@ const DayPickerStyles = styled.div`
     border-radius: 0 50% 50% 0;
   }
 
+  .is-disabled-end > button {
+    cursor: not-allowed;
+  }
+
   .is-disabled-gradient_one {
     background: linear-gradient(
       90deg,
@@ -138,6 +142,8 @@ const Calendar = ({
   const locale = useLocale();
   const [currentlySelectedDate, setCurrentSelectedDate] = useState<Date>();
 
+  console.log({ selectedRange, disabledRanges });
+
   const modifiers = useMemo(
     () =>
       generateModifiers({
@@ -147,6 +153,8 @@ const Calendar = ({
       }),
     [selectedRange, disabledRanges, currentlySelectedDate]
   );
+
+  console.log({ modifiers });
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
