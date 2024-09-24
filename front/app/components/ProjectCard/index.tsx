@@ -545,6 +545,9 @@ const ProjectCard = memo<InputProps>(
                     question: messages.joinDiscussion,
                     issue: messages.submitAnIssue,
                     contribution: messages.contributeYourInput,
+                    initiative: messages.submitYourInitiative,
+                    proposal: messages.submitYourProposal,
+                    petition: messages.submitYourPetition,
                   })}
                 />
               );
@@ -562,6 +565,9 @@ const ProjectCard = memo<InputProps>(
                     question: messages.viewTheQuestions,
                     issue: messages.viewTheIssues,
                     contribution: messages.viewTheContributions,
+                    proposal: messages.viewTheProposals,
+                    initiative: messages.viewTheInitiatives,
+                    petition: messages.viewThePetitions,
                   })}
                 />
               );

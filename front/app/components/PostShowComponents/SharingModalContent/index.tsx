@@ -97,6 +97,9 @@ const SharingModalContent = ({
         question: messages.questionEmailSharingSubject,
         issue: messages.issueEmailSharingSubject,
         contribution: messages.contributionEmailSharingSubject,
+        initiative: messages.initiativeEmailSharingSubject,
+        proposal: messages.proposalEmailSharingSubject,
+        petition: messages.petitionEmailSharingSubject,
       });
       emailSharingBody = getInputTermMessage(inputTerm, {
         idea: messages.ideaEmailSharingBody,
@@ -105,6 +108,9 @@ const SharingModalContent = ({
         question: messages.questionEmailSharingModalContentBody,
         issue: messages.issueEmailSharingBody,
         contribution: messages.contributionEmailSharingBody,
+        initiative: messages.initiativeEmailSharingBody,
+        proposal: messages.proposalEmailSharingBody,
+        petition: messages.petitionEmailSharingBody,
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
@@ -113,6 +119,9 @@ const SharingModalContent = ({
         question: messages.questionWhatsAppMessage,
         issue: messages.issueWhatsAppMessage,
         contribution: messages.contributionWhatsAppMessage,
+        initiative: messages.initiativeWhatsAppMessage,
+        proposal: messages.proposalWhatsAppMessage,
+        petition: messages.petitionWhatsAppMessage,
       });
     }
 
@@ -122,7 +131,7 @@ const SharingModalContent = ({
   const getInitiativeMessages = () => {
     const emailSharingSubject = messages.initiativeEmailSharingSubject;
     const emailSharingBody = messages.initiativeEmailSharingBody;
-    const whatsAppMessage = messages.whatsAppMessageProposal;
+    const whatsAppMessage = messages.initiativeWhatsAppMessage;
 
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };

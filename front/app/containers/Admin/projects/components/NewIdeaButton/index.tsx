@@ -42,6 +42,9 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
           question: messages.newQuestion,
           issue: messages.newIssue,
           contribution: messages.newContribution,
+          proposal: messages.newProposal,
+          initiative: messages.newInitiative,
+          petition: messages.newPetition,
         })
       )}
     />

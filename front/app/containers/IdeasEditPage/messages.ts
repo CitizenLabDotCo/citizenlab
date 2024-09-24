@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   formTitle: {
     id: 'app.containers.IdeasEditPage.formTitle',
     defaultMessage: 'Edit idea',
@@ -24,6 +25,18 @@ export default defineMessages({
   contributionFormTitle: {
     id: 'app.containers.IdeasEditPage.contributionFormTitle',
     defaultMessage: 'Edit contribution',
+  },
+  proposalFormTitle: {
+    id: 'app.containers.IdeasEditPage.proposalFormTitle',
+    defaultMessage: 'Edit proposal',
+  },
+  initiativeFormTitle: {
+    id: 'app.containers.IdeasEditPage.initiativeFormTitle',
+    defaultMessage: 'Edit initiative',
+  },
+  petitionFormTitle: {
+    id: 'app.containers.IdeasEditPage.petitionFormTitle',
+    defaultMessage: 'Edit petition',
   },
   save: {
     id: 'app.containers.IdeasEditPage.save',
