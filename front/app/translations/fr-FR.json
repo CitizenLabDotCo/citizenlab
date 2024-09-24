@@ -382,7 +382,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Rejoignez la discussion : {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Rejoignez la discussion : {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Votez pour {postTitle} sur",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Je viens de poster une proposition pour {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Liens vers la page d'accueil",
   "app.components.PostComponents.readMore": "Voir plus...",
   "app.components.PostComponents.topics": "Étiquettes",

@@ -243,7 +243,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Join the discussion: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Join the discussion: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Pōtitia te {postTitle} mō",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link to home page",
   "app.components.PostComponents.readMore": "Read more...",
   "app.components.ProjectArchivedIndicator.archivedProject": "Unfortunately, you can't participate in this project anymore because it has been archived",

@@ -324,7 +324,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Oqallinnermut peqataagit: {postTitle}",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Oqallinnermut peqataagit: {postTitle}",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit {postTitle}} other {Uani {postTitle} toqqaagit}}",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Nittartakkamut iserneq innersuussut",
   "app.components.PostComponents.readMore": "Atuarnerugit...",
   "app.components.ProjectArchivedIndicator.archivedProject": "{tenantName, select, DeloitteDK {Ajoraluartumik uunga nunarsuaq tamakkerlugu anguniakkanut peqataasinnaajunnaarputit, toqqorneqarmat} other {Ajoraluartumik uunga suliamut peqataasinnaajunnaarputit, toqqorneqarmat}}",

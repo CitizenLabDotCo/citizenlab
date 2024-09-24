@@ -277,7 +277,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Alăturați-vă discuției: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Alăturați-vă discuției: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Votul activat pentru {postTitle}",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Tocmai am postat o propunere pentru {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link către pagina de start",
   "app.components.PostComponents.readMore": "Citește mai mult...",
   "app.components.ProjectArchivedIndicator.archivedProject": "Din păcate nu mai poți participa la acest proiect deoarece a fost arhivat",
