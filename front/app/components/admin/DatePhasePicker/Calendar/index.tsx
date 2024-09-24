@@ -164,15 +164,11 @@ const Calendar = ({
       return;
     }
 
-    console.log({ day });
-
     const nextSelectedRange = getNextSelectedRange({
       disabledRanges,
       currentlySelectedDate,
       lastClickedDate: day,
     });
-
-    console.log({ nextSelectedRange });
 
     if (nextSelectedRange) {
       onUpdateRange(nextSelectedRange);

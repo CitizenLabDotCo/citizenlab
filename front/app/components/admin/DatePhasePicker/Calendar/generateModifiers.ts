@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, differenceInCalendarDays } from 'date-fns';
 
 import { ClosedDateRange, DateRange } from './typings';
 
@@ -55,9 +55,7 @@ const generateIdleView = ({
       const newDisabledRanges = [...disabledRangesWithoutLastOne, newLastRange];
 
       return {
-        isDisabled: newDisabledRanges,
-        isDisabledStart: newDisabledRanges.map((range) => range.from),
-        isDisabledEnd: newDisabledRanges.map((range) => range.to),
+        ...generateDisabledRanges(newDisabledRanges),
         isSelectedStart: previouslySelectedRange.from,
         // We then make sure that the selected range gets a gradient to show it's open-ende
         ...generateGradient(previouslySelectedRange.from, 'isSelectedGradient'),
@@ -74,9 +72,7 @@ const generateIdleView = ({
       }
 
       return {
-        isDisabled: disabledRanges,
-        isDisabledStart: disabledRanges.map((range) => range.from),
-        isDisabledEnd: disabledRanges.map((range) => range.to),
+        ...generateDisabledRanges(disabledRanges),
         isSelectedStart: previouslySelectedRange.from,
         ...generateGradient(previouslySelectedRange.from, 'isSelectedGradient'),
       };
@@ -87,13 +83,16 @@ const generateIdleView = ({
     if (!isClosedDateRange(lastDisabledRange)) {
       // In this case, we just have to generate the gradient
       // for the last disabled range
+      const disabledRanges = generateDisabledRanges(
+        disabledRangesWithoutLastOne
+      );
       return {
-        isDisabled: disabledRangesWithoutLastOne,
+        isDisabled: disabledRanges.isDisabled,
         isDisabledStart: [
-          ...disabledRangesWithoutLastOne.map((range) => range.from),
+          ...disabledRanges.isDisabledStart,
           lastDisabledRange.from,
         ],
-        isDisabledEnd: disabledRangesWithoutLastOne.map((range) => range.to),
+        isDisabledEnd: disabledRanges.isDisabledEnd,
         ...generateGradient(lastDisabledRange.from, 'isDisabledGradient'),
         ...getSelection(previouslySelectedRange),
       };
@@ -109,9 +108,7 @@ const generateIdleView = ({
       }
 
       return {
-        isDisabled: disabledRanges,
-        isDisabledStart: disabledRanges.map((range) => range.from),
-        isDisabledEnd: disabledRanges.map((range) => range.to),
+        ...generateDisabledRanges(disabledRanges),
         ...getSelection(previouslySelectedRange),
       };
     }
@@ -191,6 +188,25 @@ const isClosedDateRange = (range: DateRange): range is ClosedDateRange =>
 const allAreClosedDateRanges = (
   ranges: DateRange[]
 ): ranges is ClosedDateRange[] => ranges.every(isClosedDateRange);
+
+const generateDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
+  return {
+    isDisabled: disabledRanges.reduce((acc, range) => {
+      const diff = differenceInCalendarDays(range.to, range.from);
+      if (diff < 2) return acc;
+      if (diff === 2) return [...acc, addDays(range.from, 1)];
+      return [
+        ...acc,
+        {
+          from: addDays(range.from, 1),
+          to: addDays(range.to, -1),
+        },
+      ];
+    }, []),
+    isDisabledStart: disabledRanges.map((range) => range.from),
+    isDisabledEnd: disabledRanges.map((range) => range.to),
+  };
+};
 
 const generateGradient = (startDate: Date, prefix: string) => ({
   [`${prefix}_one`]: addDays(startDate, 1),
