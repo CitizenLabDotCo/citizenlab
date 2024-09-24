@@ -192,8 +192,8 @@ ach:
       section3:
         title: crwdns3045413:0crwdne3045413:0
         description: crwdns3045415:0crwdne3045415:0
-      other_text_field:
-        title: crwdns3045417:0{other_option}crwdne3045417:0
+      other_input_field:
+        title: crwdns3142395:0crwdne3142395:0
   custom_forms:
     categories:
       main_content:
