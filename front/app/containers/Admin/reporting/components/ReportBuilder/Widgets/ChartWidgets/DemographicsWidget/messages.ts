@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange',
     defaultMessage: 'Registration date range',
   },
+  notRepresented: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.notRepresented',
+    defaultMessage: 'Not Represented',
+  },
 });
