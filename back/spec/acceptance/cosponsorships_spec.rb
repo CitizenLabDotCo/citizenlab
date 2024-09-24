@@ -1,11 +1,7 @@
-
-
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Cosponsorships' do
-  
   explanation 'Cosponsorships are the relationships between users and ideas. They can be pending or accepted.'
   header 'Content-Type', 'application/json'
 
@@ -39,7 +35,7 @@ resource 'Cosponsorships' do
       before do
         header 'Authorization', authorization_header(@user)
       end
-  
+
       example_request 'Accept a cosponsorship when the user is the invited user' do
         expect(status).to eq 200
         expect(response_data.dig(:data, :attributes, :status)).to eq 'accepted'
@@ -48,12 +44,10 @@ resource 'Cosponsorships' do
   end
 
   context 'when the user is not the invited user' do
-      patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept_cosponsorship' do
-    
-        example_request 'Accept a cosponsorship when the user is not the invited user' do
-          expect(status).to eq 401
-        end
-    
+    patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept_cosponsorship' do
+      example_request 'Accept a cosponsorship when the user is not the invited user' do
+        expect(status).to eq 401
       end
+    end
   end
 end

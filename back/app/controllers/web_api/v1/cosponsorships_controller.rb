@@ -11,7 +11,7 @@ class WebApi::V1::CosponsorshipsController < ApplicationController
     if params[:idea_id]
       cosponsorships = cosponsorships.where(idea_id: params[:idea_id])
     end
-    
+
     paginated_cosponsorships = paginate cosponsorships
     render json: linked_json(paginated_cosponsorships, WebApi::V1::CosponsorshipSerializer, params: jsonapi_serializer_params)
   end
