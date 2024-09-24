@@ -27,7 +27,8 @@ const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
     formatMessage
   );
 
-  if (fieldSwitchOptions.length === 0) return null;
+  // Don't show if there are no field switch options, or it's a built-in field
+  if (fieldSwitchOptions.length === 0 || field.code) return null;
 
   return (
     <Box mb="24px">
