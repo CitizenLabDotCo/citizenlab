@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
@@ -12,7 +12,6 @@ import useLocale from 'hooks/useLocale';
 import { getLocale } from './locales';
 import { DateRange } from './typings';
 import { generateModifiers } from './utils/generateModifiers';
-import { getActionOnClick } from './utils/getActionOnClick';
 
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
@@ -101,7 +100,7 @@ const DayPickerStyles = styled.div`
     background: linear-gradient(90deg, ${selectedBackground3}, ${colors.white});
   }
 
-  .is-currently-selected {
+  .is-selected-single-day {
     background: var(--rdp-accent-color);
     color: ${colors.white};
     border-radius: 50%;
@@ -115,17 +114,17 @@ const modifiersClassNames = {
   isDisabledGradient_one: 'is-disabled-gradient_one',
   isDisabledGradient_two: 'is-disabled-gradient_two',
   isDisabledGradient_three: 'is-disabled-gradient_three',
-  isSelected: 'rdp-range_middle',
+  isSelectedMiddle: 'rdp-range_middle',
   isSelectedStart: 'rdp-range_start',
   isSelectedEnd: 'rdp-range_end',
   isSelectedGradient_one: 'is-selected-gradient_one',
   isSelectedGradient_two: 'is-selected-gradient_two',
   isSelectedGradient_three: 'is-selected-gradient_three',
-  isCurrentlySelected: 'is-currently-selected',
+  isSelectedSingleDay: 'is-selected-single-day',
 };
 
 interface Props {
-  selectedRange?: DateRange;
+  selectedRange: Partial<DateRange>;
   disabledRanges?: DateRange[];
   startMonth?: Date;
   endMonth?: Date;
@@ -140,16 +139,14 @@ const Calendar = ({
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
-  const [currentlySelectedDate, setCurrentSelectedDate] = useState<Date>();
 
   const modifiers = useMemo(
     () =>
       generateModifiers({
-        previouslySelectedRange: selectedRange,
+        selectedRange,
         disabledRanges,
-        currentlySelectedDate,
       }),
-    [selectedRange, disabledRanges, currentlySelectedDate]
+    [selectedRange, disabledRanges]
   );
 
   const handleDayClick: PropsBase['onDayClick'] = (
@@ -165,21 +162,7 @@ const Calendar = ({
       return;
     }
 
-    const action = getActionOnClick({
-      disabledRanges,
-      currentlySelectedDate,
-      lastClickedDate: day,
-    });
-
-    if (action.action === 'select-date') {
-      setCurrentSelectedDate(action.date);
-      return;
-    }
-
-    if (action.action === 'select-range') {
-      onUpdateRange(action.range);
-      setCurrentSelectedDate(undefined);
-    }
+    // TODO
   };
 
   return (
