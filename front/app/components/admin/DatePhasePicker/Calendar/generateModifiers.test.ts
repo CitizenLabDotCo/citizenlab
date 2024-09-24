@@ -59,7 +59,7 @@ describe('generateModifiers', () => {
         { from: new Date(2024, 9, 21), to: new Date(2024, 10, 28) },
       ];
 
-      it('works', () => {
+      it('works for closed selected range', () => {
         const selectedRange = {
           from: new Date(2024, 9, 10),
           to: new Date(2024, 9, 20),
@@ -93,11 +93,15 @@ describe('generateModifiers', () => {
           })
         ).toEqual(expectedResult);
       });
+
+      it('works for open selected range', () => {
+        // TODO
+      });
     });
 
-    // describe('with disabled ranges (last open)', () => {
-    // TODO
-    // })
+    describe('with disabled ranges (last open)', () => {
+      // TODO
+    });
   });
 
   // describe('selecting view', () => {
