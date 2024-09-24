@@ -1,0 +1,83 @@
+import { addDays } from 'date-fns';
+
+import { ClosedDateRange, DateRange } from '../typings';
+
+import { isClosedDateRange } from './utils';
+
+interface GetUpdatedRangeParams {
+  selectedRange: Partial<DateRange>;
+  disabledRanges: DateRange[];
+  clickedDate: Date;
+}
+
+export const getUpdatedRange = ({
+  selectedRange: { from, to },
+  disabledRanges,
+  clickedDate,
+}: GetUpdatedRangeParams) => {
+  if (from === undefined) {
+    return {
+      from: clickedDate,
+    };
+  }
+
+  if (from > clickedDate) {
+    return {
+      from: clickedDate,
+    };
+  }
+
+  if (from.getTime() === clickedDate.getTime()) {
+    return undefined;
+  }
+
+  if (to === undefined) {
+    const potentialNewRange = {
+      from,
+      to: clickedDate,
+    };
+
+    const newDisabledRanges = replaceLastOpenEndedRange(disabledRanges);
+
+    if (rangeOverlapsWithDisabledRange(potentialNewRange, newDisabledRanges)) {
+      return {
+        from: clickedDate,
+      };
+    } else {
+      return {
+        from,
+        to: clickedDate,
+      };
+    }
+  }
+
+  return {
+    from: clickedDate,
+  };
+};
+
+// Utility to replace the last open-ended range with a closed range.
+// This simplifies a lot of logic and makes the types easier to work with.
+const replaceLastOpenEndedRange = (
+  disabledRanges: DateRange[]
+): ClosedDateRange[] => {
+  return disabledRanges.map((range) => {
+    if (!isClosedDateRange(range)) {
+      return {
+        from: range.from,
+        to: addDays(range.from, 1),
+      };
+    }
+
+    return range;
+  });
+};
+
+const rangeOverlapsWithDisabledRange = (
+  range: ClosedDateRange,
+  disabledRanges: ClosedDateRange[]
+) => {
+  return disabledRanges.some((disabledRange) => {
+    return range.from <= disabledRange.to && range.to >= disabledRange.from;
+  });
+};
