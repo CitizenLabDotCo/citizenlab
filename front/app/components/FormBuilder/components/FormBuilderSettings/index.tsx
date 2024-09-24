@@ -23,10 +23,12 @@ import {
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import tracks from '../tracks';
 import { getFieldNumbers } from '../utils';
 
 import { ContentSettings } from './ContentSettings';
@@ -108,7 +110,10 @@ const FormBuilderSettings = ({
       >
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
-          onClick={closeSettings}
+          onClick={() => {
+            trackEventByName(tracks.formFieldSettingsCloseButtonClicked);
+            closeSettings();
+          }}
           iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
