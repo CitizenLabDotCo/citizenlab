@@ -125,7 +125,7 @@ const modifiersClassNames = {
 };
 
 interface Props {
-  selectedRange: DateRange;
+  selectedRange?: DateRange;
   disabledRanges?: DateRange[];
   startMonth?: Date;
   endMonth?: Date;

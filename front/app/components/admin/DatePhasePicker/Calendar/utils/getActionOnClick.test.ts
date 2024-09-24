@@ -1,37 +1,58 @@
 import { getActionOnClick } from './getActionOnClick';
 
 describe('getActionOnClick', () => {
-  it('sets the currently selected date if there is no currently selected date', () => {
-    const disabledRanges = [];
-    const currentlySelectedDate = undefined;
-    const lastClickedDate = new Date();
+  describe('no disabled ranges', () => {
+    it('if no currently selected date: it sets the range to open ended when you click anywhere', () => {
+      const disabledRanges = [];
+      const internallySelectedDate = undefined;
+      const lastClickedDate = new Date();
 
-    const action = getActionOnClick({
-      disabledRanges,
-      currentlySelectedDate,
-      lastClickedDate,
+      const action = getActionOnClick({
+        disabledRanges,
+        internallySelectedDate,
+        lastClickedDate,
+      });
+
+      expect(action).toEqual({
+        action: 'select-range',
+        range: {
+          from: lastClickedDate,
+          to: undefined,
+        },
+      });
     });
 
-    expect(action).toEqual({
-      action: 'select-date',
-      date: lastClickedDate,
+    it('if currenty selected date and you click before it: it sets the range open ended starting on the new date', () => {
+      const disabledRanges = [];
+      const currentlySelectedDate = new Date(2024, 8, 1);
+      const lastClickedDate = new Date(2024, 7, 1);
+
+      const action = getActionOnClick({
+        disabledRanges,
+        internallySelectedDate,
+        lastClickedDate,
+      });
+
+      expect(action).toEqual({
+        action: 'select-range',
+        date: {
+          from: lastClickedDate,
+          to: undefined,
+        },
+      });
     });
-  });
 
-  it('sets the currently selected date if the last clicked date is before the currently selected date', () => {
-    const disabledRanges = [];
-    const currentlySelectedDate = new Date(2024, 8, 1);
-    const lastClickedDate = new Date(2024, 7, 1);
+    it('if currenty selected date and you click after it: it closes the range', () => {
+      const disabledRanges = [];
 
-    const action = getActionOnClick({
-      disabledRanges,
-      currentlySelectedDate,
-      lastClickedDate,
-    });
+      const currentlySelectedDate = new Date(2024, 8, 1);
+      const lastClickedDate = new Date(2024, 9, 1);
 
-    expect(action).toEqual({
-      action: 'select-date',
-      date: lastClickedDate,
+      const action = getActionOnClick({
+        disabledRanges,
+        internallySelectedDate,
+        lastClickedDate,
+      });
     });
   });
 
@@ -44,7 +65,7 @@ describe('getActionOnClick', () => {
 
     const action = getActionOnClick({
       disabledRanges,
-      currentlySelectedDate,
+      internallySelectedDate,
       lastClickedDate,
     });
 
@@ -61,7 +82,7 @@ describe('getActionOnClick', () => {
 
     const action = getActionOnClick({
       disabledRanges,
-      currentlySelectedDate,
+      internallySelectedDate,
       lastClickedDate,
     });
 
@@ -80,7 +101,7 @@ describe('getActionOnClick', () => {
 
     const action = getActionOnClick({
       disabledRanges,
-      currentlySelectedDate,
+      internallySelectedDate,
       lastClickedDate,
     });
 

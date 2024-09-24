@@ -5,8 +5,9 @@ import { DateRange, ClosedDateRange } from '../typings';
 import { allAreClosedDateRanges, isClosedDateRange } from './utils';
 
 interface GetActionOnClickParams {
+  externallySelectedRange: DateRange;
   disabledRanges: DateRange[];
-  currentlySelectedDate?: Date;
+  internallySelectedDate?: Date;
   lastClickedDate: Date;
 }
 
@@ -23,18 +24,31 @@ type SelectRangeAction = {
 type Action = SelectDateAction | SelectRangeAction;
 
 export const getActionOnClick = ({
+  externallySelectedRange,
   disabledRanges,
-  currentlySelectedDate,
+  internallySelectedDate,
   lastClickedDate,
 }: GetActionOnClickParams): Action => {
-  if (!currentlySelectedDate) {
+  if (!isClosedDateRange(externallySelectedRange)) {
+    // This is only possible if this is the last range.
+    // If we click after this, we simply close the range.
+    return {
+      action: 'select-range',
+      range: {
+        from: externallySelectedRange.from,
+        to: lastClickedDate,
+      },
+    };
+  }
+
+  if (!internallySelectedDate) {
     return {
       action: 'select-date',
       date: lastClickedDate,
     };
   }
 
-  if (lastClickedDate <= currentlySelectedDate) {
+  if (lastClickedDate <= internallySelectedDate) {
     return {
       action: 'select-date',
       date: lastClickedDate,
@@ -42,7 +56,7 @@ export const getActionOnClick = ({
   }
 
   const potentialNewRange = {
-    from: currentlySelectedDate,
+    from: internallySelectedDate,
     to: lastClickedDate,
   };
 
@@ -56,7 +70,7 @@ export const getActionOnClick = ({
   return {
     action: 'select-range',
     range: {
-      from: currentlySelectedDate,
+      from: internallySelectedDate,
       to: lastClickedDate,
     },
   };

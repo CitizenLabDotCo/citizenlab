@@ -6,7 +6,7 @@ import { allAreClosedDateRanges, isClosedDateRange } from './utils';
 
 // Generate the current view of the calendar
 interface GenerateViewParams {
-  previouslySelectedRange: DateRange;
+  previouslySelectedRange?: DateRange;
   disabledRanges: DateRange[];
   currentlySelectedDate?: Date;
 }
