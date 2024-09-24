@@ -48,6 +48,8 @@ module EmailCampaigns
       NewIdeaForAdminMailer
     end
 
+    # The submitted action is created when the idea is first submitted,
+    # regardless of whether it's published right away or in screening
     def activity_triggers
       { 'Idea' => { 'submitted' => true } }
     end

@@ -55,12 +55,27 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
+      "your_input_in_screening": My input awaits screening
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
       cta_goto_idea: 'Go to this idea'
       cta_goto_input: 'Go to this input'
+      cta_goto:
+        idea: 'Go to this idea'
+        question: 'Go to this question'
+        contribution: 'Go to this contribution'
+        project: 'Go to this project'
+        issue: 'Go to this issue'
+        option: 'Go to this option'
+      cta_goto_your:
+        idea: 'Go to your idea'
+        question: 'Go to your question'
+        contribution: 'Go to your contribution'
+        project: 'Go to your project'
+        issue: 'Go to your issue'
+        option: 'Go to your option'
       cta_goto_proposal: 'Go to this proposal'
       cta_goto_project: 'Go to this project'
     schedules:
@@ -473,6 +488,17 @@ en:
       link: link
       cta_view_idea: 'Go to your input'
       preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+    your_input_in_screening:
+      main_header: 
+        idea: 'Your idea is in "%{prescreening_status_title}"'
+        question: 'Your question is in "%{prescreening_status_title}"'
+        contribution: 'Your contribution is in "%{prescreening_status_title}"'
+        project: 'Your project is in "%{prescreening_status_title}"'
+        issue: 'Your issue is in "%{prescreening_status_title}"'
+        option: 'Your option is in "%{prescreening_status_title}"'
+      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      subject: '"%{input_title}" is almost published'
+      preheader: 'It''s currently in %{prescreening_status_title}'
     your_proposed_initiatives_digest:
       subject: 'Weekly update of your proposals'
       preheader: 'What happened with your proposals in the past week?'
@@ -564,6 +590,7 @@ en:
         user_who_is_mentioned: 'User who is mentioned'
         user_who_published_the_proposal: 'User who published the proposal'
         user_who_published_the_input: 'User who published the input'
+        user_who_submitted_the_input: 'User who submitted the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
@@ -608,6 +635,7 @@ en:
         user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
+        new_input_awaits_screening: 'New input awaits screening'
         new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Project phase changes'
         project_published: 'Project published'

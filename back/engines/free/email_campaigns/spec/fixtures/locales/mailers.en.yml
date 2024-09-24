@@ -231,7 +231,7 @@ en:
       main_header: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
-      subject: 'Your weekly project manager report of %{time}'
+      subject: 'Your weekly project manager report'
       preheader: 'Project manager digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
@@ -263,7 +263,7 @@ en:
       yesterday: Yesterday
     comment_on_idea_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header: '%{authorName} commented on an idea you follow'
       subject: 'There''s a new comment on an idea you follow'
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
