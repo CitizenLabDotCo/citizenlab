@@ -1,24 +1,27 @@
 import React from 'react';
 
-import useCosponsorships from 'api/cosponsorship/useCosponsorships';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import CosponsorsList from './CosponsorsList';
+import RequestToCosponsor from './RequestToCosponsor';
 
 const Cosponsorship = ({ ideaId }: { ideaId: string }) => {
   const isCosponsorshipEnabled = useFeatureFlag({
     name: 'input_cosponsorship',
   });
 
-  const { data: cosponsors } = useCosponsorships({
-    ideaId,
-  });
-
   if (!isCosponsorshipEnabled) {
     return null;
   }
 
-  console.log(cosponsors);
-  return <div>Cosponsorship</div>;
+  return (
+    <Box display="flex" flexDirection="column" gap="20px">
+      <RequestToCosponsor ideaId={ideaId} />
+      <CosponsorsList ideaId={ideaId} />
+    </Box>
+  );
 };
 
 export default Cosponsorship;

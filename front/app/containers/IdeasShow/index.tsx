@@ -125,7 +125,6 @@ export const IdeasShow = ({
             projectId={project.data.id}
             translateButtonClicked={translateButtonIsClicked}
           />
-          <Cosponsorship ideaId={ideaId} />
           <ProjectLink project={project.data} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
@@ -144,6 +143,8 @@ export const IdeasShow = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
+          {compact && <Cosponsorship ideaId={ideaId} />}
+
           {compact && statusId && (
             <Box my="24px">
               {participationContext?.attributes.participation_method ===
