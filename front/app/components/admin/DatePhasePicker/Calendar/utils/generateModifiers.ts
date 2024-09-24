@@ -37,7 +37,7 @@ const generateSelectedModifiers = ({
   if (to !== undefined) {
     return {
       isSelectedStart: from,
-      isSelectedMiddle: generateIsSelectedMiddle({ from, to }),
+      isSelectedMiddle: generateMiddleRange({ from, to }),
       isSelectedEnd: to,
     };
   } else {
@@ -50,7 +50,10 @@ const generateSelectedModifiers = ({
         ...disabledRanges.map(({ to }) => to.getTime())
       );
 
-      if (from.getTime() > highestToDate) {
+      const selectedRangeIsAfterAllDisabledRanges =
+        from.getTime() > highestToDate;
+
+      if (selectedRangeIsAfterAllDisabledRanges) {
         return generateIsSelectedGradient(from);
       } else {
         return {
@@ -76,19 +79,54 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
   }
 
   if (allAreClosedDateRanges(disabledRanges)) {
-    return {}; // TODO
+    return {
+      isDisabledStart: disabledRanges.map(({ from }) => from),
+      isDisabledMiddle: generateDisabledMiddleRange(disabledRanges),
+      isDisabledEnd: disabledRanges.map(({ to }) => to),
+    };
   } else {
-    return {}; // TODO
+    const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+    const disabledRangesWithoutLast = disabledRanges.slice(0, -1);
+
+    // This should not be possible, but we need this for the type check
+    if (!allAreClosedDateRanges(disabledRangesWithoutLast)) {
+      throw new Error('Invalid props');
+    }
+
+    const isDisabledGradient = {
+      isDisabledGradient_one: addDays(lastDisabledRange.from, 1),
+      isDisabledGradient_two: addDays(lastDisabledRange.from, 2),
+      isDisabledGradient_three: addDays(lastDisabledRange.from, 3),
+    };
+
+    if (disabledRangesWithoutLast.length === 0) {
+      return {
+        isDisabledStart: [lastDisabledRange.from],
+        ...isDisabledGradient,
+      };
+    } else {
+      return {
+        isDisabledStart: [
+          ...disabledRangesWithoutLast.map(({ from }) => from),
+          lastDisabledRange.from,
+        ],
+        isDisabledMiddle: generateDisabledMiddleRange(
+          disabledRangesWithoutLast
+        ),
+        isDisabledEnd: disabledRangesWithoutLast.map(({ to }) => to),
+        ...isDisabledGradient,
+      };
+    }
   }
 };
 
-const generateIsSelectedMiddle = (selectedRange: ClosedDateRange) => {
-  const diff = differenceInCalendarDays(selectedRange.to, selectedRange.from);
+const generateMiddleRange = ({ from, to }: ClosedDateRange) => {
+  const diff = differenceInCalendarDays(to, from);
   if (diff < 2) return undefined;
-  if (diff === 2) return addDays(selectedRange.from, 1);
+  if (diff === 2) return addDays(from, 1);
   return {
-    from: addDays(selectedRange.from, 1),
-    to: addDays(selectedRange.to, -1),
+    from: addDays(from, 1),
+    to: addDays(to, -1),
   };
 };
 
@@ -98,3 +136,10 @@ const generateIsSelectedGradient = (isSelectedStart: Date) => ({
   isSelectedGradient_two: addDays(isSelectedStart, 2),
   isSelectedGradient_three: addDays(isSelectedStart, 3),
 });
+
+const generateDisabledMiddleRange = (disabledRanges: ClosedDateRange[]) => {
+  return disabledRanges.reduce((acc, range) => {
+    const middleRange = generateMiddleRange(range);
+    return middleRange ? [...acc, middleRange] : acc;
+  }, []);
+};
