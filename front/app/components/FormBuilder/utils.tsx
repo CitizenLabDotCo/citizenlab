@@ -92,6 +92,7 @@ export const formEndOption = 'survey_end';
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
+  inputType: ICustomFieldInputType,
   locales: SupportedLocale[],
   platformLocale: SupportedLocale
 ) {
@@ -99,7 +100,7 @@ export function getAdditionalSettings(
     return null;
   }
 
-  switch (field.input_type) {
+  switch (inputType) {
     case 'multiselect_image':
     case 'multiselect':
       return (

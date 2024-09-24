@@ -50,7 +50,7 @@ type Props = {
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 };
 
 export const FormField = ({
@@ -184,7 +184,7 @@ export const FormField = ({
         remove(fieldIndex);
       }
     }
-    closeSettings();
+    closeSettings(false);
     trigger();
   };
 
