@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Type',
   },
   surveyHasSubmissionsWarning: {
-    id: 'app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning',
+    id: 'app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning2',
     defaultMessage:
-      'The field type cannot be changed once the survey has submissions.',
+      'The field type cannot be changed once there are submissions.',
   },
 });
