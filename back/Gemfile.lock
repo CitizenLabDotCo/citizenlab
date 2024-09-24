@@ -657,10 +657,10 @@ GEM
     google-cloud-location (0.8.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-protobuf (3.25.3-aarch64-linux)
-    google-protobuf (3.25.3-arm64-darwin)
-    google-protobuf (3.25.3-x86_64-darwin)
-    google-protobuf (3.25.3-x86_64-linux)
+    google-protobuf (3.25.5-aarch64-linux)
+    google-protobuf (3.25.5-arm64-darwin)
+    google-protobuf (3.25.5-x86_64-darwin)
+    google-protobuf (3.25.5-x86_64-linux)
     googleapis-common-protos (1.5.0)
       google-protobuf (~> 3.18)
       googleapis-common-protos-types (~> 1.7)
@@ -924,7 +924,7 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.7)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     pundit (2.3.2)
       activesupport (>= 3.0.0)
@@ -1337,7 +1337,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   public_api!
-  puma (~> 6.4.2)
+  puma (~> 6.4.3)
   pundit (~> 2.3.2)
   que (~> 2.3.0)
   que-web (~> 0.10.0)

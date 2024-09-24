@@ -12,7 +12,7 @@ module Permissions
       @project ||= project
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       project_visible_disabled_reason || project_archived_disabled_reason || super
     end
 

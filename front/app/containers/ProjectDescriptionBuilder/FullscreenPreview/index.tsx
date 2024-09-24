@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
@@ -14,10 +14,9 @@ import useLocalize from 'hooks/useLocalize';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();

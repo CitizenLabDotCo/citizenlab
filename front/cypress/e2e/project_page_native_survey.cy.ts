@@ -238,7 +238,7 @@ describe('Native survey CTA bar', () => {
     cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response

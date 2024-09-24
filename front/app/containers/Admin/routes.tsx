@@ -38,6 +38,12 @@ import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+const ProjectDescriptionBuilderComponent = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder')
+);
+const FullscreenPreview = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+);
 
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
@@ -119,6 +125,12 @@ const IndexElement = () => {
   );
 };
 
+export enum descriptionBuilderRoutes {
+  projectdescriptionBuilder = 'project-description-builder',
+  description = `project-description-builder/projects/:projectId/description`,
+  preview = `project-description-builder/projects/:projectId/preview`,
+}
+
 const createAdminRoutes = () => {
   return {
     path: 'admin',
@@ -152,6 +164,14 @@ const createAdminRoutes = () => {
             <AdminFavicon />
           </PageLoading>
         ),
+      },
+      {
+        path: descriptionBuilderRoutes.description,
+        element: <ProjectDescriptionBuilderComponent />,
+      },
+      {
+        path: descriptionBuilderRoutes.preview,
+        element: <FullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
     ],
