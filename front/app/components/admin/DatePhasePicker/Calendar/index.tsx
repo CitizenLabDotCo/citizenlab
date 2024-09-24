@@ -154,9 +154,15 @@ const Calendar = ({
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
-    { isDisabled, isDisabledStart, isDisabledGradient_one }
+    { isDisabled, isDisabledStart, isDisabledEnd, isDisabledGradient_one }
   ) => {
-    if (isDisabled || isDisabledStart || isDisabledGradient_one) return;
+    if (
+      isDisabled ||
+      isDisabledStart ||
+      isDisabledEnd ||
+      isDisabledGradient_one
+    )
+      return;
 
     if (!currentlySelectedDate) {
       setCurrentSelectedDate(day);
