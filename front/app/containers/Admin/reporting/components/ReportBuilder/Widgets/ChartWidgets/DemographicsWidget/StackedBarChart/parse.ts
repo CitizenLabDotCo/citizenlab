@@ -1,10 +1,9 @@
+import { colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
 
 import { Localize } from 'hooks/useLocalize';
-
-import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import { binAge } from 'utils/dataUtils';
 import { roundPercentages } from 'utils/math';
@@ -70,7 +69,6 @@ const parseBirthyearResponse = (
     label: column,
   }));
 
-  // Return chart data and "No Data" bins separately
   return {
     data,
     percentages,
@@ -78,7 +76,7 @@ const parseBirthyearResponse = (
     statusColorById,
     labels: columns,
     legendItems,
-    noDataBins: zeroBins.map((bin) => bin.name), // Names of the bins with zero values
+    noDataBins: zeroBins.map((bin) => bin.name),
   };
 };
 
@@ -131,16 +129,63 @@ const parseOtherResponse = (
     legendItems,
     noDataBins: zeroColumns.map((column) =>
       localize(options[column].title_multiloc)
-    ), // Titles of the zero-value columns
+    ),
   };
 };
 
-const createColorMap = (columns: string[]) => {
-  return columns.reduce(
+const generateColorGradient = (
+  numberOfGroups: number,
+  startColor: string,
+  endColor: string
+): string[] => {
+  const colors: string[] = [];
+  for (let i = 0; i < numberOfGroups; i++) {
+    const ratio = i / (numberOfGroups - 1);
+    const interpolatedColor = interpolateColor(startColor, endColor, ratio);
+    colors.push(interpolatedColor);
+  }
+  return colors;
+};
+
+const interpolateColor = (
+  startColor: string,
+  endColor: string,
+  ratio: number
+): string => {
+  const r = Math.ceil(
+    parseInt(endColor.slice(1, 3), 16) * ratio +
+      parseInt(startColor.slice(1, 3), 16) * (1 - ratio)
+  );
+  const g = Math.ceil(
+    parseInt(endColor.slice(3, 5), 16) * ratio +
+      parseInt(startColor.slice(3, 5), 16) * (1 - ratio)
+  );
+  const b = Math.ceil(
+    parseInt(endColor.slice(5, 7), 16) * ratio +
+      parseInt(startColor.slice(5, 7), 16) * (1 - ratio)
+  );
+
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b)
+    .toString(16)
+    .slice(1)
+    .toUpperCase()}`;
+};
+
+const createColorMap = (columns: string[]): Record<string, string> => {
+  const startColor = colors.primary;
+  const endColor = colors.teal300;
+  const colorGradient = generateColorGradient(
+    columns.length,
+    startColor,
+    endColor
+  );
+
+  // Assign each column a color from the gradient
+  return columns.reduce<Record<string, string>>(
     (acc, cur, i) => ({
       ...acc,
-      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
+      [cur]: colorGradient[i],
     }),
-    {} as Record<string, string>
+    {}
   );
 };
