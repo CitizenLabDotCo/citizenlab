@@ -161,8 +161,9 @@ const Calendar = ({
       isDisabledStart ||
       isDisabledEnd ||
       isDisabledGradient_one
-    )
+    ) {
       return;
+    }
 
     if (!currentlySelectedDate) {
       setCurrentSelectedDate(day);
