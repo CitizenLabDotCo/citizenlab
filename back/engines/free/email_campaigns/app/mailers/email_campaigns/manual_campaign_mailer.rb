@@ -26,6 +26,10 @@ module EmailCampaigns
       true
     end
 
+    def preheader
+      format_message('preheader', values: { organizationName: organization_name })
+    end
+
     def subject
       multiloc_service.t(command[:subject_multiloc], locale.to_s)
     end
