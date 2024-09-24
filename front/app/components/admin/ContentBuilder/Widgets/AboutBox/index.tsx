@@ -1,17 +1,24 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
+import { useIntl } from 'utils/cl-intl';
+
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import messages from './messages';
 
-const AboutBox = () => {
+type AboutBoxProps = {
+  hideParticipationNumbers?: boolean;
+};
+
+const AboutBox = ({ hideParticipationNumbers }: AboutBoxProps) => {
   const { projectId, slug } = useParams() as {
     projectId: string;
     slug: string;
@@ -26,14 +33,48 @@ const AboutBox = () => {
       margin="0 auto"
       px={componentDefaultPadding}
     >
-      {projectID && <ProjectInfoSideBar projectId={projectID} />}
+      {projectID && (
+        <ProjectInfoSideBar
+          projectId={projectID}
+          hideParticipationNumbers={hideParticipationNumbers}
+        />
+      )}
+    </Box>
+  );
+};
+
+const AboutBoxSettings = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    hideParticipationNumbers,
+  } = useNode((node) => ({
+    hideParticipationNumbers: node.data.props.hideParticipationNumbers,
+    id: node.id,
+  }));
+
+  return (
+    <Box background="#ffffff" marginBottom="20px">
+      <Toggle
+        checked={hideParticipationNumbers}
+        onChange={() => {
+          setProp(
+            (props: AboutBoxProps) =>
+              (props.hideParticipationNumbers = !hideParticipationNumbers)
+          );
+        }}
+        label={formatMessage(messages.hideParticipationNumbersText)}
+      />
     </Box>
   );
 };
 
 AboutBox.craft = {
+  related: {
+    settings: AboutBoxSettings,
+  },
   custom: {
-    title: messages.aboutBox,
+    title: messages.participationBox,
     noPointerEvents: true,
   },
 };
