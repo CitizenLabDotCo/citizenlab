@@ -64,7 +64,7 @@ const StackedBarChart = ({ response }: Props) => {
           },
         }}
         layout="horizontal"
-        labels={stackLabels(data, columns, percentages)}
+        labels={stackLabels(data, columns, percentages, 'bottom', 'black')}
         xaxis={{ hide: true, domain: [0, 'dataMax'] }}
         yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
         tooltip={tooltip(
