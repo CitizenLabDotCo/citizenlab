@@ -40,10 +40,14 @@ const parseBirthyearResponse = (
     missingBin: blankLabel,
   });
 
-  // Sort bins by value (descending order)
-  const sortedBins = bins.sort((a, b) => b.value - a.value);
+  // Separate bins with non-zero values from bins with zero values
+  const nonZeroBins = bins.filter((bin) => bin.value > 0);
+  const zeroBins = bins.filter((bin) => bin.value === 0);
 
-  const binHash = sortedBins.reduce(
+  // Sort non-zero bins by value in descending order
+  const sortedNonZeroBins = nonZeroBins.sort((a, b) => b.value - a.value);
+
+  const binHash = sortedNonZeroBins.reduce(
     (acc, { value, name }) => ({
       ...acc,
       [name]: value,
@@ -66,6 +70,7 @@ const parseBirthyearResponse = (
     label: column,
   }));
 
+  // Return chart data and "No Data" bins separately
   return {
     data,
     percentages,
@@ -73,6 +78,7 @@ const parseBirthyearResponse = (
     statusColorById,
     labels: columns,
     legendItems,
+    noDataBins: zeroBins.map((bin) => bin.name), // Names of the bins with zero values
   };
 };
 
@@ -90,32 +96,42 @@ const parseOtherResponse = (
 
   const columns = [...columnsWithoutBlank, '_blank'];
 
-  // Sort the columns based on values in descending order
-  const sortedColumns = columns.sort((a, b) => data[0][b] - data[0][a]);
+  // Separate columns with non-zero values from columns with zero values
+  const nonZeroColumns = columns.filter((column) => data[0][column] > 0);
+  const zeroColumns = columns.filter((column) => data[0][column] === 0);
+
+  // Sort non-zero columns by value in descending order
+  const sortedNonZeroColumns = nonZeroColumns.sort(
+    (a, b) => data[0][b] - data[0][a]
+  );
 
   const percentages = roundPercentages(
-    sortedColumns.map((column) => data[0][column])
+    sortedNonZeroColumns.map((column) => data[0][column])
   );
-  const statusColorById = createColorMap(sortedColumns);
+  const statusColorById = createColorMap(sortedNonZeroColumns);
 
-  const labels = sortedColumns.map((column) => {
+  const labels = sortedNonZeroColumns.map((column) => {
     if (column === '_blank') return blankLabel;
     return localize(options[column].title_multiloc);
   });
 
-  const legendItems = sortedColumns.map((column, i) => ({
+  const legendItems = sortedNonZeroColumns.map((column, i) => ({
     icon: 'circle' as const,
     color: statusColorById[column],
     label: labels[i],
   }));
 
+  // Return chart data and "No Data" columns separately
   return {
     data,
     percentages,
-    columns: sortedColumns,
+    columns: sortedNonZeroColumns,
     statusColorById,
     labels,
     legendItems,
+    noDataBins: zeroColumns.map((column) =>
+      localize(options[column].title_multiloc)
+    ), // Titles of the zero-value columns
   };
 };
 
