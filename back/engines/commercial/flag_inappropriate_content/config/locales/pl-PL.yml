@@ -6,6 +6,7 @@ pl:
       "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
     inappropriate_content_flagged:
       subject: 'Post na Twojej platformie został oznaczony do przeglądu'
+      preheader: 'Post na Twojej platformie został oznaczony do sprawdzenia'
       header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
       comment_author: '%{authorName} skomentował(a):'
       idea_author: '%{authorName} dodał(a) nowy post:'
