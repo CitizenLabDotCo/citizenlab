@@ -13,6 +13,9 @@ resource 'Cosponsorships' do
     @cosponsorship = create(:cosponsorship, user: @user, idea: @idea)
   end
 
+  let (:idea_id) { @idea.id }
+  let (:cosponsorship_id) { @cosponsorship.id }
+
   get 'web_api/v1/ideas/:idea_id/cosponsorships' do
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -38,7 +41,7 @@ resource 'Cosponsorships' do
 
       example_request 'Accept a cosponsorship when the user is the invited user' do
         expect(status).to eq 200
-        expect(response_data.dig(:data, :attributes, :status)).to eq 'accepted'
+        expect(response_data.dig(:attributes, :status)).to eq 'accepted'
       end
     end
   end
