@@ -24,7 +24,7 @@ module EmailCampaigns
               top_ideas: [campaign.serialize_input(idea)]
             }
           ],
-          successful_proposals: [campaign.serialize_input(idea)]
+          successful_proposals: [campaign.serialize_proposal(idea)]
         },
         tracked_content: {
           idea_ids: [idea.id]

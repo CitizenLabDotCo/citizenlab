@@ -19,7 +19,8 @@ module EmailCampaigns
               ordering: image.ordering,
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
-          end
+          end,
+          input_term: idea.input_term
         }
       }
       campaign = EmailCampaigns::Campaigns::IdeaPublished.first

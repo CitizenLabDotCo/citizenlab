@@ -17,7 +17,8 @@ module EmailCampaigns
           post_published_at: Time.zone.today.prev_week.iso8601,
           post_title_multiloc: { 'en' => 'Fence around the park' },
           post_body_multiloc: { 'en' => 'Build a fence around the park and give the key to me, so I can have the park for me alone.' },
-          post_author_name: 'Julia Langer'
+          post_author_name: 'Julia Langer',
+          input_term: 'idea'
         }
       }
 
