@@ -142,8 +142,6 @@ const Calendar = ({
   const locale = useLocale();
   const [currentlySelectedDate, setCurrentSelectedDate] = useState<Date>();
 
-  console.log({ selectedRange, disabledRanges });
-
   const modifiers = useMemo(
     () =>
       generateModifiers({
@@ -153,8 +151,6 @@ const Calendar = ({
       }),
     [selectedRange, disabledRanges, currentlySelectedDate]
   );
-
-  console.log({ modifiers });
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
@@ -196,9 +192,9 @@ const Calendar = ({
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
         onDayClick={handleDayClick}
-        // This NOOP is necessary because otherwise the DayPicker
-        // will rely on its internal state to manage the selected range,
-        // rather than being controlled by our state.
+        // This NOOP and empty array are necessary because otherwise the
+        // DayPicker will rely on its internal state to manage the selected
+        // range rather than being controlled by our state.
         selected={[] as any}
         onSelect={NOOP}
       />
