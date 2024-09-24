@@ -6,6 +6,7 @@ sv:
       "inappropriate_content_flagged": Olämpligt innehåll flaggat – administratörer
     inappropriate_content_flagged:
       subject: 'Ett inlägg på din plattform har flaggats för granskning'
+      preheader: 'Ett inlägg på din plattform har flaggats för granskning'
       header_title: 'Ett inlägg på din plattform har flaggats för granskning'
       comment_author: '%{authorName} kommenterade:'
       idea_author: '%{authorName} skickade ett inlägg:'
