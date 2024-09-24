@@ -1,6 +1,8 @@
 import { addDays, differenceInCalendarDays } from 'date-fns';
 
-import { ClosedDateRange, DateRange } from './typings';
+import { ClosedDateRange, DateRange } from '../typings';
+
+import { allAreClosedDateRanges, isClosedDateRange } from './utils';
 
 // Generate the current view of the calendar
 interface GenerateViewParams {
@@ -212,13 +214,6 @@ const generateSelectingView = ({
 
   throw new Error('Unreachable');
 };
-
-const isClosedDateRange = (range: DateRange): range is ClosedDateRange =>
-  !!range.to;
-
-const allAreClosedDateRanges = (
-  ranges: DateRange[]
-): ranges is ClosedDateRange[] => ranges.every(isClosedDateRange);
 
 const generateDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
   return {
