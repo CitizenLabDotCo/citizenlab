@@ -27,15 +27,6 @@ const DayPickerStyles = styled.div`
     --rdp-accent-background-color: ${selectedBackground};
   }
 
-  .is-disabled {
-    background-color: ${disabledBackground};
-    color: ${colors.grey800};
-  }
-
-  .is-disabled > button {
-    cursor: not-allowed;
-  }
-
   .is-disabled-start {
     background-color: ${disabledBackground};
     color: ${colors.grey800};
@@ -43,6 +34,15 @@ const DayPickerStyles = styled.div`
   }
 
   .is-disabled-start > button {
+    cursor: not-allowed;
+  }
+
+  .is-disabled-middle {
+    background-color: ${disabledBackground};
+    color: ${colors.grey800};
+  }
+
+  .is-disabled-middle > button {
     cursor: not-allowed;
   }
 
@@ -108,14 +108,14 @@ const DayPickerStyles = styled.div`
 `;
 
 const modifiersClassNames = {
-  isDisabled: 'is-disabled',
   isDisabledStart: 'is-disabled-start',
+  isDisabledMiddle: 'is-disabled-middle',
   isDisabledEnd: 'is-disabled-end',
   isDisabledGradient_one: 'is-disabled-gradient_one',
   isDisabledGradient_two: 'is-disabled-gradient_two',
   isDisabledGradient_three: 'is-disabled-gradient_three',
-  isSelectedMiddle: 'rdp-range_middle',
   isSelectedStart: 'rdp-range_start',
+  isSelectedMiddle: 'rdp-range_middle',
   isSelectedEnd: 'rdp-range_end',
   isSelectedGradient_one: 'is-selected-gradient_one',
   isSelectedGradient_two: 'is-selected-gradient_two',
