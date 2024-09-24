@@ -64,7 +64,7 @@ class Phase < ApplicationRecord
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
-  DEFAULT_INPUT_TERM    = 'idea'
+  FALLBACK_INPUT_TERM = 'idea'
   CAMPAIGNS = [:project_phase_started].freeze
 
   belongs_to :project
