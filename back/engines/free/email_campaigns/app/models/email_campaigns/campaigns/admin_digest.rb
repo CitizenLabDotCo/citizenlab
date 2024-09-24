@@ -197,7 +197,7 @@ module EmailCampaigns
         .with_status_code('threshold_reached')
         .with_status_transitioned_after(time - 1.week)
         .includes(:idea_images)
-        .map { |idea| serialize_input(idea) }
+        .map { |idea| serialize_proposal(idea) }
     end
 
     def ideas_activity_counts(ideas)
@@ -249,6 +249,18 @@ module EmailCampaigns
         dislikes_increment: idea_activity(idea, :dislikes),
         comments_count: idea.comments_count,
         comments_increment: idea_activity(idea, :comments)
+      }
+    end
+
+    def serialize_proposal(proposal)
+      {
+        id: proposal.id,
+        title_multiloc: proposal.title_multiloc,
+        url: Frontend::UrlService.new.model_to_url(proposal),
+        published_at: proposal.published_at.iso8601,
+        author_name: proposal.author_name,
+        likes_count: proposal.likes_count,
+        comments_count: proposal.comments_count
       }
     end
 

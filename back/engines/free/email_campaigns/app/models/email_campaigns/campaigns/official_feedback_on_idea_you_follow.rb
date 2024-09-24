@@ -79,7 +79,8 @@ module EmailCampaigns
           post_title_multiloc: notification.post.title_multiloc,
           post_body_multiloc: notification.post.body_multiloc,
           post_author_name: name_service.display_name!(notification.post.author),
-          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient))
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient)),
+          input_term: notification.post.input_term
         }
       }]
     end
