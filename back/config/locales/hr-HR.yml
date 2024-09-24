@@ -233,6 +233,7 @@ hr:
       <ul><li>Odvojite vrijeme da razradite svoj prijedlog. Ako je potrebno, prvo upišite nacrt, a zatim ga kopirajte i zalijepite ovdje.</li><li>Odaberite smislen naslov koji jasno objašnjava što vaš prijedlog podrazumijeva.</li><li>Vizualizirajte svoj prijedlog prikladnom slikom kako bi se istaknuo!</li><li>Dodajte relevantne privitke, kao što su videozapisi, inspirativni primjeri, tehnički detalji ili planovi.</li><li>Podijelite svoju ideju na društvenim medijima i drugim kanalima kako biste prikupili podršku drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Ponovno postavite lozinku za %{organizationName}'
       cta_reset_password: 'Poništite svoju lozinku'
       message_you_reset_your_password: 'Zatražili ste ponovno postavljanje zaporke za platformu za sudjelovanje %{organizationName}. Pritisnite donji gumb za odabir nove, sigurne zaporke. Poveznica ističe za 1 sat.'
       subject: '%{organizationName}: Poništite zaporku'
@@ -311,6 +312,7 @@ hr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potvrdite svoju e-mail adresu za platformu %{organizationName}"
+      preheader: 'Potvrdite svoju adresu e-pošte za %{organizationName}'
       header: "Vaš kod za potvrdu"
       header_message: "Pozdrav, %{firstName}!"
       confirm_email_address: "Potvrdite svoju adresu e-pošte"
@@ -325,6 +327,7 @@ hr:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Vaš račun je privremeno onemogućen'
+      preheader: 'Vaš račun na platformi za sudjelovanje %{organizationName} je privremeno onemogućen'
       title_user_blocked: 'Vaš račun je privremeno onemogućen'
       paragraph_1_without_reason: "Vaš račun na platformi za sudjelovanje %{organizationName} privremeno je onemogućen zbog kršenja smjernica zajednice."
       paragraph_1_with_reason: "Vaš račun na platformi za sudjelovanje %{organizationName} privremeno je onemogućen iz sljedećeg razloga:"
@@ -340,3 +343,5 @@ hr:
   voting_method:
     default_voting_term_singular: "glasanje"
     default_voting_term_plural: "glasova"
+  ics_calendar_event:
+    event_details: "Detalji događaja"
