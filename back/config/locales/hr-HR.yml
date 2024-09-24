@@ -192,8 +192,8 @@ hr:
       section3:
         title: Pojedinosti
         description:
-      other_text_field:
-        title: Ako ste odabrali '{other_option}', na što mislite?
+      other_input_field:
+        title: Upišite svoj odgovor
   custom_forms:
     categories:
       main_content:
