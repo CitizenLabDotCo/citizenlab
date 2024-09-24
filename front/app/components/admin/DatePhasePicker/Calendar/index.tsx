@@ -12,6 +12,7 @@ import useLocale from 'hooks/useLocale';
 import { getLocale } from './locales';
 import { DateRange } from './typings';
 import { generateModifiers } from './utils/generateModifiers';
+import { getUpdatedRange } from './utils/getUpdatedRange';
 
 const disabledBackground = colors.grey300;
 const disabledBackground2 = transparentize(0.33, disabledBackground);
@@ -162,7 +163,15 @@ const Calendar = ({
       return;
     }
 
-    // TODO
+    const updatedRange = getUpdatedRange({
+      selectedRange,
+      disabledRanges,
+      clickedDate: day,
+    });
+
+    if (updatedRange) {
+      onUpdateRange(updatedRange);
+    }
   };
 
   return (
