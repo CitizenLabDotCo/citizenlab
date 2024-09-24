@@ -84,34 +84,36 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
 
   const chartData =
     totalAuthorsByAge &&
-    totalAuthorsByAge?.data.attributes.series.bins.map((fromAge, index) => {
-      let name;
-      let shortName;
-      let total;
-      let filtered;
+    totalAuthorsByAge?.data.attributes.series.bins
+      .map((fromAge, index) => {
+        let name: string;
+        let shortName: number | string;
+        let total: number;
+        let filtered: number | undefined;
 
-      if (fromAge === null) {
-        name = formatMessage(messages.unknown);
-        shortName = '?';
-        total = totalAuthorsByAge?.data.attributes.unknown_age_count;
-        filtered = filteredAuthorsByAge?.data.attributes.unknown_age_count;
-      } else {
-        name = `${fromAge} - ${fromAge + 9}`;
-        shortName = fromAge;
-        total = totalAuthorsByAge?.data.attributes.series.user_counts[index];
-        filtered =
-          filteredAuthorsByAge?.data.attributes.series.user_counts[index];
-      }
+        if (fromAge === null) {
+          name = formatMessage(messages.unknown);
+          shortName = '?';
+          total = totalAuthorsByAge?.data.attributes.unknown_age_count;
+          filtered = filteredAuthorsByAge?.data.attributes.unknown_age_count;
+        } else {
+          name = `${fromAge} - ${fromAge + 9}`;
+          shortName = fromAge;
+          total = totalAuthorsByAge?.data.attributes.series.user_counts[index];
+          filtered =
+            filteredAuthorsByAge?.data.attributes.series.user_counts[index];
+        }
 
-      return {
-        name,
-        shortName,
-        fromAge,
-        total,
-        filtered,
-        notFiltered: total - (filtered || 0),
-      };
-    });
+        return {
+          name,
+          shortName,
+          fromAge,
+          total,
+          filtered,
+          notFiltered: total - (filtered || 0),
+        };
+      })
+      .sort((a, b) => b.total - a.total);
 
   const filterKeyFrom = `author_custom_${customFieldId}_from`;
   const filterKeyTo = `author_custom_${customFieldId}_to`;
