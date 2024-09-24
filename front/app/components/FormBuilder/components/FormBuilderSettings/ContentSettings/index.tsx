@@ -19,13 +19,19 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   locales: SupportedLocale[];
+  surveyHasSubmissions: boolean;
 };
 
-export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
+export const ContentSettings = ({
+  field,
+  locales,
+  surveyHasSubmissions,
+}: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
   const lockedAttributes = field?.constraints?.locks;
@@ -45,6 +51,10 @@ export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
+            <FieldTypeSwitcher
+              field={field}
+              surveyHasSubmissions={surveyHasSubmissions}
+            />
             {!lockedAttributes?.title_multiloc && (
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
@@ -68,7 +78,12 @@ export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
             </SectionField>
           </>
         )}
-        {getAdditionalSettings(field, locales, platformLocale)}
+        {getAdditionalSettings(
+          field,
+          watch(`customFields.${field.index}.input_type`),
+          locales,
+          platformLocale
+        )}
         {!isFieldGrouping && (
           <>
             <SectionField id="e2e-required-toggle">
