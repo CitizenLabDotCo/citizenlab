@@ -171,7 +171,6 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Τίτλος φακέλου:",
   "app.components.FolderFolderCard.archived": "Αρχειοθετημένος",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# έργα} one {# έργο} other {# έργα}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Ο τύπος του πεδίου δεν μπορεί να αλλάξει όταν η έρευνα έχει υποβληθεί.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Τύπος",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Αυτόματη αποθήκευση",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Η αυτόματη αποθήκευση είναι ενεργοποιημένη από προεπιλογή όταν ανοίγετε τον επεξεργαστή φόρμας. Κάθε φορά που κλείνετε τον πίνακα ρυθμίσεων πεδίου χρησιμοποιώντας το κουμπί \"X\", θα ενεργοποιείται αυτόματα η αποθήκευση.",

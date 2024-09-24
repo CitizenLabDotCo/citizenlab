@@ -171,7 +171,6 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Títol de la carpeta:",
   "app.components.FolderFolderCard.archived": "Arxivat",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projectes} one {# projecte} other {# projectes}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "El tipus de camp no es pot canviar un cop l'enquesta tingui enviaments.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipus",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Desat automàtic",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "L'emmagatzematge automàtic està activat per defecte quan obriu l'editor de formularis. Cada vegada que tanqueu el tauler de configuració de camp amb el botó \"X\", activarà automàticament un desament.",

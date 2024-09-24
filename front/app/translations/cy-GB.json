@@ -171,7 +171,6 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Teitl y ffolder:",
   "app.components.FolderFolderCard.archived": "Wedi'i archifo",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Ni ellir newid y math o faes unwaith y bydd yr arolwg wedi'i gyflwyno.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Math",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Cadw'n awtomatig",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Mae arbed yn awtomatig yn cael ei alluogi yn ddiofyn pan fyddwch chi'n agor golygydd y ffurflen. Unrhyw bryd y byddwch chi'n cau'r panel gosodiadau maes gan ddefnyddio'r botwm \"X\", bydd yn sbarduno arbediad yn awtomatig.",
