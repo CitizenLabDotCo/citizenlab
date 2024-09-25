@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Neem deel aan de peiling",
   "app.containers.Projects.invisibleTitleSurvey": "Deelnemen aan de vragenlijst",
   "app.containers.Projects.issues": "Reacties",
+  "app.containers.Projects.liveDataMessage": "Je bekijkt realtime data. Het aantal deelnemers wordt voortdurend geüpdatet voor beheerders. Houd er rekening mee dat voor gewone gebruikers een gecached aantal wordt getoond, waardoor de cijfers licht kunnen afwijken.",
   "app.containers.Projects.location": "Locatie:",
   "app.containers.Projects.manageBasket": "Beheer mandje",
   "app.containers.Projects.meetMinBudgetRequirement": "Voldoe aan het minimumbudget om je mandje in te dienen.",
