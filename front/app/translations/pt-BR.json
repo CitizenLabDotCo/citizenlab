@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Faça a pesquisa",
   "app.containers.Projects.invisibleTitleSurvey": "Faça a pesquisa",
   "app.containers.Projects.issues": "Problemas",
+  "app.containers.Projects.liveDataMessage": "Você está visualizando dados em tempo real. As contagens de participantes são atualizadas continuamente para os administradores. Observe que os usuários comuns veem dados em cache, o que pode resultar em pequenas diferenças nos números.",
   "app.containers.Projects.location": "Localização:",
   "app.containers.Projects.manageBasket": "Administrar pedido",
   "app.containers.Projects.meetMinBudgetRequirement": "Cumprir o orçamento mínimo para submeter a sua cesta.",
