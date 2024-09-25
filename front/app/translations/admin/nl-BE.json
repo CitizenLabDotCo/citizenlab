@@ -2591,6 +2591,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registratieratio",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registraties",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Tijdlijn deelnemers",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Houd er rekening mee dat de deelnamecijfers mogelijk niet volledig accuraat zijn, omdat sommige gegevens worden vastgelegd in een externe vragenlijst die we niet bijhouden.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Grafiek",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Datumbereik",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Titel",
