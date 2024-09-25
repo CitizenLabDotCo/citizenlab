@@ -82,6 +82,8 @@ sr-Cyrl:
       "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Разлог зашто је ваш коментар обрисан:'
       cta_view: 'Погледајте ову идеју'
@@ -540,6 +542,7 @@ sr-Cyrl:
       cta_see_results: 'Погледајте резултате на платформи'
     event_registration_confirmation:
       subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, хвала на регистрацији"
       event_details:
         labels:

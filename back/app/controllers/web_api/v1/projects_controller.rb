@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache]),
       include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end

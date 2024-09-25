@@ -465,7 +465,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Rapportszesummefaassung",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Füügt d’Projetszil, genotzte Bedeelegungsmethoden an d’Resultat bäi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "ëmbenennen",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Den Titel ass scho geholl",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotDuplicateReport": "Dir kënnt dëse Rapport net duplizéieren, well en Daten enthält op déi Dir keen Zougang hutt.",

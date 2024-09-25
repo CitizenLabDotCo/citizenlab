@@ -426,7 +426,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "ملخص التقرير",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "أضف هدف المشروع وطرق المشاركة المتبعة والنتيجة",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "زوار",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "إعادة تسمية",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "العنوان مأخوذ بالفعل",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "لا يوجد مشروع",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotDuplicateReport": "لا يمكنك تكرار هذا التقرير لأنه يحتوي على بيانات لا يمكنك الوصول إليها.",
