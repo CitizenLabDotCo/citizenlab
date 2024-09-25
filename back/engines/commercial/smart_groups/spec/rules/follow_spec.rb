@@ -62,114 +62,121 @@ describe SmartGroups::Rules::Follow do
   end
 
   describe 'filter' do
-    before do
-      @project1 = create(:project)
-      @project2 = create(:project)
-      @folder = create(:project_folder)
-      @idea1 = create(:idea)
-      @idea2 = create(:idea)
-      @initiative = create(:initiative)
-      @topic = create(:topic)
-      @area = create(:area)
-      @user1, @user2, @user3, @user4, @user5, @user6, @user7 = create_list(:user, 7)
-      create(:follower, followable: @project1, user: @user1)
-      create(:follower, followable: @project1, user: @user2)
-      create(:follower, followable: @project2, user: @user2)
-      create(:follower, followable: @project2, user: @user3)
-      create(:follower, followable: @folder, user: @user4)
-      create(:follower, followable: @idea1, user: @user4)
-      create(:follower, followable: @idea2, user: @user5)
-      create(:follower, followable: @initiative, user: @user6)
-      create(:follower, followable: @topic, user: @user5)
-      create(:follower, followable: @area, user: @user6)
+    let_it_be(:project1) { create(:project) }
+    let_it_be(:project2) { create(:project) }
+    let_it_be(:folder) { create(:project_folder) }
+    let_it_be(:idea1) { create(:idea) }
+    let_it_be(:idea2) { create(:idea) }
+    let_it_be(:initiative) { create(:initiative) }
+    let_it_be(:topic) { create(:topic) }
+    let_it_be(:area) { create(:area) }
+    let_it_be(:user1) { create(:user) }
+    let_it_be(:user2) { create(:user) }
+    let_it_be(:user3) { create(:user) }
+    let_it_be(:user4) { create(:user) }
+    let_it_be(:user5) { create(:user) }
+    let_it_be(:user6) { create(:user) }
+    let_it_be(:user7) { create(:user) }
+
+    before_all do
+      create(:follower, followable: project1, user: user1)
+      create(:follower, followable: project1, user: user2)
+      create(:follower, followable: project2, user: user2)
+      create(:follower, followable: project2, user: user3)
+      create(:follower, followable: folder, user: user4)
+      create(:follower, followable: idea1, user: user4)
+      create(:follower, followable: idea2, user: user5)
+      create(:follower, followable: initiative, user: user6)
+      create(:follower, followable: topic, user: user5)
+      create(:follower, followable: area, user: user6)
     end
 
-    let(:users_scope) { User.where(id: [@user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user6.id, @user7.id]) }
+    let(:users_scope) { User.where(id: [user1.id, user2.id, user3.id, user4.id, user5.id, user6.id, user7.id]) }
 
     it "correctly filters on 'something' predicate" do
       rule = described_class.new('something')
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user6.id
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user4, user5, user6
     end
 
     it "correctly filters on 'nothing' predicate" do
       rule = described_class.new('nothing')
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user7.id
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user7
     end
 
     it "correctly filters on 'is_one_of_projects' predicate" do
-      rule = described_class.new('is_one_of_projects', [@project1.id, @project2.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id
+      rule = described_class.new('is_one_of_projects', [project1.id, project2.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3
     end
 
     it "correctly filters on 'is_not_project' predicate" do
-      rule = described_class.new('is_not_project', @project1.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user3.id, @user4.id, @user5.id, @user6.id, @user7.id
+      rule = described_class.new('is_not_project', project1.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user3, user4, user5, user6, user7
     end
 
     it "correctly filters on 'is_one_of_folders' predicate" do
-      rule = described_class.new('is_one_of_folders', [@folder.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user4.id
+      rule = described_class.new('is_one_of_folders', [folder.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user4
     end
 
     it "correctly filters on 'is_not_folder' predicate" do
-      rule = described_class.new('is_not_folder', @folder.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user5.id, @user6.id, @user7.id
+      rule = described_class.new('is_not_folder', folder.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user5, user6, user7
     end
 
     it "correctly filters on 'is_one_of_ideas' predicate" do
-      rule = described_class.new('is_one_of_ideas', [@idea1.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user4.id
+      rule = described_class.new('is_one_of_ideas', [idea1.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user4
     end
 
     it "correctly filters on 'is_not_idea' predicate" do
-      rule = described_class.new('is_not_idea', @idea1.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user5.id, @user6.id, @user7.id
+      rule = described_class.new('is_not_idea', idea1.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user5, user6, user7
     end
 
     # TODO: move-old-proposals-test
     it "correctly filters on 'is_one_of_initiatives' predicate" do
-      rule = described_class.new('is_one_of_initiatives', [@initiative.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user6.id
+      rule = described_class.new('is_one_of_initiatives', [initiative.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user6
     end
 
     it "correctly filters on 'is_not_topic' predicate" do
-      rule = described_class.new('is_not_topic', @topic.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user6.id, @user7.id
+      rule = described_class.new('is_not_topic', topic.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user4, user6, user7
     end
 
     it "correctly filters on 'is_one_of_topics' predicate" do
-      rule = described_class.new('is_one_of_topics', [@topic.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user5.id
+      rule = described_class.new('is_one_of_topics', [topic.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user5
     end
 
     # TODO: move-old-proposals-test
     it "correctly filters on 'is_not_initiative' predicate" do
-      rule = described_class.new('is_not_initiative', @initiative.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user7.id
+      rule = described_class.new('is_not_initiative', initiative.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user4, user5, user7
     end
 
     it "correctly filters on 'is_one_of_areas' predicate" do
-      rule = described_class.new('is_one_of_areas', [@area.id])
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user6.id
+      rule = described_class.new('is_one_of_areas', [area.id])
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user6
     end
 
     it "correctly filters on 'is_not_area' predicate" do
-      rule = described_class.new('is_not_area', @area.id)
-      expect { @ids = rule.filter(users_scope).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to contain_exactly @user1.id, @user2.id, @user3.id, @user4.id, @user5.id, @user7.id
+      rule = described_class.new('is_not_area', area.id)
+      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
+      expect(@users).to contain_exactly user1, user2, user3, user4, user5, user7
     end
   end
 
