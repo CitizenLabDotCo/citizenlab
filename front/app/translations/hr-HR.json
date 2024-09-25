@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Popunite anketu",
   "app.containers.Projects.invisibleTitleSurvey": "Popunite upitnik",
   "app.containers.Projects.issues": "Komentari",
+  "app.containers.Projects.liveDataMessage": "Gledate podatke u stvarnom vremenu. Broj sudionika se kontinuirano ažurira za administratore. Imajte na umu da obični korisnici vide predmemorirane podatke, što može rezultirati malim razlikama u brojevima.",
   "app.containers.Projects.location": "Lokacija:",
   "app.containers.Projects.manageBasket": "Upravljajte košaricom",
   "app.containers.Projects.meetMinBudgetRequirement": "Ispunite minimalni proračun kako biste predali košaricu.",
