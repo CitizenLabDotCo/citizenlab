@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "مسح واحد",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 مسح في المرحلة الحالية",
   "app.containers.Projects.options": "الخيارات",
+  "app.containers.Projects.participants": "مشاركون",
   "app.containers.Projects.participantsTooltip4": "يعكس هذا الرقم أيضًا عمليات إرسال الاستطلاع المجهولة. من الممكن إرسال استطلاعات مجهولة المصدر إذا كانت الاستطلاعات مفتوحة للجميع (راجع علامة التبويب {accessRightsLink} لهذا المشروع).",
   "app.containers.Projects.pastEvents": "أحداث سابقة",
   "app.containers.Projects.phases": "مراحل",
