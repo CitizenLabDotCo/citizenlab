@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 Ëmfro",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 Ëmfro an der aktueller Phase",
   "app.containers.Projects.options": "Optiounen",
+  "app.containers.Projects.participants": "Participanten",
   "app.containers.Projects.participantsTooltip4": "Dës Zuel reflektéiert och anonym Ëmfro Soumissioun. Anonym Ëmfroe sinn méiglech wann Ëmfroe fir jiddereen op sinn (kuckt den Tab {accessRightsLink} fir dëse Projet).",
   "app.containers.Projects.pastEvents": "Vergaangen Evenementer",
   "app.containers.Projects.phases": "Phasen",
