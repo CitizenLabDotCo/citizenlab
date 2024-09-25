@@ -6,6 +6,7 @@ sr-Cyrl:
       "inappropriate_content_flagged": Неприкладан садржај је означен - администратори
     inappropriate_content_flagged:
       subject: 'Објава на вашој платформи је означена за преглед'
+      preheader: 'A post on your platform has been flagged for review'
       header_title: 'Објава на вашој платформи је означена за преглед'
       comment_author: '%{authorName} је коментарисало:'
       idea_author: '%{authorName} је послао објаву:'
