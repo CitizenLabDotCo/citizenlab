@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Πάρτε μέρος στη δημοσκόπηση",
   "app.containers.Projects.invisibleTitleSurvey": "Πάρτε μέρος στην έρευνα",
   "app.containers.Projects.issues": "Σχόλια",
+  "app.containers.Projects.liveDataMessage": "Βλέπετε δεδομένα σε πραγματικό χρόνο. Ο αριθμός των συμμετεχόντων ενημερώνεται συνεχώς για τους διαχειριστές. Λάβετε υπόψη ότι οι κανονικοί χρήστες βλέπουν δεδομένα που έχουν αποθηκευτεί στην προσωρινή μνήμη, γεγονός που μπορεί να έχει ως αποτέλεσμα μικρές διαφορές στους αριθμούς.",
   "app.containers.Projects.location": "Τοποθεσία:",
   "app.containers.Projects.manageBasket": "Διαχείριση καλαθιού",
   "app.containers.Projects.meetMinBudgetRequirement": "Συμπληρώστε τον ελάχιστο προϋπολογισμό για να υποβάλετε το καλάθι σας.",
