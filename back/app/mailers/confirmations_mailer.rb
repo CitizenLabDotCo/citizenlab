@@ -11,13 +11,17 @@ class ConfirmationsMailer < ApplicationMailer
     end
   end
 
+  def preheader
+    format_message('preheader', values: { organizationName: organization_name })
+  end
+
   def to_email
     email = recipient.new_email.presence || recipient.email
     email_address_with_name(email, "#{recipient.first_name} #{recipient.last_name}")
   end
 
   def subject
-    t('.subject', organizationName: organization_name)
+    format_message('subject', values: { organizationName: organization_name })
   end
 
   def header_logo_only?

@@ -82,6 +82,8 @@ cy:
       "unsubscribe_text": "dad-danysgrifio"
     follow:
       "unfollow_here": "Rydych chi wedi derbyn yr hysbysiad hwn oherwydd eitem rydych chi'n ei dilyn. <a href=\"%{unfollow_url}\">Gallwch chi ei ddad-ddilyn yma.</a>"
+    manual:
+      preheader: 'Mae gennych bost gan %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Y rheswm pam y cafodd eich sylw ei ddileu:'
       cta_view: 'Gweld y syniad hwn'
@@ -540,6 +542,7 @@ cy:
       cta_see_results: 'Gweld canlyniadau yn y platfform'
     event_registration_confirmation:
       subject: "Rydych chi i mewn! Mae eich cofrestriad ar gyfer \"%{eventTitle}\" wedi ei gadarnhau"
+      preheader: "%{firstName}, diolch am gofrestru ar gyfer %{eventTitle}"
       header_message: "%{firstName}, diolch am gofrestru ar gyfer"
       event_details:
         labels:

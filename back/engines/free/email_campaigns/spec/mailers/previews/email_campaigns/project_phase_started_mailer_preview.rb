@@ -12,7 +12,6 @@ module EmailCampaigns
         recipient: recipient_user,
         event_payload: {
           phase_title_multiloc: { 'en' => 'Being implemented' },
-          phase_description_multiloc: { 'en' => 'Project is now being implemented' },
           phase_start_at: Time.zone.today.prev_day.iso8601,
           phase_end_at: Time.zone.today.next_month.iso8601,
           phase_url: 'demo.stg.govocal.com',

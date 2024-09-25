@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import { isEqual, transform } from 'lodash-es';
 
 import {
   attendEvent,
@@ -142,7 +142,28 @@ type JSONCompatible<T> = unknown extends T
 const ensureJSONSerializable = <T extends Record<string, any>>(
   params: JSONCompatible<T>
 ) => {
-  if (!isEqual(JSON.parse(JSON.stringify(params)), params)) {
+  // We remove all undefined properties from the params.
+  // JSON.stringify below removes undefined properties. This means that the equality
+  // check fails if the params contain undefined properties.
+  // This would mean that an object like { a: 1, b: undefined } would be rejected,
+  // because it would be serialized to { a: 1 }.
+  // Since it's really fine to remove undefined properties, we want the check to pass,
+  // so we instead remove them here.
+  const paramsWithoutUndefinedProperties = transform(
+    params,
+    (result: any, value, key) => {
+      if (value !== undefined) {
+        result[key] = value;
+      }
+    }
+  );
+
+  if (
+    !isEqual(
+      JSON.parse(JSON.stringify(params)),
+      paramsWithoutUndefinedProperties
+    )
+  ) {
     // This should in theory never happen, since it should be caught
     // by the JSONCompatible type check.
     throw new Error('SuccessAction params are not JSON serializable');

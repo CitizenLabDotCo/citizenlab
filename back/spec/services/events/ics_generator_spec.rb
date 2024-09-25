@@ -49,7 +49,8 @@ RSpec.describe Events::IcsGenerator do
         UID:%UID_PLACEHOLDER%
         DTSTART;TZID=America/New_York:20170501T160000
         DTEND;TZID=America/New_York:20170501T180000
-        DESCRIPTION:<p>Be there and learn everything about our future!</p>
+        DESCRIPTION:Event details: http://example.org/en/events/#{event.id[..-18]}
+         #{event.id[-17..]}
         GEO:50.8465574798584;4.351710319519043
         LOCATION:Atomiumsquare 1\\, 1020 Brussels\\, Belgium\\n(Sphere 1)
         SUMMARY:Info session
@@ -91,7 +92,6 @@ RSpec.describe Events::IcsGenerator do
       ics_string = ics_generator.generate_ics(event, 'fa-KE')
 
       expect(ics_string).to include("SUMMARY:#{event.title_multiloc['en']}")
-      expect(ics_string).to include("DESCRIPTION:#{event.description_multiloc['en']}")
       expect(ics_string).to include(event.address_2_multiloc['en'])
     end
   end
