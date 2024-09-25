@@ -50,7 +50,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
   describe 'filter' do
     let_it_be(:idea_status1) { create(:idea_status) }
-    let_it_be(:idea_status2) { create(:idea_status) }
+    let_it_be(:proposal_status1) { create(:proposals_status) }
     let_it_be(:user1) { create(:user) }
     let_it_be(:user2) { create(:user) }
     let_it_be(:user3) { create(:user) }
@@ -58,7 +58,8 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     let_it_be(:idea1) { create(:idea, idea_status: idea_status1, author: user1) }
     let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
     let_it_be(:comment) { create(:comment, post: idea1, author: user3) }
-    let_it_be(:idea2) { create(:idea, idea_status: idea_status2, author: user3) }
+    let_it_be(:proposal1) { create(:proposal, idea_status: proposal_status1, author: user3) }
+
     it "correctly filters on 'in' predicate" do
       rule = described_class.new('in', [idea_status1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
@@ -66,13 +67,13 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = described_class.new('not_in', idea_status2.id)
+      rule = described_class.new('not_in', proposal_status1.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
       expect(@users).to match_array [user1, user2, user4]
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = described_class.new('posted_in', [idea_status1.id, idea_status2.id])
+      rule = described_class.new('posted_in', [idea_status1.id, proposal_status1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
       expect(@users).to match_array [user1, user3]
     end
@@ -114,7 +115,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do
-      rule = described_class.new('not_reacted_comment_in', idea_status2.id)
+      rule = described_class.new('not_reacted_comment_in', proposal_status1.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
       expect(@users).to match_array [user1, user2, user3, user4]
     end
