@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Weź udział w badaniu",
   "app.containers.Projects.invisibleTitleSurvey": "Weź udział w ankiecie",
   "app.containers.Projects.issues": "Potrzeby",
+  "app.containers.Projects.liveDataMessage": "Przeglądasz dane w czasie rzeczywistym. Liczby uczestników są stale aktualizowane dla administratorów. Pamiętaj, że zwykli użytkownicy widzą dane z pamięci podręcznej, co może skutkować niewielkimi różnicami w liczbach.",
   "app.containers.Projects.location": "Lokalizacja:",
   "app.containers.Projects.manageBasket": "Zarządzaj koszykiem",
   "app.containers.Projects.meetMinBudgetRequirement": "Spełnij minimalny budżet, aby przesłać swój koszyk.",
