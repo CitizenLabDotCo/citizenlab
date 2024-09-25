@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 encuesta",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 encuesta en la fase actual",
   "app.containers.Projects.options": "Opciones",
+  "app.containers.Projects.participants": "Participantes",
   "app.containers.Projects.participantsTooltip4": "Esta cifra también refleja los envíos anónimos de encuestas. Los envíos anónimos de encuestas son posibles si las encuestas están abiertas a todo el mundo (consulta la pestaña {accessRightsLink} de este proyecto).",
   "app.containers.Projects.pastEvents": "Eventos anteriores",
   "app.containers.Projects.phases": "Fases",
