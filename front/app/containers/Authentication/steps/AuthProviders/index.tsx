@@ -88,6 +88,10 @@ const AuthProviders = memo<Props>(
       name: 'nemlog_in_login',
     });
 
+    const bosaFasLoginEnabled = useFeatureFlag({
+      name: 'bosa_fas_login',
+    });
+
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
     const azureB2cProviderName =
@@ -127,7 +131,8 @@ const AuthProviders = memo<Props>(
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
-      nemlogInLoginEnabled;
+      nemlogInLoginEnabled ||
+      bosaFasLoginEnabled;
 
     return (
       <Container
@@ -156,6 +161,18 @@ const AuthProviders = memo<Props>(
             id="e2e-login-with-fake-sso"
           >
             <FormattedMessage {...messages.continueWithFakeSSO} />
+          </StyledAuthProviderButton>
+        )}
+
+        {bosaFasLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="bullseye"
+            flow={flow}
+            authProvider="bosa_fas"
+            onContinue={onSelectAuthProvider}
+            id="e2e-login-with-bosa_fas"
+          >
+            Login with EID CASM etc
           </StyledAuthProviderButton>
         )}
 
