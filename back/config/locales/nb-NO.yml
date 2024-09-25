@@ -233,6 +233,7 @@
       <ul><li>Skriv mer om forslaget ditt. Du kan skrive en kladd og deretter kopiere det inn.</li><li>Velg en beskrivende tittel som forklarer hva forslaget ditt går ut på. </li><li>Husk å visualisere forslaget ditt med et passende bilde så det skiller seg ut.</li><li>Legg til relevante filer, som video, inspirerende eksempler, tekniske tegninger eller planer.</li><li>Del ideen din på sosiale medier og i andre kanaler for å samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Tilbakestill passordet ditt for %{organizationName}'
       cta_reset_password: 'Tilbakestill passordet ditt'
       message_you_reset_your_password: 'Du ba om å tilbakestille passord for plattformen til%{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om en time.'
       subject: '%{organizationName}: tilbakestill passordet ditt'
@@ -310,6 +311,7 @@
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bekreft e-postadressen din på deltakerplattformen til %{organizationName}"
+      preheader: 'Bekreft e-postadressen din for %{organizationName}'
       header: "Din bekreftelseskode"
       header_message: "Hei, %{firstName}!"
       confirm_email_address: "Bekreft e-postadressen din"
@@ -324,6 +326,7 @@
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Kontoen din er midlertidig deaktivert'
+      preheader: 'Kontoen din på deltakelsesplattformen til %{organizationName} er midlertidig deaktivert'
       title_user_blocked: 'Kontoen din er midlertidig deaktivert'
       paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert på grunn av brudd på fellesskapets retningslinjer."
       paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
@@ -339,3 +342,5 @@
   voting_method:
     default_voting_term_singular: "stemme"
     default_voting_term_plural: "stemmer"
+  ics_calendar_event:
+    event_details: "Begivenhetsdetaljer"

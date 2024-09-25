@@ -186,52 +186,56 @@ const ParticipationMethodPicker = ({
               image={volunteeringImage}
               selected={selectedMethod === 'volunteering'}
             />
-
-            {documentAnnotationAllowed && (
+            {documentAnnotationAllowed ? (
+              documentAnnotationEnabled && (
+                <Box position="relative">
+                  <ParticipationMethodChoice
+                    key="document"
+                    title={formatMessage(messages2.documentTitle)}
+                    subtitle={formatMessage(messages2.documentDescription)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleMethodSelect(event, 'document_annotation');
+                    }}
+                    image={documentImage}
+                    selected={selectedMethod === 'document_annotation'}
+                  />
+                </Box>
+              )
+            ) : (
               <Box position="relative">
                 <ParticipationMethodChoice
                   key="document"
                   title={formatMessage(messages2.documentTitle)}
                   subtitle={formatMessage(messages2.documentDescription)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    if (documentAnnotationEnabled) {
-                      handleMethodSelect(event, 'document_annotation');
-                    }
-                  }}
                   image={documentImage}
                   selected={selectedMethod === 'document_annotation'}
                 />
-                {/* Don't show tooltip and locked badge if the feature is enabled */}
-                {!documentAnnotationEnabled && (
-                  <Box
-                    style={{ transform: 'translateX(-50%)' }}
-                    position="absolute"
-                    top="20%"
-                    left="50%"
+                <Box
+                  style={{ transform: 'translateX(-50%)' }}
+                  position="absolute"
+                  top="20%"
+                  left="50%"
+                >
+                  <Tooltip
+                    maxWidth="250px"
+                    placement="bottom"
+                    content={formatMessage(messages.contactGovSuccessToAccess)}
+                    hideOnClick={false}
                   >
-                    <Tooltip
-                      maxWidth="250px"
-                      placement="bottom"
-                      content={formatMessage(
-                        messages.contactGovSuccessToAccess
-                      )}
-                      hideOnClick={false}
-                    >
-                      <Badge color={colors.coolGrey600} className="inverse">
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          gap="6px"
-                        >
-                          <Icon name="lock" fill="white" width="13px" />
-                          {formatMessage(messages2.addOn)}
-                        </Box>
-                      </Badge>
-                    </Tooltip>
-                  </Box>
-                )}
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap="6px"
+                      >
+                        <Icon name="lock" fill="white" width="13px" />
+                        {formatMessage(messages2.addOn)}
+                      </Box>
+                    </Badge>
+                  </Tooltip>
+                </Box>
               </Box>
             )}
 
