@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "شارك في الاستطلاع",
   "app.containers.Projects.invisibleTitleSurvey": "شارك في الاستبيان",
   "app.containers.Projects.issues": "المشكلات",
+  "app.containers.Projects.liveDataMessage": "أنت تشاهد بيانات في الوقت الفعلي. يتم تحديث أعداد المشاركين باستمرار للمسؤولين. يرجى ملاحظة أن المستخدمين العاديين يرون البيانات المخزنة مؤقتًا، مما قد يؤدي إلى اختلافات طفيفة في الأعداد.",
   "app.containers.Projects.location": "الموقع:",
   "app.containers.Projects.manageBasket": "إدارة السلة",
   "app.containers.Projects.meetMinBudgetRequirement": "يجب الوصول إلى الحد الأدنى للميزانية لإرسال سلَّتك.",
