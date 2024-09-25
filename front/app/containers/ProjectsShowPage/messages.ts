@@ -430,6 +430,10 @@ export default defineMessages({
     id: 'app.containers.Projects.accessRights',
     defaultMessage: 'Access rights',
   },
+  participants: {
+    id: 'app.containers.Projects.participants',
+    defaultMessage: 'Participants',
+  },
   surveySubmissionsTooltip: {
     id: 'app.containers.Projects.surveySubmissionsTooltip3',
     defaultMessage: 'External survey submissions are not counted.',
