@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 indagine",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 indagine nella fase attuale",
   "app.containers.Projects.options": "Opzioni",
+  "app.containers.Projects.participants": "Partecipanti",
   "app.containers.Projects.participantsTooltip4": "Questo numero riflette anche i sondaggi anonimi inviati. L'invio di sondaggi anonimi è possibile se i sondaggi sono aperti a tutti (vedi la scheda {accessRightsLink} per questo progetto).",
   "app.containers.Projects.pastEvents": "Eventi passati",
   "app.containers.Projects.phases": "Fasi",
