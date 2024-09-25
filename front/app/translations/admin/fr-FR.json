@@ -2600,6 +2600,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Taux d'inscription",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Inscriptions",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Participants",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Veuillez noter que les chiffres de participation peuvent être inférieurs à la réalité, car les données de participation à des enquêtes externes ne peuvent être mesurées.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Graphique",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Plage de dates",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Titre",
