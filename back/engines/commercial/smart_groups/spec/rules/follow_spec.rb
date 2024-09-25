@@ -67,7 +67,6 @@ describe SmartGroups::Rules::Follow do
     let_it_be(:folder) { create(:project_folder) }
     let_it_be(:idea1) { create(:idea) }
     let_it_be(:idea2) { create(:idea) }
-    let_it_be(:initiative) { create(:initiative) }
     let_it_be(:topic) { create(:topic) }
     let_it_be(:area) { create(:area) }
     let_it_be(:user1) { create(:user) }
@@ -86,7 +85,6 @@ describe SmartGroups::Rules::Follow do
       create(:follower, followable: folder, user: user4)
       create(:follower, followable: idea1, user: user4)
       create(:follower, followable: idea2, user: user5)
-      create(:follower, followable: initiative, user: user6)
       create(:follower, followable: topic, user: user5)
       create(:follower, followable: area, user: user6)
     end
@@ -141,13 +139,6 @@ describe SmartGroups::Rules::Follow do
       expect(@users).to contain_exactly user1, user2, user3, user5, user6, user7
     end
 
-    # TODO: move-old-proposals-test
-    it "correctly filters on 'is_one_of_initiatives' predicate" do
-      rule = described_class.new('is_one_of_initiatives', [initiative.id])
-      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
-      expect(@users).to contain_exactly user6
-    end
-
     it "correctly filters on 'is_not_topic' predicate" do
       rule = described_class.new('is_not_topic', topic.id)
       expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
@@ -158,13 +149,6 @@ describe SmartGroups::Rules::Follow do
       rule = described_class.new('is_one_of_topics', [topic.id])
       expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
       expect(@users).to contain_exactly user5
-    end
-
-    # TODO: move-old-proposals-test
-    it "correctly filters on 'is_not_initiative' predicate" do
-      rule = described_class.new('is_not_initiative', initiative.id)
-      expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
-      expect(@users).to contain_exactly user1, user2, user3, user4, user5, user7
     end
 
     it "correctly filters on 'is_one_of_areas' predicate" do
@@ -207,13 +191,6 @@ describe SmartGroups::Rules::Follow do
         'en' => 'Their idea',
         'fr-FR' => 'Leurs idée',
         'nl-NL' => 'Hun idee'
-      })
-    end
-    let(:initiative) do
-      create(:initiative, title_multiloc: {
-        'en' => 'My initiative',
-        'fr-FR' => 'Mon initiatif',
-        'nl-NL' => 'Mijn initiatief'
       })
     end
     let(:topic) do
@@ -285,20 +262,6 @@ describe SmartGroups::Rules::Follow do
         'value' => idea2.id
       })
     end
-    let(:follow_is_one_of_initiatives) do
-      described_class.from_json({
-        'ruleType' => 'follow',
-        'predicate' => 'is_one_of_initiatives',
-        'value' => [initiative.id]
-      })
-    end
-    let(:follow_is_not_initiative) do
-      described_class.from_json({
-        'ruleType' => 'follow',
-        'predicate' => 'is_not_initiative',
-        'value' => initiative.id
-      })
-    end
     let(:follow_is_one_of_topics) do
       described_class.from_json({
         'ruleType' => 'follow',
@@ -368,18 +331,6 @@ describe SmartGroups::Rules::Follow do
         'en' => 'Does not follow idea Their idea',
         'fr-FR' => "Ne suit pas l'idée Leurs idée",
         'nl-NL' => 'Volgt dit idee niet Hun idee'
-      })
-      # TODO: move-old-proposals-test
-      expect(follow_is_one_of_initiatives.description_multiloc).to eq({
-        'en' => 'Follows one of the following initiatives My initiative',
-        'fr-FR' => 'Suit une des propositions Mon initiatif',
-        'nl-NL' => 'Volgt één van deze voorstellen Mijn initiatief'
-      })
-      # TODO: move-old-proposals-test
-      expect(follow_is_not_initiative.description_multiloc).to eq({
-        'en' => 'Does not follow initiative My initiative',
-        'fr-FR' => 'Ne suit pas la proposition Mon initiatif',
-        'nl-NL' => 'Volgt dit voorstel niet Mijn initiatief'
       })
       expect(follow_is_one_of_topics.description_multiloc).to eq({
         'en' => 'Follows one of the following topics My topic',
