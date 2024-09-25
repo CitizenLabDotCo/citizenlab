@@ -82,6 +82,8 @@ ar-MA:
       "unsubscribe_text": "إلغاء الاشتراك"
     follow:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
+    manual:
+      preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
       reason: 'سبب حذف تعليقك:'
       cta_view: 'اعرض هذه الفكرة'
@@ -540,6 +542,7 @@ ar-MA:
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
     event_registration_confirmation:
       subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      preheader: "%{firstName}، شكرًا لك على التسجيل في %{eventTitle}"
       header_message: "%{firstName}شكرا على التسجيل"
       event_details:
         labels:
