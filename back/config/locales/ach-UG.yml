@@ -233,6 +233,7 @@ ach:
       crwdns3152913:0crwdne3152913:0
   reset_password_mailer:
     send_reset_password:
+      preheader: 'crwdns3166279:0%{organizationName}crwdne3166279:0'
       cta_reset_password: 'crwdns3152915:0crwdne3152915:0'
       message_you_reset_your_password: 'crwdns3152917:0%{organizationName}crwdne3152917:0'
       subject: 'crwdns3152919:0%{organizationName}crwdne3152919:0'
@@ -310,6 +311,7 @@ ach:
   confirmations_mailer:
     send_confirmation_code:
       subject: "crwdns3153045:0%{organizationName}crwdne3153045:0"
+      preheader: 'crwdns3166281:0%{organizationName}crwdne3166281:0'
       header: "crwdns3153047:0crwdne3153047:0"
       header_message: "crwdns3153049:0%{firstName}crwdne3153049:0"
       confirm_email_address: "crwdns3153051:0crwdne3153051:0"
@@ -324,6 +326,7 @@ ach:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'crwdns3153069:0crwdne3153069:0'
+      preheader: 'crwdns3166283:0%{organizationName}crwdne3166283:0'
       title_user_blocked: 'crwdns3153071:0crwdne3153071:0'
       paragraph_1_without_reason: "crwdns3153073:0%{organizationName}crwdne3153073:0"
       paragraph_1_with_reason: "crwdns3153075:0%{organizationName}crwdne3153075:0"
@@ -339,3 +342,5 @@ ach:
   voting_method:
     default_voting_term_singular: "crwdns3153089:0crwdne3153089:0"
     default_voting_term_plural: "crwdns3153091:0crwdne3153091:0"
+  ics_calendar_event:
+    event_details: "crwdns3166285:0crwdne3166285:0"
