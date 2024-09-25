@@ -6,6 +6,7 @@ sr-Latn:
       "inappropriate_content_flagged": Označen je neprikladan sadržaj - administratori
     inappropriate_content_flagged:
       subject: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
+      preheader: 'A post on your platform has been flagged for review'
       header_title: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
       comment_author: '%{authorName} je komentarisao/la:'
       idea_author: '%{authorName} je objavio/la novi unos:'
