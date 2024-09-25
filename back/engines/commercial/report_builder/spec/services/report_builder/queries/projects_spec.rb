@@ -106,6 +106,16 @@ RSpec.describe ReportBuilder::Queries::Projects do
     end
 
     context 'when specific publication statuses are requested' do
+      it 'returns only published projects when no publication_statuses are specified exiplicitly' do
+        result = query.run_query(
+          start_at: nil,
+          end_at: nil
+        )
+
+        expect(result[:projects].count).to eq(4)
+        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+      end
+
       it 'returns only published projects when only published is requested' do
         result = query.run_query(
           start_at: nil,

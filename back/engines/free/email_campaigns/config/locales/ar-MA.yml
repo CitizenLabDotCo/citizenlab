@@ -66,12 +66,12 @@ ar-MA:
     schedules:
       weekly:
         "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
-        "1": "أسبوعيًا يوم الاثنين %{atHour}"
-        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
-        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
-        "4": "أسبوعيًا يوم الخميس %{atHour}"
-        "5": "أسبوعيًا أيام الجمعة %{atHour}"
-        "6": "أسبوعيًا أيام السبت %{atHour}"
+        "1": "أسبوعيًا يوم الاثنين %{hourOfDay}"
+        "2": "أسبوعيًا كل يوم ثلاثاء %{hourOfDay}"
+        "3": "أسبوعيًا في أيام الأربعاء %{hourOfDay}"
+        "4": "أسبوعيًا يوم الخميس %{hourOfDay}"
+        "5": "أسبوعيًا أيام الجمعة %{hourOfDay}"
+        "6": "أسبوعيًا أيام السبت %{hourOfDay}"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -82,6 +82,8 @@ ar-MA:
       "unsubscribe_text": "إلغاء الاشتراك"
     follow:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
+    manual:
+      preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
       reason: 'سبب حذف تعليقك:'
       cta_view: 'اعرض هذه الفكرة'
@@ -540,6 +542,7 @@ ar-MA:
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
     event_registration_confirmation:
       subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      preheader: "%{firstName}، شكرًا لك على التسجيل في %{eventTitle}"
       header_message: "%{firstName}شكرا على التسجيل"
       event_details:
         labels:

@@ -246,20 +246,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'value' => project1.id
       })
     end
-    let(:participated_follows_something_rule) do
-      described_class.from_json({
-        'ruleType' => 'participated_in_project',
-        'predicate' => 'follows_something',
-        'value' => [project1.id, project2.id]
-      })
-    end
-    let(:participated_not_follows_something_rule) do
-      described_class.from_json({
-        'ruleType' => 'participated_in_project',
-        'predicate' => 'not_follows_something',
-        'value' => project1.id
-      })
-    end
     let(:participated_registered_to_an_event_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
@@ -335,16 +321,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'en' => 'Did not vote in the project beer',
         'fr-FR' => 'Did not vote in the project bière',
         'nl-NL' => 'Did not vote in the project bier'
-      })
-      expect(participated_follows_something_rule.description_multiloc).to eq({
-        'en' => 'Follows something in one of the following projects beer, delayed',
-        'fr-FR' => "Suit quelque chose dans l'un des projets suivants bière, retardé",
-        'nl-NL' => 'Volgt iets in een van de volgende projecten bier, uitgesteld'
-      })
-      expect(participated_not_follows_something_rule.description_multiloc).to eq({
-        'en' => 'Does not follow anything in the project beer',
-        'fr-FR' => 'Ne suit rien dans le projet bière',
-        'nl-NL' => 'Volgt niets in het project bier'
       })
       expect(participated_registered_to_an_event_rule.description_multiloc).to eq({
         'en' => 'Registered to an event in one of the following projects beer, delayed',

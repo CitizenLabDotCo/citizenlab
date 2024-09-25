@@ -45,8 +45,8 @@ describe('Light authentication flow', () => {
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
 
-    cy.get('.e2e-idea-button').find('button').should('exist');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     cy.get('input#email').focus().type(randomEmail());
     cy.get('#e2e-light-flow-email-submit').click();
@@ -70,8 +70,8 @@ describe('Light authentication flow', () => {
   it('works when signing up with existing normal user', () => {
     cy.visit(`/projects/${projectTitle}`);
 
-    cy.get('.e2e-idea-button').find('button').should('exist');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     cy.get('input#email').focus().type('admin@govocal.com');
     cy.get('#e2e-light-flow-email-submit').click();

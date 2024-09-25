@@ -3,10 +3,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { useParams, useLocation } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useProjectById from 'api/projects/useProjectById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -19,13 +19,13 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import Editor from '../components/Editor';
-import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
-import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
-import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
+import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
+import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
+import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);

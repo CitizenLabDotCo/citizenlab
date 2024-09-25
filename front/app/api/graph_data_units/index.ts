@@ -234,9 +234,7 @@ export const useParticipationLive = (
   );
 };
 
-export const useProjects = (
-  props: ProjectsProps = { publication_statuses: 'published' }
-) => {
+export const useProjects = (props: ProjectsProps = {}) => {
   return useGraphDataUnits<ProjectsResponse>({
     resolved_name: 'ProjectsWidget',
     props,

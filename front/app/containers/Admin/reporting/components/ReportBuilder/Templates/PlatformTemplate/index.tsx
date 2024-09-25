@@ -43,13 +43,13 @@ import { getCommunity, getComparedDateRange, getProjects } from './utils';
 interface Props {
   startDate: string;
   endDate: string;
-  publicationStatus?: ProjectReportsPublicationStatus;
+  publicationStatuses?: ProjectReportsPublicationStatus[];
 }
 
 const PlatformTemplateContent = ({
   startDate,
   endDate,
-  publicationStatus = 'published',
+  publicationStatuses = ['published'],
 }: Props) => {
   const dateRange = {
     startAt: startDate,
@@ -76,7 +76,7 @@ const PlatformTemplateContent = ({
   const { data: projects } = useProjects({
     start_at: startDate,
     end_at: endDate,
-    publication_statuses: publicationStatus,
+    publication_statuses: publicationStatuses,
   });
 
   if (!appConfigurationLocales || !userFields || !stats || !projects) {

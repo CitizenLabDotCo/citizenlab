@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Box, Select, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,18 +21,21 @@ const Settings = () => {
 
   const {
     actions: { setProp },
-    publicationStatus,
+    publicationStatuses,
   } = useNode((node) => ({
-    publicationStatus: node.data.props.publicationStatus || 'published',
+    publicationStatuses: node.data.props.publicationStatuses?.length
+      ? node.data.props.publicationStatuses
+      : ['published'],
   }));
 
-  const handleStatusChange = (option: IOption) => {
+  const handleStatusChange = (options: IOption[]) => {
+    const selectedStatuses = options.map((option) => option.value);
     setProp((props: Props) => {
-      props.publicationStatus = option.value;
+      props.publicationStatuses = selectedStatuses;
     });
   };
 
-  const options = [
+  const options: IOption[] = [
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
   ];
@@ -42,10 +47,10 @@ const Settings = () => {
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.publicationStatus)}
         </Text>
-        <Select
+        <MultipleSelect
+          value={publicationStatuses}
           options={options}
           onChange={handleStatusChange}
-          value={publicationStatus}
         />
       </Box>
       <DateRangeInput />
