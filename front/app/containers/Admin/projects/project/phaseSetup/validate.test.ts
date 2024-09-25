@@ -63,7 +63,6 @@ describe('validate', () => {
 
     const result = validate(formData, formatMessage, locales);
 
-    console.log(result.errors);
     expect(result.isValidated).toBe(true);
   });
 });

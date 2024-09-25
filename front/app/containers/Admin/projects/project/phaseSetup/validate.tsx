@@ -36,7 +36,10 @@ const validate = (
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
 
-  if (voting_method === 'multiple_voting') {
+  if (
+    participation_method === 'voting' &&
+    voting_method === 'multiple_voting'
+  ) {
     locales?.map((locale) => {
       if (
         (voting_term_plural_multiloc && !voting_term_plural_multiloc[locale]) ||
@@ -50,6 +53,7 @@ const validate = (
   }
 
   if (
+    participation_method === 'voting' &&
     voting_max_votes_per_idea &&
     voting_max_total &&
     voting_max_votes_per_idea > voting_max_total
@@ -59,6 +63,7 @@ const validate = (
   }
 
   if (
+    participation_method === 'ideation' &&
     reacting_like_method === 'limited' &&
     (!reacting_like_limited_max ||
       !isFinite(reacting_like_limited_max) ||
@@ -69,6 +74,7 @@ const validate = (
   }
 
   if (
+    participation_method === 'ideation' &&
     reacting_dislike_method === 'limited' &&
     (!reacting_dislike_limited_max ||
       !isFinite(reacting_dislike_limited_max) ||
