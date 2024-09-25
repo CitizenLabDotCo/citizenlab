@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 undersøgelse",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 undersøgelse i den nuværende fase",
   "app.containers.Projects.options": "Muligheder",
+  "app.containers.Projects.participants": "Deltagere",
   "app.containers.Projects.participantsTooltip4": "Dette tal afspejler også anonyme indsendelser af spørgeskemaer. Anonyme besvarelser er mulige, hvis undersøgelserne er åbne for alle (se {accessRightsLink} fanen for dette projekt).",
   "app.containers.Projects.pastEvents": "Tidligere begivenheder",
   "app.containers.Projects.phases": "Faser",
