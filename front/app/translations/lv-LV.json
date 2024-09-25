@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Veikt aptauju",
   "app.containers.Projects.invisibleTitleSurvey": "Aizpildiet aptauju",
   "app.containers.Projects.issues": "Komentāri",
+  "app.containers.Projects.liveDataMessage": "Jūs skatāties reāllaika datus. Dalībnieku skaits administratoriem tiek pastāvīgi atjaunināts. Lūdzu, ņemiet vērā, ka parastie lietotāji redz kešētos datus, tāpēc skaitļi var nedaudz atšķirties.",
   "app.containers.Projects.location": "Atrašanās vieta:",
   "app.containers.Projects.manageBasket": "Pārvaldīt grozu",
   "app.containers.Projects.meetMinBudgetRequirement": "Nodrošiniet atbilstību minimālajam budžetam, lai iesniegtu savu grozu.",
