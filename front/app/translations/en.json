@@ -1627,7 +1627,6 @@
   "app.containers.Projects.events": "Events",
   "app.containers.Projects.header": "Projects",
   "app.containers.Projects.ideas": "Ideas",
-  "app.containers.Projects.inaccurateParticipantsTooltip": "Participation numbers may not be fully accurate as some data is captured in an external survey that we do not track (see the {projectParticipantsLink} tab for more details)",
   "app.containers.Projects.information": "Information",
   "app.containers.Projects.invisbleTitleDocumentAnnotation1": "Review the document",
   "app.containers.Projects.invisibleTitlePhaseAbout": "About this phase",
