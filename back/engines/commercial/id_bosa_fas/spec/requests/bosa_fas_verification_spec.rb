@@ -98,10 +98,10 @@ describe 'bosa_fas verification' do
     expect(User.count).to eq(1)
     expect(@user.identities.count).to eq(1)
     expect(@user.identities.first).to have_attributes({
-                                                       provider: 'bosa_fas',
-                                                       user_id: @user.id,
-                                                       uid: '93051822361'
-                                                     })
+      provider: 'bosa_fas',
+      user_id: @user.id,
+      uid: '93051822361'
+    })
   end
 
   it 'creates a new user when the authentication token is not passed' do
@@ -114,16 +114,16 @@ describe 'bosa_fas verification' do
     user = User.order(created_at: :asc).last
     expect(user).not_to eq(@user)
     expect(user).to have_attributes({
-                                      first_name: 'Hypoliet',
-                                      last_name: 'Verhipperd',
-                                      email: nil,
-                                      password_digest: nil
-                                    })
+      first_name: 'Hypoliet',
+      last_name: 'Verhipperd',
+      email: nil,
+      password_digest: nil
+    })
     expect(user.identities.first).to have_attributes({
-                                                       provider: 'bosa_fas',
-                                                       user_id: user.id,
-                                                       uid: '93051822361'
-                                                     })
+      provider: 'bosa_fas',
+      user_id: user.id,
+      uid: '93051822361'
+    })
 
     expect(response).to redirect_to('/en/?param=some-param')
   end

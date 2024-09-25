@@ -81,7 +81,5 @@ module IdBosaFas
     def jwks
       @jwks ||= URI.parse(jwks_uri).read
     end
-
-
   end
 end
