@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Osallistu kyselyyn",
   "app.containers.Projects.invisibleTitleSurvey": "Vastaa kyselyyn",
   "app.containers.Projects.issues": "Kommentit",
+  "app.containers.Projects.liveDataMessage": "Katselet reaaliaikaista dataa. Osallistujamäärää päivitetään jatkuvasti ylläpitäjille. Huomaa, että tavalliset käyttäjät näkevät välimuistissa olevia tietoja, mikä voi aiheuttaa pieniä eroja luvuissa.",
   "app.containers.Projects.location": "Sijainti:",
   "app.containers.Projects.manageBasket": "Hallitse koria",
   "app.containers.Projects.meetMinBudgetRequirement": "Täytä vähimmäisbudjetti korin lähettämiseksi.",
