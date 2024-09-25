@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { LabelList } from 'recharts';
+import { LabelPosition } from 'recharts/types/component/Label';
 
 import { CornerRadius } from '../typings';
 
@@ -29,7 +30,9 @@ const accumulate = (values: number[]) => {
 export const stackLabels = (
   [statusRow]: [Record<string, number>],
   stackedBarColumns: string[],
-  percentages: number[]
+  percentages: number[],
+  position: LabelPosition = 'center',
+  color: string = 'white'
 ) => {
   const values = stackedBarColumns.map((column) => statusRow[column]);
   const cumulativeValues = accumulate(values);
@@ -52,6 +55,6 @@ export const stackLabels = (
   };
 
   return () => (
-    <LabelList position="center" valueAccessor={valueAccessor} fill="white" />
+    <LabelList position={position} valueAccessor={valueAccessor} fill={color} />
   );
 };
