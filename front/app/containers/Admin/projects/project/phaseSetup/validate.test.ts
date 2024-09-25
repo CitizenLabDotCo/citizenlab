@@ -57,7 +57,7 @@ describe('validate', () => {
       // custom_form_persisted: false
     };
 
-    const formatMessage = (message: any) => 'some message';
+    const formatMessage = () => 'some message';
 
     const locales: SupportedLocale[] = ['nl-BE'];
 
