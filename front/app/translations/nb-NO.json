@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Bli med på avstemmingen",
   "app.containers.Projects.invisibleTitleSurvey": "Svar på undersøkelsen",
   "app.containers.Projects.issues": "Emner",
+  "app.containers.Projects.liveDataMessage": "Du ser på sanntidsdata. Deltakertall oppdateres fortløpende for administratorer. Vær oppmerksom på at vanlige brukere ser hurtigbufrede data, noe som kan føre til små forskjeller i tallene.",
   "app.containers.Projects.location": "Sted:",
   "app.containers.Projects.manageBasket": "Administrer handlekurv",
   "app.containers.Projects.meetMinBudgetRequirement": "Meet the minimum budget to submit your basket.",
