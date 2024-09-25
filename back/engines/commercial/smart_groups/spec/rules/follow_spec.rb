@@ -127,14 +127,14 @@ describe SmartGroups::Rules::Follow do
       expect(@users).to contain_exactly user1, user2, user3, user5, user6, user7
     end
 
-    it "correctly filters on 'is_one_of_ideas' predicate" do
-      rule = described_class.new('is_one_of_ideas', [idea1.id])
+    it "correctly filters on 'is_one_of_inputs' predicate" do
+      rule = described_class.new('is_one_of_inputs', [idea1.id])
       expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
       expect(@users).to contain_exactly user4
     end
 
-    it "correctly filters on 'is_not_idea' predicate" do
-      rule = described_class.new('is_not_idea', idea1.id)
+    it "correctly filters on 'is_not_input' predicate" do
+      rule = described_class.new('is_not_input', idea1.id)
       expect { @users = rule.filter(users_scope) }.not_to exceed_query_limit(1)
       expect(@users).to contain_exactly user1, user2, user3, user5, user6, user7
     end
@@ -248,17 +248,17 @@ describe SmartGroups::Rules::Follow do
         'value' => folder.id
       })
     end
-    let(:follow_is_one_of_ideas) do
+    let(:follow_is_one_of_inputs) do
       described_class.from_json({
         'ruleType' => 'follow',
-        'predicate' => 'is_one_of_ideas',
+        'predicate' => 'is_one_of_inputs',
         'value' => [idea1.id, idea2.id]
       })
     end
-    let(:follow_is_not_idea) do
+    let(:follow_is_not_input) do
       described_class.from_json({
         'ruleType' => 'follow',
-        'predicate' => 'is_not_idea',
+        'predicate' => 'is_not_input',
         'value' => idea2.id
       })
     end
@@ -322,13 +322,13 @@ describe SmartGroups::Rules::Follow do
         'fr-FR' => 'Ne suit pas le dossier Mon dossier',
         'nl-NL' => 'Volgt deze folder niet Mijn folder'
       })
-      expect(follow_is_one_of_ideas.description_multiloc).to eq({
-        'en' => 'Follows one of the following ideas My idea, Their idea',
+      expect(follow_is_one_of_inputs.description_multiloc).to eq({
+        'en' => 'Follows one of the following inputs My idea, Their idea',
         'fr-FR' => 'Suit un des idées Mon idée, Leurs idée',
         'nl-NL' => 'Volgt één van deze ideeën Mijn idee, Hun idee'
       })
-      expect(follow_is_not_idea.description_multiloc).to eq({
-        'en' => 'Does not follow idea Their idea',
+      expect(follow_is_not_input.description_multiloc).to eq({
+        'en' => 'Does not follow input Their idea',
         'fr-FR' => "Ne suit pas l'idée Leurs idée",
         'nl-NL' => 'Volgt dit idee niet Hun idee'
       })
