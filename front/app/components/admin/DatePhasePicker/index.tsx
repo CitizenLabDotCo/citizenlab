@@ -9,9 +9,11 @@ import Calendar from './Calendar';
 import Input from './Input';
 import { DateRange } from './typings';
 
+const WIDTH = '620px';
+
 const StyledClickOutside = styled(ClickOutside)`
   div.tippy-box {
-    max-width: 620px !important;
+    max-width: ${WIDTH} !important;
     padding: 8px;
   }
 `;
@@ -28,7 +30,7 @@ const DateRangePicker = ({ selectedRange, onUpdateRange }: Props) => {
     <StyledClickOutside onClickOutside={() => setCalendarOpen(false)}>
       <Tooltip
         content={
-          <Box width="800px">
+          <Box width={WIDTH}>
             <Calendar
               selectedRange={selectedRange}
               onUpdateRange={onUpdateRange}
