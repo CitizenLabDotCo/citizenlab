@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 
-import { ClosedDateRange, DateRange } from '../typings';
+import { ClosedDateRange, DateRange } from '../../typings';
 
 import { isClosedDateRange } from './utils';
 

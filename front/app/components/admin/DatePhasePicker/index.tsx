@@ -1,7 +1,14 @@
 import React from 'react';
 
-const DateRangePicker2 = () => {
-  return <></>;
+import Input from './Input';
+import { DateRange } from './typings';
+
+interface Props {
+  selectedRange: Partial<DateRange>;
+}
+
+const DateRangePicker = ({ selectedRange }: Props) => {
+  return <Input selectedRange={selectedRange} />;
 };
 
-export default DateRangePicker2;
+export default DateRangePicker;

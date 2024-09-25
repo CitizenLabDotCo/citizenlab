@@ -1,6 +1,6 @@
 import { differenceInCalendarDays, addDays } from 'date-fns';
 
-import { DateRange, ClosedDateRange } from '../typings';
+import { DateRange, ClosedDateRange } from '../../typings';
 
 import { allAreClosedDateRanges } from './utils';
 

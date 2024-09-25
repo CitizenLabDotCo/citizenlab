@@ -9,8 +9,9 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { DateRange } from '../typings';
+
 import { getLocale } from './locales';
-import { DateRange } from './typings';
 import { generateModifiers } from './utils/generateModifiers';
 import { getUpdatedRange } from './utils/getUpdatedRange';
 
