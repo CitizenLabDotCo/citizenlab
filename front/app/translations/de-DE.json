@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Zur Abstimmung",
   "app.containers.Projects.invisibleTitleSurvey": "An der Umfrage teilnehmen",
   "app.containers.Projects.issues": "Vorhaben",
+  "app.containers.Projects.liveDataMessage": "Sie sehen die Daten in Echtzeit. Die Teilnehmendenzahlen werden für Admins ständig aktualisiert. Bitte beachten Sie, dass normale Nutzende zwischengespeicherte Daten sehen, was zu leichten Abweichungen bei den Zahlen führen kann.",
   "app.containers.Projects.location": "Adresse oder Standort:",
   "app.containers.Projects.manageBasket": "Warenkorb bearbeiten",
   "app.containers.Projects.meetMinBudgetRequirement": "Erfüllen Sie das Mindestbudget, um Ihren Warenkorb einzureichen.",
