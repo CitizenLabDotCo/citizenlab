@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 kysely",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 tutkimus nykyisessä vaiheessa",
   "app.containers.Projects.options": "Vaihtoehdot",
+  "app.containers.Projects.participants": "Osallistujat",
   "app.containers.Projects.participantsTooltip4": "Tämä luku heijastaa myös anonyymejä kyselyjä. Anonyymit kyselyn lähettäminen on mahdollista, jos kyselyt ovat avoimia kaikille (katso tämän projektin välilehti {accessRightsLink} ).",
   "app.containers.Projects.pastEvents": "Menneet tapahtumat",
   "app.containers.Projects.phases": "Projektin vaiheet",
