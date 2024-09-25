@@ -26,7 +26,7 @@ const ParticipantsWidget = ({ title, projectId, ...props }: Props) => {
       {hasEmbeddedSurvey(phases?.data) && (
         <Box mb="16px">
           <Warning>
-            {formatMessage(messages.adminInaccurateParticipantsWarning)}
+            {formatMessage(messages.adminInaccurateParticipantsWarning1)}
           </Warning>
         </Box>
       )}
