@@ -1845,7 +1845,7 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Mitään tulevia tai meneillään olevia tapahtumia ei ole tällä hetkellä suunniteltu.",
   "app.containers.eventspage.pastEvents": "Menneet tapahtumat",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Tulevat tapahtumat",
-  "app.containers.footer.accessibility-statement": "Esteettömyysilmoitus",
+  "app.containers.footer.accessibility-statement": "Saavutettavuus",
   "app.containers.footer.ariaLabel": "Toissijainen",
   "app.containers.footer.cookie-policy": "Evästekäytäntö",
   "app.containers.footer.cookieSettings": "Evästeasetukset",
