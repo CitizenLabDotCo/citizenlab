@@ -14,7 +14,7 @@ type Props = {
   title: string;
   subtitle?: string;
   image?: string;
-  onClick: (event) => void;
+  onClick?: (event) => void;
   children?: JSX.Element;
 };
 

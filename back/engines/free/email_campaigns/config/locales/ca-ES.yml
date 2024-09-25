@@ -82,6 +82,8 @@ ca:
       "unsubscribe_text": "donar-se de baixa"
     follow:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"
+    manual:
+      preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
       reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
       cta_view: 'Mira aquesta idea'
@@ -540,6 +542,7 @@ ca:
       cta_see_results: 'Veure resultats a la plataforma'
     event_registration_confirmation:
       subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
+      preheader: "%{firstName}, gràcies per registrar-te a %{eventTitle}"
       header_message: "%{firstName}, gràcies per registrar-te"
       event_details:
         labels:

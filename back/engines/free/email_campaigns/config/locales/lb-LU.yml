@@ -82,6 +82,8 @@ lb:
       "unsubscribe_text": "ofmellen"
     follow:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
+    manual:
+      preheader: 'Dir hutt Mail vun %{organizationName}'
     comment_deleted_by_admin:
       reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
       cta_view: 'Dës Iddi ukucken'
@@ -540,6 +542,7 @@ lb:
       cta_see_results: 'Gesinn Resultater an der Plattform'
     event_registration_confirmation:
       subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
+      preheader: "%{firstName}, Merci fir d'Aschreiwung fir %{eventTitle}"
       header_message: "%{firstName}, merci fir Aschreiwung fir"
       event_details:
         labels:

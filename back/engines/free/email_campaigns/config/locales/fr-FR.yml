@@ -82,6 +82,8 @@ fr:
       "unsubscribe_text": "vous désabonner"
     follow:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
+    manual:
+      preheader: 'Vous avez reçu un e-mail de la part de %{organizationName}'
     comment_deleted_by_admin:
       reason: 'La raison pour laquelle votre commentaire a été supprimé :'
       cta_view: 'Voir cette idée'
@@ -540,6 +542,7 @@ fr:
       cta_see_results: 'Voir les résultats sur la plateforme'
     event_registration_confirmation:
       subject: "Votre inscription à \"%{eventTitle}\" est confirmée !"
+      preheader: "%{firstName}, merci de vous être inscrit à l'événement « %{eventTitle} »"
       header_message: "%{firstName}, merci pour votre inscription à"
       event_details:
         labels:
