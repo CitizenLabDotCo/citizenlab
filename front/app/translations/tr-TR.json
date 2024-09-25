@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Oylamaya katılın",
   "app.containers.Projects.invisibleTitleSurvey": "Ankete katılın",
   "app.containers.Projects.issues": "Yorumlar",
+  "app.containers.Projects.liveDataMessage": "Gerçek zamanlı verileri görüntülüyorsunuz. Katılımcı sayıları yöneticiler için sürekli olarak güncellenir. Normal kullanıcıların önbelleğe alınmış verileri gördüğünü ve bu nedenle sayılarda küçük farklılıklar olabileceğini lütfen unutmayın.",
   "app.containers.Projects.location": "Konum:",
   "app.containers.Projects.manageBasket": "Sepeti yönetin",
   "app.containers.Projects.meetMinBudgetRequirement": "Sepetinizi göndermek için minimum bütçeyi karşılayın.",
