@@ -2600,6 +2600,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registration rate",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registrations",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Participants timeline",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Please note that participation numbers may not be fully accurate as some data is captured in an external survey that we do not track.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Chart",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Date range",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Title",
