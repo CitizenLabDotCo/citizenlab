@@ -233,6 +233,7 @@ sr-Latn:
       Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Resetujte vašu lozinku'
       message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
       subject: '%{organizationName}: Resetujte lozinku'
@@ -311,6 +312,7 @@ sr-Latn:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potvrdite svoju adresu e -pošte za %{organizationName} platformu"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Vaš konfirmacioni kod"
       header_message: "Zdravo %{firstName}!"
       confirm_email_address: "Potvrdi svoju adresu e-pošte"
@@ -325,6 +327,7 @@ sr-Latn:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -340,3 +343,5 @@ sr-Latn:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"
