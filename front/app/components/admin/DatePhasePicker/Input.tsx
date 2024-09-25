@@ -4,16 +4,37 @@ import {
   Icon,
   defaultInputStyle,
   Box,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import { DateRange } from './typings';
 
 const Container = styled.button`
   ${defaultInputStyle};
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   font-size: 14px;
+
+  color: ${colors.grey800};
+
+  &:hover,
+  &:focus {
+    color: ${colors.black};
+  }
+
+  svg {
+    fill: ${colors.grey700};
+  }
+
+  &:hover,
+  &:focus svg {
+    fill: ${colors.black};
+  }
 `;
 
 interface Props {
@@ -21,18 +42,19 @@ interface Props {
 }
 
 const Input = ({ selectedRange }: Props) => {
+  const { formatMessage } = useIntl();
+  const selectDate = formatMessage(messages.selectDate);
+
   return (
     <Container>
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
-          : 'Select date'}
+          : selectDate}
       </Box>
       <Icon name="chevron-right" height="16px" />
       <Box ml="8px" mr="12px">
-        {selectedRange.to
-          ? selectedRange.to.toLocaleDateString()
-          : 'Select date'}
+        {selectedRange.to ? selectedRange.to.toLocaleDateString() : selectDate}
       </Box>
       <Icon name="calendar" height="16px" />
     </Container>
