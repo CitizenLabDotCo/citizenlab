@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 anketa",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 anketa u trenutnoj fazi",
   "app.containers.Projects.options": "Opcije",
+  "app.containers.Projects.participants": "Sudionici",
   "app.containers.Projects.participantsTooltip4": "Ovaj broj također odražava anonimne ankete. Anonimno slanje anketa moguće je ako su ankete otvorene za sve (pogledajte karticu {accessRightsLink} za ovaj projekt).",
   "app.containers.Projects.pastEvents": "Prethodni događaji",
   "app.containers.Projects.phases": "Faze",
