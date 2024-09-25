@@ -153,6 +153,7 @@ export const getIdeaPostingRules = ({
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'proposals' ||
             phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.submission_enabled &&
           disabled_reason !== 'posting_not_supported'
