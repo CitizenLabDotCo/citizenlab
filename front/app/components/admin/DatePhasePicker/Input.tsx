@@ -39,14 +39,15 @@ const Container = styled.button`
 
 interface Props {
   selectedRange: Partial<DateRange>;
+  onClick: () => void;
 }
 
-const Input = ({ selectedRange }: Props) => {
+const Input = ({ selectedRange, onClick }: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(messages.selectDate);
 
   return (
-    <Container>
+    <Container onClick={onClick}>
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
