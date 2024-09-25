@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "{tenantName, select, vitrysurseine {Répondre à l'enquête} other {Répondre au sondage}}",
   "app.containers.Projects.invisibleTitleSurvey": "Répondre à l'enquête",
   "app.containers.Projects.issues": "Problèmes",
+  "app.containers.Projects.liveDataMessage": "En tant qu'administrateur, les chiffres de participation qui vous sont présentés sont mis à jour en temps réel, contrairement aux autres utilisateurs qui, pour des raisons de performance, voient des données mises en cache. Cela peut entraîner de légères différences dans les chiffres.",
   "app.containers.Projects.location": "Localisation :",
   "app.containers.Projects.manageBasket": "Gérer le panier",
   "app.containers.Projects.meetMinBudgetRequirement": "Respectez le budget minimum pour soumettre votre panier.",
