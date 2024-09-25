@@ -220,10 +220,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   />
                 </ListItem>
               )}
-            {hasEmbeddedSurvey(phases?.data) && isAdmin(authUser) && (
-              <ListItem id="e2e-project-sidebar-participants-count">
-                <ListItemIcon ariaHidden name="user" />
-                <FormattedMessage {...messages.participationDataIncomplete} />
+            <ListItem id="e2e-project-sidebar-participants-count">
+              <ListItemIcon ariaHidden name="user" />
+              <FormattedMessage
+                {...messages.xParticipants}
+                values={{ participantsCount: projectParticipantsCount }}
+              />
+              {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
                 <Box ml="4px">
                   <IconTooltip
                     placement="auto"
@@ -231,13 +234,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     iconColor={colors.coolGrey500}
                     content={
                       <FormattedMessage
-                        {...messages.inaccurateParticipantsTooltip}
+                        {...messages.participantsTooltip}
                         values={{
-                          projectParticipantsLink: (
+                          accessRightsLink: (
                             <Link
-                              to={`/admin/projects/${projectId}/participation`}
+                              to={`/admin/projects/${projectId}/settings/access-rights`}
                             >
-                              <FormattedMessage {...messages.participants} />
+                              <FormattedMessage {...messages.accessRights} />
                             </Link>
                           ),
                         }}
@@ -245,40 +248,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     }
                   />
                 </Box>
-              </ListItem>
-            )}
-            {!hasEmbeddedSurvey(phases?.data) && (
-              <ListItem id="e2e-project-sidebar-participants-count">
-                <ListItemIcon ariaHidden name="user" />
-                <FormattedMessage
-                  {...messages.xParticipants}
-                  values={{ participantsCount: projectParticipantsCount }}
-                />
-                {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
-                  <Box ml="4px">
-                    <IconTooltip
-                      placement="auto"
-                      maxTooltipWidth={200}
-                      iconColor={colors.coolGrey500}
-                      content={
-                        <FormattedMessage
-                          {...messages.participantsTooltip}
-                          values={{
-                            accessRightsLink: (
-                              <Link
-                                to={`/admin/projects/${projectId}/settings/access-rights`}
-                              >
-                                <FormattedMessage {...messages.accessRights} />
-                              </Link>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </Box>
-                )}
-              </ListItem>
-            )}
+              )}
+            </ListItem>
             {phases && phases.data.length > 1 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="timeline" className="timeline" />
