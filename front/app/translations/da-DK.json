@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Tag afstemningen",
   "app.containers.Projects.invisibleTitleSurvey": "Besvar spørgeskemaet",
   "app.containers.Projects.issues": "Høringssvar",
+  "app.containers.Projects.liveDataMessage": "Du ser data i realtid. Deltagerantallet opdateres løbende for administratorer. Bemærk, at almindelige brugere ser cachelagrede data, hvilket kan resultere i små forskelle i tallene.",
   "app.containers.Projects.location": "Lokalitet:",
   "app.containers.Projects.manageBasket": "Administrer kurv",
   "app.containers.Projects.meetMinBudgetRequirement": "Opfyld minimumsbudgettet for at indsende dine valg.",
