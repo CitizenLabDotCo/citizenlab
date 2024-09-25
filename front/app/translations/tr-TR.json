@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 anket",
   "app.containers.Projects.oneSurveyInCurrentPhase": "Mevcut aşamada 1 anket",
   "app.containers.Projects.options": "Seçenekler",
+  "app.containers.Projects.participants": "Katılımcılar",
   "app.containers.Projects.participantsTooltip4": "Bu sayı aynı zamanda anonim anket gönderimlerini de yansıtmaktadır. Anketler herkese açıksa anonim anket gönderimleri mümkündür (bu proje için {accessRightsLink} sekmesine bakın).",
   "app.containers.Projects.pastEvents": "Geçmiş etkinlikler",
   "app.containers.Projects.phases": "Aşamalar",
