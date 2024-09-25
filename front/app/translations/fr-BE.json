@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 enquête",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 enquête dans la phase actuelle",
   "app.containers.Projects.options": "Questions",
+  "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "Ce chiffre inclut également les réponses anonymes à l'enquête. Les réponses anonymes sont possibles si l'enquête est ouverte à tous (voir l'onglet {accessRightsLink} de ce projet).",
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.phases": "Phases",
