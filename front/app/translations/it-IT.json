@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Fai il sondaggio",
   "app.containers.Projects.invisibleTitleSurvey": "Prendi il sondaggio",
   "app.containers.Projects.issues": "Problemi",
+  "app.containers.Projects.liveDataMessage": "Stai visualizzando i dati in tempo reale. I conteggi dei partecipanti sono continuamente aggiornati per gli amministratori. Gli utenti abituali visualizzano i dati nella cache, il che può comportare leggere differenze nei numeri.",
   "app.containers.Projects.location": "Posizione:",
   "app.containers.Projects.manageBasket": "Gestire il carrello",
   "app.containers.Projects.meetMinBudgetRequirement": "Soddisfa il budget minimo per presentare il tuo carrello.",
