@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Cymerwch y bleidlais",
   "app.containers.Projects.invisibleTitleSurvey": "Cymerwch yr arolwg",
   "app.containers.Projects.issues": "Sylwadau",
+  "app.containers.Projects.liveDataMessage": "Rydych chi'n edrych ar ddata amser real. Mae cyfrif cyfranogwyr yn cael ei ddiweddaru'n barhaus ar gyfer gweinyddwyr. Sylwch fod defnyddwyr rheolaidd yn gweld data wedi'i storio, a all arwain at wahaniaethau bach yn y niferoedd.",
   "app.containers.Projects.location": "Lleoliad:",
   "app.containers.Projects.manageBasket": "Rheoli basged",
   "app.containers.Projects.meetMinBudgetRequirement": "Cwrdd â'r isafswm cyllideb i gyflwyno'r fasged.",
