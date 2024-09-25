@@ -6,6 +6,7 @@ it:
       "inappropriate_content_flagged": Contenuto inappropriato segnalato - amministratori
     inappropriate_content_flagged:
       subject: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
+      preheader: 'Un post sulla tua piattaforma è stato segnalato per una revisione'
       header_title: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
       comment_author: '%{authorName} ha commentato:'
       idea_author: '%{authorName} ha inserito un messaggio:'
