@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 ankieta",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 badanie w bieżącej fazie",
   "app.containers.Projects.options": "Opcje",
+  "app.containers.Projects.participants": "Uczestnicy",
   "app.containers.Projects.participantsTooltip4": "Liczba ta odzwierciedla również anonimowe ankiety. Anonimowe przesyłanie ankiet jest możliwe, jeśli ankiety są otwarte dla wszystkich (zobacz zakładkę {accessRightsLink} dla tego projektu).",
   "app.containers.Projects.pastEvents": "Minione wydarzenia",
   "app.containers.Projects.phases": "Etapy",
