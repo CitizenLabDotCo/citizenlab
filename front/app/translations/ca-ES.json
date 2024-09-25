@@ -1633,6 +1633,7 @@
   "app.containers.Projects.invisibleTitlePoll": "Feu l'enquesta",
   "app.containers.Projects.invisibleTitleSurvey": "Fes l'enquesta",
   "app.containers.Projects.issues": "Comentaris",
+  "app.containers.Projects.liveDataMessage": "Esteu visualitzant dades en temps real. Els recomptes de participants s'actualitzen contínuament per als administradors. Tingueu en compte que els usuaris habituals veuen dades emmagatzemades a la memòria cau, la qual cosa pot provocar lleugeres diferències en els números.",
   "app.containers.Projects.location": "Ubicació:",
   "app.containers.Projects.manageBasket": "Gestionar la cistella",
   "app.containers.Projects.meetMinBudgetRequirement": "Compliu el pressupost mínim per enviar la vostra cistella.",
