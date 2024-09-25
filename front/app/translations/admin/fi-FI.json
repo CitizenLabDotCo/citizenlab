@@ -912,7 +912,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.pleaseEnterValidUser": "Anna sähköpostiosoite ja/tai etu- ja sukunimi määrittääksesi tämän syötteen tekijälle. Tai poista suostumusruudun valinta.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Tähän sähköpostiin on jo liitetty tili. Tämä syöte lisätään siihen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Käyttäjän suostumus (luo käyttäjätili)",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Hyväksyä",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Hyväksy",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Hyväksy kaikki syötteet",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Tekijä:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Skannattujen lomakkeiden PDF-tiedostojen tuonti on osa premium-lisenssiä. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
