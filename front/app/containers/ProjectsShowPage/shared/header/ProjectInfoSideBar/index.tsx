@@ -16,7 +16,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
@@ -28,6 +28,8 @@ import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
+
+import AvatarBubbles from 'components/AvatarBubbles';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -136,6 +138,7 @@ const ProjectInfoSideBar = memo<Props>(
       sort: '-start_at',
     });
     const { data: authUser } = useAuthUser();
+    const theme = useTheme();
 
     const { formatMessage } = useIntl();
     const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
@@ -199,6 +202,11 @@ const ProjectInfoSideBar = memo<Props>(
       const isParticipatoryBudgeting =
         currentPhase?.attributes.participation_method === 'voting' &&
         currentPhase?.attributes.voting_method === 'budgeting';
+      const avatarIds =
+        project.data.relationships.avatars &&
+        project.data.relationships.avatars.data
+          ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
+          : [];
 
       return (
         <Container id="e2e-project-sidebar" className={className || ''}>
@@ -225,40 +233,40 @@ const ProjectInfoSideBar = memo<Props>(
                     />
                   </ListItem>
                 )}
-              <ListItem id="e2e-project-sidebar-participants-count">
-                {!hideParticipationNumbers && (
-                  <>
-                    <ListItemIcon ariaHidden name="user" />
-                    <FormattedMessage
-                      {...messages.xParticipants}
-                      values={{ participantsCount: projectParticipantsCount }}
-                    />
-                  </>
-                )}
-                {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
-                  <Box ml="4px">
-                    <IconTooltip
-                      placement="auto"
-                      maxTooltipWidth={200}
-                      iconColor={colors.coolGrey500}
-                      content={
-                        <FormattedMessage
-                          {...messages.participantsTooltip}
-                          values={{
-                            accessRightsLink: (
-                              <Link
-                                to={`/admin/projects/${projectId}/settings/access-rights`}
-                              >
-                                <FormattedMessage {...messages.accessRights} />
-                              </Link>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </Box>
-                )}
-              </ListItem>
+              {!hideParticipationNumbers && (
+                <ListItem id="e2e-project-sidebar-participants-count">
+                  <ListItemIcon ariaHidden name="user" />
+                  <FormattedMessage
+                    {...messages.xParticipants}
+                    values={{ participantsCount: projectParticipantsCount }}
+                  />
+                  {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
+                    <Box ml="4px">
+                      <IconTooltip
+                        placement="auto"
+                        maxTooltipWidth={200}
+                        iconColor={colors.coolGrey500}
+                        content={
+                          <FormattedMessage
+                            {...messages.participantsTooltip}
+                            values={{
+                              accessRightsLink: (
+                                <Link
+                                  to={`/admin/projects/${projectId}/settings/access-rights`}
+                                >
+                                  <FormattedMessage
+                                    {...messages.accessRights}
+                                  />
+                                </Link>
+                              ),
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  )}
+                </ListItem>
+              )}
               {phases && phases.data.length > 1 && (
                 <ListItem>
                   <ListItemIcon
@@ -408,6 +416,17 @@ const ProjectInfoSideBar = memo<Props>(
                   <FormattedMessage {...messages.share} />
                 </ListItemButton>
               </ListItem>
+              {avatarIds.length > 0 && (
+                <ListItem>
+                  <AvatarBubbles
+                    size={32}
+                    limit={3}
+                    userCountBgColor={theme.colors.tenantPrimary}
+                    avatarIds={avatarIds}
+                    userCount={project.data.attributes.participants_count}
+                  />
+                </ListItem>
+              )}
             </List>
           </About>
           <StyledProjectActionButtons projectId={projectId} />
