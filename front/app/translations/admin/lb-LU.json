@@ -2593,6 +2593,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Aschreiwung Taux",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Aschreiwungen",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Participanten-Timeline",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Notéiert w.e.g. datt d'Participatiounszuele vläicht net ganz korrekt sinn well e puer Donnéeën an enger externer Ëmfro erfaasst ginn, déi mir net verfollegen.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Chart",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Datumsberäich",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Title",
