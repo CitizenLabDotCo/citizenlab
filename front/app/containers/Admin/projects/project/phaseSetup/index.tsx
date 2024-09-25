@@ -113,6 +113,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     return acc;
   }, {});
 
+  console.log('formData in AdminPhaseEdit root:');
+  console.log({ formData });
+
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
@@ -226,6 +229,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
+    console.log('submitting...');
+    console.log({ formData });
     if (!formData) return;
 
     const { isValidated, errors } = validate(
@@ -235,6 +240,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     );
 
     setValidationErrors(errors);
+
+    console.log({ isValidated });
 
     if (isValidated) {
       save(formData);
@@ -295,6 +302,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const save = async (formData: IUpdatedPhaseProperties) => {
+    console.log('save...');
+    console.log({ processing });
     if (processing) return;
 
     setProcessing(true);
@@ -317,6 +326,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             (end ? end.locale('en').format('YYYY-MM-DD') : ''),
         }),
     };
+
+    console.log({ updatedAttr });
 
     if (phase) {
       updatePhase(
@@ -500,6 +511,9 @@ const AdminPhaseEditWrapper = () => {
     campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
     pageSize: 250,
   });
+
+  console.log('AdminPhaseEditWrapper:');
+  console.log({ phaseId, phase });
 
   const flatCampaigns = campaigns?.pages.flatMap((page) => page.data);
 
