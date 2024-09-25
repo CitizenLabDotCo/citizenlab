@@ -28,6 +28,10 @@ const DayPickerStyles = styled.div`
     --rdp-accent-background-color: ${selectedBackground};
   }
 
+  .rdp-range_middle > button {
+    font-size: 14px;
+  }
+
   .is-disabled-start {
     background-color: ${disabledBackground};
     color: ${colors.grey800};
