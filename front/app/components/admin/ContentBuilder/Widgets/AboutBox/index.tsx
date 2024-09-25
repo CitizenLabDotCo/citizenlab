@@ -54,7 +54,7 @@ const AboutBoxSettings = () => {
   }));
 
   return (
-    <Box background="#ffffff" marginBottom="20px">
+    <Box background="#ffffff" my="32px">
       <Toggle
         checked={hideParticipationNumbers}
         onChange={() => {
