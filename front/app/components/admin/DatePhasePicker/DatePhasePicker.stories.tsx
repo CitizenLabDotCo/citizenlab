@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// import { DateRange } from './Calendar/typings';
+import { DateRange } from './typings';
 
 import DatePhasePicker from '.';
 
@@ -23,9 +23,14 @@ export default meta;
 // ];
 
 const Wrapper = () => {
-  // const [selectedRange, setSelectedRange] = useState<Partial<DateRange>>({});
+  const [selectedRange, setSelectedRange] = useState<Partial<DateRange>>({});
 
-  return <DatePhasePicker selectedRange={{ from: new Date(2024, 2, 2) }} />;
+  return (
+    <DatePhasePicker
+      selectedRange={selectedRange}
+      onUpdateRange={setSelectedRange}
+    />
+  );
 };
 
 export const Standard = {
