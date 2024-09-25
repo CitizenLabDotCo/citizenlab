@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 vragenlijst",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 vragenlijst in de huidige fase",
   "app.containers.Projects.options": "Opties",
+  "app.containers.Projects.participants": "Deelnemers",
   "app.containers.Projects.participantsTooltip4": "Dit aantal weerspiegelt ook anoniem ingevulde enquêtes. Anoniem ingevulde enquêtes zijn mogelijk als enquêtes voor iedereen toegankelijk zijn (zie het tabblad {accessRightsLink} van dit project).",
   "app.containers.Projects.pastEvents": "Afgelopen activiteiten",
   "app.containers.Projects.phases": "Fases",
