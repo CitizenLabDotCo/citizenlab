@@ -13,8 +13,8 @@ resource 'Cosponsorships' do
     @cosponsorship = create(:cosponsorship, user: @user, idea: @idea)
   end
 
-  let (:idea_id) { @idea.id }
-  let (:cosponsorship_id) { @cosponsorship.id }
+  let(:idea_id) { @idea.id }
+  let(:cosponsorship_id) { @cosponsorship.id }
 
   get 'web_api/v1/ideas/:idea_id/cosponsorships' do
     with_options scope: :page do
