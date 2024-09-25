@@ -82,6 +82,8 @@ ach:
       "unsubscribe_text": "crwdns3141279:0crwdne3141279:0"
     follow:
       "unfollow_here": "crwdns3141281:0%{unfollow_url}crwdne3141281:0"
+    manual:
+      preheader: 'crwdns3166265:0%{organizationName}crwdne3166265:0'
     comment_deleted_by_admin:
       reason: 'crwdns3141283:0crwdne3141283:0'
       cta_view: 'crwdns3141285:0crwdne3141285:0'
@@ -540,6 +542,7 @@ ach:
       cta_see_results: 'crwdns3142089:0crwdne3142089:0'
     event_registration_confirmation:
       subject: "crwdns3142091:0%{eventTitle}crwdne3142091:0"
+      preheader: "crwdns3166267:0%{firstName}crwdnd3166267:0%{eventTitle}crwdne3166267:0"
       header_message: "crwdns3142093:0%{firstName}crwdne3142093:0"
       event_details:
         labels:
