@@ -1657,7 +1657,6 @@
   "app.containers.Projects.options": "Options",
   "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).",
-  "app.containers.Projects.participationDataIncomplete": "Participation data may be incomplete",
   "app.containers.Projects.pastEvents": "Past events",
   "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "1 poll",
