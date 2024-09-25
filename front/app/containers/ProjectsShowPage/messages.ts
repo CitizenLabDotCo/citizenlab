@@ -426,10 +426,6 @@ export default defineMessages({
     defaultMessage:
       'This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).',
   },
-  participationDataIncomplete: {
-    id: 'app.containers.Projects.participationDataIncomplete',
-    defaultMessage: 'Participation data may be incomplete',
-  },
   accessRights: {
     id: 'app.containers.Projects.accessRights',
     defaultMessage: 'Access rights',
