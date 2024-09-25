@@ -559,6 +559,7 @@ DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
+DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
@@ -602,7 +603,6 @@ DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
-DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
 DROP TABLE IF EXISTS public.baskets;
@@ -1494,20 +1494,6 @@ CREATE TABLE public.events_attendances (
 
 
 --
--- Name: followers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.followers (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    followable_type character varying NOT NULL,
-    followable_id uuid NOT NULL,
-    user_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: ideas; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1803,24 +1789,7 @@ UNION ALL
     0 AS dislikes_count
    FROM ((public.events_attendances ea
      LEFT JOIN public.events e ON ((e.id = ea.event_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)))
-UNION ALL
- SELECT f.id,
-    f.user_id AS dimension_user_id,
-    (f.user_id)::text AS participant_id,
-        CASE f.followable_type
-            WHEN 'Project'::text THEN f.followable_id
-            WHEN 'Idea'::text THEN i.project_id
-            ELSE NULL::uuid
-        END AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (f.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM ((public.followers f
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'follower'::text) AND ((adt.parent)::text = lower((f.followable_type)::text)))))
-     LEFT JOIN public.ideas i ON ((i.id = f.followable_id)));
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)));
 
 
 --
@@ -2393,6 +2362,20 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ai_reason character varying
+);
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.followers (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    followable_type character varying NOT NULL,
+    followable_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -7534,6 +7517,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240826083227'),
 ('20240829185625'),
 ('20240917181018'),
-('20240923112800');
+('20240923112800'),
+('20240923112801');
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import { Multiloc } from 'typings';
 
 import useProjectFiles from 'api/project_files/useProjectFiles';

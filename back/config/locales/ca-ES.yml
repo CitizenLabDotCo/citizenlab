@@ -233,6 +233,7 @@ ca:
       <ul><li>Preneu-vos el temps per elaborar la vostra proposta. Si cal, escriviu primer un esborrany i després copieu-lo i enganxeu-lo aquí.</li><li>Trieu un títol significatiu que expliqui clarament què implica la vostra proposta.</li><li>Visualitzeu la vostra proposta amb una imatge adequada per ajudar-la a destacar!</li><li>Afegiu fitxers adjunts rellevants, com ara vídeos, exemples inspiradors, detalls tècnics o plans.</li><li>Compartiu la vostra idea a les xarxes socials i altres canals per obtenir el suport dels altres.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Restableix la teva contrasenya per a %{organizationName}'
       cta_reset_password: 'Restablir la contrasenya'
       message_you_reset_your_password: 'Heu sol·licitat un restabliment de la contrasenya per a la plataforma de participació de %{organizationName}. Feu clic al botó següent per triar una contrasenya nova i segura. L''enllaç caduca en 1 hora.'
       subject: '%{organizationName}: Restableix la teva contrasenya'
@@ -310,6 +311,7 @@ ca:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
+      preheader: 'Confirmeu la vostra adreça de correu electrònic per a %{organizationName}'
       header: "El teu codi de confirmació"
       header_message: "hola %{firstName}!"
       confirm_email_address: "Confirma la teva adreça electrònica"
@@ -324,6 +326,7 @@ ca:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'El teu compte s''ha desactivat temporalment'
+      preheader: 'El vostre compte a la plataforma de participació de %{organizationName} s''ha desactivat temporalment'
       title_user_blocked: 'El teu compte s''ha desactivat temporalment'
       paragraph_1_without_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
       paragraph_1_with_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel motiu següent:"
@@ -339,3 +342,5 @@ ca:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "vots"
+  ics_calendar_event:
+    event_details: "Detalls de l'esdeveniment"
