@@ -2593,6 +2593,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Ποσοστό εγγραφής",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Εγγραφές",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Participants timeline",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Σημειώστε ότι οι αριθμοί συμμετοχής ενδέχεται να μην είναι πλήρως ακριβείς, καθώς ορισμένα δεδομένα καταγράφονται σε εξωτερική έρευνα την οποία δεν παρακολουθούμε.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Chart",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Date range",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Title",
