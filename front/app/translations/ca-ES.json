@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 enquesta",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 enquesta en la fase actual",
   "app.containers.Projects.options": "Opcions",
+  "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "Aquest nombre també reflecteix enviaments anònims d'enquestes. Les enquestes anònimes són possibles si les enquestes estan obertes a tothom (vegeu la pestanya {accessRightsLink} d'aquest projecte).",
   "app.containers.Projects.pastEvents": "Esdeveniments passats",
   "app.containers.Projects.phases": "Fases",
