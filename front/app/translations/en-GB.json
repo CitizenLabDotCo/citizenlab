@@ -1655,6 +1655,7 @@
   "app.containers.Projects.oneSurvey": "1 survey",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 survey in the current phase",
   "app.containers.Projects.options": "Options",
+  "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).",
   "app.containers.Projects.pastEvents": "Past events",
   "app.containers.Projects.phases": "Phases",
