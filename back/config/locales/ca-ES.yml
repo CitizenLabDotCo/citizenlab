@@ -36,6 +36,8 @@ ca:
   symbols:
     outside: algun altre lloc
   idea_statuses:
+    prescreening: projecció prèvia
+    prescreening_description: Aquesta aportació està actualment en procés de revisió pel director del projecte i encara no és visible per al públic.
     proposed: proposat
     proposed_description: Aquesta idea s'ha proposat a la ciutat
     viewed: vist
@@ -190,8 +192,8 @@ ca:
       section3:
         title: Detalls
         description:
-      other_text_field:
-        title: Si has triat "{other_option}", en què estàs pensant?
+      other_input_field:
+        title: Escriu la teva resposta
   custom_forms:
     categories:
       main_content:

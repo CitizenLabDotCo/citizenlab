@@ -36,6 +36,8 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
+    prescreening: Vorabprüfung
+    prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
     proposed_description: Diese Idee wurde der Stadt vorgeschlagen
     viewed: angesehen
@@ -190,8 +192,8 @@ de:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: '"{other_option}" erläutern'
+      other_input_field:
+        title: Antwort eingeben
   custom_forms:
     categories:
       main_content:

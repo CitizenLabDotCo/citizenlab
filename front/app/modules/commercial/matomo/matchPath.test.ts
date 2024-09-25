@@ -8,7 +8,6 @@ describe('getAllPathsFromRoutes', () => {
       '/:locale/sign-in',
       '/:locale/sign-up',
       '/:locale/invite',
-      '/:locale/complete-signup',
       '/:locale/admin',
       '/:locale/admin/dashboard',
       '/:locale/admin/dashboard/users',

@@ -115,6 +115,7 @@ const AdminPhaseEdit = () => {
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
     convertToFileType(phaseFiles)
   );
+  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [phaseFilesToRemove, setPhaseFilesToRemove] = useState<FileType[]>([]);
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [attributeDiff, setAttributeDiff] = useState<IUpdatedPhaseProperties>(
@@ -123,7 +124,6 @@ const AdminPhaseEdit = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
@@ -131,8 +131,8 @@ const AdminPhaseEdit = () => {
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
-    setSubmitState(phase ? 'enabled' : 'disabled');
-  }, [phase]);
+    setSubmitState('disabled');
+  }, [phaseId, phase?.data.attributes.end_at]);
 
   useEffect(() => {
     if (phaseFiles) {

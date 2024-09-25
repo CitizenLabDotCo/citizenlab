@@ -595,7 +595,7 @@
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
-        events: 'arrangementer'
+        events: 'Arrangementer'
         general: 'Generell'
         inputs: 'Innganger'
         internal_comments: 'Interne kommentarer'

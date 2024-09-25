@@ -36,6 +36,8 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
     proposed_description: Bu fikir kent yönetimine önerildi
     viewed: görüntülendi
@@ -190,8 +192,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+      other_input_field:
+        title: Cevabınızı yazın
   custom_forms:
     categories:
       main_content:

@@ -36,6 +36,8 @@ da:
   symbols:
     outside: et andet sted
   idea_statuses:
+    prescreening: Forudgående screening
+    prescreening_description: Dette input er i øjeblikket ved at blive gennemgået af projektlederen og er endnu ikke synligt for offentligheden.
     proposed: foreslået
     proposed_description: Denne idé er blevet foreslået til byen
     viewed: set
@@ -190,8 +192,8 @@ da:
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Siden du valgte "{other_option}", hvad tænker du så på?
+      other_input_field:
+        title: Skriv dit svar
   custom_forms:
     categories:
       main_content:

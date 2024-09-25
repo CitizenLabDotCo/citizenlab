@@ -162,8 +162,10 @@ class Idea < ApplicationRecord
   }
 
   scope :feedback_needed, lambda {
-    joins(:idea_status).where(idea_statuses: { code: 'proposed' })
+    scope = joins(:idea_status)
+    scope.where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+      .or(scope.where(idea_statuses: { code: 'threshold_reached' }))
   }
 
   scope :publicly_visible, lambda {
@@ -269,7 +271,7 @@ class Idea < ApplicationRecord
 
   def not_published_in_non_public_status
     return if !published?
-    return if idea_status.public_post?
+    return if !idea_status || idea_status.public_post?
 
     errors.add(
       :publication_status,

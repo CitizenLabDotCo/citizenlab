@@ -36,6 +36,8 @@ lv:
   symbols:
     outside: kaut kur citur
   idea_statuses:
+    prescreening: pirmskontrole
+    prescreening_description: Šos ievaddatus pašlaik izskata projekta vadītājs, un tie vēl nav publiski pieejami.
     proposed: ierosinātais
     proposed_description: Šī ideja ir ierosināta pilsētai
     viewed: skatīts
@@ -190,8 +192,8 @@ lv:
       section3:
         title: Sīkāka informācija
         description:
-      other_text_field:
-        title: Ja esat izvēlējies "{other_option}", par ko jūs domājat?
+      other_input_field:
+        title: Ierakstiet savu atbildi
   custom_forms:
     categories:
       main_content:

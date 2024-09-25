@@ -280,6 +280,11 @@ describe Permissions::IdeaPermissionsService do
         expect(service.denied_reason_for_reaction_mode('down')).to be_nil
       end
 
+      it 'does not return `reacting_like_limited_max_reached` when deleting a reaction' do
+        create(:reaction, mode: 'up', user: user, reactable: input)
+        expect(service.denied_reason_for_reaction_mode('up', delete_action: true)).to be_nil
+      end
+
       it 'returns nil if the like limit was not reached' do
         create(:reaction, mode: 'down', user: user, reactable: input)
         expect(service.denied_reason_for_reaction_mode('up')).to be_nil

@@ -36,6 +36,8 @@ sv:
   symbols:
     outside: någon annanstans
   idea_statuses:
+    prescreening: förhandsgranskning
+    prescreening_description: Denna inmatning granskas för närvarande av projektledaren och är ännu inte synlig för allmänheten.
     proposed: föreslagen
     proposed_description: Den här idén har föreslagits till staden
     viewed: har setts
@@ -190,8 +192,8 @@ sv:
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Om du valde "{other_option}", vad tänker du då på?
+      other_input_field:
+        title: Skriv in ditt svar
   custom_forms:
     categories:
       main_content:

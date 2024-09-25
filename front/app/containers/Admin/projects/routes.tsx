@@ -515,11 +515,6 @@ const createAdminProjectsRoutes = () => {
                   </PageLoading>
                 ),
               },
-              // {
-              //   path: 'allowed-input-topics',
-              //   element: <AdminAllowedTopicsComponent />,
-              // },
-
               {
                 path: projectsRoutes.projectPhaseInputImporter,
                 element: (
@@ -536,7 +531,6 @@ const createAdminProjectsRoutes = () => {
                   </PageLoading>
                 ),
               },
-              ...moduleConfiguration.routes['admin.projects.project'],
             ],
           },
         ],

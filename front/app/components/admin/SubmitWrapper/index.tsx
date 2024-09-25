@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent, useRef, useEffect } from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
@@ -88,129 +88,93 @@ interface Props
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
-  secondaryButtonOnClick?: (event: FormEvent<any>) => void;
-  secondaryButtonStyle?: ButtonStyles;
-  secondaryButtonSaveMessage?: MessageDescriptor;
   animate?: boolean;
   enableFormOnSuccess?: boolean;
 }
 
-export default class SubmitWrapper extends PureComponent<Props> {
-  submitButton: HTMLButtonElement | null;
-  secondaryButton: HTMLButtonElement | null;
+const SubmitWrapper = (props: Props) => {
+  const submitButtonRef = useRef<HTMLButtonElement>();
 
-  constructor(props: Props) {
-    super(props);
-    this.submitButton = null;
-    this.secondaryButton = null;
-  }
+  const buttonProps = omit(props, [
+    'className',
+    'style',
+    'processing',
+    'disabled',
+    'onClick',
+    'setSubmitButtonRef',
+    'messages',
+    'loading',
+  ]);
 
-  removeFocus = (el: HTMLButtonElement | null) => {
-    el && el.blur();
-  };
+  const {
+    loading,
+    status,
+    messages,
+    animate,
+    customError,
+    fullWidth,
+    onClick,
+  } = props;
 
-  setSubmitButtonRef = (el: HTMLButtonElement | null) => {
-    this.submitButton = el;
-  };
-
-  setSecondaryButtonRef = (el: HTMLButtonElement | null) => {
-    this.secondaryButton = el;
-  };
-
-  render() {
-    const style = this.props.buttonStyle || 'admin-dark';
-    const secondaryButtonStyle =
-      this.props.secondaryButtonStyle || 'primary-outlined';
-
-    if (this.props.status === 'success' || this.props.status === 'error') {
-      this.removeFocus(this.submitButton);
-      if (this.secondaryButton) {
-        this.removeFocus(this.secondaryButton);
-      }
+  useEffect(() => {
+    if (status === 'success' || status === 'error') {
+      submitButtonRef.current?.blur();
     }
+  }, [status]);
 
-    const buttonProps = omit(this.props, [
-      'className',
-      'style',
-      'processing',
-      'disabled',
-      'onClick',
-      'setSubmitButtonRef',
-      'messages',
-      'loading',
-    ]);
+  const setSubmitButtonRef = (el: HTMLButtonElement) => {
+    submitButtonRef.current = el;
+  };
 
-    const { loading, status, onClick, messages, animate, customError } =
-      this.props;
+  const style = props.buttonStyle || 'admin-dark';
 
-    // give the option to leave the form enabled even in success state
-    const isSubmitButtonDisabled =
-      status === 'disabled' ||
-      (!this.props.enableFormOnSuccess && status === 'success');
+  const isSubmitButtonDisabled =
+    status === 'disabled' ||
+    (!props.enableFormOnSuccess && status === 'success');
 
-    return (
-      <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
-        <Button
-          className="e2e-submit-wrapper-button"
-          buttonStyle={style}
-          processing={loading}
-          disabled={isSubmitButtonDisabled}
-          onClick={onClick}
-          setSubmitButtonRef={this.setSubmitButtonRef}
-          {...buttonProps}
-        >
-          {(status === 'enabled' ||
-            status === 'disabled' ||
-            status === 'error') && (
-            <FormattedMessage {...messages.buttonSave} />
-          )}
-          {status === 'success' && (
-            <FormattedMessage {...messages.buttonSuccess} />
-          )}
-        </Button>
-
-        {/* show a secondary button if an onClick handler is provided for it */}
-        {this.props.secondaryButtonOnClick && (
-          <Button
-            data-cy="e2e-submit-wrapper-secondary-submit-button"
-            buttonStyle={secondaryButtonStyle}
-            processing={loading}
-            disabled={isSubmitButtonDisabled}
-            onClick={this.props.secondaryButtonOnClick}
-            setSubmitButtonRef={this.setSecondaryButtonRef}
-            ml="25px"
-          >
-            {this.props.secondaryButtonSaveMessage ? (
-              <FormattedMessage {...this.props.secondaryButtonSaveMessage} />
-            ) : (
-              <FormattedMessage {...messages.buttonSave} />
-            )}
-          </Button>
-        )}
-
-        {status === 'error' && (
-          <Message className="error">
-            {customError ? (
-              customError
-            ) : (
-              <FormattedMessage {...messages.messageError} />
-            )}
-          </Message>
-        )}
-
+  return (
+    <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
+      <Button
+        className="e2e-submit-wrapper-button"
+        buttonStyle={style}
+        processing={loading}
+        disabled={isSubmitButtonDisabled}
+        onClick={onClick}
+        setSubmitButtonRef={setSubmitButtonRef}
+        {...buttonProps}
+      >
+        {(status === 'enabled' ||
+          status === 'disabled' ||
+          status === 'error') && <FormattedMessage {...messages.buttonSave} />}
         {status === 'success' && (
-          <CSSTransition
-            classNames="success"
-            timeout={0}
-            enter={animate}
-            exit={animate}
-          >
-            <Message className="success">
-              <FormattedMessage {...messages.messageSuccess} />
-            </Message>
-          </CSSTransition>
+          <FormattedMessage {...messages.buttonSuccess} />
         )}
-      </Wrapper>
-    );
-  }
-}
+      </Button>
+
+      {status === 'error' && (
+        <Message className="error">
+          {customError ? (
+            customError
+          ) : (
+            <FormattedMessage {...messages.messageError} />
+          )}
+        </Message>
+      )}
+
+      {status === 'success' && (
+        <CSSTransition
+          classNames="success"
+          timeout={0}
+          enter={animate}
+          exit={animate}
+        >
+          <Message className="success">
+            <FormattedMessage {...messages.messageSuccess} />
+          </Message>
+        </CSSTransition>
+      )}
+    </Wrapper>
+  );
+};
+
+export default SubmitWrapper;

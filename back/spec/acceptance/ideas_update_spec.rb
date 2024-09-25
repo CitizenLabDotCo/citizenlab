@@ -535,6 +535,8 @@ resource 'Ideas' do
     end
 
     context 'in a native survey phase' do
+      before_all { create(:idea_status_proposed) }
+
       let(:project) { create(:single_phase_native_survey_project) }
       let(:author) { create(:user) }
       let(:input) { create(:native_survey_response, project: project, author: author) }

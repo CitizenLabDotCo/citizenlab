@@ -90,6 +90,7 @@ describe Permissions::ProjectPermissionsService do
       end
 
       it 'returns `posting_limited_max_reached`' do
+        create(:idea_status_proposed)
         create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
 
         expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'

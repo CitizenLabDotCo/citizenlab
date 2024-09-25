@@ -59,7 +59,8 @@ module MultiTenancy
               tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure Active Directory'
+              login_mechanism_name: 'Azure Active Directory',
+              admin_only: false
             },
             azure_ad_b2c_login: {
               allowed: true,
@@ -394,6 +395,10 @@ module MultiTenancy
               duration: 90
             },
             user_avatars: {
+              enabled: true,
+              allowed: true
+            },
+            gravatar_avatars: {
               enabled: true,
               allowed: true
             },

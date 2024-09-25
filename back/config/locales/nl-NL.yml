@@ -36,6 +36,8 @@ nl:
   symbols:
     outside: ergens anders
   idea_statuses:
+    prescreening: voorselectie
+    prescreening_description: Deze bijdrage wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
     viewed: gezien
@@ -190,8 +192,8 @@ nl:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
+      other_input_field:
+        title: Typ je antwoord
   custom_forms:
     categories:
       main_content:

@@ -68,6 +68,8 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
   budgeting: 100,
 };
 
+type SetFn = (config: IPhaseParticipationConfig) => IPhaseParticipationConfig;
+
 const PhaseParticipationConfig = ({
   phase,
   onSubmit,
@@ -122,9 +124,13 @@ const PhaseParticipationConfig = ({
   const [reactingThresholdError, setReactingThresholdError] =
     useState<JSX.Element | null>(null);
 
-  useEffect(() => {
-    onChange(participationConfig);
-  }, [participationConfig, onChange]);
+  const updateParticipationConfig = (fn: SetFn) => {
+    setParticipationConfig((prev) => {
+      const updatedConfig = fn(prev);
+      onChange(updatedConfig);
+      return updatedConfig;
+    });
+  };
 
   useEffect(() => {
     const validate = () => {
@@ -176,7 +182,7 @@ const PhaseParticipationConfig = ({
     const survey = participation_method === 'survey';
     const proposals = participation_method === 'proposals';
 
-    setParticipationConfig(() => ({
+    updateParticipationConfig(() => ({
       ...defaultParticipationConfig,
       participation_method,
 
@@ -189,14 +195,14 @@ const PhaseParticipationConfig = ({
   };
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       survey_service,
     }));
   };
 
   const handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       survey_embed_url,
     }));
@@ -205,28 +211,28 @@ const PhaseParticipationConfig = ({
   const handleDocumentAnnotationEmbedUrlChange = (
     document_annotation_embed_url: string
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       document_annotation_embed_url,
     }));
   };
 
   const togglePostingEnabled = () => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       submission_enabled: !state.submission_enabled,
     }));
   };
 
   const toggleCommentingEnabled = () => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       commenting_enabled: !state.commenting_enabled,
     }));
   };
 
   const toggleReactingEnabled = () => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_enabled: !state.reacting_enabled,
     }));
@@ -235,7 +241,7 @@ const PhaseParticipationConfig = ({
   const handleReactingLikeMethodOnChange = (
     reacting_like_method: 'unlimited' | 'limited'
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_like_method,
       reacting_like_limited_max:
@@ -244,7 +250,7 @@ const PhaseParticipationConfig = ({
   };
 
   const handleLikingLimitOnChange = (reacting_like_limited_max: string) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
     }));
@@ -254,7 +260,7 @@ const PhaseParticipationConfig = ({
   const handleReactingDislikeEnabledOnChange = (
     reacting_dislike_enabled: boolean
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_dislike_enabled,
     }));
@@ -263,7 +269,7 @@ const PhaseParticipationConfig = ({
   const handleAllowAnonymousParticipationOnChange = (
     allow_anonymous_participation: boolean
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       allow_anonymous_participation,
     }));
@@ -272,7 +278,7 @@ const PhaseParticipationConfig = ({
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_method,
       voting_max_votes_per_idea:
@@ -284,7 +290,7 @@ const PhaseParticipationConfig = ({
   const handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_dislike_method,
       reacting_dislike_limited_max:
@@ -295,7 +301,7 @@ const PhaseParticipationConfig = ({
   const handleDislikingLimitOnChange = (
     rreacting_dislike_limited_max: string
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_dislike_limited_max: parseInt(rreacting_dislike_limited_max, 10),
     }));
@@ -303,7 +309,7 @@ const PhaseParticipationConfig = ({
   };
 
   const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       presentation_mode,
     }));
@@ -312,7 +318,7 @@ const PhaseParticipationConfig = ({
   const handleIdeaDefaultSortMethodChange = (
     ideas_order: IdeaDefaultSortMethod
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       ideas_order,
     }));
@@ -320,7 +326,7 @@ const PhaseParticipationConfig = ({
 
   const handleVotingMinTotalChange = (newVotingMinTotal: string) => {
     const voting_min_total = parseInt(newVotingMinTotal, 10);
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_min_total,
     }));
@@ -331,7 +337,7 @@ const PhaseParticipationConfig = ({
     const voting_max_total = newVotingMaxTotal
       ? parseInt(newVotingMaxTotal, 10)
       : null;
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_max_total,
     }));
@@ -340,7 +346,7 @@ const PhaseParticipationConfig = ({
 
   const handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
     const voting_max_votes_per_idea = parseInt(newVotingMaxPerIdeaTotal, 10);
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_max_votes_per_idea,
     }));
@@ -350,7 +356,7 @@ const PhaseParticipationConfig = ({
   const handleVoteTermPluralChange = (
     voting_term_plural_multiloc: Multiloc
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_term_plural_multiloc,
     }));
@@ -360,7 +366,7 @@ const PhaseParticipationConfig = ({
   const handleVoteTermSingularChange = (
     voting_term_singular_multiloc: Multiloc
   ) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       voting_term_singular_multiloc,
     }));
@@ -370,35 +376,35 @@ const PhaseParticipationConfig = ({
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       input_term,
     }));
   };
 
   const togglePollAnonymous = () => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       poll_anonymous: !state.poll_anonymous,
     }));
   };
 
   const handleDaysLimitChange = (limit: string) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       expire_days_limit: parseInt(limit, 10),
     }));
   };
 
   const handleReactingThresholdChange = (threshold: string) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       reacting_threshold: parseInt(threshold, 10),
     }));
   };
 
   const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
-    setParticipationConfig((state) => ({
+    updateParticipationConfig((state) => ({
       ...state,
       prescreening_enabled,
     }));

@@ -36,6 +36,8 @@ ach:
   symbols:
     outside: crwdns207702:0crwdne207702:0
   idea_statuses:
+    prescreening: crwdns2997287:0crwdne2997287:0
+    prescreening_description: crwdns2997289:0crwdne2997289:0
     proposed: crwdns207704:0crwdne207704:0
     proposed_description: crwdns207706:0crwdne207706:0
     viewed: crwdns207708:0crwdne207708:0
@@ -190,8 +192,8 @@ ach:
       section3:
         title: crwdns207902:0crwdne207902:0
         description: crwdns207904:0crwdne207904:0
-      other_text_field:
-        title: crwdns2158534:0{other_option}crwdne2158534:0
+      other_input_field:
+        title: crwdns3058777:0crwdne3058777:0
   custom_forms:
     categories:
       main_content:

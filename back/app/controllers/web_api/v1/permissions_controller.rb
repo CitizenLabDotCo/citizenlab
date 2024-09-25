@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update reset requirements schema]
+  before_action :set_permission, only: %i[show update reset requirements schema access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -59,6 +59,14 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
   end
 
+  def access_denied_explanation
+    authorize @permission
+    attributes = {
+      access_denied_explanation_multiloc: @permission.access_denied_explanation_multiloc
+    }
+    render json: raw_json(attributes), status: :ok
+  end
+
   private
 
   def serialize(permission)
@@ -95,7 +103,13 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_params
-    params.require(:permission).permit(:permitted_by, :global_custom_fields, :verification_expiry, group_ids: [])
+    params.require(:permission).permit(
+      :permitted_by,
+      :global_custom_fields,
+      :verification_expiry,
+      group_ids: [],
+      access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
+    )
   end
 end
 

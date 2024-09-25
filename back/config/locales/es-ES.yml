@@ -36,6 +36,8 @@ es:
   symbols:
     outside: en otro lugar
   idea_statuses:
+    prescreening: preselección
+    prescreening_description: Esta aportación está siendo revisada por el gestor del proyecto y aún no es visible para el público.
     proposed: propuesta
     proposed_description: Esta idea ha sido propuesta
     viewed: revisada
@@ -190,8 +192,8 @@ es:
       section3:
         title: Detalles
         description:
-      other_text_field:
-        title: Ya que has elegido "{other_option}", ¿en qué estás pensando?
+      other_input_field:
+        title: Escribe tu respuesta
   custom_forms:
     categories:
       main_content:

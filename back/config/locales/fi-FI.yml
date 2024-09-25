@@ -36,6 +36,8 @@ fi:
   symbols:
     outside: jossain muualla
   idea_statuses:
+    prescreening: esiseulonta
+    prescreening_description: Projektipäällikkö tarkistaa parhaillaan tätä syötettä, eikä se ole vielä näkyvissä yleisölle.
     proposed: ehdotettu
     proposed_description: Tätä ideaa on esitetty kaupungille
     viewed: katsottu
@@ -72,14 +74,14 @@ fi:
     ineligible: kelpaamattomia
     ineligible_description: kelpaamattomia
   topics:
-    nature: Luonto ja biologinen monimuotoisuus
-    nature_description: Luonto ja biologinen monimuotoisuus
+    nature: Luonto ja ympäristö
+    nature_description: Luonto ja ympäristö
     waste: Puhtaus ja hukka
     waste_description: Puhtaus ja hukka
     sustainability: Kestävä kehitys
     sustainability_description: Kestävä kehitys
-    mobility: Liikkuvuus
-    mobility_description: Liikkuvuus
+    mobility: Liikenne
+    mobility_description: Liikenne
     technology: Energia ja tekniikka
     technology_description: Energia ja tekniikka
     economy: Työ, talous ja matkailu
@@ -90,8 +92,8 @@ fi:
     public_space_description: Julkiset tilat ja rakennukset
     safety: Turvallisuus
     safety_description: Turvallisuus
-    education: Koulutus ja nuoriso
-    education_description: Koulutus ja nuoriso
+    education: Koulutus
+    education_description: Koulutus
     culture: Kulttuuria, urheilua ja tapahtumia
     culture_description: Kulttuuria, urheilua ja tapahtumia
     health: Terveys ja hyvinvointi
@@ -190,8 +192,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
-      other_text_field:
-        title: Jos valitsit{other_option}, mitä ajattelet?
+      other_input_field:
+        title: Kirjoita vastauksesi
   custom_forms:
     categories:
       main_content:

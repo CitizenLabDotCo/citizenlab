@@ -36,26 +36,28 @@ en-IE:
   symbols:
     outside: somewhere else
   idea_statuses:
+    prescreening: screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: proposed
-    proposed_description: This idea has been proposed to the city
+    proposed_description: This input has been submitted and is now open for public support. Gather votes to help move it to the next stage.
     viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
+    viewed_description: This input has been seen by the project manager.
     under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
+    under_consideration_description: This input has been taken into consideration by the project manager.
     accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
+    accepted_description: This input has been accepted and will be implemented by the project manager.
     implemented: implemented
-    implemented_description: This idea has been implemented by the city
+    implemented_description: This input has been implemented by the project manager.
     rejected: rejected
-    rejected_description: This idea has been rejected
+    rejected_description: This input has been rejected.
     expired: expired
-    expired_description: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
     answered: answered
-    answered_description: answered
+    answered_description: The project manager has published an official feedback on this input.
     ineligible: ineligible
-    ineligible_description: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -190,8 +192,8 @@ en-IE:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:

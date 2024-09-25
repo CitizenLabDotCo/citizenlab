@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
   describe 'campaign_mail' do
+    before_all { create(:idea_status_proposed) }
+
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NativeSurveyNotSubmitted.create! }
     let_it_be(:phase) { create(:native_survey_phase, start_at: '2022-12-01', end_at: '2022-12-31') }
@@ -20,10 +22,6 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
     end
 
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    before_all do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
 
     it 'renders the subject' do
       expect(mail.subject).to end_with 'Almost there! Submit your answers'
