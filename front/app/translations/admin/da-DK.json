@@ -2592,6 +2592,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registreringsgrad",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registreringer",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Deltagernes tidslinje",
+  "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Bemærk at deltagelsestallene måske ikke er helt nøjagtige, da nogle data indsamles i en ekstern undersøgelse, som vi ikke sporer.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Diagram",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Datointerval",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Titel",
