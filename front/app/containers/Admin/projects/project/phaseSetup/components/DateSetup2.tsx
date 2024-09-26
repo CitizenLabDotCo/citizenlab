@@ -8,6 +8,7 @@ import { IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
 import DatePhasePicker from 'components/admin/DatePhasePicker';
+import { isSelectedRangeOpenEnded } from 'components/admin/DatePhasePicker/isSelectedRangeOpenEnded';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
@@ -49,6 +50,13 @@ const DateSetup = ({
       to: end_at ? new Date(end_at) : undefined,
     })
   );
+
+  const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
+    selectedRange,
+    disabledRanges
+  );
+
+  console.log({ selectedRangeIsOpenEnded });
 
   return (
     <SectionField>
