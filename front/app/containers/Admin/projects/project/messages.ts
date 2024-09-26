@@ -441,6 +441,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
     defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
   },
+  // #input_term_copy
   ideaTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
     defaultMessage: 'Idea',
@@ -464,6 +465,18 @@ export default defineMessages({
   contributionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
+  },
+  proposalTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalTerm',
+    defaultMessage: 'Proposal',
+  },
+  initiativeTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm',
+    defaultMessage: 'Initiative',
+  },
+  petitionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
+    defaultMessage: 'Petition',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',

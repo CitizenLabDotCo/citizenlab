@@ -85,6 +85,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
               question: messages.questions,
               issue: messages.issues,
               contribution: messages.contributions,
+              proposal: messages.proposals,
+              initiative: messages.initiatives,
+              petition: messages.petitions,
             })}
           />
         </StyledProjectPageSectionTitle>

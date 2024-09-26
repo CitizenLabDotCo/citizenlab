@@ -22,6 +22,7 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       phase.ideas_order ||= 'trending'
+      phase.input_term ||= default_input_term if supports_input_term?
     end
 
     def author_in_form?(user)
@@ -327,6 +328,10 @@ module ParticipationMethod
 
     def supports_input_term?
       true
+    end
+
+    def default_input_term
+      'idea'
     end
 
     def supports_inputs_without_author?

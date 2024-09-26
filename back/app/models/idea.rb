@@ -323,7 +323,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   def current_phase_input_term

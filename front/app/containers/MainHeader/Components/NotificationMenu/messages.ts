@@ -26,6 +26,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
     defaultMessage: '{name} cosponsored your proposal',
   },
+  // #input_term_copy
   userCommentedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
     defaultMessage: '{name} commented on an idea that you follow',
@@ -50,9 +51,17 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnContributionYouFollow',
     defaultMessage: '{name} commented on a contribution that you follow',
   },
+  userCommentedOnProposalYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnProposalYouFollow',
+    defaultMessage: '{name} commented on a proposal that you follow',
+  },
   userCommentedOnInitiativeYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow',
     defaultMessage: '{name} commented on an initiative that you follow',
+  },
+  userCommentedOnPetitionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnPetitionYouFollow',
+    defaultMessage: '{name} commented on a petition that you follow',
   },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
@@ -165,6 +174,7 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.deletedUser',
     defaultMessage: 'Deleted user',
   },
+  // #input_term_copy
   officialFeedbackOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnIdeaYouFollow',
     defaultMessage:
@@ -195,10 +205,20 @@ export default defineMessages({
     defaultMessage:
       '{officialName} gave an official update on a contribution you follow',
   },
+  officialFeedbackOnProposalYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnProposalYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a proposal you follow',
+  },
   officialFeedbackOnInitiativeYouFollow: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow',
     defaultMessage:
       '{officialName} gave an official update on an initiative you follow',
+  },
+  officialFeedbackOnPetitionYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnPetitionYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a petition you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

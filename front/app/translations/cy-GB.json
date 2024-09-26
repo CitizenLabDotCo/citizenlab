@@ -382,7 +382,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Ymunwch â'r drafodaeth: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Ymunwch â'r drafodaeth: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Pleidleisiwch dros {postTitle} ymlaen",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Dwi newydd bostio cynnig ar gyfer {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Dolen i'r dudalen gartref",
   "app.components.PostComponents.readMore": "Darllen mwy...",
   "app.components.PostComponents.topics": "Pynciau",

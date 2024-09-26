@@ -63,8 +63,8 @@ class Phase < ApplicationRecord
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
-  INPUT_TERMS           = %w[idea question contribution project issue option].freeze
-  DEFAULT_INPUT_TERM    = 'idea'
+  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
+  FALLBACK_INPUT_TERM = 'idea'
   CAMPAIGNS = [:project_phase_started].freeze
 
   belongs_to :project
@@ -133,7 +133,6 @@ class Phase < ApplicationRecord
 
   with_options if: ->(phase) { phase.pmethod.supports_input_term? } do
     validates :input_term, inclusion: { in: INPUT_TERMS }
-    before_validation :set_input_term
   end
 
   with_options if: ->(phase) { phase.pmethod.supports_automated_statuses? } do
@@ -355,10 +354,6 @@ class Phase < ApplicationRecord
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
-  end
-
-  def set_input_term
-    self.input_term ||= DEFAULT_INPUT_TERM
   end
 
   def validate_voting
