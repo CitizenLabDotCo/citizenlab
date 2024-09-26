@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -25,9 +26,9 @@ interface Props {
 const DateSetup = ({
   formData,
   errors,
-}: // setSubmitState,
-// setFormData
-Props) => {
+  setFormData,
+  setSubmitState,
+}: Props) => {
   const { projectId, phaseId } = useParams();
   const { data: phases } = usePhases(projectId);
 
@@ -57,7 +58,14 @@ Props) => {
       <DatePhasePicker
         selectedRange={selectedRange}
         disabledRanges={disabledRanges}
-        onUpdateRange={() => {}}
+        onUpdateRange={({ from, to }) => {
+          setSubmitState('enabled');
+          setFormData({
+            ...formData,
+            start_at: from ? format(from, 'yyyy-MM-dd') : undefined,
+            end_at: to ? format(to, 'yyyy-MM-dd') : undefined,
+          });
+        }}
       />
       <Error apiErrors={errors && errors.start_at} />
       <Error apiErrors={errors && errors.end_at} />
