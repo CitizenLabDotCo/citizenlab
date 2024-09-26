@@ -784,6 +784,8 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "til",
   "app.components.formBuilder.unsavedChanges": "Du har ændringer, der ikke er gemt",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mindre end en dag} one {# dag} other {# dage}} tilbage",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft} uger tilbage",
   "app.components.screenReaderCurrency.AED": "De Forenede Arabiske Emiraters Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghansk Afghansk",
   "app.components.screenReaderCurrency.ALL": "Albansk Lek",
