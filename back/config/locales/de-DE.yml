@@ -171,8 +171,8 @@ de:
         title: Themen
         description:
       consponsor_ids:
-        title: Co-Sponsoren
-        description: Laden Sie Co-Sponsoren über das unten stehende Feld ein. Der/die eingeladenen Co-Sponsor(en) werden eine E-Mail erhalten.
+        title: Unterstützer*innen
+        description: Laden Sie Unterstützer*innen über das unten stehende Feld ein. Unterstützende werden eine E-Mail erhalten.
       location:
         title: Standort
         description:
