@@ -125,12 +125,20 @@ namespace :templates do
       lifecycle_stage: 'demo'
     ) }.with_indifferent_access
 
+    # Required for verified actions
+    config_attrs[:settings][:verification] = {
+      enabled: true,
+      allowed: true,
+      verification_methods: [{ name: 'fake_sso' }]
+    }
+
     _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_tenant(
       tenant_attrs, config_attrs
     )
 
     tenant.switch do
       puts "Verifying #{template_name}"
+      binding.pry
       template = MultiTenancy::Templates::Utils.new.fetch_external_template_models(template_name, prefix: prefix)
       MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template)
 
