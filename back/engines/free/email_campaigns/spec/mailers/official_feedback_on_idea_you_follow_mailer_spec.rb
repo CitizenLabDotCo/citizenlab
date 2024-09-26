@@ -72,7 +72,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
 
     it 'includes the CTA' do
       expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
-        with_text(/Go to this input/)
+        with_text(/Go to this idea/)
       end
     end
 
