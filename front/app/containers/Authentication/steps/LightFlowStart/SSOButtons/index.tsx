@@ -13,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import SSOButton from './SSOButton';
+import { useSSOMethodsEnabled } from 'containers/Authentication/useAnySSOEnabled';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
@@ -20,35 +21,10 @@ interface Props {
 
 const SSOButtons = (props: Props) => {
   const { formatMessage } = useIntl();
-
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
-  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
-  const azureB2cProviderName = useFeatureFlag({ name: 'azure_ad_b2c_login' });
-  const franceconnectLoginEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-  const claveUnicaLoginEnabled = useFeatureFlag({
-    name: 'clave_unica_login',
-  });
-  const hoplrLoginEnabled = useFeatureFlag({
-    name: 'hoplr_login',
-  });
-  const criiptoLoginEnabled = useFeatureFlag({
-    name: 'criipto_login',
-  });
+  const ssoMethodsEnabled = useSSOMethodsEnabled();
 
-  if (
-    !googleLoginEnabled &&
-    !facebookLoginEnabled &&
-    !azureAdLoginEnabled &&
-    !azureB2cProviderName &&
-    !franceconnectLoginEnabled &&
-    !claveUnicaLoginEnabled &&
-    !hoplrLoginEnabled &&
-    !criiptoLoginEnabled
-  ) {
+  if (ssoMethodsEnabled.indexOf(true) === -1) {
     if (passwordLoginEnabled) {
       return null;
     }
@@ -58,6 +34,21 @@ const SSOButtons = (props: Props) => {
       <Error text={formatMessage(messages.noAuthenticationMethodsEnabled)} />
     );
   }
+
+  const [
+    fakeSsoEnabled,
+    googleLoginEnabled,
+    facebookLoginEnabled,
+    azureAdLoginEnabled,
+    azureAdB2cLoginEnabled,
+    franceconnectLoginEnabled,
+    viennaCitizenLoginEnabled,
+    claveUnicaLoginEnabled,
+    hoplrLoginEnabled,
+    criiptoLoginEnabled,
+    nemlogInLoginEnabled,
+    bosaFasLoginEnabled,
+  ] = ssoMethodsEnabled;
 
   return (
     <>
@@ -77,9 +68,17 @@ const SSOButtons = (props: Props) => {
         {azureAdLoginEnabled && (
           <SSOButton ssoProvider="azureactivedirectory" {...props} />
         )}
-        {azureB2cProviderName && (
+        {azureAdB2cLoginEnabled && (
           <SSOButton ssoProvider="azureactivedirectory_b2c" {...props} />
         )}
+        {/* TODO: Add the missing SSO providers */}
+        {fakeSsoEnabled && <></>}
+        {viennaCitizenLoginEnabled && <></>}
+        {claveUnicaLoginEnabled && <></>}
+        {hoplrLoginEnabled && <></>}
+        {criiptoLoginEnabled && <></>}
+        {nemlogInLoginEnabled && <></>}
+        {bosaFasLoginEnabled && <></>}
       </Box>
     </>
   );
