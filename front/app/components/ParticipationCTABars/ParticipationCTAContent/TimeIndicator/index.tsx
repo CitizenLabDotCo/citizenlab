@@ -33,7 +33,15 @@ const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
         <ParticipationOpenIcon />
       </Box>
       {currentPhase && currentPhase.attributes.end_at !== null ? (
-        <TimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
+        <Text
+          color="white"
+          style={{ textTransform: 'uppercase' }}
+          fontSize="xs"
+          fontWeight="bold"
+          m="0"
+        >
+          <TimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
+        </Text>
       ) : (
         <Text color="white" m="0px" fontSize="s">
           <FormattedMessage {...messages.mobileProjectOpenForSubmission} />
