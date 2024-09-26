@@ -138,7 +138,6 @@ namespace :templates do
 
     tenant.switch do
       puts "Verifying #{template_name}"
-      binding.pry
       template = MultiTenancy::Templates::Utils.new.fetch_external_template_models(template_name, prefix: prefix)
       MultiTenancy::Templates::TenantSerializer.format_for_deserializer!(template)
 
