@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import { DateRange } from '../typings';
+import { Props } from '../typings';
 
 import { getLocale } from './locales';
 import { generateModifiers } from './utils/generateModifiers';
@@ -128,14 +128,6 @@ const modifiersClassNames = {
   isSelectedGradient_three: 'is-selected-gradient_three',
   isSelectedSingleDay: 'is-selected-single-day',
 };
-
-interface Props {
-  selectedRange: Partial<DateRange>;
-  disabledRanges?: DateRange[];
-  startMonth?: Date;
-  endMonth?: Date;
-  onUpdateRange: (range: DateRange) => void;
-}
 
 const Calendar = ({
   selectedRange,

@@ -7,7 +7,7 @@ import ClickOutside from 'utils/containers/clickOutside';
 
 import Calendar from './Calendar';
 import Input from './Input';
-import { DateRange } from './typings';
+import { Props } from './typings';
 
 const WIDTH = '620px';
 
@@ -18,12 +18,13 @@ const StyledClickOutside = styled(ClickOutside)`
   }
 `;
 
-interface Props {
-  selectedRange: Partial<DateRange>;
-  onUpdateRange: (range: DateRange) => void;
-}
-
-const DateRangePicker = ({ selectedRange, onUpdateRange }: Props) => {
+const DateRangePicker = ({
+  selectedRange,
+  disabledRanges,
+  startMonth,
+  endMonth,
+  onUpdateRange,
+}: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
@@ -33,6 +34,9 @@ const DateRangePicker = ({ selectedRange, onUpdateRange }: Props) => {
           <Box width={WIDTH}>
             <Calendar
               selectedRange={selectedRange}
+              disabledRanges={disabledRanges}
+              startMonth={startMonth}
+              endMonth={endMonth}
               onUpdateRange={onUpdateRange}
             />
           </Box>

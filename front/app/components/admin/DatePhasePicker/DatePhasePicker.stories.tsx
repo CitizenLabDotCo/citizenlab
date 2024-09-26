@@ -17,10 +17,10 @@ const meta = {
 export default meta;
 // type Story = StoryObj<typeof meta>;
 
-// const DISABLED_RANGES = [
-//   { from: new Date(2024, 7, 1), to: new Date(2024, 8, 5) },
-//   { from: new Date(2024, 8, 21), to: new Date(2024, 9, 20) },
-// ];
+const DISABLED_RANGES = [
+  { from: new Date(2024, 7, 1), to: new Date(2024, 8, 5) },
+  { from: new Date(2024, 8, 21), to: new Date(2024, 9, 20) },
+];
 
 const Wrapper = () => {
   const [selectedRange, setSelectedRange] = useState<Partial<DateRange>>({});
@@ -28,6 +28,7 @@ const Wrapper = () => {
   return (
     <DatePhasePicker
       selectedRange={selectedRange}
+      disabledRanges={DISABLED_RANGES}
       onUpdateRange={setSelectedRange}
     />
   );
