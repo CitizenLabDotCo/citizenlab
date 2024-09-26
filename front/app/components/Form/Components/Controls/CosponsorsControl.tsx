@@ -11,6 +11,7 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { WrappedComponentProps } from 'react-intl';
 import { MentionItem } from 'react-mentions';
 
+import { IUser } from 'api/users/types';
 import useUsersWithIds from 'api/users/useUsersByIds';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -24,7 +25,6 @@ import ErrorDisplay from '../ErrorDisplay';
 
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
-import { IUser } from 'api/users/types';
 
 const CosponsorsControlInner = ({
   uischema,
