@@ -3,10 +3,11 @@ import React from 'react';
 import { Th, colors } from '@citizenlab/cl2-component-library';
 
 import { Sort as IdeasSort } from 'api/ideas/types';
+import { Sort as InitiativesSort } from 'api/initiatives/types';
 
 interface Props {
-  sortAttribute?: IdeasSort;
-  sortAttributeName: IdeasSort;
+  sortAttribute?: IdeasSort | InitiativesSort;
+  sortAttributeName: IdeasSort | InitiativesSort;
   sortDirection?: 'ascending' | 'descending' | null;
   infoTooltip?: React.ReactChild;
   width: string;

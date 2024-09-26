@@ -39,6 +39,12 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     can_moderate?(object, params)
   }
 
+  # attribute :accepted_cosponsorships_count, if: proc { |object, params|
+  #   can_moderate?(object, params)
+  # } do |object|
+  #   object.accepted_cosponsorships_count
+  # end
+
   attribute :cosponsorships do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
 

@@ -76,8 +76,16 @@ const InitiativesHeaderRow = ({
           </SortableHeaderCell>
         </Th>
         {cosponsorsRequired && (
-          <Th width={getWidth(1)}>
-            <FormattedMessage {...messages.cosponsors} />
+          <Th>
+            <SortableHeaderCell
+              width={getWidth(1)}
+              sortAttribute={sortAttribute}
+              sortDirection={sortDirection}
+              sortAttributeName="accepted_cosponsorships_count"
+              onChange={handleSortClick('accepted_cosponsorships_count')}
+            >
+              <FormattedMessage {...messages.cosponsors} />
+            </SortableHeaderCell>
           </Th>
         )}
         <SortableHeaderCell
