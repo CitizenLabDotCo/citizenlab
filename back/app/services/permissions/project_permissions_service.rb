@@ -12,8 +12,8 @@ module Permissions
       @project ||= project
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
-      project_visible_disabled_reason || super(action, reaction_mode: reaction_mode)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
+      project_visible_disabled_reason || project_archived_disabled_reason || super
     end
 
     # Future enabled phases
@@ -34,6 +34,9 @@ module Permissions
       taking_survey_disabled_reason = denied_reason_for_action 'taking_survey'
       taking_poll_disabled_reason = denied_reason_for_action 'taking_poll'
       voting_disabled_reason = denied_reason_for_action 'voting'
+      attending_event_disabled_reason = denied_reason_for_action 'attending_event'
+      volunteering_disabled_reason = denied_reason_for_action 'volunteering'
+
       {
         posting_idea: {
           enabled: !posting_disabled_reason,
@@ -76,6 +79,14 @@ module Permissions
         voting: {
           enabled: !voting_disabled_reason,
           disabled_reason: voting_disabled_reason
+        },
+        attending_event: {
+          enabled: !attending_event_disabled_reason,
+          disabled_reason: attending_event_disabled_reason
+        },
+        volunteering: {
+          enabled: !volunteering_disabled_reason,
+          disabled_reason: volunteering_disabled_reason
         }
       }
     end
@@ -93,6 +104,12 @@ module Permissions
          (project&.visible_to == 'groups' && project.groups && !user&.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
+    end
+
+    def project_archived_disabled_reason
+      return unless project.admin_publication.archived?
+
+      PHASE_DENIED_REASONS[:project_inactive]
     end
   end
 end

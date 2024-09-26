@@ -8,7 +8,7 @@ class RecreateVersionsJob < ApplicationJob
     Rails.logger.info(
       "Recreating #{AppConfiguration.instance.name} #{instance.class.name} #{instance.id} #{attribute} versions"
     )
-    return unless instance.valid? && instance.send("#{attribute}?")
+    return unless instance.valid? && instance.send(:"#{attribute}?")
 
     instance.send(attribute).recreate_versions!(*versions)
     instance.save!

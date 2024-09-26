@@ -1,9 +1,14 @@
 class ScriptReporter
-  attr_reader :changes, :errors
+  attr_reader :creates, :changes, :errors
 
   def initialize
+    @creates = []
     @changes = []
     @errors = []
+  end
+
+  def add_create(model_name, attributes, context: {})
+    @creates << { model_name: model_name, attributes: attributes, context: context }
   end
 
   def add_change(old_value, new_value, context: {})
@@ -16,6 +21,10 @@ class ScriptReporter
 
   def report!(filestr, verbose: false)
     if verbose
+      Rails.logger.info 'Creates:'
+      creates.each do |create|
+        Rails.logger.info "  #{create[:model_name]}: #{create[:attributes]} (#{create[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
+      end
       Rails.logger.info 'Changes:'
       changes.each do |change|
         Rails.logger.info "  #{change[:old_value]} => #{change[:new_value]} (#{change[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
@@ -30,6 +39,6 @@ class ScriptReporter
       end
     end
 
-    File.write(filestr, JSON.pretty_generate(changes: changes, errors: errors))
+    File.write(filestr, JSON.pretty_generate(creates: creates, changes: changes, errors: errors))
   end
 end

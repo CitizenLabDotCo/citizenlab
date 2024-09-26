@@ -36,6 +36,8 @@ pt:
   symbols:
     outside: em outro lugar
   idea_statuses:
+    prescreening: pré-triagem
+    prescreening_description: No momento, essa entrada está sendo revisada pelo gerente de projeto e ainda não está visível para o público.
     proposed: Proposta
     proposed_description: Esta idea foi proposta por alguem da organização
     viewed: Revisado
@@ -48,6 +50,14 @@ pt:
     implemented_description: Esta ideia foi implementada pela organização.
     rejected: Rejeitada
     rejected_description: Esta Idea foi rejeitada
+    expired: expirado
+    expired_description: expirado
+    threshold_reached: limite atingido
+    threshold_reached_description: limite atingido
+    answered: respondeu
+    answered_description: respondeu
+    ineligible: inelegível
+    ineligible_description: inelegível
   initiative_statuses:
     review_pending: revisão pendente
     review_pending_description: revisão pendente
@@ -182,8 +192,8 @@ pt:
       section3:
         title: Detalhes
         description:
-      other_text_field:
-        title: Se você escolheu "{other_option}", no que está pensando?
+      other_input_field:
+        title: Digite sua resposta
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ pt:
           title: Qual é o seu problema?
         option:
           title: Qual é a sua opção?
-      details:
-        title: Detalhes
-      attachements:
-        title: Imagens e Anexos
-      extra:
-        title: Informações adicionais
   custom_field_options:
     gender:
       male: Homem
@@ -229,6 +233,7 @@ pt:
       <ul><li>Reserve um tempo para elaborar a sua proposta. Se for necessário, digite primeiro um rascunho e depois copie e cole na caixa ao lado.</li><li>Escolha um título significativo que explique exatamente o que é sua proposta</li><li>Certifique-se de visualizar a sua proposta com uma imagem adequada, para que ela se destaque mais.</li><li>Adicione anexos relevantes, tais como vídeos, exemplos inspiradores, detalhes técnicos ou planos.</li><li>Compartilhe a sua ideia nas redes sociais e outros canais para obter o apoio de outros.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Redefinir sua senha para %{organizationName}'
       cta_reset_password: 'Resetar sua senha'
       message_you_reset_your_password: 'Você solicitou uma nova senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.'
       subject: '%{organizationName}: Redefina sua senha'
@@ -267,6 +272,7 @@ pt:
       submitted_at: 'Enviado em'
       tags: 'Tags'
       title: 'Título'
+      user_data: 'Dados do usuário'
       votes_count: 'Votos'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ pt:
       option1: 'Opção 1'
       option2: 'Opção 2'
     form_end_page:
-      title: 'Obrigado por participar'
-      description: "Envie suas respostas selecionando \"Enviar\" abaixo."
+      title_text: 'Quase pronto'
+      description_text_2: "Você está prestes a enviar suas respostas. Ao clicar em 'Submit' (Enviar), você nos dá permissão para analisar suas respostas.<br/>Após o envio, você não poderá mais voltar e alterar nenhuma de suas respostas."
     pdf_export:
       personal_data: 'Dados pessoais'
-      personal_data_explanation_ideation: "Enviaremos sua entrada para a plataforma de participação on-line da %{organizationName}. Se você deseja que seu nome seja exibido como autor desta contribuição e receba atualizações relevantes à sua contribuição por e-mail, preencha os seguintes campos nesta página e criaremos uma conta para você. Seu e-mail não será público e será usado apenas por %{organizationName}. Se quiser permanecer anônimo ou não concordar que utilizemos seus dados pessoais desta forma, você pode deixá-los em branco."
-      personal_data_explanation_native_survey: "Enviaremos sua entrada para a plataforma de participação on-line da %{organizationName}. Se você deseja receber atualizações relevantes sobre sua opinião por e-mail, preencha os seguintes campos nesta página e criaremos uma conta para você. Os seus dados não serão públicos e serão utilizados apenas pela %{organizationName}. Se não concordar que utilizemos os seus dados pessoais desta forma, pode deixá-los vazios."
+      personal_data_explanation_public: "Enviaremos sua contribuição para a plataforma de participação on-line do %{organizationName}. Se você quiser que seu nome seja exibido como autor desta contribuição e receber atualizações relevantes à sua contribuição por e-mail, preencha os campos a seguir nesta página e criaremos uma conta para você. Seu e-mail não será público e será usado apenas por %{organizationName}. Se quiser permanecer anônimo ou não concordar com o uso de seus dados pessoais dessa forma, você pode deixá-los em branco."
+      personal_data_explanation_private: "Enviaremos sua contribuição para a plataforma de participação on-line do %{organizationName}. Se você quiser receber atualizações relevantes à sua contribuição por e-mail, preencha os campos a seguir nesta página e nós criaremos uma conta para você. Seus dados não serão públicos e serão usados somente por %{organizationName}. Se não concordar com o uso de seus dados pessoais dessa forma, você pode deixá-los em branco."
       first_name: 'Primeiro(s) nome'
       last_name: 'Sobrenome'
       email_address: 'Endereço de email'
@@ -287,6 +293,12 @@ pt:
       optional: 'opcional'
       permission: 'Permissão'
       choose_as_many: 'Escolha quantos quiser'
+      choose_exactly:
+        one: 'Escolha exatamente a opção %{count}'
+        other: 'Escolha exatamente %{count} opções'
+      choose_between: 'Escolha entre as opções %{min} e %{max}'
+      choose_at_least: 'Escolha pelo menos %{count} opções'
+      choose_at_most: 'Escolha no máximo %{count} opções'
       this_answer: 'Esta resposta só será partilhada com os moderadores e não com o público.'
       page: 'Página'
       date_published: 'Data de publicação (dd-mm-aaaa)'
@@ -299,6 +311,7 @@ pt:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirme seu endereço de e-mail para a plataforma de participação de %{organizationName}"
+      preheader: 'Confirme seu endereço de e-mail para %{organizationName}'
       header: "Seu Código de Confirmação"
       header_message: "Olá %{firstName}!"
       confirm_email_address: "Confirme o seu endereço de correio electrónico"
@@ -313,6 +326,7 @@ pt:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'A sua conta foi temporariamente desactivada'
+      preheader: 'Sua conta na plataforma de participação do %{organizationName} foi temporariamente desativada'
       title_user_blocked: 'A sua conta foi temporariamente desactivada'
       paragraph_1_without_reason: "Sua conta na plataforma de participação do %{organizationName} foi temporariamente desativada por violação das diretrizes da comunidade."
       paragraph_1_with_reason: "Sua conta na plataforma de participação do %{organizationName} foi desativada temporariamente pelo seguinte motivo:"
@@ -328,3 +342,5 @@ pt:
   voting_method:
     default_voting_term_singular: "voto"
     default_voting_term_plural: "votos"
+  ics_calendar_event:
+    event_details: "Detalhes do evento"

@@ -50,34 +50,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
-  newProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.newProject',
-    defaultMessage: 'New Project',
-  },
-  newIdea: {
-    id: 'app.containers.AdminPage.ProjectEdit.newIdea',
-    defaultMessage: 'New idea',
-  },
-  addNewInput: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
-    defaultMessage: 'Add an input',
-  },
-  newIssue: {
-    id: 'app.containers.AdminPage.ProjectEdit.newIssue',
-    defaultMessage: 'Add an issue',
-  },
-  newQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.newQuestion',
-    defaultMessage: 'Add a question',
-  },
-  newOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.newOption',
-    defaultMessage: 'Add an option',
-  },
-  newContribution: {
-    id: 'app.containers.AdminPage.ProjectEdit.newContribution',
-    defaultMessage: 'Add a contribution',
-  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -418,10 +390,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
   },
-  konveioDocumentAnnotationEmbedUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl',
-    defaultMessage: 'Embed Konveio URL',
-  },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
     defaultMessage: 'Consult the survey answers',
@@ -451,6 +419,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  subtitleInputProjectProposals: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
+    defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
   hiddenFieldsTip: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip',
@@ -543,23 +515,14 @@ export default defineMessages({
     defaultMessage:
       'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  konveioSupport: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
-    defaultMessage:
-      'Provide the link to your Konveio document here. Read our {supportArticleLink} for more information on setting up Konveio.',
-  },
-  konveioSupportPageURL: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
-  },
-  konveioSupportArticle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
-    defaultMessage: 'support article',
-  },
   optionsToVoteOnDescription: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
     defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
+  },
+  optionsToVoteOnDescWihoutPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase',
+    defaultMessage:
+      'Configure the voting options in the Input manager tab after creating a phase.',
   },
   optionsPageText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
@@ -589,5 +552,39 @@ export default defineMessages({
   messagingTab: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
     defaultMessage: 'Messaging',
+  },
+  expireDaysLimit: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit',
+    defaultMessage: 'Number of days to reach minimum number of votes',
+  },
+  reactingThreshold: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.reactingThreshold',
+    defaultMessage: 'Minimum number of votes to be considered',
+  },
+  expireDateLimitRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired',
+    defaultMessage: 'Number of days is required',
+  },
+  reactingThresholdRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired',
+    defaultMessage: 'Minimum number of votes is required',
+  },
+  participationOptions: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationOptions',
+    defaultMessage: 'Participation options',
+  },
+  prescreeningText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningText',
+    defaultMessage: 'Require screening of inputs',
+  },
+  prescreeningSubtext: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
+    defaultMessage:
+      'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
+  },
+  prescreeningTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
+    defaultMessage:
+      'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
 });

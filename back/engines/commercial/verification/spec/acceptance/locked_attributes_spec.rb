@@ -40,22 +40,4 @@ resource 'Users - Locked attributes' do
       end
     end
   end
-
-  get 'web_api/v1/users/custom_fields/json_forms_schema', document: false do
-    before do
-      # Bogus locks the `gender` custom_field
-      create(:custom_field_gender)
-      create(:verification, method_name: 'bogus', user: @user)
-    end
-
-    example_request 'Jsonforms UI schema marks the locked fields' do
-      assert_status 200
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
-      expect(json_response.dig(:data, :attributes, :ui_schema_multiloc, :en, :elements).find { |e| e[:scope] == '#/properties/gender' }[:options].to_h).to include({
-        readonly: true,
-        verificationLocked: true
-      })
-    end
-  end
 end

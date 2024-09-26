@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 describe InitiativesFinder do
   subject(:finder) { described_class.new(params, **options) }
 

@@ -31,7 +31,7 @@ class CarrierwaveTempRemote
         column = remote_url_field_name_to_column(remote_url_field_name)
         next unless url?(model[column])
 
-        model.public_send("#{remote_url_field_name}=", model[column])
+        model.public_send(:"#{remote_url_field_name}=", model[column])
       end
       model.save!
     end

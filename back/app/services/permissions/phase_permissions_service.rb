@@ -40,13 +40,20 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
+    VOLUNTEERING_DENIED_REASONS = {
+      not_volunteering: 'not_volunteering'
+    }.freeze
+
+    # Actions not to block if the project is inactive - ie no current phase
+    IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
+
     def initialize(phase, user, user_requirements_service: nil)
       super(user, user_requirements_service: user_requirements_service)
       @phase ||= phase
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
-      return PHASE_DENIED_REASONS[:project_inactive] unless phase
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
+      return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -54,7 +61,7 @@ module Permissions
       when 'commenting_idea'
         commenting_idea_denied_reason_for_action
       when 'reacting_idea'
-        reacting_denied_reason_for_action(reaction_mode: reaction_mode)
+        reacting_denied_reason_for_action(reaction_mode: reaction_mode, delete_action: delete_action)
       when 'voting'
         voting_denied_reason_for_action
       when 'annotating_document'
@@ -63,8 +70,10 @@ module Permissions
         taking_survey_denied_reason_for_action
       when 'taking_poll'
         taking_poll_denied_reason_for_action
+      when 'volunteering'
+        volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}"
+        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
       end
       return phase_denied_reason if phase_denied_reason
 
@@ -79,10 +88,10 @@ module Permissions
 
     # Phase methods
     def posting_idea_denied_reason_for_action
-      if !participation_method.posting_allowed? # TODO: Rename to posting_supported?
-        POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
-      elsif !phase.posting_enabled
-        POSTING_DENIED_REASONS[:posting_disabled]
+      if !participation_method.supports_submission?
+        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+      elsif !phase.submission_enabled
+        POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled
       elsif user && posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
@@ -90,22 +99,23 @@ module Permissions
 
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
-        COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
+        COMMENTING_DENIED_REASONS[:commenting_not_supported]
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end
     end
 
-    def reacting_denied_reason_for_action(reaction_mode: nil)
-      if !phase.ideation?
+    # NOTE: some reasons should not be returned if trying to delete a reaction (delete_action: true)
+    def reacting_denied_reason_for_action(reaction_mode: nil, delete_action: false)
+      if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif reaction_mode == 'up' && user && liking_limit_reached?
+      elsif reaction_mode == 'up' && user && liking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif reaction_mode == 'down' && user && disliking_limit_reached?
+      elsif reaction_mode == 'down' && user && disliking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
@@ -136,18 +146,21 @@ module Permissions
       end
     end
 
+    def volunteering_denied_reason_for_phase
+      unless phase.volunteering?
+        VOLUNTEERING_DENIED_REASONS[:not_volunteering]
+      end
+    end
+
     # Helper methods
 
     def posting_limit_reached?
-      if phase.posting_limited?
-        num_authored = phase.ideas.where(author: user, publication_status: 'published').size
-        return true if num_authored >= phase.posting_limited_max
+      return false if phase.pmethod.supports_multiple_posts?
+      return true if phase.ideas.published.exists?(author: user)
 
-        if phase.allow_anonymous_participation?
-          author_hash = Idea.create_author_hash user.id, phase.project.id, true
-          num_authored_anonymously = phase.ideas.where(author_hash: author_hash).size
-          return true if (num_authored + num_authored_anonymously) >= phase.posting_limited_max
-        end
+      if phase.allow_anonymous_participation?
+        author_hash = Idea.create_author_hash user.id, phase.project.id, true
+        return true if phase.ideas.published.exists?(author_hash: author_hash)
       end
 
       false
@@ -162,7 +175,7 @@ module Permissions
     end
 
     def participation_method
-      @participation_method ||= Factory.instance.participation_method_for(phase)
+      @participation_method ||= phase.pmethod
     end
   end
 end

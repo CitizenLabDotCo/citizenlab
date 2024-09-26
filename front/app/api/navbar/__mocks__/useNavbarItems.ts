@@ -19,6 +19,9 @@ export const navbarItemsData: INavbarItem[] = [
       static_page: {
         data: null,
       },
+      project: {
+        data: null,
+      },
     },
   },
   {
@@ -37,6 +40,9 @@ export const navbarItemsData: INavbarItem[] = [
     },
     relationships: {
       static_page: {
+        data: null,
+      },
+      project: {
         data: null,
       },
     },
@@ -59,6 +65,9 @@ export const navbarItemsData: INavbarItem[] = [
       static_page: {
         data: null,
       },
+      project: {
+        data: null,
+      },
     },
   },
   {
@@ -79,6 +88,9 @@ export const navbarItemsData: INavbarItem[] = [
       static_page: {
         data: null,
       },
+      project: {
+        data: null,
+      },
     },
   },
   {
@@ -97,6 +109,9 @@ export const navbarItemsData: INavbarItem[] = [
     },
     relationships: {
       static_page: {
+        data: null,
+      },
+      project: {
         data: null,
       },
     },
@@ -122,6 +137,9 @@ export const navbarItemsData: INavbarItem[] = [
           type: 'static_page',
         },
       },
+      project: {
+        data: null,
+      },
     },
   },
   {
@@ -144,6 +162,9 @@ export const navbarItemsData: INavbarItem[] = [
           id: '793d56cc-c8b3-4422-b393-972b71f82aa2',
           type: 'static_page',
         },
+      },
+      project: {
+        data: null,
       },
     },
   },

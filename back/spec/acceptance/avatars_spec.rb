@@ -91,6 +91,7 @@ resource 'Avatars' do
       end
     end
 
+    # TODO: cleanup-after-proposals-migration
     describe do
       let(:initiative) { create(:initiative) }
       let(:context_type) { 'initiative' }

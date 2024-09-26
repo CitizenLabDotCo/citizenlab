@@ -92,6 +92,7 @@ resource 'Comments' do
       end
     end
 
+    # TODO: move-old-proposals-test
     context "when the value of 'post_type' is 'initiative'" do
       let(:post_type) { 'initiative' }
 

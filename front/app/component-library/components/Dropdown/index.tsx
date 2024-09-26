@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { useEffect, useRef, FormEvent } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -8,14 +8,15 @@ import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
 const timeout = 200;
 
-type ContainerProps = {
+interface ContainerProps {
   top: string;
   left: string;
   right: string;
   mobileLeft: string;
   mobileRight: string;
   zIndex: string;
-};
+}
+
 const Container = styled(clickOutside)<ContainerProps>`
   border-radius: ${(props) => props.theme.borderRadius};
   background-color: #fff;
@@ -53,10 +54,10 @@ const Container = styled(clickOutside)<ContainerProps>`
   }
 `;
 
-type ContainerInnerProps = {
+interface ContainerInnerProps {
   width: string;
   mobileWidth: string;
-};
+}
 
 const ContainerInner = styled.div<ContainerInnerProps>`
   width: ${(props) => props.width};
@@ -66,10 +67,10 @@ const ContainerInner = styled.div<ContainerInnerProps>`
   `}
 `;
 
-type ContentProps = {
+interface ContentProps {
   maxHeight: string;
   mobileMaxHeight: string;
-};
+}
 
 const Content = styled.div<ContentProps>`
   max-height: ${(props) => props.maxHeight};
@@ -133,122 +134,112 @@ interface Props {
   className?: string;
 }
 
-class Dropdown extends PureComponent<Props> {
-  dropdownElement: HTMLElement | null = null;
+const Dropdown: React.FC<Props> = ({
+  opened,
+  width = '260px',
+  mobileWidth = '200px',
+  maxHeight = '320px',
+  mobileMaxHeight = '280px',
+  top = 'auto',
+  left = 'auto',
+  mobileLeft = 'auto',
+  right = 'auto',
+  mobileRight = 'auto',
+  content,
+  footer,
+  id,
+  zIndex = '5',
+  onClickOutside,
+  className,
+}) => {
+  const dropdownElement = useRef<HTMLDivElement | null>(null);
+  const triggerElement = useRef<HTMLElement | null>(null);
 
-  static defaultProps = {
-    width: '260px',
-    mobileWidth: '200px',
-    maxHeight: '320px',
-    mobileMaxHeight: '280px',
-    top: 'auto',
-    left: 'auto',
-    mobileLeft: 'auto',
-    right: 'auto',
-    mobileRight: 'auto',
-    zIndex: '5',
-  };
+  useEffect(() => {
+    const scrolling = (event: WheelEvent) => {
+      if (dropdownElement.current) {
+        const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
+        dropdownElement.current.scrollTop += deltaY;
+        event.preventDefault();
+      }
+    };
 
-  componentWillUnmount() {
-    if (this.dropdownElement) {
-      this.dropdownElement.removeEventListener('wheel', this.scrolling);
+    const currentElement = dropdownElement.current;
+    if (currentElement) {
+      currentElement.addEventListener('wheel', scrolling);
     }
-  }
 
-  scrolling = (event: WheelEvent) => {
-    // prevent body from scrolling
-    if (this.dropdownElement) {
-      const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
-      this.dropdownElement.scrollTop += deltaY;
-      event.preventDefault();
+    return () => {
+      if (currentElement) {
+        currentElement.removeEventListener('wheel', scrolling);
+      }
+    };
+  }, []); // No dependencies, so it runs only on mount and unmount
+
+  useEffect(() => {
+    if (opened && dropdownElement.current) {
+      const focusableElements =
+        dropdownElement.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+      if (focusableElements.length > 0) {
+        // Move focus to the first focusable element in the dropdown
+        focusableElements[0].focus();
+      }
     }
-  };
 
-  setRef = (element: HTMLDivElement | null) => {
-    if (element) {
-      this.dropdownElement = element;
-      this.dropdownElement.addEventListener('wheel', this.scrolling);
+    if (!opened && triggerElement.current) {
+      // Move focus back to the trigger element
+      triggerElement.current.focus();
     }
-  };
+  }, [opened]);
 
-  close = (event: FormEvent) => {
+  const close = (event: FormEvent) => {
     event.preventDefault();
-
-    if (this.props.opened && this.props.onClickOutside) {
-      this.props.onClickOutside(event);
+    if (opened && onClickOutside) {
+      onClickOutside(event);
     }
   };
 
-  render() {
-    const {
-      opened,
-      width,
-      mobileWidth,
-      maxHeight,
-      mobileMaxHeight,
-      top,
-      left,
-      mobileLeft,
-      right,
-      mobileRight,
-      content,
-      footer,
-      id,
-      zIndex,
-      className,
-    } = this.props;
-
-    if (
-      top &&
-      left &&
-      right &&
-      mobileLeft &&
-      mobileRight &&
-      maxHeight &&
-      mobileMaxHeight &&
-      width &&
-      mobileWidth &&
-      zIndex
-    ) {
-      return (
-        <CSSTransition
-          in={opened}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          exit={false}
-          classNames={`${className} dropdown`}
-        >
-          <Container
-            id={id}
-            top={top}
-            left={left}
-            mobileLeft={mobileLeft}
-            right={right}
-            mobileRight={mobileRight}
-            closeOnClickOutsideEnabled={opened}
-            onClickOutside={this.close}
-            zIndex={zIndex}
-            className={className}
+  return (
+    <CSSTransition
+      in={opened}
+      timeout={timeout}
+      mountOnEnter
+      unmountOnExit
+      exit={false}
+      classNames={`${className} dropdown`}
+      onEntering={() => {
+        if (document.activeElement instanceof HTMLElement) {
+          triggerElement.current = document.activeElement;
+        }
+      }}
+    >
+      <Container
+        id={id}
+        top={top}
+        left={left}
+        mobileLeft={mobileLeft}
+        right={right}
+        mobileRight={mobileRight}
+        closeOnClickOutsideEnabled={opened}
+        onClickOutside={close}
+        zIndex={zIndex}
+        className={className}
+      >
+        <ContainerInner width={width} mobileWidth={mobileWidth}>
+          <Content
+            maxHeight={maxHeight}
+            mobileMaxHeight={mobileMaxHeight}
+            ref={dropdownElement}
           >
-            <ContainerInner width={width} mobileWidth={mobileWidth}>
-              <Content
-                maxHeight={maxHeight}
-                mobileMaxHeight={mobileMaxHeight}
-                ref={this.setRef}
-              >
-                {content}
-              </Content>
-
-              {footer && <Footer>{footer}</Footer>}
-            </ContainerInner>
-          </Container>
-        </CSSTransition>
-      );
-    }
-
-    return null;
-  }
-}
+            {content}
+          </Content>
+          {footer && <Footer>{footer}</Footer>}
+        </ContainerInner>
+      </Container>
+    </CSSTransition>
+  );
+};
 
 export default Dropdown;

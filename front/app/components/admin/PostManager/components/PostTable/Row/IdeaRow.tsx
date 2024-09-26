@@ -22,12 +22,16 @@ import Checkbox from 'components/UI/Checkbox';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
+import IdeaOfficialFeedbackModal, {
+  getIdeaOfficialFeedbackModalEventName,
+} from '../../IdeaOfficialFeedbackModal';
 
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -70,6 +74,7 @@ const IdeaRow = ({
   idea,
   selection,
   locale,
+  type,
 }: Props) => {
   const { formatMessage } = useIntl();
   const ideasPhases = useIdeasPhases(
@@ -219,17 +224,21 @@ const IdeaRow = ({
         );
       },
     },
-    {
-      name: 'down',
-      Component: ({ idea }: IdeaCellComponentProps) => {
-        return (
-          <>
-            <Icon name="thumbs down" />
-            {idea.attributes.dislikes_count}
-          </>
-        );
-      },
-    },
+    ...(type !== 'ProjectProposals'
+      ? [
+          {
+            name: 'down',
+            Component: ({ idea }: IdeaCellComponentProps) => {
+              return (
+                <>
+                  <Icon name="thumbs down" />
+                  {idea.attributes.dislikes_count}
+                </>
+              );
+            },
+          },
+        ]
+      : []),
     {
       name: 'published_on',
       Component: ({ idea }) => {
@@ -406,6 +415,8 @@ const IdeaRow = ({
       method: 'Clicked on the squares representing the statuses',
       idea: ideaId,
     });
+
+    eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(ideaId));
   };
 
   return (
@@ -444,6 +455,7 @@ const IdeaRow = ({
         onClose={closePhaseDeselectModal}
         onConfirm={handleConfirmDeselectPhase}
       />
+      <IdeaOfficialFeedbackModal ideaId={idea.id} />
     </>
   );
 };

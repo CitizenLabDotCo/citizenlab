@@ -13,7 +13,7 @@ export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 
-type ProjectDisabledReason =
+export type ProjectDisabledReason =
   | 'project_not_visible'
   | 'project_inactive'
   | UserDisabledReason;
@@ -53,6 +53,10 @@ export type ProjectDocumentAnnotationDisabledReason =
   | ProjectDisabledReason;
 
 export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
+
+export type ProjectVolunteeringDisabledReason =
+  | 'not_volunteering'
+  | ProjectDisabledReason;
 
 export type IdeaReactingDisabledReason =
   | 'idea_not_in_current_phase'
@@ -98,7 +102,9 @@ export type ActionDescriptorAction =
   | 'budgeting'
   | 'annotating_document'
   | 'taking_survey'
-  | 'taking_poll';
+  | 'taking_poll'
+  | 'attending_event'
+  | 'volunteering';
 
 // All disabled reasons
 export type DisabledReason =
@@ -110,6 +116,7 @@ export type DisabledReason =
   | ProjectPollDisabledReason
   | ProjectDocumentAnnotationDisabledReason
   | ProjectVotingDisabledReason
+  | ProjectVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
   | IdeaVotingDisabledReason;

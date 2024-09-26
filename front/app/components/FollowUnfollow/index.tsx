@@ -122,7 +122,6 @@ const FollowUnfollow = ({
     };
 
     triggerAuthenticationFlow({
-      flow: 'signup',
       context,
       successAction,
     });

@@ -104,9 +104,8 @@ const Show = () => {
     campaign?.data.attributes.context_id
   );
 
-  const { data: sender } = useUserById(
-    campaign?.data.relationships.author.data.id
-  );
+  const authorId = campaign?.data.relationships.author.data?.id;
+  const { data: sender } = useUserById(authorId);
 
   const {
     mutate: sendCampaign,

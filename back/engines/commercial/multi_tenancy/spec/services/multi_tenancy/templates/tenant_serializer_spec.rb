@@ -117,6 +117,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
     end
 
+    # TODO: move-old-proposals-test
     it 'successfully copies over cosponsors_intiatives' do
       initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
       user = create(:user, email: 'user-1@g.com')
@@ -137,7 +138,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'successfully copies over native surveys and responses' do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
 
       timeline_project = create(:project_with_future_native_survey_phase)
       survey_phase = timeline_project.phases.last
@@ -152,7 +153,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant = create(:tenant)
       tenant.switch do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         expect(Project.count).to eq 0
 
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
@@ -174,7 +175,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       description_multiloc = {
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
       }
-      field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
+      field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
       field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
@@ -185,7 +186,9 @@ describe MultiTenancy::Templates::TenantSerializer do
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
         'random_option_ordering' => field.random_option_ordering,
-        'description_multiloc' => field.description_multiloc
+        'dropdown_layout' => field.dropdown_layout,
+        'description_multiloc' => field.description_multiloc,
+        'page_layout' => field.page_layout
       )
     end
 
@@ -233,6 +236,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         create(factory, :for_custom_form, resource: custom_form)
       end
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,
@@ -295,6 +299,19 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(BasketsIdea.count).to eq 2
         expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
       end
+    end
+
+    it 'adds a unique ID to SSO users with no email address' do
+      create(:user, email: nil, identities: [create(:identity, provider: 'fake_sso')])
+      template = tenant_serializer.run(deserializer_format: true)
+
+      # Main user
+      expect(template['models']['user'].first['email']).not_to be_nil
+      expect(template['models']['user'].first['unique_code']).to be_nil
+
+      # SSO user added above
+      expect(template['models']['user'].last['email']).to be_nil
+      expect(template['models']['user'].last['unique_code']).not_to be_nil
     end
   end
 end

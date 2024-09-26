@@ -7,6 +7,8 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
   'linear_scale',
   'multiselect_image',
   'point',
+  'line',
+  'polygon',
 ]);
 
 // Supported input types for slice survey questions

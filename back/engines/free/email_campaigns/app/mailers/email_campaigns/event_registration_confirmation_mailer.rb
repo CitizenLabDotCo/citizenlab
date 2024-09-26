@@ -12,13 +12,17 @@ module EmailCampaigns
     def campaign_mail
       attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
         Event.find(event.event_attributes.id),
-        locale.locale_sym
+        locale.to_s
       )
 
       super
     end
 
     private
+
+    def preheader
+      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
+    end
 
     def subject
       format_message('subject', values: {
@@ -56,11 +60,6 @@ module EmailCampaigns
       end
 
       location.presence
-    end
-
-    def event_description
-      description = localize_for_recipient(event.event_attributes.description_multiloc)
-      strip_tags(description).presence
     end
 
     def project_title

@@ -29,17 +29,20 @@ export const getTabs = (
     },
     getMethodConfig(phase.attributes.participation_method).showInputManager && {
       label: formatMessage(messages.inputManagerTab),
-      url: 'ideas',
-      name: 'ideas',
+      url: getMethodConfig(phase.attributes.participation_method)
+        .inputManagerName,
+      name: getMethodConfig(phase.attributes.participation_method)
+        .inputManagerName,
     },
     getMethodConfig(phase.attributes.participation_method).formEditor ===
       'simpleFormEditor' && {
       label: formatMessage(messages.inputFormTab),
-      url: 'ideaform',
-      name: 'ideaform',
+      url: 'form',
+      name: 'form',
     },
     (phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting') && {
+      phase.attributes.participation_method === 'voting' ||
+      phase.attributes.participation_method === 'proposals') && {
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',

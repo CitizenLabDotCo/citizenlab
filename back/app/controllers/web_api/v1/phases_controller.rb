@@ -49,8 +49,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      participation_method = Factory.instance.participation_method_for @phase
-      @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
+      @phase.ideas.each(&:destroy!) if !@phase.pmethod.transitive?
 
       @phase.destroy
     end
@@ -71,7 +70,7 @@ class WebApi::V1::PhasesController < ApplicationController
     count = if @phase.native_survey?
       @phase.ideas.native_survey.published.count
     else
-      @phase.ideas.ideation.published.count
+      @phase.ideas.transitive.published.count
     end
 
     render json: raw_json({ totalSubmissions: count })
@@ -79,7 +78,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -110,9 +109,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :start_at,
       :end_at,
       :participation_method,
-      :posting_enabled,
-      :posting_method,
-      :posting_limited_max,
+      :submission_enabled,
       :commenting_enabled,
       :reacting_enabled,
       :reacting_like_method,
@@ -129,6 +126,9 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
+      :prescreening_enabled,
+      :reacting_threshold,
+      :expire_days_limit,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

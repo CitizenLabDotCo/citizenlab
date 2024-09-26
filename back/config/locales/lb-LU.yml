@@ -36,6 +36,8 @@ lb:
   symbols:
     outside: anzwousch anescht
   idea_statuses:
+    prescreening: Pre-Screening
+    prescreening_description: Dësen Input gëtt am Moment vum Projet Manager iwwerpréift an ass nach net fir de Public ze gesinn.
     proposed: virgeschloen
     proposed_description: Dës Iddi gouf virgeschloen
     viewed: gesinn
@@ -48,6 +50,14 @@ lb:
     implemented_description: Dës Iddi gouf ëmgesat
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
+    expired: ofgelaaf
+    expired_description: ofgelaaf
+    threshold_reached: Schwell erreecht
+    threshold_reached_description: Schwell erreecht
+    answered: geäntwert
+    answered_description: geäntwert
+    ineligible: ineligible
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: Iwwerpréiwung waarden
     review_pending_description: Iwwerpréiwung waarden
@@ -182,8 +192,8 @@ lb:
       section3:
         title: Detailer
         description:
-      other_text_field:
-        title: Wann Dir '{other_option}' gewielt hutt, un wat denkt Dir?
+      other_input_field:
+        title: Typ Är Äntwert
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ lb:
           title: Wat ass Är Ugeleeënheet ?
         option:
           title: Wat ass Är Optioun?
-      details:
-        title: Detailer
-      attachements:
-        title: Biller an Annexen
-      extra:
-        title: Zousätzlech Informatiounen
   custom_field_options:
     gender:
       male: Männlech
@@ -229,6 +233,7 @@ lb:
       <ul><li>Huelt Iech Zäit fir Är Virschléi auszeschaffen. Falls néideg, verfaasst en Entworf an engem separaten Dokument a kopéiert en dann an d'Plattform.</li><li>Wielt en aussokräftegen Titel, dee kloer erkläert, em wat et an Ärem Virschlag geet.</li><li>Setzt e passend Bild bei Äre Virschlag dobäi fir en ervirzehiewen. </li><li>Füügt relevant Annexe bäi, wéi Videoen, inspiréierend Beispiller, technesch Detailer oder Pläng.</li><li>Deelt Äre Virschlag op den soziale Medien an op aner Kanäl, fir Ënnerstëtzung vun anere Leit ze kréien.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset Äert Passwuert fir %{organizationName}'
       cta_reset_password: 'Äert Passwuert zerécksetzen'
       message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
@@ -267,6 +272,7 @@ lb:
       submitted_at: 'Erlaabt am'
       tags: 'Tags'
       title: 'Titel'
+      user_data: 'Benotzer Daten'
       votes_count: 'Stëmmen'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ lb:
       option1: 'Méiglechkeet 1'
       option2: 'Méiglechkeet 2'
     form_end_page:
-      title: 'Merci fir d''Matmaachen'
-      description: "Gitt w.e.g. Är Äntwerten of andeems Dir 'Submit' hei ënnen auswielt."
+      title_text: 'Bal fäerdeg'
+      description_text_2: "Dir sidd amgaang Är Äntwerten ofzeginn. Andeems Dir op 'Submit' klickt, gitt Dir eis Erlaabnis fir Är Äntwerten ze analyséieren.<br/>Nodeems Dir Iech ofginn hutt, kënnt Dir net méi zréckgoen an eng vun Ären Äntwerten änneren."
     pdf_export:
       personal_data: 'Perséinlech Daten'
-      personal_data_explanation_ideation: "Mir wäerten Ären Input op d' %{organizationName}online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir kreéieren e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vum %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
-      personal_data_explanation_native_survey: "Mir wäerten Ären Input op d' %{organizationName}online Participatiounsplattform ofginn. Wann Dir Aktualiséierunge relevant fir Ären Input per E-Mail wëllt kréien, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är Donnéeë sinn net ëffentlech a ginn nëmme vum %{organizationName}benotzt. Wann Dir net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
+      personal_data_explanation_public: "Mir wäerten Ären Input op %{organizationName}'s Online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vu %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
+      personal_data_explanation_private: "Mir wäerten Ären Input op %{organizationName}'s Online Participatiounsplattform ofginn. Wann Dir Aktualiséierunge fir Ären Input per E-Mail wëllt kréien, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir kreéieren e Kont fir Iech. Är Donnéeë sinn net ëffentlech a ginn nëmme vun %{organizationName}benotzt. Wann Dir net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
       first_name: 'Virnumm'
       last_name: 'Familljennumm'
       email_address: 'E-Mailadress'
@@ -287,6 +293,12 @@ lb:
       optional: 'fakultativ'
       permission: 'Erlaabnis'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
+      choose_exactly:
+        one: 'Wielt genau %{count} Optioun'
+        other: 'Wielt genau %{count} Optiounen'
+      choose_between: 'Wielt tëscht %{min} an %{max} Optiounen'
+      choose_at_least: 'Wielt op d''mannst %{count} Optiounen'
+      choose_at_most: 'Wielt maximal %{count} Optiounen'
       this_answer: 'Dës Äntwert gëtt nëmme mat Moderatoren gedeelt, an net un de Public.'
       page: 'Säit'
       date_published: 'Verëffentlechungsdatum (dd-mm-jjjj)'
@@ -299,6 +311,7 @@ lb:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Iwwerpréiwt Är E-Mail-Adress fir d'participativ Plattform %{organizationName}"
+      preheader: 'Confirméiert Är E-Mailadress fir %{organizationName}'
       header: "Äre Bestätegungscode"
       header_message: "Gudde Moie(n) %{firstName}!"
       confirm_email_address: "Bestätegt Är E-Mail-Adress"
@@ -313,6 +326,7 @@ lb:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Äre Kont gouf temporär deaktivéiert'
+      preheader: 'Äre Kont op der Participatiounsplattform vun %{organizationName} gouf temporär deaktivéiert'
       title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
       paragraph_1_without_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf temporär deaktivéiert wéinst enger Verletzung vun de Gemeinschaftsrichtlinnen."
       paragraph_1_with_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf aus de folgende Grond temporär deaktivéiert:"
@@ -328,3 +342,5 @@ lb:
   voting_method:
     default_voting_term_singular: "stëmmen"
     default_voting_term_plural: "Stëmmen"
+  ics_calendar_event:
+    event_details: "Event Detailer"

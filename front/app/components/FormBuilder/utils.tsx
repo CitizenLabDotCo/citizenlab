@@ -18,9 +18,23 @@ import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/Con
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 import messages from './components/messages';
+
+export const builtInFieldKeys = [
+  'title_multiloc',
+  'body_multiloc',
+  'proposed_budget',
+  'topic_ids',
+  'location_description',
+  'idea_images_attributes',
+  'idea_files_attributes',
+  'topic_ids',
+];
+
+export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
@@ -36,6 +50,7 @@ export type FormBuilderConfig = {
   formCustomFields: IFlatCustomField[] | undefined | Error;
 
   displayBuiltInFields: boolean;
+  builtInFields: BuiltInKeyType[];
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
   alwaysShowCustomFields: boolean;
@@ -60,24 +75,11 @@ export const getIsPostingEnabled = (
   phase?: IPhaseData | Error | null | undefined
 ) => {
   if (!isNilOrError(phase)) {
-    return phase.attributes.posting_enabled;
+    return phase.attributes.submission_enabled;
   }
 
   return false;
 };
-
-export const builtInFieldKeys = [
-  'title_multiloc',
-  'body_multiloc',
-  'proposed_budget',
-  'topic_ids',
-  'location_description',
-  'idea_images_attributes',
-  'idea_files_attributes',
-  'topic_ids',
-];
-
-export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
@@ -90,6 +92,7 @@ export const formEndOption = 'survey_end';
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
+  inputType: ICustomFieldInputType,
   locales: SupportedLocale[],
   platformLocale: SupportedLocale
 ) {
@@ -97,7 +100,7 @@ export function getAdditionalSettings(
     return null;
   }
 
-  switch (field.input_type) {
+  switch (inputType) {
     case 'multiselect_image':
     case 'multiselect':
       return (
@@ -115,7 +118,9 @@ export function getAdditionalSettings(
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
           />
           <SelectSettings
+            inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );
@@ -129,11 +134,27 @@ export function getAdditionalSettings(
             inputType={field.input_type}
           />
           <SelectSettings
+            inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
           />
         </>
       );
     case 'page':
+      return (
+        <>
+          <PageLayoutSettings
+            field={field}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+          />
+          <FieldGroupSettings locale={platformLocale} field={field} />
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            pageLayoutName={`customFields.${field.index}.page_layout`}
+            field={field}
+          />
+        </>
+      );
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
@@ -141,12 +162,13 @@ export function getAdditionalSettings(
         <LinearScaleSettings
           platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
-          minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
-          maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
+          labelBaseName={`customFields.${field.index}`}
           locales={locales}
         />
       );
     case 'point':
+    case 'line':
+    case 'polygon':
       return (
         <PointSettings
           mapConfigIdName={`customFields.${field.index}.map_config_id`}
@@ -227,8 +249,17 @@ const getInputTypeStringKey = (
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'shapefile_upload':
+      translatedStringKey = messages.shapefileUpload;
+      break;
     case 'point':
-      translatedStringKey = messages.locationAnswer;
+      translatedStringKey = messages.dropPin;
+      break;
+    case 'line':
+      translatedStringKey = messages.drawRoute;
+      break;
+    case 'polygon':
+      translatedStringKey = messages.drawArea;
       break;
   }
 

@@ -46,7 +46,7 @@ describe('Input form builder', () => {
   });
 
   it('has a working idea form with all the defaults', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // Verify no warning is shown when there are no submissions
@@ -116,13 +116,13 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-show').contains('Boulevard Anspach');
 
     // Verify warning for altering the form is present in form builder
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
     cy.get('#e2e-warning-notice').should('exist');
   });
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
     cy.get('[data-cy="e2e-short-answer"]').should('exist');
     cy.get('[data-cy="e2e-short-answer"]').click();

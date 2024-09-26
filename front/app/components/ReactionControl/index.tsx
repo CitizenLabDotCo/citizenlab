@@ -52,6 +52,7 @@ interface Props {
   setRef?: (element: HTMLDivElement) => void;
   className?: string;
   styleType: TStyleType;
+  variant?: 'text' | 'icon';
 }
 
 const ReactionControl = ({
@@ -60,6 +61,7 @@ const ReactionControl = ({
   className,
   styleType,
   disabledReactionClick,
+  variant = 'icon',
 }: Props) => {
   const [reactingAnimation, setReactingAnimation] = useState<
     'up' | 'down' | null
@@ -283,8 +285,8 @@ const ReactionControl = ({
           iconName="vote-up"
           reactionsCount={likesCount}
           ideaId={idea.data.id}
+          variant={variant}
         />
-
         {showDislike && (
           <ReactionButton
             buttonReactionMode="down"

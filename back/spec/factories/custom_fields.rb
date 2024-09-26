@@ -42,6 +42,34 @@ FactoryBot.define do
       input_type { 'point' }
     end
 
+    factory :custom_field_line do
+      title_multiloc do
+        {
+          'en' => 'Where should we add the new cycle-path?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw a line to indicate the route of the new cycle-path.'
+        }
+      end
+      input_type { 'line' }
+    end
+
+    factory :custom_field_polygon do
+      title_multiloc do
+        {
+          'en' => 'Where should we build new housing?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please draw the area where you think we should build new housing.'
+        }
+      end
+      input_type { 'polygon' }
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {
@@ -104,16 +132,33 @@ FactoryBot.define do
       end
       input_type { 'linear_scale' }
       maximum { 5 }
-      minimum_label_multiloc do
+      linear_scale_label_1_multiloc do
         {
           'en' => 'Strongly disagree'
         }
       end
-      maximum_label_multiloc do
+      linear_scale_label_2_multiloc do
+        {
+          'en' => 'Disagree'
+        }
+      end
+      linear_scale_label_3_multiloc do
+        {
+          'en' => 'Neutral'
+        }
+      end
+      linear_scale_label_4_multiloc do
+        {
+          'en' => 'Agree'
+        }
+      end
+      linear_scale_label_5_multiloc do
         {
           'en' => 'Strongly agree'
         }
       end
+      linear_scale_label_6_multiloc { {} }
+      linear_scale_label_7_multiloc { {} }
     end
 
     factory :custom_field_page do
@@ -128,6 +173,7 @@ FactoryBot.define do
         }
       end
       input_type { 'page' }
+      page_layout { 'default' }
     end
 
     factory :custom_field_section do
@@ -183,6 +229,15 @@ FactoryBot.define do
         }
       end
       input_type { 'file_upload' }
+    end
+
+    factory :custom_field_shapefile_upload do
+      title_multiloc do
+        {
+          'en' => 'Upload a zipfile containing your shapefiles'
+        }
+      end
+      input_type { 'shapefile_upload' }
     end
 
     factory :custom_field_checkbox do

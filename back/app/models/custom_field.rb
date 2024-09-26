@@ -4,29 +4,36 @@
 #
 # Table name: custom_fields
 #
-#  id                     :uuid             not null, primary key
-#  resource_type          :string
-#  key                    :string
-#  input_type             :string
-#  title_multiloc         :jsonb
-#  description_multiloc   :jsonb
-#  required               :boolean          default(FALSE)
-#  ordering               :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  enabled                :boolean          default(TRUE), not null
-#  code                   :string
-#  resource_id            :uuid
-#  hidden                 :boolean          default(FALSE), not null
-#  maximum                :integer
-#  minimum_label_multiloc :jsonb            not null
-#  maximum_label_multiloc :jsonb            not null
-#  logic                  :jsonb            not null
-#  answer_visible_to      :string
-#  select_count_enabled   :boolean          default(FALSE), not null
-#  maximum_select_count   :integer
-#  minimum_select_count   :integer
-#  random_option_ordering :boolean          default(FALSE), not null
+#  id                            :uuid             not null, primary key
+#  resource_type                 :string
+#  key                           :string
+#  input_type                    :string
+#  title_multiloc                :jsonb
+#  description_multiloc          :jsonb
+#  required                      :boolean          default(FALSE)
+#  ordering                      :integer
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  enabled                       :boolean          default(TRUE), not null
+#  code                          :string
+#  resource_id                   :uuid
+#  hidden                        :boolean          default(FALSE), not null
+#  maximum                       :integer
+#  logic                         :jsonb            not null
+#  answer_visible_to             :string
+#  select_count_enabled          :boolean          default(FALSE), not null
+#  maximum_select_count          :integer
+#  minimum_select_count          :integer
+#  random_option_ordering        :boolean          default(FALSE), not null
+#  page_layout                   :string
+#  linear_scale_label_1_multiloc :jsonb            not null
+#  linear_scale_label_2_multiloc :jsonb            not null
+#  linear_scale_label_3_multiloc :jsonb            not null
+#  linear_scale_label_4_multiloc :jsonb            not null
+#  linear_scale_label_5_multiloc :jsonb            not null
+#  linear_scale_label_6_multiloc :jsonb            not null
+#  linear_scale_label_7_multiloc :jsonb            not null
+#  dropdown_layout               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -51,7 +58,8 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
-    multiselect multiselect_image number page point select select_image text text_multiloc topic_ids section
+    multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
+    topic_ids section
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -59,6 +67,7 @@ class CustomField < ApplicationRecord
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
+  PAGE_LAYOUTS = %w[default map].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -78,6 +87,8 @@ class CustomField < ApplicationRecord
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
+  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
+  validates :page_layout, absence: true, unless: :page?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -131,7 +142,7 @@ class CustomField < ApplicationRecord
   end
 
   def file_upload?
-    input_type == 'file_upload'
+    input_type == 'file_upload' || input_type == 'shapefile_upload'
   end
 
   def page?
@@ -152,6 +163,10 @@ class CustomField < ApplicationRecord
 
   def page_or_section?
     page? || section?
+  end
+
+  def dropdown_layout_type?
+    %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?
@@ -202,12 +217,18 @@ class CustomField < ApplicationRecord
       visitor.visit_page self
     when 'point'
       visitor.visit_point self
+    when 'line'
+      visitor.visit_line self
+    when 'polygon'
+      visitor.visit_polygon self
     when 'section'
       visitor.visit_section self
     when 'select'
       visitor.visit_select self
     when 'select_image'
       visitor.visit_select_image self
+    when 'shapefile_upload'
+      visitor.visit_shapefile_upload self
     when 'text'
       visitor.visit_text self
     when 'text_multiloc'
@@ -222,10 +243,6 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context.project
-      phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
-
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -242,7 +259,7 @@ class CustomField < ApplicationRecord
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.other_text_field.title',
+      'custom_fields.ideas.other_input_field.title',
       locales: CL2_SUPPORTED_LOCALES
     )
 
@@ -267,34 +284,6 @@ class CustomField < ApplicationRecord
     )
   end
 
-  def point_latitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_latitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
-  def point_longitude_field
-    return unless input_type == 'point'
-
-    CustomField.new(
-      key: "#{key}_longitude",
-      input_type: 'point',
-      title_multiloc: title_multiloc.to_h do |k, v|
-        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}"]
-      end,
-      required: true,
-      enabled: true
-    )
-  end
-
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
@@ -306,8 +295,14 @@ class CustomField < ApplicationRecord
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
-    min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
-    max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
+    multiloc_service = MultilocService.new
+
+    min_text = multiloc_service.t(linear_scale_label_1_multiloc, locale)
+    min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
+
+    max_text = multiloc_service.t(nth_linear_scale_multiloc(maximum), locale)
+    max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
+
     I18n.with_locale(locale) do
       I18n.t(
         'form_builder.pdf_export.linear_scale_print_description',
@@ -315,6 +310,19 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
+  end
+
+  def nth_linear_scale_multiloc(n)
+    send(:"linear_scale_label_#{n}_multiloc")
+  end
+
+  def input_term
+    phase = if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
+    phase&.input_term || Phase::DEFAULT_INPUT_TERM
   end
 
   private

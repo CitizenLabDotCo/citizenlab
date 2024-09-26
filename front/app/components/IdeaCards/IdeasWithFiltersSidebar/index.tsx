@@ -293,6 +293,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                   smallerThanPhone
                 }
                 view="card"
+                hasMoreThanOneView={false}
               />
             </ContentLeft>
 

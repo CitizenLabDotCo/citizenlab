@@ -817,7 +817,7 @@ models:
   - &4
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1079,7 +1079,7 @@ models:
   - &6
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1108,7 +1108,7 @@ models:
   - &7
     presentation_mode: map
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1137,7 +1137,7 @@ models:
   - &10
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
@@ -1166,7 +1166,7 @@ models:
   - &5
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1195,7 +1195,7 @@ models:
   - &8
     presentation_mode: map
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1226,7 +1226,7 @@ models:
   phase:
   - presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
@@ -1249,7 +1249,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1272,7 +1272,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: false
     reacting_like_method: unlimited
@@ -1295,7 +1295,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1319,7 +1319,7 @@ models:
   - &84
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
@@ -1343,7 +1343,7 @@ models:
   - &83
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: limited
@@ -1366,7 +1366,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1391,7 +1391,7 @@ models:
   - &86
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1415,7 +1415,7 @@ models:
   - &82
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: false
+    submission_enabled: false
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1438,7 +1438,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1462,7 +1462,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1485,7 +1485,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1509,7 +1509,7 @@ models:
   - &81
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: false
     reacting_enabled: false
     reacting_like_method: unlimited
@@ -1532,7 +1532,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: information
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1556,7 +1556,7 @@ models:
   - &85
     presentation_mode: card
     participation_method: ideation
-    posting_enabled: true
+    submission_enabled: true
     commenting_enabled: true
     reacting_enabled: true
     reacting_like_method: unlimited
@@ -1579,7 +1579,7 @@ models:
     updated_at: 2019-01-29 12:36:37 UTC
   - presentation_mode: card
     participation_method: ideation
-    posting_enabled: false
+    submission_enabled: false
     commenting_enabled: false
     reacting_enabled: true
     reacting_like_method: unlimited

@@ -118,7 +118,7 @@ class TrackSegmentService
   end
 
   def dummy_user_id
-    any_user = (User.admin.first || User.first)
+    any_user = User.admin.first || User.first
     any_user&.id || anonymous_id
   end
 

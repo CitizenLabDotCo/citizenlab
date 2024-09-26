@@ -24,7 +24,11 @@ import {
 
 import platformTemplateMessages from '../../../Templates/PlatformTemplate/messages';
 import UserFieldSelect from '../../_shared/UserFieldSelect';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import {
+  TitleInput,
+  DateRangeInput,
+  ProjectInput,
+} from '../_shared/ChartWidgetSettings';
 
 import messages from './messages';
 import { Props } from './typings';
@@ -105,7 +109,11 @@ const Settings = () => {
         emptyOption={false}
         onChange={setCustomFieldId}
       />
-      <ChartWidgetSettings />
+      <Box>
+        <TitleInput />
+        <DateRangeInput label={formatMessage(messages.registrationDateRange)} />
+        <ProjectInput />
+      </Box>
       <Box mb="20px">
         <GroupFilter
           currentGroupFilter={groupId}

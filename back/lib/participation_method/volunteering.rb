@@ -2,5 +2,8 @@
 
 module ParticipationMethod
   class Volunteering < Base
+    def self.method_str
+      'volunteering'
+    end
   end
 end

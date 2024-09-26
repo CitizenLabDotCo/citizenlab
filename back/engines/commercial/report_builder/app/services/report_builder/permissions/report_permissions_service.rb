@@ -28,7 +28,7 @@ class ReportBuilder::Permissions::ReportPermissionsService
 
     project_ids = UserRoleService.new.moderatable_projects(current_user).ids
 
-    report.layout.craftjs_json.each do |_node_id, node_obj|
+    report.layout.craftjs_json.each_value do |node_obj|
       type = node_obj['type']
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
       next unless ReportBuilder::QueryRepository::GRAPH_RESOLVED_NAMES_CLASSES.key?(resolved_name)

@@ -4,8 +4,9 @@ import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import FooterWithReactionControl from './FooterWithReactionControl';
-import IdeaCardFooter from './IdeaCardFooter';
+import IdeaFooter from './IdeaFooter';
+import ProposalFooter from './ProposalFooter';
+import VotingFooter from './VotingFooter';
 
 interface Props {
   idea: IIdeaData;
@@ -28,15 +29,24 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
   // passed through to the IdeaCards from there.
   // Should probably have better solution in future.
   if (participationMethod === 'voting') {
-    return <IdeaCardFooter idea={idea} showCommentCount={showCommentCount} />;
+    return <VotingFooter idea={idea} showCommentCount={showCommentCount} />;
   }
 
   if (participationMethod === 'ideation') {
     return (
-      <FooterWithReactionControl
+      <IdeaFooter
         idea={idea}
         hideIdeaStatus={hideIdeaStatus}
         showCommentCount={showCommentCount}
+      />
+    );
+  }
+  if (participationMethod === 'proposals') {
+    return (
+      <ProposalFooter
+        showCommentCount={showCommentCount}
+        idea={idea}
+        hideIdeaStatus={hideIdeaStatus}
       />
     );
   }

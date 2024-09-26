@@ -1,27 +1,35 @@
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import signOut from 'api/authentication/sign_in_out/signOut';
+import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { GetRequirements } from 'containers/Authentication/typings';
+import {
+  AuthenticationData,
+  GetRequirements,
+  State,
+  UpdateState,
+} from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {
-  requiredCustomFields,
-  requiredBuiltInFields,
   showOnboarding,
+  doesNotMeetGroupCriteria,
+  checkMissingData,
 } from './utils';
 
 export const missingDataFlow = (
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
+  state: State
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -39,29 +47,21 @@ export const missingDataFlow = (
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredBuiltInFields(requirements)) {
-          setCurrentStep('missing-data:built-in');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requirements.special.verification === 'require') {
-          setCurrentStep('missing-data:verification');
-          return;
-        }
-
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements.onboarding)) {
-          setCurrentStep('missing-data:onboarding');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -75,6 +75,7 @@ export const missingDataFlow = (
         setCurrentStep('missing-data:email-confirmation');
       },
       RESEND_CODE: async (newEmail: string) => {
+        updateState({ email: newEmail });
         await resendEmailConfirmationCode(newEmail);
         setCurrentStep('missing-data:email-confirmation');
       },
@@ -90,24 +91,21 @@ export const missingDataFlow = (
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requirements.special.verification === 'require') {
-          setCurrentStep('missing-data:verification');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
-          return;
-        }
-
-        if (showOnboarding(requirements.onboarding)) {
-          setCurrentStep('missing-data:onboarding');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
       },
@@ -117,19 +115,21 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        if (requiredCustomFields(requirements.custom_fields)) {
-          setCurrentStep('missing-data:custom-fields');
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        if (showOnboarding(requirements.onboarding)) {
-          setCurrentStep('missing-data:onboarding');
-          return;
-        }
-
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -145,13 +145,13 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -160,7 +160,7 @@ export const missingDataFlow = (
       SKIP: async () => {
         const { requirements } = await getRequirements();
 
-        if (showOnboarding(requirements.onboarding)) {
+        if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
@@ -177,8 +177,8 @@ export const missingDataFlow = (
 
         const { requirements } = await getRequirements();
 
-        if (requirements.special.group_membership === 'require') {
-          setCurrentStep('closed');
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
 

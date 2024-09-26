@@ -8,6 +8,17 @@ class MultilocService
   def t(translations, preferred_locale = nil)
     return nil unless translations
 
+    ErrorReporter.handle(ArgumentError) do
+      bad_keys = translations.keys.reject { |key| key.is_a?(String) }
+      raise ArgumentError, <<~MSG.squish if bad_keys.any?
+        translations keys must be strings, but found: #{bad_keys.map(&:inspect)}
+      MSG
+
+      raise ArgumentError, <<~MSG.squish unless preferred_locale.nil? || preferred_locale.is_a?(String)
+        preferred_locale must be a string, but found: #{preferred_locale.inspect} (#{preferred_locale.class})
+      MSG
+    end
+
     # Optimization: return early if we can to avoid instantiating the AppConfiguration.
     preferred_locale ||= I18n.locale.to_s
     return translations[preferred_locale] if translations[preferred_locale]

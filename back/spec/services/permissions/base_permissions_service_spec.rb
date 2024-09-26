@@ -214,11 +214,55 @@ describe Permissions::BasePermissionsService do
 
         it { expect(denied_reason).to eq 'user_not_active' }
       end
+
+      context 'group membership' do
+        let(:groups) { create_list(:group, 2) }
+        let(:permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        context 'when not signed in' do
+          let(:user) { nil }
+
+          it { expect(denied_reason).to eq 'user_not_signed_in' }
+        end
+
+        context 'when light unconfirmed resident who is group member' do
+          before do
+            user.reset_confirmation_and_counts
+            user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
+          end
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when light unconfirmed resident who is not a group member' do
+          before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when fully registered resident who is not a group member' do
+          it { expect(denied_reason).to eq 'user_not_in_group' }
+        end
+
+        context 'when admin' do
+          before { user.update!(roles: [{ type: 'admin' }]) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when confirmed inactive admin' do
+          before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_not_active' }
+        end
+      end
     end
 
-    context 'when permitted by groups' do
+    context 'when permitted by "verified"' do
       let(:groups) { create_list(:group, 2) }
-      let(:permission) { create(:permission, permitted_by: 'groups', groups: groups) }
+      let(:permission) { create(:permission, permitted_by: 'verified', groups: groups) }
+
+      before { SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] } }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -242,6 +286,12 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when fully registered resident who is not a group member' do
+        it { expect(denied_reason).to eq 'user_not_verified' }
+      end
+
+      context 'when verified resident who is not a group member' do
+        before { user.update!(verified: true) }
+
         it { expect(denied_reason).to eq 'user_not_in_group' }
       end
 
@@ -255,12 +305,6 @@ describe Permissions::BasePermissionsService do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
         it { expect(denied_reason).to eq 'user_not_active' }
-      end
-
-      context 'when permitted by is changed from groups to users' do
-        before { permission.update!(permitted_by: 'users') }
-
-        it { expect(denied_reason).to be_nil }
       end
     end
 

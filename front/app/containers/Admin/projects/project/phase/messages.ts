@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase',
     defaultMessage: 'Ideation phase',
   },
+  proposalsPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.proposalsPhase',
+    defaultMessage: 'Proposals phase',
+  },
   informationPhase: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase',
     defaultMessage: 'Information phase',
@@ -78,11 +82,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.mixedRights',
     defaultMessage: 'Mixed rights',
   },
-  groups: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.groups',
-    defaultMessage:
-      '{noOfGroups, plural, one {1 group} other {{noOfGroups} groups}}',
-  },
   canParticipateTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip',
     defaultMessage: '{participants} can participate in this phase.',
@@ -119,16 +118,12 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument',
     defaultMessage: '<b>Annotating document:</b>  {participants}',
   },
-  and: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
-    defaultMessage: 'and',
+  attendingEvent: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent',
+    defaultMessage: '<b>Attending event:</b>  {participants}',
   },
-  only: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.only',
-    defaultMessage: 'Only',
-  },
-  noGroups: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noGroups',
-    defaultMessage: 'No groups',
+  volunteering: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteering',
+    defaultMessage: '<b>Volunteering:</b>  {participants}',
   },
 });

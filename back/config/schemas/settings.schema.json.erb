@@ -255,6 +255,18 @@
         }
       },
 
+      "gravatar_avatars": {
+        "type": "object",
+        "title": "Automatically try to download an avatar from an external service called Gravatar when a user registers without an avatar",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -414,6 +426,12 @@
             "title": "Login Mechanism Name",
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          },
+          "admin_only": {
+            "title": "Admin only",
+            "type": "boolean",
+            "default": false,
+            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
           }
         }
       },
@@ -750,6 +768,18 @@
         }
       },
 
+      "prescreening": {
+        "type": "object",
+        "title": "Screening",
+        "description": "When active, screening can be activated on a per-project basis, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "surveys": {
         "type": "object",
         "title": "Surveys",
@@ -884,8 +914,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1076,10 +1106,10 @@
         }
       },
 
-      "input_form_mapping_question": {
+      "form_mapping": {
         "type": "object",
-        "title": "Mapping question used in in-platform surveys",
-        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
+        "title": "Mapping features used in in-platform surveys",
+        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1133,6 +1163,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "custom_idea_statuses": {
+        "type": "object",
+        "title": "Custom Input Statuses",
+        "description": "Allows admin to define custom input statuses.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1260,6 +1302,18 @@
         "type": "object",
         "title": "Customisable homepage banner",
         "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "proposals_participation_method": {
+        "type": "object",
+        "title": "Proposals participation method",
+        "description": "Enables the ability to choose proposals as a participation method for a project.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

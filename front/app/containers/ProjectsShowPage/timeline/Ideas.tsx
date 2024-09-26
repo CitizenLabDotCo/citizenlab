@@ -68,12 +68,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const participationMethod = phase.attributes.participation_method;
   const isVotingContext = participationMethod === 'voting';
 
-  if (
-    !(participationMethod === 'ideation' || participationMethod === 'voting')
-  ) {
-    return null;
-  }
-
   const inputTerm = phase.attributes.input_term;
 
   return (
@@ -121,7 +115,6 @@ interface Props {
 const IdeasContainerOuter = ({ phaseId, projectId, className }: Props) => {
   const { data: phase } = usePhase(phaseId);
   if (!phase) return null;
-
   return (
     <IdeasContainer
       projectId={projectId}

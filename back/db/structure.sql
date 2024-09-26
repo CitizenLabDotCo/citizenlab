@@ -16,8 +16,8 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f4
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
+ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
@@ -74,7 +74,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_81e27f10eb;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
@@ -215,6 +214,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
@@ -336,9 +336,6 @@ DROP INDEX IF EXISTS public.index_areas_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_areas_initiatives_on_area_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_idea_id_and_area_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_idea_id;
-DROP INDEX IF EXISTS public.index_areas_ideas_on_area_id;
 DROP INDEX IF EXISTS public.index_analytics_dimension_types_on_name_and_parent;
 DROP INDEX IF EXISTS public.index_analytics_dimension_locales_on_name;
 DROP INDEX IF EXISTS public.index_analysis_tags_on_analysis_id_and_name;
@@ -481,7 +478,6 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS areas_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS areas_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS areas_initiatives_pkey;
-ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS areas_ideas_pkey;
 ALTER TABLE IF EXISTS ONLY public.ar_internal_metadata DROP CONSTRAINT IF EXISTS ar_internal_metadata_pkey;
 ALTER TABLE IF EXISTS ONLY public.app_configurations DROP CONSTRAINT IF EXISTS app_configurations_pkey;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS analytics_fact_visits_pkey;
@@ -558,6 +554,7 @@ DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
+DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
@@ -581,7 +578,6 @@ DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas_initiatives;
-DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
@@ -601,7 +597,6 @@ DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
-DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
 DROP TABLE IF EXISTS public.baskets;
@@ -1107,10 +1102,10 @@ CREATE TABLE public.official_feedbacks (
 --
 
 CREATE VIEW public.analytics_build_feedbacks AS
- SELECT a.post_id,
-    min(a.feedback_first_date) AS feedback_first_date,
-    max(a.feedback_official) AS feedback_official,
-    max(a.feedback_status_change) AS feedback_status_change
+ SELECT post_id,
+    min(feedback_first_date) AS feedback_first_date,
+    max(feedback_official) AS feedback_official,
+    max(feedback_status_change) AS feedback_status_change
    FROM ( SELECT activities.item_id AS post_id,
             min(activities.created_at) AS feedback_first_date,
             0 AS feedback_official,
@@ -1125,7 +1120,7 @@ CREATE VIEW public.analytics_build_feedbacks AS
             0 AS feedback_status_change
            FROM public.official_feedbacks
           GROUP BY official_feedbacks.post_id) a
-  GROUP BY a.post_id;
+  GROUP BY post_id;
 
 
 --
@@ -1190,8 +1185,8 @@ CREATE TABLE public.projects (
 --
 
 CREATE VIEW public.analytics_dimension_projects AS
- SELECT projects.id,
-    projects.title_multiloc
+ SELECT id,
+    title_multiloc
    FROM public.projects;
 
 
@@ -1229,7 +1224,8 @@ CREATE TABLE public.idea_statuses (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ideas_count integer DEFAULT 0
+    ideas_count integer DEFAULT 0,
+    participation_method character varying DEFAULT 'ideation'::character varying NOT NULL
 );
 
 
@@ -1431,11 +1427,11 @@ CREATE TABLE public.events (
 --
 
 CREATE VIEW public.analytics_fact_events AS
- SELECT events.id,
-    events.project_id AS dimension_project_id,
-    (events.created_at)::date AS dimension_date_created_id,
-    (events.start_at)::date AS dimension_date_start_id,
-    (events.end_at)::date AS dimension_date_end_id
+ SELECT id,
+    project_id AS dimension_project_id,
+    (created_at)::date AS dimension_date_created_id,
+    (start_at)::date AS dimension_date_start_id,
+    (end_at)::date AS dimension_date_end_id
    FROM public.events;
 
 
@@ -1492,20 +1488,6 @@ CREATE TABLE public.events_attendances (
 
 
 --
--- Name: followers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.followers (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    followable_type character varying NOT NULL,
-    followable_id uuid NOT NULL,
-    user_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: ideas; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1538,7 +1520,8 @@ CREATE TABLE public.ideas (
     anonymous boolean DEFAULT false NOT NULL,
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    submitted_at timestamp(6) without time zone
 );
 
 
@@ -1587,7 +1570,7 @@ CREATE TABLE public.phases (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     participation_method character varying DEFAULT 'ideation'::character varying NOT NULL,
-    posting_enabled boolean DEFAULT true,
+    submission_enabled boolean DEFAULT true,
     commenting_enabled boolean DEFAULT true,
     reacting_enabled boolean DEFAULT true NOT NULL,
     reacting_like_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
@@ -1604,8 +1587,6 @@ CREATE TABLE public.phases (
     voting_min_total integer DEFAULT 0,
     reacting_dislike_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
     reacting_dislike_limited_max integer DEFAULT 10,
-    posting_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    posting_limited_max integer DEFAULT 1,
     allow_anonymous_participation boolean DEFAULT false NOT NULL,
     document_annotation_embed_url character varying,
     voting_method character varying,
@@ -1616,7 +1597,10 @@ CREATE TABLE public.phases (
     votes_count integer DEFAULT 0 NOT NULL,
     campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
-    native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb
+    native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
+    expire_days_limit integer,
+    reacting_threshold integer,
+    prescreening_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -1799,24 +1783,7 @@ UNION ALL
     0 AS dislikes_count
    FROM ((public.events_attendances ea
      LEFT JOIN public.events e ON ((e.id = ea.event_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)))
-UNION ALL
- SELECT f.id,
-    f.user_id AS dimension_user_id,
-    (f.user_id)::text AS participant_id,
-        CASE f.followable_type
-            WHEN 'Project'::text THEN f.followable_id
-            WHEN 'Idea'::text THEN i.project_id
-            ELSE NULL::uuid
-        END AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (f.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM ((public.followers f
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'follower'::text) AND ((adt.parent)::text = lower((f.followable_type)::text)))))
-     LEFT JOIN public.ideas i ON ((i.id = f.followable_id)));
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)));
 
 
 --
@@ -1979,11 +1946,11 @@ CREATE TABLE public.impact_tracking_sessions (
 --
 
 CREATE VIEW public.analytics_fact_sessions AS
- SELECT impact_tracking_sessions.id,
-    impact_tracking_sessions.monthly_user_hash,
-    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
-    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
-    impact_tracking_sessions.user_id AS dimension_user_id
+ SELECT id,
+    monthly_user_hash,
+    (created_at)::date AS dimension_date_created_id,
+    (updated_at)::date AS dimension_date_updated_id,
+    user_id AS dimension_user_id
    FROM public.impact_tracking_sessions;
 
 
@@ -2030,17 +1997,6 @@ CREATE TABLE public.areas (
     custom_field_option_id uuid,
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: areas_ideas; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.areas_ideas (
-    area_id uuid,
-    idea_id uuid,
-    id uuid DEFAULT shared_extensions.uuid_generate_v4() NOT NULL
 );
 
 
@@ -2215,14 +2171,21 @@ CREATE TABLE public.custom_fields (
     resource_id uuid,
     hidden boolean DEFAULT false NOT NULL,
     maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     logic jsonb DEFAULT '{}'::jsonb NOT NULL,
     answer_visible_to character varying,
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
+    random_option_ordering boolean DEFAULT false NOT NULL,
+    page_layout character varying,
+    linear_scale_label_1_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_3_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_4_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    dropdown_layout boolean DEFAULT false NOT NULL
 );
 
 
@@ -2379,6 +2342,20 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ai_reason character varying
+);
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.followers (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    followable_type character varying NOT NULL,
+    followable_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2812,7 +2789,8 @@ CREATE TABLE public.nav_bar_items (
     title_multiloc jsonb,
     static_page_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    project_id uuid
 );
 
 
@@ -2873,7 +2851,9 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL
+    global_custom_fields boolean DEFAULT false NOT NULL,
+    verification_expiry integer,
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -2887,7 +2867,8 @@ CREATE TABLE public.permissions_custom_fields (
     custom_field_id uuid NOT NULL,
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ordering integer DEFAULT 0
 );
 
 
@@ -3518,14 +3499,6 @@ ALTER TABLE ONLY public.app_configurations
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: areas_ideas areas_ideas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT areas_ideas_pkey PRIMARY KEY (id);
 
 
 --
@@ -4622,27 +4595,6 @@ CREATE UNIQUE INDEX index_analytics_dimension_types_on_name_and_parent ON public
 
 
 --
--- Name: index_areas_ideas_on_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_ideas_on_area_id ON public.areas_ideas USING btree (area_id);
-
-
---
--- Name: index_areas_ideas_on_idea_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_ideas_on_idea_id ON public.areas_ideas USING btree (idea_id);
-
-
---
--- Name: index_areas_ideas_on_idea_id_and_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_areas_ideas_on_idea_id_and_area_id ON public.areas_ideas USING btree (idea_id, area_id);
-
-
---
 -- Name: index_areas_initiatives_on_area_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5487,6 +5439,13 @@ CREATE INDEX index_nav_bar_items_on_code ON public.nav_bar_items USING btree (co
 --
 
 CREATE INDEX index_nav_bar_items_on_ordering ON public.nav_bar_items USING btree (ordering);
+
+
+--
+-- Name: index_nav_bar_items_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_project_id ON public.nav_bar_items USING btree (project_id);
 
 
 --
@@ -6524,14 +6483,6 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: areas_ideas fk_rails_81e27f10eb; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT fk_rails_81e27f10eb FOREIGN KEY (area_id) REFERENCES public.areas(id);
-
-
---
 -- Name: notifications fk_rails_828a073a04; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6980,19 +6931,19 @@ ALTER TABLE ONLY public.cosponsors_initiatives
 
 
 --
+-- Name: nav_bar_items fk_rails_e8076fb9f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nav_bar_items
+    ADD CONSTRAINT fk_rails_e8076fb9f6 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: polls_response_options fk_rails_e871bf6e26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.polls_response_options
     ADD CONSTRAINT fk_rails_e871bf6e26 FOREIGN KEY (response_id) REFERENCES public.polls_responses(id);
-
-
---
--- Name: areas_ideas fk_rails_e96a71e39f; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_ideas
-    ADD CONSTRAINT fk_rails_e96a71e39f FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -7491,6 +7442,23 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240510103700'),
 ('20240516113700'),
 ('20240606112752'),
-('20240612134240');
+('20240612134240'),
+('202407081751'),
+('20240710101033'),
+('20240722090955'),
+('20240729141927'),
+('20240730093933'),
+('20240731181623'),
+('20240731223530'),
+('20240805121645'),
+('20240806161121'),
+('20240812115140'),
+('20240814133336'),
+('20240814163522'),
+('20240821135150'),
+('20240826083227'),
+('20240829185625'),
+('20240923112800'),
+('20240923112801');
 
 

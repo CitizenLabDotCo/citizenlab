@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       'Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!',
   },
+  skipLinkText: {
+    id: 'app.containers.App.skipLinkText',
+    defaultMessage: 'Skip to main content',
+  },
 });

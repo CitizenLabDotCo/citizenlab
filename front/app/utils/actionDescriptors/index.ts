@@ -112,6 +112,23 @@ const actionDisabledMessages: {
     user_not_permitted: messages.pollDisabledNotPermitted,
     user_blocked: messages.pollDisabledNotPermitted,
   },
+  attending_event: {
+    user_not_signed_in: messages.attendingEventNotSignedIn,
+    user_not_permitted: messages.attendingEventNotPermitted,
+    user_not_in_group: messages.attendingEventNotInGroup,
+    user_blocked: messages.attendingEventNotPermitted,
+    user_not_verified: messages.attendingEventNotVerified,
+    user_missing_requirements: messages.attendingEventMissingRequirements,
+  },
+  volunteering: {
+    user_not_signed_in: messages.volunteeringNotSignedIn,
+    user_not_active: messages.volunteeringNotActiveUser,
+    user_not_verified: messages.volunteeringNotVerified,
+    user_missing_requirements: messages.volunteeringMissingRequirements,
+    user_not_permitted: messages.volunteeringNotPermitted,
+    user_not_in_group: messages.volunteeringNotInGroup,
+    user_blocked: messages.volunteeringNotPermitted,
+  },
 };
 
 /**

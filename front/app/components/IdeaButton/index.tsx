@@ -131,11 +131,13 @@ const IdeaButton = memo<Props>(
 
         trackEventByName(tracks.signUpInModalOpened);
 
-        triggerAuthenticationFlow({
-          flow,
-          context,
-          successAction,
-        });
+        triggerAuthenticationFlow(
+          {
+            context,
+            successAction,
+          },
+          flow
+        );
       };
 
     const tippyEnabled = !enabled && !!disabledReason;
@@ -146,7 +148,6 @@ const IdeaButton = memo<Props>(
           projectId={projectId}
           inMap={inMap}
           disabledReason={disabledReason}
-          phase={phase}
         />
       );
     }
@@ -162,7 +163,6 @@ const IdeaButton = memo<Props>(
                 projectId={projectId}
                 inMap={inMap}
                 disabledReason={disabledReason}
-                phase={phase}
               />
             ) : null
           }

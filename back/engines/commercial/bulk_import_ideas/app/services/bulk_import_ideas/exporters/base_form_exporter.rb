@@ -6,7 +6,7 @@ module BulkImportIdeas::Exporters
       @phase = phase
       @project = phase.project
       @locale = locale
-      @participation_method = Factory.instance.participation_method_for(phase)
+      @participation_method = phase.pmethod
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
     end
 
@@ -25,6 +25,12 @@ module BulkImportIdeas::Exporters
     # Combines fields and options from the export into a single array for lookup on import
     def importer_data
       raise NotImplementedError, 'This method is not yet implemented'
+    end
+
+    private
+
+    def custom_field_service
+      @custom_field_service ||= CustomFieldService.new
     end
   end
 end

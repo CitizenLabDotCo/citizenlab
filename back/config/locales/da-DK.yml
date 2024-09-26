@@ -36,6 +36,8 @@ da:
   symbols:
     outside: et andet sted
   idea_statuses:
+    prescreening: Forudgående screening
+    prescreening_description: Dette input er i øjeblikket ved at blive gennemgået af projektlederen og er endnu ikke synligt for offentligheden.
     proposed: foreslået
     proposed_description: Denne idé er blevet foreslået til byen
     viewed: set
@@ -48,6 +50,14 @@ da:
     implemented_description: Denne ide er blevet implementeret af byen
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
+    expired: udløbet
+    expired_description: udløbet
+    threshold_reached: fået nok stemmer
+    threshold_reached_description: fået nok stemmer
+    answered: under politisk behandling
+    answered_description: under politisk behandling
+    ineligible: opfylder ikke kriterierne
+    ineligible_description: opfylder ikke kriterierne
   initiative_statuses:
     review_pending: afventer gennemgang
     review_pending_description: afventer gennemgang
@@ -182,8 +192,8 @@ da:
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Siden du valgte "{other_option}", hvad tænker du så på?
+      other_input_field:
+        title: Skriv dit svar
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ da:
           title: Hvad er dit input?
         option:
           title: Hvad er din mulighed?
-      details:
-        title: Detaljer
-      attachements:
-        title: Billeder og vedhæftede filer
-      extra:
-        title: Yderligere oplysninger
   custom_field_options:
     gender:
       male: Mand
@@ -229,6 +233,7 @@ da:
       <ul><li>Giv dig tid til at uddybe dit forslag. Skriv om nødvendigt et udkast først og kopiér det derefter hertil.</li><li>Vælg en meningsfuld titel, der tydeligt forklarer, hvad dit forslag indebærer.</li><li>Sørg for at visualisere dit forslag med et passende billede, så det skiller sig mere ud.</li><li>Tilføj relevante vedhæftede filer, såsom videoer, inspirerende eksempler, tekniske detaljer eller planer.</li><li>Del din idé på de sociale medier og andre kanaler for at samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Nulstil din adgangskode til %{organizationName}'
       cta_reset_password: 'Nulstil din adgangskode'
       message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
       subject: '%{organizationName}: Nulstil din adgangskode'
@@ -267,6 +272,7 @@ da:
       submitted_at: 'Indsendt på'
       tags: 'Emner'
       title: 'Titel'
+      user_data: 'Brugerdata'
       votes_count: 'Afstemninger'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     form_end_page:
-      title: 'Tak for din deltagelse'
-      description: "Send venligst dine svar ved at vælge 'Send' nedenfor."
+      title_text: 'Næsten færdig'
+      description_text_2: "Du er ved at indsende dine svar. Ved at klikke på \"Indsend\" giver du os tilladelse til at analysere dine svar.<br/>Når du har indsendt, kan du ikke længere gå tilbage og ændre dine svar."
     pdf_export:
       personal_data: 'Personlige data'
-      personal_data_explanation_ideation: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
-      personal_data_explanation_native_survey: "Vi sender dit input til %{organizationName}'s online deltagelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
+      personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
+      personal_data_explanation_private: "Vi sender dit input til %{organizationName}'s online deltagelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
       first_name: 'Fornavn'
       last_name: 'Efternavn'
       email_address: 'E-mail adresse'
@@ -287,6 +293,12 @@ da:
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
+      choose_exactly:
+        one: 'Vælg præcis %{count} mulighed'
+        other: 'Vælg præcis %{count} muligheder'
+      choose_between: 'Vælg mellem %{min} og %{max}'
+      choose_at_least: 'Vælg mindst %{count} muligheder'
+      choose_at_most: 'Vælg højst %{count} muligheder'
       this_answer: 'Dette svar vil kun blive delt med moderatorer og ikke med offentligheden.'
       page: 'Side'
       date_published: 'Dato for offentliggørelse (dd-mm-åååå)'
@@ -299,6 +311,7 @@ da:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bekræft din e-mail-adresse til %{organizationName}'s borgerinddragelsesplatform"
+      preheader: 'Bekræft din e-mailadresse til %{organizationName}'
       header: "Din bekræftelseskode"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekræft din e-mailadresse"
@@ -313,6 +326,7 @@ da:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Din konto er blevet midlertidigt deaktiveret'
+      preheader: 'Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret'
       title_user_blocked: 'Din konto er blevet midlertidigt deaktiveret'
       paragraph_1_without_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret på grund af overtrædelse af fællesskabsretningslinjerne."
       paragraph_1_with_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
@@ -328,3 +342,5 @@ da:
   voting_method:
     default_voting_term_singular: "stem"
     default_voting_term_plural: "afstemninger"
+  ics_calendar_event:
+    event_details: "Detaljer om begivenheden"

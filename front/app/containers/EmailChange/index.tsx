@@ -9,7 +9,7 @@ import { object, string } from 'yup';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import useAuthUser from 'api/me/useAuthUser';
 
-import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
+import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
 import EmailConfirmation from 'containers/Authentication/steps/EmailConfirmation';
 import { ErrorCode } from 'containers/Authentication/typings';
 
@@ -139,9 +139,11 @@ const EmailChange = () => {
             )}
             <EmailConfirmation
               state={{
+                flow: 'signup',
                 email: methods.watch('email'),
                 token: null,
                 prefilledBuiltInFields: null,
+                ssoProvider: null,
               }}
               loading={loading}
               setError={setConfirmationError}

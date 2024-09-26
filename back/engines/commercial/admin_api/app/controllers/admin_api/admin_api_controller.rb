@@ -15,9 +15,9 @@ module AdminApi
       false
     end
 
-    def switch_tenant(&block)
+    def switch_tenant(&)
       tenant_id = params[:tenant_id] || request.headers['tenant']
-      tenant_id ? Tenant.find(tenant_id).switch(&block) : yield
+      tenant_id ? Tenant.find(tenant_id).switch(&) : yield
     end
 
     def send_not_found(error = nil)

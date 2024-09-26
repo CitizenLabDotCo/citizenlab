@@ -43,7 +43,7 @@ export interface Props {
   showFollowButton?: boolean;
 }
 
-const Container = styled(Link)`
+const Container = styled(Box)`
   display: block;
   ${defaultCardStyle};
   cursor: pointer;
@@ -99,7 +99,9 @@ const IdeaCard = ({
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
-  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const ideaTitle = localize(idea.data.attributes.title_multiloc, {
+    maxChar: 50,
+  });
   const [searchParams] = useSearchParams();
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
@@ -124,6 +126,7 @@ const IdeaCard = ({
   const { slug } = idea.data.attributes;
 
   const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
     clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
@@ -135,7 +138,6 @@ const IdeaCard = ({
     <Container
       className="e2e-card e2e-idea-card"
       id={idea.data.id}
-      to={`/ideas/${slug}?go_back=true`}
       onClick={handleClick}
     >
       <CardImage
@@ -161,15 +163,17 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Title
-            variant="h3"
-            mt="4px"
-            mb="16px"
-            className="e2e-idea-card-title"
-          >
-            {ideaTitle}
-          </Title>
-          {!hideBody && <Body idea={idea} />}
+          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+            <Title
+              variant="h3"
+              mt="4px"
+              mb="16px"
+              className="e2e-idea-card-title"
+            >
+              {ideaTitle}
+            </Title>
+            {!hideBody && <Body idea={idea} />}
+          </Link>
         </Box>
         <Box>
           <Interactions idea={idea} phase={phaseData || null} />

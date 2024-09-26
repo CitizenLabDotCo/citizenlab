@@ -113,7 +113,7 @@ class FlexibleInputFormMigrator
   end
 
   def merge_ideation_fields(fields, custom_form)
-    participation_method = Factory.instance.participation_method_for custom_form.participation_context
+    participation_method = custom_form.participation_context.pmethod
     default_fields = participation_method.default_fields(custom_form)
     constraints = participation_method.constraints
     updated_fields = []
@@ -157,7 +157,7 @@ class FlexibleInputFormMigrator
   def merge_attributes(existing_field, default_field, form_constraints)
     field_constraints = form_constraints[existing_field.code&.to_sym]
     if field_constraints
-      field_constraints[:locks]&.keys&.each do |attribute|
+      field_constraints[:locks]&.each_key do |attribute|
         existing_field[attribute] = default_field[attribute]
       end
     end

@@ -16,7 +16,7 @@ resource 'Campaign consents' do
       @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.select do |klaz|
         klaz.ancestors.include?(EmailCampaigns::Consentable) && klaz.consentable_for?(@user)
       end.map do |klaz|
-        factory_type = "#{klaz.name.demodulize.underscore}_campaign".to_sym
+        factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
         create(factory_type)
       end
 

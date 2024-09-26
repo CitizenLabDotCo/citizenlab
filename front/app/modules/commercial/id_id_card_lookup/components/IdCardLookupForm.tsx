@@ -22,7 +22,6 @@ import {
   HelpImage,
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
-import T from 'components/T';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 
@@ -116,12 +115,10 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
           <FormField>
             <StyledLabel htmlFor="cardId">
               <LabelTextContainer>
-                <T value={method.attributes.card_id_multiloc} />
+                {method.attributes.card_id}
                 <IconTooltip
                   maxTooltipWidth={200}
-                  content={
-                    <T value={method.attributes.card_id_tooltip_multiloc} />
-                  }
+                  content={method.attributes.card_id_tooltip}
                 />
               </LabelTextContainer>
               <Input

@@ -74,13 +74,38 @@ RSpec.describe SurveyResultsGeneratorService do
         'fr-FR' => "Êtes-vous d'accord avec la vision ?",
         'nl-NL' => 'Ben je het eens met de visie?'
       },
-      maximum: 5,
-      minimum_label_multiloc: {
+      maximum: 7,
+      linear_scale_label_1_multiloc: {
         'en' => 'Strongly disagree',
         'fr-FR' => "Pas du tout d'accord",
         'nl-NL' => 'Helemaal niet mee eens'
       },
-      maximum_label_multiloc: {
+      linear_scale_label_2_multiloc: {
+        'en' => 'Disagree',
+        'fr-FR' => 'Être en désaccord',
+        'nl-NL' => 'Niet mee eens'
+      },
+      linear_scale_label_3_multiloc: {
+        'en' => 'Slightly disagree',
+        'fr-FR' => 'Plutôt en désaccord',
+        'nl-NL' => 'Enigszins oneens'
+      },
+      linear_scale_label_4_multiloc: {
+        'en' => 'Neutral',
+        'fr-FR' => 'Neutre',
+        'nl-NL' => 'Neutraal'
+      },
+      linear_scale_label_5_multiloc: {
+        'en' => 'Slightly agree',
+        'fr-FR' => "Plutôt d'accord",
+        'nl-NL' => 'Enigszins eens'
+      },
+      linear_scale_label_6_multiloc: {
+        'en' => 'Agree',
+        'fr-FR' => "D'accord",
+        'nl-NL' => 'Mee eens'
+      },
+      linear_scale_label_7_multiloc: {
         'en' => 'Strongly agree',
         'fr-FR' => "Tout à fait d'accord",
         'nl-NL' => 'Strerk mee eens'
@@ -152,6 +177,17 @@ RSpec.describe SurveyResultsGeneratorService do
       required: false
     )
   end
+  let_it_be(:shapefile_upload_field) do
+    create(
+      :custom_field,
+      input_type: 'shapefile_upload',
+      resource: form,
+      title_multiloc: {
+        'en' => 'Upload a file'
+      },
+      required: false
+    )
+  end
 
   let_it_be(:point_field) do
     create(
@@ -164,7 +200,44 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  let_it_be(:map_config) { create(:map_config, mappable: point_field) }
+  let_it_be(:map_config_for_point) { create(:map_config, mappable: point_field) }
+
+  let_it_be(:line_field) do
+    create(
+      :custom_field_line,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Where should we build the new bicycle path?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config_for_line) { create(:map_config, mappable: line_field) }
+
+  let_it_be(:polygon_field) do
+    create(
+      :custom_field_polygon,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Where should we build the new housing?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config_for_polygon) { create(:map_config, mappable: polygon_field) }
+
+  let_it_be(:number_field) do
+    create(
+      :custom_field_number,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How many cats would you like?'
+      },
+      description_multiloc: {}
+    )
+  end
 
   let_it_be(:user_custom_field) do
     create(:custom_field_gender, :with_options)
@@ -176,7 +249,8 @@ RSpec.describe SurveyResultsGeneratorService do
     male_user = create(:user, custom_field_values: { gender: 'male' })
     female_user = create(:user, custom_field_values: { gender: 'female' })
     no_gender_user = create(:user, custom_field_values: {})
-    idea_file = create(:idea_file)
+    idea_file1 = create(:idea_file)
+    idea_file2 = create(:idea_file)
     create(
       :native_survey_response,
       project: project,
@@ -185,11 +259,15 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        file_upload_field.key => { 'id' => idea_file1.id, 'name' => idea_file1.name },
+        shapefile_upload_field.key => { 'id' => idea_file2.id, 'name' => idea_file2.name },
         point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
-        linear_scale_field.key => 3
+        line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
+        polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
+        linear_scale_field.key => 3,
+        number_field.key => 42
       },
-      idea_files: [idea_file],
+      idea_files: [idea_file1, idea_file2],
       author: female_user
     )
     create(
@@ -201,6 +279,8 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cow pig cat],
         select_field.key => 'la',
         point_field.key => { type: 'Point', coordinates: [11.22, 33.44] },
+        line_field.key => { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] },
+        polygon_field.key => { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] },
         linear_scale_field.key => 4
       },
       author: male_user
@@ -258,7 +338,7 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {},
       author: female_user
     )
-    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
+    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1, 6 => 2, 7 => 3 }.each do |value, count|
       count.times do
         create(
           :native_survey_response,
@@ -281,11 +361,11 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct totals' do
-        expect(generated_results[:totalSubmissions]).to eq 22
+        expect(generated_results[:totalSubmissions]).to eq 27
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 9
+        expect(generated_results[:results].count).to eq 13
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
@@ -299,7 +379,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'What is your favourite colour?' },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 4,
           textResponses: [
             { answer: 'Blue' },
@@ -326,7 +406,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
           }
@@ -343,7 +423,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
           }
@@ -363,11 +443,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 4,
-          totalPickCount: 28,
+          totalPickCount: 33,
           answers: [
-            { answer: nil, count: 18 },
+            { answer: nil, count: 23 },
             { answer: 'cat', count: 4 },
             { answer: 'dog', count: 3 },
             { answer: 'cow', count: 2 },
@@ -404,11 +484,11 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 18,
+                count: 23,
                 groups: [
                   { count: 1, group: 'male' },
                   { count: 2, group: 'female' },
-                  { count: 15, group: nil }
+                  { count: 20, group: nil }
                 ]
               }, {
                 answer: 'cat',
@@ -457,11 +537,11 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 18,
+                count: 23,
                 groups: [
                   { count: 1, group: 'la' },
                   { count: 1, group: 'other' },
-                  { count: 16, group: nil }
+                  { count: 21, group: nil }
                 ]
               }, {
                 answer: 'cat',
@@ -536,10 +616,12 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          totalResponseCount: 22,
-          questionResponseCount: 17,
-          totalPickCount: 22,
+          totalResponseCount: 27,
+          questionResponseCount: 22,
+          totalPickCount: 27,
           answers: [
+            { answer: 7, count: 3 },
+            { answer: 6, count: 2 },
             { answer: 5, count: 1 },
             { answer: 4, count: 1 },
             { answer: 3, count: 8 },
@@ -550,10 +632,12 @@ RSpec.describe SurveyResultsGeneratorService do
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
             }
           }
         }
@@ -570,23 +654,23 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
         let(:expected_result_linear_scale_without_min_and_max_labels) do
           expected_result_linear_scale.tap do |result|
-            result[:multilocs][:answer][5][:title_multiloc] = {
-              'en' => '5 - Strongly agree',
-              'fr-FR' => '5',
-              'nl-NL' => '5'
-            }
             result[:multilocs][:answer][1][:title_multiloc] = {
               'en' => '1',
               'fr-FR' => "1 - Pas du tout d'accord",
               'nl-NL' => '1'
+            }
+            result[:multilocs][:answer][5][:title_multiloc] = {
+              'en' => '5 - Slightly agree',
+              'fr-FR' => '5',
+              'nl-NL' => '5'
             }
           end
         end
 
         before do
           linear_scale_field.update!(
-            minimum_label_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
-            maximum_label_multiloc: { 'en' => 'Strongly agree' }
+            linear_scale_label_1_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
+            linear_scale_label_5_multiloc: { 'en' => 'Slightly agree' }
           )
         end
 
@@ -607,10 +691,16 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            totalResponseCount: 22,
-            questionResponseCount: 17,
-            totalPickCount: 22,
+            totalResponseCount: 27,
+            questionResponseCount: 22,
+            totalPickCount: 27,
             answers: [
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
               { answer: 5, count: 1, groups: [
                 { count: 1, group: nil }
               ] },
@@ -636,10 +726,12 @@ RSpec.describe SurveyResultsGeneratorService do
             multilocs: {
               answer: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
@@ -675,11 +767,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 6,
-          totalPickCount: 22,
+          totalPickCount: 27,
           answers: [
-            { answer: nil, count: 16 },
+            { answer: nil, count: 21 },
             { answer: 'la', count: 2 },
             { answer: 'ny', count: 1 },
             { answer: 'other', count: 3 }
@@ -707,7 +799,7 @@ RSpec.describe SurveyResultsGeneratorService do
         it 'returns select answers in order of the number of responses, with other always last' do
           answers = generator.generate_results.dig(:results, 4, :answers)
           expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
-          expect(answers.pluck(:count)).to eq [16, 2, 1, 3]
+          expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
         end
 
         it 'returns a single result for a select field' do
@@ -723,10 +815,10 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:answers] = [
               {
                 answer: nil,
-                count: 16,
+                count: 21,
                 groups: [
                   { count: 1, group: 'female' },
-                  { count: 15, group: nil }
+                  { count: 20, group: nil }
                 ]
               }, {
                 answer: 'la',
@@ -769,14 +861,16 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            totalResponseCount: 22,
+            totalResponseCount: 27,
             questionResponseCount: 6,
-            totalPickCount: 22,
+            totalPickCount: 27,
             answers: [
               {
                 answer: nil,
-                count: 16,
+                count: 21,
                 groups: [
+                  { count: 3, group: 7 },
+                  { count: 2, group: 6 },
                   { count: 1, group: 5 },
                   { count: 7, group: 3 },
                   { count: 5, group: 2 },
@@ -815,13 +909,15 @@ RSpec.describe SurveyResultsGeneratorService do
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
-            legend: [5, 4, 3, 2, 1, nil],
+            legend: [7, 6, 5, 4, 3, 2, 1, nil],
             textResponses: [
               { answer: 'Austin' },
               { answer: 'Miami' },
@@ -864,11 +960,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 3,
-          totalPickCount: 22,
+          totalPickCount: 27,
           answers: [
-            { answer: nil, count: 19 },
+            { answer: nil, count: 24 },
             { answer: 'house', count: 2 },
             { answer: 'school', count: 1 }
           ],
@@ -913,12 +1009,12 @@ RSpec.describe SurveyResultsGeneratorService do
           expect(result[:answers]).to match [
             {
               answer: nil,
-              count: 19,
+              count: 24,
               groups: [
                 { count: 1, group: 'la' },
                 { count: 1, group: 'ny' },
                 { count: 1, group: 'other' },
-                { count: 16, group: nil }
+                { count: 21, group: nil }
               ]
             },
             {
@@ -948,7 +1044,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
             { name: end_with('.pdf'), url: end_with('.pdf') }
@@ -961,6 +1057,27 @@ RSpec.describe SurveyResultsGeneratorService do
       end
     end
 
+    describe 'shapefile upload fields' do
+      let(:expected_result_shapefile_upload) do
+        {
+          customFieldId: shapefile_upload_field.id,
+          inputType: 'shapefile_upload',
+          question: { 'en' => 'Upload a file' },
+          required: false,
+          grouped: false,
+          totalResponseCount: 27,
+          questionResponseCount: 1,
+          files: [
+            { name: end_with('.pdf'), url: end_with('.pdf') }
+          ]
+        }
+      end
+
+      it 'returns the results for file upload field' do
+        expect(generated_results[:results][8]).to match expected_result_shapefile_upload
+      end
+    end
+
     describe 'point fields' do
       let(:expected_result_point) do
         {
@@ -969,18 +1086,85 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           grouped: false,
           questionResponseCount: 2,
-          totalResponseCount: 22,
+          totalResponseCount: 27,
           customFieldId: point_field.id,
-          mapConfigId: map_config.id,
+          mapConfigId: map_config_for_point.id,
           pointResponses: a_collection_containing_exactly(
-            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
           )
         }
       end
 
       it 'returns the results for a point field' do
-        expect(generated_results[:results][8]).to match expected_result_point
+        expect(generated_results[:results][9]).to match expected_result_point
+      end
+    end
+
+    describe 'line fields' do
+      let(:expected_result_line) do
+        {
+          inputType: 'line',
+          question: { 'en' => 'Where should we build the new bicycle path?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 27,
+          customFieldId: line_field.id,
+          mapConfigId: map_config_for_line.id,
+          lineResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
+          )
+        }
+      end
+
+      it 'returns the results for a line field' do
+        expect(generated_results[:results][10]).to match expected_result_line
+      end
+    end
+
+    describe 'polygon fields' do
+      let(:expected_result_polygon) do
+        {
+          inputType: 'polygon',
+          question: { 'en' => 'Where should we build the new housing?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 27,
+          customFieldId: polygon_field.id,
+          mapConfigId: map_config_for_polygon.id,
+          polygonResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
+            { answer: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
+          )
+        }
+      end
+
+      it 'returns the results for a polygon field' do
+        expect(generated_results[:results][11]).to match expected_result_polygon
+      end
+    end
+
+    describe 'number fields' do
+      let(:expected_result_number) do
+        {
+          inputType: 'number',
+          question: { 'en' => 'How many cats would you like?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 1,
+          totalResponseCount: 27,
+          customFieldId: number_field.id,
+          numberResponses: a_collection_containing_exactly(
+            { answer: 42 }
+          )
+        }
+      end
+
+      it 'returns the results for a number field' do
+        expect(generated_results[:results][12]).to match expected_result_number
       end
     end
   end

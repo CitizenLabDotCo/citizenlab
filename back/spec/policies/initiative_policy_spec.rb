@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 describe InitiativePolicy do
   subject(:policy) { described_class.new(user, initiative) }
 

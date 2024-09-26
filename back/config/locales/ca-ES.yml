@@ -36,6 +36,8 @@ ca:
   symbols:
     outside: algun altre lloc
   idea_statuses:
+    prescreening: projecció prèvia
+    prescreening_description: Aquesta aportació està actualment en procés de revisió pel director del projecte i encara no és visible per al públic.
     proposed: proposat
     proposed_description: Aquesta idea s'ha proposat a la ciutat
     viewed: vist
@@ -48,6 +50,14 @@ ca:
     implemented_description: Aquesta idea ha estat implementada per l'Ajuntament
     rejected: rebutjada
     rejected_description: Aquesta idea ha estat rebutjada
+    expired: caducat
+    expired_description: caducat
+    threshold_reached: llindar assolit
+    threshold_reached_description: llindar assolit
+    answered: va respondre
+    answered_description: va respondre
+    ineligible: inelegible
+    ineligible_description: inelegible
   initiative_statuses:
     review_pending: revisió pendent
     review_pending_description: revisió pendent
@@ -182,8 +192,8 @@ ca:
       section3:
         title: Detalls
         description:
-      other_text_field:
-        title: Si has triat "{other_option}", en què estàs pensant?
+      other_input_field:
+        title: Escriu la teva resposta
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ ca:
           title: Quin és el vostre comentari?
         option:
           title: Quina és la vostra opció ?
-      details:
-        title: Detalls
-      attachements:
-        title: Imatges i fitxers adjunts
-      extra:
-        title: Informació adicional
   custom_field_options:
     gender:
       male: Mascle
@@ -229,6 +233,7 @@ ca:
       <ul><li>Preneu-vos el temps per elaborar la vostra proposta. Si cal, escriviu primer un esborrany i després copieu-lo i enganxeu-lo aquí.</li><li>Trieu un títol significatiu que expliqui clarament què implica la vostra proposta.</li><li>Visualitzeu la vostra proposta amb una imatge adequada per ajudar-la a destacar!</li><li>Afegiu fitxers adjunts rellevants, com ara vídeos, exemples inspiradors, detalls tècnics o plans.</li><li>Compartiu la vostra idea a les xarxes socials i altres canals per obtenir el suport dels altres.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Restableix la teva contrasenya per a %{organizationName}'
       cta_reset_password: 'Restablir la contrasenya'
       message_you_reset_your_password: 'Heu sol·licitat un restabliment de la contrasenya per a la plataforma de participació de %{organizationName}. Feu clic al botó següent per triar una contrasenya nova i segura. L''enllaç caduca en 1 hora.'
       subject: '%{organizationName}: Restableix la teva contrasenya'
@@ -267,6 +272,7 @@ ca:
       submitted_at: 'Presentat a'
       tags: 'Etiquetes'
       title: 'Títol'
+      user_data: 'Dades d''usuari'
       votes_count: 'Vots'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ ca:
       option1: 'opció 1'
       option2: 'Opció 2'
     form_end_page:
-      title: 'Gràcies per participar'
-      description: "Si us plau, envieu les vostres respostes seleccionant \"Envia\" a continuació."
+      title_text: 'Gairebé fet'
+      description_text_2: "Esteu a punt d'enviar les vostres respostes. En fer clic a \"Envia\", ens doneu permís per analitzar les vostres respostes.<br/>Després d'enviar, ja no podreu tornar enrere i canviar cap de les vostres respostes."
     pdf_export:
       personal_data: 'Dades personals'
-      personal_data_explanation_ideation: "Enviarem la teva aportació a la plataforma de participació en línia de %{organizationName}. Si voleu que el vostre nom es mostri com a autor d'aquesta entrada i rebre actualitzacions rellevants per a la vostra entrada per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. El vostre correu electrònic no serà públic i només el farà servir %{organizationName}. Si vols mantenir l'anonimat, o no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
-      personal_data_explanation_native_survey: "Enviarem la teva aportació a la plataforma de participació en línia de %{organizationName}. Si voleu rebre actualitzacions rellevants per a les vostres aportacions per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. Les teves dades no seran públiques i només seran utilitzades per %{organizationName}. Si no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
+      personal_data_explanation_public: "Enviarem les vostres aportacions a la plataforma de participació en línia de %{organizationName}. Si voleu que el vostre nom es mostri com a autor d'aquesta entrada i rebre actualitzacions rellevants per a la vostra entrada per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. El vostre correu electrònic no serà públic i només el farà servir %{organizationName}. Si vols mantenir l'anonimat, o no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
+      personal_data_explanation_private: "Enviarem les vostres aportacions a la plataforma de participació en línia de %{organizationName}. Si voleu rebre actualitzacions rellevants per a les vostres aportacions per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. Les teves dades no seran públiques i només seran utilitzades per %{organizationName}. Si no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
       first_name: 'Nom'
       last_name: 'Cognom'
       email_address: 'Correu electrònic'
@@ -287,6 +293,12 @@ ca:
       optional: 'opcional'
       permission: 'Permís'
       choose_as_many: 'Trieu-ne tantes com vulgueu'
+      choose_exactly:
+        one: 'Trieu exactament l''opció %{count}'
+        other: 'Trieu exactament les opcions %{count}'
+      choose_between: 'Trieu entre les opcions %{min} i %{max}'
+      choose_at_least: 'Trieu almenys %{count} opcions'
+      choose_at_most: 'Trieu com a màxim %{count} opcions'
       this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
       page: 'Pàgina'
       date_published: 'Data de publicació (dd-mm-aaaa)'
@@ -299,6 +311,7 @@ ca:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
+      preheader: 'Confirmeu la vostra adreça de correu electrònic per a %{organizationName}'
       header: "El teu codi de confirmació"
       header_message: "hola %{firstName}!"
       confirm_email_address: "Confirma la teva adreça electrònica"
@@ -313,6 +326,7 @@ ca:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'El teu compte s''ha desactivat temporalment'
+      preheader: 'El vostre compte a la plataforma de participació de %{organizationName} s''ha desactivat temporalment'
       title_user_blocked: 'El teu compte s''ha desactivat temporalment'
       paragraph_1_without_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
       paragraph_1_with_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel motiu següent:"
@@ -328,3 +342,5 @@ ca:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "vots"
+  ics_calendar_event:
+    event_details: "Detalls de l'esdeveniment"

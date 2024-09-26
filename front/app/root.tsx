@@ -4,7 +4,6 @@ import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import '@arcgis/core/assets/esri/css/main.css';
 
 import * as Sentry from '@sentry/react';
 import { wrapUseRoutes } from '@sentry/react';

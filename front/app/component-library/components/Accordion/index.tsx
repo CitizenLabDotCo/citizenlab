@@ -12,6 +12,7 @@ import ListItem from '../ListItem';
 type AccordionProps = {
   title: ReactNode;
   children: ReactNode;
+  prefix?: ReactNode;
   isOpenByDefault?: boolean;
   className?: string;
   onChange?: (isOpen: boolean) => void;
@@ -104,6 +105,7 @@ const CollapseContainer = styled(Box)<{
 const Accordion = ({
   isOpenByDefault,
   title,
+  prefix,
   className,
   onChange,
   children,
@@ -125,18 +127,21 @@ const Accordion = ({
 
   return (
     <ListItem className={className} {...rest}>
-      <TitleButton
-        as="button"
-        padding="0"
-        aria-expanded={isExpanded}
-        aria-controls={`collapsed-section-${uuid}`}
-        id={`accordion-title-${uuid}`}
-        className={isExpanded ? 'expanded' : 'collapsed'}
-        onClick={handleChange}
-      >
-        {title}
-        <ChevronIcon name="chevron-right" />
-      </TitleButton>
+      <Box display="flex" alignItems="center">
+        {prefix}
+        <TitleButton
+          as="button"
+          padding="0"
+          aria-expanded={isExpanded}
+          aria-controls={`collapsed-section-${uuid}`}
+          id={`accordion-title-${uuid}`}
+          className={isExpanded ? 'expanded' : 'collapsed'}
+          onClick={handleChange}
+        >
+          {title}
+          <ChevronIcon name="chevron-right" />
+        </TitleButton>
+      </Box>
       <CSSTransition
         in={isExpanded}
         timeout={timeoutMilliseconds}

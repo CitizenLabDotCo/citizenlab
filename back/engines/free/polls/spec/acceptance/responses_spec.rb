@@ -32,7 +32,7 @@ resource 'Poll Responses' do
       example_request 'XLSX export for a non-anonymous poll' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        worksheet[0].cells.map(&:value).map(&:downcase)
+        worksheet[0].cells.map { |x| x.value.downcase }
 
         expect(worksheet.count).to eq 3
         expect(worksheet[0].cells.map(&:value)).to include 'User ID'

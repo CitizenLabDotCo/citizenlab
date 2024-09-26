@@ -12,6 +12,7 @@ import {
   colors,
   TooltipContentWrapper,
   Tooltip,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
@@ -297,6 +298,12 @@ const Forms = () => {
                                     messages.downloadExcelTemplate
                                   )}
                                 </Text>
+                                <IconTooltip
+                                  ml="4px"
+                                  content={formatMessage(
+                                    messages.downloadExcelTemplateTooltip
+                                  )}
+                                />
                               </Box>
                             </DropdownListItem>
                           </>

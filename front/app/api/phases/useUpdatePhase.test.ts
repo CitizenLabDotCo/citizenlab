@@ -17,7 +17,7 @@ const phasesMutationData: IUpdatedPhaseProperties = {
   end_at: 'one week from now',
   input_term: 'idea',
   participation_method: 'information',
-  posting_enabled: false,
+  submission_enabled: false,
   presentation_mode: 'card',
   start_at: 'today',
   title_multiloc: { en: 'A Mock Information phase' },

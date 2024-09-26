@@ -36,6 +36,8 @@ ach:
   symbols:
     outside: crwdns207702:0crwdne207702:0
   idea_statuses:
+    prescreening: crwdns2997287:0crwdne2997287:0
+    prescreening_description: crwdns2997289:0crwdne2997289:0
     proposed: crwdns207704:0crwdne207704:0
     proposed_description: crwdns207706:0crwdne207706:0
     viewed: crwdns207708:0crwdne207708:0
@@ -48,6 +50,14 @@ ach:
     implemented_description: crwdns207722:0crwdne207722:0
     rejected: crwdns207724:0crwdne207724:0
     rejected_description: crwdns207726:0crwdne207726:0
+    expired: crwdns2782541:0crwdne2782541:0
+    expired_description: crwdns2782543:0crwdne2782543:0
+    threshold_reached: crwdns2782545:0crwdne2782545:0
+    threshold_reached_description: crwdns2782547:0crwdne2782547:0
+    answered: crwdns2782549:0crwdne2782549:0
+    answered_description: crwdns2782551:0crwdne2782551:0
+    ineligible: crwdns2782553:0crwdne2782553:0
+    ineligible_description: crwdns2782555:0crwdne2782555:0
   initiative_statuses:
     review_pending: crwdns904347:0crwdne904347:0
     review_pending_description: crwdns904349:0crwdne904349:0
@@ -182,8 +192,8 @@ ach:
       section3:
         title: crwdns207902:0crwdne207902:0
         description: crwdns207904:0crwdne207904:0
-      other_text_field:
-        title: crwdns2158534:0{other_option}crwdne2158534:0
+      other_input_field:
+        title: crwdns3058777:0crwdne3058777:0
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ ach:
           title: crwdns207914:0crwdne207914:0
         option:
           title: crwdns207916:0crwdne207916:0
-      details:
-        title: crwdns207918:0crwdne207918:0
-      attachements:
-        title: crwdns207920:0crwdne207920:0
-      extra:
-        title: crwdns207922:0crwdne207922:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0
@@ -229,6 +233,7 @@ ach:
       crwdns963563:0crwdne963563:0
   reset_password_mailer:
     send_reset_password:
+      preheader: 'crwdns3166231:0%{organizationName}crwdne3166231:0'
       cta_reset_password: 'crwdns207950:0crwdne207950:0'
       message_you_reset_your_password: 'crwdns207952:0%{organizationName}crwdne207952:0'
       subject: 'crwdns207954:0%{organizationName}crwdne207954:0'
@@ -267,6 +272,7 @@ ach:
       submitted_at: 'crwdns2201790:0crwdne2201790:0'
       tags: 'crwdns2201792:0crwdne2201792:0'
       title: 'crwdns2201794:0crwdne2201794:0'
+      user_data: 'crwdns2747327:0crwdne2747327:0'
       votes_count: 'crwdns777775:0crwdne777775:0'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ ach:
       option1: 'crwdns207996:0crwdne207996:0'
       option2: 'crwdns207998:0crwdne207998:0'
     form_end_page:
-      title: 'crwdns1963126:0crwdne1963126:0'
-      description: "crwdns1963128:0crwdne1963128:0"
+      title_text: 'crwdns2888713:0crwdne2888713:0'
+      description_text_2: "crwdns2888715:0crwdne2888715:0"
     pdf_export:
       personal_data: 'crwdns1160094:0crwdne1160094:0'
-      personal_data_explanation_ideation: "crwdns1160096:0%{organizationName}crwdnd1160096:0%{organizationName}crwdne1160096:0"
-      personal_data_explanation_native_survey: "crwdns1160098:0%{organizationName}crwdnd1160098:0%{organizationName}crwdne1160098:0"
+      personal_data_explanation_public: "crwdns2677453:0%{organizationName}crwdnd2677453:0%{organizationName}crwdne2677453:0"
+      personal_data_explanation_private: "crwdns2677455:0%{organizationName}crwdnd2677455:0%{organizationName}crwdne2677455:0"
       first_name: 'crwdns1160100:0crwdne1160100:0'
       last_name: 'crwdns1160102:0crwdne1160102:0'
       email_address: 'crwdns1160104:0crwdne1160104:0'
@@ -287,6 +293,12 @@ ach:
       optional: 'crwdns1160108:0crwdne1160108:0'
       permission: 'crwdns1160110:0crwdne1160110:0'
       choose_as_many: 'crwdns1160112:0crwdne1160112:0'
+      choose_exactly:
+        one: 'crwdns2888705:1%{count}crwdne2888705:1'
+        other: 'crwdns2888705:5%{count}crwdne2888705:5'
+      choose_between: 'crwdns2888707:0%{min}crwdnd2888707:0%{max}crwdne2888707:0'
+      choose_at_least: 'crwdns2888709:0%{count}crwdne2888709:0'
+      choose_at_most: 'crwdns2888711:0%{count}crwdne2888711:0'
       this_answer: 'crwdns1160114:0crwdne1160114:0'
       page: 'crwdns1160116:0crwdne1160116:0'
       date_published: 'crwdns1160118:0crwdne1160118:0'
@@ -299,6 +311,7 @@ ach:
   confirmations_mailer:
     send_confirmation_code:
       subject: "crwdns208006:0%{organizationName}crwdne208006:0"
+      preheader: 'crwdns3166233:0%{organizationName}crwdne3166233:0'
       header: "crwdns208008:0crwdne208008:0"
       header_message: "crwdns208010:0%{firstName}crwdne208010:0"
       confirm_email_address: "crwdns327752:0crwdne327752:0"
@@ -313,6 +326,7 @@ ach:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'crwdns417898:0crwdne417898:0'
+      preheader: 'crwdns3166235:0%{organizationName}crwdne3166235:0'
       title_user_blocked: 'crwdns417900:0crwdne417900:0'
       paragraph_1_without_reason: "crwdns417902:0%{organizationName}crwdne417902:0"
       paragraph_1_with_reason: "crwdns417904:0%{organizationName}crwdne417904:0"
@@ -328,3 +342,5 @@ ach:
   voting_method:
     default_voting_term_singular: "crwdns777777:0crwdne777777:0"
     default_voting_term_plural: "crwdns777779:0crwdne777779:0"
+  ics_calendar_event:
+    event_details: "crwdns3166237:0crwdne3166237:0"

@@ -13,7 +13,7 @@ type Response = {
     attributes: [
       {
         count: number;
-        first_dimension_date_created_date: string | null;
+        min_dimension_date_created_date: string | null;
       }
     ];
   };
@@ -24,7 +24,7 @@ const query: Query = {
     fact: 'session',
     aggregations: {
       all: 'count',
-      'dimension_date_created.date': 'first',
+      'dimension_date_created.date': 'min',
     },
   },
 };
@@ -37,7 +37,7 @@ const Visitors = () => {
   }
 
   const [countData] = analytics.data.attributes;
-  const firstDate = countData.first_dimension_date_created_date;
+  const firstDate = countData.min_dimension_date_created_date;
   const uniqueVisitorDataDate =
     typeof firstDate === 'string' ? moment(firstDate) : undefined;
 

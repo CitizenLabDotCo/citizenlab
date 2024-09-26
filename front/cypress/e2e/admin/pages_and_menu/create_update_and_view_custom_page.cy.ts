@@ -227,18 +227,25 @@ describe('Admin: can', () => {
 
       cy.visit(`/en/admin/pages-menu/pages/${customPageId4}/content`);
 
+      // wait for toggle to be visible
+      cy.get('[data-cy="e2e-admin-section-toggle-files_section_enabled"]');
+      cy.wait(1000);
+
       // toggle attachments section
       cy.get(
-        '[data-cy="e2e-admin-section-toggle-files_section_enabled"]'
+        '[data-cy="e2e-admin-section-toggle-files_section_enabled"] > div'
       ).click();
+
       // wait for the call to complete
       cy.wait('@updateCustomPage');
+
       // wait for the toggle to become enabled in the UI
       cy.get('[data-cy="e2e-admin-section-toggle-files_section_enabled"]')
         .find('i')
         .should('have.class', 'enabled');
 
       // go to attachments section edit page
+      cy.wait(1000);
       cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
 
       cy.contains('Shown on page').should('exist');

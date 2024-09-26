@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode, AriaRole } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 
 import {
   Box,
@@ -7,6 +7,10 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledContainer = styled(Box)`
   display: flex;
@@ -33,7 +37,7 @@ const StyledContainer = styled(Box)`
 
 interface Props {
   children: ReactNode;
-  containerRole?: AriaRole; // If the scrollable container needs a specific role, pass it in
+  containerRole?: string; // If the scrollable container needs a specific role, pass it in
 }
 
 /*
@@ -43,6 +47,7 @@ interface Props {
 const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
   const containerRef = React.useRef<HTMLDivElement>(null);
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
@@ -100,6 +105,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           p="0px"
           my="auto"
           className="e2e-event-previews-scroll-left"
+          ariaLabel={formatMessage(messages.scrollLeftLabel)}
         />
       </Box>
       <StyledContainer ref={containerRef} role={containerRole}>
@@ -119,6 +125,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           buttonStyle="text"
           p="0px"
           className="e2e-event-previews-scroll-right"
+          ariaLabel={formatMessage(messages.scrollRightLabel)}
         />
       </Box>
     </Box>

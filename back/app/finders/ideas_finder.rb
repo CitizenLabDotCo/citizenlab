@@ -5,7 +5,7 @@ class IdeasFinder < ApplicationFinder
     scope ||= _base_scope
     super(
       params,
-      scope: only_idea_inputs_scope(scope),
+      scope: scope.publicly_visible,
       includes: includes,
       current_user: current_user
     )
@@ -13,12 +13,12 @@ class IdeasFinder < ApplicationFinder
 
   private
 
-  def only_idea_inputs_scope(scope)
-    scope.ideation
-  end
-
   def ideas_condition(ids)
     where(id: ids)
+  end
+
+  def transitive_condition(transitive)
+    transitive ? records.transitive : records
   end
 
   def projects_condition(project_ids)
@@ -54,7 +54,7 @@ class IdeasFinder < ApplicationFinder
   end
 
   def feedback_needed_condition(feedback_needed)
-    feedback_needed ? scope(:feedback_needed) : scope(:no_feedback_needed)
+    scope(:feedback_needed) if feedback_needed
   end
 
   def search_condition(search)

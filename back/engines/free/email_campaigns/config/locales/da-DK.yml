@@ -77,10 +77,13 @@ da:
       "link_terms_conditions": "Betingelser og vilkår"
       "link_unsubscribe": "Afmeld abonnement"
       "powered_by": "Drevet af"
-      "statement": "Denne e-mail blev sendt til dig fra Go Vocal på vegne af %{organizationName}, fordi du har registreret en bruger på %{organizationLink}. Du kan %{unsubscribeLink}, hvis du ikke ønsker at modtage disse e-mails i fremtiden."
+      "recipient_statement": "Denne e-mail blev sendt til dig af Go Vocal på vegne af %{organizationName}, fordi du er en registreret bruger af %{organizationLink}."
+      "unsubscribe_statement": "Du kan skrive til %{unsubscribeLink} , hvis du ikke ønsker at modtage disse e-mails i fremtiden."
       "unsubscribe_text": "afmeld abonnement"
     follow:
       "unfollow_here": "Du har modtaget denne meddelelse på grund af et emne, du følger. <a href=\"%{unfollow_url}\">Du kan fjerne den her.</a>"
+    manual:
+      preheader: 'Du har fået en mail fra %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Grunden til at din kommentar blev slettet er:'
       cta_view: 'Se denne ide'
@@ -539,6 +542,7 @@ da:
       cta_see_results: 'Se resultaterne på platformen'
     event_registration_confirmation:
       subject: "Så er du med! Din tilmelding til \"%{eventTitle}\" er bekræftet."
+      preheader: "%{firstName}, tak fordi du registrerede dig til %{eventTitle}"
       header_message: "%{firstName}, tak for din tilmelding til"
       event_details:
         labels:

@@ -17,7 +17,13 @@ resource 'Location' do
     let(:input) { 'New York' }
 
     before do
-      allow(HTTParty).to receive(:get).and_return({ 'predictions' => [{ 'description' => 'New York, NY, USA' }] })
+      stub_request(:get, 'https://maps.googleapis.com/maps/api/place/autocomplete/json')
+        .with(query: hash_including({ input: input }))
+        .to_return(
+          status: 200,
+          body: { 'predictions' => [{ 'description' => 'New York, NY, USA' }] }.to_json,
+          headers: { content_type: 'application/json' }
+        )
     end
 
     example_request 'Autocomplete' do
@@ -34,7 +40,13 @@ resource 'Location' do
       let(:address) { 'New York' }
 
       before do
-        allow(HTTParty).to receive(:get).and_return({ 'results' => [{ 'geometry' => { 'location' => { lat: 40.7127753, lng: -74.0059728 } } }] })
+        stub_request(:get, 'https://maps.googleapis.com/maps/api/geocode/json')
+          .with(query: hash_including({ address: address }))
+          .to_return(
+            status: 200,
+            body: { 'results' => [{ 'geometry' => { 'location' => { 'lat' => 40.7127753, 'lng' => -74.0059728 } } }] }.to_json,
+            headers: { content_type: 'application/json' }
+          )
       end
 
       example_request 'Address Geocoded' do
@@ -62,7 +74,13 @@ resource 'Location' do
     let(:lng) { -73.961452 }
 
     before do
-      allow(HTTParty).to receive(:get).and_return({ 'results' => [{ 'formatted_address' => '277 Bedford Ave, Brooklyn, NY 11211, USA' }] })
+      stub_request(:get, 'https://maps.googleapis.com/maps/api/geocode/json')
+        .with(query: hash_including({ latlng: "#{lat},#{lng}" }))
+        .to_return(
+          status: 200,
+          body: { 'results' => [{ 'formatted_address' => '277 Bedford Ave, Brooklyn, NY 11211, USA' }] }.to_json,
+          headers: { content_type: 'application/json' }
+        )
     end
 
     example_request 'Reverse geocode' do

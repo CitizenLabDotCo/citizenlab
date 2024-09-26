@@ -11,7 +11,7 @@ resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
     header_token_for user
-    IdeaStatus.create_defaults
+    create(:idea_status_proposed)
   end
 
   get 'web_api/v1/ideas/:id' do

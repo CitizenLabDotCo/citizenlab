@@ -91,6 +91,8 @@ export interface IIdeaData {
     anonymous: boolean;
     author_hash: string;
     followers_count: number;
+    reacting_threshold?: number;
+    expires_at?: string;
   };
   relationships: {
     assignee?: {
@@ -135,8 +137,8 @@ export interface IIdeaData {
 export interface IIdeaAdd {
   // Required
   project_id: string;
-  publication_status: IdeaPublicationStatus;
   // Optional
+  publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
@@ -196,6 +198,7 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
+  transitive?: boolean;
 }
 
 export interface IIdeaApprovals {

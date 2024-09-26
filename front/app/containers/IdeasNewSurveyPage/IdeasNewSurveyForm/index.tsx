@@ -28,21 +28,21 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
+import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import eventEmitter from 'utils/eventEmitter';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
-import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
+import { convertGeojsonToWKT } from './utils';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -72,7 +72,6 @@ interface Props {
 }
 
 const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
@@ -89,6 +88,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+  const [usingMapView, setUsingMapView] = useState(false);
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -155,6 +155,19 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
+  // Listen for survey page change event
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('survey_page_map'));
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
   if (
     // inputSchemaError should display an error page instead
@@ -181,8 +194,10 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
+    const requestBodyConvertedData = convertGeojsonToWKT(data);
+
     const requestBody = {
-      ...data,
+      ...requestBodyConvertedData,
       project_id: project.data.id,
       ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
@@ -278,7 +293,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           mx="auto"
           position="relative"
           top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth="700px"
+          maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
@@ -293,24 +308,12 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           >
             <Box
               background={colors.white}
-              maxWidth="700px"
+              maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
-              {allowAnonymousPosting && (
-                <Box
-                  w="100%"
-                  px={isSmallerThanPhone ? '16px' : '24px'}
-                  mt="12px"
-                  id="anonymous-survey-warning"
-                >
-                  <Warning icon="shield-checkered">
-                    {formatMessage(messages.anonymousSurveyMessage)}
-                  </Warning>
-                </Box>
-              )}
               <Form
                 schema={schema}
                 uiSchema={uiSchema}

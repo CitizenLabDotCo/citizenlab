@@ -26,7 +26,12 @@ describe('useUpdateIdeaStatus', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+
+        requestBody: {
+          title_multiloc: { en: 'name' },
+          color: '#000000',
+          participation_method: 'ideation',
+        },
       });
     });
 
@@ -47,7 +52,11 @@ describe('useUpdateIdeaStatus', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+        requestBody: {
+          title_multiloc: { en: 'name' },
+          color: '#000000',
+          participation_method: 'ideation',
+        },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

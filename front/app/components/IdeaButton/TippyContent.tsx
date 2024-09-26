@@ -3,7 +3,6 @@ import React from 'react';
 import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
@@ -58,7 +57,6 @@ interface Props {
   projectId: string;
   inMap: boolean;
   disabledReason: ProjectPostingDisabledReason;
-  phase: IPhaseData | undefined;
 }
 
 const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {

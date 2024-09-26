@@ -5,7 +5,7 @@ require 'rails_helper'
 describe IdeaAssignment::IdeaAssignmentService do
   let(:service) { described_class.new }
 
-  describe 'clean_idea_assignees_for_user!', if: (defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine)) do
+  describe 'clean_idea_assignees_for_user!' do
     it 'clears the assignee where they no longer moderate the ideas' do
       assignee = create(:admin)
       folder1 = create(:project_folder)
@@ -36,7 +36,7 @@ describe IdeaAssignment::IdeaAssignmentService do
     end
   end
 
-  describe 'clean_assignees_for_project!', if: (defined?(ProjectManagement::Engine) && defined?(ProjectFolders::Engine)) do
+  describe 'clean_assignees_for_project!' do
     it 'clears the assignee where they no longer moderate the ideas' do
       folder = create(:project_folder)
       project = create(:project, folder: folder)
@@ -64,6 +64,7 @@ describe IdeaAssignment::IdeaAssignmentService do
       timeline_survey_project = create(:project_with_active_native_survey_phase, default_assignee_id: create(:admin).id)
       expect(timeline_survey_project.phases[0].participation_method).to eq('native_survey')
 
+      create(:idea_status_proposed)
       idea = create(
         :native_survey_response,
         creation_phase_id: timeline_survey_project.phases[0].id,

@@ -53,7 +53,9 @@ const ExportButtons = ({
           />
         </>
       )}
-      {(type === 'AllIdeas' || type === 'ProjectIdeas') && (
+      {(type === 'AllIdeas' ||
+        type === 'ProjectIdeas' ||
+        type === 'ProjectProposals') && (
         <>
           <ExportIdeasButton
             exportType={exportType}

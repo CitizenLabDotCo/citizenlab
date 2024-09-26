@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 describe InitiativeStatusService do
   let(:service) { described_class.new }
 

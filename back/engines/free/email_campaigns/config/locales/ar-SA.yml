@@ -66,21 +66,24 @@ ar:
     schedules:
       weekly:
         "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
-        "1": "أسبوعيًا يوم الاثنين %{atHour}"
-        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
-        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
-        "4": "أسبوعيًا يوم الخميس %{atHour}"
-        "5": "أسبوعيًا أيام الجمعة %{atHour}"
-        "6": "أسبوعيًا أيام السبت %{atHour}"
+        "1": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "2": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "3": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "4": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "5": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+        "6": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
       "link_unsubscribe": "إلغاء الاشتراك"
       "powered_by": "مشغّل بواسطة"
-      "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة Go Vocal بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
+      "recipient_statement": "تم إرسال هذا البريد الإلكتروني إليك بواسطة Go Vocal بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لـ %{organizationLink}."
+      "unsubscribe_statement": "يمكنك %{unsubscribeLink} إذا كنت لا ترغب في تلقي رسائل البريد الإلكتروني هذه في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
     follow:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
+    manual:
+      preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
       reason: 'سبب حذف تعليقك:'
       cta_view: 'اعرض هذه الفكرة'
@@ -539,6 +542,7 @@ ar:
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
     event_registration_confirmation:
       subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      preheader: "%{firstName}، شكرًا لك على التسجيل في %{eventTitle}"
       header_message: "%{firstName}شكرا على التسجيل"
       event_details:
         labels:

@@ -14,14 +14,21 @@ module MultiTenancy
           input_type
           key
           maximum
-          maximum_label_multiloc
-          minimum_label_multiloc
+          linear_scale_label_1_multiloc
+          linear_scale_label_2_multiloc
+          linear_scale_label_3_multiloc
+          linear_scale_label_4_multiloc
+          linear_scale_label_5_multiloc
+          linear_scale_label_6_multiloc
+          linear_scale_label_7_multiloc
           select_count_enabled
           maximum_select_count
           minimum_select_count
           ordering
           title_multiloc
           random_option_ordering
+          dropdown_layout
+          page_layout
         ]
 
         # Enigmatic comment from the previous implementation:

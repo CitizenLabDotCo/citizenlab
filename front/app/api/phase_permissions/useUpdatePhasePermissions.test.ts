@@ -4,10 +4,10 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { IPCPermissionData } from './types';
+import { IPhasePermissionData } from './types';
 import useUpdatePhasePermission from './useUpdatePhasePermission';
 
-export const data: IPCPermissionData = {
+export const data: IPhasePermissionData = {
   id: '5d14ece5feb0',
   type: 'permission',
   attributes: {
@@ -16,6 +16,9 @@ export const data: IPCPermissionData = {
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
     global_custom_fields: false,
+    verification_enabled: false,
+    verification_expiry: null,
+    access_denied_explanation_multiloc: {},
   },
   relationships: {
     permission_scope: {
@@ -42,12 +45,9 @@ describe('useUpdatePhasePermission', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useUpdatePhasePermission('fc251de04cb7'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdatePhasePermission(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -72,12 +72,9 @@ describe('useUpdatePhasePermission', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useUpdatePhasePermission('fc251de04cb7'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdatePhasePermission(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         permissionId: '5d14ece5feb0',

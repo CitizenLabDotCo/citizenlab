@@ -121,7 +121,7 @@ namespace :sync_tenants do
 
               # In a later iteration, we could first try to parse
               # the new (string) value provided in the sheet.
-              object.send "#{field_name}=", value
+              object.send :"#{field_name}=", value
               object.save!
             end
           end

@@ -71,16 +71,19 @@ lv:
         "3": "Ik nedēļu, trešdienās %{hourOfDay}"
         "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
         "5": "Ik nedēļu, piektdienās %{hourOfDay}"
-        "6": "Ik nedēļu sestdienās %{atHour}"
+        "6": "Ik nedēļu sestdienās %{hourOfDay}"
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
-      "statement": "Šo e-pastu jums nosūtīja Go Vocal %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
+      "recipient_statement": "Šo e-pasta vēstuli jums nosūtīja Go Vocal %{organizationName}vārdā, jo esat reģistrēts %{organizationLink}lietotājs."
+      "unsubscribe_statement": "Ja nevēlaties turpmāk saņemt šos e-pasta ziņojumus, varat rakstīt uz %{unsubscribeLink} ."
       "unsubscribe_text": "atteikties"
     follow:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
+    manual:
+      preheader: 'Jums ir pasts no %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Iemesls, kāpēc jūsu komentārs tika dzēsts:'
       cta_view: 'Skatīt šo ideju'
@@ -539,6 +542,7 @@ lv:
       cta_see_results: 'Skatiet rezultātus platformā'
     event_registration_confirmation:
       subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
+      preheader: "%{firstName}, paldies par reģistrēšanos %{eventTitle}"
       header_message: "%{firstName}, paldies par reģistrēšanos"
       event_details:
         labels:

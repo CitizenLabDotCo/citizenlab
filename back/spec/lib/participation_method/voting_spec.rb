@@ -7,11 +7,50 @@ RSpec.describe ParticipationMethod::Voting do
 
   let(:phase) { create(:budgeting_phase) }
 
+  describe '#method_str' do
+    it 'returns voting' do
+      expect(described_class.method_str).to eq 'voting'
+    end
+  end
+
+  describe '#assign_defaults' do
+    context 'when the proposed idea status is available' do
+      let!(:proposed) { create(:idea_status_proposed) }
+      let!(:initial_status) { create(:idea_status) }
+
+      it 'sets a default "proposed" idea_status if not set' do
+        input = build(:idea, idea_status: nil)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq proposed
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+
+    context 'when the proposed idea status is not available' do
+      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
+        input = build(:idea, idea_status: nil)
+        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it 'does not change the idea_status if it is already set' do
+        initial_status = create(:idea_status)
+        input = build(:idea, idea_status: initial_status)
+        participation_method.assign_defaults input
+        expect(input.idea_status).to eq initial_status
+      end
+    end
+  end
+
   describe '#assign_defaults_for_phase' do
     context 'budgeting' do
-      it 'sets the posting method to unlimited and ideas order to random' do
+      it 'sets the ideas order to random' do
         participation_method.assign_defaults_for_phase
-        expect(phase.posting_method).to eq 'unlimited'
         expect(phase.ideas_order).to eq 'random'
       end
     end
@@ -53,12 +92,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#validate_built_in_fields?' do
-    it 'returns true' do
-      expect(participation_method.validate_built_in_fields?).to be true
-    end
-  end
-
   describe '#author_in_form?' do
     before { SettingsService.new.activate_feature! 'idea_author_change' }
 
@@ -89,52 +122,12 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#assign_defaults' do
-    context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status_implemented) }
-
-      it 'sets a default "proposed" idea_status if not set' do
-        input = build(:idea, idea_status: nil)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq proposed
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-
-    context 'when the proposed idea status is not available' do
-      it 'raises ActiveRecord::RecordNotFound when the idea_status is not set' do
-        input = build(:idea, idea_status: nil)
-        expect { participation_method.assign_defaults input }.to raise_error ActiveRecord::RecordNotFound
-      end
-
-      it 'does not change the idea_status if it is already set' do
-        initial_status = create(:idea_status_implemented)
-        input = build(:idea, idea_status: initial_status)
-        participation_method.assign_defaults input
-        expect(input.idea_status).to eq initial_status
-      end
-    end
-  end
-
   describe '#custom_form' do
     let(:project) { phase.project }
     let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
-    end
-  end
-
-  describe '#extra_fields_category_translation_key' do
-    it 'returns the translation key for the extra fields category' do
-      expect(participation_method.extra_fields_category_translation_key).to eq 'custom_forms.categories.extra.title'
     end
   end
 
@@ -162,23 +155,41 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
+  describe '#supports_serializing?' do
+    it 'returns true for voting attributes' do
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+      ].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be true
+      end
+    end
+
+    it 'returns false for the other attributes' do
+      %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
+        expect(participation_method.supports_serializing?(attribute)).to be false
+      end
+    end
+  end
+
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
-  its(:validate_built_in_fields?) { is_expected.to be true }
-  its(:never_show?) { is_expected.to be false }
-  its(:posting_allowed?) { is_expected.to be false }
-  its(:update_if_published?) { is_expected.to be true }
-  its(:creation_phase?) { is_expected.to be false }
-  its(:edit_custom_form_allowed?) { is_expected.to be true }
-  its(:delete_inputs_on_pc_deletion?) { is_expected.to be false }
-  its(:sign_in_required_for_posting?) { is_expected.to be true }
-  its(:supports_toxicity_detection?) { is_expected.to be true }
-  its(:include_data_in_email?) { is_expected.to be true }
-  its(:supports_exports?) { is_expected.to be true }
-  its(:supports_publication?) { is_expected.to be true }
+  its(:proposed_budget_in_form?) { is_expected.to be true }
+  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be true }
+  its(:supports_built_in_fields?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
+  its(:supports_edits_after_publication?) { is_expected.to be true }
+  its(:supports_exports?) { is_expected.to be true }
+  its(:supports_input_term?) { is_expected.to be true }
+  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:supports_pages_in_form?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_public_visibility?) { is_expected.to be true }
+  its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }
-  its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
-  its(:return_disabled_actions?) { is_expected.to be false }
+  its(:supports_submission?) { is_expected.to be false }
+  its(:use_reactions_as_votes?) { is_expected.to be false }
+  its(:transitive?) { is_expected.to be true }
 end

@@ -3,7 +3,7 @@
 class IdeaCustomFieldsService
   def initialize(custom_form)
     @custom_form = custom_form
-    @participation_method = Factory.instance.participation_method_for custom_form.participation_context
+    @participation_method = custom_form.participation_context.pmethod
   end
 
   def all_fields
@@ -17,11 +17,9 @@ class IdeaCustomFieldsService
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    filtered_fields = all_fields.select do |field|
+    all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
-
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
   def visible_fields
@@ -39,19 +37,14 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload topic_ids]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload]
-    filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
-
-    # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
-    # included in the importable fields list. This is because this list is used to generate the example template
-    # XLSX file, where we want to show the latitude and longitude fields as separate columns.
-    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon]
+    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
   def enabled_fields
@@ -103,10 +96,10 @@ class IdeaCustomFieldsService
   def check_form_structure(fields, errors)
     return if fields.empty?
 
-    can_have_type = @participation_method.form_structure_element
-    cannot_have_type = can_have_type == 'section' ? 'page' : 'section'
-    if fields[0][:input_type] != can_have_type
-      error = { error: "First field must be of type '#{can_have_type}'" }
+    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
+    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
+    if fields[0][:input_type] != first_field_type
+      error = { error: "First field must be of type '#{first_field_type}'" }
       errors['0'] = { structure: [error] }
     end
     fields.each_with_index do |field, index|
@@ -140,8 +133,8 @@ class IdeaCustomFieldsService
       end
       copied_field.options = copied_options
 
-      # Duplicate and persist map config if it is a point field
-      if copied_field.input_type == 'point' && field.map_config
+      # Duplicate and persist map config for custom_fields that can have an associated map_config
+      if CustomField::MAP_CONFIG_INPUT_TYPES.include?(copied_field.input_type) && field.map_config
         original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
         new_map_config = original_map_config.dup
         new_map_config.mappable = nil
@@ -174,19 +167,6 @@ class IdeaCustomFieldsService
   end
 
   private
-
-  # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::IdeaXlsxFormExporter#export
-  # can produce separate columns for latitude and longitude.
-  def replace_point_fields_with_lat_and_lon_point_fields(fields)
-    fields.map do |field|
-      if field.input_type == 'point'
-        [field.point_latitude_field, field.point_longitude_field]
-      else
-        field
-      end
-    end.flatten
-  end
 
   def insert_other_option_text_fields(fields)
     all_fields = []

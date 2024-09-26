@@ -90,7 +90,7 @@ const Form = memo(
       if (scrollToError) {
         // Scroll to the first field with an error
         document
-          .getElementById('error-display')
+          .querySelector('.error-display-container')
           ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setScrollToError(false);
       }

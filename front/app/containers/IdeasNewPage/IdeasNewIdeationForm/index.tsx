@@ -169,7 +169,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       ...data,
       location_point_geojson,
       project_id: project.data.id,
-      publication_status: 'published',
       phase_ids,
       anonymous: postAnonymously ? true : undefined,
     });

@@ -184,7 +184,13 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                   (mapLayer, index) => {
                     const layerColor = getLayerColor(mapLayer);
                     const layerIconName = getLayerIcon(mapLayer);
-                    const layerTitle = localize(mapLayer.title_multiloc);
+                    const localizedLayerTitle = localize(
+                      mapLayer.title_multiloc
+                    );
+                    const layerTitle =
+                      localizedLayerTitle === 'Unnamed layer'
+                        ? formatMessage(messages.unnamedLayer)
+                        : localizedLayerTitle;
 
                     return (
                       <SortableRow

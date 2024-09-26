@@ -32,6 +32,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formCustomFields: undefined,
 
   displayBuiltInFields: false,
+  builtInFields: [],
   showStatusBadge: true,
   isLogicEnabled: true,
   alwaysShowCustomFields: true,
@@ -80,11 +81,11 @@ export const getFormActionsConfig = (
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,
     heading: phase.attributes.title_multiloc,
-    postingEnabled: phase.attributes.posting_enabled,
+    postingEnabled: phase.attributes.submission_enabled,
     togglePostingEnabled: () => {
       updatePhase({
         phaseId: phase.id,
-        posting_enabled: !phase.attributes.posting_enabled,
+        submission_enabled: !phase.attributes.submission_enabled,
       });
     },
   };

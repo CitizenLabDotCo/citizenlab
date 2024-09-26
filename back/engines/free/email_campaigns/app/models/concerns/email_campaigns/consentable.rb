@@ -21,7 +21,7 @@ module EmailCampaigns
         return true if roles.blank?
 
         roles.any? do |role|
-          user.send("#{role}?")
+          user.send(:"#{role}?")
         end
       end
     end

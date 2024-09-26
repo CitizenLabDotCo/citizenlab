@@ -76,7 +76,7 @@ const Survey = ({
         </ProjectPageSectionTitle>
 
         <ScreenReaderOnly>
-          <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning} />
+          <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning1} />
         </ScreenReaderOnly>
 
         {surveyService === 'typeform' && (

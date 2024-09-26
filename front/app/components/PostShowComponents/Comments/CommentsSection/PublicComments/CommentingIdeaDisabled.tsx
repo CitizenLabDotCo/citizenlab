@@ -27,14 +27,16 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;
 
-    triggerAuthenticationFlow({
-      flow,
-      context: {
-        action: 'commenting_idea',
-        id: phaseId,
-        type: 'phase',
+    triggerAuthenticationFlow(
+      {
+        context: {
+          action: 'commenting_idea',
+          id: phaseId,
+          type: 'phase',
+        },
       },
-    });
+      flow
+    );
   };
 
   const signIn = () => {

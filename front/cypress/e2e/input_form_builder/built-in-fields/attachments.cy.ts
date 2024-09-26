@@ -48,7 +48,7 @@ describe('Input form builder', () => {
 
     cy.get('#e2e-idea-file-upload').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // The attachments tool box item should be disabled as it is already on the canvas
@@ -56,7 +56,7 @@ describe('Input form builder', () => {
     cy.get('@attachmentsToolboxItem').should('exist');
     cy.get('@attachmentsToolboxItem').should('have.attr', 'disabled');
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Attachments').should('exist');
       cy.contains('Attachments').click();
     });
@@ -71,7 +71,7 @@ describe('Input form builder', () => {
     cy.get('@attachmentsToolboxItem').should('not.have.attr', 'disabled');
 
     // Check to see that Attachments is removed from the canvas
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Attachments').should('not.exist');
     });
 

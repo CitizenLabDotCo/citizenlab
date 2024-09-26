@@ -564,6 +564,48 @@ RSpec.describe UiSchemaGeneratorService do
     end
   end
 
+  describe '#visit_line' do
+    let(:field) do
+      create(
+        :custom_field_line,
+        key: field_key,
+        title_multiloc: { 'en' => 'Line field title' },
+        description_multiloc: { 'en' => 'Line field description' }
+      )
+    end
+    let!(:map_config) { create(:map_config, mappable: field) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_line(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Line field title',
+        options: { input_type: field.input_type, description: 'Line field description', map_config_id: map_config.id }
+      })
+    end
+  end
+
+  describe '#visit_polygon' do
+    let(:field) do
+      create(
+        :custom_field_line,
+        key: field_key,
+        title_multiloc: { 'en' => 'Polygon field title' },
+        description_multiloc: { 'en' => 'Polygon field description' }
+      )
+    end
+    let!(:map_config) { create(:map_config, mappable: field) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_polygon(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Polygon field title',
+        options: { input_type: field.input_type, description: 'Polygon field description', map_config_id: map_config.id }
+      })
+    end
+  end
+
   describe '#visit_linear_scale' do
     let(:field) do
       create(
@@ -580,8 +622,13 @@ RSpec.describe UiSchemaGeneratorService do
         options: {
           input_type: field.input_type,
           description: 'Please indicate how strong you agree or disagree.',
-          minimum_label: 'Strongly disagree',
-          maximum_label: 'Strongly agree'
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: 'Disagree',
+          linear_scale_label3: 'Neutral',
+          linear_scale_label4: 'Agree',
+          linear_scale_label5: 'Strongly agree',
+          linear_scale_label6: '',
+          linear_scale_label7: ''
         }
       })
     end
@@ -612,6 +659,27 @@ RSpec.describe UiSchemaGeneratorService do
         scope: "#/properties/#{field_key}",
         label: 'File upload field title',
         options: { input_type: field.input_type, description: 'File upload field description' }
+      })
+    end
+  end
+
+  describe '#visit_shapefile_upload' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'shapefile_upload',
+        key: field_key,
+        title_multiloc: { 'en' => 'Shapefile upload field title' },
+        description_multiloc: { 'en' => 'Shapefile upload field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_shapefile_upload(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Shapefile upload field title',
+        options: { input_type: field.input_type, description: 'Shapefile upload field description' }
       })
     end
   end

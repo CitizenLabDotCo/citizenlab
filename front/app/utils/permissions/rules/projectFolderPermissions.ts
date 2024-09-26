@@ -6,7 +6,7 @@ import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
-import { isAdmin, TRole, userHasRole } from 'utils/permissions/roles';
+import { isAdmin, TRole } from 'utils/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
@@ -18,21 +18,31 @@ export function userModeratesFolder(
 ) {
   if (!user) return false;
 
-  return (
-    isAdmin(user) ||
-    !!user.data.attributes?.roles?.find((role: TRole) => {
-      return (
-        role.type === 'project_folder_moderator' &&
-        role.project_folder_id === projectFolderId
-      );
-    })
-  );
+  return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
 }
 
-export function isProjectFolderModerator(user: IUser | undefined) {
-  if (!user) return false;
+/**
+ * Checks if the user is a project folder moderator. If a folderId is provided,
+ * it checks if the user is a moderator of that folder specifically.
+ */
+export function isProjectFolderModerator(
+  user?: IUser,
+  folderId?: string
+): boolean {
+  const roles = user?.data.attributes?.roles;
+  if (!roles) return false;
 
-  return userHasRole(user, 'project_folder_moderator');
+  if (folderId) {
+    return roles.some(
+      (role: TRole) =>
+        role.type === 'project_folder_moderator' &&
+        role.project_folder_id === folderId
+    );
+  } else {
+    return roles.some(
+      (role: TRole) => role.type === 'project_folder_moderator'
+    );
+  }
 }
 
 // rules

@@ -25,7 +25,7 @@ module Volunteering
       end
 
       pa = Axlsx::Package.new
-      utils = XlsxExport::Utils.new
+      utils = Export::Xlsx::Utils.new
 
       sheetnames = phase.causes.to_h do |cause|
         [cause.id, utils.sanitize_sheetname(@@multiloc_service.t(cause.title_multiloc))]

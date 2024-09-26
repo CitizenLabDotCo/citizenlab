@@ -61,6 +61,7 @@ const CharCount = styled.div<{ inputSize?: InputSize }>`
 const StyledInput = styled.input`
   &::placeholder {
     color: ${colors.coolGrey600};
+    opacity: 1; /* Override Firefox's default opacity to provide the same UI for all browsers, See https://ilikekillnerds.com/2014/10/firefox-placeholder-text-looking-lighter-browsers/ */
   }
 `;
 

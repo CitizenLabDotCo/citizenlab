@@ -80,6 +80,7 @@ const FormEdit = ({
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
     useState(true);
+  const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -106,8 +107,13 @@ const FormEdit = ({
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
-        minimum_label_multiloc: object(),
-        maximum_label_multiloc: object(),
+        linear_scale_label_1_multiloc: object(),
+        linear_scale_label_2_multiloc: object(),
+        linear_scale_label_3_multiloc: object(),
+        linear_scale_label_4_multiloc: object(),
+        linear_scale_label_5_multiloc: object(),
+        linear_scale_label_6_multiloc: object(),
+        linear_scale_label_7_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -126,6 +132,7 @@ const FormEdit = ({
     handleSubmit,
     control,
     formState: { errors, isDirty },
+    getValues,
     reset,
   } = methods;
 
@@ -147,8 +154,13 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = () => {
+  const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
+
+    // If autosave is enabled & no submission have come in yet, save
+    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
+      onFormSubmit(getValues());
+    }
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
@@ -185,14 +197,21 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
-          logic: field.logic,
-        }),
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+          ? {
+              logic: field.logic,
+            }
+          : {
+              logic: [],
+            }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        ...(field.page_layout || field.input_type === 'page'
+          ? { page_layout: field.page_layout || 'default' }
+          : {}),
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
         }),
@@ -210,10 +229,23 @@ const FormEdit = ({
             : null,
           select_count_enabled: field.select_count_enabled,
           random_option_ordering: field.random_option_ordering,
+          dropdown_layout: field.dropdown_layout,
         }),
         ...(field.input_type === 'linear_scale' && {
-          minimum_label_multiloc: field.minimum_label_multiloc || {},
-          maximum_label_multiloc: field.maximum_label_multiloc || {},
+          linear_scale_label_1_multiloc:
+            field.linear_scale_label_1_multiloc || {},
+          linear_scale_label_2_multiloc:
+            field.linear_scale_label_2_multiloc || {},
+          linear_scale_label_3_multiloc:
+            field.linear_scale_label_3_multiloc || {},
+          linear_scale_label_4_multiloc:
+            field.linear_scale_label_4_multiloc || {},
+          linear_scale_label_5_multiloc:
+            field.linear_scale_label_5_multiloc || {},
+          linear_scale_label_6_multiloc:
+            field.linear_scale_label_6_multiloc || {},
+          linear_scale_label_7_multiloc:
+            field.linear_scale_label_7_multiloc || {},
           maximum: field.maximum?.toString() || '5',
         }),
       }));
@@ -306,6 +338,9 @@ const FormEdit = ({
               isSubmitting={isSubmitting}
               builderConfig={builderConfig}
               viewFormLink={viewFormLink}
+              autosaveEnabled={autosaveEnabled}
+              setAutosaveEnabled={setAutosaveEnabled}
+              showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">
@@ -372,6 +407,7 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
+                      surveyHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}

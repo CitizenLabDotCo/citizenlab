@@ -100,7 +100,7 @@ const ReadMoreWrapper = memo<Props>(
       const buttonToFocus = readMoreButton || seeLessButton;
       if (buttonToFocus) {
         // We move focus to the other button after clicking to make sure the screen reader reads it
-        buttonToFocus.focus();
+        buttonToFocus.focus({ preventScroll: true });
       }
     }, [contentId, expanded]);
 
@@ -161,6 +161,9 @@ const ReadMoreWrapper = memo<Props>(
                         fontSize={`${fontSizes.m}px`}
                         padding="0"
                         ariaExpanded={expanded}
+                        icon="arrow-right"
+                        iconPos="right"
+                        iconSize="16px"
                       >
                         <FormattedMessage {...messages.readMore} />
                       </ReadMoreButton>
@@ -188,6 +191,9 @@ const ReadMoreWrapper = memo<Props>(
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                       ariaExpanded={expanded}
+                      icon="arrow-down"
+                      iconPos="right"
+                      iconSize="16px"
                     >
                       <FormattedMessage {...messages.readLess} />
                     </Button>

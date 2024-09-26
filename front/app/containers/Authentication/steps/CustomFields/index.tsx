@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
+import { hasRequiredNonLockedFields } from 'api/custom_fields_json_form_schema/utils';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -75,10 +75,7 @@ const CustomFields = ({
     }
   };
 
-  const formHasRequiredFields = hasRequiredFields(
-    userCustomFieldsSchema,
-    locale
-  );
+  const allowSkip = !hasRequiredNonLockedFields(userCustomFieldsSchema, locale);
 
   return (
     <Box
@@ -108,7 +105,7 @@ const CustomFields = ({
             onClick={handleSubmit}
           />
 
-          {!formHasRequiredFields && (
+          {allowSkip && (
             <Button
               id="e2e-signup-custom-fields-skip-btn"
               buttonStyle="text"

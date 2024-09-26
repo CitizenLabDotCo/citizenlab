@@ -272,24 +272,6 @@ describe IdeaCustomFieldsService do
         expect(service.remove_ignored_update_params(params)).to match({ required: true })
       end
     end
-
-    describe 'replace_reportable_point_fields' do
-      it 'replaces each point field with 2 fields (1 for latitude & 1 for longitude) related by key' do
-        create(
-          :custom_field_point,
-          resource: custom_form,
-          key: 'where_is_it_zl5',
-          title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }
-        )
-
-        point_fields = service.reportable_fields.select { |field| field.input_type == 'point' }
-        expect(point_fields.map(&:key)).to match_array %w[where_is_it_zl5_latitude where_is_it_zl5_longitude]
-        expect(point_fields.map(&:title_multiloc)).to match_array [
-          { 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' },
-          { 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' }
-        ]
-      end
-    end
   end
 
   context 'constraints/locks on changing attributes' do

@@ -14,9 +14,7 @@ resource 'Ideas' do
   end
 
   describe 'Create' do
-    before do
-      IdeaStatus.create_defaults
-    end
+    before { create(:idea_status_proposed) }
 
     with_options scope: :idea do
       parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''

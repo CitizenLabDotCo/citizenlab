@@ -42,7 +42,11 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'schema', on: :member
-          resources :permissions_custom_fields, shallow: true
+          get 'access_denied_explanation', on: :member
+          patch 'reset', on: :member
+          resources :permissions_custom_fields, shallow: true do
+            patch 'reorder', on: :member
+          end
         end
       end
 
@@ -83,7 +87,9 @@ Rails.application.routes.draw do
 
       resources :background_jobs, only: %i[index]
 
-      resources :idea_statuses, only: %i[index show]
+      resources :idea_statuses do
+        patch 'reorder', on: :member
+      end
       resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
@@ -296,6 +302,7 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
+  get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
 
   if Rails.env.development?
     require 'que/web'

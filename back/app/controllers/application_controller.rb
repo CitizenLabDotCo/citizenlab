@@ -156,6 +156,6 @@ class ApplicationController < ActionController::API
     return unless resource_params.key?(image_field_name) && resource_params[image_field_name].nil?
 
     # setting the image attribute to nil will not remove the image
-    resource.public_send("remove_#{image_field_name}!")
+    resource.public_send(:"remove_#{image_field_name}!")
   end
 end

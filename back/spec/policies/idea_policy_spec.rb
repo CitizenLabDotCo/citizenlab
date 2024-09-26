@@ -503,11 +503,11 @@ describe IdeaPolicy do
     let(:author) { create(:user) }
     let(:permitted_by) { 'admins_moderators' }
     let(:participation_method) { 'ideation' }
-    let(:posting_enabled) { true }
+    let(:submission_enabled) { true }
     let(:project) do
       create(:single_phase_ideation_project, phase_attrs: {
         with_permissions: true,
-        posting_enabled: posting_enabled,
+        submission_enabled: submission_enabled,
         participation_method: participation_method,
         native_survey_title_multiloc: { 'en' => 'Survey' },
         native_survey_button_multiloc: { 'en' => 'Take the survey' }
@@ -516,7 +516,7 @@ describe IdeaPolicy do
       end
     end
     let!(:idea) do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
       phase = project.phases.first
       create(:idea, project: project, author: author, creation_phase: phase.native_survey? ? phase : nil)
     end
@@ -554,7 +554,7 @@ describe IdeaPolicy do
 
     context 'for the author of an idea in a project where posting is not permitted' do
       let(:user) { author }
-      let(:posting_enabled) { false }
+      let(:submission_enabled) { false }
 
       it do
         is_expected.to permit(:show)

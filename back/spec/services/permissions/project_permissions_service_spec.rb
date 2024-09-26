@@ -10,7 +10,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe '"posting_idea" denied_reason_for_action' do
     context 'when posting is disabled' do
-      let(:current_phase_attrs) { { posting_enabled: false } }
+      let(:current_phase_attrs) { { submission_enabled: false } }
 
       it 'returns `posting_disabled`' do
         expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_disabled'
@@ -72,8 +72,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the posting limit was reached' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 } }
+      let(:project) { create(:single_phase_native_survey_project) }
 
       it 'returns `posting_limited_max_reached`' do
         create(:idea, project: project, author: user, phases: project.phases)
@@ -83,10 +82,15 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the author posted a survey anonymously and the limit was reached' do
-      let(:project) { create(:single_phase_native_survey_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1, allow_anonymous_participation: true } }
+      let(:project) do
+        create(:single_phase_native_survey_project, phase_attrs: {
+          submission_enabled: true,
+          allow_anonymous_participation: true
+        })
+      end
 
       it 'returns `posting_limited_max_reached`' do
+        create(:idea_status_proposed)
         create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
 
         expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
@@ -94,8 +98,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the posting limit was not reached' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: phase_attrs) }
-      let(:phase_attrs) { { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 } }
+      let(:project) { create(:single_phase_native_survey_project) }
 
       it 'returns nil' do
         create(:idea, project: project)
@@ -114,7 +117,7 @@ describe Permissions::ProjectPermissionsService do
         group = create(:group)
         group.add_member(user).save!
 
-        permission.update!(permitted_by: 'groups', groups: [group])
+        permission.update!(permitted_by: 'users', groups: [group])
         expect(service.denied_reason_for_action('posting_idea')).to be_nil
       end
 
@@ -133,7 +136,7 @@ describe Permissions::ProjectPermissionsService do
       end
 
       it 'returns `user_not_in_group` when the user is not a group member' do
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        permission.update!(permitted_by: 'users', groups: create_list(:group, 2))
         expect(service.denied_reason_for_action('posting_idea')).to eq 'user_not_in_group'
       end
     end
@@ -200,7 +203,7 @@ describe Permissions::ProjectPermissionsService do
       end
 
       it 'returns `user_not_in_group` commenting is not permitted for the user' do
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        permission.update!(permitted_by: 'users', groups: create_list(:group, 2))
         expect(service.denied_reason_for_action('commenting_idea')).to eq 'user_not_in_group'
       end
 
@@ -304,7 +307,7 @@ describe Permissions::ProjectPermissionsService do
       end
 
       it "returns 'user_not_in_group' if it's in the current phase and reacting is not permitted" do
-        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+        permission.update!(permitted_by: 'users', groups: create_list(:group, 2))
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to eq 'user_not_in_group'
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to eq 'user_not_in_group'
       end
@@ -342,7 +345,7 @@ describe Permissions::ProjectPermissionsService do
       it 'returns nil' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
         groups = create_list(:group, 2, projects: [project])
-        permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+        permission.update!(permitted_by: 'users', group_ids: groups.map(&:id))
         group = groups.first
         group.add_member user
         group.save!
@@ -352,7 +355,7 @@ describe Permissions::ProjectPermissionsService do
       it 'returns `user_not_in_group` when the user is not member of a permitted group' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_survey')
         permission.update!(
-          permitted_by: 'groups',
+          permitted_by: 'users',
           group_ids: create_list(:group, 2).map(&:id)
         )
         expect(service.denied_reason_for_action('taking_survey')).to eq 'user_not_in_group'
@@ -402,7 +405,7 @@ describe Permissions::ProjectPermissionsService do
       it 'returns nil' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'annotating_document')
         groups = create_list(:group, 2, projects: [project])
-        permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+        permission.update!(permitted_by: 'users', group_ids: groups.map(&:id))
         group = groups.first
         group.add_member user
         group.save!
@@ -472,7 +475,7 @@ describe Permissions::ProjectPermissionsService do
       it 'returns nil' do
         permission = Permission.find_by(action: 'taking_poll', permission_scope: project.phases.first)
         group = create(:group, projects: [project])
-        permission.update!(permitted_by: 'groups', groups: [group])
+        permission.update!(permitted_by: 'users', groups: [group])
         group.add_member(user)
         group.save!
         expect(service.denied_reason_for_action('taking_poll')).to be_nil
@@ -505,7 +508,7 @@ describe Permissions::ProjectPermissionsService do
 
       it 'returns `user_missing_requirements`' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
-        permission.update!(permitted_by: 'users')
+        permission.update!(permitted_by: 'users', global_custom_fields: true)
         gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
         expect(service.denied_reason_for_action('taking_poll')).to eq 'user_missing_requirements'
         gender_field.update!(required: false) # Removed the required field
@@ -531,7 +534,7 @@ describe Permissions::ProjectPermissionsService do
 
       it 'returns `user_not_in_group` when the idea is in the current phase and voting is not permitted' do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
-        permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2).map(&:id))
+        permission.update!(permitted_by: 'users', group_ids: create_list(:group, 2).map(&:id))
         expect(service.denied_reason_for_action('voting')).to eq 'user_not_in_group'
       end
     end
@@ -553,6 +556,46 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
+  describe '"attending_event" denied_reason_for_project' do
+    context 'user not signed in' do
+      let(:user) { nil }
+      let(:project) { create(:project_with_current_phase) }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_signed_in'
+      end
+    end
+
+    context 'idea is in the current phase and voting is not permitted' do
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
+
+      it 'returns `user_not_in_group`' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'attending_event')
+        permission.update!(
+          permitted_by: 'users',
+          group_ids: create_list(:group, 2).map(&:id)
+        )
+        expect(service.denied_reason_for_action('attending_event')).to eq 'user_not_in_group'
+      end
+    end
+
+    context 'when the timeline is over' do
+      let(:project) { create(:project_with_past_phases) }
+
+      it 'returns nil - attending is allowed even though the phase is over' do
+        expect(service.denied_reason_for_action('attending_event')).to be_nil
+      end
+    end
+
+    context 'when the project is archived' do
+      let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it "returns 'project_inactive'" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
+      end
+    end
+  end
+
   describe '"posting_idea" future_enabled_phase' do
     context do
       let(:project) do
@@ -560,9 +603,9 @@ describe Permissions::ProjectPermissionsService do
           :project_with_current_phase,
           phases_config: {
             sequence: 'xcxxxxxy',
-            x: { posting_enabled: false },
-            y: { posting_enabled: true },
-            c: { posting_enabled: false }
+            x: { submission_enabled: false },
+            y: { submission_enabled: true },
+            c: { submission_enabled: false }
           }
         )
       end
@@ -578,7 +621,7 @@ describe Permissions::ProjectPermissionsService do
           :project_with_current_phase,
           phases_config: {
             sequence: 'xcyyy',
-            y: { posting_enabled: false }
+            y: { submission_enabled: false }
           }
         )
       end
@@ -786,6 +829,7 @@ describe Permissions::ProjectPermissionsService do
         create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
         create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'users')
         create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'users')
+        create(:permission, action: 'attending_event', permission_scope: phase, permitted_by: 'users')
       end
 
       # Load project with pre-loading as loaded by the controller
@@ -800,7 +844,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
@@ -816,7 +860,7 @@ describe Permissions::ProjectPermissionsService do
         project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
         current_phase = TimelineService.new.current_phase(project)
         current_phase.permissions.each do |permission|
-          permission.update!(permitted_by: 'groups', groups: [group])
+          permission.update!(permitted_by: 'users', groups: [group])
         end
       end
 
@@ -832,7 +876,7 @@ describe Permissions::ProjectPermissionsService do
 
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups: false)
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       expect do
         projects.each do |project|
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors

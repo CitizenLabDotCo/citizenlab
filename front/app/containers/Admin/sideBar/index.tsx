@@ -91,6 +91,7 @@ const Sidebar = ({ authUser }: Props) => {
     {
       feedback_needed: true,
       assignee: authUser?.data.id,
+      transitive: true,
     },
     isAdmin(authUser)
   );

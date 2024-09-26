@@ -163,7 +163,7 @@ module EmailCampaigns
 
     def top_ideas
       @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).select do |idea|
-        idea.participation_method_on_creation.include_data_in_email?
+        idea.participation_method_on_creation.supports_public_visibility?
       end
     end
 
@@ -223,9 +223,9 @@ module EmailCampaigns
       new_comments_increases = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
-        likes = (new_likes_counts[idea_id] || 0)
-        dislikes = (new_dislikes_counts[idea_id] || 0)
-        comments        = (new_comments_increases[idea_id] || 0)
+        likes = new_likes_counts[idea_id] || 0
+        dislikes = new_dislikes_counts[idea_id] || 0
+        comments        = new_comments_increases[idea_id] || 0
         total           = (likes + dislikes + comments)
         object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end

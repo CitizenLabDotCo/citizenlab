@@ -3,10 +3,7 @@ import React, { Suspense, useRef, useState } from 'react';
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -81,21 +78,16 @@ const NavItem = styled(Box)`
 `;
 
 const MobileNavbarContent = () => {
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const locale = useLocale();
   const { formatMessage } = useIntl();
 
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
-  const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.core.locales
-    : [];
 
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
 
   const signIn = () => {
-    triggerAuthenticationFlow({ flow: 'signin' });
+    triggerAuthenticationFlow({}, 'signin');
   };
 
   const onShowMore = (isFullMenuOpened: boolean) => {
@@ -116,11 +108,9 @@ const MobileNavbarContent = () => {
       <RightContainer>
         {!isEmailSettingsPage && (
           <>
-            {tenantLocales.length > 1 && locale && (
-              <NavItem className="noLeftMargin">
-                <LanguageSelector />
-              </NavItem>
-            )}
+            <NavItem className="noLeftMargin">
+              <LanguageSelector />
+            </NavItem>
             {isNilOrError(authUser) ? (
               <NavItem className="login">
                 <Button

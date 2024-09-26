@@ -133,6 +133,7 @@ RSpec.describe Comment do
       end
     end
 
+    # TODO: cleanup-after-proposals-migration
     context 'Initiatives' do
       it 'has the same author hash on all comments against initiatives' do
         comment1 = create(:comment, author: author, post: create(:initiative), anonymous: true)

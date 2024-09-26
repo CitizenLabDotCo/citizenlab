@@ -11,7 +11,7 @@ module MultiTenancy
           start_at = Time.zone.now + rand(100).days
           event = ::Event.create!(
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            description_multiloc: runner.rand_description_multiloc,
             location_multiloc: { en: '201 Demo Street' },
             start_at: start_at,
             end_at: start_at + rand(10).hours,

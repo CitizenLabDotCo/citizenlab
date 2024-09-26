@@ -36,6 +36,8 @@ nl-BE:
   symbols:
     outside: ergens anders
   idea_statuses:
+    prescreening: voorselectie
+    prescreening_description: Deze bijdrage wordt momenteel bekeken door de projectmanager en is nog niet zichtbaar voor het publiek.
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
     viewed: gezien
@@ -48,6 +50,14 @@ nl-BE:
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
+    expired: verstreken
+    expired_description: verstreken
+    threshold_reached: drempel bereikt
+    threshold_reached_description: drempel bereikt
+    answered: beantwoord
+    answered_description: beantwoord
+    ineligible: komt niet in aanmerking
+    ineligible_description: komt niet in aanmerking
   initiative_statuses:
     review_pending: beoordeling in behandeling
     review_pending_description: beoordeling in behandeling
@@ -182,8 +192,8 @@ nl-BE:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
+      other_input_field:
+        title: Typ je antwoord
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ nl-BE:
           title: Wat is je reactie?
         option:
           title: Wat is je optie?
-      details:
-        title: Details
-      attachements:
-        title: Afbeeldingen en bijlagen
-      extra:
-        title: Extra informatie
   custom_field_options:
     gender:
       male: Man
@@ -229,6 +233,7 @@ nl-BE:
       <ul><li>Neem de tijd om je voorstel uit te werken. Typ het eventueel eerst ergens anders en knip en plak het daarna hier.</li><li>Kies een sprekende titel, die direct en concreet uitlegt wat je voorstel omvat.</li><li>Illustreer je voorstel zeker met een passende afbeelding, zodat deze meer opvalt!</li><li>Voeg relevante bijlagen toe zoals video’s, inspirerende voorbeelden, technische details of plannen.</li><li>Deel je voorstel op social media en via andere kanalen om stemmen te verzamelen.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset je wachtwoord voor %{organizationName}'
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
       message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
       subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
@@ -267,6 +272,7 @@ nl-BE:
       submitted_at: 'Ingediend op'
       tags: 'Tags'
       title: 'Naam'
+      user_data: 'Gebruikersgegevens'
       votes_count: 'Stemmen'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ nl-BE:
       option1: 'Optie 1'
       option2: 'Optie 2'
     form_end_page:
-      title: 'Bedankt voor je deelname'
-      description: "Stuur je antwoorden in door hieronder op 'Verzenden' te klikken."
+      title_text: 'Bijna klaar'
+      description_text_2: "Je staat op het punt om je antwoorden in te sturen. Door op 'Verzenden' te klikken geef je ons toestemming om je antwoorden te analyseren.<br/>Na het verzenden kun je niet meer terug om je antwoorden te wijzigen."
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
-      personal_data_explanation_ideation: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
-      personal_data_explanation_native_survey: "We zullen je bijdrage doorsturen naar het online participatieplatform van %{organizationName}. Als je per e-mail updates wilt ontvangen die relevant zijn voor jouw bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je gegevens zijn niet openbaar en worden alleen gebruikt door %{organizationName}. Als je er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
+      personal_data_explanation_public: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
+      personal_data_explanation_private: "We zullen je bijdrage doorsturen naar het online participatieplatform van %{organizationName}. Als je per e-mail updates wilt ontvangen die relevant zijn voor jouw bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je gegevens zijn niet openbaar en worden alleen gebruikt door %{organizationName}. Als je er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
       first_name: 'Voornaam'
       last_name: 'Achternaam'
       email_address: 'E-mailadres'
@@ -287,6 +293,12 @@ nl-BE:
       optional: 'optioneel'
       permission: 'Toestemming'
       choose_as_many: 'Kies er zoveel als je wilt'
+      choose_exactly:
+        one: 'Kies precies %{count} optie'
+        other: 'Kies precies %{count} opties'
+      choose_between: 'Kies tussen %{min} en %{max} opties'
+      choose_at_least: 'Kies ten minste %{count} opties'
+      choose_at_most: 'Kies maximaal %{count} opties'
       this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
       page: 'Pagina'
       date_published: 'Datum gepubliceerd (dd-mm-jjjj)'
@@ -299,6 +311,7 @@ nl-BE:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bevestig je e-mailadres voor het participatieplatform van %{organizationName}"
+      preheader: 'Bevestig je e-mailadres voor %{organizationName}'
       header: "Je bevestigingscode "
       header_message: "Hallo %{firstName}!"
       confirm_email_address: "Bevestig uw e-mailadres"
@@ -313,6 +326,7 @@ nl-BE:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Uw account is tijdelijk uitgeschakeld'
+      preheader: 'Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld'
       title_user_blocked: 'Uw account is tijdelijk uitgeschakeld'
       paragraph_1_without_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
       paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
@@ -328,3 +342,5 @@ nl-BE:
   voting_method:
     default_voting_term_singular: "stem"
     default_voting_term_plural: "stemmen"
+  ics_calendar_event:
+    event_details: "Details evenement"

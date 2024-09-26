@@ -16,6 +16,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import Events from '../CraftComponents/Events';
+import Highlight from '../CraftComponents/Highlight';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
 import Proposals from '../CraftComponents/Proposals';
@@ -49,6 +50,7 @@ const Editor: React.FC<EditorProps> = ({
         Projects,
         Proposals,
         Events,
+        Highlight,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

@@ -28,7 +28,7 @@ export const configureMapView = (
   };
 
   // Change location of zoom widget if specified
-  if (initialData?.showZoomControls === false) {
+  if (initialData?.showZoomControls === false || isMobileOrSmaller) {
     const zoom = mapView.ui.find('zoom');
     mapView.ui.remove(zoom);
   } else if (initialData?.zoomWidgetLocation === 'right') {
@@ -46,10 +46,7 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(
-      mapView,
-      initialData?.showLegendExpanded ? false : isMobileOrSmaller
-    );
+    addMapLegend(mapView, isMobileOrSmaller, initialData?.showLegendExpanded);
   }
 
   // Show layer visibility controls if set
@@ -85,7 +82,11 @@ export const setMapCenter = (
 
 // addMapLegend
 // Description: Adds a legend to the map
-export const addMapLegend = (mapView: MapView, isMobileOrSmaller: boolean) => {
+export const addMapLegend = (
+  mapView: MapView,
+  isMobileOrSmaller: boolean,
+  showLegendExpanded: boolean | undefined
+) => {
   const legend = new Expand({
     content: new Legend({
       view: mapView,
@@ -93,7 +94,10 @@ export const addMapLegend = (mapView: MapView, isMobileOrSmaller: boolean) => {
       style: { type: 'classic', layout: 'stack' },
     }),
     view: mapView,
-    expanded: isMobileOrSmaller ? false : true,
+    expanded:
+      showLegendExpanded === undefined
+        ? !isMobileOrSmaller // By default, show the legend expanded only on desktop
+        : showLegendExpanded,
     mode: 'floating',
   });
 

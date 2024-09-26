@@ -23,9 +23,15 @@ const AccessibilityStatement = () => {
   return (
     <>
       <Helmet>
-        <title>{formatMessage(messages.title)}</title>
+        <title>{formatMessage(messages.headTitle)}</title>
         <meta
           name="description"
+          content={formatMessage(messages.pageDescription)}
+        />
+        <meta property="og:title" content={formatMessage(messages.headTitle)} />
+        <meta name="title" content={formatMessage(messages.headTitle)} />
+        <meta
+          property="og:description"
           content={formatMessage(messages.pageDescription)}
         />
       </Helmet>
@@ -72,15 +78,18 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.conformanceStatus)}</h2>
-                    <p>WCAG 2.1 AA</p>
+                    <p>WCAG 2.2 AA</p>
                     <h2>{formatMessage(messages.conformanceExceptions)}</h2>
                     <p>
                       {formatMessage(messages.contentConformanceExceptions)}
                     </p>
                     <h3>{formatMessage(messages.surveyTools)}</h3>
                     <p>{formatMessage(messages.surveyToolsException)}</p>
-                    <h3>{formatMessage(messages.mapviewIdeas)}</h3>
-                    <p>{formatMessage(messages.mapviewIdeasException)}</p>
+                    <h3>{formatMessage(messages.mapping)}</h3>
+                    <p>{formatMessage(messages.mapping_1)}</p>
+                    <p>{formatMessage(messages.mapping_2)}</p>
+                    <p>{formatMessage(messages.mapping_3)}</p>
+                    <p>{formatMessage(messages.mapping_4)}</p>
                     <h3>{formatMessage(messages.userGeneratedContent)}</h3>
                     <p>{formatMessage(messages.exception_1)}</p>
                     <h3>{formatMessage(messages.workshops)}</h3>
@@ -120,7 +129,7 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.publicationDate)}</h2>
-                    <p>{formatMessage(messages.publicationDateIntro)}</p>
+                    <p>{formatMessage(messages.publicationDate2024)}</p>
                     <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                     <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                     <ul>

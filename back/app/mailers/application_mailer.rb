@@ -17,15 +17,19 @@ class ApplicationMailer < ActionMailer::Base
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
-  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url, :home_url, :tenant_logo_url,
-    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
+    :home_url, :tenant_logo_url, :show_terms_link?, :show_privacy_policy_link?, :format_message,
     :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 
   def format_message(key, component: nil, escape_html: true, values: {})
-    msg = t(".#{key}", values)
+    msg = t(".#{key}", **values)
     escape_html ? msg : msg.html_safe
+  end
+
+  def preheader
+    raise NotImplementedError
   end
 
   def recipient_name
@@ -48,10 +52,6 @@ class ApplicationMailer < ActionMailer::Base
     format_message('header_message', values: { firstName: recipient_first_name })
   end
 
-  def preheader
-    format_message('preheader', values: { organizationName: organization_name })
-  end
-
   def url_service
     @url_service ||= Frontend::UrlService.new
   end
@@ -66,7 +66,7 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, locale.locale_sym).html_safe if multiloc
+    multiloc_service.t(multiloc, locale.to_s).html_safe if multiloc
   end
 
   # Truncates localized multiloc string, avoiding cutting string in the middle of HTML link and breaking the mail view.
@@ -150,10 +150,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def app_settings
     to_deep_struct(app_configuration.settings)
-  end
-
-  def show_unsubscribe_link?
-    true
   end
 
   def show_terms_link?

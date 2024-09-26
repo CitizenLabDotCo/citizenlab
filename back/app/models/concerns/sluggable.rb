@@ -17,7 +17,7 @@ module Sluggable
     def slug(options = {})
       @has_slug = true
       @slug_attribute = options[:attribute] || :slug
-      @slug_from ||= (options[:from] || proc { |_| generate_fallback_slug })
+      @slug_from ||= options[:from] || proc { |_| generate_fallback_slug }
       @slug_if = options[:if]
     end
   end

@@ -149,12 +149,6 @@ nn:
           title: What is your issue ?
         option:
           title: What is your option ?
-      details:
-        title: Detaljer
-      attachements:
-        title: Images and Attachements
-      extra:
-        title: Additional information
   custom_field_options:
     gender:
       male: Mann

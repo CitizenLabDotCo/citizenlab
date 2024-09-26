@@ -9,9 +9,6 @@ import analyticsConfiguration, {
 import bulkIdeaImportConfiguration, {
   bulkIdeaImportRouteTypes,
 } from './commercial/bulk_idea_import';
-import customIdeaStatusesConfiguration, {
-  customIdeaStatusesRouteTypes,
-} from './commercial/custom_idea_statuses';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -37,9 +34,6 @@ import moderationConfiguration, {
   moderationRouteTypes,
 } from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
-import projectDescriptionBuilderConfiguration, {
-  descriptionBuilderRouteTypes,
-} from './commercial/project_description_builder';
 import representativenessConfiguration, {
   representativenessRouteTypes,
 } from './commercial/representativeness';
@@ -52,9 +46,7 @@ export type moduleRouteTypes =
   | projectTemplateRouteTypes
   | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
-  | customIdeaStatusesRouteTypes
   | moderationRouteTypes
-  | descriptionBuilderRouteTypes
   | representativenessRouteTypes
   | widgetsRouteTypes;
 
@@ -91,12 +83,6 @@ export default loadModules([
   },
   {
     configuration: ideaAssignmentConfiguration,
-  },
-  {
-    configuration: projectDescriptionBuilderConfiguration,
-  },
-  {
-    configuration: customIdeaStatusesConfiguration,
   },
   {
     configuration: bulkIdeaImportConfiguration,

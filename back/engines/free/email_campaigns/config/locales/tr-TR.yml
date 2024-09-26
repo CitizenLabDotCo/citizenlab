@@ -77,10 +77,13 @@ tr:
       "link_terms_conditions": "Hüküm ve Koşullar"
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
-      "statement": "Bu e-posta %{organizationName} adına Go Vocal tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
+      "recipient_statement": "Bu e-posta size Go Vocal tarafından %{organizationName}adına gönderilmiştir, çünkü siz %{organizationLink}sitesinin kayıtlı bir kullanıcısısınız."
+      "unsubscribe_statement": "Gelecekte bu e-postaları almak istemiyorsanız %{unsubscribeLink} adresini ziyaret edebilirsiniz."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
     follow:
       "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
+    manual:
+      preheader: '%{organizationName}adresinden postanız var.'
     comment_deleted_by_admin:
       reason: 'Yorumunuzun silinme nedeni:'
       cta_view: 'Bu fikri görüntüle'
@@ -539,6 +542,7 @@ tr:
       cta_see_results: 'Platformdaki sonuçları görün'
     event_registration_confirmation:
       subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
+      preheader: "%{firstName}, %{eventTitle}adresine kaydolduğunuz için teşekkürler"
       header_message: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
       event_details:
         labels:

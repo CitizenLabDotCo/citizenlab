@@ -55,6 +55,7 @@ export type Props = {
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   maxRows?: number | undefined;
+  minRows?: number | undefined;
   error?: string | null | undefined;
   onChange?: (value: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void | undefined;
@@ -126,6 +127,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
       value,
       rows,
       maxRows,
+      minRows,
       placeholder,
       error,
       children,
@@ -150,6 +152,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             name={name || ''}
             rows={rows || 5}
             maxRows={maxRows || undefined}
+            minRows={minRows || undefined}
             value={value || ''}
             placeholder={placeholder || undefined}
             onChange={this.handleOnChange}

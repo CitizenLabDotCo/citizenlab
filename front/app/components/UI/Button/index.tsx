@@ -11,7 +11,7 @@ import { RouteType } from 'routes';
 import Link from 'utils/cl-router/Link';
 
 interface Props extends ButtonProps {
-  linkTo?: RouteType | null;
+  linkTo?: string | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
 }
@@ -53,7 +53,7 @@ const ButtonWrapper = ({
           }: Omit<ButtonProps, 'as' | 'size'> &
             React.HTMLAttributes<HTMLAnchorElement>) => (
             <Link
-              to={linkTo}
+              to={linkTo as RouteType}
               target={openLinkInNewTab ? '_blank' : undefined}
               rel="noreferrer"
               scrollToTop={scrollToTop}

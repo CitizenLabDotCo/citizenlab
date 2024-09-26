@@ -11,6 +11,8 @@ import Box from '../Box';
 const Container = styled(Box)`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 `;
 
 const StyledButton = styled.button`
@@ -22,7 +24,6 @@ const StyledButton = styled.button`
   font-weight: 500;
   white-space: nowrap;
   padding: 7px 8px;
-  margin-right: 6px;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.grey200};
   cursor: pointer;

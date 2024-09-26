@@ -28,7 +28,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       render json: { errors: { base: [{ error: 'initiative_status_transition_without_change' }] } }, status: :unprocessable_entity
       return
     end
-    if attributes[:official_feedback_attributes].present?  # If not nil nor empty hash
+    if attributes[:official_feedback_attributes].present? # If not nil nor empty hash
       attributes[:official_feedback_attributes].merge! post_id: @initiative.id, post_type: 'Initiative'
     else
       attributes.except! :official_feedback_attributes
@@ -42,7 +42,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       @initiative,
       @initiative.initiative_status,
       @change.initiative_status,
-      with_feedback: (attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id])
+      with_feedback: attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id]
     )
       if @change.save
         SideFxInitiativeStatusChangeService.new.after_create @change, current_user

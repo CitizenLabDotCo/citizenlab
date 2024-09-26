@@ -48,7 +48,7 @@ describe('Input form builder', () => {
 
     cy.get('.e2e-topics-picker').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // The tags tool box item should be disabled as it is already on the canvas
@@ -56,7 +56,7 @@ describe('Input form builder', () => {
     cy.get('@tagsToolboxItem').should('exist');
     cy.get('@tagsToolboxItem').should('have.attr', 'disabled');
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Tags').should('exist');
       cy.contains('Tags').click();
     });
@@ -71,7 +71,7 @@ describe('Input form builder', () => {
     cy.get('@tagsToolboxItem').should('not.have.attr', 'disabled');
 
     // Check to see that tags is removed from the canvas
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Tags').should('not.exist');
     });
 

@@ -19,6 +19,8 @@ export interface SSOProviderMap {
   hoplr: 'hoplr';
   id_austria: 'id_austria';
   criipto: 'criipto';
+  fake_sso: 'fake_sso';
+  nemlog_in: 'nemlog_in';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
@@ -45,7 +47,8 @@ const setHrefVienna = () => {
 export const handleOnSSOClick = (
   provider: SSOProvider,
   metaData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) => {
   if (metaData?.successAction) {
     localStorage.setItem(
@@ -56,21 +59,22 @@ export const handleOnSSOClick = (
 
   provider === 'id_vienna_saml'
     ? setHrefVienna()
-    : setHref(provider, metaData, verification);
+    : setHref(provider, metaData, verification, flow);
 };
 
 function setHref(
   provider: SSOProvider,
   authenticationData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) {
-  const { context, flow } = authenticationData;
+  const { context } = authenticationData;
 
   const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: flow,
-    sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
+    sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: context?.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,

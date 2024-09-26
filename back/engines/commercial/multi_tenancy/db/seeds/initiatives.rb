@@ -10,7 +10,7 @@ module MultiTenancy
           created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.zone.now)
           initiative = Initiative.create!(
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
-            body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            body_multiloc: runner.rand_description_multiloc,
             author: User.offset(rand(User.count)).first,
             publication_status: 'published',
             published_at: Faker::Date.between(from: created_at, to: Time.zone.now),
@@ -42,7 +42,7 @@ module MultiTenancy
 
           rand(5).times do
             initiative.official_feedbacks.create!(
-              body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+              body_multiloc: runner.rand_description_multiloc,
               author_multiloc: runner.create_for_some_locales { Faker::FunnyName.name },
               user: User.admin.sample
             )

@@ -227,6 +227,7 @@ const AuthProviderButton = memo<Props>(
                 />
                 <ButtonWrapper>
                   <ContinueButton
+                    className="e2e-sso-continue-button"
                     onClick={handleContinueClicked}
                     disabled={!isContinueEnabled}
                   >

@@ -42,6 +42,7 @@ type BaseResult = {
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
+  numberResponses?: { answer: number }[];
 
   // Defined for text questions,
   // and for select questions with "other" option
@@ -55,9 +56,11 @@ export type ResultUngrouped = BaseResult & {
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
 
-  // Defined point (map) questions
+  // Defined map questions
   mapConfigId?: string;
-  pointResponses?: { response: GeoJSON.Point }[];
+  pointResponses?: { answer: GeoJSON.Point }[];
+  lineResponses?: { answer: GeoJSON.LineString }[];
+  polygonResponses?: { answer: GeoJSON.Polygon }[];
 
   // Defined for file upload questions
   files?: { name: string; url: string }[];

@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Reactions' do
   explanation 'Reactions are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most reactiond initiatives.'
 
@@ -52,7 +53,6 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    # TODO: JS Used to include REACTING_DENIED_REASONS.values - is there some code missing?
     disabled_reasons = Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
@@ -67,6 +67,7 @@ resource 'Reactions' do
       expect(@initiative.reload.likes_count).to eq 3
     end
 
+    # TODO: cleanup-after-proposals-migration
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
       settings['initiatives']['reacting_threshold'] = 3

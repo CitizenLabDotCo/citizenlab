@@ -65,7 +65,6 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           'Sign up/in modal opened in response to clicking new initiative'
         );
         triggerAuthenticationFlow({
-          flow: 'signup',
           context,
           successAction,
         });

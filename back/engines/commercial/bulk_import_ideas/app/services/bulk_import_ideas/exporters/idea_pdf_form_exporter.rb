@@ -6,12 +6,15 @@ module BulkImportIdeas::Exporters
   class IdeaPdfFormExporter < BaseFormExporter
     attr_reader :participation_context, :form_fields, :previous_cursor
 
+    delegate :generate_multiselect_instructions, to: :class
+    private :generate_multiselect_instructions
+
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
     JUMBLING_FIELD_TYPES = %w[multiline_text html_multiloc text text_multiloc]
 
     def initialize(phase, locale, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).printable_fields
+      @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields
       @personal_data_enabled = personal_data_enabled
       @previous_cursor = nil
       @app_configuration = AppConfiguration.instance
@@ -161,8 +164,11 @@ module BulkImportIdeas::Exporters
       pdf.move_down 2.mm
 
       # Personal data explanation
-      participation_method = @phase.participation_method
-      personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
+      personal_data_explanation_key = if @phase.pmethod.supports_public_visibility?
+        'form_builder.pdf_export.personal_data_explanation_public'
+      else
+        'form_builder.pdf_export.personal_data_explanation_private'
+      end
       pdf.text I18n.with_locale(@locale) {
         I18n.t(
           personal_data_explanation_key,
@@ -260,14 +266,14 @@ module BulkImportIdeas::Exporters
       optional = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
 
       pdf.text(
-        "<b>#{custom_field.title_multiloc[@locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
+        "<b>#{custom_field_service.handle_title(custom_field, @locale)}</b>#{custom_field.required? ? '' : " (#{optional})"}",
         size: 14,
         inline_format: true
       )
     end
 
     def write_description(pdf, custom_field)
-      description = custom_field.description_multiloc[@locale]
+      description = custom_field_service.handle_description(custom_field, @locale)
       if description.present?
         paragraphs = parse_html_tags(description)
 
@@ -278,26 +284,21 @@ module BulkImportIdeas::Exporters
     end
 
     def write_instructions_and_disclaimers(pdf, custom_field)
-      show_multiselect_instructions = custom_field.input_type == 'multiselect'
-      participation_method = Factory.instance.participation_method_for @phase
-      show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
+      multiselect_instructions = generate_multiselect_instructions(custom_field, @locale)
+      visibility_disclaimer = generate_visibility_disclaimer(custom_field)
 
-      if show_multiselect_instructions || show_visibility_disclaimer
+      if multiselect_instructions || visibility_disclaimer
         pdf.move_down 2.mm
+        pdf.text("*#{multiselect_instructions}", size: 10) if multiselect_instructions
+        pdf.text("*#{visibility_disclaimer}", size: 10) if visibility_disclaimer
+      end
+    end
 
-        if show_multiselect_instructions
-          pdf.text(
-            "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
-            size: 10
-          )
-        end
+    def generate_visibility_disclaimer(custom_field)
+      return unless @phase.pmethod.supports_public_visibility? && custom_field.answer_visible_to == 'admins'
 
-        if show_visibility_disclaimer
-          pdf.text(
-            "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
-            size: 10
-          )
-        end
+      I18n.with_locale(@locale) do
+        I18n.t('form_builder.pdf_export.this_answer')
       end
     end
 
@@ -312,7 +313,7 @@ module BulkImportIdeas::Exporters
         pdf.move_up 3.mm
 
         pdf.indent(7.mm) do
-          pdf.text option.title_multiloc[@locale]
+          pdf.text custom_field_service.handle_title(option, @locale)
         end
 
         pdf.move_down 4.mm
@@ -333,7 +334,7 @@ module BulkImportIdeas::Exporters
         pdf.move_up 2.8.mm
 
         pdf.indent(7.mm) do
-          pdf.text option.title_multiloc[@locale]
+          pdf.text custom_field_service.handle_title(option, @locale)
         end
 
         pdf.move_down 4.mm
@@ -378,7 +379,7 @@ module BulkImportIdeas::Exporters
 
       # In IdeaPdfFileParser#merge_idea_with_form_fields, we add :value key to this hash.
       @importer_fields << {
-        name: field[:title_multiloc][@locale],
+        name: custom_field_service.handle_title(field, @locale),
         description: type == 'field' ? ActionView::Base.full_sanitizer.sanitize(field[:description_multiloc][@locale]) : nil,
         type: type,
         input_type: field[:input_type],
@@ -388,6 +389,33 @@ module BulkImportIdeas::Exporters
         page: page,
         position: position.to_i
       }
+    end
+
+    class << self
+      def generate_multiselect_instructions(custom_field, locale)
+        return unless custom_field.input_type == 'multiselect'
+
+        min = custom_field.minimum_select_count
+        max = custom_field.maximum_select_count
+        min = nil if min == 0
+        max = nil if max&.>= custom_field.options.length
+
+        I18n.with_locale(locale) do
+          if custom_field.select_count_enabled && (min || max)
+            if min && max && min == max
+              I18n.t('form_builder.pdf_export.choose_exactly', count: min)
+            elsif min && max
+              I18n.t('form_builder.pdf_export.choose_between', min: min, max: max)
+            elsif min
+              I18n.t('form_builder.pdf_export.choose_at_least', count: min)
+            else
+              I18n.t('form_builder.pdf_export.choose_at_most', count: max)
+            end
+          else
+            I18n.t('form_builder.pdf_export.choose_as_many')
+          end
+        end
+      end
     end
   end
 end

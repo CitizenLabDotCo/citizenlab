@@ -86,6 +86,9 @@ const IdeaShowPageTopBar = ({
   const ideaIsInParticipationContext =
     phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
+  const isProposalPhase =
+    phase?.attributes.participation_method === 'proposals';
+
   useEffect(() => {
     removeSearchParams(['go_back']);
   }, []);
@@ -140,6 +143,7 @@ const IdeaShowPageTopBar = ({
               styleType="border"
               ideaId={ideaId}
               disabledReactionClick={onDisabledReactClick}
+              variant={isProposalPhase ? 'text' : 'icon'}
             />
           )}
           {/* Only visible if voting */}

@@ -145,6 +145,7 @@ describe XlsxService do
     end
   end
 
+  # TODO: move-old-proposals-test
   describe 'generate_initiatives_xlsx' do
     let(:initiatives) { create_list(:initiative, 2) }
     let(:xlsx) { service.generate_initiatives_xlsx(initiatives) }

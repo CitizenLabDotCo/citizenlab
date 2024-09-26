@@ -233,4 +233,53 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledAlreadyResponded',
     defaultMessage: "You've already taken this poll.",
   },
+
+  // 'attending_event'
+  attendingEventNotSignedIn: {
+    id: 'app.utils.actionDescriptors.attendingEventNotSignedIn',
+    defaultMessage: 'You must log in or register to attend this event.',
+  },
+  attendingEventNotPermitted: {
+    id: 'app.utils.actionDescriptors.attendingEventNotPermitted',
+    defaultMessage: 'You are not permitted to attend this event.',
+  },
+  attendingEventNotInGroup: {
+    id: 'app.utils.actionDescriptors.attendingEventNotInGroup',
+    defaultMessage: 'You do not meet the requirements to attend this event.',
+  },
+  attendingEventNotVerified: {
+    id: 'app.utils.actionDescriptors.attendingEventNotVerified',
+    defaultMessage:
+      'You must verify your account before you can attend this event.',
+  },
+  attendingEventMissingRequirements: {
+    id: 'app.utils.actionDescriptors.attendingEventMissingRequirements',
+    defaultMessage: 'You must complete your profile to attend this event.',
+  },
+
+  // volunteering
+  volunteeringNotSignedIn: {
+    id: 'app.utils.actionDescriptors.volunteeringNotSignedIn',
+    defaultMessage: 'You must log in or register to volunteer.',
+  },
+  volunteeringNotActiveUser: {
+    id: 'app.utils.actionDescriptors.volunteeringdNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to volunteer.',
+  },
+  volunteeringNotVerified: {
+    id: 'app.utils.actionDescriptors.volunteeringNotVerified',
+    defaultMessage: 'You must verify your account before you can volunteer.',
+  },
+  volunteeringMissingRequirements: {
+    id: 'app.utils.actionDescriptors.volunteeringMissingRequirements',
+    defaultMessage: 'You must complete your profile to volunteer.',
+  },
+  volunteeringNotPermitted: {
+    id: 'app.utils.actionDescriptors.volunteeringNotPermitted',
+    defaultMessage: 'You are not permitted to volunteer.',
+  },
+  volunteeringNotInGroup: {
+    id: 'app.utils.actionDescriptors.volunteeringNotInGroup',
+    defaultMessage: 'You do not meet the requirements to volunteer.',
+  },
 });

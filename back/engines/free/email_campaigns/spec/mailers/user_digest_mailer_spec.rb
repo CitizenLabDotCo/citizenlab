@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::UserDigestMailer do
   describe 'UserDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }

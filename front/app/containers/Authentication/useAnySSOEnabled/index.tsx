@@ -1,6 +1,7 @@
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default function useAnySSOEnabled() {
+  const fakeSSOEnabled = useFeatureFlag({ name: 'fake_sso' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
@@ -29,6 +30,7 @@ export default function useAnySSOEnabled() {
   });
 
   const anySSOEnabled =
+    fakeSSOEnabled ||
     googleLoginEnabled ||
     facebookLoginEnabled ||
     azureAdLoginEnabled ||

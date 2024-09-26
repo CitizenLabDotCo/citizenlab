@@ -9,7 +9,7 @@ module CustomMaps
             base.class_eval do
               has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable,
                 serializer: ::CustomMaps::WebApi::V1::MapConfigSerializer,
-                if: proc { |object| object.input_type == 'point' }
+                if: proc { |object| CustomField::MAP_CONFIG_INPUT_TYPES.include? object.input_type }
             end
           end
         end

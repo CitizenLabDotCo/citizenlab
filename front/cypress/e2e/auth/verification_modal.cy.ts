@@ -46,9 +46,10 @@ describe('Verification modal', () => {
 
   describe('Participation with group conditions', () => {
     it('lets you participate if you meet group conditions', () => {
+      cy.clearCookies();
       cy.visit('/projects/verified-charlie-poeple-project');
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // email/password sign up step
       cy.get('#e2e-sign-up-email-password-container');
@@ -93,9 +94,10 @@ describe('Verification modal', () => {
     });
 
     it('does not let you participate if you do not meet group conditions', () => {
+      cy.clearCookies();
       cy.visit('/projects/verified-charlie-poeple-project');
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // email/password sign up step
       cy.get('#e2e-sign-up-email-password-container');
@@ -135,12 +137,11 @@ describe('Verification modal', () => {
       );
 
       // button should now be disabled
-      cy.get('.e2e-idea-button > div > button').should('exist');
-      cy.get('.e2e-idea-button > div > button').should(
-        'have.attr',
-        'aria-disabled',
-        'true'
-      );
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button')
+        .first()
+        .find('button')
+        .should('have.attr', 'aria-disabled', 'true');
     });
   });
 });

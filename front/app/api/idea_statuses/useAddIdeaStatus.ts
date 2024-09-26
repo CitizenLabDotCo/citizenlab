@@ -10,7 +10,7 @@ const addIdeaStatus = async (requestBody: IIdeaStatusAdd) =>
   fetcher<IIdeaStatus>({
     path: '/idea_statuses',
     action: 'post',
-    body: requestBody,
+    body: { idea_status: requestBody },
   });
 
 const useAddIdeaStatus = () => {

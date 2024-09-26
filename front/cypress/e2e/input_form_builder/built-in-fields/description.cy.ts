@@ -12,7 +12,7 @@ describe('Input form builder', () => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
-    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/form`);
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
@@ -40,19 +40,19 @@ describe('Input form builder', () => {
   });
 
   it('does not allow the description field to be deleted and provides no way to edit its question title', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Description').should('exist');
       cy.contains('Description').click();
     });
 
-    cy.get('[data-cy="e2e-field-row"]')
-      .eq(1)
-      .within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+      cy.contains('Description').within(() => {
         cy.get('[data-cy="e2e-more-field-actions"]').should('not.exist');
       });
+    });
 
     cy.get('#e2e-title-multiloc').should('not.exist');
   });

@@ -192,7 +192,7 @@ module EmailCampaigns
         author_first_name: comment.author&.first_name,
         author_last_name: name_service.last_name!(comment.author),
         author_locale: comment.author&.locale,
-        author_avatar: comment.author.avatar&.versions&.map { |k, v| [k.to_s, v.url] }&.to_h
+        author_avatar: comment.author.avatar&.versions&.to_h { |k, v| [k.to_s, v.url] }
       }
     end
 

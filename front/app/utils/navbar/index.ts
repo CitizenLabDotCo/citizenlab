@@ -7,17 +7,26 @@ interface IDefaultItemNotInNavbar {
   type: 'default_item';
   navbarCode: TNavbarItemCode;
   navbarId: string;
-  navbarTitleMultiloc: Multiloc;
+  titleMultiloc: Multiloc;
 }
 
 interface ICustomPageNotInNavbar {
   type: 'page';
   pageCode: TCustomPageCode;
   pageId: string;
-  pageTitleMultiloc: Multiloc;
+  titleMultiloc: Multiloc;
 }
 
-export type IItemNotInNavbar = IDefaultItemNotInNavbar | ICustomPageNotInNavbar;
+interface IProjectNotInNavbar {
+  type: 'project';
+  projectId: string;
+  titleMultiloc: Multiloc;
+}
+
+export type IItemNotInNavbar =
+  | IDefaultItemNotInNavbar
+  | ICustomPageNotInNavbar
+  | IProjectNotInNavbar;
 
 function getDefaultItemsNotInNavbar(
   removedDefaultNavbarItems: INavbarItem[]
@@ -26,7 +35,7 @@ function getDefaultItemsNotInNavbar(
     type: 'default_item',
     navbarCode: navbarItem.attributes.code,
     navbarId: navbarItem.id,
-    navbarTitleMultiloc: navbarItem.attributes.title_multiloc,
+    titleMultiloc: navbarItem.attributes.title_multiloc,
   }));
 }
 
@@ -47,7 +56,7 @@ function getPagesNotInNavbar(
       type: 'page',
       pageCode: page.attributes.code,
       pageId: page.id,
-      pageTitleMultiloc: page.attributes.nav_bar_item_title_multiloc,
+      titleMultiloc: page.attributes.nav_bar_item_title_multiloc,
     }));
 }
 

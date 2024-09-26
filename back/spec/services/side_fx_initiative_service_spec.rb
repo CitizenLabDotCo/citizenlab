@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 describe SideFxInitiativeService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
@@ -145,7 +146,7 @@ describe SideFxInitiativeService do
         :permission,
         permission_scope: nil,
         action: 'reacting_initiative',
-        permitted_by: 'groups',
+        permitted_by: 'users',
         groups: [create(:group)]
       )
 

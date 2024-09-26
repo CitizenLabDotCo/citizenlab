@@ -203,7 +203,6 @@ const InitiativeMap = ({ list }: Props) => {
             params: { lat, lng },
           };
           triggerAuthenticationFlow({
-            flow: 'signup',
             context,
             successAction,
           });

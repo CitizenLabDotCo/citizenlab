@@ -26,7 +26,6 @@
   "app.components.ProjectTemplatePreview.typeProjectName": "Type the name of the project",
   "app.components.ProjectTemplatePreview.useTemplate": "Use this template",
   "app.components.UserSearch.addModerators": "Add",
-  "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Type to search users...",
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
@@ -50,7 +49,6 @@
   "app.components.admin.PostManager.assignedTo": "Assigned to {assigneeName}",
   "app.components.admin.PostManager.assignedToMe": "Assigned to me",
   "app.components.admin.PostManager.assignee": "Assignee",
-  "app.components.admin.PostManager.automatic": "(automatic)",
   "app.components.admin.PostManager.changeStatusModalTitle": "Change this proposal's status",
   "app.components.admin.PostManager.comments": "Comments",
   "app.components.admin.PostManager.currentLat": "Center latitude",
@@ -821,7 +819,6 @@
   "app.containers.AdminPage.groups.permissions.add": "Add",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Delete",
-  "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "What can different users do?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Are you sure you want to remove this group from the project?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Select one or more groups",
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {No members} one {1 member} other {{count} members}}",
@@ -906,7 +903,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Participation platform of {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add tags and move input from one project to another",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "You can remove this content flag by selecting this item and clicking the remove button at the top. It will then reappear in the Seen or Not seen tabs",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Inappropriate content auto-detected.",
@@ -916,6 +912,5 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content."
 }

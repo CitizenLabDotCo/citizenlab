@@ -7,7 +7,7 @@ class SideFxUserService
     create_followers user
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
-    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
+    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i, payload: create_user_activity_payload(user))
     UpdateMemberCountJob.perform_later
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
@@ -134,6 +134,16 @@ class SideFxUserService
   def should_send_confirmation_email?(user)
     user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
+  end
+
+  def create_user_activity_payload(user)
+    if user.sso?
+      { flow: 'sso', method: user.identities.first&.provider }
+    elsif user.password.nil?
+      { flow: 'email_confirmation' }
+    else
+      { flow: 'email_password' }
+    end
   end
 end
 

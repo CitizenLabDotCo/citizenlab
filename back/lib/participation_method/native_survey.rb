@@ -2,25 +2,37 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    def assign_defaults_for_phase
-      phase.posting_method = 'limited'
-      phase.posting_limited_max = 1
+    def self.method_str
+      'native_survey'
     end
 
-    # Survey responses do not have a fixed field that can be used
-    # to generate a slug, so use the id as the basis for the slug.
-    def generate_slug(input)
-      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
-      SlugService.new.generate_slug input, input.id
+    def allowed_extra_field_input_types
+      %w[page number linear_scale text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon]
     end
 
     def assign_defaults(input)
-      input.publication_status = 'published'
-      input.idea_status = IdeaStatus.find_by!(code: 'proposed')
+      input.publication_status ||= 'published'
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
     end
 
-    def form_structure_element
-      'page'
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
+    def create_default_form!
+      form = CustomForm.new(participation_context: phase)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      form.save!
+      phase.reload
+
+      form
+    end
+
+    def custom_form
+      phase.custom_form || CustomForm.new(participation_context: phase)
     end
 
     def default_fields(custom_form)
@@ -32,7 +44,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           key: 'page1',
           resource: custom_form,
-          input_type: 'page'
+          input_type: 'page',
+          page_layout: 'default'
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -59,62 +72,30 @@ module ParticipationMethod
       ]
     end
 
-    def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point]
+    # Survey responses do not have a fixed field that can be used
+    # to generate a slug, so use the id as the basis for the slug.
+    def generate_slug(input)
+      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
+      SlugService.new.generate_slug input, input.id
     end
 
-    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
-    def create_default_form!
-      form = CustomForm.new(participation_context: phase)
-
-      default_fields(form).reverse_each do |field|
-        field.save!
-        field.move_to_top
-      end
-
-      form.save!
-      phase.reload
-
-      form
-    end
-
-    def never_show?
+    def return_disabled_actions?
       true
     end
 
-    def posting_allowed?
-      true
-    end
-
-    def update_if_published?
+    def supports_edits_after_publication?
       false
-    end
-
-    def creation_phase?
-      true
-    end
-
-    def custom_form
-      phase.custom_form || CustomForm.new(participation_context: phase)
-    end
-
-    def edit_custom_form_allowed?
-      true
-    end
-
-    def delete_inputs_on_pc_deletion?
-      true
     end
 
     def supports_exports?
       true
     end
 
-    def supports_toxicity_detection?
+    def supports_multiple_posts?
       false
     end
 
-    def supports_survey_form?
+    def supports_pages_in_form?
       true
     end
 
@@ -122,19 +103,20 @@ module ParticipationMethod
       true
     end
 
-    def include_data_in_email?
-      false
+    def supports_serializing?(attribute)
+      %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
     end
 
-    def return_disabled_actions?
+    def supports_submission?
       true
     end
 
-    # The "Additional information" category in the UI should be suppressed.
-    # As long as the form builder does not support sections/categories,
-    # we can suppress the heading by returning nil.
-    def extra_fields_category_translation_key
-      nil
+    def supports_survey_form?
+      true
+    end
+
+    def supports_toxicity_detection?
+      false
     end
   end
 end

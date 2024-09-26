@@ -58,7 +58,15 @@ export const TitleInput = () => {
   );
 };
 
-export const DateRangeInput = ({ resetComparePeriod = false }) => {
+interface DateRangeProps {
+  resetComparePeriod?: boolean;
+  label?: string;
+}
+
+export const DateRangeInput = ({
+  resetComparePeriod = false,
+  label,
+}: DateRangeProps) => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -116,7 +124,7 @@ export const DateRangeInput = ({ resetComparePeriod = false }) => {
   return (
     <Box mb="20px">
       <Text variant="bodyM" color="textSecondary" mb="5px">
-        {formatMessage(messages.analyticsChartDateRange)}
+        {label ?? formatMessage(messages.analyticsChartDateRange)}
       </Text>
       <DateRangePicker
         startDate={startAtMoment}

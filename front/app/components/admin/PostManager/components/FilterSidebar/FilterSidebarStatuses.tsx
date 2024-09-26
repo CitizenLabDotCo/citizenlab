@@ -37,7 +37,7 @@ const FilterSidebarStatuses = ({
     return null;
   }
 
-  const handleItemClick = (id: string) => () => {
+  const handleItemClick = (id: string) => {
     onChangeStatusFilter(id);
   };
 
@@ -49,6 +49,11 @@ const FilterSidebarStatuses = ({
     return selectedStatus === id;
   };
 
+  const linkToStatusSettings =
+    type === 'AllIdeas' || type === 'ProjectIdeas'
+      ? '/admin/settings/ideation/statuses'
+      : '/admin/settings/proposals/statuses';
+
   if (!isNilOrError(statuses)) {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
@@ -56,37 +61,33 @@ const FilterSidebarStatuses = ({
           <FormattedMessage {...messages.allStatuses} />
         </Menu.Item>
         <Divider />
-        {/* Only input statuses can be edited and only admins can do this */}
+        {/* Input statuses can be edited and only admins can do this */}
         {isAdmin(authUser) &&
           (type === 'AllIdeas' ||
-            (type === 'ProjectIdeas' && (
-              <Box display="inline-flex">
-                <Button
-                  buttonStyle="text"
-                  icon="edit"
-                  pl="12px"
-                  linkTo="/admin/settings/statuses"
-                  iconPos="right"
-                  iconSize="14px"
-                >
-                  <Text
-                    m="0px"
-                    color="coolGrey600"
-                    fontSize="s"
-                    textAlign="left"
-                  >
-                    <FormattedMessage {...messages.editStatuses} />
-                  </Text>
-                </Button>
-              </Box>
-            )))}
+            type === 'ProjectIdeas' ||
+            type === 'ProjectProposals') && (
+            <Box display="inline-flex">
+              <Button
+                buttonStyle="text"
+                icon="edit"
+                pl="12px"
+                linkTo={linkToStatusSettings}
+                iconPos="right"
+                iconSize="14px"
+              >
+                <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+                  <FormattedMessage {...messages.editStatuses} />
+                </Text>
+              </Button>
+            </Box>
+          )}
         {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
           (status) => (
             <FilterSidebarStatusesItem
               key={status.id}
               status={status}
               active={isActive(status.id)}
-              onClick={handleItemClick(status.id)}
+              onClick={() => handleItemClick(status.id)}
             />
           )
         )}

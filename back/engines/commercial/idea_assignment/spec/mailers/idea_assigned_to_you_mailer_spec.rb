@@ -18,7 +18,7 @@ RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer do
           post_author_name: author_name,
           post_published_at: idea.published_at&.iso8601,
           post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          post_assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601)
+          post_assigned_at: idea.assigned_at&.iso8601 || Time.now.iso8601
         }
       }
     end

@@ -12,6 +12,7 @@ import WebMap from '@arcgis/core/WebMap';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
+import '@arcgis/core/assets/esri/css/main.css';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -34,6 +35,10 @@ const MapContainer = styled(Box)`
 
   .esri-layer-list {
     max-height: 200px !important;
+  }
+
+  .esri-ui-corner .esri-component {
+    box-shadow: none !important;
   }
 
   ${media.phone`

@@ -114,9 +114,8 @@ module Analytics
       keys = @json_query[:sort].keys
       @pluck_fields += keys.filter { |key| @query.aggregations_names.exclude?(key) }
 
-      order_query = []
-      @json_query[:sort].each do |key, direction|
-        order_query.push("#{key} #{direction}")
+      order_query = @json_query[:sort].map do |key, direction|
+        "#{key} #{direction}"
       end
       results.order(order_query)
     end

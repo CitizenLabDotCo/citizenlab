@@ -36,9 +36,7 @@ const AccessRightsNotice = ({
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { data: userCustomFields } = useUserCustomFields();
   const { data: permissionCustomFields } = usePermissionsCustomFields({
-    projectId,
     phaseId,
-    initiativeContext: false,
     action: 'posting_idea',
   });
 
@@ -46,6 +44,7 @@ const AccessRightsNotice = ({
   const permittedBySetting = permissions?.data[0].attributes.permitted_by;
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
+
   const permissionCustomFieldIds = permissionCustomFields?.data.map(
     (customField) => customField.relationships.custom_field.data.id
   );

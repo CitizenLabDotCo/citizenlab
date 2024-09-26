@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: move-old-proposals-test
 resource 'Analytics - FactPosts model' do
   explanation 'Queries to summarise posts - ideas & initiatives/proposals.'
 
@@ -53,6 +54,7 @@ resource 'Analytics - FactPosts model' do
 
     example 'does not return survey responses', document: false do
       # Create 2 posts inc 1 ignored survey
+      create(:idea_status_proposed)
       project = create(:project_with_past_ideation_and_current_native_survey_phase)
       create(:idea, created_at: @dates[0], project: project, phases: [project.phases.first])
       create(:native_survey_response, created_at: @dates[0], project: project, phases: [project.phases.last], creation_phase: project.phases.last)

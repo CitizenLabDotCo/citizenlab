@@ -77,7 +77,6 @@ module EmailCampaigns
       [{
         event_payload: {
           phase_title_multiloc: notification.phase.title_multiloc,
-          phase_description_multiloc: notification.phase.description_multiloc,
           phase_start_at: notification.phase.start_at.iso8601,
           phase_end_at: notification.phase.end_at&.iso8601,
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),

@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 RSpec.describe Initiative do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
@@ -124,6 +125,7 @@ RSpec.describe Initiative do
     end
   end
 
+  # TODO: clean-up-old-proposals-test
   describe '#expires_at' do
     before do
       allow(Time).to receive(:now).and_return(Time.now)

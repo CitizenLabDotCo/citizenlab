@@ -284,13 +284,13 @@ FactoryBot.define do
     end
 
     # Example usage: Create a project with 4 timeline phases, for which the 2nd
-    # is the current phase. The first phase has posting_enabled, the last 2 have
+    # is the current phase. The first phase has submission_enabled, the last 2 have
     # voting_disabled
     # create(
     #   :project_with_current_phase,
     #   phases_config: {
     #     sequence: 'xcyy',
-    #     x: { posting_enabled: false },
+    #     x: { submission_enabled: false },
     #     y: { reacting_enabled: false }
     #   },
     #   current_phase_attrs: {
@@ -465,6 +465,18 @@ FactoryBot.define do
             :phase,
             project: project,
             participation_method: 'ideation',
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
+
+      factory :single_phase_proposals_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :proposals_phase,
+            project: project,
             start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
             end_at: nil,
             **evaluator.phase_attrs

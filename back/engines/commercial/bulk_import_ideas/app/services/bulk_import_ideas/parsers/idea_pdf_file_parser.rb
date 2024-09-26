@@ -4,12 +4,12 @@ module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
     IDEAS_PER_JOB = 5
     POSITION_TOLERANCE = 10
-    MAX_TOTAL_PAGES = 50
+    MAX_TOTAL_PAGES = 100
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
+      @form_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
     end
 
     # Synchronous version not implemented for PDFs
@@ -196,27 +196,27 @@ module BulkImportIdeas::Parsers
     # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
     # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields
     def process_field_value(field, form_fields)
-      field = super field, form_fields
+      processed_field = super
 
-      if TEXT_FIELD_TYPES.include?(field[:input_type]) && field[:value]
+      if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
         # Strip out text that has leaked from the field description and name into the value
-        field[:value] = field[:value].gsub(/#{field[:description]}/, '')
-        field[:value] = field[:value].gsub(/\A\s*#{field[:name]}/, '')
+        processed_field[:value] = processed_field[:value].gsub(/#{processed_field[:description]}/, '')
+        processed_field[:value] = processed_field[:value].gsub(/\A\s*#{processed_field[:name]}/, '')
 
         # Strip out out any text that has leaked from the next questions title into the value
-        next_question = form_fields[form_fields.find_index(field) + 1]
+        next_question = form_fields[form_fields.find_index(processed_field) + 1]
         if next_question && next_question[:name].split.count > 4
-          field[:value] = field[:value].gsub(/#{next_question[:name]}*/, '')
+          processed_field[:value] = processed_field[:value].gsub(/#{next_question[:name]}*/, '')
         end
 
         # Strip out 'this answer may be shared with moderators...' text
         this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
-        field[:value] = field[:value].gsub(/\*#{this_answer_copy}/, '')
+        processed_field[:value] = processed_field[:value].gsub(/\*#{this_answer_copy}/, '')
 
-        field[:value] = field[:value].strip
+        processed_field[:value] = processed_field[:value].strip
       end
 
-      field
+      processed_field
     end
 
     def complete_page_range(pages1, pages2)

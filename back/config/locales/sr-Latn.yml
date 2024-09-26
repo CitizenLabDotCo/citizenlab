@@ -36,6 +36,8 @@ sr-Latn:
   symbols:
     outside: negde drugde
   idea_statuses:
+    prescreening: screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: predloženo
     proposed_description: Ova ideja je predložena administraciji
     viewed: pregledano
@@ -48,6 +50,14 @@ sr-Latn:
     implemented_description: Ova ideja je realizovana
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
+    expired: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
+    threshold_reached: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
+    answered: answered
+    answered_description: The project manager has published an official feedback on this input.
+    ineligible: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -182,8 +192,8 @@ sr-Latn:
       section3:
         title: Detalji
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ sr-Latn:
           title: Šta je vaša tema ?
         option:
           title: Šta je vaša opcija ?
-      details:
-        title: Detalji
-      attachements:
-        title: Slike i prilozi
-      extra:
-        title: Dodatne informacije
   custom_field_options:
     gender:
       male: Muškarac
@@ -229,6 +233,7 @@ sr-Latn:
       Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Resetujte vašu lozinku'
       message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
       subject: '%{organizationName}: Resetujte lozinku'
@@ -267,6 +272,7 @@ sr-Latn:
       submitted_at: 'Submitted at'
       tags: 'Tags'
       title: 'Title'
+      user_data: 'User data'
       votes_count: 'Votes'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ sr-Latn:
       option1: 'Opcija 1'
       option2: 'Opcija 2'
     form_end_page:
-      title: 'Thanks for participating'
-      description: "Please submit your answers by selecting 'Submit' below."
+      title_text: 'Almost done'
+      description_text_2: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
     pdf_export:
       personal_data: 'Personal data'
-      personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
-      personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
       first_name: 'First name(s)'
       last_name: 'Last name'
       email_address: 'Email address'
@@ -287,6 +293,13 @@ sr-Latn:
       optional: 'optional'
       permission: 'Permission'
       choose_as_many: 'Choose as many as you like'
+      choose_exactly:
+        one: 'Choose exactly %{count} option'
+        few: 'Choose exactly %{count} options'
+        other: 'Choose exactly %{count} options'
+      choose_between: 'Choose between %{min} and %{max} options'
+      choose_at_least: 'Choose at least %{count} options'
+      choose_at_most: 'Choose at most %{count} options'
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
       page: 'Page'
       date_published: 'Date Published (dd-mm-yyyy)'
@@ -299,6 +312,7 @@ sr-Latn:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potvrdite svoju adresu e -pošte za %{organizationName} platformu"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Vaš konfirmacioni kod"
       header_message: "Zdravo %{firstName}!"
       confirm_email_address: "Potvrdi svoju adresu e-pošte"
@@ -313,6 +327,7 @@ sr-Latn:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -328,3 +343,5 @@ sr-Latn:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"

@@ -18,12 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import {
-  requiredCustomFields,
-  requiredBuiltInFields,
-  askCustomFields,
-  showOnboarding,
-} from './utils';
+import { confirmationRequired, checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -62,70 +57,54 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
-        if (enterSsoNoEmailEmail) {
-          setCurrentStep('emailless-sso:email');
+      RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = checkMissingData(
+          requirements,
+          authenticationData,
+          flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
           return;
         }
 
-        const { flow } = getAuthenticationData();
-        const { requirements } = await getRequirements();
-
         if (flow === 'signup') {
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('sign-up:verification');
-            return;
-          }
-
-          if (askCustomFields(requirements.custom_fields)) {
-            setCurrentStep('sign-up:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements.onboarding)) {
-            setCurrentStep('sign-up:onboarding');
-            return;
-          }
-
           setCurrentStep('success');
         }
 
-        if (flow === 'signin') {
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements.onboarding)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
-          const { successAction } = getAuthenticationData();
-          if (successAction) {
-            triggerSuccessAction(successAction);
-          }
+        const { successAction } = getAuthenticationData();
+        if (successAction) {
+          triggerSuccessAction(successAction);
         }
       },
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async () => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
           email: null,
           token: null,
           prefilledBuiltInFields: null,
+          ssoProvider: null,
         });
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
+        const authenticationData = getAuthenticationData();
 
-        const isLightFlow = requirements.special.password === 'dont_ask';
-        const signedIn = requirements.built_in.email === 'satisfied';
+        const { permitted_by } = requirements.authentication;
+        const isLightFlow = permitted_by === 'everyone_confirmed_email';
+
+        // This `disabled_reason === null` is a bit of a weird check,
+        // because most of the times if there is no disabled reason,
+        // you would never get into the authentication flow.
+        // There are however some weird exceptions related to onboarding,
+        // so we need to check for this.
+        const signedIn =
+          disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (isLightFlow) {
           if (!signedIn) {
@@ -133,42 +112,37 @@ export const sharedSteps = (
             return;
           }
 
-          if (requirements.special.confirmation === 'require') {
+          if (confirmationRequired(requirements)) {
             setCurrentStep('light-flow:email-confirmation');
             return;
           }
         }
 
-        if (signedIn) {
-          if (requirements.special.confirmation === 'require') {
-            setCurrentStep('missing-data:email-confirmation');
-            return;
-          }
+        const isVerifiedActionFlow = permitted_by === 'verified';
 
-          if (requiredBuiltInFields(requirements)) {
-            setCurrentStep('missing-data:built-in');
-            return;
-          }
+        const userNotSignedIn = !signedIn;
+        const userRequiresVerification = requirements.verification;
 
-          if (requirements.special.verification === 'require') {
-            setCurrentStep('missing-data:verification');
-            return;
-          }
-
-          if (requiredCustomFields(requirements.custom_fields)) {
-            setCurrentStep('missing-data:custom-fields');
-            return;
-          }
-
-          if (showOnboarding(requirements.onboarding)) {
-            setCurrentStep('missing-data:onboarding');
-            return;
-          }
-
+        if (
+          isVerifiedActionFlow &&
+          (userNotSignedIn || userRequiresVerification)
+        ) {
+          setCurrentStep('sso-verification:sso-providers');
           return;
         }
 
-        const { flow } = getAuthenticationData();
+        if (signedIn) {
+          const missingDataStep = checkMissingData(
+            requirements,
+            authenticationData,
+            flow
+          );
+
+          if (missingDataStep) {
+            setCurrentStep(missingDataStep);
+            return;
+          }
+        }
 
         if (flow === 'signin') {
           anySSOEnabled
@@ -189,14 +163,13 @@ export const sharedSteps = (
         setCurrentStep('verification-only');
       },
 
-      REOPEN_EMAILLESS_SSO: () => {
-        setCurrentStep('emailless-sso:email');
-      },
-
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
         if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('missing-data:verification');
           setError('not_entitled_under_minimum_age');
+        } else if (error_code === 'taken') {
+          setCurrentStep('missing-data:verification');
+          setError('verification_taken');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
@@ -207,6 +180,8 @@ export const sharedSteps = (
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
+        } else if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('access-denied');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
@@ -226,6 +201,10 @@ export const sharedSteps = (
           triggerSuccessAction(successAction);
         }
       },
+    },
+
+    'access-denied': {
+      CLOSE: () => setCurrentStep('closed'),
     },
   };
 };

@@ -40,7 +40,7 @@ export interface IPhaseAttributes {
   created_at: string;
   updated_at: string;
   participation_method: ParticipationMethod;
-  posting_enabled: boolean;
+  submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
   reacting_like_method: 'limited' | 'unlimited';
@@ -70,6 +70,7 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  prescreening_enabled?: boolean;
 }
 
 export interface IPhases {
@@ -86,9 +87,10 @@ export interface IUpdatedPhaseProperties {
   description_multiloc?: Multiloc;
   input_term?: InputTerm;
   start_at?: string;
-  end_at?: string;
+  end_at?: string | null;
   participation_method?: ParticipationMethod;
-  posting_enabled?: boolean | null;
+  voting_method?: VotingMethod | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;
@@ -96,9 +98,13 @@ export interface IUpdatedPhaseProperties {
   reacting_like_limited_max?: number | null;
   reacting_dislike_enabled?: boolean | null;
   reacting_dislike_limited_max?: number | null;
+  reacting_threshold?: number | null;
   presentation_mode?: 'card' | 'map' | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
+  voting_max_votes_per_idea?: number | null;
+  voting_term_singular_multiloc?: Multiloc | null;
+  voting_term_plural_multiloc?: Multiloc | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
@@ -109,7 +115,11 @@ export interface IUpdatedPhaseProperties {
   };
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  prescreening_enabled?: boolean | null;
+  allow_anonymous_participation?: boolean;
+  expire_days_limit?: number;
 }
+
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;
 }
@@ -137,7 +147,8 @@ export type ParticipationMethod =
   | 'voting'
   | 'poll'
   | 'volunteering'
-  | 'document_annotation';
+  | 'document_annotation'
+  | 'proposals';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 

@@ -67,6 +67,14 @@ class TestVisitor < FieldVisitorService
     'point from visitor'
   end
 
+  def visit_line(_field)
+    'line from visitor'
+  end
+
+  def visit_polygon(_field)
+    'polygon from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
@@ -85,6 +93,10 @@ class TestVisitor < FieldVisitorService
 
   def visit_file_upload(_field)
     'file_upload from visitor'
+  end
+
+  def visit_shapefile_upload(_field)
+    'shapefile_upload from visitor'
   end
 end
 
@@ -115,6 +127,11 @@ RSpec.describe CustomField do
   describe '#file_upload?' do
     it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
+      expect(files_field.file_upload?).to be true
+    end
+
+    it 'returns true when the input_type is "shapefile_upload"' do
+      files_field = described_class.new input_type: 'shapefile_upload'
       expect(files_field.file_upload?).to be true
     end
 
@@ -187,6 +204,44 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'page_layout validation' do
+    context 'for page custom_field' do
+      let(:page_custom_field) { build(:custom_field_page) }
+
+      it 'is valid when the page_layout is a valid value' do
+        page_custom_field.page_layout = 'default'
+        expect(page_custom_field.valid?).to be true
+
+        page_custom_field.page_layout = 'map'
+        expect(page_custom_field.valid?).to be true
+      end
+
+      it 'is invalid when the page_layout is an invalid value' do
+        page_custom_field.page_layout = 'invalid_value'
+        expect(page_custom_field.valid?).to be false
+      end
+
+      it 'is invalid when the page_layout is nil' do
+        page_custom_field.page_layout = nil
+        expect(page_custom_field.valid?).to be false
+      end
+    end
+
+    context 'for non-page custom_field' do
+      let(:custom_field) { build(:custom_field) }
+
+      it 'is valid when the page_layout is nil' do
+        custom_field.page_layout = nil
+        expect(custom_field.valid?).to be true
+      end
+
+      it 'is invalid when the page_layout is not nil' do
+        custom_field.page_layout = 'default'
+        expect(custom_field.valid?).to be false
+      end
+    end
+  end
+
   describe 'title_multiloc validation' do
     let(:form) { create(:custom_form) }
 
@@ -216,6 +271,7 @@ RSpec.describe CustomField do
       page_field = described_class.new(
         resource: form,
         input_type: 'page',
+        page_layout: 'default',
         key: 'field_key',
         title_multiloc: { 'en' => '' }
       )
@@ -415,6 +471,7 @@ RSpec.describe CustomField do
 
       it 'sets public by default if field is a page' do
         field.input_type = 'page'
+        field.page_layout = 'default'
         field.validate!
         expect(field.answer_visible_to).to eq 'public'
       end
@@ -466,8 +523,8 @@ RSpec.describe CustomField do
       expect(other_option_text_field).not_to be_nil
       expect(other_option_text_field.key).to eq 'select_field_other'
       expect(other_option_text_field.input_type).to eq 'text'
-      expect(other_option_text_field.title_multiloc['en']).to eq "If you picked 'Something else', what are you thinking of?"
-      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Puisque vous avez choisi « Quelque chose », à quoi pensez-vous ?'
+      expect(other_option_text_field.title_multiloc['en']).to eq 'Type your answer'
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Tapez votre réponse'
     end
 
     it 'returns nil otherwise' do
@@ -475,34 +532,56 @@ RSpec.describe CustomField do
     end
   end
 
-  context 'when point field methods are called' do
-    let(:point_field) { create(:custom_field_point, title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }) }
-    let(:text_field) { create(:custom_field_text) }
-
-    describe '#point_latitude_field' do
-      it "returns a point field when the field has input_type: 'point'" do
-        expect(point_field.point_latitude_field).not_to be_nil
-        expect(point_field.point_latitude_field.key).to eq "#{point_field.key}_latitude"
-        expect(point_field.point_latitude_field.title_multiloc)
-          .to eq({ 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' })
-      end
-
-      it 'returns nil otherwise' do
-        expect(text_field.point_latitude_field).to be_nil
-      end
+  describe '#linear_scale_print_description' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        maximum: 3,
+        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
+        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
+        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
+        linear_scale_label_4_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_5_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_6_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        },
+        linear_scale_label_7_multiloc: {
+          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
+        }
+      )
     end
 
-    describe '#point_longitude_field' do
-      it "returns a point field when the field has input_type: 'point'" do
-        expect(point_field.point_longitude_field).not_to be_nil
-        expect(point_field.point_longitude_field.key).to eq "#{point_field.key}_longitude"
-        expect(point_field.point_longitude_field.title_multiloc)
-          .to eq({ 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' })
-      end
+    it 'returns the linear scale print description for the specified locale' do
+      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
+      expect(field.linear_scale_print_description('fr-FR'))
+        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
+    end
 
-      it 'returns nil otherwise' do
-        expect(text_field.point_longitude_field).to be_nil
-      end
+    it 'returns default copy if the locale values is/are not specified' do
+      field.linear_scale_label_1_multiloc = { en: '' }
+      field.linear_scale_label_3_multiloc = { en: '' }
+
+      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
+      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
+    end
+  end
+
+  describe '#nth_linear_scale_multiloc' do
+    let(:field) do
+      create(
+        :custom_field_linear_scale,
+        linear_scale_label_3_multiloc: { en: 'I am label 3 multiloc' },
+        linear_scale_label_7_multiloc: { en: 'I am label 7 multiloc' }
+      )
+    end
+
+    it 'returns the nth linear scale label multiloc' do
+      expect(field.nth_linear_scale_multiloc(3)).to eq({ 'en' => 'I am label 3 multiloc' })
+      expect(field.nth_linear_scale_multiloc(7)).to eq({ 'en' => 'I am label 7 multiloc' })
     end
   end
 end

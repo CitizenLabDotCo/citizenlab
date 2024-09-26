@@ -9,7 +9,7 @@ import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import { getNavbarItemSlug } from 'api/navbar/util';
+import { getNavbarItemSlug, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
@@ -101,18 +101,14 @@ const HiddenNavbarItemList = ({
         {itemsNotInNavbar.map((item, i) => (
           <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
             <NavbarItemRow
-              title={
-                item.type === 'default_item'
-                  ? item.navbarTitleMultiloc
-                  : item.pageTitleMultiloc
-              }
+              title={item.titleMultiloc}
               isDefaultPage={item.type === 'default_item'}
               showEditButton={item.type !== 'default_item'}
               showAddButton
               viewButtonLink={getViewButtonLink(item) || undefined}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
-              addButtonDisabled={navbarItems.data.length >= 7}
+              addButtonDisabled={navbarItems.data.length >= MAX_NAVBAR_ITEMS}
               onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}

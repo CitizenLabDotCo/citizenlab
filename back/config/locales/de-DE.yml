@@ -36,6 +36,8 @@ de:
   symbols:
     outside: Anderer Ort
   idea_statuses:
+    prescreening: Vorabprüfung
+    prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
     proposed_description: Diese Idee wurde der Stadt vorgeschlagen
     viewed: angesehen
@@ -48,6 +50,14 @@ de:
     implemented_description: Diese Idee wurde von der Stadtverwaltung umgesetzt
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
+    expired: abgelaufen
+    expired_description: abgelaufen
+    threshold_reached: Schwelle erreicht
+    threshold_reached_description: Schwelle erreicht
+    answered: beantwortet
+    answered_description: beantwortet
+    ineligible: unzulässig
+    ineligible_description: unzulässig
   initiative_statuses:
     review_pending: Überprüfung steht noch aus
     review_pending_description: Überprüfung steht noch aus
@@ -182,8 +192,8 @@ de:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: '"{other_option}" erläutern'
+      other_input_field:
+        title: Antwort eingeben
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ de:
           title: Was ist Ihr Vorhaben?
         option:
           title: Was ist Ihre Option?
-      details:
-        title: Details
-      attachements:
-        title: Bilder und Anhänge
-      extra:
-        title: Zusätzliche Informationen
   custom_field_options:
     gender:
       male: Männlich
@@ -229,6 +233,7 @@ de:
       <ul><li>Nehmen Sie sich die Zeit, Ihren Vorschlag auszuarbeiten. Wenn nötig, schreiben Sie zuerst einen Entwurf und fügen ihn dann hier ein. Sobald Sie ihn veröffentlichen, können andere ihn lesen und die Zeit beginnt zu laufen.</li><li>Wählen Sie einen aussagekräftigen Titel, der deutlich macht, worum es in Ihrem Vorschlag geht.</li><li>Visualisieren Sie Ihren Vorschlag mit einem passenden Bild, damit er sich abhebt!</li><li>Fügen Sie relevante Anhänge hinzu, z.B. Videos, inspirierende Beispiele, technische Details oder Pläne.</li><li>Teilen Sie Ihre Idee in den sozialen Medien und anderen Kanälen, um Unterstützung von anderen zu erhalten.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Passwort für %{organizationName} zurücksetzen'
       cta_reset_password: 'Ihr Passwort zurücksetzen'
       message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicken Sie auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
@@ -267,6 +272,7 @@ de:
       submitted_at: 'Eingereicht am'
       tags: 'Themen-Tags'
       title: 'Titel'
+      user_data: 'Nutzer*innendaten'
       votes_count: 'Stimmen'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ de:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title: 'Danke fürs Mitmachen'
-      description: "Antworten übermitteln, indem Sie unten auf \"Einreichen\" klicken."
+      title_text: 'Fast fertig'
+      description_text_2: "Sie sind dabei, Ihre Antworten abzuschicken. Indem Sie auf 'Einreichen' klicken, erteilen Sie uns die Erlaubnis, Ihre Antworten zu analysieren.<br/>Nachdem Sie abgeschickt haben, können Sie nicht mehr zurückgehen und Ihre Antworten ändern."
     pdf_export:
       personal_data: 'Persönliche Daten'
-      personal_data_explanation_ideation: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName} weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
-      personal_data_explanation_native_survey: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName}weiterleiten. Wenn Sie Aktualisierungen, die für Ihren Beitrag relevant sind, per E-Mail erhalten möchten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir werden ein Konto für Sie anlegen. Ihre Daten sind nicht öffentlich und werden nur von %{organizationName}verwendet. Wenn Sie nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
+      personal_data_explanation_public: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
+      personal_data_explanation_private: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie Aktualisierungen, die für Ihren Beitrag relevant sind, per E-Mail erhalten möchten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir werden ein Konto für Sie anlegen. Ihre Daten sind nicht öffentlich und werden nur von %{organizationName} verwendet. Wenn Sie nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
       first_name: 'Vorname'
       last_name: 'Nachname'
       email_address: 'E-Mail-Adresse'
@@ -287,6 +293,12 @@ de:
       optional: 'optional'
       permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
+      choose_exactly:
+        one: 'Wählen Sie genau %{count} Option'
+        other: 'Wählen Sie genau %{count} Optionen'
+      choose_between: 'Wählen Sie zwischen %{min} und %{max} Optionen'
+      choose_at_least: 'Wählen Sie mindestens %{count} Optionen'
+      choose_at_most: 'Wählen Sie höchstens %{count} Optionen'
       this_answer: 'Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.'
       page: 'Seite'
       date_published: 'Veröffentlichungsdatum (TT-MM-JJJJ)'
@@ -298,10 +310,11 @@ de:
     title_suffix: 'Kopie'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform %{organizationName}"
+      subject: "E-Mail-Adresse für die Beteiligungsplattform %{organizationName} bestätigen"
+      preheader: 'E-Mail Adresse bestätigen für %{organizationName}'
       header: "Ihr Bestätigungscode"
       header_message: "Hallo %{firstName}!"
-      confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
+      confirm_email_address: "E-Mail-Adresse bestätigen"
       thanks_for_signing_up1: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
       best_regards: "Herzliche Grüße"
       ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren."
@@ -313,6 +326,7 @@ de:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ihr Konto wurde vorübergehend deaktiviert'
+      preheader: 'Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert'
       title_user_blocked: 'Ihr Konto wurde vorübergehend deaktiviert'
       paragraph_1_without_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde wegen eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert."
       paragraph_1_with_reason: "Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:"
@@ -328,3 +342,5 @@ de:
   voting_method:
     default_voting_term_singular: "Stimme"
     default_voting_term_plural: "Stimmen"
+  ics_calendar_event:
+    event_details: "Veranstaltungsdetails"
