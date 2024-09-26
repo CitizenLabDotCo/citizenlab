@@ -66,24 +66,26 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class ProjectPhaseUpcoming < Notification
-    validates :phase, :project, presence: true
+  class InvitationToCosponsorIdea < Notification
+    validates :initiating_user, :cosponsorship, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Phase' => { 'upcoming' => true } }.freeze
-    EVENT_NAME = 'Project phase upcoming'
+    ACTIVITY_TRIGGERS = { 'Cosponsorship' => { 'created' => true } }
+    EVENT_NAME = 'Invitation to cosponsor an idea'
 
     def self.make_notifications_on(activity)
-      phase = activity.item
+      cosponsorship = activity&.item
 
-      if phase.project
-        recipients = UserRoleService.new.moderators_for phase
-        recipients.ids.map do |recipient_id|
-          new(
-            recipient_id: recipient_id,
-            phase: phase,
-            project: phase.project
-          )
-        end
+      initiating_user = activity&.user
+      recipient_id = cosponsorship&.user_id
+      idea = cosponsorship&.idea
+
+      if recipient_id && initiating_user && idea
+        [new(
+          recipient_id: recipient_id,
+          initiating_user: initiating_user,
+          cosponsorship: cosponsorship,
+          post: idea
+        )]
       else
         []
       end

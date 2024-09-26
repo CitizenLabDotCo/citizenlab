@@ -130,6 +130,12 @@ FactoryBot.define do
     initiating_user
   end
 
+  factory :invitation_to_cosponsor_idea, parent: :notification, class: 'Notifications::InvitationToCosponsorIdea' do
+    association :post, factory: :idea
+    cosponsorship
+    initiating_user
+  end
+
   factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status, code: 'review_pending'
