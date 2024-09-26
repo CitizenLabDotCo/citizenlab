@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Volontario",
   "app.components.ParticipationCTABars.votesCounter.vote": "voto",
   "app.components.ParticipationCTABars.votesCounter.votes": "voti",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Meno di un giorno} one {# giorno} other {# giorni}} sinistra",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  Settimane rimaste",
   "app.components.PasswordInput.a11y_passwordHidden": "Password nascosta",
   "app.components.PasswordInput.a11y_passwordVisible": "Password visibile",
   "app.components.PasswordInput.a11y_strength1Password": "Scarsa forza della password",

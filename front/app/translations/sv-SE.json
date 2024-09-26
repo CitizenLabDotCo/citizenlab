@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Anmäler sig frivilligt",
   "app.components.ParticipationCTABars.votesCounter.vote": "omröstning",
   "app.components.ParticipationCTABars.votesCounter.votes": "röster",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Mindre än en dag} one {# dag} other {# dagar}} vänster",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} veckor kvar",
   "app.components.PasswordInput.a11y_passwordHidden": "Lösenordet är dolt",
   "app.components.PasswordInput.a11y_passwordVisible": "Lösenordet är synligt",
   "app.components.PasswordInput.a11y_strength1Password": "Dålig lösenordsstyrka",

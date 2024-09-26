@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "متطوع",
   "app.components.ParticipationCTABars.votesCounter.vote": "تصويت",
   "app.components.ParticipationCTABars.votesCounter.votes": "أصوات",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {اقل من يوم} one {# يوم} other {# أيام}} غادر",
-  "app.components.ParticipationCTABars.xWeeksLeft": "يتبقى {timeLeft} أسبوع/أسابيع",
   "app.components.PasswordInput.a11y_passwordHidden": "كلمة المرور مخفية",
   "app.components.PasswordInput.a11y_passwordVisible": "كلمة المرور مرئية",
   "app.components.PasswordInput.a11y_strength1Password": "قوة كلمة المرور غير آمنة",

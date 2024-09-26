@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Volontiraj",
   "app.components.ParticipationCTABars.votesCounter.vote": "vote",
   "app.components.ParticipationCTABars.votesCounter.votes": "votes",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Мање од једног дана} one {# дан} other {# дана}} лево",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  preostalo nedelja",
   "app.components.PasswordInput.a11y_passwordHidden": "Lozinka je skrivena",
   "app.components.PasswordInput.a11y_passwordVisible": "Lozinka je vidljiva",
   "app.components.PasswordInput.a11y_strength1Password": "Izuzetno slaba lozinka",

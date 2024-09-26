@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Voluntari",
   "app.components.ParticipationCTABars.votesCounter.vote": "votar",
   "app.components.ParticipationCTABars.votesCounter.votes": "vots",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Menys d'un dia} one {#dia} other {# dies}} esquerra",
-  "app.components.ParticipationCTABars.xWeeksLeft": "Queden {timeLeft}  setmanes",
   "app.components.PasswordInput.a11y_passwordHidden": "Contrasenya oculta",
   "app.components.PasswordInput.a11y_passwordVisible": "Contrasenya visible",
   "app.components.PasswordInput.a11y_strength1Password": "Poca força de contrasenya",

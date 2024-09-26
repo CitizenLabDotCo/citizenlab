@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "liity postituslistalle",
   "app.components.ParticipationCTABars.votesCounter.vote": "äänestys",
   "app.components.ParticipationCTABars.votesCounter.votes": "ääniä",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Alle päivä} one {# päivä} other {# päivää}} jäljellä",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  viikkoa jäljellä",
   "app.components.PasswordInput.a11y_passwordHidden": "Salasana piilotettu",
   "app.components.PasswordInput.a11y_passwordVisible": "Salasana näkyvissä",
   "app.components.PasswordInput.a11y_strength1Password": "Huono salasanan vahvuus",

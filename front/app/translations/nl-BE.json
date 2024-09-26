@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Vrijwilliger",
   "app.components.ParticipationCTABars.votesCounter.vote": "stem",
   "app.components.ParticipationCTABars.votesCounter.votes": "stemmen",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} over",
-  "app.components.ParticipationCTABars.xWeeksLeft": "nog {timeLeft} weken",
   "app.components.PasswordInput.a11y_passwordHidden": "Wachtwoord verborgen",
   "app.components.PasswordInput.a11y_passwordVisible": "Wachtwoord zichtbaar",
   "app.components.PasswordInput.a11y_strength1Password": "Zeer zwak wachtwoord",

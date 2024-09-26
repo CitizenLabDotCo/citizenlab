@@ -317,8 +317,6 @@
   "app.components.ParticipationCTABars.volunteer": "Gwirfoddolwr",
   "app.components.ParticipationCTABars.votesCounter.vote": "pleidlais",
   "app.components.ParticipationCTABars.votesCounter.votes": "pleidleisiau",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Llai na diwrnod} one {# diwrnod} other {# diwrnod}} ar ôl",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  wythnosau ar ôl",
   "app.components.PasswordInput.a11y_passwordHidden": "Cyfrinair wedi'i guddio",
   "app.components.PasswordInput.a11y_passwordVisible": "Cyfrinair yn weladwy",
   "app.components.PasswordInput.a11y_strength1Password": "Cryfder cyfrinair gwael",
