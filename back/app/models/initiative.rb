@@ -177,10 +177,6 @@ class Initiative < ApplicationRecord
     initiative_status_changed_at('proposed')
   end
 
-  # def accepted_cosponsorships_count
-  #   cosponsors_initiatives.where(status: 'pending').size
-  # end
-
   private
 
   def initiative_status_changed_at(initiative_status_code)
