@@ -784,6 +784,8 @@
   "app.components.formBuilder.title": "Başlık",
   "app.components.formBuilder.toLabel": "için",
   "app.components.formBuilder.unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Bir günden az} one {# gün} other {# gün}} sol",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  haftalar kaldı",
   "app.components.screenReaderCurrency.AED": "Birleşik Arap Emirlikleri Dirhemi",
   "app.components.screenReaderCurrency.AFN": "Afgan Afgani",
   "app.components.screenReaderCurrency.ALL": "Arnavutluk Leki",
