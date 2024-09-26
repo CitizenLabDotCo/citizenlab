@@ -147,13 +147,13 @@ const AuthProviders = memo<Props>(
 
         {bosaFasLoginEnabled && (
           <StyledAuthProviderButton
-            icon="bullseye"
+            icon="key"
             flow={flow}
             authProvider="bosa_fas"
             onContinue={onSelectAuthProvider}
             id="e2e-login-with-bosa_fas"
           >
-            Login with EID CASM etc
+            <FormattedMessage {...messages.continueWithBosa} />
           </StyledAuthProviderButton>
         )}
 
