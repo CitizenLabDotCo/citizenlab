@@ -784,6 +784,8 @@
   "app.components.formBuilder.title": "Nosaukums",
   "app.components.formBuilder.toLabel": "uz",
   "app.components.formBuilder.unsavedChanges": "Jums ir nesaglabātas izmaiņas",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mazāk par dienu} one {# diena} other {# dienas}} pa kreisi",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  atlikušās nedēļas",
   "app.components.screenReaderCurrency.AED": "Apvienoto Arābu Emirātu dirhams",
   "app.components.screenReaderCurrency.AFN": "Afganistānas afgāņu afgāņu",
   "app.components.screenReaderCurrency.ALL": "Albānijas leka",
