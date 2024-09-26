@@ -5,7 +5,13 @@ export const isSelectedRangeOpenEnded = (
   disabledRanges: DateRange[]
 ) => {
   if (from !== undefined && to === undefined) {
-    const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+    const lastDisabledRange = disabledRanges[disabledRanges.length - 1] as
+      | DateRange
+      | undefined;
+
+    if (lastDisabledRange === undefined) {
+      return true;
+    }
 
     return from.getTime() > lastDisabledRange.from.getTime();
   }

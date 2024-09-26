@@ -14,6 +14,10 @@ export const patchDisabledRanges = (
     return disabledRanges;
   }
 
+  if (disabledRanges.length === 0) {
+    return disabledRanges;
+  }
+
   const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
 
   if (
