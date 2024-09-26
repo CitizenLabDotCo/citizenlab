@@ -5,6 +5,7 @@ import {
   defaultInputStyle,
   Box,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -18,7 +19,7 @@ const Container = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  font-size: 14px;
+  font-size: ${fontSizes.base}px;
 
   color: ${colors.grey800};
 
@@ -31,7 +32,7 @@ const Container = styled.button`
     fill: ${colors.grey700};
   }
 
-  &:hover,
+  &:hover svg,
   &:focus svg {
     fill: ${colors.black};
   }
@@ -48,13 +49,18 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
   const selectDate = formatMessage(messages.selectDate);
 
   return (
-    <Container onClick={onClick}>
+    <Container
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
           : selectDate}
       </Box>
-      <Icon name="chevron-right" height="16px" />
+      <Icon name="chevron-right" height="18px" />
       <Box ml="8px" mr="12px">
         {selectedRangeIsOpenEnded
           ? formatMessage(messages.openEnded)
@@ -62,7 +68,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
           ? selectedRange.to.toLocaleDateString()
           : selectDate}
       </Box>
-      <Icon name="calendar" height="16px" />
+      <Icon name="calendar" height="18px" />
     </Container>
   );
 };
