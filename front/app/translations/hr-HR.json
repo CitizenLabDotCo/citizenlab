@@ -784,6 +784,8 @@
   "app.components.formBuilder.title": "Naslov",
   "app.components.formBuilder.toLabel": "sa",
   "app.components.formBuilder.unsavedChanges": "Imate nespremljene promjene",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Manje od jednog dana} one {# dan} other {Još # dana}}",
+  "app.components.phaseTimeLeft.xWeeksLeft": "Još {timeLeft}  tjedana",
   "app.components.screenReaderCurrency.AED": "Dirham Ujedinjenih Arapskih Emirata",
   "app.components.screenReaderCurrency.AFN": "afganistanski afgani",
   "app.components.screenReaderCurrency.ALL": "albanski lek",
