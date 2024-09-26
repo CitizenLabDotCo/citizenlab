@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
@@ -54,7 +54,7 @@ const AboutBoxSettings = () => {
   }));
 
   return (
-    <Box background="#ffffff" my="32px">
+    <Box background={colors.white} my="32px">
       <Toggle
         checked={hideParticipationNumbers}
         onChange={() => {
