@@ -120,10 +120,8 @@ const PostTable = ({
   const handleSortClick =
     (newSortAttribute: IdeasSort | InitiativesSort) => () => {
       if (isFunction(onChangeSort)) {
-        let newSortSign = '-';
-        if (newSortAttribute === sortAttribute) {
-          newSortSign = sortDirection === 'ascending' ? '-' : '';
-        }
+        const newSortSign = sortDirection === 'ascending' ? '-' : '';
+
         onChangeSort(
           `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
         );
