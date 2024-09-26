@@ -172,7 +172,7 @@ en:
         description:
       consponsor_ids:
         title: Co-sponsors
-        description:
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Location
         description:

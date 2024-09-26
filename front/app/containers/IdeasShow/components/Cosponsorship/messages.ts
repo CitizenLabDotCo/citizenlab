@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage: 'Co-sponsorship invitation',
   },
   cosponsorInvitationDescription: {
-    id: 'app.containers.IdeasShow.Cosponsorship.co-sponsorDescription',
-    defaultMessage: 'You have been invited become a co-sponsor.',
+    id: 'app.containers.IdeasShow.Cosponsorship.cosponsorDescription',
+    defaultMessage: 'You have been invited to become a co-sponsor.',
   },
   cosponsorInvitationAccepted: {
     id: 'app.containers.IdeasShow.Cosponsorship.cosponsorInvitationAccepted',
