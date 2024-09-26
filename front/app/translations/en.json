@@ -35,6 +35,7 @@
   "app.components.AssignVoteControl.votesSubmittedIdeaPage": "You have already submitted your {votes, plural, one {vote} other {votes}}. To change your {votes, plural, one {vote} other {votes}}, go back to the project page and click \"Modify your vote\".",
   "app.components.AuthProviders.continue": "Continue",
   "app.components.AuthProviders.continueWithAzure": "Continue with {azureProviderName}",
+  "app.components.AuthProviders.continueWithBosa": "Continue with itsme or eID",
   "app.components.AuthProviders.continueWithFacebook": "Continue with Facebook",
   "app.components.AuthProviders.continueWithFakeSSO": "Continue with Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Continue with Google",
