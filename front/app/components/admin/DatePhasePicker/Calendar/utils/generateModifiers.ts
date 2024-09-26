@@ -1,7 +1,8 @@
-import { differenceInCalendarDays, addDays } from 'date-fns';
+import { differenceInDays, addDays } from 'date-fns';
 
 import { DateRange, ClosedDateRange } from '../../typings';
 
+import { rangesValid } from './rangesValid';
 import { allAreClosedDateRanges } from './utils';
 
 interface GenerateModifiersParams {
@@ -13,6 +14,12 @@ export const generateModifiers = ({
   selectedRange,
   disabledRanges,
 }: GenerateModifiersParams) => {
+  const { valid, reason } = rangesValid(selectedRange, disabledRanges);
+
+  if (!valid) {
+    throw new Error(reason);
+  }
+
   const selectedModifiers = generateSelectedModifiers({
     selectedRange,
     disabledRanges,
@@ -121,7 +128,7 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
 };
 
 const generateMiddleRange = ({ from, to }: ClosedDateRange) => {
-  const diff = differenceInCalendarDays(to, from);
+  const diff = differenceInDays(to, from);
   if (diff < 2) return undefined;
   if (diff === 2) return addDays(from, 1);
   return {

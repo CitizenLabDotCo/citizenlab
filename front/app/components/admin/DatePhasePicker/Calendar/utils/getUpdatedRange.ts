@@ -2,6 +2,7 @@ import { addDays } from 'date-fns';
 
 import { ClosedDateRange, DateRange } from '../../typings';
 
+import { rangesValid } from './rangesValid';
 import { isClosedDateRange } from './utils';
 
 interface GetUpdatedRangeParams {
@@ -15,6 +16,12 @@ export const getUpdatedRange = ({
   disabledRanges,
   clickedDate,
 }: GetUpdatedRangeParams) => {
+  const { valid, reason } = rangesValid({ from, to }, disabledRanges);
+
+  if (!valid) {
+    throw new Error(reason);
+  }
+
   if (from === undefined) {
     return {
       from: clickedDate,
