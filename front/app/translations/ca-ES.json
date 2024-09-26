@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Uniu-vos a la discussió",
   "app.components.ProjectCard.learnMore": "Saber-ne més",
   "app.components.ProjectCard.reaction": "Reacció",
-  "app.components.ProjectCard.remaining": "Queden {timeRemaining}",
   "app.components.ProjectCard.reviewDocument": "Revisa el document",
   "app.components.ProjectCard.submitAnIssue": "Envieu un comentari",
   "app.components.ProjectCard.submitYourIdea": "Presenteu la vostra idea",

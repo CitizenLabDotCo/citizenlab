@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Tartışmaya katılın",
   "app.components.ProjectCard.learnMore": "Daha fazla bilgi edinin",
   "app.components.ProjectCard.reaction": "Reaksiyon",
-  "app.components.ProjectCard.remaining": "{timeRemaining} kaldı",
   "app.components.ProjectCard.reviewDocument": "Belgeyi gözden geçirin",
   "app.components.ProjectCard.submitAnIssue": "Yorum gönderin",
   "app.components.ProjectCard.submitYourIdea": "Fikrinizi sunun",

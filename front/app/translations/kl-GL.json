@@ -339,7 +339,6 @@
   "app.components.ProjectCard.joinDiscussion": "Oqallinnermut peqataagit",
   "app.components.ProjectCard.learnMore": "Paasisaqarnerugit ",
   "app.components.ProjectCard.reaction": "Reaction",
-  "app.components.ProjectCard.remaining": "{timeRemaining} uterit ",
   "app.components.ProjectCard.reviewDocument": "Review the document",
   "app.components.ProjectCard.submitAnIssue": "Ajornartorsiummik ilanngussigit",
   "app.components.ProjectCard.submitYourIdea": "Isumassarsiannik ilanngussigit",

@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Liity keskusteluun",
   "app.components.ProjectCard.learnMore": "Lue lisää",
   "app.components.ProjectCard.reaction": "Reaktio",
-  "app.components.ProjectCard.remaining": "{timeRemaining} jäljellä",
   "app.components.ProjectCard.reviewDocument": "Tarkista asiakirja",
   "app.components.ProjectCard.submitAnIssue": "Lähetä kommentti",
   "app.components.ProjectCard.submitYourIdea": "Lähetä ideasi",

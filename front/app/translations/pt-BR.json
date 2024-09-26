@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Junte-se à discussão",
   "app.components.ProjectCard.learnMore": "Saiba mais",
   "app.components.ProjectCard.reaction": "Reação",
-  "app.components.ProjectCard.remaining": "{timeRemaining} restante",
   "app.components.ProjectCard.reviewDocument": "Revisar o documento",
   "app.components.ProjectCard.submitAnIssue": "Envie um problema",
   "app.components.ProjectCard.submitYourIdea": "Envie sua ideia",

@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Ymunwch â'r drafodaeth",
   "app.components.ProjectCard.learnMore": "Dysgu mwy",
   "app.components.ProjectCard.reaction": "Adwaith",
-  "app.components.ProjectCard.remaining": "{timeRemaining} yn weddill",
   "app.components.ProjectCard.reviewDocument": "Adolygu'r ddogfen",
   "app.components.ProjectCard.submitAnIssue": "Cyflwyno sylw",
   "app.components.ProjectCard.submitYourIdea": "Cyflwyno'ch syniad",

@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Stil dit spørgsmål",
   "app.components.ProjectCard.learnMore": "Lær mere ",
   "app.components.ProjectCard.reaction": "Reaktion",
-  "app.components.ProjectCard.remaining": "{timeRemaining} tilbage ",
   "app.components.ProjectCard.reviewDocument": "Gennemgå dokumentet",
   "app.components.ProjectCard.submitAnIssue": "Send dit høringssvar",
   "app.components.ProjectCard.submitYourIdea": "Beskriv din idé",

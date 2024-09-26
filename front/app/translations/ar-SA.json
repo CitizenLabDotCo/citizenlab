@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "انضم إلى المناقشة ",
   "app.components.ProjectCard.learnMore": "حمّل المزيد",
   "app.components.ProjectCard.reaction": "رد فعل",
-  "app.components.ProjectCard.remaining": "تبقى {timeRemaining}",
   "app.components.ProjectCard.reviewDocument": "راجع المستند",
   "app.components.ProjectCard.submitAnIssue": "قُم بتقديم مُشكلة ",
   "app.components.ProjectCard.submitYourIdea": "قُم بتقديم فكرة ",

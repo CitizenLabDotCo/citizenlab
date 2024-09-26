@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Delta i diskusjonen",
   "app.components.ProjectCard.learnMore": "Lær mer",
   "app.components.ProjectCard.reaction": "Reaksjon",
-  "app.components.ProjectCard.remaining": "{timeRemaining} gjenstår",
   "app.components.ProjectCard.reviewDocument": "Se gjennom dokumentet",
   "app.components.ProjectCard.submitAnIssue": "Tilføy et emne",
   "app.components.ProjectCard.submitYourIdea": "Tilføy ideen din",

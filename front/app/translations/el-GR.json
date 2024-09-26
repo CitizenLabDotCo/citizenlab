@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Συμμετοχή στη συζήτηση",
   "app.components.ProjectCard.learnMore": "Μάθετε περισσότερα",
   "app.components.ProjectCard.reaction": "Αντίδραση",
-  "app.components.ProjectCard.remaining": "Απομένει {timeRemaining}",
   "app.components.ProjectCard.reviewDocument": "Επανεξέταση του εγγράφου",
   "app.components.ProjectCard.submitAnIssue": "Υποβάλετε ένα σχόλιο",
   "app.components.ProjectCard.submitYourIdea": "Υποβάλετε την ιδέα σας",

@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Pievienoties diskusijai",
   "app.components.ProjectCard.learnMore": "Uzzināt vairāk",
   "app.components.ProjectCard.reaction": "Reakcija",
-  "app.components.ProjectCard.remaining": "{timeRemaining} atlicis",
   "app.components.ProjectCard.reviewDocument": "Dokumenta pārskatīšana",
   "app.components.ProjectCard.submitAnIssue": "Iesniegt komentāru",
   "app.components.ProjectCard.submitYourIdea": "Iesniegt savu ideju",

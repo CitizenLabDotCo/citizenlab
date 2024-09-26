@@ -398,7 +398,6 @@
   "app.components.ProjectCard.joinDiscussion": "Придружите се дискусији",
   "app.components.ProjectCard.learnMore": "Сазнајте више",
   "app.components.ProjectCard.reaction": "Гласајте",
-  "app.components.ProjectCard.remaining": "{timeRemaining} преосталих",
   "app.components.ProjectCard.reviewDocument": "Прегледајте документ",
   "app.components.ProjectCard.submitAnIssue": "Пошаљите коментар",
   "app.components.ProjectCard.submitYourIdea": "Пошаљите своју идеју",

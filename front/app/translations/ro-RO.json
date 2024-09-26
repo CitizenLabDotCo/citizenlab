@@ -291,7 +291,6 @@
   "app.components.ProjectCard.finished": "Terminat",
   "app.components.ProjectCard.joinDiscussion": "Alăturați-vă discuției",
   "app.components.ProjectCard.learnMore": "Aflați mai multe",
-  "app.components.ProjectCard.remaining": "{timeRemaining} rămase",
   "app.components.ProjectCard.submitAnIssue": "Trimite o problemă",
   "app.components.ProjectCard.submitYourIdea": "Trimite o idee",
   "app.components.ProjectCard.submitYourProject": "Trimite un proiect",
