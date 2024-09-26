@@ -31,7 +31,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
-import TimeLeft from 'components/ParticipationCTABars/ParticipationCTAContent/TimeIndicator/TimeLeft';
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
@@ -478,7 +478,7 @@ const ProjectCard = memo<InputProps>(
         countdown = (
           <Box mt="4px" className="e2e-project-card-time-remaining">
             <Text color="textPrimary" fontSize="s" m="0">
-              <TimeLeft currentPhaseEndsAt={endAt} />
+              <PhaseTimeLeft currentPhaseEndsAt={endAt} />
             </Text>
             <ProgressBar ref={progressBarRef} aria-hidden>
               <ProgressBarOverlay

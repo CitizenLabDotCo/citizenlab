@@ -3,13 +3,13 @@ import React from 'react';
 import { useIntl } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import messages from '../../messages';
+import messages from './messages';
 
 interface Props {
   currentPhaseEndsAt: string;
 }
 
-const TimeLeft = ({ currentPhaseEndsAt }: Props) => {
+const PhaseTimeLeft = ({ currentPhaseEndsAt }: Props) => {
   const { formatMessage } = useIntl();
   let timeLeft = getPeriodRemainingUntil(currentPhaseEndsAt, 'weeks');
   let timeLeftMessage = messages.xWeeksLeft;
@@ -24,4 +24,4 @@ const TimeLeft = ({ currentPhaseEndsAt }: Props) => {
   return <>{formatMessage(timeLeftMessage, { timeLeft })}</>;
 };
 
-export default TimeLeft;
+export default PhaseTimeLeft;

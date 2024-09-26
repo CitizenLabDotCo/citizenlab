@@ -4,13 +4,13 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 import ParticipationOpenIcon from '../ParticipationOpenIcon';
 import ParticipationSuccessIcon from '../ParticipationSuccessIcon';
-
-import TimeLeft from './TimeLeft';
 
 interface Props {
   currentPhase: IPhaseData | undefined;
@@ -40,7 +40,7 @@ const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
           fontWeight="bold"
           m="0"
         >
-          <TimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
+          <PhaseTimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
         </Text>
       ) : (
         <Text color="white" m="0px" fontSize="s">
