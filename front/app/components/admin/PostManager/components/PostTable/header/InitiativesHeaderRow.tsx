@@ -64,8 +64,16 @@ const InitiativesHeaderRow = ({
         >
           <FormattedMessage {...messages.votes} />
         </SortableHeaderCell>
-        <Th width={getWidth(1)}>
-          <FormattedMessage {...messages.comments} />
+        <Th>
+          <SortableHeaderCell
+            width={getWidth(1)}
+            sortAttribute={sortAttribute}
+            sortDirection={sortDirection}
+            sortAttributeName="comments_count"
+            onChange={handleSortClick('comments_count')}
+          >
+            <FormattedMessage {...messages.comments} />
+          </SortableHeaderCell>
         </Th>
         {cosponsorsRequired && (
           <Th width={getWidth(1)}>
