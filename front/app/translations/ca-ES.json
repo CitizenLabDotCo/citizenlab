@@ -784,6 +784,8 @@
   "app.components.formBuilder.title": "Títol",
   "app.components.formBuilder.toLabel": "a",
   "app.components.formBuilder.unsavedChanges": "Tens canvis no desats",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Menys d'un dia} one {# dia} other {Queden # dies}}",
+  "app.components.phaseTimeLeft.xWeeksLeft": "Queden {timeLeft}  setmanes",
   "app.components.screenReaderCurrency.AED": "Dirham dels Emirats Àrabs Units",
   "app.components.screenReaderCurrency.AFN": "Afganès afganès",
   "app.components.screenReaderCurrency.ALL": "Lek albanès",
