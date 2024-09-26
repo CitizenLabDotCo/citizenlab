@@ -8,9 +8,9 @@ context 'id_austria verification' do
   let(:auth_hash) do
     {
       'provider' => 'id_austria',
-      'uid' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
+      'uid' => '29d14ea0-6e16-4732-86ac-5de87a941784',
       'info' =>
-        { 'name' => 'Bulenga Poulsen',
+        { 'name' => 'Annika Schmidt',
           'email' => nil,
           'email_verified' => nil,
           'nickname' => nil,
@@ -49,9 +49,9 @@ context 'id_austria verification' do
             'birthdate' => '1977-12-31',
             'dateofbirth' => '1977-12-31',
             'age' => '45',
-            'name' => 'Bulenga Poulsen',
+            'name' => 'Annika Schmidt',
             'refTextHeader' => 'Log on at IdAustria',
-            'refTextBody' => 'local development test (Koen)',
+            'refTextBody' => 'local development test',
             'country' => 'AT',
             'iss' => 'https://kobenhavn-test.id_austria.id',
             'aud' => 'urn:my:application:identifier:407793',
@@ -59,8 +59,8 @@ context 'id_austria verification' do
             'nbf' => 1_692_621_902,
             'exp' => 1_692_639_888,
             address: {
-              formatted: "Paiman Petersen\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
-              common_name: 'Paiman Petersen',
+              formatted: "Annika Schmidt\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
+              common_name: 'Annika Schmidt',
               street_address: 'Grusgraven 1,3 tv',
               postal_code: '3400',
               city: 'Hillerød',
@@ -83,7 +83,7 @@ context 'id_austria verification' do
   end
 
   before do
-    @user = create(:user, first_name: 'Bulenga', last_name: 'Poulsen')
+    @user = create(:user, first_name: 'Annika', last_name: 'Schmidt')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
 
     OmniAuth.config.test_mode = true
@@ -115,8 +115,8 @@ context 'id_austria verification' do
   def expect_to_create_verified_user(user)
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Bulenga',
-      last_name: 'Poulsen',
+      first_name: 'Annika',
+      last_name: 'Schmidt',
       custom_field_values: {
         'birthdate' => '1977-12-31',
         'birthyear' => 1977,
@@ -124,10 +124,10 @@ context 'id_austria verification' do
       }
     })
     expect(user.verifications.first).to have_attributes({
-      method_name: 'DK MitID',
+      method_name: 'id_austria',
       user_id: user.id,
       active: true,
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '410a77ec-4f85-46e4-aaef-bdbbd1a951f2', 'DK MitID')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'id_austria')
     })
   end
 
@@ -136,7 +136,7 @@ context 'id_austria verification' do
     expect(user.identities.first).to have_attributes({
       provider: 'id_austria',
       user_id: user.id,
-      uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
+      uid: auth_hash['uid'],
       auth_hash: nil
     })
   end
@@ -166,7 +166,7 @@ context 'id_austria verification' do
     expect_to_create_verified_and_identified_user(@user)
   end
 
-  it 'successfully verifies another user with another MitID account' do
+  it 'successfully verifies another user with another ID Austria account' do
     get "/auth/id_austria?token=#{@token}"
     follow_redirect!
     expect(@user.reload).to have_attributes({
@@ -175,7 +175,7 @@ context 'id_austria verification' do
 
     user2 = create(:user)
     token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['extra']['raw_info']['uuid'] = '12345'
+    auth_hash['uid'] = '12345'
     OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
 
     get "/auth/id_austria?token=#{token2}"
@@ -184,11 +184,11 @@ context 'id_austria verification' do
   end
 
   it 'fails when uid has already been used' do
-    uid = '410a77ec-4f85-46e4-aaef-bdbbd1a951f2'
+    uid = auth_hash['uid']
     create(
       :verification,
-      method_name: 'DK MitID',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'DK MitID')
+      method_name: 'id_austria',
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'id_austria')
     )
 
     get "/auth/id_austria?token=#{@token}"
@@ -199,7 +199,7 @@ context 'id_austria verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/id_austria?param=/some-param'
+    get '/auth/id_austria?param=something'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -213,7 +213,7 @@ context 'id_austria verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+    expect(response).to redirect_to('/en/?param=something')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -243,11 +243,11 @@ context 'id_austria verification' do
         get "/auth/id_austria?token=#{@token}&pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
-          first_name: 'Bulenga',
-          last_name: 'Poulsen'
+          first_name: 'Annika',
+          last_name: 'Schmidt'
         })
 
         expect(new_user.reload).to eq(new_user)
@@ -278,6 +278,7 @@ context 'id_austria verification' do
       configuration.save!
     end
 
+    # TODO: JS - User confirmation is not required - why?
     context 'email confirmation enabled' do
       before do
         configuration = AppConfiguration.instance
@@ -357,34 +358,6 @@ context 'id_austria verification' do
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(false)
       end
-    end
-  end
-
-  context 'when configured for auth0 backward compatibility' do
-    before do
-      config = AppConfiguration.instance
-      id_austria = config.settings('verification', 'verification_methods').first
-      id_austria[:method_name_for_hashing] = 'auth0'
-      id_austria[:uid_field_pattern] = 'adfs|cl-test-id_austria-verify-DK-NemID-POCES|%{nameidentifier}'
-      config.save!
-    end
-
-    it 'successfully verifies a user like auth0' do
-      get "/auth/id_austria?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
-      follow_redirect!
-
-      expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
-
-      expect(@user.reload).to have_attributes(verified: true)
-      expect(@user.custom_field_values['birthdate']).to eq '1977-12-31'
-      expect(@user.verifications.first).to have_attributes({
-        method_name: 'auth0',
-        user_id: @user.id,
-        active: true
-      })
-      hash_value = Verification::VerificationService.new.send(:hashed_uid, 'adfs|cl-test-id_austria-verify-DK-NemID-POCES|29d14ea06e16473286ac5de87a941784', 'auth0')
-      expect(@user.verifications.first.hashed_uid).to eq(hash_value)
-      expect(@user.verifications.first.hashed_uid).to eq('106ba51c378a87edd55f322f0c4c9ae7ba4f6ef9141aeec0fc1ebef68d01f128')
     end
   end
 end
