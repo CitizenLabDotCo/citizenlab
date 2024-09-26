@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { patchDisabledRanges } from './patchDisabledRanges';
 import { DateRange } from './typings';
 
 import DatePhasePicker from '.';
@@ -66,7 +67,7 @@ const WrapperOpenEndedDisabledRanges = () => {
   return (
     <DatePhasePicker
       selectedRange={selectedRange}
-      disabledRanges={DISABLED_RANGES}
+      disabledRanges={patchDisabledRanges(selectedRange, DISABLED_RANGES)}
       onUpdateRange={setSelectedRange}
     />
   );
