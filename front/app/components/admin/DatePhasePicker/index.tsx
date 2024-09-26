@@ -19,7 +19,7 @@ const StyledClickOutside = styled(ClickOutside)`
   }
 `;
 
-const DateRangePicker = ({
+const DatePhasePicker = ({
   selectedRange,
   disabledRanges = [],
   startMonth,
@@ -61,4 +61,4 @@ const DateRangePicker = ({
   );
 };
 
-export default DateRangePicker;
+export default DatePhasePicker;
