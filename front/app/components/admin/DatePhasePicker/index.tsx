@@ -7,6 +7,7 @@ import ClickOutside from 'utils/containers/clickOutside';
 
 import Calendar from './Calendar';
 import Input from './Input';
+import { isSelectedRangeOpenEnded } from './isSelectedRangeOpenEnded';
 import { Props } from './typings';
 
 const WIDTH = '620px';
@@ -20,12 +21,17 @@ const StyledClickOutside = styled(ClickOutside)`
 
 const DateRangePicker = ({
   selectedRange,
-  disabledRanges,
+  disabledRanges = [],
   startMonth,
   endMonth,
   onUpdateRange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
+    selectedRange,
+    disabledRanges
+  );
 
   return (
     <StyledClickOutside onClickOutside={() => setCalendarOpen(false)}>
@@ -47,6 +53,7 @@ const DateRangePicker = ({
       >
         <Input
           selectedRange={selectedRange}
+          selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
           onClick={() => setCalendarOpen((open) => !open)}
         />
       </Tooltip>

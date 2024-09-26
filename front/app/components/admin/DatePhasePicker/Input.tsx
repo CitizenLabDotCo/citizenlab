@@ -39,10 +39,11 @@ const Container = styled.button`
 
 interface Props {
   selectedRange: Partial<DateRange>;
+  selectedRangeIsOpenEnded: boolean;
   onClick: () => void;
 }
 
-const Input = ({ selectedRange, onClick }: Props) => {
+const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(messages.selectDate);
 
@@ -55,7 +56,11 @@ const Input = ({ selectedRange, onClick }: Props) => {
       </Box>
       <Icon name="chevron-right" height="16px" />
       <Box ml="8px" mr="12px">
-        {selectedRange.to ? selectedRange.to.toLocaleDateString() : selectDate}
+        {selectedRangeIsOpenEnded
+          ? formatMessage(messages.openEnded)
+          : selectedRange.to
+          ? selectedRange.to.toLocaleDateString()
+          : selectDate}
       </Box>
       <Icon name="calendar" height="16px" />
     </Container>
