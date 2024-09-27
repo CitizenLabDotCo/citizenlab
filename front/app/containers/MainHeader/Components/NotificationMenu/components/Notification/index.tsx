@@ -18,6 +18,7 @@ import {
   IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
   IInvitationToCosponsorInitiativeNotificationData,
+  IInvitationToCosponsorIdeaNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
@@ -55,6 +56,7 @@ import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotif
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
 import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
+import InvitationToCosponsorIdeaNotification from '../InvitationToCosponsorIdeaNotification';
 import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
@@ -178,6 +180,14 @@ const Notification = ({ notification }: Props) => {
         <InvitationToCosponsorInitiativeNotification
           notification={
             notification as IInvitationToCosponsorInitiativeNotificationData
+          }
+        />
+      );
+    case 'invitation_to_cosponsor_idea':
+      return (
+        <InvitationToCosponsorIdeaNotification
+          notification={
+            notification as IInvitationToCosponsorIdeaNotificationData
           }
         />
       );
