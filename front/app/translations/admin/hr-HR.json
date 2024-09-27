@@ -822,8 +822,6 @@
   "app.containers.Admin.project.Campaigns.noAccess": "Žao nam je, ali čini se da nemate pristup odjeljku s e-poštom",
   "app.containers.Admin.project.emails.addCampaign": "Stvorite e-poštu",
   "app.containers.Admin.project.emails.addCampaignTitle": "Nova kampanja",
-  "app.containers.Admin.project.emails.allParticipants": "Sve {participants} iz projekta",
-  "app.containers.Admin.project.emails.allParticipantsTooltipText": "Ovo uključuje registrirane korisnike koji su izvršili bilo koju radnju u projektu (uključujući praćenje). Neregistrirani ili anonimizirani korisnici nisu uključeni.",
   "app.containers.Admin.project.emails.dateSent": "Datum slanja",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Izbrisati",
   "app.containers.Admin.project.emails.draft": "Nacrt",
