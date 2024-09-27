@@ -12,15 +12,11 @@ const signUpInTracks = {
   signUpFlowCompleted: 'Sign up flow completed',
 };
 
-let allAppPaths: string[] | undefined;
-
 const trackSessionStarted = () => {
   const uaParser = new UAParser();
   const uaResult = uaParser.getResult();
 
-  if (allAppPaths === undefined) {
-    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-  }
+  const allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
 
   const routeMatch = matchPath(window.location.pathname, {
     paths: allAppPaths,
