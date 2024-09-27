@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Ceisio eto. Os bydd y mater yn parhau, cysylltwch â ni",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Roedd problem ar ein diwedd, sori",
   "app.components.HookForm.Feedback.successMessage": "Ffurflen wedi'i chyflwyno'n llwyddiannus",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Cyfrinair",
   "app.components.HorizontalScroll.scrollLeftLabel": "Sgroliwch i'r chwith.",
   "app.components.HorizontalScroll.scrollRightLabel": "Sgroliwch i'r dde.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} syniadau wedi llwytho.",
