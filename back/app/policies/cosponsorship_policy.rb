@@ -14,7 +14,7 @@ class CosponsorshipPolicy < ApplicationPolicy
     end
   end
 
-  def accept_cosponsorship?
+  def accept?
     user.id == record.user_id
   end
 end
