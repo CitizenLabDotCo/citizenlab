@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
     defaultMessage: '{name} cosponsored your proposal',
   },
+  cosponsorOfYourIdea: {
+    id: 'app.containers.NotificationMenu.cosponsorOfYourIdea',
+    defaultMessage: '{name} accepted your co-sponsorship invitation',
+  },
   userCommentedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
     defaultMessage: '{name} commented on an idea that you follow',

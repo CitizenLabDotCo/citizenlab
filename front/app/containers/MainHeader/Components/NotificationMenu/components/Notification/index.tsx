@@ -37,6 +37,7 @@ import {
   IVotingBasketNotSubmittedNotificationData,
   IVotingLastChanceNotificationData,
   IVotingResultsNotificationData,
+  ICosponsorOfYourIdeaNotificationData,
 } from 'api/notifications/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -49,6 +50,7 @@ import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification'
 import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
 import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
+import CosponsorOfYourIdeaNotification from '../CosponsorOfYourIdeaNotification';
 import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
@@ -133,6 +135,12 @@ const Notification = ({ notification }: Props) => {
           notification={
             notification as ICosponsorOfYourInitiativeNotificationData
           }
+        />
+      );
+    case 'cosponsor_of_your_idea':
+      return (
+        <CosponsorOfYourIdeaNotification
+          notification={notification as ICosponsorOfYourIdeaNotificationData}
         />
       );
     case 'idea_assigned_to_you':
