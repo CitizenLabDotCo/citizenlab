@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Essayez à nouveau. Si le problème persiste, contactez-nous",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Il y a eu un problème de notre côté, désolé",
   "app.components.HookForm.Feedback.successMessage": "Formulaire soumis avec succès",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Mot de passe",
   "app.components.HorizontalScroll.scrollLeftLabel": "Faire défiler vers la gauche.",
   "app.components.HorizontalScroll.scrollRightLabel": "Faire défiler vers la droite.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "Les idées ont été chargées dans l'ordre suivant : {sortOder}.",
