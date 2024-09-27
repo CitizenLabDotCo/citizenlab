@@ -223,14 +223,6 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
-          <Box display="flex" alignItems="center">
-            <Icon name="user" fill={colors.coolGrey600} width="16px" />
-            <Text color="coolGrey600" fontSize="s" m="0px">
-              {formatMessage(messages.participants, {
-                participantsCount: project.data.attributes.participants_count,
-              })}
-            </Text>
-          </Box>
         </Box>
       </Box>
     </NavigationTabs>
