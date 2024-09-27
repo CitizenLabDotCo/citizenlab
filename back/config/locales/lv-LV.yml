@@ -209,6 +209,12 @@ lv:
           title: Kāda ir jūsu problēma?
         option:
           title: Kāda ir jūsu izvēle?
+        proposal:
+          title: Kāds ir jūsu priekšlikums?
+        initiative:
+          title: Kāda ir jūsu iniciatīva?
+        petition:
+          title: Kāda ir jūsu petīcija?
   custom_field_options:
     gender:
       male: Vīrietis
