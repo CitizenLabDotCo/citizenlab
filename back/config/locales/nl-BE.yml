@@ -209,6 +209,12 @@ nl-BE:
           title: Wat is je reactie?
         option:
           title: Wat is je optie?
+        proposal:
+          title: Geen plaats voor jouw plannen? Start je eigen voorstel!
+        initiative:
+          title: Waar gaat je initiatief over?
+        petition:
+          title: Wat is je verzoekschrift?
   custom_field_options:
     gender:
       male: Man
