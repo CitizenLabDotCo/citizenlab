@@ -43,27 +43,47 @@ module IdFranceconnect
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('franceconnect_login')
 
-      env['omniauth.strategy'].options.merge!(
-        scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
-        response_type: :code,
-        state: true, # required by France connect
-        nonce: true, # required by France connect
-        issuer: issuer, # the integration env is now using 'https'
-        client_auth_method: 'Custom', # France connect does not use BASIC authentication
-        acr_values: 'eidas1',
-        client_signing_alg: :HS256, # hashing function of France Connect
-        client_options: {
-          identifier: configuration.settings('franceconnect_login', 'identifier'),
-          secret: configuration.settings('franceconnect_login', 'secret'),
-          scheme: 'https',
-          host: host,
-          port: 443,
-          redirect_uri: redirect_uri(configuration, env),
-          authorization_endpoint: '/api/v1/authorize',
-          token_endpoint: '/api/v1/token',
-          userinfo_endpoint: '/api/v1/userinfo'
-        }
-      )
+      # TODO: add discovery endpoint
+      if version == 'v2'
+        env['omniauth.strategy'].options.merge!(
+          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+
+          # get configuration from /.well-known/openid-configuration
+          # TODO: JS - This failed why?
+          discovery: true,
+          response_type: :code,
+          acr_values: 'eidas1',
+          issuer: issuer,
+          client_options: {
+            identifier: config[:client_id],
+            secret: config[:client_secret],
+            host: config[:domain],
+            redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
+          }
+        )
+      else
+        env['omniauth.strategy'].options.merge!(
+          scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
+          response_type: :code,
+          state: true, # required by France connect
+          nonce: true, # required by France connect
+          issuer: issuer, # the integration env is now using 'https'
+          client_auth_method: 'Custom', # France connect does not use BASIC authentication
+          acr_values: 'eidas1',
+          client_signing_alg: :HS256, # hashing function of France Connect
+          client_options: {
+            identifier: configuration.settings('franceconnect_login', 'identifier'),
+            secret: configuration.settings('franceconnect_login', 'secret'),
+            scheme: 'https',
+            host: host,
+            port: 443,
+            redirect_uri: redirect_uri(configuration, env),
+            authorization_endpoint: "/api/#{version}/authorize",
+            token_endpoint: "/api/#{version}/token",
+            userinfo_endpoint: "/api/#{version}/userinfo",
+          }
+        )
+      end
     end
 
     def logout_url(user)
@@ -79,21 +99,10 @@ module IdFranceconnect
         post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
-      "https://#{host}/api/v1/logout?#{url_params.to_query}"
+      "https://#{host}/api/#{version}/logout?#{url_params.to_query}"
     end
 
-    def host
-      case AppConfiguration.instance.settings('franceconnect_login', 'environment')
-      when 'integration'
-        'fcp.integ01.dev-franceconnect.fr'
-      when 'production'
-        'app.franceconnect.gouv.fr'
-      end
-    end
 
-    def issuer
-      "https://#{host}"
-    end
 
     def updateable_user_attrs
       super + %i[first_name last_name birthyear gender remote_avatar_url]
@@ -127,6 +136,29 @@ module IdFranceconnect
 
     private
 
+    def version
+      @version ||= auth_config['version'] == 'v2' ? 'v2' : 'v1'
+    end
+
+    def host
+      env = auth_config['environment'] || 'integration'
+      urls = {
+        production: {
+          v1: 'app.franceconnect.gouv.fr',
+          v2: 'oidc.franceconnect.gouv.fr'
+        },
+        integration: {
+          v1: 'fcp.integ01.dev-franceconnect.fr',
+          v2: 'fcp-low.integ01.dev-franceconnect.fr'
+        }
+      }
+      urls[env.to_sym][version.to_sym]
+    end
+
+    def issuer
+      "https://#{host}"
+    end
+
     # @param [AppConfiguration] configuration
     def redirect_uri(configuration, env)
       result = "#{configuration.base_backend_uri}/auth/franceconnect/callback"
@@ -136,6 +168,10 @@ module IdFranceconnect
       end
 
       result
+    end
+
+    def auth_config
+      @auth_config ||= AppConfiguration.instance.settings('franceconnect_login')
     end
   end
 end
