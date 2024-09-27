@@ -19,6 +19,7 @@
 #  entry_path        :string
 #  entry_route       :string
 #  entry_locale      :string
+#  entry_project_id  :string
 #
 # Indexes
 #

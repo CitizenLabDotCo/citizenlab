@@ -11,5 +11,6 @@ class AddUserAgentDataToSessions < ActiveRecord::Migration[7.0]
     add_column :impact_tracking_sessions, :entry_path, :string, default: nil
     add_column :impact_tracking_sessions, :entry_route, :string, default: nil
     add_column :impact_tracking_sessions, :entry_locale, :string, default: nil
+    add_column :impact_tracking_sessions, :entry_project_id, :string, default: nil
   end
 end

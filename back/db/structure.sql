@@ -1946,7 +1946,8 @@ CREATE TABLE public.impact_tracking_sessions (
     os_version character varying,
     entry_path character varying,
     entry_route character varying,
-    entry_locale character varying
+    entry_locale character varying,
+    entry_project_id character varying
 );
 
 

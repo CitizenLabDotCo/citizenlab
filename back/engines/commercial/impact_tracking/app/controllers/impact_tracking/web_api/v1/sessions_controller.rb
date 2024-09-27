@@ -10,6 +10,9 @@ module ImpactTracking
       before_action :set_current_session, only: [:upgrade]
 
       def create
+        entry_path = params['entryPath']
+        entry_route = params['entryRoute']
+
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
@@ -20,9 +23,10 @@ module ImpactTracking
           browser_version: params['browserVersion'],
           os_name: params['osName'],
           os_version: params['osVersion'],
-          entry_path: params['entryPath'],
-          entry_route: params['entryRoute'],
-          entry_locale: params['entryLocale']
+          entry_path: entry_path,
+          entry_route: entry_route,
+          entry_locale: params['entryLocale'],
+          entry_project_id: entry_project_id(entry_path, entry_route)
         )
 
         if session
@@ -76,6 +80,17 @@ module ImpactTracking
 
       def side_fx_session_service
         @side_fx_session_service ||= SideFxSessionService.new
+      end
+
+      def entry_project_id(entry_path, entry_route)
+        if entry_route.include? 'projects/:slug'
+          routes = entry_path.split('/')
+          projects_index = routes.find_index('projects')
+          entry_project_slug = routes[projects_index + 1] if projects_index
+          entry_project = Project.find_by(slug: entry_project_slug)
+
+          entry_project.id
+        end
       end
     end
   end
