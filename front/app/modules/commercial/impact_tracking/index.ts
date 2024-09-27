@@ -28,7 +28,6 @@ const trackSessionStarted = () => {
   });
 
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
-  const deviceModel = uaResult.device.model;
   const deviceType = uaResult.device.type ?? 'desktop';
   const browserName = uaResult.browser.name;
   const browserVersion = uaResult.browser.major;
@@ -44,7 +43,6 @@ const trackSessionStarted = () => {
     action: 'post',
     body: {
       referrer,
-      deviceModel,
       deviceType,
       browserName,
       browserVersion,
