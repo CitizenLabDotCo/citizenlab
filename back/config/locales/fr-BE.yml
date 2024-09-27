@@ -209,6 +209,12 @@ fr-BE:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+        proposal:
+          title: Quelle est votre proposition ?
+        initiative:
+          title: Quelle est votre proposition ?
+        petition:
+          title: Quelle est votre pétition ?
   custom_field_options:
     gender:
       male: Masculin
