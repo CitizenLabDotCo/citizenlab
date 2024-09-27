@@ -822,6 +822,8 @@
   "app.containers.Admin.project.Campaigns.noAccess": "Disculpa, pero parece que no tienes acceso a la sección de los correos electrónicos",
   "app.containers.Admin.project.emails.addCampaign": "Crear correo electrónico",
   "app.containers.Admin.project.emails.addCampaignTitle": "Crear un nuevo correo electrónico",
+  "app.containers.Admin.project.emails.allParticipantsAndFollowers": "Todos los {participants} y seguidores del proyecto",
+  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Esto incluye a los usuarios registrados que realizaron alguna acción en el proyecto. No se incluyen los usuarios no registrados o anonimizados.",
   "app.containers.Admin.project.emails.dateSent": "Fecha de envío",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Borrar",
   "app.containers.Admin.project.emails.draft": "Borrador",
