@@ -822,6 +822,8 @@
   "app.containers.Admin.project.Campaigns.noAccess": "عذرًا، ولكن يبدو أنه لا يمكنك الوصول إلى قسم رسائل البريد الإلكتروني",
   "app.containers.Admin.project.emails.addCampaign": "إنشاء البريد الإلكتروني",
   "app.containers.Admin.project.emails.addCampaignTitle": "حملة جديدة",
+  "app.containers.Admin.project.emails.allParticipantsAndFollowers": "جميع {participants} والمتابعين للمشروع",
+  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "يتضمن هذا المستخدمين المسجلين الذين قاموا بأي إجراء في المشروع. ولا يشمل المستخدمين غير المسجلين أو المجهولين.",
   "app.containers.Admin.project.emails.dateSent": "تاريخ إرسالها",
   "app.containers.Admin.project.emails.deleteButtonLabel": "يمسح",
   "app.containers.Admin.project.emails.draft": "مسودة",
