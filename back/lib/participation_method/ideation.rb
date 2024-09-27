@@ -37,7 +37,7 @@ module ParticipationMethod
     end
 
     def cosponsors_in_form?
-      phase ? phase.participation_method == 'proposals' : false
+      false
     end
 
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
