@@ -80,7 +80,6 @@ const DateSetup = ({
   }
 
   const defaultMonth = getDefaultMonth(selectedRange, disabledRanges);
-  console.log({ defaultMonth });
 
   return (
     <SectionField>
