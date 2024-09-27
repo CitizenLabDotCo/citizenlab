@@ -52,7 +52,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import CampaignRow from './components/CampaignRow';
 // import DateSetup from './components/DateSetup';
-import DateSetup from './components/DateSetup2';
+import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
