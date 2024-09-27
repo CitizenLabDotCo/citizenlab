@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Probéiert et nach eng Kéier. Wann de Problem weiderbesteet, kontaktéiert eis",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Et gouf e Problem op eiser Säit, pardon.",
   "app.components.HookForm.Feedback.successMessage": "Formulaire erfollegräich iwwermëttelt",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Passwuert",
   "app.components.HorizontalScroll.scrollLeftLabel": "Scroll lénks.",
   "app.components.HorizontalScroll.scrollRightLabel": "Scroll riets.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} Iddien sinn gelueden.",
