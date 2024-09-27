@@ -16,6 +16,11 @@ module ImpactTracking
           user_id: current_user&.id
         )
 
+        puts "=" * 20
+        puts "vnaewuptroubt"
+        puts params
+        puts "=" * 20
+
         if session
           side_fx_session_service.after_create(current_user)
 

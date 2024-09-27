@@ -141,6 +141,7 @@
     "stream-http": "3.2.0",
     "styled-components": "5.3.9",
     "tippy.js": "6.3.7",
+    "ua-parser-js": "^1.0.39",
     "util": "0.12.5",
     "webfontloader": "1.6.28",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
