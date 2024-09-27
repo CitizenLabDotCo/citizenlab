@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Tekrar deneyin. Sorun devam ederse bizimle iletişime geçin",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Bizim tarafımızda bir sorun oluştu, üzgünüz",
   "app.components.HookForm.Feedback.successMessage": "Form başarıyla gönderildi",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Şifre",
   "app.components.HorizontalScroll.scrollLeftLabel": "Sola kaydır.",
   "app.components.HorizontalScroll.scrollRightLabel": "Sağa kaydır.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} fikirler yüklendi.",
