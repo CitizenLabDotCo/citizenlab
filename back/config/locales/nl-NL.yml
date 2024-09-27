@@ -171,8 +171,8 @@ nl:
         title: Tags
         description:
       consponsor_ids:
-        title: Medesponsors
-        description: Nodig co-sponsors uit via het onderstaande veld. De uitgenodigde co-sponsor(s) ontvangen een e-mail.
+        title: Ondersteuners
+        description: Nodig ondersteuners uit via het onderstaande veld. De uitgenodigde ondersteuner(s) ontvangen een e-mail.
       location:
         title: Locatie
         description:
