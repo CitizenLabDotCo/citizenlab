@@ -209,6 +209,12 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
+        proposal:
+          title: Teklifiniz nedir?
+        initiative:
+          title: Girişiminiz nedir?
+        petition:
+          title: Dilekçeniz nedir?
   custom_field_options:
     gender:
       male: Erkek
