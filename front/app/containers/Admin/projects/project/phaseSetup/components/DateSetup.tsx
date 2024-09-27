@@ -21,6 +21,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { SubmitStateType } from '../typings';
 
+import { getDefaultMonth } from './utils';
+
 interface Props {
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
@@ -61,7 +63,7 @@ const DateSetup = ({
     return patchDisabledRanges(selectedRange, disabledRanges);
   }, [phases, phaseId, selectedRange]);
 
-  if (!disabledRanges) return null;
+  if (!phases || !disabledRanges) return null;
 
   const selectedRangeIsOpenEnded = isSelectedRangeOpenEnded(
     selectedRange,
@@ -77,6 +79,9 @@ const DateSetup = ({
     return null;
   }
 
+  const defaultMonth = getDefaultMonth(selectedRange, disabledRanges);
+  console.log({ defaultMonth });
+
   return (
     <SectionField>
       <SubSectionTitle>
@@ -85,6 +90,7 @@ const DateSetup = ({
       <DatePhasePicker
         selectedRange={selectedRange}
         disabledRanges={disabledRanges}
+        defaultMonth={defaultMonth ?? undefined}
         onUpdateRange={({ from, to }) => {
           setSubmitState('enabled');
           setFormData({

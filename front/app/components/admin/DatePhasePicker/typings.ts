@@ -13,5 +13,6 @@ export interface Props {
   disabledRanges?: DateRange[];
   startMonth?: Date;
   endMonth?: Date;
+  defaultMonth?: Date;
   onUpdateRange: (range: DateRange) => void;
 }

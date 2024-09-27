@@ -134,6 +134,7 @@ const Calendar = ({
   disabledRanges = [],
   startMonth = addYears(new Date(), -2),
   endMonth = addYears(new Date(), 2),
+  defaultMonth,
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
@@ -180,6 +181,7 @@ const Calendar = ({
         locale={getLocale(locale)}
         startMonth={startMonth}
         endMonth={endMonth}
+        defaultMonth={defaultMonth}
         modifiers={modifiers}
         modifiersClassNames={modifiersClassNames}
         onDayClick={handleDayClick}

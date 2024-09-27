@@ -24,6 +24,7 @@ const DatePhasePicker = ({
   disabledRanges = [],
   startMonth,
   endMonth,
+  defaultMonth,
   onUpdateRange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -43,6 +44,7 @@ const DatePhasePicker = ({
               disabledRanges={disabledRanges}
               startMonth={startMonth}
               endMonth={endMonth}
+              defaultMonth={defaultMonth}
               onUpdateRange={onUpdateRange}
             />
           </Box>
