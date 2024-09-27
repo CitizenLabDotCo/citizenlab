@@ -61,9 +61,10 @@ describe SideFxIdeaService do
           idea.cosponsorships.first,
           'created',
           user,
-          idea.cosponsorships.first.created_at.to_i        )
+          idea.cosponsorships.first.created_at.to_i
+        )
         .exactly(1).times
-      end
+    end
   end
 
   describe 'after_update' do
@@ -165,7 +166,7 @@ describe SideFxIdeaService do
         ).exactly(1).times
     end
 
-    it "creates a cosponsorship when cosponsor_ids change" do
+    it 'creates a cosponsorship when cosponsor_ids change' do
       cosponsor = create(:user)
 
       idea = create(:idea)

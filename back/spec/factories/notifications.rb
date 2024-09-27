@@ -43,7 +43,6 @@ FactoryBot.define do
     initiating_user
   end
 
-
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do

@@ -165,7 +165,6 @@ class SideFxIdeaService
     if added_ids.present?
       new_cosponsorships = idea.cosponsorships.where(user_id: added_ids)
       new_cosponsorships.each do |cosponsorship|
-
         LogActivityJob.perform_later(
           cosponsorship,
           'created',
@@ -175,7 +174,6 @@ class SideFxIdeaService
       end
     end
   end
-
 end
 
 SideFxIdeaService.prepend(FlagInappropriateContent::Patches::SideFxIdeaService)
