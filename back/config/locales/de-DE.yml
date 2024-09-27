@@ -209,6 +209,12 @@ de:
           title: Was ist Ihr Vorhaben?
         option:
           title: Was ist Ihre Option?
+        proposal:
+          title: Wie lautet Ihr Vorschlag?
+        initiative:
+          title: Was ist dein Vorschlag?
+        petition:
+          title: Was ist Ihre Petition?
   custom_field_options:
     gender:
       male: Männlich
