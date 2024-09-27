@@ -822,6 +822,8 @@
   "app.containers.Admin.project.Campaigns.noAccess": "Atvainojamies, bet šķiet, ka jums nav piekļuves e-pasta sadaļai.",
   "app.containers.Admin.project.emails.addCampaign": "Izveidot e-pastu",
   "app.containers.Admin.project.emails.addCampaignTitle": "Jauna kampaņa",
+  "app.containers.Admin.project.emails.allParticipantsAndFollowers": "Visi {participants} un sekotāji no projekta",
+  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Tas ietver reģistrētos lietotājus, kas projektā ir veikuši kādu darbību. Nav iekļauti nereģistrēti vai anonimizēti lietotāji.",
   "app.containers.Admin.project.emails.dateSent": "Nosūtīšanas datums",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Dzēst",
   "app.containers.Admin.project.emails.draft": "Projekts",
