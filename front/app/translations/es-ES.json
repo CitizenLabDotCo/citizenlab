@@ -651,7 +651,7 @@
   "app.components.form.controls.clickOnMapMultipleToAdd3": "Haz clic en el mapa para dibujarlo. Luego, arrastra sobre los puntos para moverlos.",
   "app.components.form.controls.clickOnMapToAddOrType": "Haz clic en el mapa o escribe una dirección abajo para añadir tu respuesta.",
   "app.components.form.controls.confirm": "Confirmar",
-  "app.components.form.controls.cosponsorsPlaceholder": "Empieza a escribir un nombre para buscar",
+  "app.components.form.controls.cosponsorsPlaceholder": "Empieza a escribir un nombre a buscar",
   "app.components.form.controls.minimumCoordinates2": "Se requiere un mínimo de {numPoints} puntos de mapa.",
   "app.components.form.controls.notPublic1": "*Esta respuesta sólo se compartirá con los gestores del proyecto, y no con el público.",
   "app.components.form.controls.selectAsManyAsYouLike": "*Selecciona tantos como quieras",
