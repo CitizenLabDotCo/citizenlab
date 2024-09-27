@@ -147,13 +147,11 @@ resource 'Projects' do
     context "when filtering by 'area_ids'" do
       let(:areas) { create_list(:area, 2) }
       let(:area_ids) { areas.pluck(:id) }
+      let!(:project) { create(:project, areas: areas) }
 
-      let!(:project) do
-        create(:project).tap { |project| project.areas << areas }
-      end
-
-      let!(:project_with_one_area) do
-        create(:project).tap { |project| project.areas << areas.first }
+      before do
+        # This project shouldn't be returned since it only has one of the requested areas.
+        create(:project, areas: areas.take(1))
       end
 
       example_request 'List only the projects that are in the specified areas' do
