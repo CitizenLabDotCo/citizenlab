@@ -10,7 +10,7 @@ class CosponsorshipPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      scope.where(post_id: Pundit.policy_scope(user, Idea))
     end
   end
 
