@@ -5,13 +5,11 @@ fr-BE:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
     inappropriate_content_flagged:
-      subject: 'Une publication a été signalée et doit-être vérifiée'
-      header_title: 'Une publication a été signalée et doit-être vérifiée'
-      comment_author: '%{authorName} a commenté :'
-      idea_author: '%{authorName} a publié une contribution :'
-      initiative_author: '%{authorName} a publié une proposition :'
+      subject: 'Un message a été marqué pour examen'
+      header_title: 'Un message a été marqué pour examen'
+      author_wrote: '%{authorName} a écrit :'
       automatically_flagged: >
         Cette publication a été automatiquement détectée comme pouvant contenir du contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération.
       how_to_review: >
         Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.
-      cta_review_post: 'Vérifier la publication'
+      cta_review: 'Vérification prépublication'
