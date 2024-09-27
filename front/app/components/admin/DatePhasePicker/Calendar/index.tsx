@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import 'react-day-picker/style.css';
-import { addYears } from 'date-fns';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
@@ -13,6 +12,7 @@ import { Props } from '../typings';
 
 import { getLocale } from './locales';
 import { generateModifiers } from './utils/generateModifiers';
+import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
 import { getUpdatedRange } from './utils/getUpdatedRange';
 
 const disabledBackground = colors.grey300;
@@ -132,11 +132,25 @@ const modifiersClassNames = {
 const Calendar = ({
   selectedRange,
   disabledRanges = [],
-  startMonth = addYears(new Date(), -2),
-  endMonth = addYears(new Date(), 2),
+  startMonth: _startMonth,
+  endMonth: _endMonth,
   defaultMonth,
   onUpdateRange,
 }: Props) => {
+  const startMonth = getStartMonth({
+    startMonth: _startMonth,
+    selectedRange,
+    disabledRanges,
+    defaultMonth,
+  });
+
+  const endMonth = getEndMonth({
+    endMonth: _endMonth,
+    selectedRange,
+    disabledRanges,
+    defaultMonth,
+  });
+
   const locale = useLocale();
 
   const modifiers = useMemo(
