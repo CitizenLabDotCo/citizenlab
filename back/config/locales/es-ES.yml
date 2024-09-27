@@ -209,6 +209,12 @@ es:
           title: '¿Cuál es su respuesta?'
         option:
           title: '¿Cuál es su opción?'
+        proposal:
+          title: '¿Cuál es tu propuesta?'
+        initiative:
+          title: '¿Cuál es tu propuesta?'
+        petition:
+          title: '¿Cuál es tu petición?'
   custom_field_options:
     gender:
       male: Masculino
