@@ -784,7 +784,7 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "tot",
   "app.components.formBuilder.unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
-  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} links",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} over",
   "app.components.phaseTimeLeft.xWeeksLeft": "nog {timeLeft} weken",
   "app.components.screenReaderCurrency.AED": "Verenigde Arabische Emiraten Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghaanse Afghani",
