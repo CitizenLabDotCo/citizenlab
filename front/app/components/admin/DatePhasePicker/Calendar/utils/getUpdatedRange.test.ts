@@ -28,14 +28,16 @@ describe('getUpdatedRange', () => {
       });
     });
 
-    it('does nothing if clicked date is start date', () => {
+    it('updates start date if clicked date is start date', () => {
       const selectedRange = { from: new Date(2024, 3, 1) };
       const disabledRanges = [];
       const clickedDate = new Date(2024, 3, 1);
 
       expect(
         getUpdatedRange({ selectedRange, disabledRanges, clickedDate })
-      ).toBeUndefined();
+      ).toEqual({
+        from: clickedDate,
+      });
     });
 
     it('updates start date if clicked date is after start date and overlaps with disabled range', () => {
