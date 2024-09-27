@@ -326,6 +326,8 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "A minimum budget is required",
   "app.components.app.containers.AdminPage.ProjectEdit.minTotalVotesLargerThanMaxError": "The minimum number of votes can't be larger than the maximum number",
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "A minimum number of votes is required",
+  "app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError": "Missing end date",
+  "app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError": "Missing start date",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Option",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Input Manager tab",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Configure the voting options in the Input manager tab after creating a phase.",
