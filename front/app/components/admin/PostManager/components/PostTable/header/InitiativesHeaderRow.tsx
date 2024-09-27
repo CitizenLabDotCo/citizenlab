@@ -13,7 +13,6 @@ import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { roundPercentage } from 'utils/math';
 import { SortDirection } from 'utils/paginationUtils';
 
 import messages from '../../../messages';
@@ -37,26 +36,23 @@ const InitiativesHeaderRow = ({
 }: Props) => {
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
 
-  const getWidth = (width: number) => `${roundPercentage(width, 11)}%`;
-
   return (
     <Thead>
       <Tr background={colors.grey50}>
-        <Th width={getWidth(1)}>
+        <Th>
           <Checkbox
             checked={!!allSelected}
             onChange={toggleSelectAll}
             size="21px"
           />
         </Th>
-        <Th width={getWidth(4)}>
+        <Th>
           <FormattedMessage {...messages.title} />
         </Th>
-        <Th width={getWidth(2)}>
+        <Th>
           <FormattedMessage {...messages.assignee} />
         </Th>
         <SortableHeaderCell
-          width={getWidth(1)}
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
           sortAttributeName="likes_count"
@@ -64,32 +60,25 @@ const InitiativesHeaderRow = ({
         >
           <FormattedMessage {...messages.votes} />
         </SortableHeaderCell>
-        <Th>
+        <SortableHeaderCell
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          sortAttributeName="comments_count"
+          onChange={handleSortClick('comments_count')}
+        >
+          <FormattedMessage {...messages.comments} />
+        </SortableHeaderCell>
+        {cosponsorsRequired && (
           <SortableHeaderCell
-            width={getWidth(1)}
             sortAttribute={sortAttribute}
             sortDirection={sortDirection}
-            sortAttributeName="comments_count"
-            onChange={handleSortClick('comments_count')}
+            sortAttributeName="accepted_cosponsorships_count"
+            onChange={handleSortClick('accepted_cosponsorships_count')}
           >
-            <FormattedMessage {...messages.comments} />
+            <FormattedMessage {...messages.cosponsors} />
           </SortableHeaderCell>
-        </Th>
-        {cosponsorsRequired && (
-          <Th>
-            <SortableHeaderCell
-              width={getWidth(1)}
-              sortAttribute={sortAttribute}
-              sortDirection={sortDirection}
-              sortAttributeName="accepted_cosponsorships_count"
-              onChange={handleSortClick('accepted_cosponsorships_count')}
-            >
-              <FormattedMessage {...messages.cosponsors} />
-            </SortableHeaderCell>
-          </Th>
         )}
         <SortableHeaderCell
-          width={getWidth(2)}
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
           sortAttributeName="new"

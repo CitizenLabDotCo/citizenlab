@@ -10,7 +10,6 @@ interface Props {
   sortAttributeName: IdeasSort | InitiativesSort;
   sortDirection?: 'ascending' | 'descending' | null;
   infoTooltip?: React.ReactChild;
-  width: string;
   onChange: () => void;
   children: React.ReactNode;
 }
@@ -38,6 +37,7 @@ const SortableHeaderCell = ({
       }
       infoTooltip={infoTooltip}
       onClick={onChange}
+      style={{ whiteSpace: 'nowrap' }}
     >
       {children}
     </Th>
