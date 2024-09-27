@@ -1937,7 +1937,16 @@ CREATE TABLE public.impact_tracking_sessions (
     highest_role character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
+    user_id uuid,
+    referrer character varying,
+    device_type character varying,
+    browser_name character varying,
+    browser_version character varying,
+    os_name character varying,
+    os_version character varying,
+    entry_path character varying,
+    entry_route character varying,
+    entry_locale character varying
 );
 
 
@@ -7459,6 +7468,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240826083227'),
 ('20240829185625'),
 ('20240923112800'),
-('20240923112801');
+('20240923112801'),
+('20240927175400');
 
 

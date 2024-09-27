@@ -65,6 +65,7 @@ const upgradeSession = () => {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    console.log('what the fuck is up');
     trackSessionStarted();
 
     events$.subscribe((event) => {

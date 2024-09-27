@@ -14,15 +14,15 @@ module ImpactTracking
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
           user_id: current_user&.id,
-          referrer: params.referrer,
-          device_type: params.deviceType,
-          browser_name: params.browserName,
-          browser_version: params.browserVersion,
-          os_name: params.osName,
-          os_version: params.osVersion,
-          entry_path: params.entryPath,
-          entry_route: params.entryRoute,
-          entry_locale: params.entryLocale
+          referrer: params['referrer'],
+          device_type: params['deviceType'],
+          browser_name: params['browserName'],
+          browser_version: params['browserVersion'],
+          os_name: params['osName'],
+          os_version: params['osVersion'],
+          entry_path: params['entryPath'],
+          entry_route: params['entryRoute'],
+          entry_locale: params['entryLocale']
         )
 
         if session
