@@ -87,7 +87,11 @@ module ImpactTracking
           routes = entry_path.split('/')
           projects_index = routes.find_index('projects')
           entry_project_slug = routes[projects_index + 1] if projects_index
+
+          return unless entry_project_slug
+
           entry_project = Project.find_by(slug: entry_project_slug)
+          return unless entry_project
 
           entry_project.id
         end
