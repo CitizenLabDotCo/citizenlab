@@ -19,13 +19,14 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { SubmitStateType } from '../typings';
+import { SubmitStateType, ValidationErrors } from '../typings';
 
 import { getDefaultMonth } from './utils';
 
 interface Props {
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
+  validationErrors: ValidationErrors;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
 }
@@ -33,6 +34,7 @@ interface Props {
 const DateSetup = ({
   formData,
   errors,
+  validationErrors,
   setFormData,
   setSubmitState,
 }: Props) => {
@@ -101,6 +103,7 @@ const DateSetup = ({
       />
       <Error apiErrors={errors && errors.start_at} />
       <Error apiErrors={errors && errors.end_at} />
+      <Error text={validationErrors.phaseDateError} />
       {selectedRangeIsOpenEnded && (
         <Box mt="24px">
           <Warning>

@@ -61,7 +61,7 @@ describe('validate', () => {
 
     const locales: SupportedLocale[] = ['nl-BE'];
 
-    const result = validate(formData, formatMessage, locales);
+    const result = validate(formData, [] as any, formatMessage, locales);
 
     expect(result.isValidated).toBe(true);
   });

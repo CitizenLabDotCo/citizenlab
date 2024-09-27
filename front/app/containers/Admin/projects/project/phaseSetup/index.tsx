@@ -230,6 +230,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     const { isValidated, errors } = validate(
       formData,
+      phases,
       formatMessage,
       tenantLocales
     );
@@ -361,6 +362,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
           <DateSetup
             formData={formData}
             errors={errors}
+            validationErrors={validationErrors}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
           />
