@@ -96,16 +96,9 @@ context 'id_austria verification' do
       enabled: true,
       verification_methods: [{
         name: 'id_austria',
-        identity_source: 'ID Austria',
-        domain: 'some.test.domain.com',
         client_id: '12345',
         client_secret: '78910',
-        birthday_custom_field_key: 'birthdate',
-        birthyear_custom_field_key: 'birthyear',
-        municipality_code_custom_field_key: 'municipality_code',
-        method_name_multiloc: {
-          en: 'ID Austria Verification'
-        }
+        ui_method_name: 'ID Austria'
       }]
     }
     configuration.save!
@@ -116,12 +109,7 @@ context 'id_austria verification' do
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Annika',
-      last_name: 'Schmidt',
-      custom_field_values: {
-        'birthdate' => '1977-12-31',
-        'birthyear' => 1977,
-        'municipality_code' => '0173'
-      }
+      last_name: 'Schmidt'
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'id_austria',
@@ -338,10 +326,6 @@ context 'id_austria verification' do
           'allowed' => false
         }
         configuration.save!
-
-        create(:custom_field, key: 'birthdate')
-        create(:custom_field, key: 'birthyear', input_type: 'number')
-        create(:custom_field, key: 'municipality_code')
       end
 
       it 'creates user that can update her email' do

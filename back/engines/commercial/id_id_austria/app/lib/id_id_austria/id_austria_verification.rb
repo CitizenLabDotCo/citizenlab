@@ -18,95 +18,49 @@ module IdIdAustria
 
     def config_parameters
       %i[
-        birthday_custom_field_key
-        birthyear_custom_field_key
-        municipality_code_custom_field_key
-        environment
         client_id
         client_secret
-        method_name_multiloc
-        minimum_age
+        ui_method_name
       ]
     end
 
     def config_parameters_schema
       {
-        method_name_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
+        ui_method_name: {
+          type: 'string',
           description: 'The name this verification method will have in the UI'
-        },
-        birthday_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'The `key` attribute of the custom field where the birthdate should be stored. Leave empty to not store the birthday. If it\'s set, the field will be locked for verified users.'
-        },
-        birthyear_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
-        },
-        municipality_code_custom_field_key: {
-          private: true,
-          type: 'string',
-          description: 'The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
         },
         environment: {
           private: true,
           type: 'string',
           enum: %w[test production],
           description: 'The environment to use for the ID Austria login'
-        },
-        minimum_age: {
-          private: true,
-          type: 'integer',
-          description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
     end
 
-    # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb
-    # TODO: JS - is there a minimum age?
-    def entitled?(auth)
-      minimum_age = config[:minimum_age]
-      return true if minimum_age.blank?
-
-      age = auth.extra.raw_info.age.to_i
-      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
-
+    def entitled?(_auth)
       true
     end
 
     def exposed_config_parameters
-      [
-        :method_name_multiloc
-      ]
+      [:ui_method_name]
     end
 
-    # TODO: JS - check if we get back a uuid field from the ID Austria API - won't necessarily notice in dev!
     # def profile_to_uid(auth)
-    #   case config[:identity_source]
-    #   when DK_MIT_ID
-    #     uid_pattern = config[:uid_field_pattern].presence || DEFAULT_UID_FIELD_PATTERN
-    #     uid_pattern % auth.extra.raw_info.to_h.symbolize_keys
-    #   else
-    #     raise "Unsupported identity source #{config[:identity_source]}"
-    #   end
+    #   TODO: JS - Check if the uid we get back is different frin just 'uid' (in base)
     # end
 
     def locked_attributes
+      %i[first_name last_name]
+    end
+
+    def locked_custom_fields
       []
     end
 
-    # TODO: JS - which fields are locked?
-    def locked_custom_fields
-      [
-        config[:birthday_custom_field_key].presence,
-        config[:birthyear_custom_field_key].presence
-      ].compact
-    end
-
     def updateable_user_attrs
-      super + %i[custom_field_values birthyear]
+      super + %i[first_name last_name]
     end
   end
 end
