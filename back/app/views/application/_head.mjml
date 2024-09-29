@@ -17,8 +17,8 @@
   </mj-attributes>
 
   <% unless preheader.empty? %>
-  <mj-preview>
-    <%= preheader %>
-  </mj-preview>
+    <mj-preview>
+      <%= preheader %>
+    </mj-preview>
   <% end %>
 </mj-head>
