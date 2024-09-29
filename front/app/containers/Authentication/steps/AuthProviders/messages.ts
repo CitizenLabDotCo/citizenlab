@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',
   },
+  continueWithBosa: {
+    id: 'app.components.AuthProviders.continueWithBosa',
+    defaultMessage: 'Continue with itsme or eID',
+  },
   continueWithLoginMechanism: {
     id: 'app.components.AuthProviders.continueWithLoginMechanism',
     defaultMessage: 'Continue with {loginMechanismName}',

@@ -49,6 +49,25 @@ module IdBosaFas
       }
     end
 
+    def filter_auth_to_persist(auth)
+      auth_to_persist = auth.deep_dup
+      auth_to_persist.tap { |h| h.delete(:credentials) }
+    end
+
+    def updateable_user_attrs
+      super + %i[first_name last_name]
+    end
+
+    def email_always_present?
+      false
+    end
+
+    def verification_prioritized?
+      true
+    end
+
+    private
+
     def host
       ENVIRONMENTS.fetch(config[:environment]).fetch(:host)
     end
@@ -61,10 +80,6 @@ module IdBosaFas
     # issued by BOSA FAS.
     def jwks
       @jwks ||= URI.parse(jwks_uri).read
-    end
-
-    def updateable_user_attrs
-      super + %i[first_name last_name]
     end
   end
 end

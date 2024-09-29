@@ -20,6 +20,10 @@ const configuration: ModuleConfiguration = {
         (vm) => vm.attributes.name === verificationMethodName
       );
 
+      // TODO: JS - different order to how they are displayed
+      // So Nemlogin is always appearing as the last one in dev
+      console.log(verificationMethods);
+
       if (method) {
         const last = isLastVerificationMethod(
           verificationMethodName,

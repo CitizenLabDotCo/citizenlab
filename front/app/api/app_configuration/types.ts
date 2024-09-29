@@ -240,6 +240,7 @@ export interface IAppConfigurationSettings {
   proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  bosa_fas_login?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

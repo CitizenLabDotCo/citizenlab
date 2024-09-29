@@ -84,6 +84,50 @@ describe 'bosa_fas verification' do
     })
   end
 
+  it 'successfully authenticates a user that was previously verified' do
+    get "/auth/bosa_fas?token=#{@token}"
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(0)
+    expect(@user.reload).to have_attributes({ verified: true })
+
+    get '/auth/bosa_fas'
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(1)
+    expect(@user.identities.first).to have_attributes({
+      provider: 'bosa_fas',
+      user_id: @user.id,
+      uid: '93051822361'
+    })
+  end
+
+  it 'creates a new user when the authentication token is not passed' do
+    expect(User.count).to eq(1)
+    get '/auth/bosa_fas?param=some-param'
+    follow_redirect!
+
+    # TODO: JS - Does it actually return an email?
+    expect(User.count).to eq(2)
+    user = User.order(created_at: :asc).last
+    expect(user).not_to eq(@user)
+    expect(user).to have_attributes({
+      first_name: 'Hypoliet',
+      last_name: 'Verhipperd',
+      email: nil,
+      password_digest: nil
+    })
+    expect(user.identities.first).to have_attributes({
+      provider: 'bosa_fas',
+      user_id: user.id,
+      uid: '93051822361'
+    })
+
+    expect(response).to redirect_to('/en/?param=some-param')
+  end
+
   it 'redirect to a path without an ending slash when no pathname is passed' do
     get "/auth/bosa_fas?token=#{@token}"
     follow_redirect!
@@ -106,12 +150,5 @@ describe 'bosa_fas verification' do
       first_name: 'Rudolphi',
       last_name: 'Raindeari'
     })
-  end
-
-  it 'fails when the authentication token is not passed' do
-    get '/auth/bosa_fas?pathname=/whatever-page'
-    follow_redirect!
-
-    expect(response).to redirect_to('/whatever-page?verification_error=true&error_code=no_token_passed')
   end
 end

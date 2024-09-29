@@ -48,6 +48,7 @@ const NemlogInButton = ({
 
   return (
     <VerificationMethodButton
+      id="e2e-nemlogin-button"
       last={last}
       onClick={handleOnClick}
       borderColor={grayBorder ? colors.grey500 : undefined}
