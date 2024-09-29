@@ -30,7 +30,7 @@
 
   <% unless preheader.empty? %>
     <mj-preview>
-      <%= preheader + '                                                                                                                                                                                                                                                                            ' %>
+      <%= preheader + '                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ' %>
     </mj-preview>
   <% end %>
 </mj-head>
