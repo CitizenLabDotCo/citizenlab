@@ -1,4 +1,4 @@
-<!-- Insert &#847;&zwnj;&nbsp; to prevent body text, including logo image alt, appearing after preview: https://www.litmus.com/blog/the-little-known-preview-text-hack-you-may-want-to-use-in-every-email -->
+<!-- Insert special characters to prevent body text, including logo image alt, appearing after preview: https://www.litmus.com/blog/the-little-known-preview-text-hack-you-may-want-to-use-in-every-email -->
 <% unless preheader.empty? %>
   <mj-section>
     <mj-column>
