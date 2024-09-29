@@ -1,4 +1,4 @@
-<mj-section padding="20px 25px 0">
+<mj-section padding="0px 25px 0">
   <mj-column>
     <mj-raw>
       <%= link_to home_url do %>
