@@ -27,4 +27,7 @@
   <mj-attributes>
     <mj-all padding="0" font-family="Arial" font-size="15px" line-height="150%" color="black" />
   </mj-attributes>
+  <mj-preview>
+    <%= preheader %>
+  </mj-preview>
 </mj-head>
