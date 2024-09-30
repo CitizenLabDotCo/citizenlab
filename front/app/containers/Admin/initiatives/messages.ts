@@ -169,8 +169,8 @@ export default defineMessages({
     defaultMessage: 'Review',
   },
   cosponsors: {
-    id: 'app.containers.Admin.initiatives.cosponsors',
-    defaultMessage: 'Cosponsors',
+    id: 'app.containers.Admin.initiatives.co-sponsors',
+    defaultMessage: 'Co-sponsors',
   },
   thresholds: {
     id: 'app.containers.Admin.initiatives.thresholds',
