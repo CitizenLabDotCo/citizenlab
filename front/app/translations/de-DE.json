@@ -1321,7 +1321,7 @@
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Einladung annehmen",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Einladung zum Unterstützen",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Unterstützer*innen",
-  "app.containers.IdeasShow.Cosponsorship.cosponsorDescription": "Sie wurden eingeladen, ein Co-Sponsor zu werden.",
+  "app.containers.IdeasShow.Cosponsorship.cosponsorDescription": "Sie wurden als Unterstützer*in eingeladen.",
   "app.containers.IdeasShow.Cosponsorship.cosponsorInvitationAccepted": "Einladung angenommen",
   "app.containers.IdeasShow.Cosponsorship.pending": "ausstehend",
   "app.containers.IdeasShow.MetaInformation.attachments": "Anhänge",
