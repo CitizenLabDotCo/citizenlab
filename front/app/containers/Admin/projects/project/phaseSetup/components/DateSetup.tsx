@@ -29,6 +29,7 @@ interface Props {
   validationErrors: ValidationErrors;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
+  setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
 const DateSetup = ({
@@ -37,6 +38,7 @@ const DateSetup = ({
   validationErrors,
   setFormData,
   setSubmitState,
+  setValidationErrors,
 }: Props) => {
   const { projectId, phaseId } = useParams();
   const { data: phases } = usePhases(projectId);
@@ -94,6 +96,10 @@ const DateSetup = ({
         defaultMonth={defaultMonth ?? undefined}
         onUpdateRange={({ from, to }) => {
           setSubmitState('enabled');
+          setValidationErrors((prevState) => ({
+            ...prevState,
+            phaseDateError: undefined,
+          }));
           setFormData({
             ...formData,
             start_at: from ? format(from, 'yyyy-MM-dd') : undefined,

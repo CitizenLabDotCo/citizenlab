@@ -365,6 +365,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             validationErrors={validationErrors}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
 
           <PhaseParticipationConfig
