@@ -239,7 +239,7 @@ class User < ApplicationRecord
   end
 
   def no_name?
-    !self[:last_name].present? && !self[:first_name].present? && !invite_pending?
+    self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
   def authenticate(unencrypted_password)

@@ -190,7 +190,7 @@ export default defineMessages({
     defaultMessage: 'User - eg User 123456',
   },
   anonymousNameScheme_animal: {
-    id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal',
-    defaultMessage: 'Animal - eg Pink Elephant',
+    id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2',
+    defaultMessage: 'Animal - eg Elephant Cat',
   },
 });

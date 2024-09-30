@@ -1238,7 +1238,7 @@ RSpec.describe User do
       settings['core']['anonymous_name_scheme'] = 'animal'
       AppConfiguration.instance.update!(settings: settings)
       user = described_class.new(email: 'test@citizenlab.co')
-      expect(user.full_name).to eq 'Green Lion'
+      expect(user.full_name).to eq 'Aardvark Cat'
       expect(user.no_name?).to be true
     end
   end
