@@ -31,9 +31,9 @@ de:
       "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "mention_in_internal_comment": Erwähnung in einem internen Kommentar
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_idea_for_admin": Neuer Input in einem Projekt, das ich moderiere
+      "new_idea_for_admin": Neuer Beitrag in einem Projekt, das ich moderiere
       "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_idea_you_follow": Aktualisierung einer Eingabe, die Sie verfolgen
+      "official_feedback_on_idea_you_follow": Update zu einem Beitrag, dem du folgst
       "official_feedback_on_initiative_you_follow": Offizielles Update zu einem Vorschlag, dem Sie folgen
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
@@ -41,7 +41,7 @@ de:
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "project_published": Projekt veröffentlicht
-      "status_change_on_idea_you_follow": Statusänderung einer Eingabe, die Sie verfolgen
+      "status_change_on_idea_you_follow": Statusänderung zu einem Beitrag, dem du folgst
       "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, dem Sie folgen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
@@ -55,7 +55,7 @@ de:
       "voting_last_chance": Letzte Chance zur Abstimmung
       "voting_phase_started": Neue Projektphase mit Abstimmung
       "voting_results": Abstimmungsergebnisse
-      "your_input_in_screening": Mein Beitrag wartet auf die Überprüfung
+      "your_input_in_screening": Mein Beitrag wartet auf Überprüfung
       "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     general:
       by_author: 'von %{authorName}'
@@ -63,11 +63,11 @@ de:
       cta_goto_idea: 'Zum Beitrag'
       cta_goto_input: 'Zum Beitrag'
       cta_goto:
-        idea: 'Zum Beitrag'
-        question: 'Gehen Sie zu dieser Frage'
-        contribution: 'Gehen Sie zu diesem Beitrag'
+        idea: 'Zur Idee'
+        question: 'Zur Frage'
+        contribution: 'Zum Beitrag'
         project: 'Zum Projekt'
-        issue: 'Zum Beitrag'
+        issue: 'Zum Problem'
         option: 'Zur Option'
         proposal: 'Zum Vorschlag'
         initiative: 'Zur Initiative'
@@ -442,9 +442,9 @@ de:
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
       header_message: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
-      header_title: 'Eine Eingabe, der Sie folgen, hat einen neuen Status'
+      header_title: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
       subject: 'Der Status von "%{input_title}" hat sich geändert.'
-      preheader: 'Eine Eingabe, der Sie folgen, hat einen neuen Status'
+      preheader: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
     status_change_on_initiative_you_follow:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
       header_message: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
@@ -459,8 +459,8 @@ de:
       intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform %{organizationName} passiert ist."
       cta_go_to_the_platform: "Zur Plattform"
       title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
-      successful_proposals_title: "Erreicht die Schwelle"
-      successful_proposals_text: "Diese haben in der vergangenen Woche genügend Unterstützung erhalten, um die nächste Stufe zu erreichen."
+      successful_proposals_title: "Schwelle erreicht"
+      successful_proposals_text: "In der vergangenen Woche haben sie genügend Unterstützung erhalten, um in die nächste Phase überzugehen."
       today_by_author: "Heute von %{author}"
       yesterday_by_author: "Gestern von %{author}"
       x_days_ago_by_author: "Vor %{x} Tagen von %{author}"
@@ -488,7 +488,7 @@ de:
         question: 'Ihre Frage wurde veröffentlicht'
         contribution: 'Ihr Beitrag wurde veröffentlicht'
         project: 'Ihr Projekt wurde veröffentlicht'
-        issue: 'Ihre Ausgabe wurde veröffentlicht'
+        issue: 'Ihr Problem wurde veröffentlicht'
         option: 'Ihre Option wurde veröffentlicht'
         proposal: 'Ihr Vorschlag wurde veröffentlicht'
         initiative: 'Ihre Initiative wurde veröffentlicht'
