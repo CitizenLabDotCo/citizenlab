@@ -80,9 +80,7 @@ en:
   user:
     anon_first_name: "User"
     anon_scheme:
-      animal:
-        first_names: 'Pink,Green,Purple,Blue,Yellow'
-        last_names: 'Aardvark,Lion,Platypus,Giraffe,Zebra'
+      animals: 'Aardvark,Cat,Platypus,Giraffe,Zebra'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe AnonymousNameService do
   let(:service) { described_class.new(user) }
-  let(:user) { create(:user, email: 'test@somewhere.com') }
+  let(:user) { create(:user, email: 'test@somewhere.com', created_at: '2024-09-30 12:00:00') }
 
   context 'when the scheme is "animal"' do
     before do
@@ -14,26 +14,24 @@ describe AnonymousNameService do
     end
 
     describe '#first_name' do
-      it 'returns a random colour' do
-        expect(service.first_name).to eq 'Yellow'
+      it 'returns a random (but consistent) animal name' do
+        expect(service.first_name).to eq 'Cat'
       end
 
-      it 'returns a random colour in French' do
-        I18n.with_locale(:'fr-FR') do
-          expect(service.first_name).to eq 'Jaune'
-        end
+      it 'returns a random animal in French' do
+        user.update!(locale: 'fr-FR')
+        expect(service.first_name).to eq 'Chat'
       end
     end
 
     describe '#last_name' do
-      it 'returns a random animal name' do
+      it 'returns a random (but consistent) animal name' do
         expect(service.last_name).to eq 'Zebra'
       end
 
       it 'returns a random animal name in French' do
-        I18n.with_locale(:'fr-FR') do
-          expect(service.last_name).to eq 'Zèbre'
-        end
+        user.update!(locale: 'fr-FR')
+        expect(service.last_name).to eq 'Zèbre'
       end
     end
   end
