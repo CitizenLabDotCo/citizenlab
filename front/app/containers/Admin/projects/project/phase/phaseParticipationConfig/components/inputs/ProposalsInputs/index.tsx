@@ -149,31 +149,33 @@ const ProposalsInputs = ({
           disabled={prescreeningEnabled}
           content={<FormattedMessage {...messages.prescreeningTooltip} />}
         >
-          <Toggle
-            disabled={!prescreeningEnabled}
-            checked={prescreening_enabled || false}
-            onChange={() => {
-              toggleReviewingEnabled(!prescreening_enabled);
-            }}
-            label={
-              <Box ml="8px" id="e2e-participation-options-toggle">
-                <Box display="flex">
-                  <Text
-                    color="primary"
-                    mb="0px"
-                    fontSize="m"
-                    style={{ fontWeight: 600 }}
-                  >
-                    <FormattedMessage {...messages.prescreeningText} />
+          <Box>
+            <Toggle
+              disabled={!prescreeningEnabled}
+              checked={prescreening_enabled || false}
+              onChange={() => {
+                toggleReviewingEnabled(!prescreening_enabled);
+              }}
+              label={
+                <Box ml="8px" id="e2e-participation-options-toggle">
+                  <Box display="flex">
+                    <Text
+                      color="primary"
+                      mb="0px"
+                      fontSize="m"
+                      style={{ fontWeight: 600 }}
+                    >
+                      <FormattedMessage {...messages.prescreeningText} />
+                    </Text>
+                  </Box>
+
+                  <Text color="coolGrey600" mt="0px" fontSize="m">
+                    <FormattedMessage {...messages.prescreeningSubtext} />
                   </Text>
                 </Box>
-
-                <Text color="coolGrey600" mt="0px" fontSize="m">
-                  <FormattedMessage {...messages.prescreeningSubtext} />
-                </Text>
-              </Box>
-            }
-          />
+              }
+            />
+          </Box>
         </Tooltip>
       </SectionField>
       <UserActions
