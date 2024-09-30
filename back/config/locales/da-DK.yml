@@ -171,8 +171,8 @@ da:
         title: Emner
         description:
       consponsor_ids:
-        title: Medsponsorer
-        description: Inviter medsponsorer via feltet nedenfor. De inviterede medsponsorer vil modtage en e-mail.
+        title: Medstillere
+        description: Inviter Medstillere via feltet nedenfor. De inviterede medstillere vil modtage en e-mail.
       location:
         title: Beliggenhed
         description:
