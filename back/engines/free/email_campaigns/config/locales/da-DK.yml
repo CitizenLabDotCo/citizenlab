@@ -254,7 +254,7 @@ da:
       main_header: '%{authorNameFirst} nævnte dig i en intern kommentar.'
       preheader: '%{authorNameFull} nævnte dig i en intern kommentar.'
     moderator_digest:
-      subject: 'Ugentlig managerrapport fra "%{project_title}"'
+      subject: 'Ugentlig projektlederrapport fra "%{project_title}"'
       preheader: 'Projektledersammendrag for %{organizationName}'
       title_your_weekly_report: '%{firstName}, din ugentlige rapport'
       text_introduction: 'Vi har samlet en liste over de idéer, der har genereret mest aktivitet i den seneste uge. Find ud af hvad der sker i dit projekt!'
@@ -280,7 +280,7 @@ da:
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} placeret en reaktion på ''%{inputTitle}''. Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} kom med en reaktion på ''%{inputTitle}''. Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
       main_header:
         idea: '%{authorName} kommenterede på en idé, du følger'
         question: '%{authorName} kommenterede på et spørgsmål, du følger'
@@ -306,15 +306,15 @@ da:
       subject: 'Nogen offentliggjorde et nyt forslag på platformen til %{organizationName}'
       preheader: '%{authorName} offentliggjorde et nyt forslag på din platform'
     new_idea_for_admin:
-      main_header_publication: 'der er blevet offentliggjort et nyt input på din platform'
-      event_description_publication: '%{authorName} har offentliggjort et nyt input på din platform. Se det nu, giv feedback eller ændr dets status!'
+      main_header_publication: 'der er blevet offentliggjort et nyt input på jeres platform'
+      event_description_publication: '%{authorName} har offentliggjort et nyt input på jeres platform. Se det nu, giv feedback eller ændr dets status!'
       cta_publication: 'Giv feedback til %{authorName}'
       main_header_prescreening: 'Et input kræver din gennemgang'
-      event_description_prescreening: '%{authorName} har sendt et nyt input til din platform.'
+      event_description_prescreening: '%{authorName} har sendt et nyt input til jeres platform.'
       input_not_visible_prescreening: '<b>Inputtet vil ikke være synligt</b>, før du ændrer dets status.'
       cta_prescreening: 'Gennemgå input'
       days_ago: '%{numberOfDays} dage siden'
-      preheader: '%{authorName} har offentliggjort et nyt input på din platform'
+      preheader: '%{authorName} har offentliggjort et nyt input på jeres platform'
       today: I dag
       yesterday: I går
     comment_on_your_comment:
@@ -452,7 +452,7 @@ da:
       subject: 'Status for et forslag du følger er ændret'
       preheader: 'Et forslag du følger har fået en ny status'
     user_digest:
-      subject: "Denne uge på deltagelsesplatformen %{organizationName}"
+      subject: "Denne uge på borgerinddragelsesplatformen %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
@@ -460,7 +460,7 @@ da:
       cta_go_to_the_platform: "Besøg platformen"
       title_no_activity_past_week: "Ingen aktivitet i den seneste uge"
       successful_proposals_title: "Nåede tærsklen"
-      successful_proposals_text: "I den forløbne uge har de fået nok støtte til at gå videre til næste fase."
+      successful_proposals_text: "I den forløbne uge har disse fået nok støtte til at gå videre til næste fase."
       today_by_author: "I dag af %{author}"
       yesterday_by_author: "I går af %{author}"
       x_days_ago_by_author: "%{x} dage siden af %{author}"
@@ -473,7 +473,7 @@ da:
       unread_notifications: "Du har nye notifikationer! Besøg platformen for at finde ud af, hvad der sker."
     threshold_reached_for_admin:
       cta_process_initiative: 'Før dette initiativ til de næste trin'
-      main_header: 'Et initiativ har nået stemmetærskelgrænsen!'
+      main_header: 'Et initiativ har nået stemmetærskel!'
       subject: "\"%{input_title} nåede afstemningstærsklen\n"
       preheader: 'Sørg for, at du gennemfører de næste trin'
     welcome:
