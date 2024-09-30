@@ -170,6 +170,9 @@ it:
       topic_ids:
         title: Argomenti
         description:
+      consponsor_ids:
+        title: Co-sponsor
+        description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
       location:
         title: Posizione
         description:
