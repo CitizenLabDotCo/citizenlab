@@ -210,7 +210,7 @@ da:
         option:
           title: Hvad er din mulighed?
         proposal:
-          title: '{tenantName, select, RegionSjælland {Stil og støt borgerforslag} KøbenhavnsKommune {Stil og støt københavnerforslag} other {Hvad er dit forslag?}}'
+          title: Hvad er dit forslag?
         initiative:
           title: Hvad er dit forslag?
         petition:
