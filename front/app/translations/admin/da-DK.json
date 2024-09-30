@@ -830,7 +830,7 @@
   "app.containers.Admin.project.emails.addCampaign": "Opret e-mail",
   "app.containers.Admin.project.emails.addCampaignTitle": "Ny kampagne",
   "app.containers.Admin.project.emails.allParticipantsAndFollowers": "Alle {participants} og følgere fra projektet",
-  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Dette omfatter registrerede brugere, der har udført en handling i projektet. Uregistrerede eller anonymiserede brugere er ikke inkluderet.",
+  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Dette omfatter registrerede brugere, der har udført en handling i projektet. Ikke registrerede eller anonymiserede brugere er ikke inkluderet.",
   "app.containers.Admin.project.emails.dateSent": "Dato for afsendelse",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Slet",
   "app.containers.Admin.project.emails.draft": "Udkast",
