@@ -164,13 +164,7 @@ const Calendar = ({
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
-    {
-      isDisabledStart,
-      isDisabledMiddle,
-      isDisabledEnd,
-      isDisabledGradient_one,
-      ...rest
-    }
+    { isDisabledStart, isDisabledMiddle, isDisabledEnd, isDisabledGradient_one }
   ) => {
     if (
       isDisabledStart ||
