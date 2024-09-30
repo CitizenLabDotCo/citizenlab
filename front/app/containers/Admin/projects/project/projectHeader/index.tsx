@@ -116,6 +116,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               size="s"
               padding="4px 8px"
               mr="12px"
+              id="e2e-view-project"
             >
               {formatMessage(messages.view)}
             </Button>
