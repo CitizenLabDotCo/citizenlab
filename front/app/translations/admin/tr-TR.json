@@ -822,8 +822,6 @@
   "app.containers.Admin.project.Campaigns.noAccess": "Üzgünüz, ancak e-postalar bölümüne erişiminiz yok gibi görünüyor",
   "app.containers.Admin.project.emails.addCampaign": "E-posta oluşturun",
   "app.containers.Admin.project.emails.addCampaignTitle": "Yeni kampanya",
-  "app.containers.Admin.project.emails.allParticipants": "Projeden tüm {participants}",
-  "app.containers.Admin.project.emails.allParticipantsTooltipText": "Bu, projede herhangi bir eylem gerçekleştiren kayıtlı kullanıcıları içerir (takip etme dahil). Kayıtsız veya anonim kullanıcılar dahil değildir.",
   "app.containers.Admin.project.emails.dateSent": "Gönderilen tarih",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Silme",
   "app.containers.Admin.project.emails.draft": "Taslak",

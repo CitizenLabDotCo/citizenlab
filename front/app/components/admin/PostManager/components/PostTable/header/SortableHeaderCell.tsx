@@ -18,7 +18,6 @@ const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   sortAttributeName,
-  width,
   infoTooltip,
   onChange,
   children,
@@ -26,9 +25,10 @@ const SortableHeaderCell = ({
   return (
     <Th
       clickable
-      width={width}
       sortDirection={
-        sortAttribute === sortAttributeName && sortDirection
+        sortAttribute &&
+        sortDirection &&
+        sortAttributeName === sortAttribute.replace(/^-/, '')
           ? sortDirection
           : undefined
       }

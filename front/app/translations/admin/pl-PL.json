@@ -822,8 +822,6 @@
   "app.containers.Admin.project.Campaigns.noAccess": "Przepraszamy, ale wygląda na to, że nie masz dostępu do sekcji e-maili",
   "app.containers.Admin.project.emails.addCampaign": "Utwórz wiadomość e-mail",
   "app.containers.Admin.project.emails.addCampaignTitle": "Nowa kampania",
-  "app.containers.Admin.project.emails.allParticipants": "Wszystkie {participants} z projektu",
-  "app.containers.Admin.project.emails.allParticipantsTooltipText": "Obejmuje to zarejestrowanych użytkowników, którzy wykonali jakąkolwiek akcję w projekcie (w tym obserwowanie). Niezarejestrowani lub anonimowi użytkownicy nie są uwzględniani.",
   "app.containers.Admin.project.emails.dateSent": "Data wysłania",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Usuń",
   "app.containers.Admin.project.emails.draft": "Wersja robocza",
