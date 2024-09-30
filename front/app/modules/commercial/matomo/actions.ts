@@ -5,9 +5,9 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import { tenantInfo, IEvent } from 'utils/analytics';
 import { getUrlLocale } from 'utils/getUrlLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 
 import { getProjectId } from './getProjectId';
-import matchPath, { getAllPathsFromRoutes } from './matchPath';
 
 export const trackEvent = (
   event: IEvent,
