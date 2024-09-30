@@ -309,8 +309,8 @@ export default defineMessages({
     defaultMessage: 'Imported',
   },
   cosponsors: {
-    id: 'app.components.admin.PostManager.cosponsors',
-    defaultMessage: 'Cosponsors',
+    id: 'app.components.admin.PostManager.co-sponsors',
+    defaultMessage: 'Co-sponsors',
   },
   prescreeningTooltipUpsell: {
     id: 'app.components.admin.PostManager.screeningTooltip',
