@@ -24,8 +24,12 @@ class ApplicationMailer < ActionMailer::Base
   NotImplementedError = Class.new(StandardError)
 
   def format_message(key, component: nil, escape_html: true, values: {})
-    msg = t(".#{key}", values)
+    msg = t(".#{key}", **values)
     escape_html ? msg : msg.html_safe
+  end
+
+  def preheader
+    raise NotImplementedError
   end
 
   def recipient_name
@@ -46,10 +50,6 @@ class ApplicationMailer < ActionMailer::Base
 
   def header_message
     format_message('header_message', values: { firstName: recipient_first_name })
-  end
-
-  def preheader
-    format_message('preheader', values: { organizationName: organization_name })
   end
 
   def url_service

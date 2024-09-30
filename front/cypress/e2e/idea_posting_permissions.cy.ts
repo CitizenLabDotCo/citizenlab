@@ -137,8 +137,8 @@ describe.skip('idea posting that requires smart group', () => {
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
     cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
-    cy.get('.e2e-idea-button').find('button').should('exist');
-    cy.get('.e2e-idea-button').find('button').click();
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click();
     cy.get('#e2e-goto-signup').click();
     cy.get('#email').type(nonPermittedUserEmail);
     cy.get('#password').type(nonPermittedUserPassword);
@@ -149,9 +149,9 @@ describe.skip('idea posting that requires smart group', () => {
   it('redirects users after authentication to form page if they are permitted', () => {
     cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
-    cy.get('.e2e-idea-button').find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.wait(2000);
-    cy.get('.e2e-idea-button').find('button').click();
+    cy.get('.e2e-idea-button').first().find('button').click();
     cy.wait(2000);
     cy.get('#e2e-goto-signup').click();
     cy.wait(2000);

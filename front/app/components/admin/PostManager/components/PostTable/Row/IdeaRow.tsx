@@ -243,7 +243,9 @@ const IdeaRow = ({
       name: 'published_on',
       Component: ({ idea }) => {
         if (!isNilOrError(locale)) {
-          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+          return (
+            <>{timeAgo(Date.parse(idea.attributes.published_at), locale)}</>
+          );
         }
         return null;
       },
