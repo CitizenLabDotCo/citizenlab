@@ -1,7 +1,8 @@
 export interface LegendItem {
   icon: 'plain-line' | 'line' | 'rect' | 'circle';
-  color: string;
+  iconColor: string;
   label: string;
+  itemColor?: string;
 }
 
 export interface ItemCoordinates {

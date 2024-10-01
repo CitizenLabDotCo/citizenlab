@@ -43,7 +43,7 @@ const StackedBarChart = ({ response }: Props) => {
   return (
     <BaseStackedBarChart
       data={data}
-      height={10}
+      height={30}
       mapping={{
         stackedLength: columns,
         fill: ({ stackIndex }) => statusColorById[columns[stackIndex]],
@@ -54,7 +54,7 @@ const StackedBarChart = ({ response }: Props) => {
         },
       }}
       layout="horizontal"
-      labels={stackLabels(data, columns, percentages, 'bottom', 'black')}
+      labels={stackLabels(data, columns, percentages)}
       xaxis={{ hide: true, domain: [0, 'dataMax'] }}
       yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
       tooltip={tooltip(

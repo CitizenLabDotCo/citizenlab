@@ -1,3 +1,4 @@
+import { colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
@@ -57,11 +58,14 @@ const parseBirthyearResponse = (
 
   const statusColorById = createColorMap(columns);
 
-  const legendItems = columns.map((column) => ({
-    icon: 'circle' as const,
-    color: statusColorById[column],
-    label: column,
-  }));
+  const legendItems = columns.map((column) => {
+    return {
+      icon: 'circle' as const,
+      iconColor: binHash[column] === 0 ? 'red' : statusColorById[column],
+      label: column,
+      itemColor: data[0][column] === 0 ? colors.coolGrey300 : undefined,
+    };
+  });
 
   return {
     data,
@@ -99,11 +103,14 @@ const parseOtherResponse = (
     return localize(options[column].title_multiloc);
   });
 
-  const legendItems = sortedColumns.map((column, i) => ({
-    icon: 'circle' as const,
-    color: statusColorById[column],
-    label: labels[i],
-  }));
+  const legendItems = sortedColumns.map((column, i) => {
+    return {
+      icon: 'circle' as const,
+      iconColor: data[0][column] === 0 ? 'red' : statusColorById[column],
+      label: labels[i],
+      itemColor: data[0][column] === 0 ? colors.coolGrey300 : undefined,
+    };
+  });
 
   return {
     data,
